@@ -980,7 +980,8 @@ video.lightbox-media {
 
 .info-header + .info-grid,
 .info-header + .badge-row {
-    margin-top: var(--ui-space-5);
+    margin-top: var(--ui-space-3);
+    margin-bottom: var(--ui-space-3);
 }
 
 .info-label {
