@@ -302,6 +302,67 @@ textarea:focus-visible,
     padding: var(--ui-space-4);
 }
 
+/* Opt-in full-height application frame. Service styles define the column ratio. */
+.ui-flat-app {
+    min-height: 100svh;
+    --ui-font-size-2xl: 40px;
+}
+
+.ui-flat-app .ui-app-header {
+    position: relative;
+    background: var(--ui-canvas);
+    backdrop-filter: none;
+}
+
+.ui-flat-app .ui-app-header-inner,
+.ui-flat-app .ui-page-overview,
+.ui-flat-app .ui-flat-workspace {
+    width: 100%;
+    max-width: none;
+}
+
+.ui-flat-app .ui-app-header-inner,
+.ui-flat-app .ui-page-overview {
+    padding-inline: var(--ui-space-8);
+}
+
+.ui-flat-app .ui-page-overview {
+    min-height: 0;
+    border-bottom: var(--ui-border-width) solid var(--ui-border-default);
+}
+
+.ui-flat-app .ui-description {
+    font-size: var(--ui-font-size-base);
+}
+
+.ui-flat-workspace {
+    min-width: 0;
+    min-height: 0;
+    gap: 0;
+    align-items: stretch;
+    padding-bottom: 0;
+}
+
+.ui-flat-workspace > .ui-flat-region {
+    min-width: 0;
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+.ui-flat-workspace > .ui-flat-region + .ui-flat-region {
+    border-left: var(--ui-border-width) solid var(--ui-border-default);
+}
+
+.ui-flat-workspace .ui-panel-header {
+    padding-inline: var(--ui-space-8);
+}
+
+.ui-flat-workspace .ui-panel-body {
+    padding: var(--ui-space-6) var(--ui-space-8);
+}
+
 .ui-page-heading {
     margin: 0;
     font-size: clamp(var(--ui-font-size-xl), 3vw, var(--ui-font-size-2xl));
@@ -1066,6 +1127,40 @@ video.lightbox-media {
     }
 }
 
+@media (min-width: 801px) {
+    .ui-flat-app main {
+        height: calc(100svh - var(--ui-header-height));
+        min-height: 0;
+        display: grid;
+        grid-template-rows: clamp(200px, 22vh, 240px) minmax(0, 1fr);
+        overflow: hidden;
+    }
+}
+
+@media (max-width: 800px) {
+    .ui-flat-app .ui-app-header-inner,
+    .ui-flat-app .ui-page-overview {
+        padding-inline: var(--ui-space-6);
+    }
+
+    .ui-flat-app .ui-page-overview {
+        padding-block: var(--ui-space-10);
+    }
+
+    .ui-flat-workspace > .ui-flat-region + .ui-flat-region {
+        border-left: 0;
+        border-top: var(--ui-border-width) solid var(--ui-border-default);
+    }
+
+    .ui-flat-workspace .ui-panel-header {
+        padding-inline: var(--ui-space-6);
+    }
+
+    .ui-flat-workspace .ui-panel-body {
+        padding-inline: var(--ui-space-6);
+    }
+}
+
 @media (max-width: 600px) {
     .ui-container,
     .ui-container-wide {
@@ -1078,6 +1173,16 @@ video.lightbox-media {
     .ui-app-header-inner {
         min-height: var(--ui-header-height-mobile);
         gap: var(--ui-space-3);
+    }
+
+    .ui-flat-app .ui-app-header-inner,
+    .ui-flat-app .ui-page-overview {
+        padding-inline: var(--ui-space-4);
+    }
+
+    .ui-flat-workspace .ui-panel-header,
+    .ui-flat-workspace .ui-panel-body {
+        padding-inline: var(--ui-space-4);
     }
 
     .ui-brand span:last-child {
