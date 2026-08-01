@@ -302,40 +302,50 @@ textarea:focus-visible,
     padding: var(--ui-space-4);
 }
 
-/* Opt-in full-height application frame. Service styles define the column ratio. */
-.ui-flat-app {
+/* Opt-in framed application shell. Service styles define content and columns. */
+.ui-framed-app {
     min-height: 100svh;
-    --ui-font-size-2xl: 40px;
+    --ui-frame-gutter: var(--ui-space-8);
+    background-color: var(--ui-canvas);
+    background-image: repeating-linear-gradient(
+        135deg,
+        transparent 0,
+        transparent 11px,
+        var(--ui-border-default) 11px,
+        var(--ui-border-default) 12px
+    );
+    background-attachment: fixed;
 }
 
-.ui-flat-app .ui-app-header {
-    position: relative;
+.ui-framed-app > .ui-app-header,
+.ui-framed-app > main {
+    width: calc(100% - (2 * var(--ui-frame-gutter)));
+    margin-inline: auto;
+    border-inline: var(--ui-border-width) solid var(--ui-border-default);
     background: var(--ui-canvas);
-    backdrop-filter: none;
 }
 
-.ui-flat-app .ui-app-header-inner,
-.ui-flat-app .ui-page-overview,
-.ui-flat-app .ui-flat-workspace {
+.ui-framed-app > main {
+    min-height: calc(100svh - var(--ui-header-height));
+}
+
+.ui-framed-app .ui-app-header-inner,
+.ui-framed-app .ui-page-overview,
+.ui-framed-app .ui-framed-workspace {
     width: 100%;
     max-width: none;
 }
 
-.ui-flat-app .ui-app-header-inner,
-.ui-flat-app .ui-page-overview {
-    padding-inline: var(--ui-space-8);
+.ui-framed-app .ui-app-header-inner,
+.ui-framed-app .ui-page-overview {
+    padding-inline: calc(var(--ui-container-gutter) / 2);
 }
 
-.ui-flat-app .ui-page-overview {
-    min-height: 0;
+.ui-framed-app .ui-page-overview {
     border-bottom: var(--ui-border-width) solid var(--ui-border-default);
 }
 
-.ui-flat-app .ui-description {
-    font-size: var(--ui-font-size-base);
-}
-
-.ui-flat-workspace {
+.ui-framed-workspace {
     min-width: 0;
     min-height: 0;
     gap: 0;
@@ -343,7 +353,7 @@ textarea:focus-visible,
     padding-bottom: 0;
 }
 
-.ui-flat-workspace > .ui-flat-region {
+.ui-framed-workspace > .ui-framed-region {
     min-width: 0;
     min-height: 0;
     border: 0;
@@ -351,16 +361,8 @@ textarea:focus-visible,
     background: transparent;
 }
 
-.ui-flat-workspace > .ui-flat-region + .ui-flat-region {
+.ui-framed-workspace > .ui-framed-region + .ui-framed-region {
     border-left: var(--ui-border-width) solid var(--ui-border-default);
-}
-
-.ui-flat-workspace .ui-panel-header {
-    padding-inline: var(--ui-space-8);
-}
-
-.ui-flat-workspace .ui-panel-body {
-    padding: var(--ui-space-6) var(--ui-space-8);
 }
 
 .ui-page-heading {
@@ -1127,37 +1129,30 @@ video.lightbox-media {
     }
 }
 
-@media (min-width: 801px) {
-    .ui-flat-app main {
+@media (min-width: 901px) {
+    .ui-framed-dashboard > main {
         height: calc(100svh - var(--ui-header-height));
         min-height: 0;
         display: grid;
-        grid-template-rows: clamp(200px, 22vh, 240px) minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr);
         overflow: hidden;
     }
 }
 
-@media (max-width: 800px) {
-    .ui-flat-app .ui-app-header-inner,
-    .ui-flat-app .ui-page-overview {
-        padding-inline: var(--ui-space-6);
+@media (max-width: 900px) {
+    .ui-framed-app {
+        --ui-frame-gutter: 0px;
+        background-image: none;
     }
 
-    .ui-flat-app .ui-page-overview {
-        padding-block: var(--ui-space-10);
+    .ui-framed-app > .ui-app-header,
+    .ui-framed-app > main {
+        border-inline: 0;
     }
 
-    .ui-flat-workspace > .ui-flat-region + .ui-flat-region {
+    .ui-framed-workspace > .ui-framed-region + .ui-framed-region {
         border-left: 0;
         border-top: var(--ui-border-width) solid var(--ui-border-default);
-    }
-
-    .ui-flat-workspace .ui-panel-header {
-        padding-inline: var(--ui-space-6);
-    }
-
-    .ui-flat-workspace .ui-panel-body {
-        padding-inline: var(--ui-space-6);
     }
 }
 
@@ -1175,14 +1170,9 @@ video.lightbox-media {
         gap: var(--ui-space-3);
     }
 
-    .ui-flat-app .ui-app-header-inner,
-    .ui-flat-app .ui-page-overview {
-        padding-inline: var(--ui-space-4);
-    }
-
-    .ui-flat-workspace .ui-panel-header,
-    .ui-flat-workspace .ui-panel-body {
-        padding-inline: var(--ui-space-4);
+    .ui-framed-app .ui-app-header-inner,
+    .ui-framed-app .ui-page-overview {
+        padding-inline: calc(var(--ui-container-gutter-mobile) / 2);
     }
 
     .ui-brand span:last-child {
