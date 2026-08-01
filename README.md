@@ -32,7 +32,8 @@ roles: `tight` (1), `snug` (1.25), `normal` (1.5), and `relaxed` (1.6).
 - Layout: `ui-container`, `ui-container-wide`, `ui-app-header`,
   `ui-page-overview`, `ui-workspace`, `ui-panel`, `ui-panel-header`,
   `ui-panel-body`; opt-in framed layouts use `ui-framed-app`,
-  `ui-framed-dashboard`, `ui-framed-workspace`, and `ui-framed-region`
+  `ui-framed-dashboard`, `ui-frame-compact`, `ui-framed-workspace`, and
+  `ui-framed-region`
 - Navigation: `ui-brand`, `ui-tabs`, `ui-tab`
 - Type: `ui-page-heading`, `ui-eyebrow`, `ui-description`, `ui-title-sm`,
   `ui-title-md`, `ui-meta-text`
@@ -42,7 +43,7 @@ roles: `tight` (1), `snug` (1.25), `normal` (1.5), and `relaxed` (1.6).
   `ui-select-wrap`, `ui-select`, `ui-input-group`, `ui-textarea`, `ui-checkbox`
 - Feedback: `ui-badge`, `ui-stats`, `ui-status-indicator`,
   `ui-status-icon`, `ui-empty`, `ui-empty-compact`, `ui-field-error`,
-  `ui-progress`, `ui-code-output`
+  `ui-progress`, `ui-list-row`, `ui-code-output`, `ui-code-output-padded`
 - Overlays: `ui-dialog`, `ui-dialog-panel`, `lightbox`
 
 Mount `/home/core/docker/ui_library` read-only and load `core-ui.css` before
