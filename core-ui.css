@@ -238,7 +238,6 @@ textarea:focus-visible,
     height: var(--ui-control-height);
     display: flex;
     align-items: center;
-    gap: var(--ui-space-1);
     padding: var(--ui-tabs-padding);
     border: var(--ui-border-width) solid var(--ui-border-default);
     border-radius: var(--ui-radius-sm);
@@ -629,7 +628,6 @@ textarea:focus-visible,
     gap: var(--ui-badge-gap);
     padding: 0 var(--ui-space-2);
     border: var(--ui-border-width) solid var(--ui-border-default);
-    border-radius: var(--ui-radius-full);
     background: var(--ui-control-bg);
     color: var(--ui-text-secondary);
     font-size: var(--ui-font-size-xs);
@@ -1056,7 +1054,6 @@ textarea:focus-visible,
     grid-template-areas: "main info";
     overflow: hidden;
     border: var(--ui-border-width) solid var(--ui-border-default);
-    border-radius: var(--ui-radius-lg);
     background: var(--ui-surface);
     box-shadow: var(--ui-shadow-dialog);
 }
