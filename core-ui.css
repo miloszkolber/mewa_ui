@@ -108,6 +108,13 @@
     --ui-backdrop-blur-md: 12px;
     --ui-backdrop-blur-lg: 16px;
     --ui-reduced-motion-duration: 0.01ms;
+    --ui-stripe-pattern: repeating-linear-gradient(
+        135deg,
+        transparent 0,
+        transparent 11px,
+        var(--ui-border-default) 11px,
+        var(--ui-border-default) 12px
+    );
 
     /* Elevation and layering */
     --ui-shadow-dialog: 0 8px 16px -4px rgba(0, 0, 0, 0.4),
@@ -265,6 +272,41 @@ textarea:focus-visible,
     background: var(--ui-control-bg-active);
 }
 
+.ui-tab-strip {
+    display: flex;
+    overflow-x: auto;
+    border-bottom: var(--ui-border-width) solid var(--ui-border-default);
+    background: var(--ui-surface);
+}
+
+.ui-tab-strip-item {
+    appearance: none;
+    min-height: var(--ui-control-height);
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 var(--ui-space-4);
+    border: 0;
+    border-right: var(--ui-border-width) solid var(--ui-border-default);
+    background: transparent;
+    color: var(--ui-text-secondary);
+    font-size: var(--ui-font-size-md);
+    font-weight: var(--ui-font-weight-medium);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.ui-tab-strip-item:hover:not([aria-selected="true"]) {
+    color: var(--ui-text-primary);
+    background: var(--ui-control-bg-hover);
+}
+
+.ui-tab-strip-item[aria-selected="true"] {
+    color: var(--ui-text-primary);
+    background: var(--ui-control-bg);
+    box-shadow: inset 0 -2px 0 var(--ui-border-hover);
+}
+
 .ui-page-overview {
     min-height: var(--ui-overview-min-height);
     display: flex;
@@ -305,20 +347,10 @@ textarea:focus-visible,
 /* Opt-in framed application shell. Service styles define content and columns. */
 .ui-framed-app {
     min-height: 100svh;
-    --ui-frame-gutter: var(--ui-space-8);
-    background-color: var(--ui-canvas);
-    background-image: repeating-linear-gradient(
-        135deg,
-        transparent 0,
-        transparent 11px,
-        var(--ui-border-default) 11px,
-        var(--ui-border-default) 12px
-    );
-    background-attachment: fixed;
-}
-
-.ui-framed-app.ui-frame-compact {
     --ui-frame-gutter: var(--ui-space-6);
+    background-color: var(--ui-canvas);
+    background-image: var(--ui-stripe-pattern);
+    background-attachment: fixed;
 }
 
 .ui-framed-app > .ui-app-header,
@@ -367,6 +399,20 @@ textarea:focus-visible,
 
 .ui-framed-workspace > .ui-framed-region + .ui-framed-region {
     border-left: var(--ui-border-width) solid var(--ui-border-default);
+}
+
+.ui-framed-split {
+    gap: var(--ui-space-6);
+    background-color: var(--ui-canvas);
+    background-image: var(--ui-stripe-pattern);
+}
+
+.ui-framed-split > .ui-framed-region {
+    background: var(--ui-canvas);
+}
+
+.ui-framed-split > .ui-framed-region:first-child {
+    border-right: var(--ui-border-width) solid var(--ui-border-default);
 }
 
 .ui-framed-app :is(
@@ -1182,8 +1228,7 @@ video.lightbox-media {
 }
 
 @media (max-width: 900px) {
-    .ui-framed-app,
-    .ui-framed-app.ui-frame-compact {
+    .ui-framed-app {
         --ui-frame-gutter: 0px;
         background-image: none;
     }
@@ -1196,6 +1241,15 @@ video.lightbox-media {
     .ui-framed-workspace > .ui-framed-region + .ui-framed-region {
         border-left: 0;
         border-top: var(--ui-border-width) solid var(--ui-border-default);
+    }
+
+    .ui-framed-split {
+        gap: 0;
+        background-image: none;
+    }
+
+    .ui-framed-split > .ui-framed-region:first-child {
+        border-right: 0;
     }
 }
 

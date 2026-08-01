@@ -32,9 +32,10 @@ roles: `tight` (1), `snug` (1.25), `normal` (1.5), and `relaxed` (1.6).
 - Layout: `ui-container`, `ui-container-wide`, `ui-app-header`,
   `ui-page-overview`, `ui-workspace`, `ui-panel`, `ui-panel-header`,
   `ui-panel-body`; opt-in framed layouts use `ui-framed-app`,
-  `ui-framed-dashboard`, `ui-frame-compact`, `ui-framed-workspace`, and
+  `ui-framed-dashboard`, `ui-framed-workspace`, `ui-framed-split`, and
   `ui-framed-region`
-- Navigation: `ui-brand`, `ui-tabs`, `ui-tab`
+- Navigation: `ui-brand`, `ui-tabs`, `ui-tab`, `ui-tab-strip`,
+  `ui-tab-strip-item`
 - Type: `ui-page-heading`, `ui-eyebrow`, `ui-description`, `ui-title-sm`,
   `ui-title-md`, `ui-meta-text`
 - Controls: `ui-button` with `ui-button-primary`, `ui-button-secondary`,
