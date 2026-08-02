@@ -2,7 +2,9 @@
 
 `core-ui.css` is the shared, framework-agnostic UI foundation for Core's small
 service frontends. It follows Geist's published tokens and metrics with
-shadcn/ui's open-code composition model.
+shadcn/ui's open-code composition model. See `DESIGN.md` for the design
+contract: token roles, layout models, the status state machine, and
+contribution rules.
 
 ## Principles
 
