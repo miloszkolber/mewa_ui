@@ -32,8 +32,8 @@ roles: `tight` (1), `snug` (1.25), `normal` (1.5), and `relaxed` (1.6).
 - Layout: `ui-container`, `ui-container-wide`, `ui-app-header`,
   `ui-page-overview`, `ui-workspace`, `ui-panel`, `ui-panel-header`,
   `ui-panel-body`; opt-in framed layouts use `ui-framed-app`,
-  `ui-framed-dashboard`, `ui-framed-workspace`, `ui-framed-split`, and
-  `ui-framed-region`
+  `ui-framed-dashboard`, `ui-framed-workspace`, `ui-framed-split`,
+  `ui-framed-panel`, and `ui-framed-region`
 - Navigation: `ui-brand`, `ui-tabs`, `ui-tab`, `ui-tab-strip`,
   `ui-tab-strip-item`
 - Type: `ui-page-heading`, `ui-eyebrow`, `ui-description`, `ui-title-sm`,
@@ -43,15 +43,24 @@ roles: `tight` (1), `snug` (1.25), `normal` (1.5), and `relaxed` (1.6).
   `ui-icon-button`, `ui-field-stack`, `ui-field-label`, `ui-field`,
   `ui-select-wrap`, `ui-select`, `ui-input-group`, `ui-textarea`, `ui-checkbox`
 - Feedback: `ui-badge`, `ui-stats`, `ui-status-indicator`,
-  `ui-status-icon`, `ui-empty`, `ui-empty-compact`, `ui-field-error`,
-  `ui-progress`, `ui-list-row`, `ui-code-output`, `ui-code-output-padded`
+  `ui-status-icon`, `ui-status-icon-loading`, `ui-empty`,
+  `ui-empty-compact`, `ui-field-error`, `ui-progress`, `ui-list-row`,
+  `ui-row`, `ui-code-output`, `ui-code-output-padded`
 - Overlays: `ui-dialog`, `ui-dialog-panel`, `lightbox`
 
-Mount `/home/core/docker/ui_library` read-only and load `core-ui.css` before
-service-specific CSS. `meili_ui` is the reference implementation.
-Service-specific branding belongs with that service's assets rather than in
-this shared foundation.
+Status rows and indicators share one state vocabulary: `ok`, `warning`,
+`error`, `running`, and `progress`. Set the state on the row or summary
+element, put the status icon classes (`ui-status-icon-ok`,
+`ui-status-icon-warning`, `ui-status-icon-error`, `ui-status-icon-loading`)
+inside a `ui-status-indicator`, and core-ui handles icon visibility plus
+indicator coloring. Use `ui-code-output.is-empty` for centered placeholder
+text in code panes.
+
+Mount `/home/core/docker/ui_library` read-only at `/ui` and load
+`/ui/core-ui.css` before service-specific CSS. `meili_ui` is the reference
+implementation. Service-specific branding belongs with that service's assets
+rather than in this shared foundation.
 
 Interface icons live in `lucide.svg`. Reference them with same-origin sprite
-links such as `<use href="/lucide.svg#search" />`; keep product marks and media
-fallback illustrations with the consuming service.
+links such as `<use href="/ui/lucide.svg#search" />`; keep product marks and
+media fallback illustrations with the consuming service.
