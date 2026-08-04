@@ -304,7 +304,6 @@ textarea:focus-visible,
 .ui-tab-strip-item[aria-selected="true"] {
     color: var(--ui-text-primary);
     background: var(--ui-control-bg);
-    box-shadow: inset 0 -2px 0 var(--ui-border-hover);
 }
 
 .ui-page-overview {
@@ -455,7 +454,6 @@ textarea:focus-visible,
 .ui-list-row[aria-pressed="true"],
 .ui-list-row[aria-selected="true"] {
     background: var(--ui-control-bg);
-    box-shadow: inset 2px 0 0 var(--ui-border-hover);
 }
 
 .ui-list-row[aria-checked="true"] {
