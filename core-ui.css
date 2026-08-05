@@ -237,6 +237,7 @@ textarea:focus-visible,
 
 .ui-tabs {
     height: var(--ui-control-height);
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
     padding: var(--ui-tabs-padding);

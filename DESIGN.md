@@ -2,10 +2,10 @@
 
 This file is the design contract for interfaces built on `core-ui.css` and
 `lucide.svg`. It captures the token system, the layout models, the state
-machine, and the rules that keep the four services (`timers`, `hf_ui`,
-`moonlight_ui`, `meili_ui`) visually aligned. `core-ui.css` is the source of
-truth for values. `README.md` inventories the primitives. This file explains
-how and why to use them.
+machine, and the rules that keep the five services (`timers_ui`, `hf_ui`,
+`moonlight_ui`, `meili_ui`, `rss`) visually aligned. `core-ui.css` is the
+source of truth for values. `README.md` inventories the primitives. This file
+explains how and why to use them.
 
 ## Principles
 
@@ -177,7 +177,8 @@ no tint so their rows stay quiet.
 Domain mappings in use: hf jobs map `success` to `ok` and queue states to
 `progress`. Moonlight device, cert, and update cards map to `ok` or
 `warning`. Timers map `running` to `running` and results to `ok` or
-`warning`.
+`warning`. RSS maps feed fetch results to `ok` or `error` on its status
+badges.
 
 ## Accessibility contracts
 
@@ -212,10 +213,9 @@ to the sprite.
 
 Mount `/home/core/docker/ui_library` read-only at `/ui` and serve the
 library under the `/ui/` prefix. Load `/ui/core-ui.css` before the service
-stylesheet so service rules can override primitives. The root-level
-`/core-ui.css` and `/lucide.svg` paths are gone from the four services; the
-`rss` frontend is the one remaining root-path consumer and has not been
-migrated. New or migrated services must use the `/ui/` prefix.
+stylesheet so service rules can override primitives. All five services serve
+the library under the `/ui/` prefix. New or migrated services must use the
+`/ui/` prefix.
 
 ## Contributing to the library
 
