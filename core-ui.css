@@ -474,6 +474,10 @@ textarea:focus-visible,
     border-top: var(--ui-border-width) solid var(--ui-border-default);
 }
 
+.ui-status-row {
+    grid-template-columns: var(--ui-status-indicator-size) minmax(0, 1fr) auto;
+}
+
 .ui-page-heading {
     margin: 0;
     font-size: clamp(var(--ui-font-size-xl), 3vw, var(--ui-font-size-2xl));

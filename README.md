@@ -47,7 +47,7 @@ roles: `tight` (1), `snug` (1.25), `normal` (1.5), and `relaxed` (1.6).
 - Feedback: `ui-badge`, `ui-stats`, `ui-status-indicator`,
   `ui-status-icon`, `ui-status-icon-loading`, `ui-empty`,
   `ui-empty-compact`, `ui-field-error`, `ui-progress`, `ui-list-row`,
-  `ui-row`, `ui-code-output`, `ui-code-output-padded`
+  `ui-row`, `ui-status-row`, `ui-code-output`, `ui-code-output-padded`
 - Overlays: `ui-dialog`, `ui-dialog-panel`, `lightbox`
 
 Status rows and indicators share one state vocabulary: `ok`, `warning`,

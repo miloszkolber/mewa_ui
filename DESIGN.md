@@ -137,6 +137,10 @@ The full inventory lives in `README.md`. The contracts that matter most:
 
 - **`ui-row`** is the base list row: grid, 16px gap and padding, 1px top
   separator between siblings. Content goes in its own cells
+- **`ui-status-row`** is `ui-row` plus the standard status columns:
+  `var(--ui-status-indicator-size) minmax(0, 1fr) auto`. The indicator goes
+  in the first cell, copy in the middle, actions on the right. Rows without
+  actions override to two columns
 - **`ui-list-row`** is the interactive row for tabs, menus, and filter
   options. Selected and pressed states come from `aria-selected`,
   `aria-pressed`, and `aria-checked`. Filter options use
@@ -176,7 +180,8 @@ no tint so their rows stay quiet.
 
 Domain mappings in use: hf jobs map `success` to `ok` and queue states to
 `progress`. Moonlight device, cert, and update cards map to `ok` or
-`warning`. Timers map `running` to `running` and results to `ok` or
+`warning`, and to `running` while a status refresh or reconnect is in
+flight. Timers map `running` to `running` and results to `ok` or
 `warning`. RSS maps feed fetch results to `ok` or `error` on its status
 badges.
 
@@ -193,7 +198,9 @@ badges.
   that set `aria-checked`. `aria-haspopup="menu"` + `aria-expanded` on the
   trigger
 - **Dialogs.** `role="dialog"` with `aria-modal="true"` and an
-  `aria-labelledby` pointing at the dialog title
+  `aria-labelledby` pointing at the dialog title. Hide dialogs and lightboxes
+  with the `hidden` attribute, not inline `display` styles; the global
+  `[hidden]` rule overrides component `display`
 - **Live regions.** `role="status"` or `aria-live="polite"` for non-critical
   updates, `role="alert"` for errors
 - **Motion.** Loading spinners use `ui-spin`. `prefers-reduced-motion` is
