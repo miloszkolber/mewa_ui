@@ -2,7 +2,7 @@
 
 This file is the design contract for interfaces built on `core-ui.css` and
 `lucide.svg`. It captures the token system, the layout models, the state
-machine, and the rules that keep the five services (`timers_ui`, `hf_ui`,
+machine, and the rules that keep the five services (`homelab_ui`, `hf_ui`,
 `moonlight_ui`, `meili_ui`, `rss`) visually aligned. `core-ui.css` is the
 source of truth for values. `README.md` inventories the primitives. This file
 explains how and why to use them.

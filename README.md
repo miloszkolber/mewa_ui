@@ -59,7 +59,7 @@ indicator coloring. Use `ui-code-output.is-empty` for centered placeholder
 text in code panes.
 
 Mount `/home/core/docker/ui_library` read-only at `/ui` and load
-`/ui/core-ui.css` before service-specific CSS. Consumers are `timers_ui`,
+`/ui/core-ui.css` before service-specific CSS. Consumers are `homelab_ui`,
 `hf_ui`, `moonlight_ui`, `meili_ui`, and `rss`; `meili_ui` is the reference
 implementation. Service-specific branding belongs with that service's assets
 rather than in this shared foundation.
