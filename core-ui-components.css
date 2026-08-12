@@ -459,7 +459,8 @@ svg:has(> use) use {
     .ui-switch-control { display: none; }
 }
 
-@media (max-width: var(--ui-component-mobile-breakpoint)) {
+/* CSS custom properties are invalid in media conditions. Keep this fallback aligned with --ui-component-mobile-breakpoint. */
+@media (max-width: 40rem) {
     .ui-container { width: min(var(--ui-container-max), calc(100% - var(--ui-container-gutter-mobile))); }
     .ui-skeleton-title,
     .ui-skeleton-text { width: 100%; }

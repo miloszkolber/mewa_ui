@@ -39,7 +39,7 @@ When dynamic markup is inserted, call `CoreUI.enhance(root)`. Call `CoreUI.destr
 
 ## Icons
 
-`lucide.svg` is served from `/ui/lucide.svg`. Use `<use href="/ui/lucide.svg#search" />` with `currentColor` and the icon tokens. The catalog preview keeps its sandbox limited to scripts and forms. It deliberately omits `allow-same-origin`, so local snippets cannot access the parent or escape the isolated preview. Copied fragments run in the normal trusted `/ui` origin, where the external local sprite and other `/ui` assets are reliable. Decorative icons are `aria-hidden="true"`; icon-only buttons require an accessible name. Product marks and media illustrations stay in the consuming service.
+`lucide.svg` is served from `/ui/lucide.svg`. Use `<use href="/ui/lucide.svg#search" />` with `currentColor` and the icon tokens. Catalog previews allow their trusted local snippet document to retain the `/ui` origin so browsers can load the external same-origin sprite. The iframe remains sandboxed without navigation, popup, or parent-navigation permissions. Decorative icons are `aria-hidden="true"`; icon-only buttons require an accessible name. Product marks and media illustrations stay in the consuming service.
 
 ## Serving and consumers
 

@@ -180,7 +180,11 @@ test("gallery markup and styles meet the catalog contract", () => {
     const css = read(path.join(catalogDir, "catalog.css"));
     checkMarkupContract(html, "catalog/index.html");
     checkCssContract(css, "catalog/catalog.css");
-    assert.match(html, /<iframe[^>]+sandbox="allow-scripts allow-forms"/i);
+    const iframe = html.match(/<iframe\b[^>]*\bsandbox="([^"]+)"[^>]*>/i);
+    assert(iframe, "catalog preview requires a sandbox");
+    const permissions = new Set(iframe[1].split(/\s+/));
+    assert(permissions.has("allow-scripts") && permissions.has("allow-forms") && permissions.has("allow-same-origin"), "catalog preview needs scripts, forms, and its trusted local origin for the Lucide sprite");
+    assert(!permissions.has("allow-top-navigation") && !permissions.has("allow-popups"), "catalog preview must not gain navigation or popup permissions");
     assert.match(html, /href="\/ui\/core-ui\.css"/);
     assert.match(html, /href="\/ui\/core-ui-components\.css"/);
     assert.match(html, /id="component-search"/);

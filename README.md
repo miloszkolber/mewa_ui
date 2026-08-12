@@ -19,7 +19,7 @@ The catalog contains the 64 components in the live official `/docs/components` b
 ## Principles
 
 - Prefer native-first HTML semantics and native controls. Add enhancement only where interaction requires it.
-- Use `data-ui-*` hooks for component behavior and styling hooks. Reserve `data-state` for the documented status and component state values. Status values are `ok`, `warning`, `error`, `running`, and `progress`.
+- Use `data-ui-*` hooks for component behavior and styling hooks. Reserve `data-state` for status only. Status values are `ok`, `warning`, `error`, `running`, and `progress`.
 - Preserve visible focus, keyboard navigation, reduced motion, live-region semantics, and mobile layouts.
 - Use tokenized simple typography and a 4px spacing scale. The expanded layer uses square-ish radii, no visual shadows, and blur only on approved overlays.
 - Use semantic monochrome surfaces and semantic status colors. Do not introduce per-service palette values.

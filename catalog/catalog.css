@@ -146,7 +146,8 @@
     transform: translateY(0);
 }
 
-@media (max-width: var(--ui-catalog-tablet-breakpoint)) {
+/* CSS custom properties are invalid in media conditions. Keep these fallbacks aligned with the catalog breakpoint tokens. */
+@media (max-width: 56.25rem) {
     .ui-catalog-layout {
         grid-template-columns: 1fr;
     }
@@ -160,7 +161,7 @@
     }
 }
 
-@media (max-width: var(--ui-catalog-mobile-breakpoint)) {
+@media (max-width: 37.5rem) {
     .ui-catalog-header,
     .ui-catalog-detail-header,
     .ui-catalog-source-header {
