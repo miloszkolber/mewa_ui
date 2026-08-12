@@ -1,69 +1,39 @@
 # Core UI
 
-`core-ui.css` is the shared, framework-agnostic UI foundation for Core's small
-service frontends. It follows Geist's published tokens and metrics with
-shadcn/ui's open-code composition model. See `DESIGN.md` for the design
-contract: token roles, layout models, the status state machine, and
-contribution rules.
+Core UI is a framework-agnostic, copy-ready implementation of the current official shadcn component catalog for Core's small service frontends. It is static HTML, CSS, and optional JavaScript. There is no framework or frontend build step.
+
+`core-ui.css` is the compatibility foundation for existing Core services. Load `core-ui-components.css` after it for the expanded component layer, and load `core-ui.js` only when progressive enhancement is needed. See `DESIGN.md` for the design, accessibility, state, and contribution contract.
+
+## Files and catalog
+
+- `/ui/core-ui.css` provides the compatibility tokens and shared Core primitives.
+- `/ui/core-ui-components.css` provides the expanded shadcn-style component selectors and tokens.
+- `/ui/core-ui.js` is optional. `CoreUI.enhance(root)` wires dynamic markup and `CoreUI.destroy(root)` removes its listeners and observers.
+- `catalog/index.html` is the searchable catalog. It loads component previews and source from `/ui/snippets/`.
+- `catalog/components.json` is the component manifest and source of truth for the catalog.
+- `snippets/` contains 62 copy-ready standalone HTML snippets. Each source fragment is delimited by `<!-- core-ui-snippet:start -->` and `<!-- core-ui-snippet:end -->` markers.
+- `lucide.svg` is the local Lucide sprite.
+
+The catalog currently includes Toggle and Toggle Group and is tested for exact manifest/snippet parity. Use the searchable catalog rather than copying preview-shell markup.
 
 ## Principles
 
-- Use semantic HTML and native controls before adding JavaScript components.
-- Keep shared tokens and primitives here; keep service layout in service CSS.
-- Use the system font stacks, 4px spacing scale, modest radii, and neutral
-  surfaces.
-- Use a 2px element border for focused inputs and selected content; reserve red
-  for destructive actions and green for healthy status.
-- Preserve visible focus, keyboard navigation, reduced motion, and mobile
-  layouts.
-- Do not add a frontend build step solely to consume the foundation.
+- Prefer native-first HTML semantics and native controls. Add enhancement only where interaction requires it.
+- Use `data-ui-*` hooks for component behavior and styling hooks. Reserve `data-state` for the documented status and component state values. Status values are `ok`, `warning`, `error`, `running`, and `progress`.
+- Preserve visible focus, keyboard navigation, reduced motion, live-region semantics, and mobile layouts.
+- Use tokenized simple typography and a 4px spacing scale. The expanded layer uses square-ish radii, no visual shadows, and blur only on approved overlays.
+- Use semantic monochrome surfaces and semantic status colors. Do not introduce per-service palette values.
 
-## Tokens
+## Serving and consumers
 
-Tokens are grouped by semantic colors, typography, component sizing, spacing
-and layout, then elevation and layering. Prefer role-based tokens such as
-`--ui-text-primary`, `--ui-control-bg-hover`, and `--ui-danger` in shared
-primitives. The shorter legacy color names remain aliases for existing service
-styles.
+Mount `/home/core/docker/ui_library` read-only at `/ui` and serve the library under the `/ui/` prefix. Load `/ui/core-ui.css` first, then `/ui/core-ui-components.css`, before service-specific CSS. Include `/ui/core-ui.js` when using dynamic enhancement.
 
-Typography uses the 12/14/16/24/32px size scale and four unitless line-height
-roles: `tight` (1), `snug` (1.25), `normal` (1.5), and `relaxed` (1.6).
+The requested five consumers are `homelab_ui`, `hf_ui`, `moonlight_ui`, `meili_ui`, and `rss`, with `meili_ui` as the reference implementation. `subtitles` also mounts this library and is a consumer. Service-specific branding belongs with the consuming service.
 
-## Primitives
+## Icons
 
-- Layout: `ui-container`, `ui-container-wide`, `ui-app-header`,
-  `ui-page-overview`, `ui-workspace`, `ui-panel`, `ui-panel-header`,
-  `ui-panel-body`; opt-in framed layouts use `ui-framed-app`,
-  `ui-framed-dashboard`, `ui-framed-workspace`, `ui-framed-split`,
-  `ui-framed-panel`, and `ui-framed-region`
-- Navigation: `ui-brand`, `ui-tabs`, `ui-tab`, `ui-tab-strip`,
-  `ui-tab-strip-item`
-- Type: `ui-page-heading`, `ui-eyebrow`, `ui-description`, `ui-title-sm`,
-  `ui-title-md`, `ui-meta-text`
-- Controls: `ui-button` with `ui-button-primary`, `ui-button-secondary`,
-  `ui-button-tertiary`, or `ui-button-danger`; `ui-button-icon`,
-  `ui-icon-button`, `ui-field-stack`, `ui-field-label`, `ui-field`,
-  `ui-select-wrap`, `ui-select`, `ui-input-group`, `ui-textarea`, `ui-checkbox`
-- Feedback: `ui-badge`, `ui-stats`, `ui-status-indicator`,
-  `ui-status-icon`, `ui-status-icon-loading`, `ui-empty`,
-  `ui-empty-compact`, `ui-field-error`, `ui-progress`, `ui-list-row`,
-  `ui-row`, `ui-status-row`, `ui-code-output`, `ui-code-output-padded`
-- Overlays: `ui-dialog`, `ui-dialog-panel`, `lightbox`
+Use same-origin Lucide sprite links such as `<svg aria-hidden="true"><use href="/ui/lucide.svg#search" /></svg>`. Icon-only controls need an accessible name. Keep product marks and media fallback illustrations with the consuming service.
 
-Status rows and indicators share one state vocabulary: `ok`, `warning`,
-`error`, `running`, and `progress`. Set the state on the row or summary
-element, put the status icon classes (`ui-status-icon-ok`,
-`ui-status-icon-warning`, `ui-status-icon-error`, `ui-status-icon-loading`)
-inside a `ui-status-indicator`, and core-ui handles icon visibility plus
-indicator coloring. Use `ui-code-output.is-empty` for centered placeholder
-text in code panes.
+## Checks
 
-Mount `/home/core/docker/ui_library` read-only at `/ui` and load
-`/ui/core-ui.css` before service-specific CSS. Consumers are `homelab_ui`,
-`hf_ui`, `moonlight_ui`, `meili_ui`, and `rss`; `meili_ui` is the reference
-implementation. Service-specific branding belongs with that service's assets
-rather than in this shared foundation.
-
-Interface icons live in `lucide.svg`. Reference them with same-origin sprite
-links such as `<use href="/ui/lucide.svg#search" />`; keep product marks and
-media fallback illustrations with the consuming service.
+From `/home/core/docker/ui_library`, run the catalog contract test with either `bun tests/catalog-contract.test.js` or `node tests/catalog-contract.test.js`. The check validates the manifest, 62 snippets, source markers, `/ui/` references, accessibility hooks, stylesheet restrictions, and JavaScript syntax.
