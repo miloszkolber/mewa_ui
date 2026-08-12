@@ -30,7 +30,7 @@
 .ui-catalog-sidebar,
 .ui-catalog-detail {
     border: var(--ui-border-width) solid var(--ui-border-default);
-    border-radius: var(--ui-radius-md);
+    border-radius: var(--ui-component-radius);
     background: var(--ui-surface-raised);
 }
 
@@ -107,7 +107,7 @@
     margin-top: var(--ui-space-4);
     overflow: hidden;
     border: var(--ui-border-width) solid var(--ui-border-default);
-    border-radius: var(--ui-radius-sm);
+    border-radius: var(--ui-component-radius);
     background: var(--ui-canvas);
 }
 
@@ -127,7 +127,7 @@
     max-height: var(--ui-catalog-source-max-height);
     margin-top: var(--ui-space-2);
     border: var(--ui-border-width) solid var(--ui-border-default);
-    border-radius: var(--ui-radius-sm);
+    border-radius: var(--ui-component-radius);
     background: var(--ui-canvas);
 }
 
