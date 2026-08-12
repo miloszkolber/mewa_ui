@@ -11,10 +11,10 @@ Core UI is a framework-agnostic, copy-ready implementation of the current offici
 - `/ui/core-ui.js` is optional. `CoreUI.enhance(root)` wires dynamic markup and `CoreUI.destroy(root)` removes its listeners and observers.
 - `catalog/index.html` is the searchable catalog. It loads component previews and source from `/ui/snippets/`.
 - `catalog/components.json` is the component manifest and source of truth for the catalog.
-- `snippets/` contains 62 copy-ready standalone HTML snippets. Each source fragment is delimited by `<!-- core-ui-snippet:start -->` and `<!-- core-ui-snippet:end -->` markers.
+- `snippets/` contains 64 copy-ready standalone HTML snippets matching the 64 current official components. Each source fragment is delimited by `<!-- core-ui-snippet:start -->` and `<!-- core-ui-snippet:end -->` markers.
 - `lucide.svg` is the local Lucide sprite.
 
-The catalog currently includes Toggle and Toggle Group and is tested for exact manifest/snippet parity. Use the searchable catalog rather than copying preview-shell markup.
+The catalog contains the 64 components in the live official `/docs/components` base-link list, fetched 2026-08-13. This catalog can evolve as the official list changes. Use the searchable catalog rather than copying preview-shell markup.
 
 ## Principles
 
@@ -26,7 +26,7 @@ The catalog currently includes Toggle and Toggle Group and is tested for exact m
 
 ## Serving and consumers
 
-Mount `/home/core/docker/ui_library` read-only at `/ui` and serve the library under the `/ui/` prefix. Load `/ui/core-ui.css` first, then `/ui/core-ui-components.css`, before service-specific CSS. Include `/ui/core-ui.js` when using dynamic enhancement.
+Mount `/home/core/docker/ui_library` read-only at `/ui` and serve the library under the `/ui/` prefix. A copied fragment requires `/ui/core-ui.css` followed by `/ui/core-ui-components.css`; include `/ui/core-ui.js` only when using dynamic enhancement.
 
 The requested five consumers are `homelab_ui`, `hf_ui`, `moonlight_ui`, `meili_ui`, and `rss`, with `meili_ui` as the reference implementation. `subtitles` also mounts this library and is a consumer. Service-specific branding belongs with the consuming service.
 
@@ -36,4 +36,4 @@ Use same-origin Lucide sprite links such as `<svg aria-hidden="true"><use href="
 
 ## Checks
 
-From `/home/core/docker/ui_library`, run the catalog contract test with either `bun tests/catalog-contract.test.js` or `node tests/catalog-contract.test.js`. The check validates the manifest, 62 snippets, source markers, `/ui/` references, accessibility hooks, stylesheet restrictions, and JavaScript syntax.
+From `/home/core/docker/ui_library`, run `bun tests/catalog-contract.test.js` or `node tests/catalog-contract.test.js` for the catalog contract, and `bun tests/runtime-contract.test.js` or `node tests/runtime-contract.test.js` for the runtime harness. These are static and DOM-harness checks, not real browser or assistive-technology validation. For a native Node syntax check without a local Node install, run `docker run --rm -v "$PWD:/work" -w /work node:alpine node --check core-ui.js`.

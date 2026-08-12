@@ -1,6 +1,6 @@
 # Design guidelines
 
-This is the design contract for the expanded Core UI catalog. It applies to `core-ui.css`, `core-ui-components.css`, the optional `core-ui.js` enhancement runtime, and the 62 standalone snippets. `core-ui.css` remains the compatibility foundation for existing consumers. The expanded layer adds the current official shadcn catalog without requiring a framework or build step.
+This is the design contract for the expanded Core UI catalog. It applies to `core-ui.css`, `core-ui-components.css`, the optional `core-ui.js` enhancement runtime, and the 64 standalone snippets. `core-ui.css` remains the compatibility foundation for existing consumers. The expanded layer adds the current official shadcn catalog without requiring a framework or build step.
 
 ## Contract
 
@@ -13,7 +13,7 @@ This is the design contract for the expanded Core UI catalog. It applies to `cor
 
 ## Catalog and source
 
-The searchable catalog is `/ui/catalog/index.html`. `catalog/components.json` is the manifest. Every manifest entry has exactly one matching `/ui/snippets/<slug>.html` file, and every snippet exposes its copy-ready fragment between `<!-- core-ui-snippet:start -->` and `<!-- core-ui-snippet:end -->`. Snippets reference `/ui/core-ui.css`, `/ui/core-ui-components.css`, `/ui/lucide.svg`, and optionally `/ui/core-ui.js`.
+The searchable catalog is `/ui/catalog/index.html`. `catalog/components.json` is the manifest. Its 64 entries are the live official `/docs/components` base-link list fetched 2026-08-13, and the catalog can evolve as that list changes. Every manifest entry has exactly one matching `/ui/snippets/<slug>.html` file, and every snippet exposes its copy-ready fragment between `<!-- core-ui-snippet:start -->` and `<!-- core-ui-snippet:end -->`. A copied fragment requires `/ui/core-ui.css` and `/ui/core-ui-components.css`, plus `/ui/lucide.svg` for icons and optionally `/ui/core-ui.js` for enhancement.
 
 The catalog covers disclosure, navigation, overlays, forms, feedback, content, layout, and data display, including Accordion, Alert, Dialog, Tabs, Popover, Menu families, Listbox/combobox patterns, Calendar, Carousel, Resizable, forms, Toast, Message Scroller, Questionnaire, Data Table, Chart, Toggle, and Toggle Group.
 
@@ -39,7 +39,7 @@ When dynamic markup is inserted, call `CoreUI.enhance(root)`. Call `CoreUI.destr
 
 ## Icons
 
-`lucide.svg` is served from `/ui/lucide.svg`. Use `<use href="/ui/lucide.svg#search" />` with `currentColor` and the icon tokens. Decorative icons are `aria-hidden="true"`; icon-only buttons require an accessible name. Product marks and media illustrations stay in the consuming service.
+`lucide.svg` is served from `/ui/lucide.svg`. Use `<use href="/ui/lucide.svg#search" />` with `currentColor` and the icon tokens. The catalog preview keeps its sandbox limited to scripts and forms. It deliberately omits `allow-same-origin`, so local snippets cannot access the parent or escape the isolated preview. Copied fragments run in the normal trusted `/ui` origin, where the external local sprite and other `/ui` assets are reliable. Decorative icons are `aria-hidden="true"`; icon-only buttons require an accessible name. Product marks and media illustrations stay in the consuming service.
 
 ## Serving and consumers
 
@@ -49,4 +49,4 @@ Mount `/home/core/docker/ui_library` read-only at `/ui`. The requested five cons
 
 Add shared behavior or tokens here only when it belongs to the catalog or is shared by multiple consumers. Keep selectors composable, avoid IDs for styling, and preserve compatibility classes in `core-ui.css` unless an explicit migration is approved. Add or update the manifest and matching marked snippet together.
 
-From `/home/core/docker/ui_library`, run `bun tests/catalog-contract.test.js` or `node tests/catalog-contract.test.js`. The test checks catalog assets, manifest/snippet parity, source markers, local Lucide references, ARIA hooks, reserved state values, no-shadow/overlay-blur rules, and JavaScript syntax.
+From `/home/core/docker/ui_library`, run `bun tests/catalog-contract.test.js` or `node tests/catalog-contract.test.js`, then `bun tests/runtime-contract.test.js` or `node tests/runtime-contract.test.js`. The catalog test checks assets, 64-entry manifest/snippet parity, source markers, local Lucide references, ARIA hooks, reserved state values, no-shadow/overlay-blur rules, and JavaScript syntax. The runtime test is a small DOM harness, not real browser or assistive-technology validation. A native Node syntax check can run in Alpine with `docker run --rm -v "$PWD:/work" -w /work node:alpine node --check core-ui.js`.
