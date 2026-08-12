@@ -1,5 +1,8 @@
 "use strict";
 
+// External verification: node tests/catalog-contract.test.js
+// Bun may run this file too, but native Node.js checks the shipped scripts when available.
+
 const assert = require("node:assert/strict");
 const childProcess = require("node:child_process");
 const fs = require("node:fs");
@@ -96,6 +99,22 @@ function checkCssContract(css, filename) {
     }
 }
 
+function unTokenizedDimensions(css) {
+    const declarations = [];
+    for (const rule of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+        const selector = rule[1].trim(), body = rule[2];
+        for (const match of body.matchAll(/(?:^|;)\s*([\w-]+)\s*:\s*([^;{}]+)(?=;|$)/g)) {
+            const property = match[1], value = match[2].trim();
+        // Zero, percentages, and the one-pixel visually-hidden clipping rectangle do
+        // not encode a design scale. Everything else must consume an existing token.
+        if (property.startsWith("--") || /^0(?:[a-z%]+)?$/i.test(value) || /^(?:0|\d+(?:\.\d+)?)%$/.test(value) || /^rect\(0, 0, 0, 0\)$/i.test(value)) continue;
+            if (/\.ui-sr-only\b/.test(selector) && /^(?:-?1px|0)$/.test(value)) continue;
+            if (/\b\d+(?:\.\d+)?(?:px|rem|em|ch|vw|vh|vmin|vmax|svh|lvh|dvh|s|ms)\b/i.test(value) && !/\bvar\(/.test(value)) declarations.push(`${property}: ${value}`);
+        }
+    }
+    return declarations;
+}
+
 function cssFilesLoadedBy(html, filename) {
     return Array.from(html.matchAll(/<link\b[^>]*\brel=(?:"stylesheet"|'stylesheet')[^>]*\bhref=(?:"([^"]+)"|'([^']+)')/gi), (match) => match[1] || match[2]).map((href) => {
         assert(href.startsWith("/ui/"), `${filename}: stylesheet ${href} is not served from /ui/`);
@@ -178,12 +197,27 @@ test("every stylesheet loaded by the gallery and snippets is tokenized and shado
         // core-ui.css defines legacy token values. New catalog and component rules may
         // consume only those tokens, not introduce raw color literals themselves.
         if (file !== path.join(root, "core-ui.css")) checkCssContract(css, path.relative(root, file));
+        if (file !== path.join(root, "core-ui.css")) {
+            const dimensions = unTokenizedDimensions(css);
+            assert.deepEqual(dimensions, [], `${path.relative(root, file)}: new CSS must use design tokens for lengths and durations:\n${dimensions.join("\n")}`);
+        }
         visualShadowDeclarations(css, path.relative(root, file)).forEach((failure) => {
             const selector = failure.slice(`${path.relative(root, file)}: `.length);
             if (file !== path.join(root, "core-ui.css") || !legacyShadowIsNeutralized(selector, componentCss)) failures.push(failure);
         });
     });
     assert.deepEqual(failures, [], `visual shadows are forbidden in every loaded stylesheet. A core-ui.css compatibility shadow is allowed only when core-ui-components.css neutralizes its selector in snippet body scope:\n${failures.join("\n")}`);
+});
+
+test("component CSS keeps popup parts, SVGs, and form states explicitly covered", () => {
+    const css = read(path.join(root, "core-ui-components.css"));
+    assert.match(css, /(?:^|[}\n])\s*svg\s*\{[^}]*\b(?:width|height|display)\s*:/, "component CSS needs a generic SVG baseline rule");
+    ["popover", "dropdown-menu", "context-menu", "menubar", "navigation-menu", "tooltip", "hover-card"].forEach((component) => {
+        assert.match(css, new RegExp(`\\[data-ui-component="${component}"\\][^{]*(?:\\[data-ui-part="(?:panel|content|menu)"\\]|\\[data-ui-${component.replace(/-/g, "")}-content\\])`), `${component}: popup positioning must target the actual panel/content part`);
+    });
+    [":hover", ":focus", ":disabled", "[aria-invalid=\"true\"]"].forEach((state) => {
+        assert(css.includes(`.ui-field${state}`) || css.includes(`.ui-select${state}`) || css.includes(`.ui-textarea${state}`), `form controls need an explicit ${state} state selector`);
+    });
 });
 
 test("manifest and snippet files have exact parity", () => {
@@ -271,6 +305,7 @@ test("component stylesheet and runtime syntax are valid", () => {
     const componentCss = path.join(root, "core-ui-components.css");
     assert(fs.existsSync(componentCss), "missing core-ui-components.css");
     checkCssContract(read(componentCss), "core-ui-components.css");
+    assert.deepEqual(unTokenizedDimensions(read(componentCss)), [], "core-ui-components.css: direct dimensions must be expressed as design tokens");
     [path.join(catalogDir, "catalog.js"), path.join(root, "core-ui.js")].forEach((file) => {
         assert(fs.existsSync(file), `missing ${path.basename(file)}`);
         if (!process.versions.bun && process.release.name === "node") {
