@@ -1,0 +1,122 @@
+/* Core UI components: optional, dependency-free enhancements for composed snippets. */
+:root {
+    --ui-component-surface: var(--ui-surface-raised);
+    --ui-component-surface-muted: var(--ui-control-bg);
+    --ui-component-surface-active: var(--ui-control-bg-active);
+    --ui-component-text: var(--ui-text-primary);
+    --ui-component-text-muted: var(--ui-text-secondary);
+    --ui-component-border: var(--ui-border-default);
+    --ui-component-border-hover: var(--ui-border-hover);
+    --ui-component-focus: var(--ui-focus-ring);
+    --ui-component-overlay: var(--ui-dialog-overlay);
+    --ui-component-width-sm: 24rem;
+    --ui-component-width-md: 32rem;
+    --ui-component-width-lg: 48rem;
+    --ui-component-menu-width: 14rem;
+    --ui-component-date-width: 18rem;
+    --ui-component-sidebar-width: 16rem;
+    --ui-component-row-height: var(--ui-control-height);
+    --ui-component-border-width: var(--ui-border-width);
+    --ui-component-radius: var(--ui-radius-xs);
+    --ui-component-gap: var(--ui-space-2);
+    --ui-component-padding: var(--ui-space-3);
+    --ui-component-z-popover: var(--ui-z-dialog);
+    --ui-component-z-overlay: var(--ui-z-toast);
+    --ui-component-transition: 120ms;
+}
+
+/* Deliberately replace foundation shadow-based focus and overlay treatment. */
+:where(.core-ui, [data-core-ui]) :focus-visible,
+.ui-component:focus-visible,
+[data-ui-component]:focus-visible,
+.ui-dialog :focus-visible {
+    outline: var(--ui-focus-ring-width) solid var(--ui-component-focus);
+    outline-offset: var(--ui-focus-ring-width);
+}
+
+.ui-dialog-panel,
+.lightbox-content,
+.ui-status-indicator,
+.ui-status-dot,
+.ui-field:focus,
+.ui-field[aria-invalid="true"],
+.ui-select:focus,
+.ui-textarea:focus { outline: var(--ui-focus-ring-width) solid var(--ui-component-focus); }
+
+.ui-field[aria-invalid="true"] { outline-color: var(--ui-danger); }
+
+.ui-dialog-panel { border-radius: var(--ui-component-radius); }
+
+:where(.core-ui, [data-core-ui]) :is(.button, .ui-button, [data-ui-button]),
+.ui-component.button {
+    min-height: var(--ui-component-row-height);
+    border: var(--ui-component-border-width) solid var(--ui-component-border);
+    border-radius: var(--ui-component-radius);
+    background: var(--ui-component-surface-muted);
+    color: var(--ui-component-text);
+    padding: var(--ui-space-2) var(--ui-space-3);
+    cursor: pointer;
+}
+:where(.core-ui, [data-core-ui]) :is(.button, .ui-button, [data-ui-button]):hover:not(:disabled),
+.ui-component.button:hover:not(:disabled) { background: var(--ui-component-surface-active); border-color: var(--ui-component-border-hover); }
+:where(.core-ui, [data-core-ui]) :is(.button, .ui-button, [data-ui-button]):disabled,
+.ui-component.button:disabled { color: var(--ui-text-disabled); cursor: not-allowed; }
+:where(.core-ui, [data-core-ui]) :is(.button-primary, .ui-button-primary, [data-variant="default"]),
+.ui-component.button-primary { background: var(--ui-text-primary); color: var(--ui-text-inverse); border-color: var(--ui-text-primary); }
+:where(.core-ui, [data-core-ui]) :is(.button-destructive, .ui-button-danger, [data-variant="destructive"]),
+.ui-component.button-destructive { background: var(--ui-danger); color: var(--ui-text-on-danger); border-color: var(--ui-danger); }
+
+:where(.core-ui, [data-core-ui]) :is(.card, .ui-card, [data-ui-card]),
+.ui-component.card { border: var(--ui-component-border-width) solid var(--ui-component-border); border-radius: var(--ui-component-radius); background: var(--ui-component-surface); color: var(--ui-component-text); }
+:where(.core-ui, [data-core-ui]) :is(.card-header, .card-content, .card-footer),
+.ui-component :is(.card-header, .card-content, .card-footer) { padding: var(--ui-component-padding); }
+
+:where(.core-ui, [data-core-ui]) :is(.input, .textarea, .select, [data-ui-input]),
+.ui-component.input { width: 100%; min-height: var(--ui-component-row-height); border: var(--ui-component-border-width) solid var(--ui-component-border); border-radius: var(--ui-component-radius); background: var(--ui-component-surface-muted); color: var(--ui-component-text); padding: var(--ui-space-2); }
+:where(.core-ui, [data-core-ui]) :is(.input, .textarea, .select, [data-ui-input]):hover,
+.ui-component.input:hover { border-color: var(--ui-component-border-hover); }
+
+[role="tablist"], [data-ui-tabs] { display: flex; gap: var(--ui-space-1); border-bottom: var(--ui-component-border-width) solid var(--ui-component-border); }
+[role="tab"], [data-ui-tab] { min-height: var(--ui-component-row-height); border: 0; border-bottom: var(--ui-focus-ring-width) solid transparent; background: transparent; color: var(--ui-component-text-muted); padding: var(--ui-space-2) var(--ui-space-3); cursor: pointer; }
+[role="tab"][aria-selected="true"], [data-ui-tab][aria-selected="true"] { border-bottom-color: var(--ui-component-focus); color: var(--ui-component-text); }
+
+[data-ui-disclosure-panel], [data-ui-popover-content], [data-ui-menu-content], [data-ui-hovercard-content], [data-ui-navigation-menu-content] { border: var(--ui-component-border-width) solid var(--ui-component-border); border-radius: var(--ui-component-radius); background: var(--ui-component-surface); color: var(--ui-component-text); padding: var(--ui-component-padding); }
+[data-ui-popover-content], [data-ui-menu-content], [data-ui-hovercard-content], [data-ui-navigation-menu-content] { position: absolute; z-index: var(--ui-component-z-popover); min-width: var(--ui-component-menu-width); }
+[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [data-ui-menu-item] { display: flex; align-items: center; width: 100%; min-height: var(--ui-component-row-height); border: 0; border-radius: var(--ui-radius-xs); background: transparent; color: var(--ui-component-text); padding: var(--ui-space-2); text-align: start; cursor: pointer; }
+[role="menuitem"]:hover, [role="menuitemcheckbox"]:hover, [role="menuitemradio"]:hover, [data-ui-menu-item]:hover { background: var(--ui-component-surface-active); }
+
+[data-ui-dialog], [data-ui-alert-dialog], [data-ui-sheet], [data-ui-drawer] { position: fixed; inset: 0; z-index: var(--ui-component-z-overlay); display: grid; place-items: center; background: var(--ui-component-overlay); padding: var(--ui-space-4); }
+[data-ui-dialog]:not([hidden]), [data-ui-alert-dialog]:not([hidden]), [data-ui-sheet]:not([hidden]), [data-ui-drawer]:not([hidden]), .ui-dialog:not([hidden]) { backdrop-filter: blur(var(--ui-backdrop-blur-sm)); }
+[data-ui-dialog] > *, [data-ui-alert-dialog] > *, [data-ui-sheet] > *, [data-ui-drawer] > * { width: min(var(--ui-component-width-md), 100%); max-height: 100%; overflow: auto; border: var(--ui-component-border-width) solid var(--ui-component-border); border-radius: var(--ui-component-radius); background: var(--ui-component-surface); padding: var(--ui-space-4); }
+[data-ui-sheet][data-side="right"], [data-ui-drawer][data-side="right"] { place-items: stretch end; padding: 0; }
+[data-ui-sheet][data-side="right"] > *, [data-ui-drawer][data-side="right"] > * { width: min(var(--ui-component-sidebar-width), 100%); border-radius: 0; }
+
+[data-ui-combobox], [data-ui-command], [data-ui-select] { position: relative; }
+[data-ui-combobox-list], [data-ui-command-list], [data-ui-select-list] { max-height: var(--ui-component-width-sm); overflow: auto; border: var(--ui-component-border-width) solid var(--ui-component-border); background: var(--ui-component-surface); padding: var(--ui-space-1); }
+[data-ui-option][aria-selected="true"], [data-ui-command-item][aria-selected="true"] { background: var(--ui-component-surface-active); }
+
+[data-ui-calendar] { width: var(--ui-component-date-width); border: var(--ui-component-border-width) solid var(--ui-component-border); background: var(--ui-component-surface); padding: var(--ui-component-padding); }
+[data-ui-calendar-grid] { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: var(--ui-space-1); }
+[data-ui-calendar-day] { aspect-ratio: 1; border: 0; border-radius: var(--ui-radius-xs); background: transparent; color: var(--ui-component-text); cursor: pointer; }
+[data-ui-calendar-day]:hover, [data-ui-calendar-day][aria-selected="true"] { background: var(--ui-component-surface-active); }
+
+[data-ui-carousel] { overflow: hidden; }
+[data-ui-carousel-track] { display: flex; transition: transform var(--ui-component-transition) ease; }
+[data-ui-carousel-slide] { flex: 0 0 100%; }
+[data-ui-otp] { display: flex; gap: var(--ui-space-2); }
+[data-ui-otp] input { width: var(--ui-control-height); min-height: var(--ui-control-height); border: var(--ui-component-border-width) solid var(--ui-component-border); background: var(--ui-component-surface-muted); color: var(--ui-component-text); text-align: center; }
+[data-ui-resizable] { display: flex; min-width: 0; }
+[data-ui-resize-handle] { width: var(--ui-space-2); cursor: col-resize; background: var(--ui-component-border); }
+[data-ui-slider-output] { color: var(--ui-component-text-muted); font-variant-numeric: tabular-nums; }
+[data-ui-toggle][aria-pressed="true"], [data-ui-toggle-group] [aria-pressed="true"] { background: var(--ui-component-surface-active); border-color: var(--ui-component-focus); }
+[data-ui-toast-viewport] { position: fixed; right: var(--ui-space-4); bottom: var(--ui-space-4); z-index: var(--ui-component-z-overlay); display: grid; gap: var(--ui-component-gap); width: min(var(--ui-component-width-sm), calc(100% - var(--ui-space-8))); }
+[data-ui-toast] { border: var(--ui-component-border-width) solid var(--ui-component-border); border-radius: var(--ui-component-radius); background: var(--ui-component-surface); padding: var(--ui-component-padding); }
+[data-ui-sidebar][hidden] { display: none; }
+[data-ui-message-scroller] { overflow: auto; }
+[data-ui-message-scroller] [data-ui-jump] { position: sticky; bottom: var(--ui-space-2); }
+[data-ui-question][hidden] { display: none; }
+[data-ui-table] th { cursor: pointer; }
+[data-ui-table] th[aria-sort="ascending"]::after { content: " ↑"; }
+[data-ui-table] th[aria-sort="descending"]::after { content: " ↓"; }
+
+@media (prefers-reduced-motion: reduce) { [data-ui-carousel-track] { transition: none; } }
