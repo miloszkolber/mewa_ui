@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A searchable catalog of Core UI components.">
+  <title>Core UI catalog</title>
+  <link rel="stylesheet" href="/ui/core-ui.css">
+  <link rel="stylesheet" href="/ui/core-ui-components.css">
+  <link rel="stylesheet" href="/ui/catalog/catalog.css">
+  <script src="/ui/catalog/catalog.js" defer></script>
+</head>
+<body class="ui-catalog">
+  <a class="ui-catalog-skip" href="#catalog-main">Skip to catalog</a>
+  <header class="ui-app-header">
+    <div class="ui-container ui-app-header-inner ui-catalog-header">
+      <a class="ui-brand" href="/ui/catalog/" aria-label="Core UI catalog home">Core UI <span>catalog</span></a>
+      <p class="ui-catalog-count" id="component-count" aria-live="polite"></p>
+    </div>
+  </header>
+  <main class="ui-container ui-catalog-main" id="catalog-main">
+    <section class="ui-page-overview ui-catalog-overview" aria-labelledby="catalog-title">
+      <div>
+        <p class="ui-eyebrow">Component reference</p>
+        <h1 class="ui-page-heading" id="catalog-title">Core UI components</h1>
+        <p class="ui-description">Browse the current shadcn component catalog. Each entry has an isolated, sandboxed preview and its source fragment.</p>
+      </div>
+    </section>
+    <div class="ui-catalog-layout">
+      <aside class="ui-catalog-sidebar" aria-label="Catalog navigation">
+        <label class="ui-field-stack" for="component-search">
+          <span class="ui-field-label">Search components</span>
+          <input class="ui-field" id="component-search" type="search" autocomplete="off" placeholder="Search by name or group" aria-controls="component-list">
+        </label>
+        <nav class="ui-catalog-nav" aria-label="Component list">
+          <ul class="ui-catalog-list" id="component-list"></ul>
+        </nav>
+      </aside>
+      <section class="ui-catalog-detail" aria-live="polite" aria-busy="true" aria-labelledby="component-title">
+        <div class="ui-catalog-detail-header">
+          <div>
+            <p class="ui-eyebrow" id="component-group"></p>
+            <h2 class="ui-title-md" id="component-title">Loading catalog</h2>
+          </div>
+          <span class="ui-badge" id="component-kind"></span>
+        </div>
+        <div class="ui-catalog-preview-wrap">
+          <iframe class="ui-catalog-preview" id="component-preview" title="Component preview" sandbox="allow-scripts allow-forms" referrerpolicy="same-origin"></iframe>
+        </div>
+        <div class="ui-catalog-source-header">
+          <h3 class="ui-title-sm">Marked source fragment</h3>
+          <button class="ui-button ui-button-secondary ui-button-small" id="copy-source" type="button">Copy fragment</button>
+        </div>
+        <p class="ui-meta-text" id="copy-status" role="status"></p>
+        <pre class="ui-code-output ui-code-output-padded ui-catalog-source" id="component-source" tabindex="0"><code></code></pre>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
