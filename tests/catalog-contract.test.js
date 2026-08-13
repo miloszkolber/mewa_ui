@@ -179,13 +179,9 @@ test("catalog, manifest, and canonical source assets exist", () => {
     ["core-ui-components.css", "core-ui.js", "lucide.svg"].forEach((file) => assert(!fs.existsSync(path.join(root, file)), `legacy root ${file} must be removed`));
 });
 
-test("nginx serves canonical source assets without legacy aliases", () => {
-    const config = read(path.join(root, "nginx.conf"));
-    assert.match(config, /absolute_redirect\s+off;/, "root redirect must retain the externally published port through a relative Location header");
-    ["base.css", "components.css", "components.js", "lucide.svg"].forEach((asset) => {
-        assert.match(config, new RegExp(`location\\s*=\\s*\\/ui\\/src\\/${asset.replace(".", "\\.")}\\s*\\{\\s*alias\\s+\\/usr\\/share\\/nginx\\/html\\/ui\\/src\\/${asset.replace(".", "\\.")};`), `nginx must map canonical ${asset} to src/${asset}`);
-    });
-    assert(!/alias\s+\/usr\/share\/nginx\/html\/ui\/(?:core-ui(?:-components)?\.(?:css|js)|lucide\.svg);/.test(config), "nginx must not alias canonical routes to legacy root assets");
+test("deployment files stay outside the standalone library", () => {
+    assert(!fs.existsSync(path.join(root, "docker-compose.yaml")), "Compose deployment belongs to the parent repository");
+    assert(!fs.existsSync(path.join(root, "nginx.conf")), "Nginx deployment belongs to the parent repository");
 });
 
 test("repository consumers do not reference removed root UI assets", () => {
