@@ -111,34 +111,139 @@
             if (type === "menubar" && ["ArrowLeft", "ArrowRight"].includes(event.key)) { const pairs = qa(root, "[data-ui-part=trigger],[data-ui-trigger]").map((item) => ({ trigger: item, panel: panelFor(item, root) })).filter((item) => item.panel); const index = pairs.findIndex((item) => item.trigger === trigger); const next = pairs[(index + (event.key === "ArrowRight" ? 1 : -1) + pairs.length) % pairs.length]; event.preventDefault(); close(); next.trigger.focus(); }
         });
     }
+    function optionDisabled(item) { return item.disabled || item.getAttribute("disabled") !== null || item.getAttribute("aria-disabled") === "true"; }
+    function customSelect(root, state) {
+        const trigger = part(root, "trigger"), input = q(root, "input[type=hidden]") || part(root, "input"), list = part(root, "listbox list content") || q(root, "[role=listbox]");
+        if (!trigger || !list) return;
+        const allItems = () => qa(list, "[role=option],[data-ui-option]");
+        const items = () => allItems().filter((item) => !item.hidden && !optionDisabled(item));
+        const value = (item) => item?.dataset.value || item?.textContent.trim() || "";
+        allItems().forEach((item, index) => { if (!item.id) item.id = `${trigger.id || "core-ui-select"}-option-${index + 1}`; });
+        let committed = allItems().find((item) => item.getAttribute("aria-selected") === "true") || items()[0];
+        let active = committed;
+        let typeahead = "", typeaheadTimer;
+        const setActive = (item) => { active = item; if (item) trigger.setAttribute("aria-activedescendant", item.id); else trigger.removeAttribute("aria-activedescendant"); };
+        const setCommitted = (item, notify) => {
+            if (!item || optionDisabled(item)) return;
+            committed = item;
+            allItems().forEach((entry) => entry.setAttribute("aria-selected", String(entry === item)));
+            if (input) input.value = value(item);
+            const label = part(root, "value"); if (label) label.textContent = item.textContent.trim();
+            setActive(item);
+            if (notify) emit(root, "core-ui:select", { value: value(item), item });
+        };
+        const close = (restoreFocus) => { list.hidden = true; trigger.setAttribute("aria-expanded", "false"); setActive(committed); if (restoreFocus) trigger.focus(); };
+        const show = () => { list.hidden = false; trigger.setAttribute("aria-expanded", "true"); setActive(active || committed || items()[0]); };
+        const move = (next) => { const visible = items(); if (!visible.length) return; const index = visible.indexOf(active); setActive(visible[(index + next + visible.length) % visible.length]); };
+        setCommitted(committed, false);
+        allItems().forEach((item) => add(state, item, "click", () => { if (!optionDisabled(item)) { setCommitted(item, true); close(true); } }));
+        add(state, trigger, "click", () => { if (list.hidden) show(); else close(false); });
+        add(state, trigger, "keydown", (event) => {
+            if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) { event.preventDefault(); show(); if (event.key === "Home") setActive(items()[0]); else if (event.key === "End") setActive(items().at(-1)); else move(event.key === "ArrowDown" ? 1 : -1); }
+            else if (event.key === "Enter" || event.key === " ") { event.preventDefault(); if (list.hidden) show(); else { setCommitted(active, true); close(true); } }
+            else if (event.key === "Escape" && !list.hidden) { event.preventDefault(); close(true); }
+            else if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) { typeahead += event.key.toLowerCase(); clearTimeout(typeaheadTimer); typeaheadTimer = setTimeout(() => { typeahead = ""; }, 500); const found = items().find((item) => item.textContent.trim().toLowerCase().startsWith(typeahead)); if (found) { event.preventDefault(); show(); setActive(found); } }
+        });
+        add(state, document, "pointerdown", (event) => { if (!root.contains(event.target) && !list.hidden) close(false); });
+        state.cleanup.push(() => clearTimeout(typeaheadTimer));
+    }
     function choices(root, state) {
+        if (root.dataset.uiComponent === "select") { customSelect(root, state); return; }
         const input = part(root, "input trigger") || q(root, "input[role=combobox]");
         if (!input || input.tagName === "SELECT") return;
         const list = part(root, "listbox list content") || q(root, "[role=listbox]");
         const allItems = () => qa(list || root, "[role=option],[data-ui-option],[data-ui-command-item]");
-        const items = () => allItems().filter((item) => !item.hidden);
+        const items = () => allItems().filter((item) => !item.hidden && !optionDisabled(item));
+        const value = (item) => item?.dataset.value || item?.textContent.trim() || "";
         allItems().forEach((item, index) => { if (!item.id) item.id = `${input.id || "core-ui-choice"}-option-${index + 1}`; });
-        let active = Math.max(0, items().findIndex((item) => item.getAttribute("aria-selected") === "true"));
-        const setActive = (item) => { const visible = items(); active = Math.max(0, visible.indexOf(item)); visible.forEach((entry) => entry.setAttribute("aria-selected", String(entry === item))); input.setAttribute("aria-activedescendant", item?.id || ""); };
-        if (items()[active]) setActive(items()[active]);
-        const select = (item) => { setActive(item); input.value = item.dataset.value || item.textContent.trim(); input.setAttribute("aria-expanded", "false"); if (list) list.hidden = true; emit(root, "core-ui:select", { value: input.value, item }); };
-        allItems().forEach((item) => add(state, item, "click", () => select(item)));
+        let committed = allItems().find((item) => item.getAttribute("aria-selected") === "true");
+        let active = committed || items()[0];
+        const setActive = (item) => { active = item; if (item) input.setAttribute("aria-activedescendant", item.id); else input.removeAttribute("aria-activedescendant"); };
+        const setCommitted = (item) => { if (!item || optionDisabled(item)) return; committed = item; allItems().forEach((entry) => entry.setAttribute("aria-selected", String(entry === item))); input.value = value(item); setActive(item); input.setAttribute("aria-expanded", "false"); if (list) list.hidden = true; emit(root, "core-ui:select", { value: input.value, item }); };
         const show = () => { if (list) list.hidden = false; input.setAttribute("aria-expanded", "true"); };
+        const filter = (needle) => { allItems().forEach((item) => { item.hidden = optionDisabled(item) || !item.textContent.toLowerCase().includes(needle); }); const visible = items(), empty = part(root, "empty"); if (empty) empty.hidden = visible.length > 0; setActive(visible[0]); };
+        setActive(active);
+        allItems().forEach((item) => add(state, item, "click", () => setCommitted(item)));
         add(state, input, "focus", show);
-        add(state, input, "input", () => { show(); const needle = input.value.toLowerCase(); allItems().forEach((item) => { item.hidden = !item.textContent.toLowerCase().includes(needle); }); const visible = items(), empty = part(root, "empty"); if (empty) empty.hidden = visible.length > 0; if (visible.length) setActive(visible[0]); else input.removeAttribute("aria-activedescendant"); });
-        add(state, input, "keydown", (event) => { const visible = items(); if (event.key === "Escape") { if (list) list.hidden = true; input.setAttribute("aria-expanded", "false"); return; } if (!visible.length) return; if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); show(); setActive(visible[(active + (event.key === "ArrowDown" ? 1 : -1) + visible.length) % visible.length]); } else if (event.key === "Enter") { event.preventDefault(); select(visible[active]); } });
+        add(state, input, "input", () => { show(); filter(input.value.toLowerCase()); });
+        add(state, input, "keydown", (event) => { const visible = items(); if (event.key === "Escape") { event.preventDefault(); input.value = value(committed); filter(""); if (list) list.hidden = true; input.setAttribute("aria-expanded", "false"); setActive(committed); return; } if (!visible.length) return; if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) { event.preventDefault(); show(); const index = visible.indexOf(active); setActive(event.key === "Home" ? visible[0] : event.key === "End" ? visible.at(-1) : visible[(index + (event.key === "ArrowDown" ? 1 : -1) + visible.length) % visible.length]); } else if (event.key === "Enter") { event.preventDefault(); setCommitted(active); } });
     }
     function calendar(root, state) {
-        const days = () => qa(root, "[data-ui-calendar-day], [data-ui-part=grid] button, [data-ui-calendar] button:not([data-ui-part])").filter((day) => !day.matches("[data-ui-calendar-previous],[data-ui-calendar-next]"));
+        const parse = (value) => { const match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})$/); return match ? new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3])) : null; };
+        const iso = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+        const addDays = (date, amount) => new Date(date.getFullYear(), date.getMonth(), date.getDate() + amount);
+        const addMonths = (date, amount) => new Date(date.getFullYear(), date.getMonth() + amount, 1);
         const heading = q(root, "[data-ui-part=header] h1,[data-ui-part=header] h2,[data-ui-part=header] h3") || part(root, "month") || q(root, "[aria-live]");
-        const label = (date) => date.toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" });
-        const shiftMonth = (delta) => {
-            days().forEach((day) => { const source = day.dataset.date || day.value || day.getAttribute("aria-label"); const date = new Date(/^\d{4}-\d{2}-\d{2}$/.test(source) ? `${source}T00:00:00` : source); if (Number.isNaN(date.valueOf())) return; date.setMonth(date.getMonth() + delta); const value = date.toISOString().slice(0, 10); day.dataset.date = value; if (day.value) day.value = value; day.textContent = String(date.getDate()); day.setAttribute("aria-label", label(date)); });
-            const first = days()[0]; if (heading && first?.dataset.date) heading.textContent = new Date(`${first.dataset.date}T00:00:00`).toLocaleDateString(undefined, { month: "long", year: "numeric" });
-            emit(root, "core-ui:month-change", { value: first?.dataset.date, month: heading?.textContent });
+        const grid = q(root, "[data-ui-calendar-grid],[data-ui-part=grid]");
+        const today = iso(new Date());
+        const selectedButton = q(root, "[data-ui-calendar-day][aria-selected=true]");
+        const firstButton = q(root, "[data-ui-calendar-day]");
+        const selected = parse(root.dataset.uiValue || root.dataset.value || selectedButton?.dataset.date);
+        const configuredMonth = String(root.dataset.uiMonth || "").match(/^(\d{4})-(\d{2})$/);
+        const initial = selected || parse(firstButton?.dataset.date) || new Date();
+        const viewed = configuredMonth ? new Date(Number(configuredMonth[1]), Number(configuredMonth[2]) - 1, 1) : new Date(initial.getFullYear(), initial.getMonth(), 1);
+        const disabledDates = new Set(String(root.dataset.uiDisabledDates || "").split(",").map((value) => value.trim()).filter(Boolean));
+        const minimum = parse(root.dataset.uiMin), maximum = parse(root.dataset.uiMax);
+        const isDisabled = (date) => disabledDates.has(iso(date)) || Boolean(minimum && date < minimum) || Boolean(maximum && date > maximum);
+        const dateLabel = (date) => date.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+        const monthLabel = (date) => date.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+        const days = () => qa(root, "[data-ui-calendar-day]");
+        const stateful = { view: viewed, selected: selected && !isDisabled(selected) ? selected : null, active: selected || new Date(viewed.getFullYear(), viewed.getMonth(), 1) };
+        const syncRoot = () => { root.dataset.uiMonth = `${stateful.view.getFullYear()}-${String(stateful.view.getMonth() + 1).padStart(2, "0")}`; if (stateful.selected) root.dataset.uiValue = iso(stateful.selected); else delete root.dataset.uiValue; };
+        const focus = (date) => { stateful.active = date; if (date.getFullYear() !== stateful.view.getFullYear() || date.getMonth() !== stateful.view.getMonth()) stateful.view = new Date(date.getFullYear(), date.getMonth(), 1); render(); q(root, `[data-ui-calendar-day][data-date="${iso(date)}"]`)?.focus(); };
+        const select = (date, shouldFocus) => { if (isDisabled(date)) return; stateful.selected = date; stateful.active = date; if (date.getFullYear() !== stateful.view.getFullYear() || date.getMonth() !== stateful.view.getMonth()) stateful.view = new Date(date.getFullYear(), date.getMonth(), 1); render(); const button = q(root, `[data-ui-calendar-day][data-date="${iso(date)}"]`); if (shouldFocus) button?.focus(); emit(root, "core-ui:date-change", { value: iso(date), date }); };
+        const render = () => {
+            syncRoot();
+            if (heading) heading.textContent = monthLabel(stateful.view);
+            if (!grid || !document.createElement) {
+                days().forEach((button) => { const date = parse(button.dataset.date); if (!date) return; const replacement = new Date(stateful.view.getFullYear(), stateful.view.getMonth(), date.getDate()); button.dataset.date = iso(replacement); button.textContent = String(replacement.getDate()); button.setAttribute("aria-label", dateLabel(replacement)); });
+                return;
+            }
+            const body = q(grid, "tbody"); if (!body) return;
+            const first = new Date(stateful.view.getFullYear(), stateful.view.getMonth(), 1);
+            const start = addDays(first, -first.getDay());
+            const fragment = document.createDocumentFragment ? document.createDocumentFragment() : null;
+            const target = fragment || body;
+            for (let week = 0; week < 6; week++) {
+                const row = document.createElement("tr");
+                for (let day = 0; day < 7; day++) {
+                    const date = addDays(start, week * 7 + day), value = iso(date), button = document.createElement("button"), cell = document.createElement("td");
+                    const outside = date.getMonth() !== stateful.view.getMonth();
+                    button.type = "button"; button.dataset.uiCalendarDay = ""; button.dataset.date = value; button.textContent = String(date.getDate()); button.setAttribute("aria-label", dateLabel(date)); button.setAttribute("aria-selected", String(Boolean(stateful.selected && iso(stateful.selected) === value))); button.tabIndex = iso(stateful.active) === value ? 0 : -1;
+                    if (value === today) button.setAttribute("aria-current", "date");
+                    if (outside) button.dataset.uiCalendarOutside = "";
+                    if (isDisabled(date)) { button.disabled = true; button.setAttribute("aria-disabled", "true"); }
+                    cell.setAttribute("role", "gridcell"); cell.append(button); row.append(cell);
+                }
+                target.append(row);
+            }
+            if (body.replaceChildren && fragment) body.replaceChildren(fragment); else { while (body.firstElementChild) body.firstElementChild.remove(); if (fragment) body.append(fragment); }
         };
-        const select = (day, focus) => { days().forEach((item) => { item.setAttribute("aria-selected", String(item === day)); item.tabIndex = item === day ? 0 : -1; }); if (focus) day.focus(); emit(root, "core-ui:date-change", { value: day.dataset.date || day.value || day.getAttribute("aria-label") || day.textContent.trim() }); };
-        const keys = (event, day) => { const all = days(), index = all.indexOf(day); if (event.key === "PageDown" || event.key === "PageUp") { event.preventDefault(); shiftMonth((event.key === "PageDown" ? 1 : -1) * (event.shiftKey ? 12 : 1)); select(days()[event.key === "PageDown" ? days().length - 1 : 0], true); return; } const offsets = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 7, ArrowUp: -7 }; const offset = event.key === "Home" ? -index : event.key === "End" ? all.length - index - 1 : offsets[event.key]; if (offset !== undefined) { event.preventDefault(); select(all[Math.max(0, Math.min(index + offset, all.length - 1))], true); } }; days().forEach((day) => { add(state, day, "click", () => select(day)); add(state, day, "keydown", (event) => keys(event, day)); }); parts(root, "previous prev").filter((button) => button.matches("[data-ui-calendar-previous]") || button.getAttribute("aria-label")?.toLowerCase().includes("previous")).forEach((button) => add(state, button, "click", () => shiftMonth(-1))); parts(root, "next").filter((button) => button.matches("[data-ui-calendar-next]") || button.getAttribute("aria-label")?.toLowerCase().includes("next")).forEach((button) => add(state, button, "click", () => shiftMonth(1))); }
+        const changeMonth = (amount) => { stateful.view = addMonths(stateful.view, amount); const last = new Date(stateful.view.getFullYear(), stateful.view.getMonth() + 1, 0).getDate(); stateful.active = new Date(stateful.view.getFullYear(), stateful.view.getMonth(), Math.min(stateful.active.getDate(), last)); render(); emit(root, "core-ui:month-change", { value: iso(stateful.active), month: heading?.textContent }); };
+        const keys = (event, button) => {
+            const date = parse(button.dataset.date); if (!date) return;
+            if (event.key === "Enter" || event.key === " ") { event.preventDefault(); select(date, true); return; }
+            if (event.key === "PageDown" || event.key === "PageUp") { event.preventDefault(); changeMonth((event.key === "PageDown" ? 1 : -1) * (event.shiftKey ? 12 : 1)); focus(stateful.active); return; }
+            const offsets = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 7, ArrowUp: -7 };
+            const amount = event.key === "Home" ? -date.getDay() : event.key === "End" ? 6 - date.getDay() : offsets[event.key];
+            if (amount !== undefined) { event.preventDefault(); focus(addDays(date, amount)); }
+        };
+        add(state, root, "click", (event) => { const day = event.target.closest?.("[data-ui-calendar-day]"); if (day) select(parse(day.dataset.date), false); });
+        add(state, root, "keydown", (event) => { const day = event.target.closest?.("[data-ui-calendar-day]"); if (day) keys(event, day); });
+        parts(root, "previous prev").filter((button) => button.matches("[data-ui-calendar-previous]") || button.getAttribute("aria-label")?.toLowerCase().includes("previous")).forEach((button) => add(state, button, "click", () => changeMonth(-1)));
+        parts(root, "next").filter((button) => button.matches("[data-ui-calendar-next]") || button.getAttribute("aria-label")?.toLowerCase().includes("next")).forEach((button) => add(state, button, "click", () => changeMonth(1)));
+        render();
+    }
+    function datePicker(root, state) {
+        const input = part(root, "input"), trigger = part(root, "trigger") || q(root, "[data-ui-trigger]"), panel = panelFor(trigger, root), calendarRoot = q(root, "[data-ui-calendar]");
+        const hidden = q(root, "input[type=hidden][data-ui-date-value]") || q(root, "input[type=hidden]");
+        if (!trigger || !panel || !calendarRoot) return;
+        const format = (value) => { const date = new Date(`${value}T00:00:00`); return Number.isNaN(date.valueOf()) ? value : date.toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" }); };
+        const close = (restore) => { open(trigger, panel, false); if (restore) trigger.focus(); };
+        add(state, trigger, "click", (event) => { event.preventDefault(); open(trigger, panel, panel.hidden); });
+        add(state, root, "keydown", (event) => { if (event.key === "Escape" && !panel.hidden) { event.preventDefault(); close(true); } });
+        add(state, root, "core-ui:date-change", (event) => { if (event.target !== calendarRoot) return; const value = event.detail.value; if (input) input.value = format(value); if (hidden) hidden.value = value; root.dataset.uiValue = value; close(true); });
+    }
     function carousel(root, state) { const track = q(root, "[data-ui-carousel-track]"); const slides = () => qa(root, "[data-ui-carousel-slide],[data-ui-part=slide]"); let index = Math.max(0, slides().findIndex((slide) => slide.getAttribute("aria-hidden") !== "true" && !slide.hidden)); const show = (next) => { const all = slides(); if (!all.length) return; index = (next + all.length) % all.length; all.forEach((slide, item) => { const inactive = item !== index; slide.hidden = !track && inactive; slide.inert = inactive; slide.setAttribute("aria-hidden", String(inactive)); }); if (track) track.style.transform = `translateX(-${index * 100}%)`; const status = part(root, "status"); if (status) status.textContent = `Slide ${index + 1} of ${all.length}`; emit(root, "core-ui:slide-change", { index }); }; parts(root, "next").forEach((button) => add(state, button, "click", () => show(index + 1))); parts(root, "previous prev").forEach((button) => add(state, button, "click", () => show(index - 1))); add(state, root, "keydown", (event) => { if (event.key === "ArrowRight" || event.key === "ArrowLeft") { event.preventDefault(); show(index + (event.key === "ArrowRight" ? 1 : -1)); } }); show(index); }
     function otp(root, state) { const fields = qa(root, "[data-ui-part=slot], input"); fields.forEach((field, index) => { add(state, field, "input", () => { field.value = field.value.slice(-1); if (field.value) fields[index + 1]?.focus(); }); add(state, field, "keydown", (event) => { if (event.key === "Backspace" && !field.value) fields[index - 1]?.focus(); }); add(state, field, "paste", (event) => { const text = event.clipboardData?.getData("text").replace(/\s/g, "") || ""; if (!text) return; event.preventDefault(); text.slice(0, fields.length - index).split("").forEach((value, offset) => { fields[index + offset].value = value; }); fields[Math.min(index + text.length, fields.length - 1)].focus(); }); }); }
     function resizable(root, state) { const handle = part(root, "handle") || q(root, "[data-ui-resize-handle]"); const pane = parts(root, "panel pane")[0] || q(root, "[data-ui-resize-pane]"); if (!handle || !pane) return; const setWidth = (width) => { const min = Number(handle.getAttribute("aria-valuemin") || 0), max = Number(handle.getAttribute("aria-valuemax") || 100), container = root.getBoundingClientRect().width || 1; width = Math.max(container * min / 100, Math.min(container * max / 100, width)); pane.style.flexBasis = `${width}px`; const value = Math.round(width / container * 100); handle.setAttribute("aria-valuenow", String(value)); handle.setAttribute("aria-valuetext", `${value} percent`); }; add(state, handle, "pointerdown", (event) => { const startX = event.clientX, startWidth = pane.getBoundingClientRect().width; handle.setPointerCapture?.(event.pointerId); const finish = () => { removeMove(); removeUp(); removeCancel(); if (handle.hasPointerCapture?.(event.pointerId)) handle.releasePointerCapture(event.pointerId); }; const removeMove = add(state, handle, "pointermove", (next) => setWidth(startWidth + next.clientX - startX)); const removeUp = add(state, handle, "pointerup", finish, { once: true }); const removeCancel = add(state, handle, "pointercancel", finish, { once: true }); }); add(state, handle, "keydown", (event) => { if (event.key === "ArrowLeft" || event.key === "ArrowRight") { event.preventDefault(); setWidth(pane.getBoundingClientRect().width + (event.key === "ArrowLeft" ? -16 : 16)); } }); }
@@ -151,7 +256,7 @@
         if (component === "questionnaire" || root.matches("[data-ui-questionnaire]")) { const steps = qa(root, "[data-ui-question],[data-ui-part=step]"); let index = Math.max(0, steps.findIndex((step) => !step.hidden)); const nextButtons = qa(root, "[data-ui-question-next],[data-ui-part=next]"), previous = qa(root, "[data-ui-question-prev],[data-ui-part=previous],[data-ui-part=prev]"), submit = part(root, "submit"); const update = (next) => { index = Math.max(0, Math.min(next, steps.length - 1)); steps.forEach((step, item) => { step.hidden = item !== index; }); const final = index === steps.length - 1; nextButtons.forEach((button) => { button.hidden = final; }); previous.forEach((button) => { button.hidden = index === 0; button.disabled = index === 0; }); if (submit) submit.hidden = !final; const progress = part(root, "progress"); if (progress) progress.textContent = `Step ${index + 1} of ${steps.length}`; emit(root, "core-ui:question-change", { step: index, question: steps[index] }); }; nextButtons.forEach((button) => add(state, button, "click", (event) => { const invalid = qa(steps[index], "[required]").find((field) => !field.checkValidity()); if (invalid) { event.preventDefault(); invalid.reportValidity(); return; } update(index + 1); })); previous.forEach((button) => add(state, button, "click", () => update(index - 1))); update(index); }
         if (component === "message-scroller" || root.matches("[data-ui-message-scroller]")) { const list = part(root, "list") || root, jump = q(root, "[data-ui-jump]") || part(root, "jump"); let follow = list.scrollHeight - list.scrollTop - list.clientHeight < 24; const sync = () => { follow = list.scrollHeight - list.scrollTop - list.clientHeight < 24; if (jump) jump.hidden = follow; }; add(state, list, "scroll", sync); if (jump) add(state, jump, "click", () => { list.scrollTop = list.scrollHeight; sync(); }); const observer = new MutationObserver(() => { if (follow) list.scrollTop = list.scrollHeight; sync(); }); observer.observe(list, { childList: true, subtree: true }); state.observer = observer; if (jump) jump.hidden = follow; }
     }
-    function enhance(root = document) { const all = []; if (root.matches?.(selector)) all.push(root); all.push(...qa(root, selector)); all.forEach((element) => { if (instances.has(element)) return; const state = { listeners: [], cleanup: [] }; instances.set(element, state); const component = element.dataset.uiComponent || ""; if (/^(accordion|collapsible)$/.test(component) || element.matches("[data-ui-disclosure]")) disclosure(element, state); if (component === "tabs" || element.matches("[data-ui-tabs]")) tabs(element, state); if (/^(dialog|alert-dialog|sheet|drawer)$/.test(component) || element.matches("[data-ui-dialog],[data-ui-alert-dialog],[data-ui-sheet],[data-ui-drawer]")) modal(element, state); if (/^(popover|dropdown-menu|context-menu|menubar|navigation-menu|hover-card|tooltip|date-picker)$/.test(component) || element.matches("[data-ui-popover],[data-ui-menu],[data-ui-hovercard],[data-ui-navigation-menu]")) popup(element, state, component); if (/^(combobox|select|command)$/.test(component) || element.matches("[data-ui-combobox],[data-ui-select],[data-ui-command]")) choices(element, state); if (component === "calendar" || element.matches("[data-ui-calendar]")) calendar(element, state); if (component === "carousel" || element.matches("[data-ui-carousel]")) carousel(element, state); if (component === "input-otp" || element.matches("[data-ui-otp]")) otp(element, state); if (component === "resizable" || element.matches("[data-ui-resizable]")) resizable(element, state); extras(element, state, component); }); return root; }
+    function enhance(root = document) { const all = []; if (root.matches?.(selector)) all.push(root); all.push(...qa(root, selector)); all.forEach((element) => { if (instances.has(element)) return; const state = { listeners: [], cleanup: [] }; instances.set(element, state); const component = element.dataset.uiComponent || ""; if (/^(accordion|collapsible)$/.test(component) || element.matches("[data-ui-disclosure]")) disclosure(element, state); if (component === "tabs" || element.matches("[data-ui-tabs]")) tabs(element, state); if (/^(dialog|alert-dialog|sheet|drawer)$/.test(component) || element.matches("[data-ui-dialog],[data-ui-alert-dialog],[data-ui-sheet],[data-ui-drawer]")) modal(element, state); if (/^(popover|dropdown-menu|context-menu|menubar|navigation-menu|hover-card|tooltip)$/.test(component) || (component !== "date-picker" && element.matches("[data-ui-popover],[data-ui-menu],[data-ui-hovercard],[data-ui-navigation-menu]"))) popup(element, state, component); if (/^(combobox|select|command)$/.test(component) || element.matches("[data-ui-combobox],[data-ui-select],[data-ui-command]")) choices(element, state); if (component === "calendar" || element.matches("[data-ui-calendar]")) calendar(element, state); if (component === "date-picker") datePicker(element, state); if (component === "carousel" || element.matches("[data-ui-carousel]")) carousel(element, state); if (component === "input-otp" || element.matches("[data-ui-otp]")) otp(element, state); if (component === "resizable" || element.matches("[data-ui-resizable]")) resizable(element, state); extras(element, state, component); }); return root; }
     function destroy(root = document) { const all = []; if (root.matches?.(selector)) all.push(root); all.push(...qa(root, selector)); all.forEach((element) => { const state = instances.get(element); if (!state) return; state.listeners.forEach(([node, type, fn, options]) => node.removeEventListener(type, fn, options)); state.observer?.disconnect(); state.cleanup.forEach((cleanup) => cleanup()); instances.delete(element); }); return root; }
     window.CoreUI = Object.assign(window.CoreUI || {}, { enhance, destroy });
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => enhance()); else enhance();
