@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/ui/src/base.css"><link rel="stylesheet" href="/ui/src/components.css"><script src="/ui/src/components.js" defer></script><title>Accordion</title></head><body>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/ui/src/base.css"><link rel="stylesheet" href="/ui/src/components.css"><script src="/ui/src/components.js" defer></script><title>Accordion</title></head><body class="ui-demo">
 <!-- core-ui-snippet:start -->
 <section class="ui-panel" data-ui-component="accordion" aria-label="Frequently asked questions">
   <h2 class="ui-title-md">Frequently asked questions</h2>
   <div data-ui-part="item"><h3><button class="ui-button ui-button-tertiary" data-ui-part="trigger" id="accordion-shipping-trigger" aria-expanded="true" aria-controls="accordion-shipping-panel">When will my order arrive?</button></h3><div data-ui-part="panel" id="accordion-shipping-panel" role="region" aria-labelledby="accordion-shipping-trigger"><p>Most orders arrive in three to five business days.</p></div></div>
-  <div data-ui-part="item"><h3><button class="ui-button ui-button-tertiary" data-ui-part="trigger" id="accordion-returns-trigger" aria-expanded="false" aria-controls="accordion-returns-panel">What is the return policy?</button></h3><div data-ui-part="panel" id="accordion-returns-panel" role="region" aria-labelledby="accordion-returns-trigger" hidden><p>Returns are accepted within 30 days.</p></div></div>
+  <div data-ui-part="item"><h3><button class="ui-button ui-button-tertiary" data-ui-part="trigger" id="accordion-returns-trigger" aria-expanded="false" aria-controls="accordion-returns-panel">What is the return policy?</button></h3><div data-ui-part="panel" id="accordion-returns-panel" role="region" aria-labelledby="accordion-returns-trigger" hidden><p>Returns are accepted within 30 days of delivery with the original receipt.</p></div></div>
+  <div data-ui-part="item"><h3><button class="ui-button ui-button-tertiary" data-ui-part="trigger" id="accordion-support-trigger" aria-expanded="false" aria-controls="accordion-support-panel">Where can I get help?</button></h3><div data-ui-part="panel" id="accordion-support-panel" role="region" aria-labelledby="accordion-support-trigger" hidden><p>Contact support with your order number for a faster response.</p></div></div>
 </section>
 <!-- core-ui-snippet:end -->
 </body></html>

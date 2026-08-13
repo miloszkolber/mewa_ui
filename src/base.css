@@ -1,28 +1,239 @@
-/* Core UI canonical foundation: tokens, reset, and browser primitives only. */
+/* Core UI foundation: tokens, reset, document typography, and browser primitives. */
 :root {
     color-scheme: dark;
-    /* Solid ten-step palettes. */
-    --ui-mono-0: #000000; --ui-mono-1: #080808; --ui-mono-2: #101010; --ui-mono-3: #181818; --ui-mono-4: #242424; --ui-mono-5: #303030; --ui-mono-6: #484848; --ui-mono-7: #707070; --ui-mono-8: #a0a0a0; --ui-mono-9: #ededed;
-    --ui-red-0: #180305; --ui-red-1: #30060a; --ui-red-2: #500b12; --ui-red-3: #71111a; --ui-red-4: #961a25; --ui-red-5: #ba2432; --ui-red-6: #df3343; --ui-red-7: #f05b68; --ui-red-8: #fa9aa2; --ui-red-9: #ffe5e7;
-    --ui-green-0: #02180b; --ui-green-1: #052d14; --ui-green-2: #08451e; --ui-green-3: #0b5d29; --ui-green-4: #087a35; --ui-green-5: #0a9743; --ui-green-6: #13b956; --ui-green-7: #3bd174; --ui-green-8: #82e6a2; --ui-green-9: #def8e7;
-    --ui-yellow-0: #1a1100; --ui-yellow-1: #332300; --ui-yellow-2: #503700; --ui-yellow-3: #704c00; --ui-yellow-4: #906200; --ui-yellow-5: #ae7800; --ui-yellow-6: #cc9200; --ui-yellow-7: #e5af28; --ui-yellow-8: #f3d071; --ui-yellow-9: #fff4d6;
-    /* Semantic roles. */
-    --ui-canvas: var(--ui-mono-0); --ui-surface: var(--ui-mono-1); --ui-surface-raised: var(--ui-mono-2); --ui-control-bg: var(--ui-mono-3); --ui-control-bg-hover: var(--ui-mono-4); --ui-control-bg-active: var(--ui-mono-5);
-    --ui-border-subtle: var(--ui-mono-3); --ui-border-default: var(--ui-mono-5); --ui-border-hover: var(--ui-mono-6); --ui-text-primary: var(--ui-mono-9); --ui-text-secondary: var(--ui-mono-8); --ui-text-tertiary: var(--ui-mono-7); --ui-text-disabled: var(--ui-mono-7); --ui-text-inverse: var(--ui-mono-0);
-    --ui-focus-ring: var(--ui-mono-9); --ui-danger: var(--ui-red-6); --ui-danger-hover: var(--ui-red-7); --ui-danger-muted: var(--ui-red-1); --ui-success: var(--ui-green-6); --ui-success-text: var(--ui-green-8); --ui-success-muted: var(--ui-green-1); --ui-warning: var(--ui-yellow-7); --ui-warning-muted: var(--ui-yellow-1); --ui-text-on-danger: var(--ui-mono-9); --ui-dialog-overlay: color-mix(in srgb, var(--ui-mono-0) 80%, transparent);
-    /* Typography. */
-    --ui-font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --ui-font-mono: ui-monospace, monospace; --ui-font-size-xs: 0.75rem; --ui-font-size-sm: 0.875rem; --ui-font-size-md: 0.875rem; --ui-font-size-base: 1rem; --ui-font-size-lg: 1.5rem; --ui-font-size-xl: 1.5rem; --ui-font-size-2xl: 2rem; --ui-line-height-tight: 1; --ui-line-height-snug: 1.25; --ui-line-height-normal: 1.5; --ui-line-height-relaxed: 1.6; --ui-font-weight-medium: 500; --ui-font-weight-semibold: 600; --ui-letter-spacing-tight: -0.0175rem; --ui-letter-spacing-title: -0.025rem; --ui-letter-spacing-heading: -0.08rem; --ui-letter-spacing-wide: 0.08em;
-    /* Spacing, geometry, layout, motion, and layers. */
-    --ui-space-1: 0.25rem; --ui-space-2: 0.5rem; --ui-space-3: 0.75rem; --ui-space-4: 1rem; --ui-space-5: 1.25rem; --ui-space-6: 1.5rem; --ui-space-7: 1.75rem; --ui-space-8: 2rem; --ui-space-10: 2.5rem; --ui-space-12: 3rem; --ui-space-16: 4rem;
-    --ui-radius-none: 0; --ui-radius-xs: 0.25rem; --ui-radius-full: 9999px; --ui-border-width: 1px; --ui-focus-ring-width: 2px; --ui-control-height: 2.5rem; --ui-control-height-sm: 2rem; --ui-icon-button-size: 2.25rem; --ui-icon-size-sm: 1rem; --ui-icon-size-md: 1.125rem; --ui-icon-stroke-width: 1.8; --ui-checkbox-size: 1.125rem; --ui-status-dot-size: 0.375rem; --ui-status-indicator-size: 2.75rem; --ui-status-icon-size: 1.25rem;
-    --ui-container-max: 75rem; --ui-container-wide-max: 97.5rem; --ui-container-gutter: 3rem; --ui-container-gutter-mobile: 1.5rem; --ui-copy-max: 38.75rem; --ui-header-height: 4rem; --ui-header-height-mobile: 3.5rem; --ui-frame-gutter: var(--ui-space-6); --ui-rail-width: 3.5rem; --ui-topbar-height: 3.5rem; --ui-viewport-min-height: 100svh; --ui-component-width-sm: 24rem; --ui-component-width-md: 32rem; --ui-component-width-lg: 48rem; --ui-component-menu-width: 14rem; --ui-component-date-width: 18rem; --ui-component-sidebar-width: 16rem;
-    --ui-duration-fast: 120ms; --ui-duration-reduced: 0.01ms; --ui-ease-standard: ease; --ui-backdrop-blur-sm: 0.5rem; --ui-z-header: 50; --ui-z-dialog: 1200; --ui-z-toast: 1500; --ui-stripe-pattern: repeating-linear-gradient(135deg, transparent 0, transparent 0.6875rem, var(--ui-border-default) 0.6875rem, var(--ui-border-default) 0.75rem);
+
+    /* Ten-step palettes, from deepest surface to highest-contrast foreground. */
+    --ui-mono-0: #09090b;
+    --ui-mono-1: #111113;
+    --ui-mono-2: #18181b;
+    --ui-mono-3: #27272a;
+    --ui-mono-4: #3f3f46;
+    --ui-mono-5: #52525b;
+    --ui-mono-6: #71717a;
+    --ui-mono-7: #a1a1aa;
+    --ui-mono-8: #d4d4d8;
+    --ui-mono-9: #fafafa;
+    --ui-red-0: #240609;
+    --ui-red-1: #450a0a;
+    --ui-red-2: #7f1d1d;
+    --ui-red-3: #991b1b;
+    --ui-red-4: #b91c1c;
+    --ui-red-5: #dc2626;
+    --ui-red-6: #ef4444;
+    --ui-red-7: #f87171;
+    --ui-red-8: #fca5a5;
+    --ui-red-9: #fee2e2;
+    --ui-green-0: #052e16;
+    --ui-green-1: #064e3b;
+    --ui-green-2: #065f46;
+    --ui-green-3: #047857;
+    --ui-green-4: #059669;
+    --ui-green-5: #10b981;
+    --ui-green-6: #34d399;
+    --ui-green-7: #6ee7b7;
+    --ui-green-8: #a7f3d0;
+    --ui-green-9: #d1fae5;
+    --ui-yellow-0: #451a03;
+    --ui-yellow-1: #713f12;
+    --ui-yellow-2: #854d0e;
+    --ui-yellow-3: #a16207;
+    --ui-yellow-4: #ca8a04;
+    --ui-yellow-5: #eab308;
+    --ui-yellow-6: #facc15;
+    --ui-yellow-7: #fde047;
+    --ui-yellow-8: #fef08a;
+    --ui-yellow-9: #fef9c3;
+
+    /* Semantic roles. Components must consume these, not raw palette values. */
+    --ui-background: var(--ui-mono-0);
+    --ui-card: var(--ui-mono-1);
+    --ui-popover: var(--ui-mono-1);
+    --ui-muted: var(--ui-mono-2);
+    --ui-muted-foreground: var(--ui-mono-7);
+    --ui-accent: var(--ui-mono-3);
+    --ui-accent-foreground: var(--ui-mono-9);
+    --ui-input: var(--ui-mono-3);
+    --ui-ring: var(--ui-mono-8);
+    --ui-status-ok: var(--ui-green-6);
+    --ui-status-warning: var(--ui-yellow-6);
+    --ui-status-error: var(--ui-red-6);
+    --ui-status-running: var(--ui-mono-7);
+    --ui-canvas: var(--ui-background);
+    --ui-surface: var(--ui-card);
+    --ui-surface-raised: var(--ui-popover);
+    --ui-control-bg: var(--ui-muted);
+    --ui-control-bg-hover: var(--ui-accent);
+    --ui-control-bg-active: var(--ui-mono-4);
+    --ui-border-subtle: var(--ui-mono-2);
+    --ui-border-default: var(--ui-mono-3);
+    --ui-border-hover: var(--ui-mono-5);
+    --ui-text-primary: var(--ui-mono-9);
+    --ui-text-secondary: var(--ui-mono-7);
+    --ui-text-tertiary: var(--ui-mono-6);
+    --ui-text-disabled: var(--ui-mono-5);
+    --ui-text-inverse: var(--ui-mono-0);
+    --ui-text-on-danger: var(--ui-mono-9);
+    --ui-focus-ring: var(--ui-ring);
+    --ui-danger: var(--ui-status-error);
+    --ui-danger-hover: var(--ui-red-7);
+    --ui-danger-muted: color-mix(in srgb, var(--ui-danger) 10%, var(--ui-surface));
+    --ui-success: var(--ui-status-ok);
+    --ui-success-text: var(--ui-green-7);
+    --ui-success-muted: color-mix(in srgb, var(--ui-success) 8%, var(--ui-surface));
+    --ui-warning: var(--ui-status-warning);
+    --ui-warning-muted: color-mix(in srgb, var(--ui-warning) 8%, var(--ui-surface));
+    --ui-dialog-overlay: color-mix(in srgb, var(--ui-mono-0) 82%, transparent);
+
+    /* Literal ten-step type, spacing, size, radius, and layer scales. */
+    --ui-type-0: 0.6875rem;
+    --ui-type-1: 0.75rem;
+    --ui-type-2: 0.8125rem;
+    --ui-type-3: 0.875rem;
+    --ui-type-4: 1rem;
+    --ui-type-5: 1.125rem;
+    --ui-type-6: 1.25rem;
+    --ui-type-7: 1.5rem;
+    --ui-type-8: 1.875rem;
+    --ui-type-9: 2.25rem;
+    --ui-space-0: 0;
+    --ui-space-1: 0.25rem;
+    --ui-space-2: 0.5rem;
+    --ui-space-3: 0.75rem;
+    --ui-space-4: 1rem;
+    --ui-space-5: 1.25rem;
+    --ui-space-6: 1.5rem;
+    --ui-space-7: 2rem;
+    --ui-space-8: 2.5rem;
+    --ui-space-9: 3rem;
+    --ui-size-0: 0;
+    --ui-size-1: 1rem;
+    --ui-size-2: 1.25rem;
+    --ui-size-3: 1.5rem;
+    --ui-size-4: 2rem;
+    --ui-size-5: 2.5rem;
+    --ui-size-6: 3rem;
+    --ui-size-7: 4rem;
+    --ui-size-8: 12rem;
+    --ui-size-9: 18rem;
+    --ui-radius-0: 0;
+    --ui-radius-1: 0.125rem;
+    --ui-radius-2: 0.25rem;
+    --ui-radius-3: 0.375rem;
+    --ui-radius-4: 0.5rem;
+    --ui-radius-5: 0.75rem;
+    --ui-radius-6: 1rem;
+    --ui-radius-7: 1.5rem;
+    --ui-radius-8: 2rem;
+    --ui-radius-9: 9999px;
+    --ui-layer-0: 0;
+    --ui-layer-1: 10;
+    --ui-layer-2: 20;
+    --ui-layer-3: 50;
+    --ui-layer-4: 100;
+    --ui-layer-5: 500;
+    --ui-layer-6: 1000;
+    --ui-layer-7: 1200;
+    --ui-layer-8: 1500;
+    --ui-layer-9: 2000;
+
+    /* Compatibility aliases and reusable geometry. */
+    --ui-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --ui-font-sans: var(--ui-font-mono);
+    --ui-font-size-xs: var(--ui-type-1);
+    --ui-font-size-sm: var(--ui-type-3);
+    --ui-font-size-md: var(--ui-type-3);
+    --ui-font-size-base: var(--ui-type-4);
+    --ui-font-size-lg: var(--ui-type-7);
+    --ui-font-size-xl: var(--ui-type-8);
+    --ui-font-size-2xl: var(--ui-type-9);
+    --ui-line-height-tight: 1.1;
+    --ui-line-height-snug: 1.25;
+    --ui-line-height-normal: 1.5;
+    --ui-line-height-relaxed: 1.65;
+    --ui-font-weight-medium: 500;
+    --ui-font-weight-semibold: 600;
+    --ui-letter-spacing-tight: -0.0125em;
+    --ui-letter-spacing-title: -0.02em;
+    --ui-letter-spacing-heading: -0.035em;
+    --ui-letter-spacing-wide: 0.08em;
+    --ui-radius-none: var(--ui-radius-0);
+    --ui-radius-xs: var(--ui-radius-1);
+    --ui-radius-full: var(--ui-radius-9);
+    --ui-border-width: 1px;
+    --ui-focus-ring-width: 2px;
+    --ui-control-height: 2.25rem;
+    --ui-control-height-sm: var(--ui-size-4);
+    --ui-icon-button-size: var(--ui-control-height);
+    --ui-icon-size-sm: var(--ui-size-1);
+    --ui-icon-size-md: var(--ui-type-5);
+    --ui-icon-stroke-width: 1.8;
+    --ui-checkbox-size: var(--ui-type-5);
+    --ui-status-dot-size: var(--ui-space-2);
+    --ui-status-indicator-size: var(--ui-size-5);
+    --ui-status-icon-size: var(--ui-type-6);
+    --ui-container-max: 75rem;
+    --ui-container-wide-max: 97.5rem;
+    --ui-container-gutter: var(--ui-space-9);
+    --ui-container-gutter-mobile: var(--ui-space-5);
+    --ui-copy-max: 42rem;
+    --ui-header-height: var(--ui-size-7);
+    --ui-header-height-mobile: var(--ui-size-6);
+    --ui-frame-gutter: var(--ui-space-6);
+    --ui-rail-width: var(--ui-size-6);
+    --ui-topbar-height: var(--ui-size-6);
+    --ui-viewport-min-height: 100svh;
+    --ui-component-width-sm: 24rem;
+    --ui-component-width-md: 32rem;
+    --ui-component-width-lg: 48rem;
+    --ui-component-menu-width: 14rem;
+    --ui-component-date-width: 18rem;
+    --ui-component-sidebar-width: 16rem;
+    --ui-duration-fast: 120ms;
+    --ui-duration-reduced: 0.01ms;
+    --ui-ease-standard: ease;
+    --ui-backdrop-blur-sm: 0.5rem;
+    --ui-z-header: var(--ui-layer-3);
+    --ui-z-dialog: var(--ui-layer-7);
+    --ui-z-toast: var(--ui-layer-8);
+    --ui-stripe-pattern: repeating-linear-gradient(135deg, transparent var(--ui-space-0), transparent var(--ui-space-3), var(--ui-border-default) var(--ui-space-3), var(--ui-border-default) calc(var(--ui-space-3) + var(--ui-border-width)));
+    --ui-bg: var(--ui-canvas);
+    --ui-fill: var(--ui-control-bg);
+    --ui-fill-hover: var(--ui-control-bg-hover);
+    --ui-fill-active: var(--ui-control-bg-active);
+    --ui-border: var(--ui-border-default);
+    --ui-text: var(--ui-text-primary);
+    --ui-disabled: var(--ui-text-disabled);
+    --ui-focus: var(--ui-focus-ring);
+    --ui-red: var(--ui-danger);
+    --ui-red-hover: var(--ui-danger-hover);
+    --ui-red-muted: var(--ui-danger-muted);
+    --ui-green: var(--ui-success);
+    --ui-green-secondary: var(--ui-success-text);
 }
-*, *::before, *::after { box-sizing: border-box; }
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
 html { background: var(--ui-canvas); color: var(--ui-text-primary); font-family: var(--ui-font-sans); text-rendering: optimizeLegibility; }
-body { min-height: 100vh; margin: 0; background: var(--ui-canvas); color: var(--ui-text-primary); font-size: var(--ui-font-size-md); line-height: var(--ui-line-height-normal); -webkit-font-smoothing: antialiased; }
-button, input, select, textarea { font: inherit; } button, a { -webkit-tap-highlight-color: transparent; } [hidden] { display: none !important; }
+body { min-width: var(--ui-size-0); min-height: var(--ui-viewport-min-height); margin: var(--ui-space-0); background: var(--ui-canvas); color: var(--ui-text-primary); font-size: var(--ui-font-size-md); line-height: var(--ui-line-height-normal); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; }
+button, [role="button"] { cursor: pointer; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button:disabled, [aria-disabled="true"] { cursor: not-allowed; }
+a { color: var(--ui-text-primary); text-underline-offset: var(--ui-space-1); }
+p, h1, h2, h3, h4, ul, ol, figure, blockquote { margin-block: var(--ui-space-0); }
+img, svg { max-inline-size: 100%; }
+svg { display: inline-block; vertical-align: middle; }
+svg:has(> use) { inline-size: var(--ui-icon-size-md); block-size: var(--ui-icon-size-md); flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: var(--ui-icon-stroke-width); stroke-linecap: round; stroke-linejoin: round; }
+::selection { background: var(--ui-accent); color: var(--ui-accent-foreground); }
 :focus-visible { outline: var(--ui-focus-ring-width) solid var(--ui-focus-ring); outline-offset: var(--ui-focus-ring-width); }
-svg { display: inline-block; vertical-align: middle; } svg:has(> use) { width: var(--ui-icon-size-md); height: var(--ui-icon-size-md); flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: var(--ui-icon-stroke-width); }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: var(--ui-duration-reduced) !important; animation-duration: var(--ui-duration-reduced) !important; } }
-@media (forced-colors: active) { :focus-visible { outline-color: Highlight; } }
+[hidden] { display: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; transition-duration: var(--ui-duration-reduced) !important; animation-duration: var(--ui-duration-reduced) !important; animation-iteration-count: 1 !important; }
+}
+
+@media (forced-colors: active) {
+    :focus-visible { outline-color: Highlight; }
+}
