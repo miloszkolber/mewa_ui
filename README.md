@@ -1,41 +1,33 @@
-# Core UI
+# Core UI library
 
-Core UI is a framework-agnostic, copy-ready implementation of the current official shadcn component catalog for Core's small service frontends. It is static HTML, CSS, and optional JavaScript. There is no framework or frontend build step.
+Core UI is a framework-agnostic, copy-ready catalog for Core service frontends. It is static HTML, CSS, and optional JavaScript with no framework or frontend build step.
 
-`core-ui.css` is the compatibility foundation for existing Core services. Load `core-ui-components.css` after it for the expanded component layer, and load `core-ui.js` only when progressive enhancement is needed. See `DESIGN.md` for the design, accessibility, state, and contribution contract.
+## Canonical assets
 
-## Files and catalog
+The architecture has exactly two canonical CSS files: `/ui/src/base.css` for tokens, reset, typography, layout primitives, and shared foundations, and `/ui/src/components.css` for component selectors and states. The other canonical assets are `/ui/src/components.js` for progressive enhancement and `/ui/src/lucide.svg` for the local icon sprite.
 
-- `/ui/core-ui.css` provides the compatibility tokens and shared Core primitives.
-- `/ui/core-ui-components.css` provides the expanded shadcn-style component selectors and tokens.
-- `/ui/core-ui.js` is optional. `CoreUI.enhance(root)` wires dynamic markup and `CoreUI.destroy(root)` removes its listeners and observers.
-- `catalog/index.html` is the searchable catalog. It loads component previews and source from `/ui/snippets/`.
-- `catalog/components.json` is the component manifest and source of truth for the catalog.
-- `snippets/` contains 64 copy-ready standalone HTML snippets matching the 64 current official components. Each source fragment is delimited by `<!-- core-ui-snippet:start -->` and `<!-- core-ui-snippet:end -->` markers.
-- `lucide.svg` is the local Lucide sprite.
+The root `core-ui.css` is legacy-only for existing services. Root `core-ui-components.css`, root `core-ui.js`, and root `lucide.svg` are removed by this architecture. New snippets and services must use the `src/` assets and must not add another stylesheet layer.
 
-The catalog contains the 64 components in the live official `/docs/components` base-link list, fetched 2026-08-13. This catalog can evolve as the official list changes. Use the searchable catalog rather than copying preview-shell markup.
+`catalog/index.html` is the searchable catalog, `catalog/components.json` is its manifest, and `snippets/` contains the 64 copy-ready fragments. Each snippet is delimited by `<!-- core-ui-snippet:start -->` and `<!-- core-ui-snippet:end -->`.
 
-## Principles
+## Serving
 
-- Prefer native-first HTML semantics and native controls. Add enhancement only where interaction requires it.
-- Use `data-ui-*` hooks for component behavior and styling hooks. Reserve `data-state` for status only. Status values are `ok`, `warning`, `error`, `running`, and `progress`.
-- Preserve visible focus, keyboard navigation, reduced motion, live-region semantics, and mobile layouts.
-- Use tokenized simple typography and a 4px spacing scale. The expanded layer uses square-ish radii, no visual shadows, and blur only on approved overlays.
-- Use semantic monochrome surfaces and semantic status colors. Do not introduce per-service palette values.
+Mount `/home/core/docker/ui_library` read-only at `/ui` in Compose. The catalog is then available at `http://localhost:<published-port>/ui/catalog/`, and a consumer references `/ui/src/base.css`, `/ui/src/components.css`, `/ui/src/components.js`, and `/ui/src/lucide.svg`.
 
-## Serving and consumers
+For a quick local catalog server, run `python3 -m http.server 8080 --directory /home/core/docker/ui_library` and open `http://localhost:8080/catalog/`. For a Compose consumer, run `docker compose -f /home/core/docker/meili_ui/docker-compose.yaml up -d` (or the relevant consumer Compose file), then use that service's published URL with the `/ui/catalog/` path.
 
-Mount `/home/core/docker/ui_library` read-only at `/ui` and serve the library under the `/ui/` prefix. A copied fragment requires `/ui/core-ui.css` followed by `/ui/core-ui-components.css`; include `/ui/core-ui.js` only when using dynamic enhancement.
+## Usage principles
 
-The requested five consumers are `homelab_ui`, `hf_ui`, `moonlight_ui`, `meili_ui`, and `rss`, with `meili_ui` as the reference implementation. `subtitles` also mounts this library and is a consumer. Service-specific branding belongs with the consuming service.
+- Start with semantic HTML and native controls. JavaScript is progressive enhancement.
+- Use `data-ui-*` hooks for behavior and styling, and reserve `data-state` for `ok`, `warning`, `error`, `running`, and `progress`.
+- Use 10-step scales and semantic role mapping from `src/base.css`; do not introduce service-specific palette values.
+- Use square geometry. Do not use shadows or blur except for approved overlays.
+- Preserve visible focus, keyboard behavior, reduced motion, live-region semantics, and mobile contracts.
 
-## Icons
+Every Lucide icon used by a snippet or service must first be added as a symbol to `src/lucide.svg`. Reference it with a same-origin `<use href="/ui/src/lucide.svg#name">`; icon-only controls require an accessible name.
 
-Use same-origin Lucide sprite links such as `<svg aria-hidden="true"><use href="/ui/lucide.svg#search" /></svg>`. Icon-only controls need an accessible name. Keep product marks and media fallback illustrations with the consuming service.
+## Contribution and validation
 
-## Checks
+Add shared tokens or behavior only when they belong to the catalog or serve multiple consumers. Update the manifest and its marked snippet together. Keep selectors composable and IDs out of styling.
 
-From `/home/core/docker/ui_library`, run `bun tests/catalog-contract.test.js` or `node tests/catalog-contract.test.js` for the catalog contract, and `bun tests/runtime-contract.test.js` or `node tests/runtime-contract.test.js` for the runtime harness. These are static and DOM-harness checks, not real browser or assistive-technology validation. For a native Node syntax check without a local Node install, run `docker run --rm -v "$PWD:/work" -w /work node:alpine node --check core-ui.js`.
-
-`tests/browser-smoke.mjs` provides an optional real-browser check for every standalone snippet plus representative interactions. It expects `puppeteer-core`, a static server exposing this directory at `/ui`, and a Chromium DevTools endpoint. Configure those endpoints with `CORE_UI_BASE_URL` and `CORE_UI_BROWSER_URL`.
+From `/home/core/docker/ui_library`, run `node tests/catalog-contract.test.js` and `node tests/runtime-contract.test.js` (Bun may run either command). These checks cover catalog parity, asset references, accessibility hooks, state vocabulary, and runtime behavior. They are not real-browser or assistive-technology validation. When available, run `node tests/browser-smoke.mjs` with `CORE_UI_BASE_URL` and `CORE_UI_BROWSER_URL` configured.
