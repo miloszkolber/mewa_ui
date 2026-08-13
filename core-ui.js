@@ -188,7 +188,7 @@
         const dateLabel = (date) => date.toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
         const monthLabel = (date) => date.toLocaleDateString(undefined, { month: "long", year: "numeric" });
         const days = () => qa(root, "[data-ui-calendar-day]");
-        const stateful = { view: viewed, selected: selected && !isDisabled(selected) ? selected : null, active: selected || new Date(viewed.getFullYear(), viewed.getMonth(), 1) };
+        const stateful = { view: viewed, selected: selected && !isDisabled(selected) ? selected : null, active: selected && !isDisabled(selected) ? selected : new Date(viewed.getFullYear(), viewed.getMonth(), 1) };
         const syncRoot = () => { root.dataset.uiMonth = `${stateful.view.getFullYear()}-${String(stateful.view.getMonth() + 1).padStart(2, "0")}`; if (stateful.selected) root.dataset.uiValue = iso(stateful.selected); else delete root.dataset.uiValue; };
         const focus = (date) => { stateful.active = date; if (date.getFullYear() !== stateful.view.getFullYear() || date.getMonth() !== stateful.view.getMonth()) stateful.view = new Date(date.getFullYear(), date.getMonth(), 1); render(); q(root, `[data-ui-calendar-day][data-date="${iso(date)}"]`)?.focus(); };
         const select = (date, shouldFocus) => { if (isDisabled(date)) return; stateful.selected = date; stateful.active = date; if (date.getFullYear() !== stateful.view.getFullYear() || date.getMonth() !== stateful.view.getMonth()) stateful.view = new Date(date.getFullYear(), date.getMonth(), 1); render(); const button = q(root, `[data-ui-calendar-day][data-date="${iso(date)}"]`); if (shouldFocus) button?.focus(); emit(root, "core-ui:date-change", { value: iso(date), date }); };
