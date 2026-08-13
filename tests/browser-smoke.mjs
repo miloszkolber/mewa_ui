@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import puppeteer from "puppeteer-core";
 
-const base = process.env.CORE_UI_BASE_URL || "http://127.0.0.1:18081/ui";
+const base = process.env.CORE_UI_BASE_URL || "http://127.0.0.1:8083/ui";
 const browserURL = process.env.CORE_UI_BROWSER_URL || "http://127.0.0.1:9223";
 const screenshotDir = process.env.CORE_UI_SCREENSHOT_DIR;
 const manifest = JSON.parse(fs.readFileSync(new URL("../catalog/components.json", import.meta.url), "utf8"));
