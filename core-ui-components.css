@@ -370,6 +370,8 @@ svg:has(> use) use {
 [data-ui-tabs] [data-ui-part="trigger"] { border: 0; border-bottom: var(--ui-focus-ring-width) solid var(--ui-component-border); border-radius: 0; background: none; color: var(--ui-component-muted-text); }
 [role="tab"][aria-selected="true"],
 [data-ui-tab][aria-selected="true"] { border-bottom-color: var(--ui-component-focus); color: var(--ui-component-text); }
+[role="tab"]:disabled,
+[data-ui-tabs] [data-ui-part="trigger"]:disabled { color: var(--ui-text-disabled); cursor: not-allowed; }
 
 [data-ui-part="panel"],
 [data-ui-part="menu"],
