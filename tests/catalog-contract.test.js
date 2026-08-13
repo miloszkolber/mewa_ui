@@ -11,6 +11,7 @@ const path = require("node:path");
 const root = path.resolve(__dirname, "..");
 const catalogDir = path.join(root, "catalog");
 const snippetsDir = path.join(root, "snippets");
+const layoutsDir = path.join(root, "layouts");
 const srcDir = path.join(root, "src");
 const manifestPath = path.join(catalogDir, "components.json");
 const canonicalBaseCss = path.join(srcDir, "base.css");
@@ -47,6 +48,22 @@ function read(file) {
 
 function existingFiles(directory, suffix) {
     return fs.existsSync(directory) ? fs.readdirSync(directory).filter((file) => file.endsWith(suffix)).sort() : [];
+}
+
+function repositorySourceFiles(directory) {
+    const extensions = new Set([".c", ".cc", ".conf", ".cpp", ".css", ".go", ".h", ".html", ".ini", ".java", ".js", ".json", ".jsx", ".mjs", ".md", ".py", ".rs", ".scss", ".service", ".sh", ".svelte", ".svg", ".toml", ".ts", ".tmpl", ".tpl", ".tsx", ".vue", ".yaml", ".yml"]);
+    const names = new Set(["Dockerfile", "Makefile", "Procfile"]);
+    const files = [];
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+        const file = path.join(directory, entry.name);
+        if (entry.isDirectory()) {
+            if (![".git", "node_modules"].includes(entry.name)) files.push(...repositorySourceFiles(file));
+            continue;
+        }
+        if (!entry.isFile() || file === path.join(root, "core-ui.css") || file === __filename) continue;
+        if (extensions.has(path.extname(entry.name).toLowerCase()) || names.has(entry.name)) files.push(file);
+    }
+    return files;
 }
 
 function attributes(tag) {
@@ -159,6 +176,29 @@ test("catalog, manifest, and canonical source assets exist", () => {
     [canonicalBaseCss, canonicalComponentCss, canonicalRuntime, canonicalSprite].forEach((file) => assert(fs.existsSync(file), `missing ${path.relative(root, file)}`));
     assert(!fs.existsSync(path.join(catalogDir, "catalog.css")), "catalog.css must not be a third loaded stylesheet");
     assert(fs.existsSync(path.join(root, "core-ui.css")), "legacy root core-ui.css remains present until its removal is orchestrated");
+    ["core-ui-components.css", "core-ui.js", "lucide.svg"].forEach((file) => assert(!fs.existsSync(path.join(root, file)), `legacy root ${file} must be removed`));
+});
+
+test("nginx serves canonical source assets without legacy aliases", () => {
+    const config = read(path.join(root, "nginx.conf"));
+    assert.match(config, /absolute_redirect\s+off;/, "root redirect must retain the externally published port through a relative Location header");
+    ["base.css", "components.css", "components.js", "lucide.svg"].forEach((asset) => {
+        assert.match(config, new RegExp(`location\\s*=\\s*\\/ui\\/src\\/${asset.replace(".", "\\.")}\\s*\\{\\s*alias\\s+\\/usr\\/share\\/nginx\\/html\\/ui\\/src\\/${asset.replace(".", "\\.")};`), `nginx must map canonical ${asset} to src/${asset}`);
+    });
+    assert(!/alias\s+\/usr\/share\/nginx\/html\/ui\/(?:core-ui(?:-components)?\.(?:css|js)|lucide\.svg);/.test(config), "nginx must not alias canonical routes to legacy root assets");
+});
+
+test("repository consumers do not reference removed root UI assets", () => {
+    const dockerRoot = path.dirname(root);
+    const forbidden = ["/ui/core-ui-components.css", "/ui/core-ui.js", "/ui/lucide.svg"];
+    const matches = [];
+    repositorySourceFiles(dockerRoot).forEach((file) => {
+        const source = read(file);
+        forbidden.forEach((reference) => {
+            if (source.includes(reference)) matches.push(`${path.relative(dockerRoot, file)}: ${reference}`);
+        });
+    });
+    assert.deepEqual(matches, [], `removed root UI assets remain referenced:\n${matches.join("\n")}`);
 });
 
 test("manifest is the complete declared component set", () => {
@@ -192,8 +232,36 @@ test("catalog markup uses only canonical source assets", () => {
 test("catalog layout keeps its two canonical layout regions", () => {
     const html = read(path.join(catalogDir, "index.html"));
     assert.match(html, /<div class="ui-catalog-layout">[\s\S]*<aside class="ui-catalog-sidebar"[\s\S]*<section class="ui-catalog-detail"/);
-    ["ui-catalog-layout", "ui-catalog-sidebar", "ui-catalog-detail"].forEach((className) => {
+    ["ui-catalog", "ui-catalog-skip", "ui-catalog-header", "ui-catalog-count", "ui-catalog-main", "ui-catalog-overview", "ui-catalog-layout", "ui-catalog-sidebar", "ui-catalog-nav", "ui-catalog-list", "ui-catalog-empty", "ui-catalog-detail", "ui-catalog-detail-header", "ui-catalog-preview-wrap", "ui-catalog-preview", "ui-catalog-source-header", "ui-catalog-source"].forEach((className) => {
         assert(classDefinitions(read(canonicalComponentCss)).has(className), `src/components.css must define catalog layout class ${className}`);
+    });
+});
+
+test("layout examples use the two canonical shell variants", () => {
+    const rail = read(path.join(layoutsDir, "vertical-rail.html"));
+    const top = read(path.join(layoutsDir, "horizontal-tabs.html"));
+    [[rail, "vertical-rail.html"], [top, "horizontal-tabs.html"]].forEach(([html, filename]) => {
+        checkMarkupContract(html, filename);
+        assert.deepEqual(cssHrefsLoadedBy(html, filename), canonicalStylesheets, `${filename} must load canonical stylesheets in order`);
+        assert.match(html, /<script\b[^>]*\bsrc="\/ui\/src\/components\.js"[^>]*>/i, `${filename} must load the canonical runtime`);
+        assert(!html.includes("ui-framed-"), `${filename} must not use legacy framed classes`);
+    });
+    assert.match(rail, /<body class="ui-shell ui-shell--rail">[\s\S]*<div class="ui-frame">[\s\S]*<nav class="ui-rail"[^>]*>[\s\S]*<main class="ui-shell-main"/);
+    assert.match(top, /<body class="ui-shell ui-shell--top">[\s\S]*<div class="ui-frame">[\s\S]*<header class="ui-topbar">[\s\S]*<nav class="ui-topnav"[^>]*>[\s\S]*<main class="ui-shell-main"/);
+    const cssClasses = classDefinitions(read(canonicalComponentCss));
+    ["ui-shell", "ui-shell--rail", "ui-shell--top", "ui-frame", "ui-rail", "ui-topbar", "ui-topbar-brand", "ui-topnav", "ui-shell-main"].forEach((className) => {
+        assert(cssClasses.has(className), `src/components.css must define layout class ${className}`);
+    });
+});
+
+test("layout examples use symbols from the canonical sprite", () => {
+    const symbols = new Set(Array.from(read(canonicalSprite).matchAll(/<symbol\b[^>]*\bid="([^"]+)"/gi), (match) => match[1]));
+    existingFiles(layoutsDir, ".html").forEach((filename) => {
+        const html = read(path.join(layoutsDir, filename));
+        for (const use of html.matchAll(/<use\b[^>]*(?:href|xlink:href)="([^"#]+)#([\w-]+)"/gi)) {
+            assert.equal(use[1], "/ui/src/lucide.svg", `${filename}: icons must use the canonical sprite`);
+            assert(symbols.has(use[2]), `${filename}: missing sprite symbol ${use[2]}`);
+        }
     });
 });
 

@@ -48,6 +48,26 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
     if (result.count !== manifest.length || result.overflow > 1) failures.push(`catalog ${viewport.width}: ${JSON.stringify(result)}`);
 }
 
+for (const layout of ["vertical-rail", "horizontal-tabs"]) {
+    for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844, isMobile: true }]) {
+        await load(`${base}/layouts/${layout}.html`, viewport);
+        assertCanonicalAssets(await canonicalAssets(), `${layout} ${viewport.width}`);
+        const result = await page.evaluate((name) => {
+            const main = document.querySelector(".ui-shell-main")?.getBoundingClientRect();
+            const navigation = document.querySelector(name === "vertical-rail" ? ".ui-rail" : ".ui-topbar")?.getBoundingClientRect();
+            return {
+                main: main && { top: main.top, right: main.right, bottom: main.bottom, left: main.left },
+                navigation: navigation && { top: navigation.top, right: navigation.right, bottom: navigation.bottom, left: navigation.left },
+                overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+            };
+        }, layout);
+        if (!result.main || !result.navigation || result.overflow > 1) failures.push(`${layout} ${viewport.width}: ${JSON.stringify(result)}`);
+        if (layout === "vertical-rail" && viewport.width > 640 && result.navigation.right > result.main.left + 1) failures.push(`${layout} ${viewport.width}: rail does not precede main`);
+        if (layout === "vertical-rail" && viewport.width <= 640 && result.navigation.top < result.main.bottom - 1) failures.push(`${layout} ${viewport.width}: mobile rail does not follow main`);
+        if (layout === "horizontal-tabs" && result.navigation.bottom > result.main.top + 1) failures.push(`${layout} ${viewport.width}: top navigation does not precede main`);
+    }
+}
+
 for (const component of manifest) {
     await load(`${base}/snippets/${component.slug}.html`, { width: 1024, height: 768 });
     assertCanonicalAssets(await canonicalAssets(), component.slug);

@@ -20,13 +20,13 @@ Interactive elements retain a visible `:focus-visible` indicator and honor `pref
 
 There are exactly two supported layouts.
 
-### App shell
+### Vertical rail
 
-Use `<div class="ui-layout-app">` with `<aside class="ui-layout-app__sidebar"><nav aria-label="Workspace navigation">…</nav></aside>`, `<header class="ui-layout-app__header">…</header>`, and `<main class="ui-layout-app__main">…</main>`. Desktop places primary navigation in the left sidebar and utility navigation in the top header. The sidebar toggle is a named button with `aria-expanded`, `aria-controls`, and `aria-keyshortcuts="Control+B Meta+B"`; keyboard users can toggle it with the same shortcut, and mobile collapses the sidebar into an Escape-dismissible overlay. Links use native anchors and `aria-current="page"`.
+Use `<body class="ui-shell ui-shell--rail">` with a direct `<div class="ui-frame">` containing `<nav class="ui-rail" aria-label="Workspace navigation">…</nav>` and `<main class="ui-shell-main">…</main>`. Put the navigation links directly inside `.ui-rail`, use native anchors and `aria-current="page"`, and give every icon-only link an accessible name. Desktop places the rail on the left. Narrow screens move it below the main content as a compact navigation row.
 
-### Catalog shell
+### Horizontal tabs
 
-Use `<div class="ui-layout-catalog">` with `<aside class="ui-layout-catalog__sidebar"><nav aria-label="Catalog navigation">…</nav></aside>`, `<header class="ui-layout-catalog__header">…</header>`, and `<main class="ui-layout-catalog__main">…</main>`. Desktop places the component navigation in the left sidebar and search/filter controls in the top header. The mobile contract moves navigation behind a named toggle, preserves a logical DOM order of header, navigation, then main, supports Escape and visible focus, and keeps search usable without horizontal overflow.
+Use `<body class="ui-shell ui-shell--top">` with a direct `<div class="ui-frame">` containing `<header class="ui-topbar">…</header>` and `<main class="ui-shell-main">…</main>`. The header contains `.ui-topbar-brand` and `<nav class="ui-topnav" aria-label="Workspace navigation">…</nav>`. Links use native anchors and `aria-current="page"`. Narrow screens preserve the bar and allow the route links to scroll without causing page overflow.
 
 ## Icons
 
@@ -34,7 +34,7 @@ Every Lucide icon used must first be added as a symbol to `src/lucide.svg`. Use 
 
 ## Catalog and serving
 
-The catalog is `/ui/catalog/index.html`; `catalog/components.json` is the manifest and each entry has one matching marked file in `snippets/`. Mount `/home/core/docker/ui_library` read-only at `/ui` in Compose. The serving URL is `http://localhost:<published-port>/ui/catalog/`. For local serving run `python3 -m http.server 8080 --directory /home/core/docker/ui_library`; for Compose run `docker compose -f /home/core/docker/meili_ui/docker-compose.yaml up -d` or the relevant consumer file.
+The catalog is `/ui/catalog/index.html`; `catalog/components.json` is the manifest and each entry has one matching marked file in `snippets/`. Its `.ui-catalog-*` classes are catalog-specific composition rather than a third reusable layout. Mount `/home/core/docker/ui_library` read-only at `/ui` in Compose. The serving URL is `http://localhost:<published-port>/ui/catalog/`. For local serving run `python3 -m http.server 8080 --directory /home/core/docker/ui_library`; for Compose run `docker compose -f /home/core/docker/meili_ui/docker-compose.yaml up -d` or the relevant consumer file.
 
 ## Contribution and validation
 

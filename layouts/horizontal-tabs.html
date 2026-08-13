@@ -8,24 +8,23 @@
     <link rel="stylesheet" href="/ui/src/components.css">
     <script src="/ui/src/components.js" defer></script>
 </head>
-<body class="ui-framed-app">
+<body class="ui-shell ui-shell--top">
     <a class="ui-skip-link" href="#main-content">Skip to main content</a>
-    <header class="ui-app-header">
-        <div class="ui-app-header-inner">
-            <a class="ui-brand" href="#overview" aria-label="Atlas home">
+    <div class="ui-frame">
+        <header class="ui-topbar">
+            <a class="ui-topbar-brand" href="#overview" aria-label="Atlas home">
                 <svg class="ui-brand-logo" aria-hidden="true"><use href="/ui/src/lucide.svg#layers-3"></use></svg>
                 <span>Atlas</span>
             </a>
-            <nav class="ui-tabs" aria-label="Workspace routes">
-                <a class="ui-tab" href="#overview" aria-current="page">Overview</a>
-                <a class="ui-tab" href="#projects">Projects</a>
-                <a class="ui-tab" href="#activity">Activity</a>
-                <a class="ui-tab" href="#settings">Settings</a>
+            <nav class="ui-topnav" aria-label="Workspace navigation">
+                <a href="#overview" aria-current="page">Overview</a>
+                <a href="#projects">Projects</a>
+                <a href="#activity">Activity</a>
+                <a href="#settings">Settings</a>
             </nav>
-        </div>
-    </header>
-    <main id="main-content">
-        <section class="ui-framed-workspace ui-framed-region ui-panel" aria-labelledby="page-title">
+        </header>
+        <main class="ui-shell-main" id="main-content">
+          <section class="ui-panel" aria-labelledby="page-title">
             <header class="ui-panel-header">
                 <div>
                     <p class="ui-eyebrow">Workspace</p>
@@ -36,7 +35,8 @@
             <div class="ui-panel-body">
                 <p class="ui-description">A large framed content surface keeps work separate from the striped application gutters.</p>
             </div>
-        </section>
-    </main>
+          </section>
+        </main>
+    </div>
 </body>
 </html>
