@@ -34,7 +34,7 @@ Every Lucide icon used must first be added as a symbol to `src/lucide.svg`. Use 
 
 ## Catalog and serving
 
-The catalog is `/ui/catalog/index.html`; `catalog/components.json` is the manifest and each entry has one matching marked file in `snippets/`. Its `.ui-catalog-*` classes are catalog-specific composition rather than a third reusable layout. Mount `/home/core/docker/ui_library` read-only at `/ui` in Compose. The serving URL is `http://localhost:<published-port>/ui/catalog/`. For local serving run `python3 -m http.server 8080 --directory /home/core/docker/ui_library`; for Compose run `docker compose -f /home/core/docker/meili_ui/docker-compose.yaml up -d` or the relevant consumer file.
+The catalog is `/ui/catalog/index.html`; `catalog/components.json` is the manifest and each entry has one matching marked file in `snippets/`. Its `.ui-catalog-*` classes are catalog-specific composition rather than a third reusable layout. Mount `/repo/ui_library` read-only at `/ui` in Compose. The deployment Compose and Nginx files remain in the parent Core repository. The serving URL is `http://localhost:<published-port>/ui/catalog/`. For local serving run `python3 -m http.server 8080 --directory /repo/ui_library`; for Compose use the relevant deployment file from the parent Core repository.
 
 ## Contribution and validation
 

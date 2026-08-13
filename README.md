@@ -12,9 +12,9 @@ The root `core-ui.css` is legacy-only for existing services. Root `core-ui-compo
 
 ## Serving
 
-Mount `/home/core/docker/ui_library` read-only at `/ui` in Compose. The catalog is then available at `http://localhost:<published-port>/ui/catalog/`, and a consumer references `/ui/src/base.css`, `/ui/src/components.css`, `/ui/src/components.js`, and `/ui/src/lucide.svg`.
+Mount `/repo/ui_library` read-only at `/ui` in Compose. The deployment Compose and Nginx files remain in the parent Core repository. The catalog is then available at `http://localhost:<published-port>/ui/catalog/`, and a consumer references `/ui/src/base.css`, `/ui/src/components.css`, `/ui/src/components.js`, and `/ui/src/lucide.svg`.
 
-For a quick local catalog server, run `python3 -m http.server 8080 --directory /home/core/docker/ui_library` and open `http://localhost:8080/catalog/`. For a Compose consumer, run `docker compose -f /home/core/docker/meili_ui/docker-compose.yaml up -d` (or the relevant consumer Compose file), then use that service's published URL with the `/ui/catalog/` path.
+For a quick local catalog server, run `python3 -m http.server 8080 --directory /repo/ui_library` and open `http://localhost:8080/catalog/`. For a Compose consumer, use the relevant deployment file from the parent Core repository, then use that service's published URL with the `/ui/catalog/` path.
 
 ## Usage principles
 
@@ -30,4 +30,4 @@ Every Lucide icon used by a snippet or service must first be added as a symbol t
 
 Add shared tokens or behavior only when they belong to the catalog or serve multiple consumers. Update the manifest and its marked snippet together. Keep selectors composable and IDs out of styling.
 
-From `/home/core/docker/ui_library`, run `node tests/catalog-contract.test.js` and `node tests/runtime-contract.test.js` (Bun may run either command). These checks cover catalog parity, asset references, accessibility hooks, state vocabulary, and runtime behavior. They are not real-browser or assistive-technology validation. When available, run `node tests/browser-smoke.mjs` with `CORE_UI_BASE_URL` and `CORE_UI_BROWSER_URL` configured.
+From `/repo/ui_library`, run `node tests/catalog-contract.test.js` and `node tests/runtime-contract.test.js` (Bun may run either command). These checks cover catalog parity, asset references, accessibility hooks, state vocabulary, and runtime behavior. They are not real-browser or assistive-technology validation. When available, run `node tests/browser-smoke.mjs` with `CORE_UI_BASE_URL` and `CORE_UI_BROWSER_URL` configured.
