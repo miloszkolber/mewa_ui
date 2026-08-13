@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/ui/src/base.css"><link rel="stylesheet" href="/ui/src/components.css"><script src="/ui/src/components.js" defer></script><title>Lightbox</title></head><body class="ui-demo ui-demo-wide">
+<!-- mewa-ui-snippet:start -->
+<section class="ui-lightbox" data-ui-component="lightbox" aria-label="Project image gallery">
+  <div class="ui-lightbox-grid">
+    <button class="ui-lightbox-thumbnail" data-ui-part="trigger" data-ui-slide="0" type="button" aria-label="Open elevation study" aria-haspopup="dialog" aria-expanded="false" aria-controls="lightbox-dialog"><svg viewBox="0 0 160 110" aria-hidden="true"><path d="M12 96H148M24 96V46L80 14L136 46V96M48 96V58H112V96M80 14V96"></path></svg><span>Elevation</span></button>
+    <button class="ui-lightbox-thumbnail" data-ui-part="trigger" data-ui-slide="1" type="button" aria-label="Open structural grid study" aria-haspopup="dialog" aria-expanded="false" aria-controls="lightbox-dialog"><svg viewBox="0 0 160 110" aria-hidden="true"><path d="M20 16H140V94H20ZM50 16V94M80 16V94M110 16V94M20 42H140M20 68H140"></path></svg><span>Grid</span></button>
+    <button class="ui-lightbox-thumbnail" data-ui-part="trigger" data-ui-slide="2" type="button" aria-label="Open circulation study" aria-haspopup="dialog" aria-expanded="false" aria-controls="lightbox-dialog"><svg viewBox="0 0 160 110" aria-hidden="true"><path d="M18 92H142M30 92V22H72V92M88 92V48H130V92M42 38H60M42 54H60M42 70H60M100 64H118M100 80H118"></path></svg><span>Circulation</span></button>
+  </div>
+  <div class="ui-dialog ui-lightbox-dialog" data-ui-part="panel" id="lightbox-dialog" role="dialog" aria-modal="true" aria-labelledby="lightbox-title" aria-describedby="lightbox-status" hidden>
+    <div class="ui-lightbox-content" data-ui-part="content">
+      <header><div><h2 class="ui-title-md" id="lightbox-title">Project studies</h2><output class="ui-meta-text" data-ui-part="status" id="lightbox-status" aria-live="polite"></output></div><button class="ui-icon-button ui-button-ghost" type="button" data-ui-close aria-label="Close lightbox" autofocus><svg aria-hidden="true"><use href="/ui/src/lucide.svg#x"></use></svg></button></header>
+      <div class="ui-lightbox-stage">
+        <figure data-ui-part="slide"><svg class="ui-lightbox-art" viewBox="0 0 640 400" role="img" aria-label="Linear elevation study"><path d="M40 340H600M90 340V170L320 48L550 170V340M180 340V220H460V340M320 48V340"></path></svg><figcaption>Elevation study · 01</figcaption></figure>
+        <figure data-ui-part="slide" hidden><svg class="ui-lightbox-art" viewBox="0 0 640 400" role="img" aria-label="Structural grid study"><path d="M70 50H570V350H70ZM195 50V350M320 50V350M445 50V350M70 150H570M70 250H570"></path></svg><figcaption>Structural grid · 02</figcaption></figure>
+        <figure data-ui-part="slide" hidden><svg class="ui-lightbox-art" viewBox="0 0 640 400" role="img" aria-label="Circulation study"><path d="M60 340H580M110 340V70H280V340M360 340V170H530V340M160 130H230M160 190H230M160 250H230M410 230H480M410 290H480"></path></svg><figcaption>Circulation study · 03</figcaption></figure>
+      </div>
+      <footer><button class="ui-button ui-button-secondary" data-ui-part="previous" type="button"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#chevron-left"></use></svg>Previous</button><button class="ui-button ui-button-secondary" data-ui-part="next" type="button">Next<svg aria-hidden="true"><use href="/ui/src/lucide.svg#chevron-right"></use></svg></button></footer>
+    </div>
+  </div>
+</section>
+<!-- mewa-ui-snippet:end -->
+</body></html>

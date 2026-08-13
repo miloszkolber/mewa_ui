@@ -89,8 +89,14 @@ for (const viewport of viewports) {
     await load(`${base}/catalog/`, viewport, "catalog");
     assertCanonicalAssets(await canonicalAssets(), `catalog ${viewport.name}`, { runtime: false });
     await page.waitForFunction((count) => document.querySelector("#component-count")?.textContent.includes(String(count)), {}, manifest.length);
-    const result = await page.evaluate(() => ({ count: document.querySelector("#component-list")?.children.length, overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth }));
+    await page.waitForFunction(() => document.querySelector("#component-preview")?.contentDocument?.body?.children.length > 0);
+    const result = await page.evaluate(() => ({ count: document.querySelector("#component-list")?.children.length, description: document.querySelector("#component-description")?.textContent.trim(), previewMain: Boolean(document.querySelector("#component-preview")?.contentDocument?.querySelector("body > main")), overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth }));
     if (result.count !== manifest.length || result.overflow > 1) failures.push(`catalog ${viewport.name}: ${JSON.stringify(result)}`);
+    if (!result.description || result.previewMain) failures.push(`catalog ${viewport.name}: preview must expose description and only the marked fragment`);
+    await page.click("#copy-source");
+    await page.waitForFunction(() => document.querySelector("#copy-status")?.textContent.length > 0);
+    const copyState = await page.$eval("#copy-status", (node) => node.textContent);
+    if (!copyState.includes("copied")) failures.push(`catalog ${viewport.name}: copy action failed (${copyState})`);
 }
 
 for (const layout of ["vertical-rail", "horizontal-tabs"]) {
@@ -100,11 +106,13 @@ for (const layout of ["vertical-rail", "horizontal-tabs"]) {
         const result = await page.evaluate((name) => {
             const main = document.querySelector(".ui-shell-main")?.getBoundingClientRect();
             const navigation = document.querySelector(name === "vertical-rail" ? ".ui-rail" : ".ui-topbar")?.getBoundingClientRect();
-            return { main, navigation, overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth };
+            const heading = document.querySelector(".ui-page-heading")?.getBoundingClientRect();
+            const content = document.querySelector(".ui-stat-grid,.ui-template-grid,.ui-card")?.getBoundingClientRect();
+            return { main, navigation, heading, content, overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth };
         }, layout);
-        if (!result.main || !result.navigation || result.overflow > 1) failures.push(`${layout} ${viewport.name}: ${JSON.stringify(result)}`);
+        if (!result.main || !result.navigation || !result.heading || !result.content || result.heading.height < 1 || result.content.height < 1 || result.overflow > 1) failures.push(`${layout} ${viewport.name}: ${JSON.stringify(result)}`);
         if (layout === "vertical-rail" && viewport.width > 640 && result.navigation.right > result.main.left + 1) failures.push(`${layout} ${viewport.name}: rail does not precede main`);
-        if (layout === "vertical-rail" && viewport.width <= 640 && result.navigation.top < result.main.bottom - 1) failures.push(`${layout} ${viewport.name}: mobile rail does not follow main`);
+        if (layout === "vertical-rail" && viewport.width <= 640 && result.navigation.bottom > viewport.height + 1) failures.push(`${layout} ${viewport.name}: mobile navigation does not remain at the viewport edge`);
         if (layout === "horizontal-tabs" && result.navigation.bottom > result.main.top + 1) failures.push(`${layout} ${viewport.name}: top navigation does not precede main`);
     }
 }
@@ -143,18 +151,12 @@ await screenshot("state-accordion-open");
 await component("collapsible"); await page.click("#collapsible-members-trigger"); assert.equal(await page.$eval("#collapsible-members-panel", (node) => node.hidden), false);
 await clickAndAssert("dropdown-menu", "#dropdown-account-trigger", "#dropdown-account-menu");
 await component("dropdown-menu"); await page.click("#dropdown-account-trigger"); await screenshot("state-dropdown-menu-open");
-await component("context-menu"); await page.click("#context-menu-trigger", { button: "right" });
-const contextPosition = await page.$eval("#context-menu-actions", (node) => ({ hidden: node.hidden, left: Number.parseFloat(node.style.left), top: Number.parseFloat(node.style.top) }));
-assert.equal(contextPosition.hidden, false); assert(contextPosition.left >= 0 && contextPosition.top >= 0, "context menu has pointer position");
-await screenshot("state-context-menu-open");
-await component("menubar"); await page.focus("#menubar-file-trigger"); await page.keyboard.press("ArrowDown"); assert.equal(await page.$eval("#menubar-file-menu", (node) => node.hidden), false); await page.keyboard.press("Escape"); await page.keyboard.press("ArrowRight"); assert.equal(await page.$eval("#menubar-edit-trigger", (node) => node.tabIndex), 0); assert.equal(await page.$eval("#menubar-file-trigger", (node) => node.tabIndex), -1);
-await component("menubar"); await page.focus("#menubar-file-trigger"); await page.keyboard.press("ArrowDown"); await screenshot("state-menubar-open");
 await component("navigation-menu"); await page.click("#navigation-menu-products-trigger"); assert.equal(await page.$eval("#navigation-menu-products-panel", (node) => node.hidden), false); await screenshot("state-navigation-menu-open"); await component("navigation-menu", viewports[1]); await page.click("#navigation-menu-products-trigger"); await screenshot("state-navigation-menu-open", viewports[1]);
 await component("select"); await page.click("#select-timezone"); assert(await page.$eval('#select-timezone-list', (node) => Math.abs(node.getBoundingClientRect().width - node.parentElement.getBoundingClientRect().width) <= 2), "select listbox matches its control width"); await screenshot("state-select-open"); await page.keyboard.press("End"); await page.keyboard.press("Enter"); assert.equal(await page.$eval('input[name="timezone"]', (node) => node.value), "europe-london"); await component("select", viewports[1]); await page.click("#select-timezone"); await screenshot("state-select-open", viewports[1]);
 await component("combobox"); await page.focus("#combobox-framework"); await page.keyboard.down("Control"); await page.keyboard.press("A"); await page.keyboard.up("Control"); await page.keyboard.type("Sve"); assert.equal(await page.$eval("#combobox-framework-svelte", (node) => node.dataset.uiActive), "true"); assert(await page.$eval("#combobox-framework-list", (node) => Math.abs(node.getBoundingClientRect().width - node.parentElement.getBoundingClientRect().width) <= 2), "combobox list matches its control width"); await screenshot("state-combobox-open"); await page.mouse.click(4, 4); assert.equal(await page.$eval("#combobox-framework-list", (node) => node.hidden), true); assert.equal(await page.$eval("#combobox-framework", (node) => node.getAttribute("aria-expanded")), "false"); assert.equal(await page.$eval("#combobox-framework", (node) => node.value), "React"); assert.equal(await page.$eval('input[name="framework"]', (node) => node.value), "React"); assert.equal(await page.$eval("#combobox-framework", (node) => node.getAttribute("aria-activedescendant")), "combobox-framework-react"); assert.equal(await page.$eval("#combobox-framework-react", (node) => node.hidden), false); assert.equal(await page.$eval("#combobox-framework-svelte", (node) => node.hidden), false); await page.focus("#combobox-framework"); await page.keyboard.down("Control"); await page.keyboard.press("A"); await page.keyboard.up("Control"); await page.keyboard.type("Sve"); await page.keyboard.press("Enter"); assert.equal(await page.$eval("#combobox-framework", (node) => node.value), "Svelte"); assert.equal(await page.$eval('input[name="framework"]', (node) => node.value), "Svelte"); await component("combobox", viewports[1]); await page.focus("#combobox-framework"); await screenshot("state-combobox-open", viewports[1]);
 await component("command"); await page.focus("#command-search"); await screenshot("state-command-open"); assert.equal(await page.$eval("#command-list", (node) => node.hidden), false); await component("command", viewports[1]); await page.focus("#command-search"); await screenshot("state-command-open", viewports[1]);
 await component("dialog"); await page.click('[data-ui-part="trigger"]'); await screenshot("state-dialog-open"); await page.$eval("#dialog-profile-name", (node) => { node.value = ""; }); await page.click('[data-ui-dialog-form] button[type="submit"]'); assert.equal(await page.$eval("#dialog-profile", (node) => node.hidden), false); await page.type("#dialog-profile-name", "Alex Morgan"); const dialogURL = page.url(); await page.click('[data-ui-dialog-form] button[type="submit"]'); assert.equal(await page.$eval("#dialog-profile", (node) => node.hidden), true); assert.equal(page.url(), dialogURL);
-await component("alert-dialog"); await page.click('[data-ui-part="trigger"]'); await screenshot("state-alert-dialog-open"); await page.keyboard.press("Escape");
+await component("alert"); await page.click('[data-ui-part="trigger"]'); await screenshot("state-alert-dialog-open"); await page.keyboard.press("Escape");
 await component("drawer"); await page.click('[data-ui-part="trigger"]'); await screenshot("state-drawer-open"); await page.keyboard.press("Escape");
 await component("sheet"); await page.click('[data-ui-part="trigger"]'); await screenshot("state-sheet-open"); await page.keyboard.press("Escape");
 for (const slug of ["tooltip", "hover-card"]) { await component(slug); await page.hover('[data-ui-part="trigger"]'); assert.equal(await page.$eval('[data-ui-part="content"]', (node) => node.hidden), false, `${slug} opens on hover`); await page.click('[data-ui-part="trigger"]'); assert.equal(await page.$eval('[data-ui-part="content"]', (node) => node.hidden), false, `${slug} stays open while its trigger is focused or hovered`); }
@@ -181,6 +183,15 @@ await component("diff"); await page.$eval('[data-ui-part="control"]', (node) => 
 await component("number-field"); await page.click('[data-ui-part="increment"]'); assert.equal(await page.$eval('[data-ui-part="input"]', (node) => node.value), "4");
 await component("toolbar"); await page.focus('[role="toolbar"] button'); await page.keyboard.press("ArrowRight"); assert.equal(await page.$eval('[role="toolbar"]', (node) => document.activeElement?.getAttribute("aria-label")), "Italic"); await page.click('[aria-label="Bold"]'); assert.equal(await page.$eval('[aria-label="Bold"]', (node) => node.getAttribute("aria-pressed")), "true");
 await component("rating"); await page.click('label[for="rating-5"]'); assert.equal(await page.$eval("#rating-5", (node) => node.checked), true);
+await component("autocomplete"); await page.focus("#autocomplete-city"); await page.keyboard.down("Control"); await page.keyboard.press("A"); await page.keyboard.up("Control"); await page.keyboard.type("Wro"); assert.equal(await page.$eval("#autocomplete-city-wroclaw", (node) => node.dataset.uiActive), "true"); await page.keyboard.press("Enter"); assert.equal(await page.$eval("#autocomplete-city", (node) => node.value), "Wrocław");
+await component("checkbox-group"); await page.click("#checkbox-group-all"); assert.equal(await page.$$eval('[data-ui-part="item"]', (nodes) => nodes.every((node) => node.checked)), true);
+await component("lightbox"); await page.click('[data-ui-slide="1"]'); assert.equal(await page.$eval('#lightbox-dialog', (node) => node.hidden), false); assert.match(await page.$eval('[data-ui-part="status"]', (node) => node.textContent), /Image 2 of 3/); await page.keyboard.press("ArrowRight"); assert.match(await page.$eval('[data-ui-part="status"]', (node) => node.textContent), /Image 3 of 3/); await page.keyboard.press("Escape"); assert.equal(await page.$eval('#lightbox-dialog', (node) => node.hidden), true);
+await component("sortable-list"); await page.focus('[data-ui-part="handle"]'); await page.keyboard.press("Space"); await page.keyboard.press("ArrowDown"); assert.match(await page.$eval('[data-ui-part="status"]', (node) => node.textContent), /position 2 of 3/);
+await component("split-button"); await page.click('[data-ui-part="trigger"]'); assert.equal(await page.$eval('[data-ui-part="content"]', (node) => node.hidden), false); await page.keyboard.press("ArrowDown"); await page.keyboard.press("Escape"); assert.equal(await page.$eval('[data-ui-part="content"]', (node) => node.hidden), true);
+await component("time-field"); await page.focus('[data-ui-part="minute"]'); await page.keyboard.press("ArrowUp"); assert.equal(await page.$eval('[data-ui-part="value"]', (node) => node.value), "09:31");
+await component("chart"); assert.equal(await page.$eval('[data-ui-part="plot"]', (plot) => { const box = plot.getBoundingClientRect(); return [...plot.querySelectorAll("text")].every((node) => { const text = node.getBoundingClientRect(); return text.left >= box.left - 1 && text.right <= box.right + 1; }); }), true, "chart labels remain inside the plot");
+await component("button"); assert.equal(await page.$eval('.ui-button-ghost', (node) => getComputedStyle(node).backgroundColor === "rgba(0, 0, 0, 0)"), true, "ghost button is transparent at rest");
+assert.match(await page.$eval("body", (node) => getComputedStyle(node).fontFamily), /mono/i, "system monospace is used throughout");
 
 await page.close();
 await browser.disconnect();

@@ -75,7 +75,6 @@
     function popup(root, state, type) {
         const triggers = qa(root, "[data-ui-part=trigger],[data-ui-trigger]").filter((node, index, all) => all.indexOf(node) === index);
         const pairs = triggers.map((trigger) => ({ trigger, panel: panelFor(trigger, root) })).filter((pair) => pair.panel);
-        if (type === "menubar") pairs.forEach((pair, index) => { pair.trigger.tabIndex = index ? -1 : 0; });
         const close = (except) => pairs.forEach((pair) => { if (pair !== except) { open(pair.trigger, pair.panel, false); delete pair.panel.dataset.uiPositioned; pair.panel.style.position = ""; pair.panel.style.left = ""; pair.panel.style.top = ""; } });
         const position = (pair, point) => {
             const panel = pair.panel, anchor = pair.trigger.getBoundingClientRect?.() || {}, rect = panel.getBoundingClientRect?.() || {};
@@ -102,10 +101,6 @@
         const show = (pair, focus, point) => { close(pair); open(pair.trigger, pair.panel, true); position(pair, point); if (focus) menuFocus(pair.panel, 0); };
         pairs.forEach((pair) => {
             if (type !== "tooltip" && type !== "hover-card") add(state, pair.trigger, "click", (event) => { event.preventDefault(); const visible = !pair.panel.hidden; close(); if (!visible) show(pair); });
-            if (type === "context-menu" || type === "menubar") {
-                add(state, pair.trigger, "contextmenu", (event) => { event.preventDefault(); show(pair, true, { x: event.clientX || 0, y: event.clientY || 0 }); });
-                add(state, pair.trigger, "keydown", (event) => { if (event.shiftKey && event.key === "F10") { event.preventDefault(); show(pair, true); } });
-            }
             if (type === "tooltip" || type === "hover-card") {
                 const containsPair = (target) => pair.trigger.contains(target) || pair.panel.contains(target);
                 const leave = (event) => { if (!containsPair(event.relatedTarget)) open(pair.trigger, pair.panel, false); };
@@ -148,8 +143,102 @@
         });
         add(state, trigger, "keydown", (event) => {
             if (["ArrowDown", "ArrowUp"].includes(event.key)) { event.preventDefault(); show(pair); menuFocus(panel, event.key === "ArrowDown" ? 0 : -1); }
-            if (type === "menubar" && ["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) { const pairs = qa(root, "[data-ui-part=trigger],[data-ui-trigger]").map((item) => ({ trigger: item, panel: panelFor(item, root) })).filter((item) => item.panel && !optionDisabled(item.trigger)); const index = pairs.findIndex((item) => item.trigger === trigger); const next = event.key === "Home" ? pairs[0] : event.key === "End" ? pairs.at(-1) : pairs[(index + (event.key === "ArrowRight" ? 1 : -1) + pairs.length) % pairs.length]; if (next) { event.preventDefault(); close(); pairs.forEach((item) => { item.trigger.tabIndex = item === next ? 0 : -1; }); next.trigger.focus(); } }
         });
+    }
+
+    function autocomplete(root, state) {
+        const input = part(root, "input") || q(root, "input[role=combobox]");
+        const list = part(root, "listbox") || q(root, "[role=listbox]");
+        const empty = part(root, "empty");
+        if (!input || !list) return;
+        const allItems = () => qa(list, "[role=option]");
+        const items = () => allItems().filter((item) => !item.hidden && !optionDisabled(item));
+        const value = (item) => item?.dataset.value || item?.textContent.trim() || "";
+        let active;
+        allItems().forEach((item, index) => { if (!item.id) item.id = `${input.id || "mewa-ui-autocomplete"}-option-${index + 1}`; });
+        const setActive = (item) => { active = item; allItems().forEach((entry) => { if (entry === item) entry.dataset.uiActive = "true"; else delete entry.dataset.uiActive; }); if (item) input.setAttribute("aria-activedescendant", item.id); else input.removeAttribute("aria-activedescendant"); };
+        const show = () => { list.hidden = false; input.setAttribute("aria-expanded", "true"); };
+        const close = () => { list.hidden = true; input.setAttribute("aria-expanded", "false"); setActive(undefined); };
+        const filter = () => { const needle = input.value.trim().toLowerCase(); allItems().forEach((item) => { item.hidden = optionDisabled(item) || !item.textContent.toLowerCase().includes(needle); }); const visible = items(); if (empty) empty.hidden = visible.length > 0; setActive(visible[0]); };
+        const commit = (item) => { if (!item) return; input.value = value(item); allItems().forEach((entry) => entry.setAttribute("aria-selected", String(entry === item))); close(); emit(root, "mewa-ui:autocomplete-select", { value: input.value, item }); };
+        allItems().forEach((item) => add(state, item, "click", () => commit(item)));
+        add(state, input, "focus", () => { filter(); show(); });
+        add(state, input, "input", () => { filter(); show(); });
+        add(state, input, "keydown", (event) => {
+            const visible = items();
+            if (event.key === "Escape" && !list.hidden) { event.preventDefault(); close(); return; }
+            if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key) && visible.length) { event.preventDefault(); show(); const index = visible.indexOf(active); setActive(event.key === "Home" ? visible[0] : event.key === "End" ? visible.at(-1) : visible[(index + (event.key === "ArrowDown" ? 1 : -1) + visible.length) % visible.length]); }
+            else if (event.key === "Enter" && active) { event.preventDefault(); commit(active); }
+        });
+        add(state, document, "pointerdown", (event) => { if (!root.contains(event.target)) close(); });
+        add(state, root, "focusout", (event) => { if (!root.contains(event.relatedTarget)) close(); });
+    }
+
+    function checkboxGroup(root, state) {
+        const master = part(root, "all");
+        const items = parts(root, "item");
+        const status = part(root, "status");
+        if (!master || !items.length) return;
+        const notify = () => emit(root, "mewa-ui:checkbox-group-change", { values: items.filter((item) => item.checked).map((item) => item.value) });
+        const sync = () => {
+            const enabled = items.filter((item) => !item.disabled);
+            const selected = enabled.filter((item) => item.checked).length;
+            master.checked = selected === enabled.length && enabled.length > 0;
+            master.indeterminate = selected > 0 && selected < enabled.length;
+            master.setAttribute("aria-checked", master.indeterminate ? "mixed" : String(master.checked));
+            if (status) status.textContent = `${selected} of ${enabled.length} channels selected.`;
+        };
+        add(state, master, "change", () => { items.filter((item) => !item.disabled).forEach((item) => { item.checked = master.checked; }); sync(); notify(); });
+        items.forEach((item) => add(state, item, "change", () => { sync(); notify(); }));
+        sync();
+    }
+
+    function lightbox(root, state) {
+        const triggers = parts(root, "trigger");
+        const panel = part(root, "panel");
+        const slides = parts(root, "slide");
+        const previous = part(root, "previous");
+        const next = part(root, "next");
+        const status = part(root, "status");
+        if (!panel || !slides.length) return;
+        let index = 0;
+        const show = (nextIndex) => { index = (nextIndex + slides.length) % slides.length; slides.forEach((slide, position) => { slide.hidden = position !== index; }); if (status) status.textContent = `Image ${index + 1} of ${slides.length}.`; emit(root, "mewa-ui:lightbox-change", { index }); };
+        triggers.forEach((trigger) => add(state, trigger, "click", () => show(Number(trigger.dataset.uiSlide) || 0)));
+        if (previous) add(state, previous, "click", () => show(index - 1));
+        if (next) add(state, next, "click", () => show(index + 1));
+        add(state, panel, "keydown", (event) => { if (event.key === "ArrowLeft" || event.key === "ArrowRight") { event.preventDefault(); show(index + (event.key === "ArrowRight" ? 1 : -1)); } });
+        show(0);
+    }
+
+    function sortableList(root, state) {
+        const list = part(root, "list") || q(root, "ol,ul");
+        const status = part(root, "status");
+        if (!list) return;
+        const items = () => parts(root, "item");
+        const label = (item) => part(item, "handle")?.getAttribute("aria-label")?.replace(/^Reorder\s+/i, "") || item.textContent.trim();
+        const announce = (item, prefix = "Moved") => { const position = items().indexOf(item) + 1; if (status) status.textContent = `${prefix} ${label(item)} to position ${position} of ${items().length}.`; };
+        const move = (item, direction) => { const current = items(), index = current.indexOf(item), target = Math.max(0, Math.min(current.length - 1, index + direction)); if (target === index) return; const reference = direction > 0 ? current[target + 1] || null : current[target]; list.insertBefore(item, reference); announce(item); part(item, "handle")?.focus(); emit(root, "mewa-ui:sort-change", { order: items().map(label) }); };
+        let dragged;
+        items().forEach((item) => {
+            const handle = part(item, "handle");
+            if (handle) add(state, handle, "keydown", (event) => { const grabbed = handle.getAttribute("aria-pressed") === "true"; if (event.key === " " || event.key === "Enter") { event.preventDefault(); handle.setAttribute("aria-pressed", String(!grabbed)); if (status) status.textContent = `${!grabbed ? "Lifted" : "Dropped"} ${label(item)}. ${!grabbed ? "Use Up or Down to move it." : ""}`.trim(); } else if (grabbed && (event.key === "ArrowUp" || event.key === "ArrowDown")) { event.preventDefault(); move(item, event.key === "ArrowDown" ? 1 : -1); } else if (grabbed && event.key === "Escape") { event.preventDefault(); handle.setAttribute("aria-pressed", "false"); if (status) status.textContent = `Dropped ${label(item)}.`; } });
+            add(state, item, "dragstart", (event) => { dragged = item; item.dataset.uiDragging = "true"; if (event.dataTransfer) event.dataTransfer.effectAllowed = "move"; });
+            add(state, item, "dragover", (event) => { if (!dragged || dragged === item) return; event.preventDefault(); const current = items(), from = current.indexOf(dragged), to = current.indexOf(item); list.insertBefore(dragged, from < to ? current[to + 1] || null : item); });
+            add(state, item, "drop", (event) => { event.preventDefault(); if (dragged) announce(dragged); });
+            add(state, item, "dragend", () => { if (dragged) delete dragged.dataset.uiDragging; dragged = undefined; });
+        });
+    }
+
+    function timeField(root, state) {
+        const hour = part(root, "hour"), minute = part(root, "minute"), period = part(root, "period"), value = part(root, "value"), status = part(root, "status");
+        if (!hour || !minute || !period) return;
+        const numeric = (field, fallback) => { const parsed = Number(String(field.value || "").replace(/\D/g, "")); return Number.isFinite(parsed) ? parsed : fallback; };
+        const sync = () => { const hourValue = Math.max(1, Math.min(12, numeric(hour, 12))), minuteValue = Math.max(0, Math.min(59, numeric(minute, 0))), offset = period.value === "PM" ? 12 : 0, hour24 = (hourValue % 12) + offset, serialized = `${String(hour24).padStart(2, "0")}:${String(minuteValue).padStart(2, "0")}`; if (value) value.value = serialized; if (status) status.textContent = `${String(hourValue).padStart(2, "0")}:${String(minuteValue).padStart(2, "0")} ${period.value || "AM"}`; emit(root, "mewa-ui:time-change", { value: serialized }); };
+        const normalize = (field, minimum, maximum) => { const next = Math.max(minimum, Math.min(maximum, numeric(field, minimum))); field.value = String(next).padStart(2, "0"); sync(); };
+        const step = (field, minimum, maximum, amount) => { const current = numeric(field, minimum), range = maximum - minimum + 1, next = ((current - minimum + amount) % range + range) % range + minimum; field.value = String(next).padStart(2, "0"); sync(); };
+        [[hour, 1, 12], [minute, 0, 59]].forEach(([field, minimum, maximum], index) => { add(state, field, "input", () => { field.value = field.value.replace(/\D/g, "").slice(0, 2); if (index === 0 && field.value.length === 2) minute.focus(); sync(); }); add(state, field, "blur", () => normalize(field, minimum, maximum)); add(state, field, "keydown", (event) => { if (event.key === "ArrowUp" || event.key === "ArrowDown") { event.preventDefault(); step(field, minimum, maximum, event.key === "ArrowUp" ? 1 : -1); } }); });
+        add(state, period, "change", sync);
+        normalize(hour, 1, 12); normalize(minute, 0, 59); sync();
     }
     function customSelect(root, state) {
         const trigger = part(root, "trigger"), input = q(root, "input[type=hidden]") || part(root, "input"), list = part(root, "listbox list content") || q(root, "[role=listbox]");
@@ -310,7 +399,7 @@
         if (component === "questionnaire" || root.matches("[data-ui-questionnaire]")) { const steps = qa(root, "[data-ui-question],[data-ui-part=step]"); if (!steps.length) return; let index = Math.max(0, steps.findIndex((step) => !step.hidden)); const nextButtons = qa(root, "[data-ui-question-next],[data-ui-part=next]"), previous = qa(root, "[data-ui-question-prev],[data-ui-part=previous],[data-ui-part=prev]"), submit = part(root, "submit"); const update = (next, focusStep = false) => { index = Math.max(0, Math.min(next, steps.length - 1)); steps.forEach((step, item) => { step.hidden = item !== index; }); const final = index === steps.length - 1; nextButtons.forEach((button) => { button.hidden = final; }); previous.forEach((button) => { button.hidden = index === 0; button.disabled = index === 0; }); if (submit) submit.hidden = !final; const progress = part(root, "progress"); if (progress) progress.textContent = `Step ${index + 1} of ${steps.length}`; if (focusStep) { const step = steps[index]; if (step.getAttribute("tabindex") === null) step.setAttribute("tabindex", "-1"); step.focus(); } emit(root, "mewa-ui:question-change", { step: index, question: steps[index] }); }; update(index); nextButtons.forEach((button) => add(state, button, "click", (event) => { const invalid = qa(steps[index], "[required]").find((field) => !field.checkValidity()); if (invalid) { event.preventDefault(); invalid.reportValidity(); return; } event.preventDefault(); update(index + 1, true); })); previous.forEach((button) => add(state, button, "click", (event) => { event.preventDefault(); update(index - 1, true); })); }
         if (component === "message-scroller" || root.matches("[data-ui-message-scroller]")) { const list = part(root, "list") || root, messages = part(root, "messages"), composer = part(root, "composer"), textarea = composer && q(composer, "textarea"), status = part(root, "status"), jump = q(root, "[data-ui-jump]") || part(root, "jump"), bottom = () => Math.max(0, list.scrollHeight - list.clientHeight); let follow = list.scrollTop >= bottom() - 24; const sync = () => { list.scrollTop = Math.max(0, Math.min(list.scrollTop, bottom())); follow = list.scrollTop >= bottom() - 24; if (jump) jump.hidden = follow; }; add(state, list, "scroll", sync); if (jump) add(state, jump, "click", () => { list.scrollTop = bottom(); sync(); }); const observer = new MutationObserver(() => { if (follow) list.scrollTop = bottom(); sync(); }); observer.observe(list, { childList: true, subtree: true }); state.observer = observer; if (textarea) add(state, textarea, "input", () => textarea.setCustomValidity("")); if (composer && textarea && messages) add(state, composer, "submit", (event) => { event.preventDefault(); const message = textarea.value.trim(); textarea.setCustomValidity(message ? "" : "Enter a message."); if (!composer.checkValidity() || !message) { composer.reportValidity(); return; } const item = document.createElement("li"), article = document.createElement("article"), header = document.createElement("header"), author = document.createElement("h3"), time = document.createElement("time"), body = document.createElement("p"), metadata = document.createElement("p"), now = new Date(); author.className = "ui-message-title"; author.textContent = composer.dataset.uiMessageAuthor || root.dataset.uiMessageAuthor || "You"; time.className = "ui-meta-text"; time.dateTime = now.toISOString(); time.textContent = now.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" }); body.textContent = message; metadata.className = "ui-meta-text"; metadata.textContent = "Added to this discussion"; header.append(author, time); article.append(header, body, metadata); item.append(article); follow = true; messages.append(item); textarea.value = ""; list.scrollTop = bottom(); sync(); if (status) status.textContent = "Message added. You are viewing the latest messages."; }); sync(); }
     }
-    function enhance(root = document) { const all = []; if (root.matches?.(selector)) all.push(root); all.push(...qa(root, selector)); all.forEach((element) => { if (instances.has(element)) return; const state = { listeners: [], cleanup: [] }; instances.set(element, state); const component = element.dataset.uiComponent || ""; if (/^(accordion|collapsible)$/.test(component) || element.matches("[data-ui-disclosure]")) disclosure(element, state); if (component === "tabs" || element.matches("[data-ui-tabs]")) tabs(element, state); if (/^(dialog|alert-dialog|sheet|drawer)$/.test(component) || element.matches("[data-ui-dialog],[data-ui-alert-dialog],[data-ui-sheet],[data-ui-drawer]")) modal(element, state); if (/^(popover|dropdown-menu|context-menu|menubar|navigation-menu|hover-card|tooltip)$/.test(component) || (component !== "date-picker" && element.matches("[data-ui-popover],[data-ui-menu],[data-ui-hovercard],[data-ui-navigation-menu]"))) popup(element, state, component); if (/^(combobox|select|command)$/.test(component) || element.matches("[data-ui-combobox],[data-ui-select],[data-ui-command]")) choices(element, state); if (component === "calendar" || element.matches("[data-ui-calendar]")) calendar(element, state); if (component === "date-picker") datePicker(element, state); if (component === "carousel" || element.matches("[data-ui-carousel]")) carousel(element, state); if (component === "input-otp" || element.matches("[data-ui-otp]")) otp(element, state); if (component === "resizable" || element.matches("[data-ui-resizable]")) resizable(element, state); extras(element, state, component); }); return root; }
+    function enhance(root = document) { const all = []; if (root.matches?.(selector)) all.push(root); all.push(...qa(root, selector)); all.forEach((element) => { if (instances.has(element)) return; const state = { listeners: [], cleanup: [] }; instances.set(element, state); const component = element.dataset.uiComponent || ""; if (/^(accordion|collapsible)$/.test(component) || element.matches("[data-ui-disclosure]")) disclosure(element, state); if (component === "tabs" || element.matches("[data-ui-tabs]")) tabs(element, state); if (/^(dialog|sheet|drawer|lightbox)$/.test(component) || (component === "alert" && q(element, "[data-ui-alert-dialog]")) || element.matches("[data-ui-dialog],[data-ui-alert-dialog],[data-ui-sheet],[data-ui-drawer]")) modal(element, state); if (/^(popover|dropdown-menu|navigation-menu|hover-card|tooltip|split-button)$/.test(component) || (component !== "date-picker" && element.matches("[data-ui-popover],[data-ui-menu],[data-ui-hovercard],[data-ui-navigation-menu]"))) popup(element, state, component); if (component === "autocomplete") autocomplete(element, state); if (/^(combobox|select|command)$/.test(component) || element.matches("[data-ui-combobox],[data-ui-select],[data-ui-command]")) choices(element, state); if (component === "checkbox-group") checkboxGroup(element, state); if (component === "lightbox") lightbox(element, state); if (component === "sortable-list") sortableList(element, state); if (component === "time-field") timeField(element, state); if (component === "calendar" || element.matches("[data-ui-calendar]")) calendar(element, state); if (component === "date-picker") datePicker(element, state); if (component === "carousel" || element.matches("[data-ui-carousel]")) carousel(element, state); if (component === "input-otp" || element.matches("[data-ui-otp]")) otp(element, state); if (component === "resizable" || element.matches("[data-ui-resizable]")) resizable(element, state); extras(element, state, component); }); return root; }
     function destroy(root = document) { const all = []; if (root.matches?.(selector)) all.push(root); all.push(...qa(root, selector)); all.forEach((element) => { const state = instances.get(element); if (!state) return; state.listeners.forEach(([node, type, fn, options]) => node.removeEventListener(type, fn, options)); state.observer?.disconnect(); state.cleanup.forEach((cleanup) => cleanup()); instances.delete(element); }); return root; }
     window.MewaUI = Object.assign(window.MewaUI || {}, { enhance, destroy });
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => enhance()); else enhance();

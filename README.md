@@ -1,6 +1,6 @@
 # mewa_ui
 
-`mewa_ui` is a standalone, dependency-free component library for personal services. It ships semantic HTML, vanilla CSS, optional JavaScript, and a local Lucide sprite. There is no Tailwind, framework, package install, or frontend build step.
+`mewa_ui` is a standalone, dependency-free component library for personal services. It ships semantic HTML, vanilla CSS, optional JavaScript, and a local Lucide sprite. There is no Tailwind, framework, package install, or frontend build step. All interface text uses the system monospace stack.
 
 The visual language is intentionally narrow: monochrome, square, border-led, and shadow-free. Red, yellow, and green are reserved for meaningful status communication. Surfaces use translucent blur only when they overlap other content.
 
@@ -10,9 +10,9 @@ The visual language is intentionally narrow: monochrome, square, border-led, and
 - `src/components.css` — component structures, variants, states, and responsive behavior.
 - `src/components.js` — progressive enhancement and lifecycle methods.
 - `src/lucide.svg` — same-origin Lucide symbols used by snippets.
-- `catalog/` — searchable live reference and copyable marked fragments.
+- `catalog/` — searchable live reference with a compact preview, description, and copyable marked fragment for every component.
 - `snippets/` — 75 complete, copy-ready component documents.
-- `layouts/` — vertical-rail and horizontal-navigation service shells.
+- `layouts/` — complete vertical-navigation and horizontal-navigation application templates.
 
 The root `core-ui.css` is preserved as a legacy migration reference. New work should use only the four `src/` assets above. The portfolio website is not a dependency or part of this repository.
 
@@ -45,6 +45,8 @@ Lucide icons are served from the local sprite:
 ```
 
 Add a symbol to `src/lucide.svg` before referencing a new icon. Decorative icons stay hidden from assistive technology; icon-only controls require an accessible name.
+
+Alert includes both inline status messages and the blocking confirmation variant. Buttons include bordered, filled, destructive, and borderless ghost variants. Autocomplete, Checkbox Group, Lightbox, Sortable List, Split Button, and Time Field include their keyboard and live-announcement behavior in the shared runtime.
 
 ## Serve the catalog
 

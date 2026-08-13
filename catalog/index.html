@@ -19,13 +19,6 @@
     </div>
   </header>
   <main class="ui-container ui-catalog-main" id="catalog-main">
-    <section class="ui-page-overview ui-catalog-overview" aria-labelledby="catalog-title">
-      <div>
-        <p class="ui-eyebrow">Component reference</p>
-        <h1 class="ui-page-heading" id="catalog-title">mewa_ui components</h1>
-        <p class="ui-description">Browse 75 dependency-free components shaped by shadcn, Basecoat, daisyUI, Coss, and 0build patterns. Each entry has a trusted same-origin sandboxed preview and its copy-ready source fragment.</p>
-      </div>
-    </section>
     <div class="ui-catalog-layout">
       <aside class="ui-catalog-sidebar" aria-label="Catalog navigation">
         <label class="ui-field-stack" for="component-search">
@@ -36,20 +29,19 @@
           <ul class="ui-catalog-list" id="component-list"></ul>
         </nav>
       </aside>
-      <section class="ui-catalog-detail" aria-live="polite" aria-busy="true" aria-labelledby="component-title">
+      <section class="ui-catalog-detail" aria-live="polite" aria-busy="true" aria-labelledby="component-title" aria-describedby="component-description">
         <div class="ui-catalog-detail-header">
           <div>
-            <p class="ui-eyebrow" id="component-group"></p>
-            <h2 class="ui-title-md" id="component-title">Loading catalog</h2>
+            <h1 class="ui-page-heading" id="component-title">Loading catalog</h1>
+            <p class="ui-description" id="component-description"></p>
           </div>
-          <span class="ui-badge" id="component-kind"></span>
         </div>
         <div class="ui-catalog-preview-wrap">
           <iframe class="ui-catalog-preview" id="component-preview" title="Component preview" sandbox="allow-scripts allow-forms allow-same-origin" referrerpolicy="same-origin"></iframe>
         </div>
         <div class="ui-catalog-source-header">
-          <h3 class="ui-title-sm">Marked source fragment</h3>
-          <button class="ui-button ui-button-secondary ui-button-small" id="copy-source" type="button">Copy fragment</button>
+          <h2 class="ui-title-sm">HTML</h2>
+          <button class="ui-button ui-button-secondary ui-button-small" id="copy-source" type="button">Copy code</button>
         </div>
         <p class="ui-meta-text" id="copy-status" role="status"></p>
         <pre class="ui-code-output ui-code-output-padded ui-catalog-source" id="component-source" tabindex="0"><code></code></pre>

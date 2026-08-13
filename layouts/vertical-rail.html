@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Vertical rail layout</title>
+    <title>Vertical navigation application template</title>
     <link rel="stylesheet" href="/ui/src/base.css">
     <link rel="stylesheet" href="/ui/src/components.css">
     <script src="/ui/src/components.js" defer></script>
@@ -12,35 +12,21 @@
     <a class="ui-skip-link" href="#main-content">Skip to main content</a>
     <div class="ui-frame">
         <nav class="ui-rail" aria-label="Workspace navigation">
-            <a href="#overview" aria-label="Atlas home">
-                <svg aria-hidden="true"><use href="/ui/src/lucide.svg#layers-3"></use></svg>
-            </a>
-            <a href="#overview" aria-current="page" aria-label="Overview">
-                <svg aria-hidden="true"><use href="/ui/src/lucide.svg#layout-dashboard"></use></svg>
-            </a>
-            <a href="#projects" aria-label="Projects">
-                <svg aria-hidden="true"><use href="/ui/src/lucide.svg#folder-kanban"></use></svg>
-            </a>
-            <a href="#activity" aria-label="Activity">
-                <svg aria-hidden="true"><use href="/ui/src/lucide.svg#activity"></use></svg>
-            </a>
-            <a href="#settings" aria-label="Settings">
-                <svg aria-hidden="true"><use href="/ui/src/lucide.svg#settings"></use></svg>
-            </a>
+            <a class="ui-rail-brand" href="#overview" aria-label="Atlas home"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#layers-3"></use></svg><span>Atlas</span></a>
+            <div class="ui-rail-links">
+                <a href="#overview" aria-current="page"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#layout-dashboard"></use></svg><span>Overview</span></a>
+                <a href="#projects"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#folder-kanban"></use></svg><span>Projects</span></a>
+                <a href="#activity"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#activity"></use></svg><span>Activity</span></a>
+                <a href="#settings"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#settings"></use></svg><span>Settings</span></a>
+            </div>
+            <a class="ui-rail-account" href="#account"><span class="ui-avatar" aria-hidden="true">AM</span><span>Alex Morgan<small>Owner</small></span></a>
         </nav>
         <main class="ui-shell-main" id="main-content">
-            <section class="ui-panel" aria-labelledby="page-title">
-                <header class="ui-panel-header">
-                    <div>
-                        <p class="ui-eyebrow">Workspace</p>
-                        <h1 class="ui-page-heading" id="page-title">Overview</h1>
-                    </div>
-                    <a class="ui-button ui-button-primary" href="#new-project">New project</a>
-                </header>
-                <div class="ui-panel-body">
-                    <p class="ui-description">A large framed content surface keeps work separate from the striped application gutters.</p>
-                </div>
-            </section>
+            <div class="ui-template-content">
+                <header class="ui-template-header"><div><p class="ui-eyebrow">Engineering workspace</p><h1 class="ui-page-heading">Overview</h1><p class="ui-description">Track current delivery health and the work that needs attention.</p></div><button class="ui-button ui-button-primary" type="button"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#plus"></use></svg>New project</button></header>
+                <dl class="ui-stat-grid"><div class="ui-stat-card"><dt>Active projects</dt><dd>12</dd><dd class="ui-meta-text" data-state="ok">+2 this month</dd></div><div class="ui-stat-card"><dt>Needs review</dt><dd>4</dd><dd class="ui-meta-text" data-state="warning">2 due today</dd></div><div class="ui-stat-card"><dt>Failed checks</dt><dd>1</dd><dd class="ui-meta-text" data-state="error">Atlas build</dd></div></dl>
+                <div class="ui-template-grid"><section class="ui-card"><header class="ui-card-header"><div><h2 class="ui-card-title">Recent activity</h2><p class="ui-card-description">Updates across owned projects.</p></div><button class="ui-button ui-button-ghost ui-button-small" type="button">View all</button></header><div class="ui-card-content"><div class="ui-item"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#circle-check"></use></svg><div class="ui-item-content"><strong>Beacon deployed</strong><span class="ui-item-description">Production · 18 minutes ago</span></div><span class="ui-badge" data-state="ok">Live</span></div><div class="ui-item"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#circle-alert"></use></svg><div class="ui-item-content"><strong>Atlas needs review</strong><span class="ui-item-description">Pull request 184 · 1 hour ago</span></div><span class="ui-badge" data-state="warning">Review</span></div></div></section><section class="ui-card"><header class="ui-card-header"><div><h2 class="ui-card-title">Next deployment</h2><p class="ui-card-description">Scheduled production window.</p></div><span class="ui-badge">Friday</span></header><div class="ui-card-content"><h3 class="ui-title-md">Atlas 2.4</h3><p class="ui-description">Four approved changes are ready for the Warsaw production window.</p></div><footer class="ui-card-footer"><button class="ui-button ui-button-secondary" type="button">Review release</button><button class="ui-button ui-button-primary" type="button">Deploy</button></footer></section></div>
+            </div>
         </main>
     </div>
 </body>

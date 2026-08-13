@@ -23,13 +23,13 @@ const canonicalStylesheets = ["/ui/src/base.css", "/ui/src/components.css"];
 // primitives from daisyUI, Basecoat, Coss, and 0build. Every item must ship as a
 // real snippet with the same canonical assets and contract checks.
 const expectedNames = [
-    "Accordion", "Alert", "Alert Dialog", "Aspect Ratio", "Attachment", "Avatar", "Badge", "Breadcrumb", "Bubble", "Button", "Button Group", "Calendar", "Card", "Carousel", "Chart", "Checkbox", "Collapsible", "Combobox", "Command", "Context Menu", "Data Table", "Date Picker", "Dialog", "Diff", "Direction", "Dock", "Drawer", "Dropdown Menu", "Empty", "Field", "Fieldset", "File Input", "Hover Card", "Input", "Input Group", "Input OTP", "Item", "Kbd", "Label", "Marker", "Menubar", "Message", "Message Scroller", "Meter", "Native Select", "Navigation Menu", "Number Field", "Pagination", "Popover", "Progress", "Questionnaire", "Radio Group", "Rating", "Resizable", "Scroll Area", "Select", "Separator", "Sheet", "Sidebar", "Skeleton", "Slider", "Spinner", "Stat", "Steps", "Switch", "Table", "Tabs", "Textarea", "Timeline", "Toast", "Toggle", "Toggle Group", "Toolbar", "Tooltip", "Typography"
+    "Accordion", "Alert", "Aspect Ratio", "Attachment", "Autocomplete", "Avatar", "Badge", "Breadcrumb", "Button", "Button Group", "Calendar", "Card", "Carousel", "Chart", "Checkbox", "Checkbox Group", "Collapsible", "Combobox", "Command", "Data Table", "Date Picker", "Dialog", "Diff", "Drawer", "Dropdown Menu", "Empty", "Field", "Fieldset", "File Input", "Hover Card", "Input", "Input Group", "Input OTP", "Item", "Kbd", "Label", "Lightbox", "Marker", "Message", "Message Scroller", "Meter", "Native Select", "Navigation Menu", "Number Field", "Pagination", "Popover", "Progress", "Questionnaire", "Radio Group", "Rating", "Resizable", "Scroll Area", "Select", "Separator", "Sheet", "Sidebar", "Skeleton", "Slider", "Sortable List", "Spinner", "Split Button", "Stat", "Steps", "Switch", "Table", "Tabs", "Textarea", "Time Field", "Timeline", "Toast", "Toggle", "Toggle Group", "Toolbar", "Tooltip", "Typography"
 ].sort();
 const permittedStates = new Set(["ok", "warning", "error", "running", "progress"]);
-const legacyClasses = new Set(["is-busy", "is-empty", "is-idle", "lightbox", "lightbox-content", "lightbox-main", "lightbox-info", "lightbox-media", "info-header", "info-title", "info-sub", "info-grid", "info-label", "info-value", "badge-row", "lb-close", "lb-prev", "lb-next"]);
+const legacyClasses = new Set(["is-busy", "is-empty", "is-idle"]);
 // These are semantic marker classes deliberately styled by their containing component
 // or native element, rather than a standalone class rule.
-const explicitClassAllowlist = new Set(["ui-alert-icon", "ui-aspect-ratio-icon", "ui-attachment-icon", "ui-avatar-fallback", "ui-breadcrumb", "ui-button-danger", "ui-button-icon", "ui-button-primary", "ui-button-secondary", "ui-button-tertiary", "ui-direction-label", "ui-empty-icon", "ui-item-action", "ui-item-icon", "ui-item-title", "ui-kbd-row", "ui-message-icon", "ui-scroll-area-list", "ui-scroll-area-title", "ui-skeleton-avatar", "ui-skeleton-text", "ui-skeleton-title", "ui-spin", "ui-switch-title"]);
+const explicitClassAllowlist = new Set(["ui-alert-icon", "ui-aspect-ratio-icon", "ui-attachment-icon", "ui-avatar-fallback", "ui-breadcrumb", "ui-button-danger", "ui-button-icon", "ui-button-primary", "ui-button-secondary", "ui-button-tertiary", "ui-empty-icon", "ui-item-action", "ui-item-icon", "ui-item-title", "ui-kbd-row", "ui-message-icon", "ui-scroll-area-list", "ui-scroll-area-title", "ui-skeleton-avatar", "ui-skeleton-text", "ui-skeleton-title", "ui-spin", "ui-switch-title"]);
 let failures = 0;
 
 function test(name, callback) {
@@ -122,7 +122,7 @@ function checkMarkupContract(html, filename) {
 function checkCssContract(css, filename, { allowRawColors = false } = {}) {
     if (!allowRawColors) assert(!/(?:#[0-9a-f]{3,8}\b|\brgba?\(|\bhsla?\(|\b(?:white|black|red|green|blue|gray|grey)(?=[^a-z-]|$))/i.test(css), `${filename}: raw color is forbidden`);
     for (const match of css.matchAll(/([^{}]+)\{[^{}]*\bbackdrop-filter\s*:\s*blur\(/gi)) {
-        assert(/\.ui-(?:dialog|app-header|catalog-overlay)|\[data-ui-(?:popover-content|menu-content|hovercard-content|navigation-menu-content|dialog|alert-dialog|sheet|drawer|toast)\]|\[data-ui-component="(?:popover|dropdown-menu|context-menu|menubar|navigation-menu|tooltip|hover-card|sheet|drawer|toast)"\]/.test(match[1]), `${filename}: backdrop blur only belongs on an approved overlapping-surface selector`);
+        assert(/\.ui-(?:dialog|app-header|catalog-overlay|autocomplete)|\[data-ui-(?:popover-content|menu-content|hovercard-content|navigation-menu-content|dialog|alert-dialog|sheet|drawer|toast)\]|\[data-ui-component="(?:autocomplete|popover|dropdown-menu|navigation-menu|tooltip|hover-card|split-button|sheet|drawer|toast)"\]/.test(match[1]), `${filename}: backdrop blur only belongs on an approved overlapping-surface selector`);
     }
 }
 
@@ -211,6 +211,8 @@ test("manifest is the complete declared component set", () => {
         assert(!slugs.has(component.slug), `duplicate slug ${component.slug}`);
         slugs.add(component.slug);
         assert.equal(typeof component.group, "string");
+        assert.equal(typeof component.description, "string", `${component.slug}: description must be a string`);
+        assert(component.description.length >= 24, `${component.slug}: description is too terse for the LLM reference`);
         assert(["static", "interactive"].includes(component.behavior), `${component.slug}: invalid behavior`);
         assert.equal(typeof component.static, "boolean", `${component.slug}: static must be boolean`);
     });
@@ -291,13 +293,14 @@ test("canonical stylesheet responsibilities are enforced", () => {
     requiredFoundation.forEach((declaration) => assert(baseCss.includes(declaration), `src/base.css: missing requested foundation ${declaration}`));
     assert(!/--ui-(?:space|radius|layer)-/i.test(baseCss), "base.css must not restore semantic spacing, radius, or layer scales");
     assert(!/--ui-font-weight-(?:semibold|bold)/i.test(baseCss), "base.css supports only regular and medium weights");
+    assert.match(baseCss, /strong\s*,\s*b\s*\{[^}]*font-weight:\s*var\(--ui-font-weight-medium\)/i, "base.css must keep semantic emphasis within the 500-weight ceiling");
     assert.deepEqual(visualShadowDeclarations(componentCss, "src/components.css"), [], "src/components.css: visual shadows are forbidden");
 });
 
 test("component CSS keeps popup parts, SVGs, and form states explicitly covered", () => {
     const css = read(canonicalComponentCss);
     assert.match(css, /(?:^|[}\n])\s*svg\s*\{[^}]*\b(?:width|height|display)\s*:/, "component CSS needs a generic SVG baseline rule");
-    ["popover", "dropdown-menu", "context-menu", "menubar", "navigation-menu", "tooltip", "hover-card"].forEach((component) => {
+    ["popover", "dropdown-menu", "navigation-menu", "tooltip", "hover-card", "split-button"].forEach((component) => {
         assert.match(css, new RegExp(`\\[data-ui-component="${component}"\\][^{]*(?:\\[data-ui-part="(?:panel|content|menu)"\\]|\\[data-ui-${component.replace(/-/g, "")}-content\\])`), `${component}: popup positioning must target the actual panel/content part`);
     });
     [":hover", ":focus", ":disabled", "[aria-invalid=\"true\"]"].forEach((state) => {
@@ -350,18 +353,19 @@ test("every ui-* snippet class has CSS coverage or a documented compatibility al
 
 test("interactive component families expose their expected hooks", () => {
     const needs = {
-        accordion: /aria-expanded|data-accordion/i, "alert-dialog": /role="(?:alert)?dialog"[\s\S]*aria-modal="true"|data-dialog/i, carousel: /aria-label|data-carousel/i,
-        checkbox: /type="checkbox"|role="checkbox"/i, collapsible: /aria-expanded|data-collapsible/i, combobox: /role="combobox"|data-combobox/i,
-        command: /role="(?:dialog|listbox|menu)"|data-command/i, "context-menu": /role="menu"|data-context-menu/i, dialog: /role="dialog"[\s\S]*aria-modal="true"|data-dialog/i,
+        accordion: /aria-expanded|data-accordion/i, alert: /role="(?:alert)?dialog"[\s\S]*aria-modal="true"|data-ui-alert-dialog/i, autocomplete: /aria-autocomplete="list"[\s\S]*role="listbox"/i, carousel: /aria-label|data-carousel/i,
+        checkbox: /type="checkbox"|role="checkbox"/i, "checkbox-group": /data-ui-part="all"[\s\S]*data-ui-part="item"/i, collapsible: /aria-expanded|data-collapsible/i, combobox: /role="combobox"|data-combobox/i,
+        command: /role="(?:dialog|listbox|menu)"|data-command/i, dialog: /role="dialog"[\s\S]*aria-modal="true"|data-dialog/i,
         drawer: /role="dialog"|data-drawer/i, "dropdown-menu": /role="menu"|data-dropdown/i, "hover-card": /aria-describedby|data-hover-card/i,
-        "input-otp": /autocomplete="one-time-code"|data-otp/i, menubar: /role="menubar"|data-menubar/i, "navigation-menu": /role="navigation"|data-navigation-menu|data-ui-part="(?:trigger|content)"/i,
+        "input-otp": /autocomplete="one-time-code"|data-otp/i, lightbox: /data-ui-slide="0"[\s\S]*role="dialog"/i, "navigation-menu": /role="navigation"|data-navigation-menu|data-ui-part="(?:trigger|content)"/i,
         popover: /aria-expanded|data-popover/i, "radio-group": /role="radiogroup"|type="radio"|data-radio-group/i, resizable: /role="separator"|data-resizable/i,
         select: /<select\b|role="combobox"|data-select/i, sheet: /role="dialog"|data-sheet/i, slider: /role="slider"|type="range"|data-slider/i,
         switch: /role="switch"|type="checkbox"|data-switch/i, tabs: /role="tablist"[\s\S]*role="tab"|data-tabs/i, toast: /role="(?:status|alert)"|aria-live=|data-toast/i,
         toggle: /aria-pressed|data-toggle/i, tooltip: /role="tooltip"|aria-describedby|data-tooltip/i,
         diff: /type="range"[\s\S]*aria-label=|data-ui-component="diff"/i, "file-input": /type="file"[\s\S]*aria-describedby=/i,
         "number-field": /type="number"[\s\S]*(?:data-ui-part="increment"|aria-label="Increase)/i,
-        rating: /type="radio"[\s\S]*deployment-rating/i, toolbar: /role="toolbar"[\s\S]*aria-orientation=/i
+        rating: /type="radio"[\s\S]*deployment-rating/i, "sortable-list": /draggable="true"[\s\S]*data-ui-part="handle"/i, "split-button": /aria-haspopup="menu"[\s\S]*role="menu"/i,
+        "time-field": /data-ui-part="hour"[\s\S]*data-ui-part="minute"[\s\S]*data-ui-part="period"/i, toolbar: /role="toolbar"[\s\S]*aria-orientation=/i
     };
     Object.entries(needs).forEach(([slug, expression]) => {
         const file = path.join(snippetsDir, `${slug}.html`);
@@ -383,6 +387,12 @@ test("runtime-supported generic hook schemas are present in their snippets", () 
         "file-input": ["data-ui-component", "data-ui-part"],
         "number-field": ["data-ui-component", "data-ui-part"],
         toolbar: ["data-ui-component", "data-ui-toggle-group"]
+        ,autocomplete: ["data-ui-component", "data-ui-part"],
+        "checkbox-group": ["data-ui-component", "data-ui-part"],
+        lightbox: ["data-ui-component", "data-ui-slide"],
+        "sortable-list": ["data-ui-component", "data-ui-part"],
+        "split-button": ["data-ui-component", "data-ui-part"],
+        "time-field": ["data-ui-component", "data-ui-part"]
     };
     const failures = [];
     Object.entries(schemas).forEach(([slug, hooks]) => {
@@ -392,7 +402,7 @@ test("runtime-supported generic hook schemas are present in their snippets", () 
             if (!hasHook(html, hook)) failures.push(`${slug}.html: missing runtime-supported hook ${hook}`);
         });
     });
-    ["diff", "file-input", "number-field", "toolbar"].forEach((component) => {
+    ["autocomplete", "checkbox-group", "diff", "file-input", "lightbox", "number-field", "sortable-list", "time-field", "toolbar"].forEach((component) => {
         assert(runtime.includes(`component === "${component}"`), `runtime does not initialize ${component}`);
     });
     assert.deepEqual(failures, [], `interactive snippets must use runtime-supported hooks, not incompatible data-ui-part aliases:\n${failures.join("\n")}`);

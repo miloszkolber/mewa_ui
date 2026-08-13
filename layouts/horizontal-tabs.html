@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Horizontal tabs layout</title>
+    <title>Horizontal navigation application template</title>
     <link rel="stylesheet" href="/ui/src/base.css">
     <link rel="stylesheet" href="/ui/src/components.css">
     <script src="/ui/src/components.js" defer></script>
@@ -12,30 +12,16 @@
     <a class="ui-skip-link" href="#main-content">Skip to main content</a>
     <div class="ui-frame">
         <header class="ui-topbar">
-            <a class="ui-topbar-brand" href="#overview" aria-label="Atlas home">
-                <svg class="ui-brand-logo" aria-hidden="true"><use href="/ui/src/lucide.svg#layers-3"></use></svg>
-                <span>Atlas</span>
-            </a>
-            <nav class="ui-topnav" aria-label="Workspace navigation">
-                <a href="#overview" aria-current="page">Overview</a>
-                <a href="#projects">Projects</a>
-                <a href="#activity">Activity</a>
-                <a href="#settings">Settings</a>
-            </nav>
+            <a class="ui-topbar-brand" href="#overview" aria-label="Atlas home"><svg class="ui-brand-logo" aria-hidden="true"><use href="/ui/src/lucide.svg#layers-3"></use></svg><span>Atlas</span></a>
+            <nav class="ui-topnav" aria-label="Workspace navigation"><a href="#overview" aria-current="page">Overview</a><a href="#projects">Projects</a><a href="#activity">Activity</a><a href="#settings">Settings</a></nav>
+            <div class="ui-topbar-actions"><button class="ui-icon-button ui-button-ghost" type="button" aria-label="Search"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#search"></use></svg></button><a class="ui-avatar" href="#account" aria-label="Alex Morgan account">AM</a></div>
         </header>
         <main class="ui-shell-main" id="main-content">
-          <section class="ui-panel" aria-labelledby="page-title">
-            <header class="ui-panel-header">
-                <div>
-                    <p class="ui-eyebrow">Workspace</p>
-                    <h1 class="ui-page-heading" id="page-title">Overview</h1>
-                </div>
-                <a class="ui-button ui-button-primary" href="#new-project">New project</a>
-            </header>
-            <div class="ui-panel-body">
-                <p class="ui-description">A large framed content surface keeps work separate from the striped application gutters.</p>
+            <div class="ui-template-content">
+                <header class="ui-template-header"><div><p class="ui-eyebrow">Engineering workspace</p><h1 class="ui-page-heading">Overview</h1><p class="ui-description">Track current delivery health and the work that needs attention.</p></div><button class="ui-button ui-button-primary" type="button"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#plus"></use></svg>New project</button></header>
+                <dl class="ui-stat-grid"><div class="ui-stat-card"><dt>Active projects</dt><dd>12</dd><dd class="ui-meta-text" data-state="ok">+2 this month</dd></div><div class="ui-stat-card"><dt>Needs review</dt><dd>4</dd><dd class="ui-meta-text" data-state="warning">2 due today</dd></div><div class="ui-stat-card"><dt>Failed checks</dt><dd>1</dd><dd class="ui-meta-text" data-state="error">Atlas build</dd></div></dl>
+                <section class="ui-card"><header class="ui-card-header"><div><h2 class="ui-card-title">Projects</h2><p class="ui-card-description">Current state of the team’s active work.</p></div><button class="ui-button ui-button-ghost ui-button-small" type="button">Filter</button></header><div class="ui-card-content"><div class="ui-table-wrap"><table class="ui-table ui-table--responsive"><caption class="ui-sr-only">Active projects</caption><thead><tr><th scope="col">Project</th><th scope="col">Owner</th><th scope="col">Status</th><th scope="col">Updated</th></tr></thead><tbody><tr><th scope="row" data-label="Project">Atlas</th><td data-label="Owner">Alex Morgan</td><td data-label="Status"><span class="ui-badge" data-state="warning">Review</span></td><td data-label="Updated">18 min ago</td></tr><tr><th scope="row" data-label="Project">Beacon</th><td data-label="Owner">Marta Nowak</td><td data-label="Status"><span class="ui-badge" data-state="ok">Live</span></td><td data-label="Updated">1 hr ago</td></tr><tr><th scope="row" data-label="Project">Core</th><td data-label="Owner">Piotr Lis</td><td data-label="Status"><span class="ui-badge">Draft</span></td><td data-label="Updated">Yesterday</td></tr></tbody></table></div></div></section>
             </div>
-          </section>
         </main>
     </div>
 </body>

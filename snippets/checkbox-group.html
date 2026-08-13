@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/ui/src/base.css"><link rel="stylesheet" href="/ui/src/components.css"><script src="/ui/src/components.js" defer></script><title>Checkbox group</title></head><body class="ui-demo">
+<!-- mewa-ui-snippet:start -->
+<fieldset class="ui-checkbox-group" data-ui-component="checkbox-group" aria-describedby="checkbox-group-help checkbox-group-status">
+  <legend>Notification channels</legend>
+  <p class="ui-meta-text" id="checkbox-group-help">Select every channel the workspace may use.</p>
+  <label class="ui-checkbox-label ui-checkbox-label-all" for="checkbox-group-all"><input class="ui-checkbox" data-ui-part="all" id="checkbox-group-all" type="checkbox"><span class="ui-checkbox-control" aria-hidden="true"></span><span>Select all</span></label>
+  <div class="ui-checkbox-group-items">
+    <label class="ui-checkbox-label" for="checkbox-group-email"><input class="ui-checkbox" data-ui-part="item" id="checkbox-group-email" name="channels" type="checkbox" value="email" checked><span class="ui-checkbox-control" aria-hidden="true"></span><span>Email</span></label>
+    <label class="ui-checkbox-label" for="checkbox-group-push"><input class="ui-checkbox" data-ui-part="item" id="checkbox-group-push" name="channels" type="checkbox" value="push" checked><span class="ui-checkbox-control" aria-hidden="true"></span><span>Push notification</span></label>
+    <label class="ui-checkbox-label" for="checkbox-group-sms"><input class="ui-checkbox" data-ui-part="item" id="checkbox-group-sms" name="channels" type="checkbox" value="sms"><span class="ui-checkbox-control" aria-hidden="true"></span><span>SMS</span></label>
+  </div>
+  <output class="ui-meta-text" data-ui-part="status" id="checkbox-group-status" aria-live="polite"></output>
+</fieldset>
+<!-- mewa-ui-snippet:end -->
+</body></html>

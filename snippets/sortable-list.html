@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/ui/src/base.css"><link rel="stylesheet" href="/ui/src/components.css"><script src="/ui/src/components.js" defer></script><title>Sortable list</title></head><body class="ui-demo">
+<!-- mewa-ui-snippet:start -->
+<section class="ui-sortable-list" data-ui-component="sortable-list" aria-labelledby="sortable-title" aria-describedby="sortable-help sortable-status">
+  <header><h2 class="ui-title-md" id="sortable-title">Dashboard sections</h2><p class="ui-meta-text" id="sortable-help">Drag a handle, or focus it and use Space then the arrow keys.</p></header>
+  <ol data-ui-part="list">
+    <li data-ui-part="item" draggable="true"><button class="ui-icon-button ui-button-ghost" data-ui-part="handle" type="button" aria-label="Reorder Overview" aria-pressed="false"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#menu"></use></svg></button><div><strong>Overview</strong><span class="ui-meta-text">Key workspace metrics</span></div><span class="ui-kbd">1</span></li>
+    <li data-ui-part="item" draggable="true"><button class="ui-icon-button ui-button-ghost" data-ui-part="handle" type="button" aria-label="Reorder Activity" aria-pressed="false"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#menu"></use></svg></button><div><strong>Activity</strong><span class="ui-meta-text">Recent team changes</span></div><span class="ui-kbd">2</span></li>
+    <li data-ui-part="item" draggable="true"><button class="ui-icon-button ui-button-ghost" data-ui-part="handle" type="button" aria-label="Reorder Deployments" aria-pressed="false"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#menu"></use></svg></button><div><strong>Deployments</strong><span class="ui-meta-text">Environment status</span></div><span class="ui-kbd">3</span></li>
+  </ol>
+  <p class="ui-meta-text" data-ui-part="status" id="sortable-status" aria-live="assertive">Three sections. Overview is first.</p>
+</section>
+<!-- mewa-ui-snippet:end -->
+</body></html>

@@ -10,9 +10,8 @@
         search: document.querySelector("#component-search"),
         list: document.querySelector("#component-list"),
         detail: document.querySelector(".ui-catalog-detail"),
-        group: document.querySelector("#component-group"),
         title: document.querySelector("#component-title"),
-        kind: document.querySelector("#component-kind"),
+        description: document.querySelector("#component-description"),
         preview: document.querySelector("#component-preview"),
         source: document.querySelector("#component-source code"),
         copy: document.querySelector("#copy-source"),
@@ -21,6 +20,23 @@
     let components = [];
     let selectedSlug = "";
     let sourceRequest;
+
+    function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+    }
+
+    function previewDocument(component, fragment) {
+        return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(component.name)} preview</title><link rel="stylesheet" href="/ui/src/base.css"><link rel="stylesheet" href="/ui/src/components.css"><script src="/ui/src/components.js" defer><\/script></head><body class="ui-demo ui-demo-preview">${fragment}</body></html>`;
+    }
+
+    function resizePreview() {
+        try {
+            const height = elements.preview.contentDocument?.documentElement.scrollHeight || 0;
+            elements.preview.style.height = `${Math.max(320, Math.min(960, height))}px`;
+        } catch (error) {
+            elements.preview.style.height = "32rem";
+        }
+    }
 
     function snippetUrl(slug) {
         return new URL(`${slug}.html`, new URL(snippetsBaseUrl, window.location.origin)).pathname;
@@ -84,7 +100,9 @@
             if (component.slug !== selectedSlug) {
                 return;
             }
-            elements.source.textContent = extractMarkedFragment(documentSource);
+            const fragment = extractMarkedFragment(documentSource);
+            elements.source.textContent = fragment;
+            elements.preview.srcdoc = previewDocument(component, fragment);
         } catch (error) {
             if (error.name === "AbortError") {
                 return;
@@ -99,10 +117,10 @@
             return;
         }
         selectedSlug = component.slug;
-        elements.group.textContent = component.group;
         elements.title.textContent = component.name;
-        elements.kind.textContent = component.static ? "Static" : "Interactive";
-        elements.preview.src = snippetUrl(component.slug);
+        elements.description.textContent = component.description;
+        elements.preview.removeAttribute("src");
+        elements.preview.srcdoc = "";
         elements.preview.title = `${component.name} preview`;
         elements.copyStatus.textContent = "";
         elements.detail.setAttribute("aria-busy", "false");
@@ -113,6 +131,19 @@
         void loadSource(component);
     }
 
+    function legacyCopy(source) {
+        const field = document.createElement("textarea");
+        field.value = source;
+        field.setAttribute("readonly", "");
+        field.className = "ui-sr-only";
+        document.body.append(field);
+        field.select();
+        field.setSelectionRange(0, field.value.length);
+        const copied = document.execCommand("copy");
+        field.remove();
+        if (!copied) throw new Error("Legacy copy was rejected.");
+    }
+
     async function copySource() {
         const source = elements.source.textContent;
         if (!source || source.startsWith("Loading") || source.startsWith("Source unavailable")) {
@@ -120,8 +151,25 @@
             return;
         }
         try {
-            await navigator.clipboard.writeText(source);
-            elements.copyStatus.textContent = "Source fragment copied.";
+            let copied = false;
+            try {
+                legacyCopy(source);
+                copied = true;
+            } catch (error) {
+                copied = false;
+            }
+            if (navigator.clipboard && window.isSecureContext) {
+                try {
+                    await navigator.clipboard.writeText(source);
+                    copied = true;
+                } catch (error) {
+                    // The synchronous fallback already copied successfully.
+                }
+            }
+            if (!copied) throw new Error("Copy was rejected.");
+            elements.copy.textContent = "Copied";
+            elements.copyStatus.textContent = "Code copied to the clipboard.";
+            window.setTimeout(() => { elements.copy.textContent = "Copy code"; }, 1600);
         } catch (error) {
             elements.copyStatus.textContent = "Copy failed. Select the source text and copy it manually.";
         }
@@ -158,5 +206,15 @@
         }
     });
     elements.copy.addEventListener("click", () => void copySource());
+    elements.preview.addEventListener("load", () => {
+        resizePreview();
+        try {
+            const observer = new ResizeObserver(resizePreview);
+            observer.observe(elements.preview.contentDocument.documentElement);
+            window.setTimeout(() => observer.disconnect(), 5000);
+        } catch (error) {
+            resizePreview();
+        }
+    });
     void initialize();
 })();
