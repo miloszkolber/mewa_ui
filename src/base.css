@@ -1,0 +1,28 @@
+/* Core UI canonical foundation: tokens, reset, and browser primitives only. */
+:root {
+    color-scheme: dark;
+    /* Solid ten-step palettes. */
+    --ui-mono-0: #000000; --ui-mono-1: #080808; --ui-mono-2: #101010; --ui-mono-3: #181818; --ui-mono-4: #242424; --ui-mono-5: #303030; --ui-mono-6: #484848; --ui-mono-7: #707070; --ui-mono-8: #a0a0a0; --ui-mono-9: #ededed;
+    --ui-red-0: #180305; --ui-red-1: #30060a; --ui-red-2: #500b12; --ui-red-3: #71111a; --ui-red-4: #961a25; --ui-red-5: #ba2432; --ui-red-6: #df3343; --ui-red-7: #f05b68; --ui-red-8: #fa9aa2; --ui-red-9: #ffe5e7;
+    --ui-green-0: #02180b; --ui-green-1: #052d14; --ui-green-2: #08451e; --ui-green-3: #0b5d29; --ui-green-4: #087a35; --ui-green-5: #0a9743; --ui-green-6: #13b956; --ui-green-7: #3bd174; --ui-green-8: #82e6a2; --ui-green-9: #def8e7;
+    --ui-yellow-0: #1a1100; --ui-yellow-1: #332300; --ui-yellow-2: #503700; --ui-yellow-3: #704c00; --ui-yellow-4: #906200; --ui-yellow-5: #ae7800; --ui-yellow-6: #cc9200; --ui-yellow-7: #e5af28; --ui-yellow-8: #f3d071; --ui-yellow-9: #fff4d6;
+    /* Semantic roles. */
+    --ui-canvas: var(--ui-mono-0); --ui-surface: var(--ui-mono-1); --ui-surface-raised: var(--ui-mono-2); --ui-control-bg: var(--ui-mono-3); --ui-control-bg-hover: var(--ui-mono-4); --ui-control-bg-active: var(--ui-mono-5);
+    --ui-border-subtle: var(--ui-mono-3); --ui-border-default: var(--ui-mono-5); --ui-border-hover: var(--ui-mono-6); --ui-text-primary: var(--ui-mono-9); --ui-text-secondary: var(--ui-mono-8); --ui-text-tertiary: var(--ui-mono-7); --ui-text-disabled: var(--ui-mono-7); --ui-text-inverse: var(--ui-mono-0);
+    --ui-focus-ring: var(--ui-mono-9); --ui-danger: var(--ui-red-6); --ui-danger-hover: var(--ui-red-7); --ui-danger-muted: var(--ui-red-1); --ui-success: var(--ui-green-6); --ui-success-text: var(--ui-green-8); --ui-success-muted: var(--ui-green-1); --ui-warning: var(--ui-yellow-7); --ui-warning-muted: var(--ui-yellow-1); --ui-text-on-danger: var(--ui-mono-9); --ui-dialog-overlay: color-mix(in srgb, var(--ui-mono-0) 80%, transparent);
+    /* Typography. */
+    --ui-font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --ui-font-mono: ui-monospace, monospace; --ui-font-size-xs: 0.75rem; --ui-font-size-sm: 0.875rem; --ui-font-size-md: 0.875rem; --ui-font-size-base: 1rem; --ui-font-size-lg: 1.5rem; --ui-font-size-xl: 1.5rem; --ui-font-size-2xl: 2rem; --ui-line-height-tight: 1; --ui-line-height-snug: 1.25; --ui-line-height-normal: 1.5; --ui-line-height-relaxed: 1.6; --ui-font-weight-medium: 500; --ui-font-weight-semibold: 600; --ui-letter-spacing-tight: -0.0175rem; --ui-letter-spacing-title: -0.025rem; --ui-letter-spacing-heading: -0.08rem; --ui-letter-spacing-wide: 0.08em;
+    /* Spacing, geometry, layout, motion, and layers. */
+    --ui-space-1: 0.25rem; --ui-space-2: 0.5rem; --ui-space-3: 0.75rem; --ui-space-4: 1rem; --ui-space-5: 1.25rem; --ui-space-6: 1.5rem; --ui-space-7: 1.75rem; --ui-space-8: 2rem; --ui-space-10: 2.5rem; --ui-space-12: 3rem; --ui-space-16: 4rem;
+    --ui-radius-none: 0; --ui-radius-xs: 0.25rem; --ui-radius-full: 9999px; --ui-border-width: 1px; --ui-focus-ring-width: 2px; --ui-control-height: 2.5rem; --ui-control-height-sm: 2rem; --ui-icon-button-size: 2.25rem; --ui-icon-size-sm: 1rem; --ui-icon-size-md: 1.125rem; --ui-icon-stroke-width: 1.8; --ui-checkbox-size: 1.125rem; --ui-status-dot-size: 0.375rem; --ui-status-indicator-size: 2.75rem; --ui-status-icon-size: 1.25rem;
+    --ui-container-max: 75rem; --ui-container-wide-max: 97.5rem; --ui-container-gutter: 3rem; --ui-container-gutter-mobile: 1.5rem; --ui-copy-max: 38.75rem; --ui-header-height: 4rem; --ui-header-height-mobile: 3.5rem; --ui-frame-gutter: var(--ui-space-6); --ui-rail-width: 3.5rem; --ui-topbar-height: 3.5rem; --ui-viewport-min-height: 100svh; --ui-component-width-sm: 24rem; --ui-component-width-md: 32rem; --ui-component-width-lg: 48rem; --ui-component-menu-width: 14rem; --ui-component-date-width: 18rem; --ui-component-sidebar-width: 16rem;
+    --ui-duration-fast: 120ms; --ui-duration-reduced: 0.01ms; --ui-ease-standard: ease; --ui-backdrop-blur-sm: 0.5rem; --ui-z-header: 50; --ui-z-dialog: 1200; --ui-z-toast: 1500; --ui-stripe-pattern: repeating-linear-gradient(135deg, transparent 0, transparent 0.6875rem, var(--ui-border-default) 0.6875rem, var(--ui-border-default) 0.75rem);
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--ui-canvas); color: var(--ui-text-primary); font-family: var(--ui-font-sans); text-rendering: optimizeLegibility; }
+body { min-height: 100vh; margin: 0; background: var(--ui-canvas); color: var(--ui-text-primary); font-size: var(--ui-font-size-md); line-height: var(--ui-line-height-normal); -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; } button, a { -webkit-tap-highlight-color: transparent; } [hidden] { display: none !important; }
+:focus-visible { outline: var(--ui-focus-ring-width) solid var(--ui-focus-ring); outline-offset: var(--ui-focus-ring-width); }
+svg { display: inline-block; vertical-align: middle; } svg:has(> use) { width: var(--ui-icon-size-md); height: var(--ui-icon-size-md); flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: var(--ui-icon-stroke-width); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: var(--ui-duration-reduced) !important; animation-duration: var(--ui-duration-reduced) !important; } }
+@media (forced-colors: active) { :focus-visible { outline-color: Highlight; } }
