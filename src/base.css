@@ -4,14 +4,14 @@
 
     /* Ten-step palettes, from deepest surface to highest-contrast foreground. */
     --ui-mono-0: #09090b;
-    --ui-mono-1: #111113;
+    --ui-mono-1: #0f0f12;
     --ui-mono-2: #18181b;
     --ui-mono-3: #27272a;
     --ui-mono-4: #3f3f46;
     --ui-mono-5: #52525b;
     --ui-mono-6: #71717a;
     --ui-mono-7: #a1a1aa;
-    --ui-mono-8: #d4d4d8;
+    --ui-mono-8: #e4e4e7;
     --ui-mono-9: #fafafa;
     --ui-red-0: #240609;
     --ui-red-1: #450a0a;
@@ -47,7 +47,7 @@
     /* Semantic roles. Components must consume these, not raw palette values. */
     --ui-background: var(--ui-mono-0);
     --ui-card: var(--ui-mono-1);
-    --ui-popover: var(--ui-mono-1);
+    --ui-popover: var(--ui-mono-2);
     --ui-muted: var(--ui-mono-2);
     --ui-muted-foreground: var(--ui-mono-7);
     --ui-accent: var(--ui-mono-3);
@@ -76,12 +76,12 @@
     --ui-focus-ring: var(--ui-ring);
     --ui-danger: var(--ui-status-error);
     --ui-danger-hover: var(--ui-red-7);
-    --ui-danger-muted: color-mix(in srgb, var(--ui-danger) 10%, var(--ui-surface));
+    --ui-danger-muted: var(--ui-surface);
     --ui-success: var(--ui-status-ok);
     --ui-success-text: var(--ui-green-7);
-    --ui-success-muted: color-mix(in srgb, var(--ui-success) 8%, var(--ui-surface));
+    --ui-success-muted: var(--ui-surface);
     --ui-warning: var(--ui-status-warning);
-    --ui-warning-muted: color-mix(in srgb, var(--ui-warning) 8%, var(--ui-surface));
+    --ui-warning-muted: var(--ui-surface);
     --ui-dialog-overlay: color-mix(in srgb, var(--ui-mono-0) 82%, transparent);
 
     /* Literal ten-step type, spacing, size, radius, and layer scales. */
@@ -89,12 +89,12 @@
     --ui-type-1: 0.75rem;
     --ui-type-2: 0.8125rem;
     --ui-type-3: 0.875rem;
-    --ui-type-4: 1rem;
-    --ui-type-5: 1.125rem;
-    --ui-type-6: 1.25rem;
-    --ui-type-7: 1.5rem;
-    --ui-type-8: 1.875rem;
-    --ui-type-9: 2.25rem;
+    --ui-type-4: 0.9375rem;
+    --ui-type-5: 1rem;
+    --ui-type-6: 1.125rem;
+    --ui-type-7: 1.25rem;
+    --ui-type-8: 1.5rem;
+    --ui-type-9: 1.875rem;
     --ui-space-0: 0;
     --ui-space-1: 0.25rem;
     --ui-space-2: 0.5rem;
@@ -143,26 +143,26 @@
     --ui-font-size-sm: var(--ui-type-3);
     --ui-font-size-md: var(--ui-type-3);
     --ui-font-size-base: var(--ui-type-4);
-    --ui-font-size-lg: var(--ui-type-7);
-    --ui-font-size-xl: var(--ui-type-8);
+    --ui-font-size-lg: var(--ui-type-6);
+    --ui-font-size-xl: var(--ui-type-7);
     --ui-font-size-2xl: var(--ui-type-9);
-    --ui-line-height-tight: 1.1;
-    --ui-line-height-snug: 1.25;
+    --ui-line-height-tight: 1.2;
+    --ui-line-height-snug: 1.35;
     --ui-line-height-normal: 1.5;
     --ui-line-height-relaxed: 1.65;
     --ui-font-weight-medium: 500;
     --ui-font-weight-semibold: 600;
-    --ui-letter-spacing-tight: -0.0125em;
-    --ui-letter-spacing-title: -0.02em;
-    --ui-letter-spacing-heading: -0.035em;
+    --ui-letter-spacing-tight: -0.01em;
+    --ui-letter-spacing-title: -0.015em;
+    --ui-letter-spacing-heading: -0.025em;
     --ui-letter-spacing-wide: 0.08em;
     --ui-radius-none: var(--ui-radius-0);
     --ui-radius-xs: var(--ui-radius-1);
     --ui-radius-full: var(--ui-radius-9);
     --ui-border-width: 1px;
     --ui-focus-ring-width: 2px;
-    --ui-control-height: 2.25rem;
-    --ui-control-height-sm: var(--ui-size-4);
+    --ui-control-height: var(--ui-size-4);
+    --ui-control-height-sm: 1.75rem;
     --ui-icon-button-size: var(--ui-control-height);
     --ui-icon-size-sm: var(--ui-size-1);
     --ui-icon-size-md: var(--ui-type-5);
@@ -182,10 +182,16 @@
     --ui-rail-width: var(--ui-size-6);
     --ui-topbar-height: var(--ui-size-6);
     --ui-viewport-min-height: 100svh;
+    --ui-demo-min-height: 32rem;
+    --ui-preview-min-height: 34rem;
+    --ui-preview-min-height-mobile: 30rem;
+    --ui-source-max-height-mobile: 24rem;
+    --ui-table-min-width: 32rem;
     --ui-component-width-sm: 24rem;
     --ui-component-width-md: 32rem;
-    --ui-component-width-lg: 48rem;
+    --ui-component-width-lg: 44rem;
     --ui-component-menu-width: 14rem;
+    --ui-component-popup-wide-width: 32rem;
     --ui-component-date-width: 18rem;
     --ui-component-sidebar-width: 16rem;
     --ui-duration-fast: 120ms;
