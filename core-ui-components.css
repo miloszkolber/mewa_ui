@@ -141,6 +141,8 @@ svg:has(> use) use {
 
 .ui-button:disabled,
 .ui-icon-button:disabled,
+[data-ui-part="trigger"]:disabled,
+[role="tab"]:disabled,
 [aria-disabled="true"] { color: var(--ui-text-disabled); cursor: not-allowed; }
 .ui-button-primary,
 .ui-button[data-variant="default"] { background: var(--ui-text-primary); border-color: var(--ui-text-primary); color: var(--ui-text-inverse); }

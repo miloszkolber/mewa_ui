@@ -73,6 +73,16 @@ assert.equal(await page.$eval("#tabs-security-tab", (node) => node.getAttribute(
 await page.keyboard.press("ArrowRight");
 assert.equal(await page.$eval("#tabs-account-tab", (node) => node.getAttribute("aria-selected")), "true");
 assert.equal(await page.$eval("#tabs-billing-tab", (node) => node.getAttribute("aria-selected")), "false");
+const disabledTab = await page.evaluate(() => {
+    const disabled = document.querySelector("#tabs-billing-tab");
+    const enabled = document.querySelector("#tabs-security-tab");
+    const disabledStyle = getComputedStyle(disabled);
+    const enabledStyle = getComputedStyle(enabled);
+    return { cursor: disabledStyle.cursor, color: disabledStyle.color, enabledColor: enabledStyle.color, focused: document.activeElement === disabled };
+});
+assert.equal(disabledTab.cursor, "not-allowed");
+assert.notEqual(disabledTab.color, disabledTab.enabledColor);
+assert.equal(disabledTab.focused, false);
 
 await component("combobox");
 await page.focus("#combobox-framework");
