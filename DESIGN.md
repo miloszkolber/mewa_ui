@@ -50,6 +50,16 @@ Two service shells are supported:
 
 Both layout documents are complete application templates with identity, navigation, account/actions, headings, status content, and responsive behavior. They are not empty shell diagrams.
 
+### Service UI reference notes
+
+The service interfaces in [`core/docker/meili_ui`](https://github.com/miloszkolber/core/tree/master/docker/meili_ui), [`core/docker/hf_ui`](https://github.com/miloszkolber/core/tree/master/docker/hf_ui), and [`core/docker/moonlight_ui`](https://github.com/miloszkolber/core/tree/master/docker/moonlight_ui) are visual references only. They remain separate applications and are not copied into or changed by this library.
+
+- `meili_ui` keeps search, filters, and status in a compact tool cluster, then gives the content grid the remaining width. mewa_ui follows the same principle for toolbars, header actions, and dense lists.
+- `hf_ui` uses a framed split workspace, stable label/control alignment, one clear primary action, and an early single-column breakpoint. That informs form, panel, and app-template balance.
+- `moonlight_ui` composes operational rows as indicator, flexible copy, and a predictable action column; its narrow layout turns those actions full-width. That pattern informs status rows, items, and responsive action groups.
+
+Across these references, the adopted rhythm is explicit rather than token-heavy: 16 px framed insets, 12 px row insets, 8–12 px internal gaps, and 40 px primary controls. Larger gaps are reserved for separating page regions, not for padding individual components.
+
 ## Contribution checklist
 
 1. Add or update the manifest entry and matching marked snippet together.

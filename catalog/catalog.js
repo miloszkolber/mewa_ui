@@ -32,9 +32,9 @@
     function resizePreview() {
         try {
             const height = elements.preview.contentDocument?.documentElement.scrollHeight || 0;
-            elements.preview.style.height = `${Math.max(320, Math.min(960, height))}px`;
+            elements.preview.style.height = `${Math.max(256, Math.min(960, height))}px`;
         } catch (error) {
-            elements.preview.style.height = "32rem";
+            elements.preview.style.height = "16rem";
         }
     }
 
@@ -61,7 +61,9 @@
     function renderList() {
         const visible = currentComponents();
         elements.list.replaceChildren();
-        elements.count.textContent = `${visible.length} of ${components.length} components`;
+        elements.count.textContent = visible.length === components.length
+            ? `${components.length} components`
+            : `${visible.length} of ${components.length} components`;
         if (!visible.length) {
             const empty = document.createElement("li");
             empty.className = "ui-catalog-empty";

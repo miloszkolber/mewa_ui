@@ -58,6 +58,8 @@ python3 -m http.server 8080 --directory /path/to/parent
 
 Open `http://localhost:8080/ui/catalog/` when the repository directory is named `ui` under that parent. In a service deployment, mount this repository read-only at `/ui`; deployment configuration remains with the consuming service.
 
+The catalog header links directly to the complete [vertical rail](layouts/vertical-rail.html) and [horizontal tabs](layouts/horizontal-tabs.html) layout previews.
+
 ## Validate
 
 Run from the repository root:

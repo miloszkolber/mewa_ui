@@ -90,9 +90,14 @@ for (const viewport of viewports) {
     assertCanonicalAssets(await canonicalAssets(), `catalog ${viewport.name}`, { runtime: false });
     await page.waitForFunction((count) => document.querySelector("#component-count")?.textContent.includes(String(count)), {}, manifest.length);
     await page.waitForFunction(() => document.querySelector("#component-preview")?.contentDocument?.body?.children.length > 0);
-    const result = await page.evaluate(() => ({ count: document.querySelector("#component-list")?.children.length, description: document.querySelector("#component-description")?.textContent.trim(), previewMain: Boolean(document.querySelector("#component-preview")?.contentDocument?.querySelector("body > main")), overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth }));
+    const result = await page.evaluate(() => ({ count: document.querySelector("#component-list")?.children.length, description: document.querySelector("#component-description")?.textContent.trim(), previewMain: Boolean(document.querySelector("#component-preview")?.contentDocument?.querySelector("body > main")), layoutLinks: [...document.querySelectorAll(".ui-catalog-layout-links a")].map((link) => link.getAttribute("href")), overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth }));
     if (result.count !== manifest.length || result.overflow > 1) failures.push(`catalog ${viewport.name}: ${JSON.stringify(result)}`);
     if (!result.description || result.previewMain) failures.push(`catalog ${viewport.name}: preview must expose description and only the marked fragment`);
+    if (result.layoutLinks.join("|") !== "/ui/layouts/vertical-rail.html|/ui/layouts/horizontal-tabs.html") failures.push(`catalog ${viewport.name}: layout preview links are missing or incorrect`);
+    for (const [name, href] of [["Vertical rail", "/ui/layouts/vertical-rail.html"], ["Horizontal tabs", "/ui/layouts/horizontal-tabs.html"]]) {
+        const response = await page.evaluate(async (path) => ({ path, ok: (await fetch(path)).ok }), href);
+        if (!response.ok) failures.push(`catalog ${viewport.name}: ${name} preview is unavailable (${response.path})`);
+    }
     await page.click("#copy-source");
     await page.waitForFunction(() => document.querySelector("#copy-status")?.textContent.length > 0);
     const copyState = await page.$eval("#copy-status", (node) => node.textContent);

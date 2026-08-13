@@ -229,12 +229,15 @@ test("catalog markup uses only canonical source assets", () => {
     assert.deepEqual(cssHrefsLoadedBy(html, "catalog/index.html"), canonicalStylesheets, "catalog must load only base.css followed by components.css");
     assert.match(html, /<script\b[^>]*\bsrc="\/ui\/catalog\/catalog\.js"[^>]*>/i);
     assert.match(html, /id="component-search"/);
+    assert.match(html, /<nav class="ui-catalog-layout-links"[^>]*aria-label="Layout previews"/);
+    assert.match(html, /href="\/ui\/layouts\/vertical-rail\.html"/);
+    assert.match(html, /href="\/ui\/layouts\/horizontal-tabs\.html"/);
 });
 
 test("catalog layout keeps its two canonical layout regions", () => {
     const html = read(path.join(catalogDir, "index.html"));
     assert.match(html, /<div class="ui-catalog-layout">[\s\S]*<aside class="ui-catalog-sidebar"[\s\S]*<section class="ui-catalog-detail"/);
-    ["ui-catalog", "ui-catalog-skip", "ui-catalog-header", "ui-catalog-count", "ui-catalog-main", "ui-catalog-overview", "ui-catalog-layout", "ui-catalog-sidebar", "ui-catalog-nav", "ui-catalog-list", "ui-catalog-empty", "ui-catalog-detail", "ui-catalog-detail-header", "ui-catalog-preview-wrap", "ui-catalog-preview", "ui-catalog-source-header", "ui-catalog-source"].forEach((className) => {
+    ["ui-catalog", "ui-catalog-skip", "ui-catalog-header", "ui-catalog-header-meta", "ui-catalog-layout-links", "ui-catalog-count", "ui-catalog-main", "ui-catalog-overview", "ui-catalog-layout", "ui-catalog-sidebar", "ui-catalog-nav", "ui-catalog-list", "ui-catalog-empty", "ui-catalog-detail", "ui-catalog-detail-header", "ui-catalog-preview-wrap", "ui-catalog-preview", "ui-catalog-source-header", "ui-catalog-source"].forEach((className) => {
         assert(classDefinitions(read(canonicalComponentCss)).has(className), `src/components.css must define catalog layout class ${className}`);
     });
 });
