@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Horizontal tabs layout</title>
+    <link rel="stylesheet" href="/ui/src/base.css">
+    <link rel="stylesheet" href="/ui/src/components.css">
+    <script src="/ui/src/components.js" defer></script>
+</head>
+<body class="ui-framed-app">
+    <a class="ui-skip-link" href="#main-content">Skip to main content</a>
+    <header class="ui-app-header">
+        <div class="ui-app-header-inner">
+            <a class="ui-brand" href="#overview" aria-label="Atlas home">
+                <svg class="ui-brand-logo" aria-hidden="true"><use href="/ui/src/lucide.svg#layers-3"></use></svg>
+                <span>Atlas</span>
+            </a>
+            <nav class="ui-tabs" aria-label="Workspace routes">
+                <a class="ui-tab" href="#overview" aria-current="page">Overview</a>
+                <a class="ui-tab" href="#projects">Projects</a>
+                <a class="ui-tab" href="#activity">Activity</a>
+                <a class="ui-tab" href="#settings">Settings</a>
+            </nav>
+        </div>
+    </header>
+    <main id="main-content">
+        <section class="ui-framed-workspace ui-framed-region ui-panel" aria-labelledby="page-title">
+            <header class="ui-panel-header">
+                <div>
+                    <p class="ui-eyebrow">Workspace</p>
+                    <h1 class="ui-page-heading" id="page-title">Overview</h1>
+                </div>
+                <a class="ui-button ui-button-primary" href="#new-project">New project</a>
+            </header>
+            <div class="ui-panel-body">
+                <p class="ui-description">A large framed content surface keeps work separate from the striped application gutters.</p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
