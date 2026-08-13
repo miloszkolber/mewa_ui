@@ -23,8 +23,23 @@ async function load(url, viewport = { width: 1280, height: 900 }) {
     await page.evaluate(() => document.fonts?.ready);
 }
 
+async function canonicalAssets() {
+    return page.evaluate(() => ({
+        stylesheets: [...document.querySelectorAll('link[rel="stylesheet"]')].map((node) => new URL(node.href).pathname),
+        scripts: [...document.scripts].map((node) => new URL(node.src).pathname),
+        iconReferences: [...document.querySelectorAll('use[href], use[xlink\\:href]')].map((node) => node.getAttribute("href") || node.getAttribute("xlink:href")),
+    }));
+}
+
+function assertCanonicalAssets(assets, pageName, { runtime = true } = {}) {
+    assert.deepEqual(assets.stylesheets, ["/ui/src/base.css", "/ui/src/components.css"], `${pageName}: stylesheet order must be canonical`);
+    if (runtime) assert(assets.scripts.includes("/ui/src/components.js"), `${pageName}: missing canonical runtime`);
+    assets.iconReferences.forEach((reference) => assert(reference.startsWith("/ui/src/lucide.svg#"), `${pageName}: icon must use canonical sprite (${reference})`));
+}
+
 for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844, isMobile: true }]) {
     await load(`${base}/catalog/`, viewport);
+    assertCanonicalAssets(await canonicalAssets(), `catalog ${viewport.width}`, { runtime: false });
     await page.waitForFunction(() => document.querySelector("#component-count")?.textContent.includes("64"));
     const result = await page.evaluate(() => ({
         count: document.querySelector("#component-list")?.children.length,
@@ -35,6 +50,7 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 390, height: 844
 
 for (const component of manifest) {
     await load(`${base}/snippets/${component.slug}.html`, { width: 1024, height: 768 });
+    assertCanonicalAssets(await canonicalAssets(), component.slug);
     const result = await page.evaluate(() => {
         const walker = document.createTreeWalker(document, NodeFilter.SHOW_COMMENT);
         let hasStart = false;

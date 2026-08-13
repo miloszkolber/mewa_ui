@@ -1,7 +1,7 @@
 "use strict";
 
 // This intentionally small DOM is a runtime contract harness, not a browser.
-// It executes core-ui.js without a package or browser binary and covers the
+// It executes src/components.js without a package or browser binary and covers the
 // selectors, events, focus, and mutable state the progressive enhancement uses.
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
@@ -84,7 +84,7 @@ function key(target, value, extra) { return fire(target, "keydown", { key: value
 function mount(root) { document.body.append(root); window.CoreUI.enhance(root); return root; }
 function listeners(target, type) { return (target.listeners[type] || []).length; }
 
-vm.runInNewContext(fs.readFileSync(path.join(__dirname, "..", "core-ui.js"), "utf8"), { window, document, CustomEvent: EventLike, MutationObserver: class { observe() {} disconnect() {} }, console });
+vm.runInNewContext(fs.readFileSync(path.join(__dirname, "..", "src", "components.js"), "utf8"), { window, document, CustomEvent: EventLike, MutationObserver: class { observe() {} disconnect() {} }, console });
 
 function test(name, run) { try { run(); console.log(`PASS ${name}`); } catch (error) { console.error(`FAIL ${name}\n${error.stack}`); process.exitCode = 1; } }
 

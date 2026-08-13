@@ -11,7 +11,13 @@ const path = require("node:path");
 const root = path.resolve(__dirname, "..");
 const catalogDir = path.join(root, "catalog");
 const snippetsDir = path.join(root, "snippets");
+const srcDir = path.join(root, "src");
 const manifestPath = path.join(catalogDir, "components.json");
+const canonicalBaseCss = path.join(srcDir, "base.css");
+const canonicalComponentCss = path.join(srcDir, "components.css");
+const canonicalRuntime = path.join(srcDir, "components.js");
+const canonicalSprite = path.join(srcDir, "lucide.svg");
+const canonicalStylesheets = ["/ui/src/base.css", "/ui/src/components.css"];
 // Authoritative inventory: https://ui.shadcn.com/docs/components, fetched 2026-08-13.
 // The sidebar's 64 /docs/components/base/* links are the source of truth. It includes
 // Toggle and Toggle Group, and does not include Form or Sonner.
@@ -92,8 +98,8 @@ function checkMarkupContract(html, filename) {
     idsAndTargets(html, filename);
 }
 
-function checkCssContract(css, filename) {
-    assert(!/(?:#[0-9a-f]{3,8}\b|\brgba?\(|\bhsla?\(|\b(?:white|black|red|green|blue|gray|grey)(?=[^a-z-]|$))/i.test(css), `${filename}: raw color is forbidden`);
+function checkCssContract(css, filename, { allowRawColors = false } = {}) {
+    if (!allowRawColors) assert(!/(?:#[0-9a-f]{3,8}\b|\brgba?\(|\bhsla?\(|\b(?:white|black|red|green|blue|gray|grey)(?=[^a-z-]|$))/i.test(css), `${filename}: raw color is forbidden`);
     for (const match of css.matchAll(/([^{}]+)\{[^{}]*\bbackdrop-filter\s*:\s*blur\(/gi)) {
         assert(/\.ui-(?:dialog|app-header|catalog-overlay)|\[data-ui-(?:popover-content|menu-content|hovercard-content|navigation-menu-content|dialog|alert-dialog|sheet|drawer)\]|\[data-ui-component="(?:popover|dropdown-menu|context-menu|menubar|navigation-menu|tooltip|hover-card|sheet|drawer)"\]/.test(match[1]), `${filename}: backdrop blur only belongs on an approved overlay selector`);
     }
@@ -115,12 +121,11 @@ function unTokenizedDimensions(css) {
     return declarations;
 }
 
-function cssFilesLoadedBy(html, filename) {
+function cssHrefsLoadedBy(html, filename) {
     return Array.from(html.matchAll(/<link\b[^>]*\brel=(?:"stylesheet"|'stylesheet')[^>]*\bhref=(?:"([^"]+)"|'([^']+)')/gi), (match) => match[1] || match[2]).map((href) => {
         assert(href.startsWith("/ui/"), `${filename}: stylesheet ${href} is not served from /ui/`);
-        const file = path.join(root, href.slice("/ui/".length));
-        assert(fs.existsSync(file), `${filename}: missing loaded stylesheet ${href}`);
-        return file;
+        assert(fs.existsSync(path.join(root, href.slice("/ui/".length))), `${filename}: missing loaded stylesheet ${href}`);
+        return href;
     });
 }
 
@@ -131,13 +136,6 @@ function visualShadowDeclarations(css, filename) {
         failures.push(`${filename}: ${match[1].trim().replace(/\s+/g, " ")}`);
     }
     return failures;
-}
-
-function legacyShadowIsNeutralized(selector, componentCss) {
-    const normalized = selector.replace(/\s+/g, " ").trim();
-    if (/:focus-visible/.test(normalized) && /:where\(body,[^)]*\) :focus-visible\s*\{[^}]*\bbox-shadow\s*:\s*none/i.test(componentCss)) return true;
-    const classes = Array.from(normalized.matchAll(/\.([a-z0-9-]+)/gi), (match) => match[1]);
-    return classes.length > 0 && classes.every((className) => Array.from(componentCss.matchAll(/([^{}]+)\{[^{}]*\bbox-shadow\s*:\s*none/gi)).some((match) => new RegExp(`\\.${className}(?![a-z0-9-])`, "i").test(match[1])));
 }
 
 function uiClasses(html) {
@@ -156,8 +154,11 @@ function hasHook(html, hook) {
     return html.includes(hook);
 }
 
-test("gallery assets and manifest exist", () => {
-    ["index.html", "catalog.css", "catalog.js", "components.json"].forEach((file) => assert(fs.existsSync(path.join(catalogDir, file)), `missing catalog/${file}`));
+test("catalog, manifest, and canonical source assets exist", () => {
+    ["index.html", "catalog.js", "components.json"].forEach((file) => assert(fs.existsSync(path.join(catalogDir, file)), `missing catalog/${file}`));
+    [canonicalBaseCss, canonicalComponentCss, canonicalRuntime, canonicalSprite].forEach((file) => assert(fs.existsSync(file), `missing ${path.relative(root, file)}`));
+    assert(!fs.existsSync(path.join(catalogDir, "catalog.css")), "catalog.css must not be a third loaded stylesheet");
+    assert(fs.existsSync(path.join(root, "core-ui.css")), "legacy root core-ui.css remains present until its removal is orchestrated");
 });
 
 test("manifest is the complete declared component set", () => {
@@ -175,46 +176,50 @@ test("manifest is the complete declared component set", () => {
     });
 });
 
-test("gallery markup and styles meet the catalog contract", () => {
+test("catalog markup uses only canonical source assets", () => {
     const html = read(path.join(catalogDir, "index.html"));
-    const css = read(path.join(catalogDir, "catalog.css"));
     checkMarkupContract(html, "catalog/index.html");
-    checkCssContract(css, "catalog/catalog.css");
     const iframe = html.match(/<iframe\b[^>]*\bsandbox="([^"]+)"[^>]*>/i);
     assert(iframe, "catalog preview requires a sandbox");
     const permissions = new Set(iframe[1].split(/\s+/));
     assert(permissions.has("allow-scripts") && permissions.has("allow-forms") && permissions.has("allow-same-origin"), "catalog preview needs scripts, forms, and its trusted local origin for the Lucide sprite");
     assert(!permissions.has("allow-top-navigation") && !permissions.has("allow-popups"), "catalog preview must not gain navigation or popup permissions");
-    assert.match(html, /href="\/ui\/core-ui\.css"/);
-    assert.match(html, /href="\/ui\/core-ui-components\.css"/);
+    assert.deepEqual(cssHrefsLoadedBy(html, "catalog/index.html"), canonicalStylesheets, "catalog must load only base.css followed by components.css");
+    assert.match(html, /<script\b[^>]*\bsrc="\/ui\/catalog\/catalog\.js"[^>]*>/i);
     assert.match(html, /id="component-search"/);
 });
 
-test("every stylesheet loaded by the gallery and snippets is tokenized and shadow-free", () => {
-    const documents = [path.join(catalogDir, "index.html"), ...existingFiles(snippetsDir, ".html").map((file) => path.join(snippetsDir, file))];
-    const loaded = new Set();
-    documents.forEach((file) => cssFilesLoadedBy(read(file), path.relative(root, file)).forEach((stylesheet) => loaded.add(stylesheet)));
-    const failures = [];
-    const componentCss = read(path.join(root, "core-ui-components.css"));
-    loaded.forEach((file) => {
-        const css = read(file);
-        // core-ui.css defines legacy token values. New catalog and component rules may
-        // consume only those tokens, not introduce raw color literals themselves.
-        if (file !== path.join(root, "core-ui.css")) checkCssContract(css, path.relative(root, file));
-        if (file !== path.join(root, "core-ui.css")) {
-            const dimensions = unTokenizedDimensions(css);
-            assert.deepEqual(dimensions, [], `${path.relative(root, file)}: new CSS must use design tokens for lengths and durations:\n${dimensions.join("\n")}`);
-        }
-        visualShadowDeclarations(css, path.relative(root, file)).forEach((failure) => {
-            const selector = failure.slice(`${path.relative(root, file)}: `.length);
-            if (file !== path.join(root, "core-ui.css") || !legacyShadowIsNeutralized(selector, componentCss)) failures.push(failure);
-        });
+test("catalog layout keeps its two canonical layout regions", () => {
+    const html = read(path.join(catalogDir, "index.html"));
+    assert.match(html, /<div class="ui-catalog-layout">[\s\S]*<aside class="ui-catalog-sidebar"[\s\S]*<section class="ui-catalog-detail"/);
+    ["ui-catalog-layout", "ui-catalog-sidebar", "ui-catalog-detail"].forEach((className) => {
+        assert(classDefinitions(read(canonicalComponentCss)).has(className), `src/components.css must define catalog layout class ${className}`);
     });
-    assert.deepEqual(failures, [], `visual shadows are forbidden in every loaded stylesheet. A core-ui.css compatibility shadow is allowed only when core-ui-components.css neutralizes its selector in snippet body scope:\n${failures.join("\n")}`);
+});
+
+test("canonical stylesheet responsibilities are enforced", () => {
+    const catalog = path.join(catalogDir, "index.html");
+    assert.deepEqual(cssHrefsLoadedBy(read(catalog), path.relative(root, catalog)), canonicalStylesheets, "catalog must load canonical stylesheets only");
+    existingFiles(snippetsDir, ".html").map((file) => path.join(snippetsDir, file)).forEach((file) => {
+        const html = read(file);
+        assert.deepEqual(cssHrefsLoadedBy(html, path.relative(root, file)), canonicalStylesheets, `${path.relative(root, file)} must load exactly the canonical stylesheets in order`);
+        assert.match(html, /<script\b[^>]*\bsrc="\/ui\/src\/components\.js"[^>]*>/i, `${path.relative(root, file)} must load canonical runtime`);
+        assert(!html.includes("/ui/core-ui.css"), `${path.relative(root, file)} must ignore legacy /ui/core-ui.css`);
+        assert(!html.includes("/ui/core-ui-components.css") && !html.includes("/ui/core-ui.js") && !html.includes("/ui/lucide.svg"), `${path.relative(root, file)} must not load legacy root component assets`);
+    });
+    const cssAssets = fs.readdirSync(srcDir).filter((file) => file.endsWith(".css")).sort();
+    assert.deepEqual(cssAssets, ["base.css", "components.css"], "src has exactly two canonical CSS assets");
+    const baseCss = read(canonicalBaseCss);
+    const componentCss = read(canonicalComponentCss);
+    assert(!/\.ui-[a-z0-9-]+/i.test(baseCss), "base.css defines tokens and resets, not .ui component classes");
+    checkCssContract(baseCss, "src/base.css", { allowRawColors: true });
+    checkCssContract(componentCss, "src/components.css");
+    assert.deepEqual(unTokenizedDimensions(componentCss), [], "src/components.css: direct dimensions must be expressed as design tokens");
+    assert.deepEqual(visualShadowDeclarations(componentCss, "src/components.css"), [], "src/components.css: visual shadows are forbidden");
 });
 
 test("component CSS keeps popup parts, SVGs, and form states explicitly covered", () => {
-    const css = read(path.join(root, "core-ui-components.css"));
+    const css = read(canonicalComponentCss);
     assert.match(css, /(?:^|[}\n])\s*svg\s*\{[^}]*\b(?:width|height|display)\s*:/, "component CSS needs a generic SVG baseline rule");
     ["popover", "dropdown-menu", "context-menu", "menubar", "navigation-menu", "tooltip", "hover-card"].forEach((component) => {
         assert.match(css, new RegExp(`\\[data-ui-component="${component}"\\][^{]*(?:\\[data-ui-part="(?:panel|content|menu)"\\]|\\[data-ui-${component.replace(/-/g, "")}-content\\])`), `${component}: popup positioning must target the actual panel/content part`);
@@ -233,7 +238,7 @@ test("manifest and snippet files have exact parity", () => {
 
 test("each snippet has a valid marked fragment, markup, icons, and references", () => {
     const manifest = JSON.parse(read(manifestPath));
-    const sprite = read(path.join(root, "lucide.svg"));
+    const sprite = read(canonicalSprite);
     const symbols = new Set(Array.from(sprite.matchAll(/<symbol\b[^>]*\bid="([^"]+)"/gi), (match) => match[1]));
     const iconFailures = [];
     manifest.forEach((component) => {
@@ -246,15 +251,17 @@ test("each snippet has a valid marked fragment, markup, icons, and references", 
         assert(start !== -1 && end > start, `${filename}: missing or invalid catalog-source markers`);
         assert(html.slice(start + startMarker.length, end).trim(), `${filename}: marked source fragment is empty`);
         checkMarkupContract(html, filename);
-        for (const use of html.matchAll(/<use\b[^>]*(?:href|xlink:href)="\/ui\/lucide\.svg#([\w-]+)"/gi)) {
-            if (!symbols.has(use[1])) iconFailures.push(`${filename}: missing sprite symbol ${use[1]}`);
-        }
+        const iconReferences = Array.from(html.matchAll(/<use\b[^>]*(?:href|xlink:href)="([^"#]+)#([\w-]+)"/gi));
+        iconReferences.forEach((use) => {
+            assert.equal(use[1], "/ui/src/lucide.svg", `${filename}: icons must use the canonical /ui/src/lucide.svg sprite`);
+            if (!symbols.has(use[2])) iconFailures.push(`${filename}: missing sprite symbol ${use[2]}`);
+        });
     });
     assert.deepEqual(iconFailures, [], `local Lucide sprite failures:\n${iconFailures.join("\n")}`);
 });
 
 test("every ui-* snippet class has CSS coverage or a documented compatibility allowance", () => {
-    const css = [read(path.join(root, "core-ui.css")), read(path.join(root, "core-ui-components.css"))].join("\n");
+    const css = read(canonicalComponentCss);
     const definitions = classDefinitions(css);
     const missing = [];
     existingFiles(snippetsDir, ".html").forEach((filename) => {
@@ -284,7 +291,7 @@ test("interactive component families expose their expected hooks", () => {
 });
 
 test("runtime-supported generic hook schemas are present in their snippets", () => {
-    const runtime = read(path.join(root, "core-ui.js"));
+    const runtime = read(canonicalRuntime);
     const schemas = {
         questionnaire: ["data-ui-questionnaire", "data-ui-question", "data-ui-question-next"],
         "message-scroller": ["data-ui-message-scroller", "data-ui-jump"],
@@ -305,12 +312,8 @@ test("runtime-supported generic hook schemas are present in their snippets", () 
     assert.deepEqual(failures, [], `interactive snippets must use runtime-supported hooks, not incompatible data-ui-part aliases:\n${failures.join("\n")}`);
 });
 
-test("component stylesheet and runtime syntax are valid", () => {
-    const componentCss = path.join(root, "core-ui-components.css");
-    assert(fs.existsSync(componentCss), "missing core-ui-components.css");
-    checkCssContract(read(componentCss), "core-ui-components.css");
-    assert.deepEqual(unTokenizedDimensions(read(componentCss)), [], "core-ui-components.css: direct dimensions must be expressed as design tokens");
-    [path.join(catalogDir, "catalog.js"), path.join(root, "core-ui.js")].forEach((file) => {
+test("canonical runtime syntax is valid", () => {
+    [path.join(catalogDir, "catalog.js"), canonicalRuntime].forEach((file) => {
         assert(fs.existsSync(file), `missing ${path.basename(file)}`);
         if (!process.versions.bun && process.release.name === "node") {
             childProcess.execFileSync(process.execPath, ["--check", file], { stdio: "pipe" });
