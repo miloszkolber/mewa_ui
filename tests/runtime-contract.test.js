@@ -82,7 +82,7 @@ global.document = document;
 function node(tag, attributes, text) { const result = new Element(tag, attributes); result.textContent = text || ""; return result; }
 function fire(target, type, init) { const event = new EventLike(type, init); target.dispatchEvent(event); return event; }
 function key(target, value, extra) { return fire(target, "keydown", { key: value, ...extra }); }
-function mount(root) { document.body.append(root); window.CoreUI.enhance(root); return root; }
+function mount(root) { document.body.append(root); window.MewaUI.enhance(root); return root; }
 function listeners(target, type) { return (target.listeners[type] || []).length; }
 
 vm.runInNewContext(fs.readFileSync(path.join(__dirname, "..", "src", "components.js"), "utf8"), { window, document, CustomEvent: EventLike, MutationObserver: class { observe() {} disconnect() {} }, console });
@@ -95,7 +95,7 @@ test("disclosure and tabs wire triggers, panels, and arrow selection", () => {
 });
 
 test("modal restores focus and popup tooltip opens and closes", () => {
-    const dialog = node("section", { "data-ui-dialog": "" }), opener = node("button", { "data-ui-part": "trigger", "aria-controls": "modal" }), modal = node("div", { id: "modal" }), close = node("button", { "data-ui-close": "" }); modal.hidden = true; modal.append(close); dialog.append(opener, modal); mount(dialog); fire(opener, "click"); assert.equal(modal.hidden, false); assert.equal(document.documentElement.dataset.coreUiModalOpen, "true"); assert.equal(document.activeElement, close); key(modal, "Escape"); assert.equal(modal.hidden, true); assert.equal(document.activeElement, opener);
+    const dialog = node("section", { "data-ui-dialog": "" }), opener = node("button", { "data-ui-part": "trigger", "aria-controls": "modal" }), modal = node("div", { id: "modal" }), close = node("button", { "data-ui-close": "" }); modal.hidden = true; modal.append(close); dialog.append(opener, modal); mount(dialog); fire(opener, "click"); assert.equal(modal.hidden, false); assert.equal(document.documentElement.dataset.mewaUiModalOpen, "true"); assert.equal(document.activeElement, close); key(modal, "Escape"); assert.equal(modal.hidden, true); assert.equal(document.activeElement, opener);
     const tooltip = node("section", { "data-ui-component": "tooltip" }), tipTrigger = node("button", { "data-ui-part": "trigger", "aria-controls": "tip" }), tip = node("div", { id: "tip" }); tip.hidden = true; tooltip.append(tipTrigger, tip); mount(tooltip); fire(tipTrigger, "focus"); assert.equal(tip.hidden, false); fire(tipTrigger, "blur"); assert.equal(tip.hidden, true); fire(tooltip, "pointerenter"); assert.equal(tip.hidden, false); fire(tooltip, "pointerleave"); assert.equal(tip.hidden, true);
 });
 
@@ -107,9 +107,9 @@ test("destroying an active modal restores page state", () => {
     const page = node("main"), dialog = node("section", { "data-ui-dialog": "" }), opener = node("button", { "data-ui-part": "trigger", "aria-controls": "destroy-modal" }), modal = node("div", { id: "destroy-modal" });
     modal.hidden = true; dialog.append(opener, modal); document.body.append(page); mount(dialog); fire(opener, "click");
     assert.equal(page.inert, true);
-    window.CoreUI.destroy(dialog);
+    window.MewaUI.destroy(dialog);
     assert.equal(page.inert, false);
-    assert.equal(document.documentElement.dataset.coreUiModalOpen, undefined);
+    assert.equal(document.documentElement.dataset.mewaUiModalOpen, undefined);
     assert.equal(modal.hidden, true);
 });
 
@@ -154,7 +154,7 @@ test("OTP, resizable, toggle group, toast, and sidebar execute their hooks", () 
     const resize = node("section", { "data-ui-resizable": "" }), handle = node("button", { "data-ui-part": "handle", "aria-valuemin": "0", "aria-valuemax": "100" }), pane = node("div", { "data-ui-part": "panel" }); resize.rect.width = 200; pane.rect.width = 100; resize.append(handle, pane); mount(resize); key(handle, "ArrowRight"); assert.equal(handle.getAttribute("aria-valuenow"), "58"); fire(handle, "pointerdown", { clientX: 10, pointerId: 1 }); fire(handle, "pointermove", { clientX: 20, pointerId: 1 }); pane.rect.width = 110; fire(handle, "pointermove", { clientX: 30, pointerId: 1 }); assert.equal(pane.style.flexBasis, "120px"); fire(handle, "pointercancel", { pointerId: 1 }); assert.equal(listeners(handle, "pointermove"), 0); assert.equal(listeners(handle, "pointerup"), 0); assert.equal(listeners(handle, "pointercancel"), 0);
     const group = node("section", { "data-ui-toggle-group": "" }), left = node("button", { "data-ui-toggle": "", "data-ui-part": "trigger", "aria-pressed": "false" }), right = node("button", { "data-ui-toggle": "", "data-ui-part": "trigger", "aria-pressed": "false" }), disabledToggle = node("button", { "data-ui-toggle": "", "data-ui-part": "trigger", "aria-pressed": "false", "aria-disabled": "true" }); group.append(left, right, disabledToggle); mount(group); fire(left, "click"); fire(right, "click"); fire(disabledToggle, "click"); assert.equal(left.getAttribute("aria-pressed"), "false"); assert.equal(right.getAttribute("aria-pressed"), "true"); assert.equal(disabledToggle.getAttribute("aria-pressed"), "false");
     const toastRoot = node("section", { "data-ui-toast": "" }), toastTrigger = node("button", { "data-ui-part": "trigger" }), region = node("div", { "data-ui-part": "region" }), toast = node("div", { "data-ui-part": "toast" }), dismiss = node("button", { "data-ui-close": "" }); toast.hidden = true; toast.append(dismiss); toastRoot.append(toastTrigger, region, toast); mount(toastRoot); assert.equal(toast.hidden, true); fire(toastTrigger, "click"); assert.equal(toast.hidden, false); fire(dismiss, "click"); assert.equal(toast.hidden, true); fire(toastTrigger, "click"); assert.equal(toast.hidden, false);
-    const sidebar = node("section", { "data-ui-sidebar": "" }), sidebarButton = node("button", { "data-ui-part": "trigger", "aria-expanded": "false" }), sidebarPanel = node("aside", { "data-ui-part": "panel" }); sidebarPanel.hidden = true; sidebar.append(sidebarButton, sidebarPanel); mount(sidebar); const globals = listeners(document, "keydown"); fire(sidebarButton, "click"); assert.equal(sidebarPanel.hidden, false); window.CoreUI.destroy(sidebar); window.CoreUI.enhance(sidebar); assert.equal(listeners(document, "keydown"), globals); sidebarPanel.hidden = true; const sidebarKey = key(document, "b", { ctrlKey: true }); assert.equal(sidebarKey.defaultPrevented, true); assert.equal(sidebarPanel.hidden, false);
+    const sidebar = node("section", { "data-ui-sidebar": "" }), sidebarButton = node("button", { "data-ui-part": "trigger", "aria-expanded": "false" }), sidebarPanel = node("aside", { "data-ui-part": "panel" }); sidebarPanel.hidden = true; sidebar.append(sidebarButton, sidebarPanel); mount(sidebar); const globals = listeners(document, "keydown"); fire(sidebarButton, "click"); assert.equal(sidebarPanel.hidden, false); window.MewaUI.destroy(sidebar); window.MewaUI.enhance(sidebar); assert.equal(listeners(document, "keydown"), globals); sidebarPanel.hidden = true; const sidebarKey = key(document, "b", { ctrlKey: true }); assert.equal(sidebarKey.defaultPrevented, true); assert.equal(sidebarPanel.hidden, false);
 });
 
 test("data table filtering and sorting, questionnaire steps, and message jump work", () => {
@@ -168,6 +168,13 @@ test("native selects remain native and sliders publish their accessible value", 
     const sliderRoot = node("section", { "data-ui-component": "slider" }), slider = node("input", { id: "volume", type: "range", min: "0", max: "100", value: "60" }), output = node("output", { for: "volume" }); slider.value = "60"; slider.max = "100"; sliderRoot.append(slider, output); mount(sliderRoot); slider.value = "75"; fire(slider, "input"); assert.equal(slider.getAttribute("aria-valuetext"), "75 percent");
 });
 
+test("diff, file input, number field, and toolbar execute their focused interaction contracts", () => {
+    const diff = node("figure", { "data-ui-component": "diff" }), diffInput = node("input", { type: "range", max: "100", "data-ui-part": "control" }), diffStatus = node("output", { "data-ui-part": "status" }); diffInput.value = "54"; diff.append(diffInput, diffStatus); mount(diff); diffInput.value = "72"; fire(diffInput, "input"); assert.equal(diff.style["--ui-diff-position"], "72%"); assert.equal(diffStatus.textContent, "72% after"); assert.equal(diffInput.getAttribute("aria-valuetext"), "72 percent after");
+    const fileRoot = node("section", { "data-ui-component": "file-input" }), fileInput = node("input", { type: "file", "data-ui-part": "input" }), fileStatus = node("p", { "data-ui-part": "status" }); fileInput.files = [{ name: "artifact.zip" }]; fileRoot.append(fileInput, fileStatus); mount(fileRoot); fire(fileInput, "change"); assert.equal(fileStatus.textContent, "artifact.zip selected.");
+    const numberRoot = node("section", { "data-ui-component": "number-field" }), decrement = node("button", { "data-ui-part": "decrement" }), numberInput = node("input", { type: "number", min: "1", max: "4", step: "1", "data-ui-part": "input" }), increment = node("button", { "data-ui-part": "increment" }); numberInput.value = "3"; numberRoot.append(decrement, numberInput, increment); mount(numberRoot); fire(increment, "click"); assert.equal(numberInput.value, "4"); assert.equal(increment.disabled, true); assert.equal(document.activeElement, numberInput); fire(decrement, "click"); assert.equal(numberInput.value, "3"); assert.equal(increment.disabled, false);
+    const toolbar = node("div", { "data-ui-component": "toolbar", role: "toolbar", "aria-orientation": "horizontal" }), group = node("div", { "data-ui-toggle-group": "", "data-multiple": "true" }), bold = node("button", { "data-ui-toggle": "", "aria-pressed": "false" }), italic = node("button", { "data-ui-toggle": "", "aria-pressed": "true" }), clear = node("button"); group.append(bold, italic); toolbar.append(group, clear); mount(toolbar); assert.equal(bold.tabIndex, 0); assert.equal(italic.tabIndex, -1); bold.focus(); const arrow = key(toolbar, "ArrowRight"); assert.equal(arrow.defaultPrevented, true); assert.equal(document.activeElement, italic); assert.equal(bold.tabIndex, -1); assert.equal(italic.tabIndex, 0); fire(bold, "click"); assert.equal(bold.getAttribute("aria-pressed"), "true", "nested toggle group receives exactly one activation"); key(toolbar, "End"); assert.equal(document.activeElement, clear);
+});
+
 test("calendar rejects rollover dates and questionnaires permit empty markup", () => {
     const calendar = node("section", { "data-ui-calendar": "", "data-ui-value": "2026-02-30" }), day = node("button", { "data-ui-calendar-day": "", "data-date": "2026-02-30" }); calendar.append(day); mount(calendar); assert.equal(calendar.dataset.uiValue, undefined);
     mount(node("form", { "data-ui-questionnaire": "" }));
@@ -179,7 +186,7 @@ test("date picker positions, dismisses, and clears global lifecycle state", () =
     panel.hidden = true; calendar.append(day); panel.append(calendar); picker.append(trigger, panel); mount(picker); fire(trigger, "click");
     assert.equal(panel.hidden, false); assert.equal(panel.style.position, "fixed"); assert.equal(panel.dataset.uiPositioned, "true"); assert.equal(document.activeElement, day);
     fire(document, "pointerdown"); assert.equal(panel.hidden, true); assert.equal(panel.style.position, ""); assert.equal(trigger.getAttribute("aria-expanded"), "false");
-    fire(trigger, "click"); window.CoreUI.destroy(picker); assert.equal(panel.hidden, true); assert.equal(panel.dataset.uiPositioned, undefined); assert.equal(listeners(window, "resize"), resizeListeners); assert.equal(listeners(window, "scroll"), scrollListeners);
+    fire(trigger, "click"); window.MewaUI.destroy(picker); assert.equal(panel.hidden, true); assert.equal(panel.dataset.uiPositioned, undefined); assert.equal(listeners(window, "resize"), resizeListeners); assert.equal(listeners(window, "scroll"), scrollListeners);
 });
 
 test("calendar skips disabled dates and editable choices dismiss outside", () => {

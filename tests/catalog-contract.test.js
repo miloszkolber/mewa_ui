@@ -19,11 +19,11 @@ const canonicalComponentCss = path.join(srcDir, "components.css");
 const canonicalRuntime = path.join(srcDir, "components.js");
 const canonicalSprite = path.join(srcDir, "lucide.svg");
 const canonicalStylesheets = ["/ui/src/base.css", "/ui/src/components.css"];
-// Authoritative inventory: https://ui.shadcn.com/docs/components, fetched 2026-08-13.
-// The sidebar's 64 /docs/components/base/* links are the source of truth. It includes
-// Toggle and Toggle Group, and does not include Form or Sonner.
+// Declared inventory: the original shadcn-aligned set plus selected, broadly useful
+// primitives from daisyUI, Basecoat, Coss, and 0build. Every item must ship as a
+// real snippet with the same canonical assets and contract checks.
 const expectedNames = [
-    "Accordion", "Alert", "Alert Dialog", "Aspect Ratio", "Attachment", "Avatar", "Badge", "Breadcrumb", "Bubble", "Button", "Button Group", "Calendar", "Card", "Carousel", "Chart", "Checkbox", "Collapsible", "Combobox", "Command", "Context Menu", "Data Table", "Date Picker", "Dialog", "Direction", "Drawer", "Dropdown Menu", "Empty", "Field", "Hover Card", "Input", "Input Group", "Input OTP", "Item", "Kbd", "Label", "Marker", "Menubar", "Message", "Message Scroller", "Native Select", "Navigation Menu", "Pagination", "Popover", "Progress", "Questionnaire", "Radio Group", "Resizable", "Scroll Area", "Select", "Separator", "Sheet", "Sidebar", "Skeleton", "Slider", "Spinner", "Switch", "Table", "Tabs", "Textarea", "Toast", "Toggle", "Toggle Group", "Tooltip", "Typography"
+    "Accordion", "Alert", "Alert Dialog", "Aspect Ratio", "Attachment", "Avatar", "Badge", "Breadcrumb", "Bubble", "Button", "Button Group", "Calendar", "Card", "Carousel", "Chart", "Checkbox", "Collapsible", "Combobox", "Command", "Context Menu", "Data Table", "Date Picker", "Dialog", "Diff", "Direction", "Dock", "Drawer", "Dropdown Menu", "Empty", "Field", "Fieldset", "File Input", "Hover Card", "Input", "Input Group", "Input OTP", "Item", "Kbd", "Label", "Marker", "Menubar", "Message", "Message Scroller", "Meter", "Native Select", "Navigation Menu", "Number Field", "Pagination", "Popover", "Progress", "Questionnaire", "Radio Group", "Rating", "Resizable", "Scroll Area", "Select", "Separator", "Sheet", "Sidebar", "Skeleton", "Slider", "Spinner", "Stat", "Steps", "Switch", "Table", "Tabs", "Textarea", "Timeline", "Toast", "Toggle", "Toggle Group", "Toolbar", "Tooltip", "Typography"
 ].sort();
 const permittedStates = new Set(["ok", "warning", "error", "running", "progress"]);
 const legacyClasses = new Set(["is-busy", "is-empty", "is-idle", "lightbox", "lightbox-content", "lightbox-main", "lightbox-info", "lightbox-media", "info-header", "info-title", "info-sub", "info-grid", "info-label", "info-value", "badge-row", "lb-close", "lb-prev", "lb-next"]);
@@ -112,13 +112,17 @@ function checkMarkupContract(html, filename) {
         const value = match[2] || match[3];
         assert(permittedStates.has(value), `${filename}: unsupported data-state ${value}`);
     }
+    for (const match of html.matchAll(/<button\b[^>]*>/gi)) {
+        const type = attributes(match[0]).type;
+        assert(["button", "submit", "reset"].includes(type), `${filename}: every button needs an explicit valid type`);
+    }
     idsAndTargets(html, filename);
 }
 
 function checkCssContract(css, filename, { allowRawColors = false } = {}) {
     if (!allowRawColors) assert(!/(?:#[0-9a-f]{3,8}\b|\brgba?\(|\bhsla?\(|\b(?:white|black|red|green|blue|gray|grey)(?=[^a-z-]|$))/i.test(css), `${filename}: raw color is forbidden`);
     for (const match of css.matchAll(/([^{}]+)\{[^{}]*\bbackdrop-filter\s*:\s*blur\(/gi)) {
-        assert(/\.ui-(?:dialog|app-header|catalog-overlay)|\[data-ui-(?:popover-content|menu-content|hovercard-content|navigation-menu-content|dialog|alert-dialog|sheet|drawer)\]|\[data-ui-component="(?:popover|dropdown-menu|context-menu|menubar|navigation-menu|tooltip|hover-card|sheet|drawer)"\]/.test(match[1]), `${filename}: backdrop blur only belongs on an approved overlay selector`);
+        assert(/\.ui-(?:dialog|app-header|catalog-overlay)|\[data-ui-(?:popover-content|menu-content|hovercard-content|navigation-menu-content|dialog|alert-dialog|sheet|drawer|toast)\]|\[data-ui-component="(?:popover|dropdown-menu|context-menu|menubar|navigation-menu|tooltip|hover-card|sheet|drawer|toast)"\]/.test(match[1]), `${filename}: backdrop blur only belongs on an approved overlapping-surface selector`);
     }
 }
 
@@ -278,7 +282,15 @@ test("canonical stylesheet responsibilities are enforced", () => {
     assert(!/\.ui-[a-z0-9-]+/i.test(baseCss), "base.css defines tokens and resets, not .ui component classes");
     checkCssContract(baseCss, "src/base.css", { allowRawColors: true });
     checkCssContract(componentCss, "src/components.css");
-    assert.deepEqual(unTokenizedDimensions(componentCss), [], "src/components.css: direct dimensions must be expressed as design tokens");
+    const requiredFoundation = [
+        "--ui-font-size-xs: 0.75rem", "--ui-font-size-sm: 0.875rem", "--ui-font-size-base: 1rem",
+        "--ui-heading-sm: 1rem", "--ui-heading-md: 1.25rem", "--ui-heading-lg: 1.5rem", "--ui-heading-xl: 2rem",
+        "--ui-line-height-tight: 1.2", "--ui-line-height-normal: 1.4", "--ui-line-height-relaxed: 1.6",
+        "--ui-font-weight-regular: 400", "--ui-font-weight-medium: 500"
+    ];
+    requiredFoundation.forEach((declaration) => assert(baseCss.includes(declaration), `src/base.css: missing requested foundation ${declaration}`));
+    assert(!/--ui-(?:space|radius|layer)-/i.test(baseCss), "base.css must not restore semantic spacing, radius, or layer scales");
+    assert(!/--ui-font-weight-(?:semibold|bold)/i.test(baseCss), "base.css supports only regular and medium weights");
     assert.deepEqual(visualShadowDeclarations(componentCss, "src/components.css"), [], "src/components.css: visual shadows are forbidden");
 });
 
@@ -308,8 +320,8 @@ test("each snippet has a valid marked fragment, markup, icons, and references", 
     manifest.forEach((component) => {
         const filename = `${component.slug}.html`;
         const html = read(path.join(snippetsDir, filename));
-        const startMarker = "<!-- core-ui-snippet:start -->";
-        const endMarker = "<!-- core-ui-snippet:end -->";
+        const startMarker = "<!-- mewa-ui-snippet:start -->";
+        const endMarker = "<!-- mewa-ui-snippet:end -->";
         const start = html.indexOf(startMarker);
         const end = html.indexOf(endMarker);
         assert(start !== -1 && end > start, `${filename}: missing or invalid catalog-source markers`);
@@ -346,7 +358,10 @@ test("interactive component families expose their expected hooks", () => {
         popover: /aria-expanded|data-popover/i, "radio-group": /role="radiogroup"|type="radio"|data-radio-group/i, resizable: /role="separator"|data-resizable/i,
         select: /<select\b|role="combobox"|data-select/i, sheet: /role="dialog"|data-sheet/i, slider: /role="slider"|type="range"|data-slider/i,
         switch: /role="switch"|type="checkbox"|data-switch/i, tabs: /role="tablist"[\s\S]*role="tab"|data-tabs/i, toast: /role="(?:status|alert)"|aria-live=|data-toast/i,
-        toggle: /aria-pressed|data-toggle/i, tooltip: /role="tooltip"|aria-describedby|data-tooltip/i
+        toggle: /aria-pressed|data-toggle/i, tooltip: /role="tooltip"|aria-describedby|data-tooltip/i,
+        diff: /type="range"[\s\S]*aria-label=|data-ui-component="diff"/i, "file-input": /type="file"[\s\S]*aria-describedby=/i,
+        "number-field": /type="number"[\s\S]*(?:data-ui-part="increment"|aria-label="Increase)/i,
+        rating: /type="radio"[\s\S]*deployment-rating/i, toolbar: /role="toolbar"[\s\S]*aria-orientation=/i
     };
     Object.entries(needs).forEach(([slug, expression]) => {
         const file = path.join(snippetsDir, `${slug}.html`);
@@ -363,7 +378,11 @@ test("runtime-supported generic hook schemas are present in their snippets", () 
         toggle: ["data-ui-toggle"],
         "toggle-group": ["data-ui-toggle-group", "data-ui-toggle"],
         calendar: ["data-ui-calendar", "data-ui-calendar-day"],
-        "data-table": ["data-ui-table"]
+        "data-table": ["data-ui-table"],
+        diff: ["data-ui-component", "data-ui-part"],
+        "file-input": ["data-ui-component", "data-ui-part"],
+        "number-field": ["data-ui-component", "data-ui-part"],
+        toolbar: ["data-ui-component", "data-ui-toggle-group"]
     };
     const failures = [];
     Object.entries(schemas).forEach(([slug, hooks]) => {
@@ -372,6 +391,9 @@ test("runtime-supported generic hook schemas are present in their snippets", () 
             if (!hasHook(runtime, hook)) failures.push(`${slug}: runtime does not support ${hook}`);
             if (!hasHook(html, hook)) failures.push(`${slug}.html: missing runtime-supported hook ${hook}`);
         });
+    });
+    ["diff", "file-input", "number-field", "toolbar"].forEach((component) => {
+        assert(runtime.includes(`component === "${component}"`), `runtime does not initialize ${component}`);
     });
     assert.deepEqual(failures, [], `interactive snippets must use runtime-supported hooks, not incompatible data-ui-part aliases:\n${failures.join("\n")}`);
 });

@@ -3,8 +3,8 @@
 
     const catalogUrl = "/ui/catalog/components.json";
     const snippetsBaseUrl = "/ui/snippets/";
-    const sourceStart = "<!-- core-ui-snippet:start -->";
-    const sourceEnd = "<!-- core-ui-snippet:end -->";
+    const sourceStart = "<!-- mewa-ui-snippet:start -->";
+    const sourceEnd = "<!-- mewa-ui-snippet:end -->";
     const elements = {
         count: document.querySelector("#component-count"),
         search: document.querySelector("#component-search"),
@@ -103,8 +103,12 @@
         elements.title.textContent = component.name;
         elements.kind.textContent = component.static ? "Static" : "Interactive";
         elements.preview.src = snippetUrl(component.slug);
+        elements.preview.title = `${component.name} preview`;
         elements.copyStatus.textContent = "";
         elements.detail.setAttribute("aria-busy", "false");
+        if (window.location.hash !== `#${component.slug}`) {
+            window.history.replaceState(null, "", `#${component.slug}`);
+        }
         renderList();
         void loadSource(component);
     }
@@ -136,7 +140,8 @@
             components = data.filter((component) => typeof component.name === "string" && /^[a-z0-9-]+$/.test(component.slug));
             renderList();
             if (components.length) {
-                selectComponent(components[0].slug);
+                const requested = window.location.hash.slice(1);
+                selectComponent(components.some((component) => component.slug === requested) ? requested : components[0].slug);
             }
         } catch (error) {
             elements.detail.setAttribute("aria-busy", "false");

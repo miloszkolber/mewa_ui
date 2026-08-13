@@ -3,9 +3,9 @@ import fs from "node:fs";
 import path from "node:path";
 import puppeteer from "puppeteer-core";
 
-const base = process.env.CORE_UI_BASE_URL || "http://127.0.0.1:8083/ui";
-const browserURL = process.env.CORE_UI_BROWSER_URL || "http://127.0.0.1:9223";
-const screenshotDir = process.env.CORE_UI_SCREENSHOT_DIR;
+const base = process.env.MEWA_UI_BASE_URL || "http://127.0.0.1:8083/ui";
+const browserURL = process.env.MEWA_UI_BROWSER_URL || "http://127.0.0.1:9223";
+const screenshotDir = process.env.MEWA_UI_SCREENSHOT_DIR;
 const manifest = JSON.parse(fs.readFileSync(new URL("../catalog/components.json", import.meta.url), "utf8"));
 const viewports = [
     { name: "desktop", width: 1280, height: 900 },
@@ -66,7 +66,7 @@ async function assertVisualState(name) {
         const visible = [...document.body.querySelectorAll("*")].filter((node) => { const box = node.getBoundingClientRect(); return !node.hidden && box.width > 0 && box.height > 0; }).length;
         const walker = document.createTreeWalker(document, NodeFilter.SHOW_COMMENT);
         let hasStart = false;
-        while (walker.nextNode()) if (walker.currentNode.data.trim() === "core-ui-snippet:start") hasStart = true;
+        while (walker.nextNode()) if (walker.currentNode.data.trim() === "mewa-ui-snippet:start") hasStart = true;
         const focusFailures = [];
         for (const node of document.querySelectorAll("button,a[href],input,select,textarea,[tabindex='0']")) {
             if (node.matches(":disabled,[aria-disabled='true']") || !node.getClientRects().length || node.closest("[hidden],[inert]")) continue;
@@ -88,7 +88,7 @@ async function assertVisualState(name) {
 for (const viewport of viewports) {
     await load(`${base}/catalog/`, viewport, "catalog");
     assertCanonicalAssets(await canonicalAssets(), `catalog ${viewport.name}`, { runtime: false });
-    await page.waitForFunction(() => document.querySelector("#component-count")?.textContent.includes("64"));
+    await page.waitForFunction((count) => document.querySelector("#component-count")?.textContent.includes(String(count)), {}, manifest.length);
     const result = await page.evaluate(() => ({ count: document.querySelector("#component-list")?.children.length, overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth }));
     if (result.count !== manifest.length || result.overflow > 1) failures.push(`catalog ${viewport.name}: ${JSON.stringify(result)}`);
 }
@@ -129,6 +129,13 @@ async function clickAndAssert(slug, trigger, panel) {
     await component(slug); await page.click(trigger); assert.equal(await page.$eval(panel, (node) => node.hidden), false, `${slug} opens`); await page.keyboard.press("Escape"); assert.equal(await page.$eval(panel, (node) => node.hidden), true, `${slug} closes`);
 }
 
+await component("button");
+const buttonContrast = await page.$$eval(".ui-button-primary, .ui-button-danger", (nodes) => {
+    const channel = (value) => { value /= 255; return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4; };
+    const luminance = (value) => { const [red, green, blue] = value.match(/[\d.]+/g).slice(0, 3).map(Number); return 0.2126 * channel(red) + 0.7152 * channel(green) + 0.0722 * channel(blue); };
+    return nodes.map((node) => { const style = getComputedStyle(node), foreground = luminance(style.color), background = luminance(style.backgroundColor); return (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05); });
+});
+assert(buttonContrast.every((ratio) => ratio >= 4.5), `button variants need 4.5:1 text contrast (${buttonContrast.join(", ")})`);
 await component("accordion");
 await page.click("#accordion-returns-trigger");
 assert.equal(await page.$eval("#accordion-returns-panel", (node) => node.hidden), false);
@@ -170,6 +177,10 @@ await component("resizable"); await page.focus('[data-ui-part="handle"]'); const
 await component("message-scroller"); await page.$eval('[data-ui-part="list"]', (node) => { for (let index = 0; index < 30; index++) { const message = document.createElement("p"); message.textContent = `Message ${index}`; node.append(message); } node.scrollTop = 0; node.dispatchEvent(new Event("scroll")); }); await page.waitForFunction(() => !document.querySelector('[data-ui-part="jump"]').hidden); await page.click('[data-ui-part="jump"]'); assert.equal(await page.$eval('[data-ui-part="jump"]', (node) => node.hidden), true);
 await component("message-scroller"); await page.type("#message-scroller-input", "   "); await page.click('[data-ui-part="composer"] button[type="submit"]'); assert.equal(await page.$eval("#message-scroller-input", (node) => node.validationMessage), "Enter a message."); await page.type("#message-scroller-input", "Ready for review."); await page.click('[data-ui-part="composer"] button[type="submit"]'); assert.equal(await page.$eval('[data-ui-part="messages"] li:last-child p', (node) => node.textContent), "Ready for review."); assert.equal(await page.$eval("#message-scroller-input", (node) => node.value), "");
 await component("data-table"); await page.type("#data-table-filter", "absent"); assert.equal(await page.$eval('[data-ui-part="empty"]', (node) => node.hidden), false); await page.$eval("#data-table-filter", (node) => { node.value = ""; node.dispatchEvent(new Event("input", { bubbles: true })); }); await page.click('[data-ui-table-sort-trigger]'); assert.equal(await page.$eval("th", (node) => node.getAttribute("aria-sort")), "descending");
+await component("diff"); await page.$eval('[data-ui-part="control"]', (node) => { node.value = "68"; node.dispatchEvent(new Event("input", { bubbles: true })); }); assert.equal(await page.$eval('[data-ui-part="status"]', (node) => node.textContent), "68% after"); assert.equal(await page.$eval('[data-ui-part="control"]', (node) => node.getAttribute("aria-valuetext")), "68 percent after");
+await component("number-field"); await page.click('[data-ui-part="increment"]'); assert.equal(await page.$eval('[data-ui-part="input"]', (node) => node.value), "4");
+await component("toolbar"); await page.focus('[role="toolbar"] button'); await page.keyboard.press("ArrowRight"); assert.equal(await page.$eval('[role="toolbar"]', (node) => document.activeElement?.getAttribute("aria-label")), "Italic"); await page.click('[aria-label="Bold"]'); assert.equal(await page.$eval('[aria-label="Bold"]', (node) => node.getAttribute("aria-pressed")), "true");
+await component("rating"); await page.click('label[for="rating-5"]'); assert.equal(await page.$eval("#rating-5", (node) => node.checked), true);
 
 await page.close();
 await browser.disconnect();

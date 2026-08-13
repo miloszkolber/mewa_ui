@@ -1,41 +1,55 @@
-# Core UI design contract
+# mewa_ui design contract
 
-This document defines the new static architecture for the Core UI catalog. It covers only `src/base.css`, `src/components.css`, `src/components.js`, `src/lucide.svg`, and the copy-ready snippets. Existing services may remain on their legacy root asset during migration, but new work uses the `src/` contract.
+This contract applies only to this standalone repository. External products may guide its visual direction, but they are not dependencies and must not be modified as part of library work.
 
 ## Foundations
 
-- **Two CSS files:** `src/base.css` owns reset, typography, layout primitives, focus, tokens, and responsive foundations. `src/components.css` owns component selectors, variants, and component state. There are exactly two canonical CSS files.
-- **10-step scales:** define spacing, type, size, radius, and layering as steps 0 through 9. Components consume scale tokens, never one-off values.
-- **Semantic mapping:** map neutral surface, text, border, accent, focus, success, warning, danger, and disabled roles to the scale tokens. Components use semantic roles, not raw palette names or service colors.
-- **Status vocabulary:** `data-state` may be only `ok`, `warning`, `error`, `running`, or `progress`. Use ARIA and component-specific `data-ui-*` hooks for every other state.
-- **Geometry:** use square or near-square geometry with restrained radii. Never add shadows. Blur is allowed only on approved overlays, including dialogs, popovers, menus, sheets, drawers, and catalog overlays.
+- `src/base.css` owns the compact palette, semantic roles, requested typography, focus treatment, reset, and shared browser primitives.
+- `src/components.css` owns component-specific layout, spacing, structure, variants, and responsive rules.
+- Body sizes are 12, 14, and 16 px. Heading sizes are 16, 20, 24, and 32 px.
+- Line heights are 1.2, 1.4, and 1.6. Weights are 400 and 500.
+- The palette has monochrome, red, yellow, and green scales. Status colors never decorate neutral actions.
+- Geometry is square. Shadows are forbidden. Circular geometry is limited to objects whose meaning depends on it, such as radio controls, avatars, and status dots.
+- Backdrop blur belongs only to overlapping surfaces: dialogs, sheets, drawers, menus, popovers, tooltips, toasts, and sticky glass headers.
+- Component-local dimensions and spacing are explicit. Do not rebuild a large semantic spacing-token taxonomy.
 
-## Runtime and accessibility
+## Markup and behavior
 
-`src/components.js` is progressive enhancement. It must not be required for readable content, native form submission, or basic navigation. Mark dynamic roots with hooks such as `data-ui-disclosure`, `data-ui-tabs`, `data-ui-dialog`, `data-ui-popover`, `data-ui-menu`, `data-ui-combobox`, `data-ui-calendar`, `data-ui-carousel`, `data-ui-resizable`, `data-ui-toggle`, and `data-ui-toggle-group`. Call `CoreUI.enhance(root)` after inserting markup and `CoreUI.destroy(root)` before removing an enhanced subtree.
+Start from semantic HTML and native controls. A component must remain understandable without JavaScript wherever the platform provides a native path. Use `data-ui-*` only as stable behavior hooks; use classes for styling; use `data-state` only for `ok`, `warning`, `error`, `running`, or `progress`.
 
-Interactive elements retain a visible `:focus-visible` indicator and honor `prefers-reduced-motion`. Disclosure triggers expose `aria-expanded` and `aria-controls`, with closed content `hidden`. Tabs use `tablist`, `tab`, `tabpanel`, `aria-selected`, `aria-controls`, and roving focus. Dialogs use `role="dialog"`, `aria-modal="true"`, a labelled title, an explicit close control, and Escape handling. Menus and listboxes use their correct roles, selected/checked state, and arrow-key navigation. Forms associate labels, use native validation, and announce non-critical updates with `role="status"` or `aria-live="polite"`; errors use `role="alert"`. Calendars, carousels, resizable handles, scrollers, questionnaires, tables, and charts provide the labels, keyboard operations, announcements, captions, scopes, sorting state, and text alternatives appropriate to their content.
+`src/components.js` exposes `MewaUI.enhance(root)` and `MewaUI.destroy(root)`. Enhancement must be idempotent, clean up listeners, and preserve native submission and navigation. Custom events use the `mewa-ui:*` prefix.
 
-## Layouts and navigation
+Interactive patterns follow their platform and ARIA keyboard models:
 
-There are exactly two supported layouts.
+- Disclosure controls synchronize `aria-expanded`, `aria-controls`, and `hidden`.
+- Tabs, menus, listboxes, toolbars, and composite choices use roving focus and the expected arrow, Home, End, Escape, and activation keys.
+- Modal surfaces label their purpose, trap focus, inert background content, close with Escape, and restore focus.
+- Forms keep explicit labels, descriptions, native validation, and live status announcements.
+- Tables retain captions, scopes, and sorting state even when their narrow-screen presentation changes.
+- Reduced-motion and forced-colors modes remain usable.
 
-### Vertical rail
+## Components
 
-Use `<body class="ui-shell ui-shell--rail">` with a direct `<div class="ui-frame">` containing `<nav class="ui-rail" aria-label="Workspace navigation">…</nav>` and `<main class="ui-shell-main">…</main>`. Put the navigation links directly inside `.ui-rail`, use native anchors and `aria-current="page"`, and give every icon-only link an accessible name. Desktop places the rail on the left. Narrow screens move it below the main content as a compact navigation row.
+Every manifest entry has exactly one complete document in `snippets/`. Its reusable fragment is delimited by `<!-- mewa-ui-snippet:start -->` and `<!-- mewa-ui-snippet:end -->`. A component is not considered implemented until markup, styles, behavior where needed, focus treatment, narrow-screen behavior, local icons, and contract coverage agree.
 
-### Horizontal tabs
-
-Use `<body class="ui-shell ui-shell--top">` with a direct `<div class="ui-frame">` containing `<header class="ui-topbar">…</header>` and `<main class="ui-shell-main">…</main>`. The header contains `.ui-topbar-brand` and `<nav class="ui-topnav" aria-label="Workspace navigation">…</nav>`. Links use native anchors and `aria-current="page"`. Narrow screens preserve the bar and allow the route links to scroll without causing page overflow.
+The catalog loads exactly `src/base.css`, `src/components.css`, and its own catalog script. Snippets load the two stylesheets plus `src/components.js`. Do not create per-component stylesheets or scripts.
 
 ## Icons
 
-Every Lucide icon used must first be added as a symbol to `src/lucide.svg`. Use same-origin references such as `<svg aria-hidden="true"><use href="/ui/src/lucide.svg#search" /></svg>` and `currentColor`. Decorative icons are hidden from assistive technology. Icon-only controls have an accessible name. Product marks and media illustrations belong to the consuming service.
+Lucide is the primary icon source. Symbols live in `src/lucide.svg`, inherit `currentColor`, and use the shared stroke treatment. Decorative icons use `aria-hidden="true"`; icon-only controls have an `aria-label` or equivalent accessible name. Product marks and content illustration belong to consuming services.
 
-## Catalog and serving
+## Layouts
 
-The catalog is `/ui/catalog/index.html`; `catalog/components.json` is the manifest and each entry has one matching marked file in `snippets/`. Its `.ui-catalog-*` classes are catalog-specific composition rather than a third reusable layout. Mount `/repo/ui_library` read-only at `/ui` in Compose. The deployment Compose and Nginx files remain in the parent Core repository. The serving URL is `http://localhost:<published-port>/ui/catalog/`. For local serving run `python3 -m http.server 8080 --directory /repo/ui_library`; for Compose use the relevant deployment file from the parent Core repository.
+Two service shells are supported:
 
-## Contribution and validation
+- `.ui-shell.ui-shell--rail` contains `.ui-frame`, `.ui-rail`, and `.ui-shell-main`; the rail becomes a bottom row on narrow screens.
+- `.ui-shell.ui-shell--top` contains `.ui-frame`, `.ui-topbar`, `.ui-topnav`, and `.ui-shell-main`; route links scroll inside the bar rather than widening the page.
 
-Keep shared changes in `src/`, update the manifest and matching snippet together, and preserve semantic HTML and composable selectors. Run `node tests/catalog-contract.test.js` and `node tests/runtime-contract.test.js` from this directory. These are static and DOM-harness checks, not real-browser or screen-reader validation. When a Chromium DevTools endpoint and `puppeteer-core` are available, run `node tests/browser-smoke.mjs` with `CORE_UI_BASE_URL` and `CORE_UI_BROWSER_URL`.
+## Contribution checklist
+
+1. Add or update the manifest entry and matching marked snippet together.
+2. Use existing semantic roles and the four color scales; add a foundation token only when multiple unrelated components need it.
+3. Add required Lucide symbols locally.
+4. Cover runtime behavior in `tests/runtime-contract.test.js` and repository contracts in `tests/catalog-contract.test.js`.
+5. Inspect desktop, 200% zoom, keyboard-only operation, and a 320–390 px viewport in a real browser.
+6. Run both Node contract suites before handoff.
