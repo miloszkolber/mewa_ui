@@ -1,8 +1,14 @@
-/* mewa_ui foundation: color, type, focus, and browser primitives. */
+@font-face {
+  font-family: "geist_mono";
+  src: url("geistmono.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400 550;
+  font-display: swap;
+}
+
+/* foundation */
 :root {
     color-scheme: dark;
-
-    /* Four compact scales: monochrome plus semantic red, yellow, and green. */
     --ui-mono-0: #050505;
     --ui-mono-1: #0a0a0a;
     --ui-mono-2: #111111;
@@ -32,7 +38,7 @@
     --ui-green-4: #28d66b;
     --ui-green-5: #94efb5;
 
-    /* Semantic roles. Status colors carry meaning; neutral UI stays monochrome. */
+    /* semantic */
     --ui-canvas: var(--ui-mono-0);
     --ui-surface: var(--ui-mono-1);
     --ui-surface-raised: var(--ui-mono-2);
@@ -64,8 +70,8 @@
     --ui-success-muted: color-mix(in srgb, var(--ui-green-0) 72%, var(--ui-surface));
     --ui-dialog-overlay: color-mix(in srgb, var(--ui-mono-0) 76%, transparent);
 
-    /* Requested type system: 12/14/16 body, 16/20/24/32 headings. */
-    --ui-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    /* typography */
+    --ui-font-mono: geist_mono, ui-monospace, monospace;
     --ui-font-size-xs: 0.75rem;
     --ui-font-size-sm: 0.875rem;
     --ui-font-size-base: 1rem;
@@ -77,11 +83,11 @@
     --ui-line-height-normal: 1.4;
     --ui-line-height-relaxed: 1.6;
     --ui-font-weight-regular: 400;
-    --ui-font-weight-medium: 500;
+    --ui-font-weight-medium: 550;
     --ui-tracking-tight: -0.01em;
     --ui-tracking-wide: 0.08em;
 
-    /* Global control geometry only. Component-specific dimensions stay local. */
+    /* global geometry */
     --ui-border-width: 1px;
     --ui-focus-ring-width: 2px;
     --ui-control-height: 2.5rem;
