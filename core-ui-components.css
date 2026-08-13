@@ -156,6 +156,7 @@ svg:has(> use) use {
 .ui-button-group > * { border-radius: 0; }
 .ui-button-group > :first-child { border-start-start-radius: var(--ui-component-radius); border-end-start-radius: var(--ui-component-radius); }
 .ui-button-group > :last-child { border-start-end-radius: var(--ui-component-radius); border-end-end-radius: var(--ui-component-radius); }
+.ui-button-group [data-ui-toggle][aria-pressed="true"] { position: relative; z-index: var(--ui-component-z-popup); border-color: var(--ui-component-focus); background: var(--ui-component-active); color: var(--ui-component-text); }
 
 .ui-card,
 .ui-panel,
@@ -274,6 +275,7 @@ svg:has(> use) use {
 .ui-pagination-link[aria-current="page"] { color: var(--ui-component-text); font-weight: var(--ui-font-weight-semibold); }
 .ui-pagination { justify-content: center; }
 .ui-pagination-link { display: inline-flex; min-width: var(--ui-component-row); min-height: var(--ui-component-row); align-items: center; justify-content: center; border: var(--ui-border-width) solid var(--ui-component-border); border-radius: var(--ui-component-radius); }
+.ui-pagination > button:disabled { color: var(--ui-text-disabled); cursor: not-allowed; }
 .ui-bubble-list { display: grid; align-items: stretch; }
 .ui-bubble { max-width: var(--ui-component-width-md); padding: var(--ui-component-padding); }
 .ui-bubble-outgoing { justify-self: end; background: var(--ui-component-active); }
@@ -392,12 +394,46 @@ svg:has(> use) use {
 [data-ui-component="tooltip"] [data-ui-part="content"],
 [data-ui-component="hover-card"] [data-ui-part="content"],
 [data-ui-combobox] [data-ui-part="content"],
-[data-ui-command] [data-ui-part="content"] { position: absolute; z-index: var(--ui-component-z-popup); min-width: var(--ui-component-menu-width); backdrop-filter: blur(var(--ui-backdrop-blur-sm)); }
+[data-ui-command] [data-ui-part="content"] { position: absolute; inset-block-start: calc(100% + var(--ui-component-gap)); inset-inline-start: 0; z-index: var(--ui-component-z-popup); min-width: var(--ui-component-menu-width); backdrop-filter: blur(var(--ui-backdrop-blur-sm)); }
+[data-ui-component="navigation-menu"] > [data-ui-part="list"],
+[data-ui-component="menubar"] { display: flex; align-items: center; gap: var(--ui-component-gap); margin: 0; padding: 0; list-style: none; }
+[data-ui-component="navigation-menu"] > [data-ui-part="list"] > li,
+[data-ui-component="menubar"] > [data-ui-part="menu"] { position: relative; margin: 0; padding: 0; list-style: none; }
+[data-ui-component="navigation-menu"] [data-ui-part="link"] { display: inline-flex; align-items: center; min-height: var(--ui-component-row); padding: var(--ui-space-2) var(--ui-component-padding); color: var(--ui-component-muted-text); text-decoration: none; }
+[data-ui-component="navigation-menu"] [data-ui-part="link"]:hover,
+[data-ui-component="navigation-menu"] [data-ui-part="link"][aria-current="page"] { background: var(--ui-component-active); color: var(--ui-component-text); }
+[data-ui-component="navigation-menu"] [data-ui-part="link"][aria-disabled="true"] { color: var(--ui-text-disabled); cursor: not-allowed; }
+[data-ui-component="navigation-menu"] [data-ui-part="content"] { display: grid; gap: var(--ui-space-1); }
+[data-ui-component="navigation-menu"] [data-ui-part="trigger"][aria-expanded="true"],
+[data-ui-component="menubar"] [data-ui-part="trigger"][aria-expanded="true"] { border-color: var(--ui-component-focus); background: var(--ui-component-active); color: var(--ui-component-text); }
+[data-ui-component="menubar"] > [data-ui-part="menu"] > [data-ui-part="trigger"] { border: 0; border-radius: var(--ui-component-radius); background: none; }
+[data-ui-component="menubar"] [data-ui-part="content"] { margin: 0; list-style: none; }
 [role="menuitem"],
-[data-ui-menu-item] { display: flex; align-items: center; width: 100%; min-height: var(--ui-component-row); padding: var(--ui-space-2); color: var(--ui-component-text); }
+[role="menuitem"],
+[role="menuitemcheckbox"],
+[role="menuitemradio"],
+[data-ui-menu-item] { display: flex; align-items: center; width: 100%; min-height: var(--ui-component-row); border: 0; border-radius: 0; background: none; padding: var(--ui-space-2); color: var(--ui-component-text); font: inherit; text-align: start; text-decoration: none; }
 [role="menuitem"]:hover,
+[role="menuitemcheckbox"]:hover,
+[role="menuitemradio"]:hover,
 [data-ui-menu-item]:hover,
 [role="option"][aria-selected="true"] { background: var(--ui-component-active); }
+[role="menuitemcheckbox"][aria-checked="true"],
+[role="menuitemradio"][aria-checked="true"] { background: var(--ui-component-active); color: var(--ui-component-text); }
+[role="menuitem"]:disabled,
+[role="menuitemcheckbox"]:disabled,
+[role="menuitemradio"]:disabled,
+[role="menuitem"][aria-disabled="true"],
+[role="menuitemcheckbox"][aria-disabled="true"],
+[role="menuitemradio"][aria-disabled="true"],
+[role="menuitem"][aria-disabled="true"]:is(a),
+[role="menuitemcheckbox"][aria-disabled="true"]:is(a),
+[role="menuitemradio"][aria-disabled="true"]:is(a) { color: var(--ui-text-disabled); cursor: not-allowed; }
+.ui-menu-item-destructive { color: var(--ui-danger); }
+.ui-menu-item-destructive:hover:not(:disabled) { background: var(--ui-component-active); color: var(--ui-danger); }
+[data-ui-component="dropdown-menu"] [data-ui-part="content"][aria-busy="true"],
+[data-ui-component="context-menu"] [data-ui-part="content"][aria-busy="true"],
+[data-ui-component="menubar"] [data-ui-part="content"][aria-busy="true"] { cursor: progress; }
 
 [data-ui-dialog],
 [data-ui-alert-dialog],
