@@ -37,3 +37,5 @@ Use same-origin Lucide sprite links such as `<svg aria-hidden="true"><use href="
 ## Checks
 
 From `/home/core/docker/ui_library`, run `bun tests/catalog-contract.test.js` or `node tests/catalog-contract.test.js` for the catalog contract, and `bun tests/runtime-contract.test.js` or `node tests/runtime-contract.test.js` for the runtime harness. These are static and DOM-harness checks, not real browser or assistive-technology validation. For a native Node syntax check without a local Node install, run `docker run --rm -v "$PWD:/work" -w /work node:alpine node --check core-ui.js`.
+
+`tests/browser-smoke.mjs` provides an optional real-browser check for every standalone snippet plus representative interactions. It expects `puppeteer-core`, a static server exposing this directory at `/ui`, and a Chromium DevTools endpoint. Configure those endpoints with `CORE_UI_BASE_URL` and `CORE_UI_BROWSER_URL`.

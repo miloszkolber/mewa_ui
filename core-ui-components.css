@@ -417,6 +417,7 @@ svg:has(> use) use {
 [role="menuitemcheckbox"]:hover,
 [role="menuitemradio"]:hover,
 [data-ui-menu-item]:hover,
+[role="option"][data-ui-active="true"],
 [role="option"][aria-selected="true"] { background: var(--ui-component-active); }
 [role="menuitemcheckbox"][aria-checked="true"],
 [role="menuitemradio"][aria-checked="true"] { background: var(--ui-component-active); color: var(--ui-component-text); }

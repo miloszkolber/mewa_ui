@@ -68,7 +68,7 @@
         state.cleanup.push(() => panels.forEach((panel) => close(panel, false)));
     }
     function disclosure(root, state) { parts(root, "trigger").forEach((trigger) => add(state, trigger, "click", () => { const panel = panelFor(trigger, root); open(trigger, panel, trigger.getAttribute("aria-expanded") !== "true"); })); }
-    function tabs(root, state) { const tabs = qa(root, "[role=tab],[data-ui-tab],[data-ui-part=trigger]"); const select = (tab, focus) => { tabs.forEach((item) => { const selected = item === tab; item.setAttribute("aria-selected", String(selected)); item.tabIndex = selected ? 0 : -1; const panel = panelFor(item, root); if (panel) panel.hidden = !selected; }); if (focus) tab.focus(); }; tabs.forEach((tab, index) => { add(state, tab, "click", () => select(tab)); add(state, tab, "keydown", (event) => { const delta = event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : event.key === "ArrowLeft" || event.key === "ArrowUp" ? -1 : 0; const next = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : delta ? (index + delta + tabs.length) % tabs.length : null; if (next !== null) { event.preventDefault(); select(tabs[next], true); } }); }); }
+    function tabs(root, state) { const tabs = qa(root, "[role=tab],[data-ui-tab],[data-ui-part=trigger]"), enabled = () => tabs.filter((tab) => !optionDisabled(tab)); const select = (tab, focus) => { if (optionDisabled(tab)) return; tabs.forEach((item) => { const selected = item === tab; item.setAttribute("aria-selected", String(selected)); item.tabIndex = selected ? 0 : -1; const panel = panelFor(item, root); if (panel) panel.hidden = !selected; }); if (focus) tab.focus(); }; tabs.forEach((tab) => { if (optionDisabled(tab)) tab.tabIndex = -1; add(state, tab, "click", () => select(tab)); add(state, tab, "keydown", (event) => { const available = enabled(), index = available.indexOf(tab), delta = event.key === "ArrowRight" || event.key === "ArrowDown" ? 1 : event.key === "ArrowLeft" || event.key === "ArrowUp" ? -1 : 0; const next = event.key === "Home" ? available[0] : event.key === "End" ? available.at(-1) : delta && index >= 0 ? available[(index + delta + available.length) % available.length] : null; if (next) { event.preventDefault(); select(next, true); } }); }); }
     function popup(root, state, type) {
         const triggers = qa(root, "[data-ui-part=trigger],[data-ui-trigger]").filter((node, index, all) => all.indexOf(node) === index);
         const pairs = triggers.map((trigger) => ({ trigger, panel: panelFor(trigger, root) })).filter((pair) => pair.panel);
@@ -122,7 +122,7 @@
         let committed = allItems().find((item) => item.getAttribute("aria-selected") === "true") || items()[0];
         let active = committed;
         let typeahead = "", typeaheadTimer;
-        const setActive = (item) => { active = item; if (item) trigger.setAttribute("aria-activedescendant", item.id); else trigger.removeAttribute("aria-activedescendant"); };
+        const setActive = (item) => { active = item; allItems().forEach((entry) => { if (entry === item) entry.dataset.uiActive = "true"; else delete entry.dataset.uiActive; }); if (item) trigger.setAttribute("aria-activedescendant", item.id); else trigger.removeAttribute("aria-activedescendant"); };
         const setCommitted = (item, notify) => {
             if (!item || optionDisabled(item)) return;
             committed = item;
@@ -158,7 +158,7 @@
         allItems().forEach((item, index) => { if (!item.id) item.id = `${input.id || "core-ui-choice"}-option-${index + 1}`; });
         let committed = allItems().find((item) => item.getAttribute("aria-selected") === "true");
         let active = committed || items()[0];
-        const setActive = (item) => { active = item; if (item) input.setAttribute("aria-activedescendant", item.id); else input.removeAttribute("aria-activedescendant"); };
+        const setActive = (item) => { active = item; allItems().forEach((entry) => { if (entry === item) entry.dataset.uiActive = "true"; else delete entry.dataset.uiActive; }); if (item) input.setAttribute("aria-activedescendant", item.id); else input.removeAttribute("aria-activedescendant"); };
         const setCommitted = (item) => { if (!item || optionDisabled(item)) return; committed = item; allItems().forEach((entry) => entry.setAttribute("aria-selected", String(entry === item))); input.value = value(item); setActive(item); input.setAttribute("aria-expanded", "false"); if (list) list.hidden = true; emit(root, "core-ui:select", { value: input.value, item }); };
         const show = () => { if (list) list.hidden = false; input.setAttribute("aria-expanded", "true"); };
         const filter = (needle) => { allItems().forEach((item) => { item.hidden = optionDisabled(item) || !item.textContent.toLowerCase().includes(needle); }); const visible = items(), empty = part(root, "empty"); if (empty) empty.hidden = visible.length > 0; setActive(visible[0]); };
