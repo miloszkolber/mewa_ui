@@ -641,6 +641,9 @@ test("reviewed overlay, feedback, form, and state contracts stay explicit", () =
     assert.equal((snippet("select").match(/<input\b[^>]*data-ui-part="input"[^>]*type="hidden"/gi) || []).length, 2, "every custom Select example needs a form value");
     assert.match(snippet("message"), /data-state="running"[\s\S]*ui-message-icon ui-spin/, "running Message feedback needs a visible reduced-motion-aware spinner");
     assert.match(snippet("data-table"), /data-ui-table-clear[\s\S]*data-ui-part="range"/, "Data Table must expose clear-filter and result-range hooks");
+    const table = snippet("table");
+    assert.match(table, /class="ui-table ui-table--responsive"/, "standalone Table must use its responsive mobile presentation");
+    ["File", "Status", "Updated"].forEach((label) => assert.match(table, new RegExp(`data-label="${label}"`), `standalone Table must label ${label} on narrow screens`));
     assert(!/data-ui-carousel-track[^>]*aria-live/i.test(snippet("carousel")), "Carousel must announce changes through one status region");
     const base = read(canonicalBaseCss), css = read(canonicalComponentCss);
     assert.match(base, /--ui-font-mono:\s*"geist-mono"/, "the canonical Geist Mono token must remain available for technical content");

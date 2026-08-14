@@ -4,6 +4,8 @@ Audit baseline: 2026-08-14. The portfolio and `core/docker` interfaces are visua
 
 ## Current pass
 
+- Evaluated the captured desktop and mobile screenshots plus fresh 1280 × 900 and 390 × 844 screenshots for all six application layouts. Corrected the standalone Table example so its Updated column remains visible on mobile through the responsive table pattern and explicit data labels.
+- Expanded Dropdown Menu and Command popup capacity to `20rem` within the viewport. Their screenshot states now show complete action lists instead of ending on a partially clipped row. Horizontal navigation fades and bounded scroll-area content were reviewed as intentional scroll affordances rather than layout overflow.
 - Ran a live-browser visual audit across the catalog, all six layouts, and all 71 snippets: every visible text element meets 4.5:1 contrast (3:1 for large text), no text is clipped, no stray border radii or computed shadows exist, and no page overflows at 200% zoom. Reduced-motion disables shimmer, spinner, and carousel motion. Placeholder text uses the documented subtle foreground.
 - Removed 15 unused Lucide symbols from the canonical sprite (44 to 29), including leftovers from the removed Rating and catalog copy controls. Every referenced symbol still exists and the full static, runtime, and browser suites pass.
 - Completed a fresh-eyes review of every snippet, stylesheet, runtime handler, catalog file, layout, and test. Scoped the global `[data-ui-toggle][aria-pressed="true"]` pressed-state rule to button groups and standalone toggles, moved dialogs, sheets, and drawers from the toast stacking token to `--ui-z-dialog`, and removed the global SVG size override while keeping the required baseline rule.
