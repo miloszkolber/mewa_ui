@@ -4,6 +4,16 @@ Audit baseline: 2026-08-14. The portfolio and `core/docker` interfaces are visua
 
 ## Current pass
 
+- Re-inspected all 71 manifest entries, marked snippets, production styles, runtime handlers, catalog code, six layouts, and contract tests. The final browser suite passed every snippet at 1280 × 900 and 390 × 844, all six layouts at both widths, the catalog and palette view, the no-JavaScript questionnaire fallback, and targeted open/focus/filter/resize/sort states.
+- Compared the canonical library with the current `hf_ui`, `moonlight_ui`, and both `meili_ui` surfaces. Preserved their strongest interaction qualities through distinct rest/hover/active states and clearer operational patterns, while recording the verified asset and structural migration boundary in `MIGRATION.md` instead of adding legacy aliases.
+- Moved Dialog, blocking Alert, Drawer, Sheet, and Lightbox onto native `<dialog>` top-layer semantics with a generic-container fallback, explicit focus restoration, Escape/cancel handling, and directional edge-panel geometry.
+- Corrected Tooltip so only its trigger and description surface own hover, removed duplicate Toast and Carousel announcements, stopped the inline Command example from claiming dialog semantics, and prevented Carousel shortcuts from consuming arrow keys inside descendant controls.
+- Added accumulated menu typeahead, committed pointer-sort events with canceled-drag rollback, vertical and horizontal Resizable behavior with Home/End bounds, decimal-safe Number Field stepping, and complete Data Table filter clearing, singular/plural status, and visible-range synchronization.
+- Restored meaningful visual state separation for form controls, input groups, tabs, pagination, breadcrumbs, and resize handles. Narrowed disabled-button styling so it no longer leaks onto unrelated `aria-disabled` options.
+- Activated the existing Geist Mono asset through `--ui-font-mono` for code, logs, and keyboard notation; running Message feedback now has a status-colored, reduced-motion-aware spinner.
+- Added explicit `requiresJs` metadata to every manifest entry, exposed it in the catalog, and updated the LLM contract so native interactivity is not confused with a runtime dependency.
+- Declared and locked the dev-only `puppeteer-core` dependency, added portable package scripts and ignore rules, and expanded static, runtime, and browser regression coverage. Production remains zero-build and dependency-free.
+
 - Rebuilt the foundation around six theme-specific 11-step role palettes and generalized semantic roles. All palette values and color interpolation use OKLCH; the ramps are deliberately not reversible theme generators.
 - Assigned `050`–`100` to surfaces, `200`–`300` to hover and active backgrounds, `400` to subtle borders, `500`–`700` to borders and decoration, and `800`–`950` to muted through primary text.
 - Rebuilt all opaque palettes on the same `L 17.7`–`91.9351` OKLCH lightness curve. Gray defines the APCA baseline against `050`: `500`–`950` target `Lc 15`, `30`, `45`, `60`, `75`, and `90`.
@@ -42,6 +52,9 @@ The useful next candidates are requirement-led patterns such as a date-range pic
 - [Radix Colors scale composition](https://www.radix-ui.com/colors/docs/palette-composition/understanding-the-scale)
 - [APCA usage guidance](https://git.apcacontrast.com/documentation/APCA_in_a_Nutshell.html)
 - [daisyUI components](https://daisyui.com/components/)
-- [Basecoat source and patterns](https://github.com/hunvreus/basecoat)
+- [Basecoat installation and runtime patterns](https://basecoatui.com/installation/)
 - [Coss UI component index](https://coss.com/ui/llms.txt)
 - [0build documentation](https://0build.dev/docs/latest/kit/installation/)
+- [WAI-ARIA Tooltip Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/)
+- [WAI-ARIA Modal Dialog Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/)
+- [WAI-ARIA Combobox Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/)

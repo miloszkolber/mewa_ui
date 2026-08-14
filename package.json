@@ -1,0 +1,13 @@
+{
+  "name": "mewa-ui",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Vanilla, accessible, monochrome component library for personal services.",
+  "scripts": {
+    "test": "node tests/catalog-contract.test.js && node tests/runtime-contract.test.js",
+    "test:browser": "node tests/browser-smoke.mjs"
+  },
+  "devDependencies": {
+    "puppeteer-core": "25.3.0"
+  }
+}

@@ -16,20 +16,21 @@
 - Horizontal application layout: `/ui/layouts/horizontal-navbar.html`
 - Operations workspace layout: `/ui/layouts/operations-workspace.html`
 - Catalog-only styles: `/ui/src/demo.css` (do not load in consuming applications)
+- Existing-service migration map: `/ui/MIGRATION.md`
 
 ## Integration contract
 
-1. Read `catalog/components.json` to choose a component by purpose, group, and behavior.
+1. Read `catalog/components.json` to choose a component by purpose, group, behavior, and the explicit `requiresJs` boolean.
 2. Open the matching snippet and copy only content between `<!-- mewa-ui-snippet:start -->` and `<!-- mewa-ui-snippet:end -->`.
 3. Preserve native elements, labels, ids, `aria-*` relationships, live regions, and `data-ui-*` hooks.
 4. Replace example content and ids as needed, keeping every reference unique and valid.
 5. Do not invent `ui-*` classes, `data-ui-*` hooks, palette-step usage, or external icon dependencies.
-6. Static components need only the production styles. Interactive components also need `components.js`; it enhances on load.
+6. Load `components.js` only when at least one selected manifest entry has `requiresJs: true`. A component can be interactive through native HTML while still having `requiresJs: false`.
 7. For dynamically inserted markup call `MewaUI.enhance(container)`. Before permanently removing an enhanced subtree call `MewaUI.destroy(container)`.
 
 ## Visual contract
 
-- Geist first: `geist, sans-serif` through `--ui-font`.
+- Geist first: `geist, sans-serif` through `--ui-font`; technical output and keyboard notation use Geist Mono through `--ui-font-mono`.
 - Square, border-led, shadow-free geometry.
 - Blur only for surfaces that overlap content.
 - Six theme-specific 11-step OKLCH role palettes (`050`–`950`): gray, alpha white, alpha black, red, amber, green. Do not reverse them to synthesize a light theme.
@@ -59,3 +60,9 @@ Bubble, Context Menu, Direction/RTL demo, Dock, Hover Card, Input OTP, Menubar, 
 ## Accessibility
 
 Keep native form submission and fallback behavior. Do not remove captions, legends, explicit labels, descriptions, focusability, `aria-live` output, `aria-expanded`, `aria-controls`, `aria-selected`, or keyboard instructions present in snippets. Respect reduced motion and forced colors. Provide a keyboard path for drag or pointer interactions.
+
+Modal Dialog, Alert Dialog, Drawer, Sheet, and Lightbox examples use native `<dialog>` and the runtime's `showModal()` lifecycle. Do not replace them with generic containers. Keep one announcement owner for each update; for example, Toast announces from the toast item rather than nesting live regions.
+
+## Existing services
+
+`hf_ui`, `moonlight_ui`, and both `meili_ui` pages still consume the legacy `/ui/core-ui.css`. Follow `/ui/MIGRATION.md`; do not invent compatibility aliases or load the legacy and canonical component styles together.

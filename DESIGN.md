@@ -7,7 +7,7 @@ This contract applies only to this standalone repository. The portfolio and serv
 - `src/base.css` owns the six OKLCH palettes, generalized semantic roles, typography, geometry, focus, reset, and browser primitives.
 - `src/mewa.css` owns production component layout, spacing, structure, variants, utilities, and responsive rules.
 - `src/demo.css` owns only catalog and snippet presentation.
-- Interface text uses `geist, sans-serif` through `--ui-font`.
+- Interface text uses `geist, sans-serif` through `--ui-font`. Technical output, code, and keyboard notation use local Geist Mono through `--ui-font-mono`.
 - Body sizes are 12, 14, and 16 px. Heading sizes are 16, 24, and 32 px. Line heights are 1.25 and 1.61. Weights are 400 and 550. Tracking is zero.
 - Every palette value is expressed in OKLCH and uses the theme-specific `050`, `100` … `900`, `950` role scale. Components address semantic roles, never raw red, amber, green, or gray steps. The scale is not intended to generate a light theme when reversed.
 - The roles are fixed: `050`–`100` surfaces; `200`–`300` hover, active, and interactive backgrounds; `400` subtle borders; `500`–`700` borders and decoration; `800`–`950` muted through primary text.
@@ -30,7 +30,7 @@ Interactive patterns follow their platform and ARIA keyboard models:
 
 - Disclosures synchronize `aria-expanded`, `aria-controls`, and `hidden`.
 - Tabs, menus, listboxes, and grouped choices expose the expected arrow, Home, End, Escape, and activation behavior.
-- Modal surfaces label their purpose, trap focus, inert background content, close with Escape, and restore focus.
+- Modal surfaces use native `<dialog>` where available, label their purpose, enter the modal top layer, trap focus, inert background content, close with Escape, and restore focus. The runtime retains a generic-container fallback for existing markup during migration.
 - Forms keep explicit labels, descriptions, native validation, and live status announcements.
 - Tables retain captions, scopes, and sorting state when their narrow-screen presentation changes.
 - Drag interactions provide a keyboard path and a live announcement.
@@ -46,7 +46,7 @@ Alert owns inline and blocking-dialog variants. Progress owns both task progress
 
 ## LLM consumption
 
-`llms.txt` is the concise entry point. `catalog/components.json` is the canonical inventory. An LLM should copy only marked snippet fragments, preserve their accessible names and ARIA relationships, load canonical assets in order, and avoid inventing undocumented `ui-*` classes or `data-ui-*` hooks.
+`llms.txt` is the concise entry point. `catalog/components.json` is the canonical inventory and its `requiresJs` boolean is the source of truth for runtime loading. An LLM should copy only marked snippet fragments, preserve their accessible names and ARIA relationships, load canonical assets in order, and avoid inventing undocumented `ui-*` classes or `data-ui-*` hooks.
 
 Descriptions explain purpose rather than demo content. Examples use realistic variations without product-specific wrappers. Stable file names, marker comments, and hook schemas are covered by contract tests.
 
@@ -63,6 +63,8 @@ Lucide is the primary icon source. Symbols live in `src/lucide.svg`, inherit `cu
 Six complete layout documents cover expanded vertical, left-utility, right-utility, collapsed vertical, horizontal navigation, and an operations workspace composition. All use the same dashed frame, header, breadcrumb, intro, action, and responsive behavior.
 
 The visual references in [`core/docker/meili_ui`](https://github.com/miloszkolber/core/tree/master/docker/meili_ui), [`core/docker/hf_ui`](https://github.com/miloszkolber/core/tree/master/docker/hf_ui), and [`core/docker/moonlight_ui`](https://github.com/miloszkolber/core/tree/master/docker/moonlight_ui) remain separate applications. Their compact tool clusters, framed workspaces, stable form alignment, operational rows, and early single-column breakpoints inform balance without being copied into this repository.
+
+Their observed legacy class families and asset-serving boundaries are recorded in `MIGRATION.md`. New canonical work does not add aliases for those classes; each service migrates its markup, routing, local CSS, and runtime usage as one reviewable change.
 
 ## Contribution checklist
 

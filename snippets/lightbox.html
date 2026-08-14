@@ -7,7 +7,7 @@
     <button class="ui-lightbox-thumbnail" data-ui-part="trigger" data-ui-slide="1" type="button" aria-label="Open structural grid study" aria-haspopup="dialog" aria-expanded="false" aria-controls="lightbox-dialog"><svg viewBox="0 0 160 110" aria-hidden="true"><path d="M20 16H140V94H20ZM50 16V94M80 16V94M110 16V94M20 42H140M20 68H140"></path></svg><span>Grid</span></button>
     <button class="ui-lightbox-thumbnail" data-ui-part="trigger" data-ui-slide="2" type="button" aria-label="Open circulation study" aria-haspopup="dialog" aria-expanded="false" aria-controls="lightbox-dialog"><svg viewBox="0 0 160 110" aria-hidden="true"><path d="M18 92H142M30 92V22H72V92M88 92V48H130V92M42 38H60M42 54H60M42 70H60M100 64H118M100 80H118"></path></svg><span>Circulation</span></button>
   </div>
-  <div class="ui-dialog ui-lightbox-dialog" data-ui-part="panel" id="lightbox-dialog" role="dialog" aria-modal="true" aria-labelledby="lightbox-title" aria-describedby="lightbox-status" hidden>
+  <dialog class="ui-dialog ui-lightbox-dialog" data-ui-part="panel" id="lightbox-dialog" aria-labelledby="lightbox-title" aria-describedby="lightbox-status">
     <div class="ui-lightbox-content" data-ui-part="content">
       <header><div><h2 class="ui-title-md" id="lightbox-title">Project studies</h2><output class="ui-meta-text" data-ui-part="status" id="lightbox-status" aria-live="polite"></output></div><button class="ui-icon-button ui-button-ghost" type="button" data-ui-close aria-label="Close lightbox" autofocus><svg aria-hidden="true"><use href="/ui/src/lucide.svg#x"></use></svg></button></header>
       <div class="ui-lightbox-stage">
@@ -17,7 +17,7 @@
       </div>
       <footer><button class="ui-button ui-button-secondary" data-ui-part="previous" type="button"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#chevron-left"></use></svg>Previous</button><button class="ui-button ui-button-secondary" data-ui-part="next" type="button">Next<svg aria-hidden="true"><use href="/ui/src/lucide.svg#chevron-right"></use></svg></button></footer>
     </div>
-  </div>
+  </dialog>
 </section>
 <!-- mewa-ui-snippet:end -->
 </body></html>

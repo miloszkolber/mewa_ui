@@ -28,6 +28,7 @@ const canonicalDemoStylesheets = [...canonicalProductionStylesheets, "/ui/src/de
 const expectedNames = [
     "Accordion", "Alert", "Aspect Ratio", "Attachment", "Autocomplete", "Avatar", "Badge", "Breadcrumb", "Button", "Button Group", "Calendar", "Card", "Carousel", "Chart", "Checkbox", "Checkbox Group", "Collapsible", "Combobox", "Command", "Data Table", "Date Picker", "Description List", "Dialog", "Diff", "Drawer", "Dropdown Menu", "Empty", "Field", "Fieldset", "File Input", "Input", "Input Group", "Item", "Kbd", "Label", "Lightbox", "Marker", "Message", "Message Scroller", "Native Select", "Navbar Horizontal", "Navbar Vertical", "Number Field", "Pagination", "Popover", "Progress", "Questionnaire", "Radio Group", "Resizable", "Scroll Area", "Scroll Fade", "Select", "Separator", "Sheet", "Shimmer", "Skeleton", "Slider", "Sortable List", "Spinner", "Split Button", "Stat", "Switch", "Table", "Tabs", "Textarea", "Time Field", "Timeline", "Toast", "Toggle", "Tooltip", "Typography"
 ].sort();
+const runtimeRequiredSlugs = new Set(["accordion", "alert", "autocomplete", "button-group", "calendar", "carousel", "checkbox-group", "collapsible", "combobox", "command", "data-table", "date-picker", "dialog", "diff", "drawer", "dropdown-menu", "file-input", "lightbox", "message-scroller", "navbar-vertical", "number-field", "popover", "questionnaire", "resizable", "select", "sheet", "slider", "sortable-list", "split-button", "tabs", "time-field", "toast", "toggle", "tooltip"]);
 const permittedStates = new Set(["ok", "warning", "error", "running", "progress"]);
 const legacyClasses = new Set(["is-busy", "is-empty", "is-idle"]);
 // These are semantic marker classes deliberately styled by their containing component
@@ -244,6 +245,25 @@ test("catalog, manifest, and canonical source assets exist", () => {
     assert(!fs.existsSync(path.join(catalogDir, "catalog.css")), "catalog-specific presentation belongs in src/demo.css");
     assert(fs.existsSync(path.join(root, "core-ui.css")), "legacy root core-ui.css remains present until its removal is orchestrated");
     ["core-ui-components.css", "core-ui.js", "lucide.svg"].forEach((file) => assert(!fs.existsSync(path.join(root, file)), `legacy root ${file} must be removed`));
+    ["MIGRATION.md", "package.json", "pnpm-lock.yaml", ".gitignore"].forEach((file) => assert(fs.existsSync(path.join(root, file)), `missing ${file}`));
+});
+
+test("dev tooling is declared without creating a production dependency", () => {
+    const packageJson = JSON.parse(read(path.join(root, "package.json")));
+    assert.equal(packageJson.private, true, "the personal library package must not publish accidentally");
+    assert.deepEqual(packageJson.dependencies || {}, {}, "production remains dependency-free");
+    assert.equal(packageJson.devDependencies?.["puppeteer-core"], "25.3.0", "browser smoke dependency must be pinned");
+    assert.equal(packageJson.scripts?.test, "node tests/catalog-contract.test.js && node tests/runtime-contract.test.js");
+    assert.equal(packageJson.scripts?.["test:browser"], "node tests/browser-smoke.mjs");
+    assert.match(read(path.join(root, "pnpm-lock.yaml")), /puppeteer-core:\n\s+specifier: 25\.3\.0\n\s+version: 25\.3\.0/, "the browser dependency must be locked");
+});
+
+test("legacy service migration stays explicit and separate from canonical CSS", () => {
+    const migration = read(path.join(root, "MIGRATION.md"));
+    ["docker/hf_ui", "docker/moonlight_ui", "docker/meili_ui", "/ui/core-ui.css", "/ui/src/base.css", "/ui/src/mewa.css", "/ui/src/components.js"].forEach((reference) => assert(migration.includes(reference), `MIGRATION.md must document ${reference}`));
+    assert.match(migration, /Meili's explicit Go route/i, "Meili migration must include its static-route boundary");
+    assert.match(migration, /links that navigate are not ARIA tabs/i, "route navigation must not be migrated as a tab widget");
+    assert(!read(canonicalComponentCss).includes(".ui-framed-"), "canonical CSS must not absorb legacy framed-layout aliases");
 });
 
 test("deployment files stay outside the standalone library", () => {
@@ -278,6 +298,8 @@ test("manifest is the complete declared component set", () => {
         assert(component.description.length >= 24, `${component.slug}: description is too terse for the LLM reference`);
         assert(["static", "interactive"].includes(component.behavior), `${component.slug}: invalid behavior`);
         assert.equal(typeof component.static, "boolean", `${component.slug}: static must be boolean`);
+        assert.equal(typeof component.requiresJs, "boolean", `${component.slug}: requiresJs must be boolean`);
+        assert.equal(component.requiresJs, runtimeRequiredSlugs.has(component.slug), `${component.slug}: requiresJs must reflect the shipped runtime contract`);
     });
 });
 
@@ -592,11 +614,11 @@ test("interactive component families expose their expected hooks", () => {
     const needs = {
         accordion: /aria-expanded|data-accordion/i, alert: /role="(?:alert)?dialog"[\s\S]*aria-modal="true"|data-ui-alert-dialog/i, autocomplete: /aria-autocomplete="list"[\s\S]*role="listbox"/i, carousel: /aria-label|data-carousel/i,
         checkbox: /type="checkbox"|role="checkbox"/i, "checkbox-group": /data-ui-part="all"[\s\S]*data-ui-part="item"/i, collapsible: /aria-expanded|data-collapsible/i, combobox: /role="combobox"|data-combobox/i,
-        command: /role="(?:dialog|listbox|menu)"|data-command/i, dialog: /role="dialog"[\s\S]*aria-modal="true"|data-dialog/i,
-        drawer: /role="dialog"|data-drawer/i, "dropdown-menu": /role="menu"|data-dropdown/i,
-        lightbox: /data-ui-slide="0"[\s\S]*role="dialog"/i, "navbar-vertical": /data-ui-navbar-vertical[\s\S]*aria-controls="navbar-vertical-panel"/i,
+        command: /role="(?:dialog|listbox|menu)"|data-command/i, dialog: /<dialog\b[^>]*data-ui-dialog|role="dialog"[\s\S]*aria-modal="true"|data-dialog/i,
+        drawer: /<dialog\b[^>]*data-ui-drawer|role="dialog"|data-drawer/i, "dropdown-menu": /role="menu"|data-dropdown/i,
+        lightbox: /data-ui-slide="0"[\s\S]*<dialog\b/i, "navbar-vertical": /data-ui-navbar-vertical[\s\S]*aria-controls="navbar-vertical-panel"/i,
         popover: /aria-expanded|data-popover/i, "radio-group": /role="radiogroup"|type="radio"|data-radio-group/i, resizable: /role="separator"|data-resizable/i,
-        select: /<select\b|role="combobox"|data-select/i, sheet: /role="dialog"|data-sheet/i, slider: /role="slider"|type="range"|data-slider/i,
+        select: /<select\b|role="combobox"|data-select/i, sheet: /<dialog\b[^>]*data-ui-sheet|role="dialog"|data-sheet/i, slider: /role="slider"|type="range"|data-slider/i,
         switch: /role="switch"|type="checkbox"|data-switch/i, tabs: /role="tablist"[\s\S]*role="tab"|data-tabs/i, toast: /role="(?:status|alert)"|aria-live=|data-toast/i,
         toggle: /aria-pressed|data-toggle/i, tooltip: /role="tooltip"|aria-describedby|data-tooltip/i,
         diff: /type="range"[\s\S]*aria-label=|data-ui-component="diff"/i, "file-input": /type="file"[\s\S]*aria-describedby=/i,
@@ -608,6 +630,24 @@ test("interactive component families expose their expected hooks", () => {
         const file = path.join(snippetsDir, `${slug}.html`);
         assert(expression.test(read(file)), `${slug}.html lacks its expected ARIA or behavior hook`);
     });
+});
+
+test("reviewed overlay, feedback, form, and state contracts stay explicit", () => {
+    const snippet = (slug) => read(path.join(snippetsDir, `${slug}.html`));
+    ["dialog", "drawer", "lightbox", "sheet"].forEach((slug) => assert.match(snippet(slug), /<dialog\b/i, `${slug} must use the native dialog element`));
+    assert.match(snippet("alert"), /<dialog\b[^>]*role="alertdialog"/i, "the blocking Alert variant must use a native alert dialog");
+    assert(!/role="dialog"|aria-modal="false"/i.test(snippet("command")), "the inline Command example must not claim dialog semantics");
+    assert(!/data-ui-toast-viewport[^>]*aria-live/i.test(snippet("toast")), "the Toast viewport must not duplicate its child status announcement");
+    assert.equal((snippet("select").match(/<input\b[^>]*data-ui-part="input"[^>]*type="hidden"/gi) || []).length, 2, "every custom Select example needs a form value");
+    assert.match(snippet("message"), /data-state="running"[\s\S]*ui-message-icon ui-spin/, "running Message feedback needs a visible reduced-motion-aware spinner");
+    assert.match(snippet("data-table"), /data-ui-table-clear[\s\S]*data-ui-part="range"/, "Data Table must expose clear-filter and result-range hooks");
+    assert(!/data-ui-carousel-track[^>]*aria-live/i.test(snippet("carousel")), "Carousel must announce changes through one status region");
+    const base = read(canonicalBaseCss), css = read(canonicalComponentCss);
+    assert.match(base, /--ui-font-mono:\s*"geist-mono"/, "the canonical Geist Mono token must remain available for technical content");
+    assert.match(css, /\.ui-field[^}]*border:[^;]*var\(--ui-border\)/, "fields need a quieter rest border");
+    assert.match(css, /\.ui-field:hover[^}]*border-color:\s*var\(--ui-border-strong\)/, "fields need a distinct hover border");
+    assert.match(css, /\[role="tab"\]:hover[^}]*background:\s*var\(--ui-surface-hover\)/, "tabs need a visible hover state");
+    assert.match(css, /dialog\.ui-dialog:not\(\[open\]\)[^}]*display:\s*none/, "closed native dialogs must stay out of layout");
 });
 
 test("runtime-supported generic hook schemas are present in their snippets", () => {
