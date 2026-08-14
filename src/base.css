@@ -11,17 +11,17 @@
     color-scheme: dark;
 
     /* Theme-specific role scale: surfaces, interaction, borders, decoration, text. */
-    --ui-gray-050: oklch(16.3758% 0 0);
-    --ui-gray-100: oklch(19.5735% 0 0);
-    --ui-gray-200: oklch(22.6450% 0 0);
-    --ui-gray-300: oklch(26.4480% 0 0);
-    --ui-gray-400: oklch(30.5191% 0 0);
-    --ui-gray-500: oklch(44.6812% 0 0);
-    --ui-gray-600: oklch(57.1224% 0 0);
-    --ui-gray-700: oklch(67.4268% 0 0);
-    --ui-gray-800: oklch(76.4527% 0 0);
-    --ui-gray-900: oklch(84.5997% 0 0);
-    --ui-gray-950: oklch(92.4940% 0 0);
+    --ui-gray-050: oklch(17.7000% 0 0);
+    --ui-gray-100: oklch(20.6000% 0 0);
+    --ui-gray-200: oklch(24.0000% 0 0);
+    --ui-gray-300: oklch(28.0000% 0 0);
+    --ui-gray-400: oklch(33.0000% 0 0);
+    --ui-gray-500: oklch(44.3721% 0 0);
+    --ui-gray-600: oklch(56.8777% 0 0);
+    --ui-gray-700: oklch(67.2170% 0 0);
+    --ui-gray-800: oklch(76.2657% 0 0);
+    --ui-gray-900: oklch(84.4291% 0 0);
+    --ui-gray-950: oklch(94.5000% 0 0);
 
     /* Alpha ramps use the same role-aligned opacity at every corresponding step. */
     --ui-alpha-white-050: oklch(98.5104% 0 0 / 0.03);
@@ -47,40 +47,40 @@
     --ui-alpha-black-900: oklch(14.4788% 0 0 / 0.72);
     --ui-alpha-black-950: oklch(14.4788% 0 0 / 0.88);
 
-    /* Status scales share lightness and chroma step-for-step, keep stable hues, and remain inside sRGB. */
-    --ui-red-050: oklch(16.3758% 0.015 25);
-    --ui-red-100: oklch(19.5735% 0.022 25);
-    --ui-red-200: oklch(22.6450% 0.032 25);
-    --ui-red-300: oklch(26.4480% 0.045 25);
-    --ui-red-400: oklch(30.5191% 0.06 25);
-    --ui-red-500: oklch(44.6812% 0.09 25);
-    --ui-red-600: oklch(57.1224% 0.105 25);
-    --ui-red-700: oklch(67.4268% 0.115 25);
-    --ui-red-800: oklch(76.4527% 0.1 25);
-    --ui-red-900: oklch(84.5997% 0.055 25);
-    --ui-red-950: oklch(92.4940% 0.025 25);
-    --ui-amber-050: oklch(16.3758% 0.015 78);
-    --ui-amber-100: oklch(19.5735% 0.022 78);
-    --ui-amber-200: oklch(22.6450% 0.032 78);
-    --ui-amber-300: oklch(26.4480% 0.045 78);
-    --ui-amber-400: oklch(30.5191% 0.06 78);
-    --ui-amber-500: oklch(44.6812% 0.09 78);
-    --ui-amber-600: oklch(57.1224% 0.105 78);
-    --ui-amber-700: oklch(67.4268% 0.115 78);
-    --ui-amber-800: oklch(76.4527% 0.1 78);
-    --ui-amber-900: oklch(84.5997% 0.055 78);
-    --ui-amber-950: oklch(92.4940% 0.025 78);
-    --ui-green-050: oklch(16.3758% 0.015 145);
-    --ui-green-100: oklch(19.5735% 0.022 145);
-    --ui-green-200: oklch(22.6450% 0.032 145);
-    --ui-green-300: oklch(26.4480% 0.045 145);
-    --ui-green-400: oklch(30.5191% 0.06 145);
-    --ui-green-500: oklch(44.6812% 0.09 145);
-    --ui-green-600: oklch(57.1224% 0.105 145);
-    --ui-green-700: oklch(67.4268% 0.115 145);
-    --ui-green-800: oklch(76.4527% 0.1 145);
-    --ui-green-900: oklch(84.5997% 0.055 145);
-    --ui-green-950: oklch(92.4940% 0.025 145);
+    /* Status scales share the gray lightness curve, use reference-shaped chroma, and remain inside sRGB. */
+    --ui-red-050: oklch(17.7000% 0.049 17);
+    --ui-red-100: oklch(20.6000% 0.057 17);
+    --ui-red-200: oklch(24.0000% 0.067 17);
+    --ui-red-300: oklch(28.0000% 0.078 17);
+    --ui-red-400: oklch(33.0000% 0.092 17);
+    --ui-red-500: oklch(44.3721% 0.135 17);
+    --ui-red-600: oklch(56.8777% 0.175 17);
+    --ui-red-700: oklch(67.2170% 0.168 17);
+    --ui-red-800: oklch(76.2657% 0.135 17);
+    --ui-red-900: oklch(84.4291% 0.082 17);
+    --ui-red-950: oklch(94.5000% 0.026 17);
+    --ui-amber-050: oklch(17.7000% 0.035 75);
+    --ui-amber-100: oklch(20.6000% 0.041 75);
+    --ui-amber-200: oklch(24.0000% 0.048 75);
+    --ui-amber-300: oklch(28.0000% 0.056 75);
+    --ui-amber-400: oklch(33.0000% 0.066 75);
+    --ui-amber-500: oklch(44.3721% 0.089 75);
+    --ui-amber-600: oklch(56.8777% 0.114 75);
+    --ui-amber-700: oklch(67.2170% 0.135 75);
+    --ui-amber-800: oklch(76.2657% 0.153 75);
+    --ui-amber-900: oklch(84.4291% 0.128 75);
+    --ui-amber-950: oklch(94.5000% 0.042 75);
+    --ui-green-050: oklch(17.7000% 0.048 145);
+    --ui-green-100: oklch(20.6000% 0.056 145);
+    --ui-green-200: oklch(24.0000% 0.066 145);
+    --ui-green-300: oklch(28.0000% 0.076 145);
+    --ui-green-400: oklch(33.0000% 0.09 145);
+    --ui-green-500: oklch(44.3721% 0.135 145);
+    --ui-green-600: oklch(56.8777% 0.176 145);
+    --ui-green-700: oklch(67.2170% 0.169 145);
+    --ui-green-800: oklch(76.2657% 0.153 145);
+    --ui-green-900: oklch(84.4291% 0.114 145);
+    --ui-green-950: oklch(94.5000% 0.051 145);
 
     /* General semantic roles. Components do not address palette steps directly. */
     --ui-background: var(--ui-gray-050);

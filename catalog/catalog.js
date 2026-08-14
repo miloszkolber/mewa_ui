@@ -128,7 +128,7 @@
             const grid = document.createElement("ol");
             const values = paletteSteps.map((step) => parseOklch(tokenValue(palette.prefix, step)));
             const colors = values.map(oklchToSrgb);
-            const contrastAnchor = colors[1];
+            const contrastAnchor = colors[0];
             section.className = "ui-catalog-palette";
             header.className = "ui-catalog-palette-header";
             heading.textContent = palette.name;
@@ -160,7 +160,7 @@
                     contrast.textContent = "Lc depends on backdrop";
                 } else {
                     delta.textContent = `L ${(value.lightness * 100).toFixed(1)}`;
-                    contrast.textContent = `Lc ${signedMetric(apcaContrast(colors[index], contrastAnchor))} vs 100`;
+                    contrast.textContent = `Lc ${signedMetric(apcaContrast(colors[index], contrastAnchor))} vs 050`;
                 }
                 meta.append(name, role, delta, contrast);
                 item.append(swatch, meta);

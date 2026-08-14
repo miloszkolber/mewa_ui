@@ -101,7 +101,7 @@ for (const viewport of viewports) {
     const paletteResult = await page.evaluate(() => ({
         sections: document.querySelectorAll(".ui-catalog-palette").length,
         complete: [...document.querySelectorAll(".ui-catalog-palette-grid")].every((grid) => grid.children.length === 11),
-        textMetrics: [...document.querySelectorAll(".ui-catalog-palette:not(:nth-last-child(-n+2)) .ui-catalog-palette-step .ui-catalog-palette-metric:last-child")].every((metric) => metric.textContent.includes("vs 100")),
+        textMetrics: [...document.querySelectorAll(".ui-catalog-palette:not(:nth-last-child(-n+2)) .ui-catalog-palette-step .ui-catalog-palette-metric:last-child")].every((metric) => metric.textContent.includes("vs 050")),
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
     }));
     if (paletteResult.sections !== 6 || !paletteResult.complete || !paletteResult.textMetrics || paletteResult.overflow > 1) failures.push(`catalog palettes ${viewport.name}: ${JSON.stringify(paletteResult)}`);

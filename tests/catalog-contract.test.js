@@ -322,7 +322,7 @@ test("catalog layout keeps its two canonical layout regions", () => {
     assert.match(script, /data-mewa-ui-modal-open/, "catalog must mirror modal state out of its sandboxed preview");
     assert.match(script, /MutationObserver/, "catalog must recover modal state when a preview event is missed");
     assert.match(script, /function apcaContrast\(/, "catalog palettes must calculate APCA Lc locally");
-    assert.match(script, /vs 100/, "catalog palette contrast must use step 100 as its anchor");
+    assert.match(script, /vs 050/, "catalog palette contrast must use step 050 as its anchor");
     assert(!script.includes("ΔL"), "catalog palettes must focus on absolute lightness instead of relative ΔL");
     assert.match(script, /addEventListener\("hashchange", selectRequestedView\)/, "catalog hash navigation must update the active component or palette view");
     ["gray", "red", "amber", "green", "alpha-white", "alpha-black"].forEach((prefix) => assert(script.includes(`prefix: "${prefix}"`), `catalog must render the ${prefix} palette`));
@@ -392,9 +392,9 @@ test("canonical stylesheet responsibilities are enforced", () => {
         assert.match(baseCss, new RegExp(`--ui-${prefix}-${step}:\\s*oklch\\([^;]+\\);`), `src/base.css: --ui-${prefix}-${step} must use OKLCH`);
     }));
     assert(!/--ui-(?:gray|alpha-white|alpha-black|red|amber|green)-000\b/.test(baseCss), "obsolete 000 palette steps must not return");
-    assert.match(baseCss, /--ui-gray-050:\s*oklch\(16\.3758% 0 0\)/, "gray 050 must equal #0e0e0e in OKLCH");
-    assert.match(baseCss, /--ui-gray-100:\s*oklch\(19\.5735% 0 0\)/, "gray 100 must preserve a close surface step");
-    assert.match(baseCss, /--ui-gray-950:\s*oklch\(92\.4940% 0 0\)/, "gray 950 must provide the Lc 90 primary-text endpoint");
+    assert.match(baseCss, /--ui-gray-050:\s*oklch\(17\.7000% 0 0\)/, "gray 050 must start the shared lightness curve at L 17.7");
+    assert.match(baseCss, /--ui-gray-100:\s*oklch\(20\.6000% 0 0\)/, "gray 100 must preserve a close surface step");
+    assert.match(baseCss, /--ui-gray-950:\s*oklch\(94\.5000% 0 0\)/, "gray 950 must end the shared lightness curve at L 94.5");
 
     const opaquePrefixes = ["gray", "red", "amber", "green"];
     const opaquePalettes = Object.fromEntries(opaquePrefixes.map((prefix) => [prefix, parseOklchPalette(baseCss, prefix)]));
@@ -409,27 +409,36 @@ test("canonical stylesheet responsibilities are enforced", () => {
             }
             oklchToLinearSrgb(color).forEach((channel) => assert(channel >= -0.0001 && channel <= 1.0001, `${prefix}-${paletteSteps[index]} must stay inside sRGB`));
         });
-        const anchor = palette.get("100");
-        const targetLc = { "500": 15, "600": 30, "700": 45, "800": 60, "900": 75, "950": 90 };
-        Object.entries(targetLc).forEach(([step, target]) => {
-            const actual = Math.abs(apcaContrast(palette.get(step), anchor));
-            assert(Math.abs(actual - target) <= 2.1, `${prefix}-${step} must stay centered on Lc ${target} against ${prefix}-100`);
+        const anchor = palette.get("050");
+        const contrastSteps = paletteSteps.slice(5);
+        const contrasts = contrastSteps.map((step) => apcaContrast(palette.get(step), anchor));
+        contrasts.forEach((contrast, index) => {
+            assert(contrast < 0, `${prefix}-${contrastSteps[index]}: light-on-dark APCA polarity must remain negative against ${prefix}-050`);
+            if (index > 0) assert(Math.abs(contrast) > Math.abs(contrasts[index - 1]), `${prefix}: APCA magnitude must increase through ${contrastSteps[index]}`);
         });
-        assert(apcaContrast(palette.get("950"), anchor) < 0, `${prefix}: light-on-dark APCA polarity must remain negative`);
     });
 
     const gray = opaquePalettes.gray;
-    const statusChroma = { "050": 0.015, "100": 0.022, "200": 0.032, "300": 0.045, "400": 0.06, "500": 0.09, "600": 0.105, "700": 0.115, "800": 0.1, "900": 0.055, "950": 0.025 };
-    ["red", "amber", "green"].forEach((prefix) => {
+    const grayTargets = { "500": 15, "600": 30, "700": 45, "800": 60, "900": 75 };
+    Object.entries(grayTargets).forEach(([step, target]) => {
+        const actual = Math.abs(apcaContrast(gray.get(step), gray.get("050")));
+        assert(Math.abs(actual - target) <= 0.1, `gray-${step} must define the shared Lc ${target} baseline against gray-050`);
+    });
+    const grayEndpoint = Math.abs(apcaContrast(gray.get("950"), gray.get("050")));
+    assert(Math.abs(grayEndpoint - 95.4) <= 0.2, "gray-950 must reach approximately Lc 95.4 against gray-050");
+
+    const statusProfiles = {
+        red: { hue: 17, chroma: { "050": 0.049, "100": 0.057, "200": 0.067, "300": 0.078, "400": 0.092, "500": 0.135, "600": 0.175, "700": 0.168, "800": 0.135, "900": 0.082, "950": 0.026 } },
+        amber: { hue: 75, chroma: { "050": 0.035, "100": 0.041, "200": 0.048, "300": 0.056, "400": 0.066, "500": 0.089, "600": 0.114, "700": 0.135, "800": 0.153, "900": 0.128, "950": 0.042 } },
+        green: { hue: 145, chroma: { "050": 0.048, "100": 0.056, "200": 0.066, "300": 0.076, "400": 0.09, "500": 0.135, "600": 0.176, "700": 0.169, "800": 0.153, "900": 0.114, "950": 0.051 } }
+    };
+    Object.entries(statusProfiles).forEach(([prefix, profile]) => {
         const palette = opaquePalettes[prefix];
         paletteSteps.forEach((step) => {
             assert.equal(palette.get(step).lightness, gray.get(step).lightness, `${prefix}-${step} must share gray-${step}'s absolute OKLCH lightness`);
-            assert.equal(palette.get(step).chroma, statusChroma[step], `${prefix}-${step} must share the common status chroma arc`);
+            assert.equal(palette.get(step).chroma, profile.chroma[step], `${prefix}-${step} must follow its reference-shaped chroma curve`);
+            assert.equal(palette.get(step).hue, profile.hue, `${prefix}-${step} must keep the fixed ${profile.hue} hue`);
         });
-    });
-    ["red", "amber", "green"].forEach((prefix) => {
-        const hues = paletteSteps.map((step) => opaquePalettes[prefix].get(step).hue);
-        assert(hues.every((hue) => hue === hues[0]), `${prefix}: status hue must remain stable across the scale`);
     });
 
     const alphaWhite = parseOklchPalette(baseCss, "alpha-white");
