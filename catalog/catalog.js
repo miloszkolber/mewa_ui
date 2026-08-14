@@ -5,6 +5,28 @@
     const snippetsBaseUrl = "/ui/snippets/";
     const sourceStart = "<!-- mewa-ui-snippet:start -->";
     const sourceEnd = "<!-- mewa-ui-snippet:end -->";
+    const paletteSteps = ["050", "100", "200", "300", "400", "500", "600", "700", "800", "900", "950"];
+    const paletteRoles = {
+        "050": "Foundation background",
+        "100": "Subtle surface",
+        "200": "Raised surface",
+        "300": "Interactive",
+        "400": "Interactive strong",
+        "500": "Subtle border",
+        "600": "Strong border",
+        "700": "Disabled",
+        "800": "Decorative",
+        "900": "Secondary text",
+        "950": "Primary text"
+    };
+    const palettes = [
+        { prefix: "gray", name: "Gray", description: "Neutral application roles." },
+        { prefix: "red", name: "Red", description: "Errors and destructive actions." },
+        { prefix: "amber", name: "Amber", description: "Warnings and pending states." },
+        { prefix: "green", name: "Green", description: "Success and healthy states." },
+        { prefix: "alpha-white", name: "Alpha white", description: "Role-aligned overlays on darker backdrops.", alpha: true, backdrop: "--ui-gray-050" },
+        { prefix: "alpha-black", name: "Alpha black", description: "Role-aligned overlays on lighter backdrops.", alpha: true, backdrop: "--ui-gray-950" }
+    ];
     const elements = {
         count: document.querySelector("#component-count"),
         search: document.querySelector("#component-search"),
@@ -12,7 +34,11 @@
         detail: document.querySelector(".ui-catalog-detail"),
         title: document.querySelector("#component-title"),
         description: document.querySelector("#component-description"),
-        preview: document.querySelector("#component-preview")
+        preview: document.querySelector("#component-preview"),
+        previewWrap: document.querySelector("#component-preview-wrap"),
+        paletteLink: document.querySelector("[data-catalog-view=\"colors\"]"),
+        paletteView: document.querySelector("#palette-view"),
+        paletteScales: document.querySelector("#palette-scales")
     };
     let components = [];
     let selectedSlug = "";
@@ -28,6 +54,124 @@
 
     function escapeHtml(value) {
         return String(value).replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+    }
+
+    function parseOklch(value) {
+        const match = value.match(/^oklch\(\s*([\d.]+)%\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?\s*\)$/i);
+        if (!match) throw new Error(`Unsupported palette value: ${value}`);
+        return {
+            lightness: Number(match[1]) / 100,
+            chroma: Number(match[2]),
+            hue: Number(match[3]),
+            alpha: match[4] === undefined ? 1 : Number(match[4])
+        };
+    }
+
+    function oklchToSrgb({ lightness, chroma, hue }) {
+        const radians = hue * Math.PI / 180;
+        const a = chroma * Math.cos(radians);
+        const b = chroma * Math.sin(radians);
+        const lPrime = lightness + 0.3963377774 * a + 0.2158037573 * b;
+        const mPrime = lightness - 0.1055613458 * a - 0.0638541728 * b;
+        const sPrime = lightness - 0.0894841775 * a - 1.291485548 * b;
+        const l = lPrime ** 3;
+        const m = mPrime ** 3;
+        const s = sPrime ** 3;
+        const linear = [
+            4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+            -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+            -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s
+        ];
+        return linear.map((channel) => {
+            const encoded = channel <= 0.0031308 ? 12.92 * channel : 1.055 * channel ** (1 / 2.4) - 0.055;
+            return Math.max(0, Math.min(1, encoded));
+        });
+    }
+
+    // APCA 0.0.98G-4g. Source and usage guidance: https://git.apcacontrast.com/documentation/
+    function apcaLuminance([red, green, blue]) {
+        return 0.2126729 * red ** 2.4 + 0.7151522 * green ** 2.4 + 0.0721750 * blue ** 2.4;
+    }
+
+    function apcaSoftClamp(luminance) {
+        return luminance < 0.022 ? luminance + (0.022 - luminance) ** 1.414 : luminance;
+    }
+
+    function apcaContrast(foreground, background) {
+        const text = apcaSoftClamp(apcaLuminance(foreground));
+        const surface = apcaSoftClamp(apcaLuminance(background));
+        if (Math.abs(surface - text) < 0.0005) return 0;
+        if (surface > text) {
+            const contrast = (surface ** 0.56 - text ** 0.57) * 1.14;
+            return (contrast < 0.1 ? 0 : contrast - 0.027) * 100;
+        }
+        const contrast = (surface ** 0.65 - text ** 0.62) * 1.14;
+        return (contrast > -0.1 ? 0 : contrast + 0.027) * 100;
+    }
+
+    function tokenValue(prefix, step) {
+        return getComputedStyle(document.documentElement).getPropertyValue(`--ui-${prefix}-${step}`).trim();
+    }
+
+    function signedMetric(value, digits = 0) {
+        if (Math.abs(value) < 0.5 * 10 ** -digits) return (0).toFixed(digits);
+        return `${value > 0 ? "+" : "−"}${Math.abs(value).toFixed(digits)}`;
+    }
+
+    function renderPalettes() {
+        if (elements.paletteScales.childElementCount) return;
+        palettes.forEach((palette) => {
+            const section = document.createElement("section");
+            const header = document.createElement("header");
+            const heading = document.createElement("h2");
+            const description = document.createElement("p");
+            const grid = document.createElement("ol");
+            const values = paletteSteps.map((step) => parseOklch(tokenValue(palette.prefix, step)));
+            const colors = values.map(oklchToSrgb);
+            const foundation = values[0];
+            const surfaceColors = colors.slice(0, 3);
+            section.className = "ui-catalog-palette";
+            header.className = "ui-catalog-palette-header";
+            heading.textContent = palette.name;
+            description.textContent = palette.description;
+            grid.className = "ui-catalog-palette-grid";
+            header.append(heading, description);
+            section.append(header, grid);
+            paletteSteps.forEach((step, index) => {
+                const item = document.createElement("li");
+                const swatch = document.createElement("div");
+                const meta = document.createElement("div");
+                const name = document.createElement("strong");
+                const role = document.createElement("span");
+                const delta = document.createElement("span");
+                const contrast = document.createElement("span");
+                const value = values[index];
+                item.className = "ui-catalog-palette-step";
+                swatch.className = "ui-catalog-palette-swatch";
+                meta.className = "ui-catalog-palette-meta";
+                role.className = "ui-catalog-palette-role";
+                delta.className = "ui-catalog-palette-metric";
+                contrast.className = "ui-catalog-palette-metric";
+                swatch.style.setProperty("--ui-palette-color", `var(--ui-${palette.prefix}-${step})`);
+                if (palette.alpha) swatch.style.setProperty("--ui-palette-backdrop", `var(${palette.backdrop})`);
+                name.textContent = step;
+                role.textContent = paletteRoles[step];
+                if (palette.alpha) {
+                    delta.textContent = `α ${value.alpha.toFixed(2)} · Δα ${signedMetric(value.alpha - foundation.alpha, 2)}`;
+                    contrast.textContent = "Lc depends on backdrop";
+                } else {
+                    delta.textContent = `L ${(value.lightness * 100).toFixed(1)} · ΔL ${signedMetric((value.lightness - foundation.lightness) * 100, 1)}`;
+                    const lc = apcaContrast(colors[index], colors[0]);
+                    contrast.textContent = index >= 9
+                        ? `Lc ${signedMetric(lc)} · surface min ${Math.min(...surfaceColors.map((surface) => Math.abs(apcaContrast(colors[index], surface)))).toFixed(0)}`
+                        : `Lc ${signedMetric(lc)}`;
+                }
+                meta.append(name, role, delta, contrast);
+                item.append(swatch, meta);
+                grid.append(item);
+            });
+            elements.paletteScales.append(section);
+        });
     }
 
     function previewDocument(component, fragment) {
@@ -113,6 +257,9 @@
         if (!component) return;
         setPreviewModalState(false);
         selectedSlug = component.slug;
+        elements.paletteLink.removeAttribute("aria-current");
+        elements.paletteView.hidden = true;
+        elements.previewWrap.hidden = false;
         elements.title.textContent = component.name;
         elements.description.textContent = component.description;
         elements.preview.srcdoc = "";
@@ -120,6 +267,33 @@
         if (window.location.hash !== `#${component.slug}`) window.history.replaceState(null, "", `#${component.slug}`);
         renderList();
         void loadPreview(component);
+    }
+
+    function selectPaletteView() {
+        previewRequest?.abort();
+        setPreviewModalState(false);
+        selectedSlug = "colors";
+        elements.title.textContent = "Color palettes";
+        elements.description.textContent = "Theme-specific OKLCH scales organized by interface role and measured with APCA.";
+        elements.preview.srcdoc = "";
+        elements.previewWrap.hidden = true;
+        elements.paletteView.hidden = false;
+        elements.paletteLink.setAttribute("aria-current", "page");
+        elements.detail.setAttribute("aria-busy", "false");
+        if (window.location.hash !== "#colors") window.history.replaceState(null, "", "#colors");
+        renderList();
+        renderPalettes();
+    }
+
+    function selectRequestedView() {
+        if (!components.length) return;
+        const requested = window.location.hash.slice(1);
+        if (requested === "colors") {
+            if (selectedSlug !== "colors") selectPaletteView();
+            return;
+        }
+        const nextSlug = components.some((component) => component.slug === requested) ? requested : components[0].slug;
+        if (selectedSlug !== nextSlug) selectComponent(nextSlug);
     }
 
     async function initialize() {
@@ -130,10 +304,7 @@
             if (!Array.isArray(data)) throw new Error("Catalog data is not an array.");
             components = data.filter((component) => typeof component.name === "string" && /^[a-z0-9-]+$/.test(component.slug));
             renderList();
-            if (components.length) {
-                const requested = window.location.hash.slice(1);
-                selectComponent(components.some((component) => component.slug === requested) ? requested : components[0].slug);
-            }
+            selectRequestedView();
         } catch (error) {
             elements.detail.setAttribute("aria-busy", "false");
             elements.title.textContent = "Catalog unavailable";
@@ -142,6 +313,11 @@
     }
 
     elements.search.addEventListener("input", renderList);
+    elements.paletteLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        selectPaletteView();
+    });
+    window.addEventListener("hashchange", selectRequestedView);
     elements.list.addEventListener("click", (event) => {
         const button = event.target.closest("button[data-component-slug]");
         if (button) selectComponent(button.dataset.componentSlug);

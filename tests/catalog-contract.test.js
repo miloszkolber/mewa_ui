@@ -129,6 +129,66 @@ function checkCssContract(css, filename, { allowRawColors = false } = {}) {
     }
 }
 
+function parseOklchPalette(css, prefix) {
+    const values = new Map();
+    const expression = new RegExp(`--ui-${prefix}-(\\d{3}):\\s*oklch\\(\\s*([\\d.]+)%\\s+([\\d.]+)\\s+([\\d.]+)(?:\\s*\\/\\s*([\\d.]+))?\\s*\\);`, "g");
+    for (const match of css.matchAll(expression)) {
+        values.set(match[1], {
+            lightness: Number(match[2]) / 100,
+            chroma: Number(match[3]),
+            hue: Number(match[4]),
+            alpha: match[5] === undefined ? 1 : Number(match[5])
+        });
+    }
+    return values;
+}
+
+function oklchToLinearSrgb({ lightness, chroma, hue }) {
+    const radians = hue * Math.PI / 180;
+    const a = chroma * Math.cos(radians);
+    const b = chroma * Math.sin(radians);
+    const lPrime = lightness + 0.3963377774 * a + 0.2158037573 * b;
+    const mPrime = lightness - 0.1055613458 * a - 0.0638541728 * b;
+    const sPrime = lightness - 0.0894841775 * a - 1.291485548 * b;
+    const l = lPrime ** 3;
+    const m = mPrime ** 3;
+    const s = sPrime ** 3;
+    return [
+        4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+        -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+        -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s
+    ];
+}
+
+function linearToSrgb(channel) {
+    return channel <= 0.0031308 ? 12.92 * channel : 1.055 * channel ** (1 / 2.4) - 0.055;
+}
+
+function oklchToSrgb(color) {
+    return oklchToLinearSrgb(color).map((channel) => Math.max(0, Math.min(1, linearToSrgb(channel))));
+}
+
+function apcaLuminance(color) {
+    const [red, green, blue] = oklchToSrgb(color);
+    return 0.2126729 * red ** 2.4 + 0.7151522 * green ** 2.4 + 0.0721750 * blue ** 2.4;
+}
+
+function apcaSoftClamp(luminance) {
+    return luminance < 0.022 ? luminance + (0.022 - luminance) ** 1.414 : luminance;
+}
+
+function apcaContrast(foreground, background) {
+    const text = apcaSoftClamp(apcaLuminance(foreground));
+    const surface = apcaSoftClamp(apcaLuminance(background));
+    if (Math.abs(surface - text) < 0.0005) return 0;
+    if (surface > text) {
+        const contrast = (surface ** 0.56 - text ** 0.57) * 1.14;
+        return (contrast < 0.1 ? 0 : contrast - 0.027) * 100;
+    }
+    const contrast = (surface ** 0.65 - text ** 0.62) * 1.14;
+    return (contrast > -0.1 ? 0 : contrast + 0.027) * 100;
+}
+
 function unTokenizedDimensions(css) {
     const declarations = [];
     for (const rule of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
@@ -242,21 +302,29 @@ test("catalog markup uses only canonical source assets", () => {
     assert.deepEqual(cssHrefsLoadedBy(html, "catalog/index.html"), canonicalDemoStylesheets, "catalog must load base.css, mewa.css, then demo.css");
     assert.match(html, /<script\b[^>]*\bsrc="\/ui\/catalog\/catalog\.js"[^>]*>/i);
     assert.match(html, /id="component-search"/);
-    assert.match(html, /<nav class="ui-catalog-layout-links"[^>]*aria-label="Layout previews"/);
+    assert.match(html, /<nav class="ui-catalog-layout-links"[^>]*aria-label="Catalog resources"/);
+    assert.match(html, /href="#colors"[^>]*data-catalog-view="colors"/);
     assert.match(html, /href="\/ui\/layouts\/vertical-navbar\.html"/);
     assert.match(html, /href="\/ui\/layouts\/horizontal-navbar\.html"/);
+    assert.match(html, /id="palette-view"[^>]*hidden/);
+    assert.match(html, /id="palette-scales"/);
+    assert.match(html, /APCA values use the current 0\.0\.98G-4g algorithm as design guidance, not as a compliance claim/);
     assert(!/component-source|copy-source|copy-status|<pre\b/i.test(html), "catalog must expose previews without embedded HTML source controls");
 });
 
 test("catalog layout keeps its two canonical layout regions", () => {
     const html = read(path.join(catalogDir, "index.html"));
     assert.match(html, /<div class="ui-catalog-layout">[\s\S]*<aside class="ui-catalog-sidebar"[\s\S]*<section class="ui-catalog-detail"/);
-    ["ui-catalog", "ui-catalog-skip", "ui-catalog-header", "ui-catalog-header-meta", "ui-catalog-layout-links", "ui-catalog-count", "ui-catalog-main", "ui-catalog-layout", "ui-catalog-sidebar", "ui-catalog-nav", "ui-catalog-list", "ui-catalog-empty", "ui-catalog-detail", "ui-catalog-detail-header", "ui-catalog-preview-wrap", "ui-catalog-preview", "ui-catalog-preview-modal", "ui-catalog-modal-open"].forEach((className) => {
+    ["ui-catalog", "ui-catalog-skip", "ui-catalog-header", "ui-catalog-header-meta", "ui-catalog-layout-links", "ui-catalog-count", "ui-catalog-main", "ui-catalog-layout", "ui-catalog-sidebar", "ui-catalog-nav", "ui-catalog-list", "ui-catalog-empty", "ui-catalog-detail", "ui-catalog-detail-header", "ui-catalog-preview-wrap", "ui-catalog-preview", "ui-catalog-preview-modal", "ui-catalog-modal-open", "ui-catalog-palette-view", "ui-catalog-palette-intro", "ui-catalog-palette-roles", "ui-catalog-palette-disclaimer", "ui-catalog-palette-scales", "ui-catalog-palette", "ui-catalog-palette-header", "ui-catalog-palette-grid", "ui-catalog-palette-step", "ui-catalog-palette-swatch", "ui-catalog-palette-meta", "ui-catalog-palette-role", "ui-catalog-palette-metric"].forEach((className) => {
         assert(classDefinitions(read(canonicalDemoCss)).has(className), `src/demo.css must define catalog layout class ${className}`);
     });
     const script = read(path.join(catalogDir, "catalog.js"));
     assert.match(script, /data-mewa-ui-modal-open/, "catalog must mirror modal state out of its sandboxed preview");
     assert.match(script, /MutationObserver/, "catalog must recover modal state when a preview event is missed");
+    assert.match(script, /function apcaContrast\(/, "catalog palettes must calculate APCA Lc locally");
+    assert.match(script, /surface min/, "catalog text steps must expose their minimum contrast across all surfaces");
+    assert.match(script, /addEventListener\("hashchange", selectRequestedView\)/, "catalog hash navigation must update the active component or palette view");
+    ["gray", "red", "amber", "green", "alpha-white", "alpha-black"].forEach((prefix) => assert(script.includes(`prefix: "${prefix}"`), `catalog must render the ${prefix} palette`));
 });
 
 test("layout examples use the two canonical shell variants", () => {
@@ -318,12 +386,70 @@ test("canonical stylesheet responsibilities are enforced", () => {
     ];
     requiredFoundation.forEach((declaration) => assert(baseCss.includes(declaration), `src/base.css: missing requested foundation ${declaration}`));
     const palettePrefixes = ["gray", "alpha-white", "alpha-black", "red", "amber", "green"];
-    const paletteSteps = ["000", "100", "200", "300", "400", "500", "600", "700", "800", "900"];
+    const paletteSteps = ["050", "100", "200", "300", "400", "500", "600", "700", "800", "900", "950"];
     palettePrefixes.forEach((prefix) => paletteSteps.forEach((step) => {
         assert.match(baseCss, new RegExp(`--ui-${prefix}-${step}:\\s*oklch\\([^;]+\\);`), `src/base.css: --ui-${prefix}-${step} must use OKLCH`);
     }));
-    assert.match(baseCss, /--ui-gray-000:\s*oklch\(14\.4788% 0 0\)/, "gray 000 must equal #0a0a0a in OKLCH");
-    assert.match(baseCss, /--ui-gray-900:\s*oklch\(98\.5104% 0 0\)/, "gray 900 must equal #fafafa in OKLCH");
+    assert(!/--ui-(?:gray|alpha-white|alpha-black|red|amber|green)-000\b/.test(baseCss), "obsolete 000 palette steps must not return");
+    assert.match(baseCss, /--ui-gray-050:\s*oklch\(16\.3758% 0 0\)/, "gray 050 must equal #0e0e0e in OKLCH");
+    assert.match(baseCss, /--ui-gray-100:\s*oklch\(19\.5735% 0 0\)/, "gray 100 must preserve a close surface step");
+    assert.match(baseCss, /--ui-gray-950:\s*oklch\(92\.4940% 0 0\)/, "gray 950 must provide the Lc 90 primary-text endpoint");
+
+    const opaquePrefixes = ["gray", "red", "amber", "green"];
+    const opaquePalettes = Object.fromEntries(opaquePrefixes.map((prefix) => [prefix, parseOklchPalette(baseCss, prefix)]));
+    opaquePrefixes.forEach((prefix) => {
+        const palette = opaquePalettes[prefix];
+        assert.deepEqual([...palette.keys()], paletteSteps, `${prefix}: palette steps must be exactly 050 through 950`);
+        const values = paletteSteps.map((step) => palette.get(step));
+        values.forEach((color, index) => {
+            if (index > 0) {
+                assert(color.lightness > values[index - 1].lightness, `${prefix}: OKLCH lightness must increase at ${paletteSteps[index]}`);
+                assert(apcaLuminance(color) > apcaLuminance(values[index - 1]), `${prefix}: rendered APCA luminance must increase at ${paletteSteps[index]}`);
+            }
+            oklchToLinearSrgb(color).forEach((channel) => assert(channel >= -0.0001 && channel <= 1.0001, `${prefix}-${paletteSteps[index]} must stay inside sRGB`));
+        });
+        const foundation = palette.get("050");
+        const roleLc = (step) => Math.abs(apcaContrast(palette.get(step), foundation));
+        assert(roleLc("500") >= 14.9, `${prefix}-500 must reach about Lc 15 against its foundation`);
+        assert(roleLc("600") >= 22, `${prefix}-600 must reach Lc 22 against its foundation`);
+        assert(roleLc("700") >= 30, `${prefix}-700 must reach Lc 30 for disabled content`);
+        assert(roleLc("800") >= 45, `${prefix}-800 must reach Lc 45 for decorative content`);
+        const surfaces = ["050", "100", "200"].map((step) => palette.get(step));
+        const minimumTextLc = (step) => Math.min(...surfaces.map((surface) => Math.abs(apcaContrast(palette.get(step), surface))));
+        assert(minimumTextLc("900") >= 75, `${prefix}-900 must reach Lc 75 against every 050–200 surface`);
+        assert(minimumTextLc("950") >= 90, `${prefix}-950 must reach Lc 90 against every 050–200 surface`);
+        assert(apcaContrast(palette.get("950"), foundation) < 0, `${prefix}: light-on-dark APCA polarity must remain negative`);
+    });
+
+    const gray = opaquePalettes.gray;
+    ["red", "amber", "green"].forEach((prefix) => {
+        const palette = opaquePalettes[prefix];
+        paletteSteps.forEach((step) => {
+            assert(Math.abs(apcaLuminance(palette.get(step)) - apcaLuminance(gray.get(step))) <= 0.00002, `${prefix}-${step} must share the gray APCA luminance curve`);
+        });
+    });
+
+    const alphaWhite = parseOklchPalette(baseCss, "alpha-white");
+    const alphaBlack = parseOklchPalette(baseCss, "alpha-black");
+    assert.deepEqual([...alphaWhite.keys()], paletteSteps, "alpha white must use the complete 11-step scale");
+    assert.deepEqual([...alphaBlack.keys()], paletteSteps, "alpha black must use the complete 11-step scale");
+    paletteSteps.forEach((step, index) => {
+        assert.equal(alphaWhite.get(step).alpha, alphaBlack.get(step).alpha, `alpha scales must align by role at ${step}`);
+        if (index > 0) {
+            assert(alphaWhite.get(step).alpha > alphaWhite.get(paletteSteps[index - 1]).alpha, `alpha white must strengthen at ${step}`);
+            assert(alphaBlack.get(step).alpha > alphaBlack.get(paletteSteps[index - 1]).alpha, `alpha black must strengthen at ${step}`);
+        }
+    });
+    [
+        ["background", "gray-050"], ["surface", "gray-100"], ["surface-raised", "gray-200"], ["interactive", "gray-300"], ["interactive-strong", "gray-400"],
+        ["border-subtle", "alpha-white-500"], ["border", "alpha-white-600"], ["border-strong", "gray-600"], ["disabled-foreground", "gray-700"],
+        ["subtle-foreground", "gray-800"], ["muted-foreground", "gray-900"], ["foreground", "gray-950"]
+    ].forEach(([role, token]) => assert.match(baseCss, new RegExp(`--ui-${role}:\\s*var\\(--ui-${token}\\)`), `${role} must use its role-scale token`));
+    assert.match(baseCss, /--ui-state-hover-lightness:\s*0\.02/, "dark surfaces need a theme-specific hover lightness modifier");
+    assert.match(baseCss, /--ui-state-pressed-lightness:\s*-0\.005/, "pressed and light-control hover states need the requested half-point OKLCH modifier");
+    assert.match(baseCss, /--ui-interactive-hover:\s*oklch\(from var\(--ui-interactive\) calc\(l \+ var\(--ui-state-hover-lightness\)\) c h\)/, "hover states must derive from a semantic base with relative OKLCH");
+    assert.match(baseCss, /--ui-primary-hover:\s*oklch\(from var\(--ui-primary\) calc\(l \+ var\(--ui-state-pressed-lightness\)\) c h\)/, "light control hovers must use the half-point relative OKLCH modifier");
+    assert(!/--ui-(?:gray|alpha-white|alpha-black|red|amber|green)-\d{3}\b/.test(componentCss), "component CSS must consume semantic color roles instead of palette steps");
     assert(!/(?:#[0-9a-f]{3,8}\b|\brgba?\(|\bhsla?\(|color-mix\(in\s+srgb)/i.test(baseCss + componentCss + demoCss), "canonical styles must use OKLCH color syntax and interpolation");
     assert(!/--ui-(?:space|radius|layer)-/i.test(baseCss), "base.css must not restore semantic spacing, radius, or layer scales");
     assert(!/--ui-font-weight-(?:semibold|bold)/i.test(baseCss), "base.css supports only regular and medium weights");

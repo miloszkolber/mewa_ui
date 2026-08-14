@@ -28,8 +28,10 @@
 - Geist Mono first: `geist_mono, ui-monospace, monospace`.
 - Square, border-led, shadow-free geometry.
 - Blur only for surfaces that overlap content.
-- Six 10-step OKLCH palettes: gray, alpha white, alpha black, red, amber, green.
-- Components consume semantic roles from `base.css`; red, amber, and green communicate status.
+- Six theme-specific 11-step OKLCH role palettes (`050`–`950`): gray, alpha white, alpha black, red, amber, green. Do not reverse them to synthesize a light theme.
+- `050`–`200` are surfaces; `300`–`400` interactive foundations; `500`–`600` borders; `700`–`800` disabled/decorative content; `900` secondary text; `950` primary text.
+- Opaque palettes share an APCA luminance curve. Text steps reach at least `Lc 75` and `Lc 90` against every `050`–`200` surface. APCA is design guidance, not a compliance claim.
+- Components consume semantic roles from `base.css`; red, amber, and green communicate status. Derive hover/pressed values from semantic roles with the supplied relative-OKLCH modifiers instead of selecting another palette step.
 - Use `--ui-border-dashed` for structural section division.
 - Ghost buttons have no border or fill at rest.
 - Lucide icons use the local sprite and `currentColor`. Decorative SVGs are `aria-hidden="true"`; icon-only controls require an accessible name.

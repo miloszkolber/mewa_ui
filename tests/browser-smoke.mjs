@@ -95,7 +95,18 @@ for (const viewport of viewports) {
     if (result.count !== manifest.length || result.overflow > 1) failures.push(`catalog ${viewport.name}: ${JSON.stringify(result)}`);
     if (!result.description || result.previewMain || result.hasSource) failures.push(`catalog ${viewport.name}: catalog must expose description and marked preview without HTML source controls`);
     if (viewport.width > 768 && Math.abs(result.sidebarLeft) > 1) failures.push(`catalog ${viewport.name}: component navigation is not pinned to the left edge`);
-    if (result.layoutLinks.join("|") !== "/ui/layouts/vertical-navbar.html|/ui/layouts/horizontal-navbar.html") failures.push(`catalog ${viewport.name}: layout preview links are missing or incorrect`);
+    if (result.layoutLinks.join("|") !== "#colors|/ui/layouts/vertical-navbar.html|/ui/layouts/horizontal-navbar.html") failures.push(`catalog ${viewport.name}: catalog resource links are missing or incorrect`);
+    await page.click('[data-catalog-view="colors"]');
+    await page.waitForFunction(() => !document.querySelector("#palette-view")?.hidden && document.querySelectorAll(".ui-catalog-palette").length === 6);
+    const paletteResult = await page.evaluate(() => ({
+        sections: document.querySelectorAll(".ui-catalog-palette").length,
+        complete: [...document.querySelectorAll(".ui-catalog-palette-grid")].every((grid) => grid.children.length === 11),
+        textMetrics: [...document.querySelectorAll(".ui-catalog-palette:not(:nth-last-child(-n+2)) .ui-catalog-palette-step:nth-child(n+10) .ui-catalog-palette-metric:last-child")].every((metric) => metric.textContent.includes("surface min")),
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
+    }));
+    if (paletteResult.sections !== 6 || !paletteResult.complete || !paletteResult.textMetrics || paletteResult.overflow > 1) failures.push(`catalog palettes ${viewport.name}: ${JSON.stringify(paletteResult)}`);
+    await page.evaluate(() => { window.location.hash = "#accordion"; });
+    await page.waitForFunction(() => document.querySelector("#component-title")?.textContent === "Accordion" && !document.querySelector("#component-preview-wrap")?.hidden);
     for (const [name, href] of [["Vertical navbar", "/ui/layouts/vertical-navbar.html"], ["Horizontal navbar", "/ui/layouts/horizontal-navbar.html"]]) {
         const response = await page.evaluate(async (path) => ({ path, ok: (await fetch(path)).ok }), href);
         if (!response.ok) failures.push(`catalog ${viewport.name}: ${name} preview is unavailable (${response.path})`);

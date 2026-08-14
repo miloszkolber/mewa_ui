@@ -4,8 +4,10 @@ Audit baseline: 2026-08-14. The portfolio and `core/docker` interfaces are visua
 
 ## Current pass
 
-- Rebuilt the foundation around six 10-step palettes and generalized semantic roles. All palette values and color interpolation use OKLCH.
-- Verified the red, amber, and green scales against the live Vercel Geist color page in dark mode. Gray retains the requested `#0a0a0a` and `#fafafa` endpoints as equivalent OKLCH values; alpha scales use those same endpoints.
+- Rebuilt the foundation around six theme-specific 11-step role palettes and generalized semantic roles. All palette values and color interpolation use OKLCH; the ramps are deliberately not reversible theme generators.
+- Assigned `050`–`200` to surfaces, `300`–`400` to interactive foundations, `500`–`600` to borders, `700`–`800` to disabled/decorative content, and `900`–`950` to accessible text. Red, amber, and green share gray's tested APCA luminance curve at every step and remain inside sRGB.
+- Set the two text landmarks to at least `Lc 75` and `Lc 90` against every surface in the same palette. Added relative-OKLCH state modifiers, including the requested half-point negative lightness modifier for light controls and pressed states.
+- Added a catalog palette view with role labels, raw token swatches, `ΔL` or `Δα`, signed APCA Lc, minimum surface Lc for text, and an explicit non-compliance disclaimer.
 - Adopted the exact Geist Mono, size, line-height, weight, icon, control, border, focus, and checkbox tokens requested for this pass.
 - Removed text-spacing additions, the relaxed line-height scale, shadows, rounded component geometry, and decorative blur.
 - Renamed production component CSS to `src/mewa.css` and moved all catalog/snippet presentation into `src/demo.css`.
@@ -33,6 +35,8 @@ The useful next candidates are requirement-led patterns such as a date-range pic
 
 - [shadcn/ui components and utilities](https://ui.shadcn.com/docs)
 - [Vercel Geist colors](https://vercel.com/geist/colors)
+- [Radix Colors scale composition](https://www.radix-ui.com/colors/docs/palette-composition/understanding-the-scale)
+- [APCA usage guidance](https://git.apcacontrast.com/documentation/APCA_in_a_Nutshell.html)
 - [daisyUI components](https://daisyui.com/components/)
 - [Basecoat source and patterns](https://github.com/hunvreus/basecoat)
 - [Coss UI component index](https://coss.com/ui/llms.txt)

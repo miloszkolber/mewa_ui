@@ -16,8 +16,9 @@
     <div class="ui-app-header-inner ui-catalog-header">
       <a class="ui-brand" href="/ui/catalog/" aria-label="mewa_ui catalog home">mewa_ui <span>catalog</span></a>
       <div class="ui-catalog-header-meta">
-        <nav class="ui-catalog-layout-links" aria-label="Layout previews">
-          <span class="ui-sr-only">Layout previews</span>
+        <nav class="ui-catalog-layout-links" aria-label="Catalog resources">
+          <span class="ui-sr-only">Catalog resources</span>
+          <a href="#colors" data-catalog-view="colors">Color palettes</a>
           <a href="/ui/layouts/vertical-navbar.html">Vertical navbar</a>
           <a href="/ui/layouts/horizontal-navbar.html">Horizontal navbar</a>
         </nav>
@@ -43,7 +44,22 @@
             <p class="ui-description" id="component-description"></p>
           </div>
         </div>
-        <div class="ui-catalog-preview-wrap">
+        <div class="ui-catalog-palette-view" id="palette-view" hidden>
+          <section class="ui-catalog-palette-intro" aria-labelledby="palette-method-title">
+            <h2 id="palette-method-title">Role and contrast model</h2>
+            <dl class="ui-catalog-palette-roles">
+              <div><dt>050–200</dt><dd>Background and surfaces</dd></div>
+              <div><dt>300–400</dt><dd>Interactive elements</dd></div>
+              <div><dt>500–600</dt><dd>Borders and separators</dd></div>
+              <div><dt>700–800</dt><dd>Disabled and decorative content</dd></div>
+              <div><dt>900–950</dt><dd>Accessible text on every surface</dd></div>
+            </dl>
+            <p>Each opaque step reports its OKLCH lightness difference from its 050 foundation and its signed APCA Lc against that foundation. Text steps also report the minimum absolute Lc across 050–200. Alpha contrast depends on the final backdrop.</p>
+            <p class="ui-catalog-palette-disclaimer">APCA values use the current 0.0.98G-4g algorithm as design guidance, not as a compliance claim. <a href="https://git.apcacontrast.com/documentation/WhyAPCA" rel="noopener noreferrer">Read the APCA guidance</a>.</p>
+          </section>
+          <div class="ui-catalog-palette-scales" id="palette-scales"></div>
+        </div>
+        <div class="ui-catalog-preview-wrap" id="component-preview-wrap">
           <iframe class="ui-catalog-preview" id="component-preview" title="Component preview" sandbox="allow-scripts allow-forms allow-same-origin" referrerpolicy="same-origin"></iframe>
         </div>
       </section>

@@ -117,6 +117,12 @@
     color: var(--ui-foreground);
 }
 
+.ui-catalog-layout-links a[aria-current="page"] {
+    border-color: var(--ui-border-strong);
+    background: var(--ui-surface-active);
+    color: var(--ui-foreground);
+}
+
 .ui-catalog-count {
     color: var(--ui-muted-foreground);
     font-size: var(--ui-font-size-xsmall);
@@ -212,6 +218,136 @@
     background: var(--ui-background);
 }
 
+.ui-catalog-palette-view {
+    display: grid;
+    inline-size: min(100%, 96rem);
+    gap: 1.5rem;
+}
+
+.ui-catalog-palette-view[hidden] {
+    display: none;
+}
+
+.ui-catalog-palette-intro {
+    display: grid;
+    gap: 1rem;
+    padding: 1rem;
+    border: var(--ui-border-dashed);
+    background: var(--ui-surface);
+}
+
+.ui-catalog-palette-intro > p {
+    max-inline-size: 72rem;
+    color: var(--ui-muted-foreground);
+}
+
+.ui-catalog-palette-roles {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin: 0;
+    border: var(--ui-border-width) solid var(--ui-border);
+}
+
+.ui-catalog-palette-roles > div {
+    min-inline-size: 0;
+    padding: 0.75rem;
+}
+
+.ui-catalog-palette-roles > div + div {
+    border-inline-start: var(--ui-border-width) solid var(--ui-border);
+}
+
+.ui-catalog-palette-roles dt {
+    color: var(--ui-foreground);
+    font-weight: var(--ui-font-weight-medium);
+}
+
+.ui-catalog-palette-roles dd {
+    margin: 0.25rem 0 0;
+    color: var(--ui-muted-foreground);
+    font-size: var(--ui-font-size-xsmall);
+}
+
+.ui-catalog-palette-disclaimer {
+    padding-block-start: 1rem;
+    border-block-start: var(--ui-border-dashed);
+    font-size: var(--ui-font-size-xsmall);
+}
+
+.ui-catalog-palette-scales {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.ui-catalog-palette {
+    min-inline-size: 0;
+    border: var(--ui-border-dashed);
+    background: var(--ui-surface);
+}
+
+.ui-catalog-palette-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    border-block-end: var(--ui-border-dashed);
+}
+
+.ui-catalog-palette-header p {
+    color: var(--ui-muted-foreground);
+    font-size: var(--ui-font-size-xsmall);
+    text-align: end;
+}
+
+.ui-catalog-palette-grid {
+    display: grid;
+    grid-template-columns: repeat(11, minmax(5.75rem, 1fr));
+    overflow-x: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ui-catalog-palette-step {
+    min-inline-size: 0;
+    background: var(--ui-background);
+}
+
+.ui-catalog-palette-step + .ui-catalog-palette-step {
+    border-inline-start: var(--ui-border-width) solid var(--ui-border);
+}
+
+.ui-catalog-palette-swatch {
+    block-size: 5rem;
+    border-block-end: var(--ui-border-width) solid var(--ui-border);
+    background: linear-gradient(var(--ui-palette-color), var(--ui-palette-color)), var(--ui-palette-backdrop, var(--ui-background));
+}
+
+.ui-catalog-palette-meta {
+    display: grid;
+    gap: 0.25rem;
+    padding: 0.75rem;
+}
+
+.ui-catalog-palette-meta strong,
+.ui-catalog-palette-role,
+.ui-catalog-palette-metric {
+    display: block;
+}
+
+.ui-catalog-palette-role {
+    min-block-size: calc(var(--ui-line-height-regular) * 2em);
+    color: var(--ui-foreground);
+    font-size: var(--ui-font-size-xsmall);
+}
+
+.ui-catalog-palette-metric {
+    color: var(--ui-muted-foreground);
+    font-size: var(--ui-font-size-xsmall);
+    font-variant-numeric: tabular-nums;
+}
+
 .ui-catalog-preview {
     display: block;
     inline-size: 100%;
@@ -261,6 +397,15 @@
         gap: 0.5rem;
     }
 
+    .ui-catalog-layout-links {
+        max-inline-size: 100%;
+        overflow-x: auto;
+    }
+
+    .ui-catalog-layout-links a {
+        padding-inline: 0.25rem;
+    }
+
     .ui-catalog-layout {
         display: block;
     }
@@ -278,5 +423,24 @@
 
     .ui-catalog-detail {
         padding: 1.25rem;
+    }
+
+    .ui-catalog-palette-roles {
+        grid-template-columns: 1fr;
+    }
+
+    .ui-catalog-palette-roles > div + div {
+        border-inline-start: 0;
+        border-block-start: var(--ui-border-width) solid var(--ui-border);
+    }
+
+    .ui-catalog-palette-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .ui-catalog-palette-header p {
+        text-align: start;
     }
 }
