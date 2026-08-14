@@ -7,15 +7,15 @@
     const sourceEnd = "<!-- mewa-ui-snippet:end -->";
     const paletteSteps = ["050", "100", "200", "300", "400", "500", "600", "700", "800", "900", "950"];
     const paletteRoles = {
-        "050": "Foundation background",
-        "100": "Subtle surface",
-        "200": "Raised surface",
-        "300": "Interactive",
-        "400": "Interactive strong",
-        "500": "Subtle border",
+        "050": "Foundation surface",
+        "100": "Raised surface",
+        "200": "Hover background",
+        "300": "Active background",
+        "400": "Subtle border",
+        "500": "Default border",
         "600": "Strong border",
-        "700": "Disabled",
-        "800": "Decorative",
+        "700": "Decorative content",
+        "800": "Muted text",
         "900": "Secondary text",
         "950": "Primary text"
     };
@@ -128,8 +128,7 @@
             const grid = document.createElement("ol");
             const values = paletteSteps.map((step) => parseOklch(tokenValue(palette.prefix, step)));
             const colors = values.map(oklchToSrgb);
-            const foundation = values[0];
-            const surfaceColors = colors.slice(0, 3);
+            const contrastAnchor = colors[1];
             section.className = "ui-catalog-palette";
             header.className = "ui-catalog-palette-header";
             heading.textContent = palette.name;
@@ -157,14 +156,11 @@
                 name.textContent = step;
                 role.textContent = paletteRoles[step];
                 if (palette.alpha) {
-                    delta.textContent = `α ${value.alpha.toFixed(2)} · Δα ${signedMetric(value.alpha - foundation.alpha, 2)}`;
+                    delta.textContent = `L ${(value.lightness * 100).toFixed(1)} · α ${value.alpha.toFixed(2)}`;
                     contrast.textContent = "Lc depends on backdrop";
                 } else {
-                    delta.textContent = `L ${(value.lightness * 100).toFixed(1)} · ΔL ${signedMetric((value.lightness - foundation.lightness) * 100, 1)}`;
-                    const lc = apcaContrast(colors[index], colors[0]);
-                    contrast.textContent = index >= 9
-                        ? `Lc ${signedMetric(lc)} · surface min ${Math.min(...surfaceColors.map((surface) => Math.abs(apcaContrast(colors[index], surface)))).toFixed(0)}`
-                        : `Lc ${signedMetric(lc)}`;
+                    delta.textContent = `L ${(value.lightness * 100).toFixed(1)}`;
+                    contrast.textContent = `Lc ${signedMetric(apcaContrast(colors[index], contrastAnchor))} vs 100`;
                 }
                 meta.append(name, role, delta, contrast);
                 item.append(swatch, meta);

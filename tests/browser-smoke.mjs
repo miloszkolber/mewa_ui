@@ -101,7 +101,7 @@ for (const viewport of viewports) {
     const paletteResult = await page.evaluate(() => ({
         sections: document.querySelectorAll(".ui-catalog-palette").length,
         complete: [...document.querySelectorAll(".ui-catalog-palette-grid")].every((grid) => grid.children.length === 11),
-        textMetrics: [...document.querySelectorAll(".ui-catalog-palette:not(:nth-last-child(-n+2)) .ui-catalog-palette-step:nth-child(n+10) .ui-catalog-palette-metric:last-child")].every((metric) => metric.textContent.includes("surface min")),
+        textMetrics: [...document.querySelectorAll(".ui-catalog-palette:not(:nth-last-child(-n+2)) .ui-catalog-palette-step .ui-catalog-palette-metric:last-child")].every((metric) => metric.textContent.includes("vs 100")),
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
     }));
     if (paletteResult.sections !== 6 || !paletteResult.complete || !paletteResult.textMetrics || paletteResult.overflow > 1) failures.push(`catalog palettes ${viewport.name}: ${JSON.stringify(paletteResult)}`);
@@ -205,7 +205,7 @@ await component("shimmer"); assert.match(await page.$eval('.ui-shimmer', (node) 
 await component("spinner"); assert.equal(await page.$eval('.ui-spin', (node) => getComputedStyle(node).animationDuration), "1.2s", "spinner uses the slower motion duration");
 await component("chart"); assert.equal(await page.$eval('[data-ui-part="plot"]', (plot) => { const box = plot.getBoundingClientRect(); return plot.scrollWidth === plot.clientWidth && [...plot.querySelectorAll(".ui-chart-labels li, .ui-chart-value")].every((node) => { const label = node.getBoundingClientRect(); return label.left >= box.left - 1 && label.right <= box.right + 1; }); }), true, "chart stays responsive and keeps every label inside the plot");
 await component("button"); assert.equal(await page.$eval('.ui-button-ghost', (node) => getComputedStyle(node).backgroundColor === "rgba(0, 0, 0, 0)"), true, "ghost button is transparent at rest");
-assert.match(await page.$eval("body", (node) => getComputedStyle(node).fontFamily), /geist_mono/i, "Geist Mono is the primary interface family");
+assert.match(await page.$eval("body", (node) => getComputedStyle(node).fontFamily), /geist/i, "Geist is the primary interface family");
 
 await page.close();
 await browser.disconnect();

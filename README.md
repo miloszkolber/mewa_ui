@@ -2,7 +2,7 @@
 
 `mewa_ui` is a standalone component library for personal services: semantic HTML, vanilla CSS, optional JavaScript, and a local Lucide SVG sprite. It has no framework, Tailwind, package-install, or build-step dependency.
 
-The visual contract is monochrome, square, border-led, and shadow-free. Red, amber, and green communicate state. Blur is reserved for surfaces that overlap content. Geist Mono is the primary family through the `geist_mono` token, with `ui-monospace` and `monospace` fallbacks.
+The visual contract is monochrome, square, border-led, and shadow-free. Red, amber, and green communicate state. Blur is reserved for surfaces that overlap content. Geist is the primary interface family through the `geist` token, with a generic sans-serif fallback.
 
 The portfolio and service interfaces that informed the visual direction remain separate projects. They are references, not dependencies, and are never modified as part of this library.
 
@@ -53,17 +53,17 @@ Decorative icons stay hidden from assistive technology. Icon-only controls need 
 
 The body scale is 12, 14, and 16 px. Headings use 16, 24, and 32 px. Line heights are 1.25 and 1.61; weights are 400 and 550; tracking is zero. Component spacing remains local instead of being hidden behind a semantic spacing taxonomy.
 
-All six palettes use the same theme-specific 11-step `050`–`950` role map: gray, alpha white, alpha black, red, amber, and green. Steps `050`–`200` are backgrounds and surfaces, `300`–`400` are interactive foundations, `500`–`600` are borders, `700`–`800` are disabled or decorative content, and `900`–`950` are secondary and primary text. This is deliberately not a reversible dark-to-light ramp.
+All six palettes use the same theme-specific 11-step `050`–`950` role map: gray, alpha white, alpha black, red, amber, and green. Steps `050`–`100` are surfaces, `200`–`300` are hover and active backgrounds, `400` is the subtle-border step, and `500`–`950` form an APCA contrast ladder. This is deliberately not a reversible dark-to-light ramp.
 
-The opaque palettes stay inside sRGB and share one rendered APCA luminance curve. Red, amber, and green use restrained chroma with a stable hue per family, avoiding both washed-out endpoints and abrupt color shifts. Against every `050`–`200` surface, `900` reaches at least `Lc 75` and `950` reaches at least `Lc 90`; dark-theme polarity is negative. The catalog reports each step's OKLCH `ΔL` from its `050` foundation and its APCA Lc. Alpha values use role-aligned opacity and report `Δα` because their final contrast depends on the backdrop. These values are design guidance, not an APCA compliance claim.
+The opaque palettes stay inside sRGB. Every corresponding opaque step uses the same absolute OKLCH lightness, and every status family uses the same chroma arc with a stable hue. Against each palette's `100` surface, steps `500`, `600`, `700`, `800`, `900`, and `950` center on `Lc 15`, `30`, `45`, `60`, `75`, and `90`; minor per-hue differences are bounded because identical OKLCH values do not render to identical sRGB luminance. The catalog reports only absolute lightness and Lc. Alpha values remain role-aligned because their final contrast depends on the backdrop. These values are design guidance, not an APCA compliance claim.
 
-Components consume generalized semantic roles rather than palette steps. Hover and pressed colors derive from those roles with relative OKLCH modifiers; `-0.005` is a half-point OKLCH lightness change in relative-color syntax.
+Components consume generalized semantic roles rather than palette steps. Hover and active backgrounds map directly to `200` and `300`; relative OKLCH modifiers remain available for light controls and status actions where a palette step is not the appropriate state change.
 
 `--ui-border-dashed` is the shared structural-divider treatment. Ghost buttons have no border or fill at rest. Alert owns inline status and blocking confirmation variants. Progress owns task progress and native meter measurements.
 
 ## Catalog and layouts
 
-Mount the repository at `/ui`, then open `/ui/catalog/`. The catalog displays the selected component's name, description, and live preview without embedding source-code controls. Open `/ui/catalog/#colors` for the role, token, `ΔL`/`Δα`, and APCA visualization of all six palettes.
+Mount the repository at `/ui`, then open `/ui/catalog/`. The catalog displays the selected component's name, description, and live preview without embedding source-code controls. Open `/ui/catalog/#colors` for the role, absolute lightness, opacity, and APCA visualization of all six palettes.
 
 Complete application previews:
 

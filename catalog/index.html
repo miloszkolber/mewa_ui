@@ -48,13 +48,13 @@
           <section class="ui-catalog-palette-intro" aria-labelledby="palette-method-title">
             <h2 id="palette-method-title">Role and contrast model</h2>
             <dl class="ui-catalog-palette-roles">
-              <div><dt>050–200</dt><dd>Background and surfaces</dd></div>
-              <div><dt>300–400</dt><dd>Interactive elements</dd></div>
-              <div><dt>500–600</dt><dd>Borders and separators</dd></div>
-              <div><dt>700–800</dt><dd>Disabled and decorative content</dd></div>
-              <div><dt>900–950</dt><dd>Accessible text on every surface</dd></div>
+              <div><dt>050–100</dt><dd>Surfaces</dd></div>
+              <div><dt>200–300</dt><dd>Hover and active backgrounds</dd></div>
+              <div><dt>400</dt><dd>Subtle borders</dd></div>
+              <div><dt>500–700</dt><dd>Borders and decoration</dd></div>
+              <div><dt>800–950</dt><dd>Muted through primary text</dd></div>
             </dl>
-            <p>Each opaque step reports its OKLCH lightness difference from its 050 foundation and its signed APCA Lc against that foundation. Text steps also report the minimum absolute Lc across 050–200. Alpha contrast depends on the final backdrop.</p>
+            <p>Each opaque step reports its absolute OKLCH lightness and signed APCA Lc against its 100 surface. Steps 500–950 target Lc 15, 30, 45, 60, 75, and 90. Alpha contrast depends on the final backdrop.</p>
             <p class="ui-catalog-palette-disclaimer">APCA values use the current 0.0.98G-4g algorithm as design guidance, not as a compliance claim. <a href="https://git.apcacontrast.com/documentation/WhyAPCA" rel="noopener noreferrer">Read the APCA guidance</a>.</p>
           </section>
           <div class="ui-catalog-palette-scales" id="palette-scales"></div>

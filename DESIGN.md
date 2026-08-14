@@ -7,13 +7,13 @@ This contract applies only to this standalone repository. The portfolio and serv
 - `src/base.css` owns the six OKLCH palettes, generalized semantic roles, typography, geometry, focus, reset, and browser primitives.
 - `src/mewa.css` owns production component layout, spacing, structure, variants, utilities, and responsive rules.
 - `src/demo.css` owns only catalog and snippet presentation.
-- Interface text uses `geist_mono, ui-monospace, monospace` through `--ui-font-mono`.
+- Interface text uses `geist, sans-serif` through `--ui-font`.
 - Body sizes are 12, 14, and 16 px. Heading sizes are 16, 24, and 32 px. Line heights are 1.25 and 1.61. Weights are 400 and 550. Tracking is zero.
 - Every palette value is expressed in OKLCH and uses the theme-specific `050`, `100` … `900`, `950` role scale. Components address semantic roles, never raw red, amber, green, or gray steps. The scale is not intended to generate a light theme when reversed.
-- The roles are fixed: `050`–`200` backgrounds and surfaces; `300`–`400` interactive foundations; `500`–`600` borders and separators; `700`–`800` disabled and decorative content; `900` secondary text; `950` primary text.
-- Opaque scales increase monotonically, remain in sRGB, and share the gray APCA luminance curve. Each status family keeps a stable hue and a restrained chroma arc while APCA luminance remains fixed. Relative to `050`, steps `500`, `600`, `700`, and `800` reach approximately `Lc 15`, `22`, `30`, and `45`. Against every `050`–`200` surface, `900` reaches at least `Lc 75` and `950` reaches at least `Lc 90`. Light-on-dark values have negative APCA polarity.
-- APCA 0.0.98G-4g is used as perceptual design guidance, not as a standards-compliance claim. The catalog exposes signed Lc, minimum surface Lc for text, and OKLCH `ΔL` from each scale's `050` foundation. Alpha scales expose `Δα` because composite contrast is backdrop-dependent.
-- Interaction states derive from semantic bases with relative OKLCH. Dark surfaces use a theme-aware positive hover lift; light controls and pressed states use `-0.005`, equal to a half-point OKLCH lightness modifier. Do not reserve extra palette steps for hover or active states.
+- The roles are fixed: `050`–`100` surfaces; `200`–`300` hover, active, and interactive backgrounds; `400` subtle borders; `500`–`950` the `Lc 15`, `30`, `45`, `60`, `75`, and `90` contrast ladder against `100`.
+- Opaque scales increase monotonically and remain in sRGB. Corresponding steps share exact OKLCH lightness, while red, amber, and green also share exact chroma and keep a stable hue per family. The APCA landmarks are centered on the requested targets with a small bounded per-hue variation caused by sRGB conversion. Light-on-dark values have negative APCA polarity.
+- APCA 0.0.98G-4g is used as perceptual design guidance, not as a standards-compliance claim. The catalog exposes absolute OKLCH lightness and signed Lc against step `100`. Alpha scales expose absolute lightness and opacity because composite contrast is backdrop-dependent.
+- Dark-surface hover and active states map directly to steps `200` and `300`. Relative OKLCH modifiers remain for light controls, pressed primary actions, and status actions where a dedicated palette step is not appropriate.
 - Geometry is square. Shadows are forbidden. Circular geometry is limited to objects whose meaning depends on it, such as radios, avatars, and status dots.
 - Backdrop blur belongs only to overlapping surfaces such as dialogs, sheets, drawers, menus, popovers, tooltips, toasts, mobile navigation panels, and sticky glass headers.
 - Component-local dimensions and spacing are explicit. Do not recreate a semantic spacing-token taxonomy.
@@ -39,7 +39,7 @@ Interactive patterns follow their platform and ARIA keyboard models:
 
 Every entry in `catalog/components.json` has exactly one complete document in `snippets/`. The reusable fragment is delimited by `<!-- mewa-ui-snippet:start -->` and `<!-- mewa-ui-snippet:end -->`. A component is complete only when markup, styling, behavior, focus, narrow-screen treatment, local icons, and contract coverage agree.
 
-Snippets load `base.css`, `mewa.css`, `demo.css`, then `components.js`. Application layouts load only the production pair and runtime. The catalog renders the marked fragment as a preview plus its name and description; source-code controls do not belong in the catalog UI. Its `#colors` view documents palette roles, raw OKLCH tokens, `ΔL`/`Δα`, and APCA Lc without turning palette steps into component-level APIs.
+Snippets load `base.css`, `mewa.css`, `demo.css`, then `components.js`. Application layouts load only the production pair and runtime. The catalog renders the marked fragment as a preview plus its name and description; source-code controls do not belong in the catalog UI. Its `#colors` view documents palette roles, raw OKLCH tokens, absolute lightness or opacity, and APCA Lc without turning palette steps into component-level APIs.
 
 Alert owns inline and blocking-dialog variants. Progress owns both task progress and bounded meter measurements. Ghost buttons are the default low-emphasis action inside calendars, date pickers, and compound controls. The vertical navbar subsumes the former sidebar component.
 
