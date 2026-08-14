@@ -36,7 +36,7 @@
   {"name":"Label","slug":"label","group":"Form","description":"Accessible labels with optional required and supplementary information.","behavior":"static","static":true,"requiresJs":false},
   {"name":"Lightbox","slug":"lightbox","group":"Overlay","description":"A modal media viewer with thumbnail selection, next and previous controls, and arrow-key navigation.","behavior":"interactive","static":false,"requiresJs":true},
   {"name":"Marker","slug":"marker","group":"Content","description":"Small semantic indicators for neutral and status-coded states.","behavior":"static","static":true,"requiresJs":false},
-  {"name":"Message","slug":"message","group":"Content","description":"A structured message with author, timestamp, body, and optional status.","behavior":"static","static":true,"requiresJs":false},
+  {"name":"Message","slug":"message","group":"Content","description":"An inline status message with an icon, title, and description across ok, running, and error states.","behavior":"static","static":true,"requiresJs":false},
   {"name":"Message Scroller","slug":"message-scroller","group":"Content","description":"A live message region that preserves reading position and offers a jump-to-latest action.","behavior":"interactive","static":false,"requiresJs":true},
   {"name":"Native Select","slug":"native-select","group":"Form","description":"The platform select element styled for consistent application forms.","behavior":"interactive","static":false,"requiresJs":false},
   {"name":"Navbar Horizontal","slug":"navbar-horizontal","group":"Navigation","description":"A framed horizontal application navbar with identity, scrollable destinations, current-page state, and an action area.","behavior":"static","static":true,"requiresJs":false},
