@@ -14,6 +14,7 @@
 - Vertical layout with left utility rail: `/ui/layouts/vertical-navbar-utility-start.html`
 - Collapsed vertical application layout: `/ui/layouts/vertical-navbar-collapsed.html`
 - Horizontal application layout: `/ui/layouts/horizontal-navbar.html`
+- Operations workspace layout: `/ui/layouts/operations-workspace.html`
 - Catalog-only styles: `/ui/src/demo.css` (do not load in consuming applications)
 
 ## Integration contract
@@ -28,13 +29,13 @@
 
 ## Visual contract
 
-- Geist Mono first: `geist_mono, ui-monospace, monospace`.
+- Geist first: `geist, sans-serif` through `--ui-font`.
 - Square, border-led, shadow-free geometry.
 - Blur only for surfaces that overlap content.
 - Six theme-specific 11-step OKLCH role palettes (`050`–`950`): gray, alpha white, alpha black, red, amber, green. Do not reverse them to synthesize a light theme.
-- `050`–`200` are surfaces; `300`–`400` interactive foundations; `500`–`600` borders; `700`–`800` disabled/decorative content; `900` secondary text; `950` primary text.
-- Opaque palettes share an APCA luminance curve. Text steps reach at least `Lc 75` and `Lc 90` against every `050`–`200` surface. APCA is design guidance, not a compliance claim.
-- Components consume semantic roles from `base.css`; red, amber, and green communicate status. Derive hover/pressed values from semantic roles with the supplied relative-OKLCH modifiers instead of selecting another palette step.
+- `050`–`100` are surfaces; `200`–`300` are hover and active backgrounds; `400` is the subtle-border step; `500`–`700` are borders and decoration; `800`–`950` are muted through primary text.
+- Opaque palettes share the same absolute OKLCH lightness curve. Gray defines the APCA baseline against `050`; APCA remains design guidance, not a compliance claim.
+- Components consume semantic roles from `base.css`; red, amber, and green communicate status. Dark-surface hover and active roles map to `200` and `300`; relative OKLCH modifiers are reserved for light controls and status actions where another palette step is not the correct state change.
 - Use `--ui-border-dashed` for structural section division.
 - Ghost buttons have no border or fill at rest.
 - Lucide icons use the local sprite and `currentColor`. Decorative SVGs are `aria-hidden="true"`; icon-only controls require an accessible name.
@@ -45,6 +46,11 @@
 - Progress includes task progress and bounded native meter examples.
 - Navbar Vertical replaces the former Sidebar component.
 - Button Group may use the internal grouped-toggle behavior; Toggle Group is not a public component.
+- Description List owns compact key/value metadata. Item owns operational status rows with visible state and independent trailing actions. Scroll Area owns bounded diagnostic logs. Search, filter, and action clusters are compositions of existing controls.
+
+## Inventory
+
+The catalog contains 71 snippets and six complete layouts.
 
 ## Removed public components
 

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Operations workspace layout</title>
+    <link rel="stylesheet" href="/ui/src/base.css">
+    <link rel="stylesheet" href="/ui/src/mewa.css">
+    <script src="/ui/src/components.js" defer></script>
+</head>
+<body class="ui-shell ui-shell--vertical" data-ui-shell data-ui-nav-collapsed="false">
+    <a class="ui-skip-link" href="#main-content">Skip to main content</a>
+    <div class="ui-frame">
+        <nav class="ui-navbar ui-navbar--vertical" id="operations-navbar" data-ui-component="navbar-vertical" data-ui-navbar-vertical data-ui-collapsed="false" aria-label="Workspace navigation">
+            <header><a class="ui-navbar-brand" href="#main-content" aria-label="Atlas home"><span class="ui-navbar-mark" aria-hidden="true">A</span><span class="ui-navbar-label">Atlas</span></a><button class="ui-icon-button ui-button-ghost ui-navbar-toggle" data-ui-part="trigger" type="button" aria-expanded="true" aria-controls="operations-navbar-panel" aria-label="Toggle navigation"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#menu"></use></svg></button></header>
+            <div data-ui-part="panel" id="operations-navbar-panel">
+                <ul class="ui-navbar-list"><li><a class="ui-navbar-link" href="#main-content" aria-current="page"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#activity"></use></svg><span class="ui-navbar-label">Operations</span></a></li><li><a class="ui-navbar-link" href="#runs"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#circle"></use></svg><span class="ui-navbar-label">Runs</span></a></li><li><a class="ui-navbar-link" href="#metadata"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#circle"></use></svg><span class="ui-navbar-label">Metadata</span></a></li></ul>
+                <button class="ui-button ui-button-ghost ui-navbar-collapse" data-ui-part="collapse-trigger" type="button" aria-expanded="true" aria-controls="operations-navbar" aria-label="Hide menu"><svg class="ui-navbar-collapse-icon--close" aria-hidden="true"><use href="/ui/src/lucide.svg#panel-left-close"></use></svg><svg class="ui-navbar-collapse-icon--open" aria-hidden="true"><use href="/ui/src/lucide.svg#panel-left-open"></use></svg><span class="ui-navbar-label">Hide menu</span></button>
+            </div>
+        </nav>
+        <div class="ui-shell-workspace">
+            <header class="ui-shell-header"><nav class="ui-shell-breadcrumb" aria-label="Breadcrumb"><span aria-current="page">~ / Operations / Production</span></nav><button class="ui-button ui-button-primary" type="button">New run</button></header>
+            <main class="ui-shell-main" id="main-content" aria-labelledby="page-title">
+                <div class="ui-shell-layout">
+                    <section class="ui-shell-content">
+                        <header class="ui-shell-intro"><h1 class="ui-page-heading" id="page-title">Production operations</h1><p class="ui-description">Review active jobs, recent health signals, and the diagnostic output for the current release window.</p></header>
+                        <div class="ui-operations-workspace">
+                            <section class="ui-operations-section" aria-label="Operation filters">
+                                <form class="ui-operations-tools" role="search"><label class="ui-field-stack"><span class="ui-field-label">Search operations</span><input class="ui-field" type="search" name="operation" placeholder="Search jobs and workers"></label><label class="ui-field-stack"><span class="ui-field-label">State</span><select class="ui-select" name="state"><option>All states</option><option>Running</option><option>Needs attention</option><option>Complete</option></select></label><button class="ui-button" type="submit">Apply filters</button></form>
+                                <dl class="ui-stat-grid ui-operations-stats"><div class="ui-stat-card"><dt>Running</dt><dd>4</dd><dd class="ui-meta-text" data-state="warning">One nearing limit</dd></div><div class="ui-stat-card"><dt>Healthy workers</dt><dd>18</dd><dd class="ui-meta-text" data-state="ok">All zones reporting</dd></div><div class="ui-stat-card"><dt>Attention</dt><dd>2</dd><dd class="ui-meta-text" data-state="warning">Review before 10:00</dd></div></dl>
+                            </section>
+                            <section class="ui-operations-section" id="runs" aria-labelledby="runs-title"><header><h2 class="ui-title-md" id="runs-title">Current operations</h2><p class="ui-meta-text">Status is visible in each row. Actions remain independent controls.</p></header><div class="ui-operations-list"><article class="ui-item ui-item--operation" data-state="running"><span class="ui-marker" data-state="running" aria-hidden="true"></span><div class="ui-item-content"><div class="ui-item-heading"><span class="ui-item-title">Rebuild search index</span><span class="ui-item-status"><svg class="ui-spin" aria-hidden="true"><use href="/ui/src/lucide.svg#loader-circle"></use></svg>Running</span></div><span class="ui-item-description">Re-indexing production documents after the schema migration.</span><div class="ui-item-meta"><span>Started 09:34 UTC</span><span>Worker 03</span></div><div class="ui-item-progress"><progress class="ui-progress" value="64" max="100" aria-label="Rebuild search index progress">64%</progress><span>64%</span></div></div><div class="ui-item-actions"><button class="ui-button ui-button-small" type="button">View run</button></div></article><article class="ui-item ui-item--operation" data-state="ok"><span class="ui-marker" data-state="ok" aria-hidden="true"></span><div class="ui-item-content"><div class="ui-item-heading"><span class="ui-item-title">Nightly backup</span><span class="ui-item-status"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#circle-check"></use></svg>Complete</span></div><span class="ui-item-description">Snapshot verified and retained for the scheduled window.</span><div class="ui-item-meta"><span>Completed 09:28 UTC</span><span>12.4 GB</span></div></div><div class="ui-item-actions"><button class="ui-button ui-button-small" type="button">Details</button></div></article><article class="ui-item ui-item--operation" data-state="warning"><span class="ui-marker" data-state="warning" aria-hidden="true"></span><div class="ui-item-content"><div class="ui-item-heading"><span class="ui-item-title">Queue latency</span><span class="ui-item-status"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#circle-alert"></use></svg>Warning</span></div><span class="ui-item-description">P95 delivery time is above the five-minute target.</span><div class="ui-item-meta"><span>Observed 09:41 UTC</span><span>8m 14s</span></div></div><div class="ui-item-actions"><button class="ui-button ui-button-small" type="button">Inspect</button></div></article></div></section>
+                            <section class="ui-operations-section" id="metadata" data-ui-component="tabs" data-ui-tabs aria-labelledby="operations-detail-title"><header><p class="ui-eyebrow">Current run</p><h2 class="ui-title-md" id="operations-detail-title">Release metadata and output</h2></header><div data-ui-part="list" role="tablist" aria-label="Current run details"><button data-ui-part="trigger" id="operations-summary-tab" type="button" role="tab" aria-selected="true" aria-controls="operations-summary-panel">Summary</button><button data-ui-part="trigger" id="operations-history-tab" type="button" role="tab" aria-selected="false" aria-controls="operations-history-panel" tabindex="-1">History</button></div><div data-ui-part="panel" id="operations-summary-panel" role="tabpanel" aria-labelledby="operations-summary-tab"><div class="ui-operations-detail-grid"><section><h3 class="ui-title-sm">Metadata</h3><dl class="ui-description-list"><div><dt>Release</dt><dd>2026.08.14-rc2</dd></div><div><dt>Environment</dt><dd>Production</dd></div><div><dt>Started</dt><dd><time datetime="2026-08-14T09:34:00Z">14 Aug 2026, 09:34 UTC</time></dd></div><div><dt>Rollback</dt><dd><span class="ui-description-list-unavailable">Unavailable</span></dd></div></dl></section><section><h3 class="ui-title-sm">Progress</h3><div class="ui-progress-list"><section class="ui-progress-group" data-state="running" aria-labelledby="operations-progress-label"><div class="ui-progress-header"><span id="operations-progress-label">Index rebuild</span><output for="operations-progress">64% complete</output></div><progress class="ui-progress" id="operations-progress" value="64" max="100" aria-labelledby="operations-progress-label">64%</progress></section><section class="ui-progress-group" data-state="warning" aria-labelledby="operations-capacity-label"><div class="ui-progress-header"><span id="operations-capacity-label">Worker capacity</span><output for="operations-capacity">78%</output></div><meter class="ui-progress" id="operations-capacity" min="0" max="100" low="60" high="85" optimum="20" value="78" aria-labelledby="operations-capacity-label">78%</meter></section></div></section></div></div><div data-ui-part="panel" id="operations-history-panel" role="tabpanel" aria-labelledby="operations-history-tab" hidden><p class="ui-meta-text">Previous completed runs remain available from the run history.</p></div><section class="ui-scroll-area ui-scroll-area--output" tabindex="0" aria-labelledby="operations-output-title"><header class="ui-scroll-area-header"><h3 class="ui-scroll-area-title" id="operations-output-title">Worker diagnostic output</h3><span class="ui-meta-text">Read-only</span></header><pre class="ui-code-output">09:41:02 worker-03 started index rebuild
+09:41:06 fetched schema version 18
+09:41:14 indexed batch 1 of 28
+09:41:18 indexed batch 2 of 28
+09:41:25 checkpoint written to operations/search-index
+09:41:31 awaiting next batch
+09:41:38 indexed batch 3 of 28
+09:41:46 indexed batch 4 of 28
+09:41:54 indexed batch 5 of 28
+09:42:03 index segment merged
+09:42:12 indexed batch 6 of 28
+09:42:20 indexed batch 7 of 28
+09:42:29 checkpoint verified
+09:42:38 indexed batch 8 of 28
+09:42:47 indexed batch 9 of 28
+09:42:55 indexed batch 10 of 28
+09:43:04 checkpoint written to operations/search-index
+09:43:12 indexed batch 11 of 28
+09:43:21 indexed batch 12 of 28
+09:43:30 awaiting next batch</pre></section></section>
+                        </div>
+                    </section>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

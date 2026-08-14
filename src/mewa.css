@@ -50,7 +50,7 @@ svg { display: inline-block; inline-size: var(--ui-icon-size-medium); block-size
 .ui-attachment, .ui-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; }
 .ui-attachment-content, .ui-item-content { display: grid; min-inline-size: 0; flex: 1; gap: 0.25rem; }
 .ui-item { inline-size: 100%; text-align: start; }
-.ui-item:hover:not(:disabled), .ui-item[aria-pressed="true"] { border-color: var(--ui-border-strong); background: var(--ui-surface-active); }
+.ui-item:is(button, a[href]):hover:not(:disabled), .ui-item[aria-pressed="true"] { border-color: var(--ui-border-strong); background: var(--ui-surface-active); }
 .ui-item:disabled { color: var(--ui-disabled-foreground); }
 .ui-badge, .ui-attachment-status, .ui-kbd { display: inline-flex; align-items: center; gap: 0.25rem; min-height: 1.5rem; padding: 0.25rem 0.5rem; border: var(--ui-border-width) solid var(--ui-border); background: var(--ui-surface-raised); color: var(--ui-muted-foreground); font-size: var(--ui-font-size-xsmall); font-weight: var(--ui-font-weight-medium); }
 .ui-badge { border-color: currentColor; }
@@ -680,6 +680,42 @@ meter.ui-progress::-moz-meter-bar { background: currentColor; }
 .ui-shell-utility { display: grid; min-inline-size: 0; place-items: center; padding: 1.5rem; color: var(--ui-muted-foreground); text-align: center; }
 .ui-shell-layout--utility-end .ui-shell-utility { border-inline-start: var(--ui-border-dashed); }
 .ui-shell-layout--utility-start .ui-shell-utility { border-inline-end: var(--ui-border-dashed); }
+/* Reusable operational data patterns. */
+.ui-item-list { display: grid; gap: 0.5rem; }
+.ui-item--operation { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: start; }
+.ui-item--operation .ui-marker { margin: 0.375rem 0 0; }
+.ui-item-heading, .ui-item-meta, .ui-item-progress, .ui-item-status, .ui-item-actions { display: flex; align-items: center; min-inline-size: 0; }
+.ui-item-heading { justify-content: space-between; gap: 0.75rem; }
+.ui-item-status { flex: 0 0 auto; gap: 0.25rem; color: var(--ui-muted-foreground); font-size: var(--ui-font-size-xsmall); font-weight: var(--ui-font-weight-medium); }
+.ui-item-status > svg { inline-size: var(--ui-icon-size-small); block-size: var(--ui-icon-size-small); }
+.ui-item-meta { flex-wrap: wrap; gap: 0.25rem 0.75rem; color: var(--ui-muted-foreground); font-size: var(--ui-font-size-xsmall); }
+.ui-item-progress { gap: 0.5rem; color: var(--ui-muted-foreground); font-size: var(--ui-font-size-xsmall); font-variant-numeric: tabular-nums; }
+.ui-item-progress .ui-progress { min-inline-size: 0; flex: 1; }
+.ui-item-actions { align-self: center; }
+.ui-item--operation[data-state="running"] .ui-item-status, .ui-item--operation[data-state="warning"] .ui-item-status { color: var(--ui-warning-strong); }
+.ui-item--operation[data-state="ok"] .ui-item-status { color: var(--ui-success-strong); }
+.ui-item--operation[data-state="error"] .ui-item-status { color: var(--ui-danger-strong); }
+.ui-marker[data-state="running"] { background: var(--ui-warning); }
+.ui-description-list { margin: 0; border: var(--ui-border-width) solid var(--ui-border); background: var(--ui-surface); }
+.ui-description-list > div { display: grid; grid-template-columns: minmax(8rem, 28%) minmax(0, 1fr); gap: 0.75rem; padding: 0.75rem; }
+.ui-description-list > div + div { border-block-start: var(--ui-border-width) solid var(--ui-border); }
+.ui-description-list dt { color: var(--ui-muted-foreground); font-size: var(--ui-font-size-xsmall); font-weight: var(--ui-font-weight-medium); }
+.ui-description-list dd { min-inline-size: 0; margin: 0; color: var(--ui-foreground); overflow-wrap: anywhere; }
+.ui-description-list-unavailable { color: var(--ui-disabled-foreground); }
+.ui-scroll-area-header { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
+.ui-scroll-area--output { max-block-size: 16rem; overflow: auto; background: var(--ui-surface); }
+.ui-scroll-area--output .ui-code-output { overflow: visible; min-inline-size: 0; }
+.ui-operations-workspace { display: grid; min-inline-size: 0; }
+.ui-operations-section { display: grid; min-inline-size: 0; gap: 1rem; padding: 1.5rem; border-block-end: var(--ui-border-dashed); }
+.ui-operations-section > header { display: grid; gap: 0.25rem; }
+.ui-operations-tools { display: grid; grid-template-columns: minmax(0, 1fr) minmax(10rem, 14rem) auto; align-items: end; gap: 0.75rem; }
+.ui-operations-tools .ui-button { align-self: end; }
+.ui-operations-stats { inline-size: 100%; margin: 0; }
+.ui-operations-stats .ui-stat-card > dd:not(.ui-meta-text) { font-size: var(--ui-heading-large); }
+.ui-operations-list { display: grid; gap: 0.5rem; }
+.ui-operations-detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.ui-operations-detail-grid > section { display: grid; align-content: start; gap: 0.75rem; min-inline-size: 0; }
+.ui-operations-workspace [data-ui-component="tabs"] { min-inline-size: 0; }
 
 /* Application navigation. Vertical navbar subsumes the former sidebar pattern. */
 .ui-navbar { background: var(--ui-background); color: var(--ui-foreground); }
@@ -738,6 +774,12 @@ meter.ui-progress::-moz-meter-bar { background: currentColor; }
     .ui-shell-workspace { min-block-size: calc(100svh - 3.5rem); grid-template-rows: 3.5rem minmax(0, 1fr); }
     .ui-shell-header { inset-block-start: 3.5rem; min-block-size: 3.5rem; }
     .ui-shell-layout { min-block-size: calc(100svh - 7rem); }
+    .ui-item--operation { grid-template-columns: auto minmax(0, 1fr); }
+    .ui-item-actions { grid-column: 2; justify-self: start; }
+    .ui-description-list > div { grid-template-columns: 1fr; gap: 0.25rem; }
+    .ui-operations-section { padding: 1rem; }
+    .ui-operations-tools, .ui-operations-detail-grid { grid-template-columns: 1fr; }
+    .ui-operations-tools .ui-button { justify-self: start; }
     .ui-navbar--horizontal .ui-navbar-brand { padding-inline: 0.75rem; }
     .ui-navbar--horizontal .ui-navbar-link { padding-inline: 0.75rem; }
 }

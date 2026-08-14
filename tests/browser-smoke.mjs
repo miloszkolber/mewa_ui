@@ -12,6 +12,78 @@ const viewports = [
     { name: "mobile", width: 390, height: 844, isMobile: true },
 ];
 const narrowViewport = { name: "narrow", width: 320, height: 720, isMobile: true };
+
+const clamp = (value) => Math.max(0, Math.min(1, value));
+const alphaComponent = (value) => value.endsWith("%") ? Number(value.slice(0, -1)) / 100 : Number(value);
+const rgbComponent = (value) => value.endsWith("%") ? Number(value.slice(0, -1)) / 100 : Number(value) / 255;
+const srgbComponent = (value) => value.endsWith("%") ? Number(value.slice(0, -1)) / 100 : Number(value);
+const linearToSrgb = (value) => value <= 0.0031308 ? value * 12.92 : 1.055 * value ** (1 / 2.4) - 0.055;
+
+function parseCssColor(value) {
+    const text = value.trim().toLowerCase();
+    if (text === "transparent") return { red: 0, green: 0, blue: 0, alpha: 0 };
+    const rgb = text.match(/^rgba?\((.*)\)$/);
+    if (rgb) {
+        const body = rgb[1].trim();
+        let channels, alpha = 1;
+        if (body.includes(",")) {
+            assert(!body.includes("/"), `mixed legacy RGB syntax is unsupported: ${value}`);
+            const parts = body.split(",").map((part) => part.trim());
+            assert(parts.length === 3 || parts.length === 4, `legacy RGB needs three channels and optional alpha: ${value}`);
+            channels = parts.slice(0, 3).map(rgbComponent);
+            if (parts.length === 4) alpha = alphaComponent(parts[3]);
+        } else {
+            const sections = body.split("/").map((part) => part.trim());
+            assert(sections.length <= 2, `modern RGB contains too many alpha separators: ${value}`);
+            channels = sections[0].split(/\s+/).filter(Boolean).map(rgbComponent);
+            if (sections.length === 2) alpha = alphaComponent(sections[1]);
+        }
+        assert(channels.length === 3 && channels.every(Number.isFinite) && Number.isFinite(alpha), `unsupported RGB color: ${value}`);
+        return { red: clamp(channels[0]), green: clamp(channels[1]), blue: clamp(channels[2]), alpha: clamp(alpha) };
+    }
+    const srgb = text.match(/^color\(srgb\s+(.+)\)$/);
+    if (srgb) {
+        const sections = srgb[1].split("/").map((part) => part.trim());
+        assert(sections.length <= 2, `sRGB contains too many alpha separators: ${value}`);
+        const channels = sections[0].split(/\s+/).filter(Boolean).map(srgbComponent);
+        const alpha = sections.length === 2 ? alphaComponent(sections[1]) : 1;
+        assert(channels.length === 3 && channels.every(Number.isFinite) && Number.isFinite(alpha), `unsupported sRGB color: ${value}`);
+        return { red: clamp(channels[0]), green: clamp(channels[1]), blue: clamp(channels[2]), alpha: clamp(alpha) };
+    }
+    const oklch = text.match(/^oklch\(\s*([-+\d.]+)(%)?\s+([-+\d.]+)\s+([-+\d.]+)(?:deg)?(?:\s*\/\s*([-+\d.]+%?))?\s*\)$/);
+    if (oklch) {
+        const lightness = Number(oklch[1]) / (oklch[2] ? 100 : 1), chroma = Number(oklch[3]), radians = Number(oklch[4]) * Math.PI / 180, alpha = oklch[5] ? alphaComponent(oklch[5]) : 1;
+        assert([lightness, chroma, radians, alpha].every(Number.isFinite), `unsupported OKLCH color: ${value}`);
+        const a = chroma * Math.cos(radians), b = chroma * Math.sin(radians);
+        const l = (lightness + 0.3963377774 * a + 0.2158037573 * b) ** 3, m = (lightness - 0.1055613458 * a - 0.0638541728 * b) ** 3, s = (lightness - 0.0894841775 * a - 1.291485548 * b) ** 3;
+        return { red: clamp(linearToSrgb(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s)), green: clamp(linearToSrgb(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s)), blue: clamp(linearToSrgb(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s)), alpha: clamp(alpha) };
+    }
+    throw new Error(`unsupported computed color: ${value}`);
+}
+
+const composite = (foreground, background) => ({ red: foreground.red * foreground.alpha + background.red * (1 - foreground.alpha), green: foreground.green * foreground.alpha + background.green * (1 - foreground.alpha), blue: foreground.blue * foreground.alpha + background.blue * (1 - foreground.alpha), alpha: 1 });
+const linearChannel = (value) => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+const luminance = (color) => 0.2126 * linearChannel(color.red) + 0.7152 * linearChannel(color.green) + 0.0722 * linearChannel(color.blue);
+const contrastRatio = (foreground, background) => (Math.max(luminance(foreground), luminance(background)) + 0.05) / (Math.min(luminance(foreground), luminance(background)) + 0.05);
+const near = (actual, expected) => Math.abs(actual - expected) <= 0.0001;
+
+const colorFixtures = [
+    ["rgb(255, 0, 128)", { red: 1, green: 0, blue: 128 / 255, alpha: 1 }],
+    ["rgb(100% 0% 50%)", { red: 1, green: 0, blue: 0.5, alpha: 1 }],
+    ["rgb(255 0 0 / 25%)", { red: 1, green: 0, blue: 0, alpha: 0.25 }],
+    ["rgba(255, 255, 255, 0.5)", { red: 1, green: 1, blue: 1, alpha: 0.5 }],
+    ["color(srgb 0.25 0.5 1 / 75%)", { red: 0.25, green: 0.5, blue: 1, alpha: 0.75 }],
+    ["oklch(100% 0 0 / 50%)", { red: 1, green: 1, blue: 1, alpha: 0.5 }],
+    ["oklch(1 0 0 / 0.5)", { red: 1, green: 1, blue: 1, alpha: 0.5 }],
+    ["transparent", { red: 0, green: 0, blue: 0, alpha: 0 }],
+];
+colorFixtures.forEach(([source, expected]) => {
+    const actual = parseCssColor(source);
+    Object.keys(expected).forEach((channel) => assert(near(actual[channel], expected[channel]), `${source}: ${channel} parsed as ${actual[channel]}, expected ${expected[channel]}`));
+});
+const halfWhiteOnBlack = composite(parseCssColor("rgba(255, 255, 255, 0.5)"), parseCssColor("rgb(0 0 0)"));
+assert([halfWhiteOnBlack.red, halfWhiteOnBlack.green, halfWhiteOnBlack.blue].every((channel) => near(channel, 0.5)), "legacy rgba alpha must participate in compositing");
+assert(contrastRatio(parseCssColor("rgb(255 255 255)"), parseCssColor("rgb(0 0 0)")) > 20, "contrast fixtures must preserve black/white luminance");
 if (screenshotDir) fs.mkdirSync(screenshotDir, { recursive: true });
 
 const browser = await puppeteer.connect({ browserURL });
@@ -95,7 +167,7 @@ for (const viewport of viewports) {
     if (result.count !== manifest.length || result.overflow > 1) failures.push(`catalog ${viewport.name}: ${JSON.stringify(result)}`);
     if (!result.description || result.previewMain || result.hasSource) failures.push(`catalog ${viewport.name}: catalog must expose description and marked preview without HTML source controls`);
     if (viewport.width > 768 && Math.abs(result.sidebarLeft) > 1) failures.push(`catalog ${viewport.name}: component navigation is not pinned to the left edge`);
-    if (result.layoutLinks.join("|") !== "#colors|/ui/layouts/vertical-navbar.html|/ui/layouts/vertical-navbar-utility-end.html|/ui/layouts/vertical-navbar-utility-start.html|/ui/layouts/vertical-navbar-collapsed.html|/ui/layouts/horizontal-navbar.html") failures.push(`catalog ${viewport.name}: catalog resource links are missing or incorrect`);
+    if (result.layoutLinks.join("|") !== "#colors|/ui/layouts/vertical-navbar.html|/ui/layouts/vertical-navbar-utility-end.html|/ui/layouts/vertical-navbar-utility-start.html|/ui/layouts/vertical-navbar-collapsed.html|/ui/layouts/horizontal-navbar.html|/ui/layouts/operations-workspace.html") failures.push(`catalog ${viewport.name}: catalog resource links are missing or incorrect`);
     await page.click('[data-catalog-view="colors"]');
     await page.waitForFunction(() => !document.querySelector("#palette-view")?.hidden && document.querySelectorAll(".ui-catalog-palette").length === 6);
     const paletteResult = await page.evaluate(() => ({
@@ -107,7 +179,7 @@ for (const viewport of viewports) {
     if (paletteResult.sections !== 6 || !paletteResult.complete || !paletteResult.textMetrics || paletteResult.overflow > 1) failures.push(`catalog palettes ${viewport.name}: ${JSON.stringify(paletteResult)}`);
     await page.evaluate(() => { window.location.hash = "#accordion"; });
     await page.waitForFunction(() => document.querySelector("#component-title")?.textContent === "Accordion" && !document.querySelector("#component-preview-wrap")?.hidden);
-    for (const [name, href] of [["Vertical", "/ui/layouts/vertical-navbar.html"], ["Utility right", "/ui/layouts/vertical-navbar-utility-end.html"], ["Utility left", "/ui/layouts/vertical-navbar-utility-start.html"], ["Collapsed", "/ui/layouts/vertical-navbar-collapsed.html"], ["Horizontal", "/ui/layouts/horizontal-navbar.html"]]) {
+    for (const [name, href] of [["Vertical", "/ui/layouts/vertical-navbar.html"], ["Utility right", "/ui/layouts/vertical-navbar-utility-end.html"], ["Utility left", "/ui/layouts/vertical-navbar-utility-start.html"], ["Collapsed", "/ui/layouts/vertical-navbar-collapsed.html"], ["Horizontal", "/ui/layouts/horizontal-navbar.html"], ["Operations", "/ui/layouts/operations-workspace.html"]]) {
         const response = await page.evaluate(async (path) => ({ path, ok: (await fetch(path)).ok }), href);
         if (!response.ok) failures.push(`catalog ${viewport.name}: ${name} preview is unavailable (${response.path})`);
     }
@@ -119,6 +191,7 @@ const layoutPreviews = [
     { slug: "vertical-navbar-utility-start", orientation: "vertical", utility: "start" },
     { slug: "vertical-navbar-collapsed", orientation: "vertical", collapsed: true },
     { slug: "horizontal-navbar", orientation: "horizontal" },
+    { slug: "operations-workspace", orientation: "vertical", operations: true },
 ];
 for (const layout of layoutPreviews) {
     for (const viewport of viewports) {
@@ -141,6 +214,17 @@ for (const layout of layoutPreviews) {
         if (layout.utility === "end" && viewport.width > 1024 && result.content.right > result.utility.left + 1) failures.push(`${layout.slug} ${viewport.name}: right utility rail is not after content`);
         if (layout.utility === "start" && viewport.width > 1024 && result.utility.right > result.content.left + 1) failures.push(`${layout.slug} ${viewport.name}: left utility rail is not before content`);
         if (layout.collapsed && viewport.width > 768 && (Math.abs(result.navigation.width - 64) > 2 || result.collapsed !== "true")) failures.push(`${layout.slug} ${viewport.name}: collapsed navigation geometry or state is incorrect`);
+        if (layout.operations) {
+            const operations = await page.evaluate(() => ({
+                tools: Boolean(document.querySelector(".ui-operations-tools")),
+                rows: document.querySelectorAll(".ui-item--operation").length,
+                metadata: Boolean(document.querySelector(".ui-description-list")),
+                progress: Boolean(document.querySelector(".ui-progress")),
+                output: Boolean(document.querySelector(".ui-scroll-area--output")),
+                overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
+            }));
+            if (!operations.tools || operations.rows < 3 || !operations.metadata || !operations.progress || !operations.output || operations.overflow > 1) failures.push(`${layout.slug} ${viewport.name}: ${JSON.stringify(operations)}`);
+        }
     }
 }
 
@@ -165,12 +249,11 @@ async function clickAndAssert(slug, trigger, panel) {
 }
 
 await component("button");
-const buttonContrast = await page.$$eval(".ui-button-primary, .ui-button-danger", (nodes) => {
-    const channel = (value) => { value /= 255; return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4; };
-    const luminance = (value) => { const [red, green, blue] = value.match(/[\d.]+/g).slice(0, 3).map(Number); return 0.2126 * channel(red) + 0.7152 * channel(green) + 0.0722 * channel(blue); };
-    return nodes.map((node) => { const style = getComputedStyle(node), foreground = luminance(style.color), background = luminance(style.backgroundColor); return (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05); });
-});
-assert(buttonContrast.every((ratio) => ratio >= 4.5), `button variants need 4.5:1 text contrast (${buttonContrast.join(", ")})`);
+const buttonStyles = await page.$$eval(".ui-button-primary, .ui-button-danger", (nodes) => nodes.filter((node) => !node.matches(":disabled,[aria-disabled='true']")).map((node) => { const style = getComputedStyle(node); return { fontWeight: style.fontWeight, foreground: style.color, background: style.backgroundColor }; }));
+const pageBackground = parseCssColor(await page.$eval("body", (node) => getComputedStyle(node).backgroundColor));
+const buttonContrast = buttonStyles.map((style) => { const background = composite(parseCssColor(style.background), pageBackground), foreground = composite(parseCssColor(style.foreground), background); return { ...style, ratio: contrastRatio(foreground, background) }; });
+assert(buttonContrast.length > 0 && buttonContrast.every(({ ratio }) => ratio >= 4.5), `active button variants need 4.5:1 text contrast (${buttonContrast.map(({ ratio }) => ratio).join(", ")})`);
+assert(buttonContrast.every(({ fontWeight }) => fontWeight === "550"), `active button variants need the medium 550 weight (${buttonContrast.map(({ fontWeight }) => fontWeight).join(", ")})`);
 await component("accordion");
 await page.click("#accordion-returns-trigger");
 assert.equal(await page.$eval("#accordion-returns-panel", (node) => node.hidden), false);
@@ -200,7 +283,7 @@ await component("carousel"); await page.focus("[data-ui-carousel]"); await page.
 await component("navbar-vertical", viewports[1]); assert.equal(await page.$eval('[data-ui-part="panel"]', (node) => node.hidden), true); await page.click('[data-ui-part="trigger"]'); assert.equal(await page.$eval('[data-ui-part="panel"]', (node) => node.hidden), false); await screenshot("state-navbar-vertical-open", viewports[1]);
 await component("toast"); assert.equal(await page.$eval('[data-ui-part="toast"]', (node) => node.hidden), true); await page.click('[data-ui-part="trigger"]'); assert.equal(await page.$eval('[data-ui-part="toast"]', (node) => node.hidden), false); await screenshot("state-toast-open"); await page.click('[data-ui-close]'); assert.equal(await page.$eval('[data-ui-part="toast"]', (node) => node.hidden), true); await page.click('[data-ui-part="trigger"]'); assert.equal(await page.$eval('[data-ui-part="toast"]', (node) => node.hidden), false);
 await component("questionnaire"); await page.click('input[name="goal"]'); await page.click('[data-ui-question-next]'); assert.equal(await page.$$eval("[data-ui-question]", (nodes) => nodes[1].hidden), false);
-await component("resizable"); await page.focus('[data-ui-part="handle"]'); const resizeBefore = await page.$eval('[data-ui-part="handle"]', (node) => node.getAttribute("aria-valuenow")); await page.keyboard.press("ArrowRight"); const resizeState = await page.$eval('[data-ui-part="handle"]', (node) => { const group = node.closest('[data-ui-part="group"]').getBoundingClientRect(), panel = node.previousElementSibling.getBoundingClientRect(), handle = node.getBoundingClientRect(), value = Number(node.getAttribute("aria-valuenow")); return { value, minimum: Number(node.getAttribute("aria-valuemin")), maximum: Number(node.getAttribute("aria-valuemax")), ratio: Math.round(panel.width / group.width * 100), groupHeight: group.height, handleWidth: handle.width, handleHeight: handle.height, cursor: getComputedStyle(node).cursor }; }); assert.notEqual(String(resizeState.value), resizeBefore); assert(resizeState.value >= resizeState.minimum && resizeState.value <= resizeState.maximum); assert(Math.abs(resizeState.value - resizeState.ratio) <= 1, "resizable value matches the pane width"); assert(resizeState.handleWidth >= 24 && resizeState.handleHeight >= resizeState.groupHeight - 1, "resizable exposes a full-height touch target at least 24 CSS pixels wide"); assert.equal(resizeState.cursor, "col-resize", "vertical divider advertises horizontal resizing"); for (const viewport of [viewports[1], narrowViewport]) { await component("resizable", viewport); const responsiveResizeState = await page.$eval('[data-ui-part="handle"]', (node) => { const group = node.closest('[data-ui-part="group"]').getBoundingClientRect(), panel = node.previousElementSibling.getBoundingClientRect(), value = Number(node.getAttribute("aria-valuenow")); return { value, ratio: Math.round(panel.width / group.width * 100) }; }); assert(Math.abs(responsiveResizeState.value - responsiveResizeState.ratio) <= 1, `${viewport.name} resizable value matches rendered geometry`); }
+await component("resizable"); await page.focus('[data-ui-part="handle"]'); const resizeBefore = await page.$eval('[data-ui-part="handle"]', (node) => node.getAttribute("aria-valuenow")); await page.keyboard.press("ArrowRight"); const resizeState = await page.$eval('[data-ui-part="handle"]', (node) => { const groupNode = node.closest('[data-ui-part="group"]'), group = groupNode.getBoundingClientRect(), panel = node.previousElementSibling.getBoundingClientRect(), handle = node.getBoundingClientRect(), value = Number(node.getAttribute("aria-valuenow")); return { value, minimum: Number(node.getAttribute("aria-valuemin")), maximum: Number(node.getAttribute("aria-valuemax")), ratio: Math.round(panel.width / group.width * 100), groupClientHeight: groupNode.clientHeight, handleWidth: handle.width, handleHeight: handle.height, cursor: getComputedStyle(node).cursor }; }); assert.notEqual(String(resizeState.value), resizeBefore); assert(resizeState.value >= resizeState.minimum && resizeState.value <= resizeState.maximum); assert(Math.abs(resizeState.value - resizeState.ratio) <= 1, "resizable value matches the pane width"); assert(resizeState.handleWidth >= 24 && resizeState.handleHeight >= resizeState.groupClientHeight - 1, "resizable exposes a full-height touch target at least 24 CSS pixels wide"); assert.equal(resizeState.cursor, "col-resize", "vertical divider advertises horizontal resizing"); for (const viewport of [viewports[1], narrowViewport]) { await component("resizable", viewport); const responsiveResizeState = await page.$eval('[data-ui-part="handle"]', (node) => { const group = node.closest('[data-ui-part="group"]').getBoundingClientRect(), panel = node.previousElementSibling.getBoundingClientRect(), value = Number(node.getAttribute("aria-valuenow")); return { value, ratio: Math.round(panel.width / group.width * 100) }; }); assert(Math.abs(responsiveResizeState.value - responsiveResizeState.ratio) <= 1, `${viewport.name} resizable value matches rendered geometry`); }
 await component("message-scroller"); await page.$eval('[data-ui-part="list"]', (node) => { for (let index = 0; index < 30; index++) { const message = document.createElement("p"); message.textContent = `Message ${index}`; node.append(message); } node.scrollTop = 0; node.dispatchEvent(new Event("scroll")); }); await page.waitForFunction(() => !document.querySelector('[data-ui-part="jump"]').hidden); await page.click('[data-ui-part="jump"]'); assert.equal(await page.$eval('[data-ui-part="jump"]', (node) => node.hidden), true);
 await component("message-scroller"); await page.type("#message-scroller-input", "   "); await page.click('[data-ui-part="composer"] button[type="submit"]'); assert.equal(await page.$eval("#message-scroller-input", (node) => node.validationMessage), "Enter a message."); await page.type("#message-scroller-input", "Ready for review."); await page.click('[data-ui-part="composer"] button[type="submit"]'); assert.equal(await page.$eval('[data-ui-part="messages"] li:last-child p', (node) => node.textContent), "Ready for review."); assert.equal(await page.$eval("#message-scroller-input", (node) => node.value), "");
 await component("data-table"); await page.type("#data-table-filter", "absent"); assert.equal(await page.$eval('[data-ui-part="empty"]', (node) => node.hidden), false); await page.$eval("#data-table-filter", (node) => { node.value = ""; node.dispatchEvent(new Event("input", { bubbles: true })); }); await page.click('[data-ui-table-sort-trigger]'); assert.equal(await page.$eval("th", (node) => node.getAttribute("aria-sort")), "descending");
@@ -213,6 +296,29 @@ await component("sortable-list"); await page.focus('[data-ui-part="handle"]'); a
 await component("split-button"); await page.click('[data-ui-part="trigger"]'); assert.equal(await page.$eval('[data-ui-part="content"]', (node) => node.hidden), false); assert.equal(await page.$eval('[data-ui-part="content"]', (node) => Math.abs(node.getBoundingClientRect().right - node.closest('.ui-split-button').getBoundingClientRect().right) <= 1), true, "split-button menu aligns to the group end"); await page.keyboard.press("ArrowDown"); await page.keyboard.press("Escape"); assert.equal(await page.$eval('[data-ui-part="content"]', (node) => node.hidden), true);
 await component("time-field"); await page.focus('[data-ui-part="minute"]'); await page.keyboard.press("ArrowUp"); assert.equal(await page.$eval('[data-ui-part="value"]', (node) => node.value), "09:31");
 await component("progress"); assert.equal(await page.$$eval('progress.ui-progress,meter.ui-progress', (nodes) => nodes.length), 4, "progress example includes task progress and native meter states");
+for (const viewport of [viewports[1], narrowViewport]) {
+    await component("description-list", viewport);
+    const descriptionListGeometry = await page.$eval(".ui-description-list", (list) => {
+        const longValue = [...list.querySelectorAll("dd")].find((node) => node.textContent.includes("registry.example"));
+        const listBox = list.getBoundingClientRect(), valueBox = longValue.getBoundingClientRect();
+        return { overflow: list.scrollWidth - list.clientWidth, contained: valueBox.left >= listBox.left - 1 && valueBox.right <= listBox.right + 1, wrapped: valueBox.height > parseFloat(getComputedStyle(longValue).lineHeight) + 1 };
+    });
+    assert.equal(descriptionListGeometry.overflow <= 1 && descriptionListGeometry.contained && descriptionListGeometry.wrapped, true, `${viewport.name} Description List wraps long values without overflow`);
+    await component("item", viewport);
+    const operationGeometry = await page.$$eval(".ui-item--operation", (rows) => rows.map((row) => {
+        const action = row.querySelector(".ui-item-actions button,.ui-item-actions a[href]"), status = row.querySelector(".ui-item-status"), box = row.getBoundingClientRect(), actionBox = action?.getBoundingClientRect();
+        action?.focus();
+        return { overflow: row.scrollWidth - row.clientWidth, nonInteractiveRow: !row.matches("button,a,input,select,textarea,[role=button],[role=link]") && !row.hasAttribute("tabindex"), visibleStatus: Boolean(status?.textContent.trim() && status.getClientRects().length), independentFocusedAction: document.activeElement === action, actionContained: Boolean(actionBox && actionBox.left >= box.left - 1 && actionBox.right <= box.right + 1) };
+    }));
+    assert(operationGeometry.length >= 3 && operationGeometry.every((row) => row.overflow <= 1 && row.nonInteractiveRow && row.visibleStatus && row.independentFocusedAction && row.actionContained), `${viewport.name} operational Item rows remain noninteractive and contained with visible status and independent actions: ${JSON.stringify(operationGeometry)}`);
+    await component("scroll-area", viewport);
+    const outputGeometry = await page.$eval(".ui-scroll-area--output", (output) => {
+        output.focus();
+        const scrollOwners = [output, ...output.querySelectorAll("*")].filter((node) => ["auto", "scroll"].includes(getComputedStyle(node).overflowY)).length;
+        return { focused: document.activeElement === output, overflow: output.scrollWidth - output.clientWidth, bounded: output.scrollHeight > output.clientHeight, scrollOwners, live: output.getAttribute("aria-live") };
+    });
+    assert.equal(outputGeometry.focused && outputGeometry.overflow <= 1 && outputGeometry.bounded && outputGeometry.scrollOwners === 1 && outputGeometry.live === null, true, `${viewport.name} diagnostic output has one focusable bounded scroll owner without a live region`);
+}
 await component("scroll-fade"); assert.equal(await page.$eval('.ui-scroll-fade-y', (node) => getComputedStyle(node).maskImage !== "none"), true, "vertical scroll fade exposes a mask"); assert.equal(await page.$eval('.ui-scroll-fade-x', (node) => getComputedStyle(node).maskImage !== "none"), true, "horizontal scroll fade exposes a mask");
 await component("shimmer"); assert.match(await page.$eval('.ui-shimmer', (node) => getComputedStyle(node).animationName), /ui-shimmer/, "shimmer utility animates"); assert.equal(await page.$eval('.ui-shimmer-none', (node) => getComputedStyle(node).animationName), "none", "shimmer can be disabled");
 await component("spinner"); assert.equal(await page.$eval('.ui-spin', (node) => getComputedStyle(node).animationDuration), "1.2s", "spinner uses the slower motion duration");

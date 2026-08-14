@@ -15,8 +15,8 @@ The portfolio and service interfaces that informed the visual direction remain s
 - `src/demo.css` — catalog and standalone snippet presentation only; consuming applications do not load it.
 - `catalog/components.json` — machine-readable public inventory and behavior metadata.
 - `catalog/` — searchable, preview-only component reference.
-- `snippets/` — 70 complete documents with reusable fragments marked by stable comments.
-- `layouts/` — five complete application compositions built from one vertical/horizontal shell contract.
+- `snippets/` — 71 complete documents with reusable fragments marked by stable comments.
+- `layouts/` — six complete application compositions built from one vertical/horizontal shell contract.
 - `llms.txt` — concise machine-oriented integration guidance.
 
 The root `core-ui.css` remains only as a legacy migration reference. New work uses the canonical `src/` assets.
@@ -72,6 +72,9 @@ Complete application previews:
 - [Vertical navigation with left utility rail](layouts/vertical-navbar-utility-start.html)
 - [Collapsed vertical navigation](layouts/vertical-navbar-collapsed.html)
 - [Horizontal navigation](layouts/horizontal-navbar.html)
+- [Operations workspace](layouts/operations-workspace.html)
+
+Description List owns compact metadata, Item owns operational status rows, and Scroll Area owns bounded diagnostic logs. Search, filter, and action clusters are compositions of existing controls rather than a separate component API.
 
 ## Validate
 

@@ -15,7 +15,7 @@ Audit baseline: 2026-08-14. The portfolio and `core/docker` interfaces are visua
 - Simplified the catalog to name, description, and preview; removed embedded HTML/copy controls and pinned the component list to the left on desktop.
 - Added Scroll Fade and Shimmer utilities, a slower spinner, larger resizable hit area, and a corrected vertical-divider cursor/geometry contract.
 - Replaced Sidebar with Vertical Navbar and added a Horizontal Navbar. Both also ship as full application templates linked from the catalog.
-- Rebuilt application layouts around one measured shell: 15rem expanded navigation, 4rem collapsed navigation, 4rem headers, and optional 22.5rem utility rails. The catalog now links expanded, collapsed, left-utility, right-utility, and horizontal previews.
+- Rebuilt application layouts around one measured shell: 15rem expanded navigation, 4rem collapsed navigation, 4rem headers, and optional 22.5rem utility rails. The catalog now links expanded, collapsed, left-utility, right-utility, horizontal, and operations-workspace previews.
 - Merged Meter into Progress and kept native `<progress>` and `<meter>` semantics.
 - Removed Navigation Menu, Input OTP, Hover Card, Rating, Steps, Toggle Group, and Toolbar from the public inventory. Button Group keeps its own pressed-state behavior without exposing a Toggle Group component.
 - Preserved the previously added Autocomplete, Checkbox Group, Lightbox, Sortable List, Split Button, and Time Field behavior and accessibility coverage.
@@ -24,8 +24,10 @@ Audit baseline: 2026-08-14. The portfolio and `core/docker` interfaces are visua
 - Corrected compact input/date-picker groups, responsive chart labels, diff copy balance, resizable pane overflow and file-name clipping, slider width, progress-label spacing, separator composition, and the vertical-navbar brand target.
 - Moved accordion state marks into explicit `aria-hidden` elements so generated symbols no longer alter trigger or region names, while retaining the larger 24 px visual icon.
 - Removed duplicate button overrides and redundant resizable compatibility selectors without changing the public class or behavior contract.
+- Added Description List for compact metadata, operational Item rows with visible state and independent actions, and a labelled bounded diagnostic-output Scroll Area example.
+- Added an operations workspace layout that composes existing controls, stats, Item rows, tabs, Description List metadata, Progress, and Scroll Area output without creating compatibility APIs.
 
-The resulting catalog contains 70 components.
+The resulting catalog contains 71 components and six complete layouts.
 
 ## Deliberate boundaries
 

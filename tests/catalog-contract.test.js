@@ -26,7 +26,7 @@ const canonicalDemoStylesheets = [...canonicalProductionStylesheets, "/ui/src/de
 // primitives from daisyUI, Basecoat, Coss, and 0build. Every item must ship as a
 // real snippet with the same canonical assets and contract checks.
 const expectedNames = [
-    "Accordion", "Alert", "Aspect Ratio", "Attachment", "Autocomplete", "Avatar", "Badge", "Breadcrumb", "Button", "Button Group", "Calendar", "Card", "Carousel", "Chart", "Checkbox", "Checkbox Group", "Collapsible", "Combobox", "Command", "Data Table", "Date Picker", "Dialog", "Diff", "Drawer", "Dropdown Menu", "Empty", "Field", "Fieldset", "File Input", "Input", "Input Group", "Item", "Kbd", "Label", "Lightbox", "Marker", "Message", "Message Scroller", "Native Select", "Navbar Horizontal", "Navbar Vertical", "Number Field", "Pagination", "Popover", "Progress", "Questionnaire", "Radio Group", "Resizable", "Scroll Area", "Scroll Fade", "Select", "Separator", "Sheet", "Shimmer", "Skeleton", "Slider", "Sortable List", "Spinner", "Split Button", "Stat", "Switch", "Table", "Tabs", "Textarea", "Time Field", "Timeline", "Toast", "Toggle", "Tooltip", "Typography"
+    "Accordion", "Alert", "Aspect Ratio", "Attachment", "Autocomplete", "Avatar", "Badge", "Breadcrumb", "Button", "Button Group", "Calendar", "Card", "Carousel", "Chart", "Checkbox", "Checkbox Group", "Collapsible", "Combobox", "Command", "Data Table", "Date Picker", "Description List", "Dialog", "Diff", "Drawer", "Dropdown Menu", "Empty", "Field", "Fieldset", "File Input", "Input", "Input Group", "Item", "Kbd", "Label", "Lightbox", "Marker", "Message", "Message Scroller", "Native Select", "Navbar Horizontal", "Navbar Vertical", "Number Field", "Pagination", "Popover", "Progress", "Questionnaire", "Radio Group", "Resizable", "Scroll Area", "Scroll Fade", "Select", "Separator", "Sheet", "Shimmer", "Skeleton", "Slider", "Sortable List", "Spinner", "Split Button", "Stat", "Switch", "Table", "Tabs", "Textarea", "Time Field", "Timeline", "Toast", "Toggle", "Tooltip", "Typography"
 ].sort();
 const permittedStates = new Set(["ok", "warning", "error", "running", "progress"]);
 const legacyClasses = new Set(["is-busy", "is-empty", "is-idle"]);
@@ -304,7 +304,7 @@ test("catalog markup uses only canonical source assets", () => {
     assert.match(html, /id="component-search"/);
     assert.match(html, /<nav class="ui-catalog-layout-links"[^>]*aria-label="Catalog resources"/);
     assert.match(html, /href="#colors"[^>]*data-catalog-view="colors"/);
-    ["vertical-navbar.html", "vertical-navbar-utility-end.html", "vertical-navbar-utility-start.html", "vertical-navbar-collapsed.html", "horizontal-navbar.html"].forEach((filename) => {
+    ["vertical-navbar.html", "vertical-navbar-utility-end.html", "vertical-navbar-utility-start.html", "vertical-navbar-collapsed.html", "horizontal-navbar.html", "operations-workspace.html"].forEach((filename) => {
         assert.match(html, new RegExp(`href="/ui/layouts/${filename.replace(".", "\\.")}"`), `catalog must link ${filename}`);
     });
     assert.match(html, /id="palette-view"[^>]*hidden/);
@@ -330,7 +330,7 @@ test("catalog layout keeps its two canonical layout regions", () => {
 });
 
 test("layout examples compose the canonical shell variants", () => {
-    const filenames = ["vertical-navbar.html", "vertical-navbar-utility-end.html", "vertical-navbar-utility-start.html", "vertical-navbar-collapsed.html", "horizontal-navbar.html"];
+    const filenames = ["vertical-navbar.html", "vertical-navbar-utility-end.html", "vertical-navbar-utility-start.html", "vertical-navbar-collapsed.html", "horizontal-navbar.html", "operations-workspace.html"];
     const layouts = new Map(filenames.map((filename) => [filename, read(path.join(layoutsDir, filename))]));
     layouts.forEach((html, filename) => {
         checkMarkupContract(html, filename);
@@ -345,6 +345,8 @@ test("layout examples compose the canonical shell variants", () => {
     assert.match(layouts.get("vertical-navbar-utility-end.html"), /ui-shell-layout ui-shell-layout--utility-end[\s\S]*ui-shell-content[\s\S]*ui-shell-utility/);
     assert.match(layouts.get("vertical-navbar-utility-start.html"), /ui-shell-layout ui-shell-layout--utility-start[\s\S]*ui-shell-utility[\s\S]*ui-shell-content/);
     assert.match(layouts.get("vertical-navbar-collapsed.html"), /data-ui-nav-collapsed="true"[\s\S]*data-ui-collapsed="true"/);
+    assert.match(layouts.get("operations-workspace.html"), /<body class="ui-shell ui-shell--vertical"[^>]*data-ui-shell[^>]*>[\s\S]*<div class="ui-frame">[\s\S]*<nav class="ui-navbar ui-navbar--vertical"[^>]*>[\s\S]*<div class="ui-shell-workspace">[\s\S]*<main class="ui-shell-main"/, "operations workspace must use the vertical shell structure");
+    assert.match(layouts.get("operations-workspace.html"), /ui-operations-tools[\s\S]*ui-stat-grid[\s\S]*ui-item--operation[\s\S]*data-ui-tabs[\s\S]*ui-description-list[\s\S]*ui-progress[\s\S]*ui-scroll-area--output/, "operations workspace must compose the requested reusable patterns");
     const cssClasses = classDefinitions(read(canonicalComponentCss));
     ["ui-shell", "ui-shell--vertical", "ui-shell--horizontal", "ui-frame", "ui-navbar", "ui-navbar--vertical", "ui-navbar--horizontal", "ui-navbar-mark", "ui-navbar-collapse", "ui-shell-workspace", "ui-shell-header", "ui-shell-main", "ui-shell-layout", "ui-shell-layout--utility-end", "ui-shell-layout--utility-start", "ui-shell-content", "ui-shell-intro", "ui-shell-utility"].forEach((className) => {
         assert(cssClasses.has(className), `src/mewa.css must define layout class ${className}`);
@@ -510,6 +512,37 @@ test("visual-audit fixes retain explicit semantic and responsive contracts", () 
         assert.match(css, new RegExp(`\\.ui-alert\\[data-state="${state}"\\][^{]*, \\.ui-message\\[data-state="${state}"\\] \\{[^}]*border-color: var\\(--ui-${tone}\\); background: var\\(--ui-surface\\);`), `${state} alerts must reserve status color for their border on a neutral surface`);
         assert.match(css, new RegExp(`\\.ui-alert\\[data-state="${state}"\\] \\.ui-alert-icon[^}]*\\{ color: var\\(--ui-${tone}\\);`), `${state} alert borders and emphasized content must use the same status color`);
     });
+});
+
+test("operational data patterns retain their ownership and semantic contracts", () => {
+    const descriptionList = read(path.join(snippetsDir, "description-list.html"));
+    const item = read(path.join(snippetsDir, "item.html"));
+    const scrollArea = read(path.join(snippetsDir, "scroll-area.html"));
+    const css = read(canonicalComponentCss);
+    const readRoot = (filename) => read(path.join(root, filename));
+    const readme = readRoot("README.md"), design = readRoot("DESIGN.md"), audit = readRoot("AUDIT.md"), guide = readRoot("llms.txt");
+    assert.match(descriptionList, /<dl class="ui-description-list">[\s\S]*<dt>Artifact<\/dt>[\s\S]*<dd>registry\.[\s\S]*<dt>Rollback window<\/dt>[\s\S]*ui-description-list-unavailable[\s\S]*<time datetime="2026-08-14T09:42:00Z">[\s\S]*<dt>Version<\/dt>/, "Description List must use semantic compact metadata rows with wrapping, unavailable, time, and version examples");
+    const operationRows = new Map(Array.from(item.matchAll(/<article class="ui-item ui-item--operation" data-state="([^"]+)"([^>]*)>([\s\S]*?)<\/article>/g), (match) => [match[1], { attributes: match[2], body: match[3] }]));
+    assert.deepEqual([...operationRows.keys()].sort(), ["ok", "running", "warning"], "Item must expose the complete operational state examples");
+    operationRows.forEach(({ attributes: rowAttributes, body }, state) => {
+        assert(!/\brole\s*=|\btabindex\s*=/.test(rowAttributes), `${state} operational Item root must remain noninteractive`);
+        assert.match(body, /class="ui-item-status"[^>]*>[\s\S]*?\b(?:Running|Complete|Warning)\b/, `${state} operational Item must own visible status text`);
+        assert.match(body, /<div class="ui-item-actions">[\s\S]*<(?:button|a)\b/, `${state} operational Item must own its independent trailing action`);
+    });
+    assert.match(operationRows.get("running").body, /class="ui-item-progress"[\s\S]*<progress\b/, "the running operational Item must own its optional progress region");
+    assert(!/\.ui-item:hover:not\(:disabled\)/.test(css), "noninteractive operational Items must not inherit a click-like hover treatment");
+    assert.match(scrollArea, /<section class="ui-scroll-area ui-scroll-area--output" tabindex="0" aria-labelledby="scroll-area-output-title">[\s\S]*<pre class="ui-code-output">/, "Scroll Area must own a labelled focusable diagnostic output region");
+    assert(!/ui-scroll-area--output"[^>]*aria-live/.test(scrollArea), "diagnostic output must not become a live region by default");
+    ["ui-description-list", "ui-item--operation", "ui-scroll-area--output", "ui-operations-workspace"].forEach((className) => assert(classDefinitions(css).has(className), `src/mewa.css must define ${className}`));
+    assert.match(readme, /71 complete documents/i, "README must state the 71-snippet inventory");
+    assert.match(design, /six complete layout documents/i, "DESIGN must state the six-layout inventory");
+    assert.match(audit, /71 components and six complete layouts/i, "AUDIT must state the final component and layout inventory");
+    assert.match(guide, /Description List owns compact (?:key\/value )?metadata/i, "LLM guide must preserve Description List ownership");
+    assert.match(design + guide, /Item owns (?:non-interactive )?operational status rows/i, "design guidance must preserve Item ownership");
+    assert.match(design + guide, /Scroll Area owns bounded diagnostic (?:output|logs)/i, "design guidance must preserve Scroll Area ownership");
+    assert.match(design + guide, /(?:search, filter, and action clusters|Search, filter, and action clusters) (?:are|remain) compositions/i, "design guidance must keep tool clusters as compositions");
+    assert.match(guide, /Geist first: `geist, sans-serif` through `--ui-font`/, "LLM guide must identify the canonical font family");
+    assert.match(guide, /`050`–`100` are surfaces; `200`–`300` are hover and active backgrounds; `400` is the subtle-border step/, "LLM guide must preserve the canonical role map");
 });
 
 test("manifest and snippet files have exact parity", () => {

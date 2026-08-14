@@ -42,7 +42,7 @@ Every entry in `catalog/components.json` has exactly one complete document in `s
 
 Snippets load `base.css`, `mewa.css`, `demo.css`, then `components.js`. Application layouts load only the production pair and runtime. The catalog renders the marked fragment as a preview plus its name and description; source-code controls do not belong in the catalog UI. Its `#colors` view documents palette roles, raw OKLCH tokens, absolute lightness or opacity, and APCA Lc without turning palette steps into component-level APIs.
 
-Alert owns inline and blocking-dialog variants. Progress owns both task progress and bounded meter measurements. Ghost buttons are the default low-emphasis action inside calendars, date pickers, and compound controls. The vertical navbar subsumes the former sidebar component.
+Alert owns inline and blocking-dialog variants. Progress owns both task progress and bounded meter measurements. Description List owns compact key/value metadata, Item owns non-interactive operational status rows with independent trailing actions, and Scroll Area owns bounded diagnostic output. Search, filter, and action clusters remain compositions of existing controls. Ghost buttons are the default low-emphasis action inside calendars, date pickers, and compound controls. The vertical navbar subsumes the former sidebar component.
 
 ## LLM consumption
 
@@ -60,7 +60,7 @@ Lucide is the primary icon source. Symbols live in `src/lucide.svg`, inherit `cu
 - `.ui-shell.ui-shell--horizontal` places identity, scrollable routes, and actions in the shared 4rem header geometry.
 - `.ui-shell-layout` owns the content region. `--utility-start` and `--utility-end` add a 22.5rem controls rail without changing page-header or intro spacing; the rail stacks after content when space becomes constrained.
 
-Five complete layout documents cover expanded vertical, left-utility, right-utility, collapsed vertical, and horizontal navigation compositions. All use the same dashed frame, header, breadcrumb, intro, action, and responsive behavior.
+Six complete layout documents cover expanded vertical, left-utility, right-utility, collapsed vertical, horizontal navigation, and an operations workspace composition. All use the same dashed frame, header, breadcrumb, intro, action, and responsive behavior.
 
 The visual references in [`core/docker/meili_ui`](https://github.com/miloszkolber/core/tree/master/docker/meili_ui), [`core/docker/hf_ui`](https://github.com/miloszkolber/core/tree/master/docker/hf_ui), and [`core/docker/moonlight_ui`](https://github.com/miloszkolber/core/tree/master/docker/moonlight_ui) remain separate applications. Their compact tool clusters, framed workspaces, stable form alignment, operational rows, and early single-column breakpoints inform balance without being copied into this repository.
 
