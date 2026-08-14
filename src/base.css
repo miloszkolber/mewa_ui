@@ -1,6 +1,6 @@
 @font-face {
-  font-family: "geist_mono";
-  src: url("geistmono.woff2") format("woff2");
+  font-family: "geist";
+  src: url("geist.woff2") format("woff2");
   font-style: normal;
   font-weight: 400 550;
   font-display: swap;
@@ -123,7 +123,7 @@
     --ui-shimmer-highlight: var(--ui-alpha-white-950);
 
     /* Typography. */
-    --ui-font-mono: geist_mono, ui-monospace, monospace;
+    --ui-font: geist, sans-serif;
     --ui-font-size-xsmall: 0.75rem;
     --ui-font-size-small: 0.875rem;
     --ui-font-size-base: 1rem;
@@ -169,7 +169,7 @@ html {
     min-inline-size: 0;
     background: var(--ui-background);
     color: var(--ui-foreground);
-    font-family: var(--ui-font-mono);
+    font-family: var(--ui-font);
     text-rendering: optimizeLegibility;
 }
 
