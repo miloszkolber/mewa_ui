@@ -486,6 +486,10 @@ test("visual-audit fixes retain explicit semantic and responsive contracts", () 
     assert(resizable.includes("ui-resizable-file-name"), "resizable file names need a dedicated truncation target");
     assert.match(css, /\[data-ui-resizable\] \[data-ui-part="group"\]\s*\{[^}]*overflow:\s*hidden/, "resizable panes must remain inside the component boundary");
     assert(!/\[data-ui-resizable\] \[data-ui-part="pane"\][^}]*min-inline-size:\s*100%/.test(css), "compact resizable panes must not force a second viewport");
+    [["ok", "success"], ["warning", "warning"], ["error", "danger"]].forEach(([state, tone]) => {
+        assert.match(css, new RegExp(`\\.ui-alert\\[data-state="${state}"\\][^{]*, \\.ui-message\\[data-state="${state}"\\] \\{[^}]*border-color: var\\(--ui-${tone}\\); background: var\\(--ui-surface\\);`), `${state} alerts must reserve status color for their border on a neutral surface`);
+        assert.match(css, new RegExp(`\\.ui-alert\\[data-state="${state}"\\] \\.ui-alert-icon[^}]*\\{ color: var\\(--ui-${tone}\\);`), `${state} alert borders and emphasized content must use the same status color`);
+    });
 });
 
 test("manifest and snippet files have exact parity", () => {

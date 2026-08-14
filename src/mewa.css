@@ -40,12 +40,13 @@ svg { display: inline-block; inline-size: var(--ui-icon-size-medium); block-size
 .ui-card-footer { display: flex; flex-wrap: wrap; gap: 0.5rem; border-block-start: var(--ui-border-width) solid var(--ui-border); }
 .ui-alert, .ui-message { display: grid; grid-template-columns: var(--ui-icon-size-medium) minmax(0, 1fr); gap: 0.75rem; padding: 1rem; border: var(--ui-border-width) solid var(--ui-border); background: var(--ui-surface); }
 .ui-alert > div, .ui-message > div { display: grid; gap: 0.25rem; }
-.ui-alert[data-state="ok"], .ui-message[data-state="ok"] { border-color: var(--ui-success-strong); background: var(--ui-success-surface); }
-.ui-alert[data-state="warning"], .ui-message[data-state="warning"] { border-color: var(--ui-warning-strong); background: var(--ui-warning-surface); }
-.ui-alert[data-state="error"], .ui-message[data-state="error"] { border-color: var(--ui-danger-strong); background: var(--ui-danger-surface); }
-.ui-alert[data-state="ok"] .ui-alert-icon, .ui-alert[data-state="ok"] .ui-alert-title, .ui-message[data-state="ok"] .ui-message-icon, .ui-message[data-state="ok"] .ui-message-title { color: var(--ui-success-strong); }
-.ui-alert[data-state="warning"] .ui-alert-icon, .ui-alert[data-state="warning"] .ui-alert-title, .ui-message[data-state="warning"] .ui-message-icon, .ui-message[data-state="warning"] .ui-message-title { color: var(--ui-warning-strong); }
-.ui-alert[data-state="error"] .ui-alert-icon, .ui-alert[data-state="error"] .ui-alert-title, .ui-message[data-state="error"] .ui-message-icon, .ui-message[data-state="error"] .ui-message-title { color: var(--ui-danger-strong); }
+.ui-alert-description, .ui-message-description { color: var(--ui-subtle-foreground); }
+.ui-alert[data-state="ok"], .ui-message[data-state="ok"] { border-color: var(--ui-success); background: var(--ui-surface); }
+.ui-alert[data-state="warning"], .ui-message[data-state="warning"] { border-color: var(--ui-warning); background: var(--ui-surface); }
+.ui-alert[data-state="error"], .ui-message[data-state="error"] { border-color: var(--ui-danger); background: var(--ui-surface); }
+.ui-alert[data-state="ok"] .ui-alert-icon, .ui-alert[data-state="ok"] .ui-alert-title, .ui-message[data-state="ok"] .ui-message-icon, .ui-message[data-state="ok"] .ui-message-title { color: var(--ui-success); }
+.ui-alert[data-state="warning"] .ui-alert-icon, .ui-alert[data-state="warning"] .ui-alert-title, .ui-message[data-state="warning"] .ui-message-icon, .ui-message[data-state="warning"] .ui-message-title { color: var(--ui-warning); }
+.ui-alert[data-state="error"] .ui-alert-icon, .ui-alert[data-state="error"] .ui-alert-title, .ui-message[data-state="error"] .ui-message-icon, .ui-message[data-state="error"] .ui-message-title { color: var(--ui-danger); }
 .ui-attachment, .ui-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; }
 .ui-attachment-content, .ui-item-content { display: grid; min-inline-size: 0; flex: 1; gap: 0.25rem; }
 .ui-item { inline-size: 100%; text-align: start; }
