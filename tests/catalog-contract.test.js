@@ -428,6 +428,16 @@ test("canonical stylesheet responsibilities are enforced", () => {
             assert(Math.abs(apcaLuminance(palette.get(step)) - apcaLuminance(gray.get(step))) <= 0.00002, `${prefix}-${step} must share the gray APCA luminance curve`);
         });
     });
+    const statusChromaFloors = {
+        red: { "500": 0.17, "600": 0.20, "700": 0.23, "800": 0.18 },
+        amber: { "500": 0.11, "600": 0.13, "700": 0.15, "800": 0.16, "900": 0.16, "950": 0.11 },
+        green: { "500": 0.11, "600": 0.13, "700": 0.15, "800": 0.18, "900": 0.14, "950": 0.08 }
+    };
+    Object.entries(statusChromaFloors).forEach(([prefix, floors]) => {
+        Object.entries(floors).forEach(([step, minimum]) => {
+            assert(opaquePalettes[prefix].get(step).chroma >= minimum, `${prefix}-${step} must retain vivid status chroma`);
+        });
+    });
 
     const alphaWhite = parseOklchPalette(baseCss, "alpha-white");
     const alphaBlack = parseOklchPalette(baseCss, "alpha-black");

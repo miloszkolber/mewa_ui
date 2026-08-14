@@ -5,7 +5,7 @@ Audit baseline: 2026-08-14. The portfolio and `core/docker` interfaces are visua
 ## Current pass
 
 - Rebuilt the foundation around six theme-specific 11-step role palettes and generalized semantic roles. All palette values and color interpolation use OKLCH; the ramps are deliberately not reversible theme generators.
-- Assigned `050`–`200` to surfaces, `300`–`400` to interactive foundations, `500`–`600` to borders, `700`–`800` to disabled/decorative content, and `900`–`950` to accessible text. Red, amber, and green share gray's tested APCA luminance curve at every step and remain inside sRGB.
+- Assigned `050`–`200` to surfaces, `300`–`400` to interactive foundations, `500`–`600` to borders, `700`–`800` to disabled/decorative content, and `900`–`950` to accessible text. Red, amber, and green now use a substantially richer Tailwind/shadcn-shaped chroma progression while sharing gray's tested APCA luminance curve at every step and remaining inside sRGB.
 - Set the two text landmarks to at least `Lc 75` and `Lc 90` against every surface in the same palette. Added relative-OKLCH state modifiers, including the requested half-point negative lightness modifier for light controls and pressed states.
 - Added a catalog palette view with role labels, raw token swatches, `ΔL` or `Δα`, signed APCA Lc, minimum surface Lc for text, and an explicit non-compliance disclaimer.
 - Adopted the exact Geist Mono, size, line-height, weight, icon, control, border, focus, and checkbox tokens requested for this pass.
