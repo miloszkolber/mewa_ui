@@ -1,0 +1,282 @@
+/* Catalog and standalone snippet presentation. Consuming applications do not load this file. */
+
+.ui-demo {
+    --ui-demo-inset: clamp(1rem, 4vw, 3rem);
+    display: grid;
+    min-block-size: 100svh;
+    align-content: center;
+    gap: 1rem;
+    padding: var(--ui-demo-inset);
+    background: var(--ui-background);
+}
+
+.ui-demo > main {
+    display: grid;
+    inline-size: min(48rem, calc(100vw - var(--ui-demo-inset) - var(--ui-demo-inset)));
+    min-inline-size: 0;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    gap: 1rem;
+    margin-inline: auto;
+}
+
+.ui-demo > main > .ui-page-heading + .ui-description {
+    margin-block-start: -0.5rem;
+}
+
+.ui-demo > [data-ui-component],
+.ui-demo > [data-ui-resizable],
+.ui-demo > [data-ui-carousel],
+.ui-demo > [data-ui-message-scroller],
+.ui-demo > [data-ui-questionnaire],
+.ui-demo > [data-ui-table],
+.ui-demo > [data-ui-chart] {
+    max-inline-size: min(48rem, calc(100vw - var(--ui-demo-inset) - var(--ui-demo-inset)));
+    margin-inline: auto;
+}
+
+.ui-demo-wide > main {
+    inline-size: min(72rem, calc(100vw - var(--ui-demo-inset) - var(--ui-demo-inset)));
+}
+
+.ui-demo-wide > [data-ui-component],
+.ui-demo-wide > [data-ui-table],
+.ui-demo-wide > [data-ui-chart] {
+    max-inline-size: min(72rem, calc(100vw - var(--ui-demo-inset) - var(--ui-demo-inset)));
+}
+
+.ui-demo-preview {
+    min-block-size: 0;
+    align-content: start;
+    padding: clamp(1rem, 3vw, 2rem);
+}
+
+.ui-demo-preview > [data-ui-component],
+.ui-demo-preview > [data-ui-resizable],
+.ui-demo-preview > [data-ui-carousel],
+.ui-demo-preview > [data-ui-message-scroller],
+.ui-demo-preview > [data-ui-questionnaire],
+.ui-demo-preview > [data-ui-table],
+.ui-demo-preview > [data-ui-chart] {
+    min-inline-size: 0;
+    align-self: start;
+}
+
+.ui-catalog {
+    background: var(--ui-background);
+}
+
+.ui-catalog .ui-app-header {
+    border-block-end: var(--ui-border-dashed);
+    background: var(--ui-glass);
+    backdrop-filter: blur(var(--ui-backdrop-blur));
+}
+
+.ui-catalog-header {
+    inline-size: 100%;
+    min-block-size: 4rem;
+    padding-inline: 1rem;
+}
+
+.ui-catalog-header,
+.ui-catalog-header-meta,
+.ui-catalog-layout-links {
+    display: flex;
+    align-items: center;
+}
+
+.ui-catalog-header {
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.ui-catalog-header-meta {
+    min-inline-size: 0;
+    gap: 1rem;
+}
+
+.ui-catalog-layout-links a {
+    display: inline-flex;
+    min-block-size: var(--ui-control-height-sm);
+    align-items: center;
+    padding-inline: 0.625rem;
+    border: var(--ui-border-width) solid var(--ui-border);
+    background: var(--ui-background);
+    color: var(--ui-muted-foreground);
+    font-size: var(--ui-font-size-xsmall);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.ui-catalog-layout-links a + a {
+    border-inline-start: 0;
+}
+
+.ui-catalog-layout-links a:hover {
+    background: var(--ui-surface-active);
+    color: var(--ui-foreground);
+}
+
+.ui-catalog-count {
+    color: var(--ui-muted-foreground);
+    font-size: var(--ui-font-size-xsmall);
+    white-space: nowrap;
+}
+
+.ui-catalog-main {
+    min-block-size: calc(100svh - 4rem);
+}
+
+.ui-catalog-layout {
+    display: grid;
+    min-block-size: calc(100svh - 4rem);
+    grid-template-columns: 18rem minmax(0, 1fr);
+    align-items: start;
+}
+
+.ui-catalog-sidebar {
+    position: sticky;
+    inset-block-start: 4rem;
+    align-self: start;
+    block-size: calc(100svh - 4rem);
+    padding: 1rem;
+    border-inline-end: var(--ui-border-dashed);
+    background: var(--ui-surface);
+}
+
+.ui-catalog-nav {
+    max-block-size: calc(100svh - 10rem);
+    margin-block-start: 1rem;
+    overflow-y: auto;
+}
+
+.ui-catalog-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ui-catalog-list button {
+    display: flex;
+    inline-size: 100%;
+    min-block-size: var(--ui-control-height-sm);
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-inline: 0.5rem;
+    border: 0;
+    border-inline-start: var(--ui-focus-ring-width) solid transparent;
+    background: transparent;
+    color: var(--ui-muted-foreground);
+    font-size: var(--ui-font-size-xsmall);
+    text-align: start;
+}
+
+.ui-catalog-list button:hover,
+.ui-catalog-list button[aria-current="true"] {
+    background: var(--ui-surface-active);
+    color: var(--ui-foreground);
+}
+
+.ui-catalog-list button[aria-current="true"] {
+    border-inline-start-color: var(--ui-foreground);
+}
+
+.ui-catalog-list small {
+    color: var(--ui-subtle-foreground);
+    font-size: var(--ui-font-size-xsmall);
+}
+
+.ui-catalog-empty {
+    padding: 0.75rem 0.5rem;
+    color: var(--ui-muted-foreground);
+}
+
+.ui-catalog-detail {
+    display: grid;
+    min-inline-size: 0;
+    align-content: start;
+    gap: 1.5rem;
+    padding: clamp(1.5rem, 4vw, 4rem);
+}
+
+.ui-catalog-detail-header > div {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.ui-catalog-preview-wrap {
+    inline-size: min(100%, 80rem);
+    overflow: hidden;
+    border: var(--ui-border-dashed);
+    background: var(--ui-background);
+}
+
+.ui-catalog-preview {
+    display: block;
+    inline-size: 100%;
+    min-block-size: 18rem;
+    border: 0;
+    background: var(--ui-background);
+}
+
+.ui-catalog-preview-modal {
+    position: fixed;
+    inset: 0;
+    z-index: var(--ui-z-toast);
+    block-size: 100svh !important;
+}
+
+.ui-catalog-modal-open {
+    overflow: hidden;
+}
+
+.ui-catalog-skip {
+    position: fixed;
+    inset-block-start: 0.5rem;
+    inset-inline-start: 0.5rem;
+    z-index: var(--ui-z-toast);
+    padding: 0.5rem 0.75rem;
+    background: var(--ui-foreground);
+    color: var(--ui-inverse-foreground);
+    transform: translateY(-200%);
+}
+
+.ui-catalog-skip:focus {
+    transform: translateY(0);
+}
+
+@media (max-width: 48rem) {
+    .ui-catalog-header {
+        min-block-size: auto;
+        align-items: flex-start;
+        flex-direction: column;
+        padding-block: 0.75rem;
+    }
+
+    .ui-catalog-header-meta {
+        inline-size: 100%;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    .ui-catalog-layout {
+        display: block;
+    }
+
+    .ui-catalog-sidebar {
+        position: static;
+        block-size: auto;
+        border-inline-end: 0;
+        border-block-end: var(--ui-border-dashed);
+    }
+
+    .ui-catalog-nav {
+        max-block-size: 14rem;
+    }
+
+    .ui-catalog-detail {
+        padding: 1.25rem;
+    }
+}

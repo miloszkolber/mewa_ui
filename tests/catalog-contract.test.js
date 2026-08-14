@@ -15,15 +15,18 @@ const layoutsDir = path.join(root, "layouts");
 const srcDir = path.join(root, "src");
 const manifestPath = path.join(catalogDir, "components.json");
 const canonicalBaseCss = path.join(srcDir, "base.css");
-const canonicalComponentCss = path.join(srcDir, "components.css");
+const canonicalComponentCss = path.join(srcDir, "mewa.css");
+const canonicalDemoCss = path.join(srcDir, "demo.css");
 const canonicalRuntime = path.join(srcDir, "components.js");
 const canonicalSprite = path.join(srcDir, "lucide.svg");
-const canonicalStylesheets = ["/ui/src/base.css", "/ui/src/components.css"];
+const canonicalLlmGuide = path.join(root, "llms.txt");
+const canonicalProductionStylesheets = ["/ui/src/base.css", "/ui/src/mewa.css"];
+const canonicalDemoStylesheets = [...canonicalProductionStylesheets, "/ui/src/demo.css"];
 // Declared inventory: the original shadcn-aligned set plus selected, broadly useful
 // primitives from daisyUI, Basecoat, Coss, and 0build. Every item must ship as a
 // real snippet with the same canonical assets and contract checks.
 const expectedNames = [
-    "Accordion", "Alert", "Aspect Ratio", "Attachment", "Autocomplete", "Avatar", "Badge", "Breadcrumb", "Button", "Button Group", "Calendar", "Card", "Carousel", "Chart", "Checkbox", "Checkbox Group", "Collapsible", "Combobox", "Command", "Data Table", "Date Picker", "Dialog", "Diff", "Drawer", "Dropdown Menu", "Empty", "Field", "Fieldset", "File Input", "Hover Card", "Input", "Input Group", "Input OTP", "Item", "Kbd", "Label", "Lightbox", "Marker", "Message", "Message Scroller", "Meter", "Native Select", "Navigation Menu", "Number Field", "Pagination", "Popover", "Progress", "Questionnaire", "Radio Group", "Rating", "Resizable", "Scroll Area", "Select", "Separator", "Sheet", "Sidebar", "Skeleton", "Slider", "Sortable List", "Spinner", "Split Button", "Stat", "Steps", "Switch", "Table", "Tabs", "Textarea", "Time Field", "Timeline", "Toast", "Toggle", "Toggle Group", "Toolbar", "Tooltip", "Typography"
+    "Accordion", "Alert", "Aspect Ratio", "Attachment", "Autocomplete", "Avatar", "Badge", "Breadcrumb", "Button", "Button Group", "Calendar", "Card", "Carousel", "Chart", "Checkbox", "Checkbox Group", "Collapsible", "Combobox", "Command", "Data Table", "Date Picker", "Dialog", "Diff", "Drawer", "Dropdown Menu", "Empty", "Field", "Fieldset", "File Input", "Input", "Input Group", "Item", "Kbd", "Label", "Lightbox", "Marker", "Message", "Message Scroller", "Native Select", "Navbar Horizontal", "Navbar Vertical", "Number Field", "Pagination", "Popover", "Progress", "Questionnaire", "Radio Group", "Resizable", "Scroll Area", "Scroll Fade", "Select", "Separator", "Sheet", "Shimmer", "Skeleton", "Slider", "Sortable List", "Spinner", "Split Button", "Stat", "Switch", "Table", "Tabs", "Textarea", "Time Field", "Timeline", "Toast", "Toggle", "Tooltip", "Typography"
 ].sort();
 const permittedStates = new Set(["ok", "warning", "error", "running", "progress"]);
 const legacyClasses = new Set(["is-busy", "is-empty", "is-idle"]);
@@ -122,7 +125,7 @@ function checkMarkupContract(html, filename) {
 function checkCssContract(css, filename, { allowRawColors = false } = {}) {
     if (!allowRawColors) assert(!/(?:#[0-9a-f]{3,8}\b|\brgba?\(|\bhsla?\(|\b(?:white|black|red|green|blue|gray|grey)(?=[^a-z-]|$))/i.test(css), `${filename}: raw color is forbidden`);
     for (const match of css.matchAll(/([^{}]+)\{[^{}]*\bbackdrop-filter\s*:\s*blur\(/gi)) {
-        assert(/\.ui-(?:dialog|app-header|catalog-overlay|autocomplete)|\[data-ui-(?:popover-content|menu-content|hovercard-content|navigation-menu-content|dialog|alert-dialog|sheet|drawer|toast)\]|\[data-ui-component="(?:autocomplete|popover|dropdown-menu|navigation-menu|tooltip|hover-card|split-button|sheet|drawer|toast)"\]/.test(match[1]), `${filename}: backdrop blur only belongs on an approved overlapping-surface selector`);
+        assert(/\.ui-(?:dialog|app-header|catalog-overlay|autocomplete|navbar--vertical)|\[data-ui-(?:popover-content|menu-content|dialog|alert-dialog|sheet|drawer|toast)\]|\[data-ui-component="(?:autocomplete|popover|dropdown-menu|tooltip|split-button|sheet|drawer|toast)"\]/.test(match[1]), `${filename}: backdrop blur only belongs on an approved overlapping-surface selector`);
     }
 }
 
@@ -177,8 +180,8 @@ function hasHook(html, hook) {
 
 test("catalog, manifest, and canonical source assets exist", () => {
     ["index.html", "catalog.js", "components.json"].forEach((file) => assert(fs.existsSync(path.join(catalogDir, file)), `missing catalog/${file}`));
-    [canonicalBaseCss, canonicalComponentCss, canonicalRuntime, canonicalSprite].forEach((file) => assert(fs.existsSync(file), `missing ${path.relative(root, file)}`));
-    assert(!fs.existsSync(path.join(catalogDir, "catalog.css")), "catalog.css must not be a third loaded stylesheet");
+    [canonicalBaseCss, canonicalComponentCss, canonicalDemoCss, canonicalRuntime, canonicalSprite, canonicalLlmGuide].forEach((file) => assert(fs.existsSync(file), `missing ${path.relative(root, file)}`));
+    assert(!fs.existsSync(path.join(catalogDir, "catalog.css")), "catalog-specific presentation belongs in src/demo.css");
     assert(fs.existsSync(path.join(root, "core-ui.css")), "legacy root core-ui.css remains present until its removal is orchestrated");
     ["core-ui-components.css", "core-ui.js", "lucide.svg"].forEach((file) => assert(!fs.existsSync(path.join(root, file)), `legacy root ${file} must be removed`));
 });
@@ -218,6 +221,16 @@ test("manifest is the complete declared component set", () => {
     });
 });
 
+test("LLM guide points to canonical machine-readable sources", () => {
+    const guide = read(canonicalLlmGuide);
+    ["/ui/catalog/components.json", "/ui/snippets/SLUG.html", "/ui/src/base.css", "/ui/src/mewa.css", "/ui/src/components.js", "/ui/src/lucide.svg#SYMBOL_ID"].forEach((reference) => {
+        assert(guide.includes(reference), `llms.txt must document ${reference}`);
+    });
+    assert(guide.includes("<!-- mewa-ui-snippet:start -->") && guide.includes("<!-- mewa-ui-snippet:end -->"), "llms.txt must identify the reusable fragment markers");
+    assert.match(guide, /preserve native elements, labels, ids, `aria-\*` relationships/i, "llms.txt must preserve accessibility relationships");
+    assert(!/components\.css|vertical-rail|horizontal-tabs/i.test(guide), "llms.txt must not advertise retired assets");
+});
+
 test("catalog markup uses only canonical source assets", () => {
     const html = read(path.join(catalogDir, "index.html"));
     checkMarkupContract(html, "catalog/index.html");
@@ -226,36 +239,40 @@ test("catalog markup uses only canonical source assets", () => {
     const permissions = new Set(iframe[1].split(/\s+/));
     assert(permissions.has("allow-scripts") && permissions.has("allow-forms") && permissions.has("allow-same-origin"), "catalog preview needs scripts, forms, and its trusted local origin for the Lucide sprite");
     assert(!permissions.has("allow-top-navigation") && !permissions.has("allow-popups"), "catalog preview must not gain navigation or popup permissions");
-    assert.deepEqual(cssHrefsLoadedBy(html, "catalog/index.html"), canonicalStylesheets, "catalog must load only base.css followed by components.css");
+    assert.deepEqual(cssHrefsLoadedBy(html, "catalog/index.html"), canonicalDemoStylesheets, "catalog must load base.css, mewa.css, then demo.css");
     assert.match(html, /<script\b[^>]*\bsrc="\/ui\/catalog\/catalog\.js"[^>]*>/i);
     assert.match(html, /id="component-search"/);
     assert.match(html, /<nav class="ui-catalog-layout-links"[^>]*aria-label="Layout previews"/);
-    assert.match(html, /href="\/ui\/layouts\/vertical-rail\.html"/);
-    assert.match(html, /href="\/ui\/layouts\/horizontal-tabs\.html"/);
+    assert.match(html, /href="\/ui\/layouts\/vertical-navbar\.html"/);
+    assert.match(html, /href="\/ui\/layouts\/horizontal-navbar\.html"/);
+    assert(!/component-source|copy-source|copy-status|<pre\b/i.test(html), "catalog must expose previews without embedded HTML source controls");
 });
 
 test("catalog layout keeps its two canonical layout regions", () => {
     const html = read(path.join(catalogDir, "index.html"));
     assert.match(html, /<div class="ui-catalog-layout">[\s\S]*<aside class="ui-catalog-sidebar"[\s\S]*<section class="ui-catalog-detail"/);
-    ["ui-catalog", "ui-catalog-skip", "ui-catalog-header", "ui-catalog-header-meta", "ui-catalog-layout-links", "ui-catalog-count", "ui-catalog-main", "ui-catalog-overview", "ui-catalog-layout", "ui-catalog-sidebar", "ui-catalog-nav", "ui-catalog-list", "ui-catalog-empty", "ui-catalog-detail", "ui-catalog-detail-header", "ui-catalog-preview-wrap", "ui-catalog-preview", "ui-catalog-source-header", "ui-catalog-source"].forEach((className) => {
-        assert(classDefinitions(read(canonicalComponentCss)).has(className), `src/components.css must define catalog layout class ${className}`);
+    ["ui-catalog", "ui-catalog-skip", "ui-catalog-header", "ui-catalog-header-meta", "ui-catalog-layout-links", "ui-catalog-count", "ui-catalog-main", "ui-catalog-layout", "ui-catalog-sidebar", "ui-catalog-nav", "ui-catalog-list", "ui-catalog-empty", "ui-catalog-detail", "ui-catalog-detail-header", "ui-catalog-preview-wrap", "ui-catalog-preview", "ui-catalog-preview-modal", "ui-catalog-modal-open"].forEach((className) => {
+        assert(classDefinitions(read(canonicalDemoCss)).has(className), `src/demo.css must define catalog layout class ${className}`);
     });
+    const script = read(path.join(catalogDir, "catalog.js"));
+    assert.match(script, /data-mewa-ui-modal-open/, "catalog must mirror modal state out of its sandboxed preview");
+    assert.match(script, /MutationObserver/, "catalog must recover modal state when a preview event is missed");
 });
 
 test("layout examples use the two canonical shell variants", () => {
-    const rail = read(path.join(layoutsDir, "vertical-rail.html"));
-    const top = read(path.join(layoutsDir, "horizontal-tabs.html"));
-    [[rail, "vertical-rail.html"], [top, "horizontal-tabs.html"]].forEach(([html, filename]) => {
+    const vertical = read(path.join(layoutsDir, "vertical-navbar.html"));
+    const horizontal = read(path.join(layoutsDir, "horizontal-navbar.html"));
+    [[vertical, "vertical-navbar.html"], [horizontal, "horizontal-navbar.html"]].forEach(([html, filename]) => {
         checkMarkupContract(html, filename);
-        assert.deepEqual(cssHrefsLoadedBy(html, filename), canonicalStylesheets, `${filename} must load canonical stylesheets in order`);
+        assert.deepEqual(cssHrefsLoadedBy(html, filename), canonicalProductionStylesheets, `${filename} must load production stylesheets without demo.css`);
         assert.match(html, /<script\b[^>]*\bsrc="\/ui\/src\/components\.js"[^>]*>/i, `${filename} must load the canonical runtime`);
         assert(!html.includes("ui-framed-"), `${filename} must not use legacy framed classes`);
     });
-    assert.match(rail, /<body class="ui-shell ui-shell--rail">[\s\S]*<div class="ui-frame">[\s\S]*<nav class="ui-rail"[^>]*>[\s\S]*<main class="ui-shell-main"/);
-    assert.match(top, /<body class="ui-shell ui-shell--top">[\s\S]*<div class="ui-frame">[\s\S]*<header class="ui-topbar">[\s\S]*<nav class="ui-topnav"[^>]*>[\s\S]*<main class="ui-shell-main"/);
+    assert.match(vertical, /<body class="ui-shell ui-shell--vertical">[\s\S]*<div class="ui-frame">[\s\S]*<nav class="ui-navbar ui-navbar--vertical"[^>]*>[\s\S]*<main class="ui-shell-main"/);
+    assert.match(horizontal, /<body class="ui-shell ui-shell--horizontal">[\s\S]*<div class="ui-frame">[\s\S]*<nav class="ui-navbar ui-navbar--horizontal"[^>]*>[\s\S]*<main class="ui-shell-main"/);
     const cssClasses = classDefinitions(read(canonicalComponentCss));
-    ["ui-shell", "ui-shell--rail", "ui-shell--top", "ui-frame", "ui-rail", "ui-topbar", "ui-topbar-brand", "ui-topnav", "ui-shell-main"].forEach((className) => {
-        assert(cssClasses.has(className), `src/components.css must define layout class ${className}`);
+    ["ui-shell", "ui-shell--vertical", "ui-shell--horizontal", "ui-frame", "ui-navbar", "ui-navbar--vertical", "ui-navbar--horizontal", "ui-shell-main"].forEach((className) => {
+        assert(cssClasses.has(className), `src/mewa.css must define layout class ${className}`);
     });
 });
 
@@ -272,43 +289,74 @@ test("layout examples use symbols from the canonical sprite", () => {
 
 test("canonical stylesheet responsibilities are enforced", () => {
     const catalog = path.join(catalogDir, "index.html");
-    assert.deepEqual(cssHrefsLoadedBy(read(catalog), path.relative(root, catalog)), canonicalStylesheets, "catalog must load canonical stylesheets only");
+    assert.deepEqual(cssHrefsLoadedBy(read(catalog), path.relative(root, catalog)), canonicalDemoStylesheets, "catalog must load the production pair plus demo.css");
     existingFiles(snippetsDir, ".html").map((file) => path.join(snippetsDir, file)).forEach((file) => {
         const html = read(file);
-        assert.deepEqual(cssHrefsLoadedBy(html, path.relative(root, file)), canonicalStylesheets, `${path.relative(root, file)} must load exactly the canonical stylesheets in order`);
+        assert.deepEqual(cssHrefsLoadedBy(html, path.relative(root, file)), canonicalDemoStylesheets, `${path.relative(root, file)} must load the production pair plus demo.css`);
         assert.match(html, /<script\b[^>]*\bsrc="\/ui\/src\/components\.js"[^>]*>/i, `${path.relative(root, file)} must load canonical runtime`);
         assert(!html.includes("/ui/core-ui.css"), `${path.relative(root, file)} must ignore legacy /ui/core-ui.css`);
         assert(!html.includes("/ui/core-ui-components.css") && !html.includes("/ui/core-ui.js") && !html.includes("/ui/lucide.svg"), `${path.relative(root, file)} must not load legacy root component assets`);
     });
     const cssAssets = fs.readdirSync(srcDir).filter((file) => file.endsWith(".css")).sort();
-    assert.deepEqual(cssAssets, ["base.css", "components.css"], "src has exactly two canonical CSS assets");
+    assert.deepEqual(cssAssets, ["base.css", "demo.css", "mewa.css"], "src has base, production, and demo CSS assets only");
     const baseCss = read(canonicalBaseCss);
     const componentCss = read(canonicalComponentCss);
+    const demoCss = read(canonicalDemoCss);
     assert(!/\.ui-[a-z0-9-]+/i.test(baseCss), "base.css defines tokens and resets, not .ui component classes");
+    assert(!/\.ui-(?:demo|catalog)(?:\b|-)/i.test(componentCss), "mewa.css must not contain demo or catalog presentation");
+    assert(/\.ui-demo\b/.test(demoCss) && /\.ui-catalog\b/.test(demoCss), "demo.css owns snippet and catalog presentation");
     checkCssContract(baseCss, "src/base.css", { allowRawColors: true });
-    checkCssContract(componentCss, "src/components.css");
+    checkCssContract(componentCss, "src/mewa.css");
+    checkCssContract(demoCss, "src/demo.css");
     const requiredFoundation = [
-        "--ui-font-size-xs: 0.75rem", "--ui-font-size-sm: 0.875rem", "--ui-font-size-base: 1rem",
-        "--ui-heading-sm: 1rem", "--ui-heading-md: 1.25rem", "--ui-heading-lg: 1.5rem", "--ui-heading-xl: 2rem",
-        "--ui-line-height-tight: 1.2", "--ui-line-height-normal: 1.4", "--ui-line-height-relaxed: 1.6",
-        "--ui-font-weight-regular: 400", "--ui-font-weight-medium: 500"
+        "--ui-font-mono: geist_mono, ui-monospace, monospace", "--ui-font-size-xsmall: 0.75rem", "--ui-font-size-small: 0.875rem", "--ui-font-size-base: 1rem",
+        "--ui-heading-base: 1rem", "--ui-heading-large: 1.5rem", "--ui-heading-xlarge: 2rem",
+        "--ui-line-height-tight: 1.25", "--ui-line-height-regular: 1.61", "--ui-font-weight-regular: 400", "--ui-font-weight-medium: 550", "--ui-tracking: 0",
+        "--ui-border-width: 1px", "--ui-focus-ring-width: 2px", "--ui-control-height: 2.5rem", "--ui-control-height-sm: 2rem", "--ui-icon-button-size: 2.5rem",
+        "--ui-icon-size-small: 1rem", "--ui-icon-size-medium: 1.25rem", "--ui-icon-size-large: 1.5rem", "--ui-icon-stroke-width: 1.5", "--ui-checkbox-size: 1.25rem",
+        "--ui-border-dashed: var(--ui-border-width) dashed var(--ui-border)"
     ];
     requiredFoundation.forEach((declaration) => assert(baseCss.includes(declaration), `src/base.css: missing requested foundation ${declaration}`));
+    const palettePrefixes = ["gray", "alpha-white", "alpha-black", "red", "amber", "green"];
+    const paletteSteps = ["000", "100", "200", "300", "400", "500", "600", "700", "800", "900"];
+    palettePrefixes.forEach((prefix) => paletteSteps.forEach((step) => {
+        assert.match(baseCss, new RegExp(`--ui-${prefix}-${step}:\\s*oklch\\([^;]+\\);`), `src/base.css: --ui-${prefix}-${step} must use OKLCH`);
+    }));
+    assert.match(baseCss, /--ui-gray-000:\s*oklch\(14\.4788% 0 0\)/, "gray 000 must equal #0a0a0a in OKLCH");
+    assert.match(baseCss, /--ui-gray-900:\s*oklch\(98\.5104% 0 0\)/, "gray 900 must equal #fafafa in OKLCH");
+    assert(!/(?:#[0-9a-f]{3,8}\b|\brgba?\(|\bhsla?\(|color-mix\(in\s+srgb)/i.test(baseCss + componentCss + demoCss), "canonical styles must use OKLCH color syntax and interpolation");
     assert(!/--ui-(?:space|radius|layer)-/i.test(baseCss), "base.css must not restore semantic spacing, radius, or layer scales");
     assert(!/--ui-font-weight-(?:semibold|bold)/i.test(baseCss), "base.css supports only regular and medium weights");
-    assert.match(baseCss, /strong\s*,\s*b\s*\{[^}]*font-weight:\s*var\(--ui-font-weight-medium\)/i, "base.css must keep semantic emphasis within the 500-weight ceiling");
-    assert.deepEqual(visualShadowDeclarations(componentCss, "src/components.css"), [], "src/components.css: visual shadows are forbidden");
+    assert(!/--ui-line-height-(?:normal|relaxed)|--ui-tracking-(?:tight|wide)/i.test(baseCss + componentCss), "removed typography scales must not return");
+    assert(!/letter-spacing\s*:/i.test(baseCss + componentCss + demoCss), "canonical styles must not add text spacing");
+    assert.match(baseCss, /strong\s*,\s*b\s*\{[^}]*font-weight:\s*var\(--ui-font-weight-medium\)/i, "base.css must keep semantic emphasis at the medium weight");
+    assert.deepEqual(visualShadowDeclarations(componentCss, "src/mewa.css"), [], "src/mewa.css: visual shadows are forbidden");
+    assert.deepEqual(visualShadowDeclarations(demoCss, "src/demo.css"), [], "src/demo.css: visual shadows are forbidden");
 });
 
 test("component CSS keeps popup parts, SVGs, and form states explicitly covered", () => {
     const css = read(canonicalComponentCss);
     assert.match(css, /(?:^|[}\n])\s*svg\s*\{[^}]*\b(?:width|height|display)\s*:/, "component CSS needs a generic SVG baseline rule");
-    ["popover", "dropdown-menu", "navigation-menu", "tooltip", "hover-card", "split-button"].forEach((component) => {
+    ["popover", "dropdown-menu", "tooltip", "split-button"].forEach((component) => {
         assert.match(css, new RegExp(`\\[data-ui-component="${component}"\\][^{]*(?:\\[data-ui-part="(?:panel|content|menu)"\\]|\\[data-ui-${component.replace(/-/g, "")}-content\\])`), `${component}: popup positioning must target the actual panel/content part`);
     });
     [":hover", ":focus", ":disabled", "[aria-invalid=\"true\"]"].forEach((state) => {
         assert(css.includes(`.ui-field${state}`) || css.includes(`.ui-select${state}`) || css.includes(`.ui-textarea${state}`), `form controls need an explicit ${state} state selector`);
     });
+});
+
+test("visual-audit fixes retain explicit semantic and responsive contracts", () => {
+    const css = read(canonicalComponentCss);
+    const accordion = read(path.join(snippetsDir, "accordion.html"));
+    const chart = read(path.join(snippetsDir, "chart.html"));
+    const resizable = read(path.join(snippetsDir, "resizable.html"));
+    assert.equal((accordion.match(/class="ui-accordion-icon" aria-hidden="true"/g) || []).length, 3, "accordion state marks must stay out of accessible names");
+    assert(!/\[data-ui-part="trigger"\]::after/.test(css), "accordion state marks must not return to the trigger pseudo-element");
+    assert(chart.includes("ui-chart-canvas") && chart.includes("ui-chart-labels"), "chart must keep its responsive canvas and HTML axis labels");
+    assert(!/\[data-ui-chart\] \[data-ui-part="plot"\][^}]*overflow-x:\s*auto/.test(css), "chart must scale instead of clipping behind an internal scroller");
+    assert(resizable.includes("ui-resizable-file-name"), "resizable file names need a dedicated truncation target");
+    assert.match(css, /\[data-ui-resizable\] \[data-ui-part="group"\]\s*\{[^}]*overflow:\s*hidden/, "resizable panes must remain inside the component boundary");
+    assert(!/\[data-ui-resizable\] \[data-ui-part="pane"\][^}]*min-inline-size:\s*100%/.test(css), "compact resizable panes must not force a second viewport");
 });
 
 test("manifest and snippet files have exact parity", () => {
@@ -343,7 +391,7 @@ test("each snippet has a valid marked fragment, markup, icons, and references", 
 });
 
 test("every ui-* snippet class has CSS coverage or a documented compatibility allowance", () => {
-    const css = read(canonicalComponentCss);
+    const css = `${read(canonicalComponentCss)}\n${read(canonicalDemoCss)}`;
     const definitions = classDefinitions(css);
     const missing = [];
     existingFiles(snippetsDir, ".html").forEach((filename) => {
@@ -359,16 +407,16 @@ test("interactive component families expose their expected hooks", () => {
         accordion: /aria-expanded|data-accordion/i, alert: /role="(?:alert)?dialog"[\s\S]*aria-modal="true"|data-ui-alert-dialog/i, autocomplete: /aria-autocomplete="list"[\s\S]*role="listbox"/i, carousel: /aria-label|data-carousel/i,
         checkbox: /type="checkbox"|role="checkbox"/i, "checkbox-group": /data-ui-part="all"[\s\S]*data-ui-part="item"/i, collapsible: /aria-expanded|data-collapsible/i, combobox: /role="combobox"|data-combobox/i,
         command: /role="(?:dialog|listbox|menu)"|data-command/i, dialog: /role="dialog"[\s\S]*aria-modal="true"|data-dialog/i,
-        drawer: /role="dialog"|data-drawer/i, "dropdown-menu": /role="menu"|data-dropdown/i, "hover-card": /aria-describedby|data-hover-card/i,
-        "input-otp": /autocomplete="one-time-code"|data-otp/i, lightbox: /data-ui-slide="0"[\s\S]*role="dialog"/i, "navigation-menu": /role="navigation"|data-navigation-menu|data-ui-part="(?:trigger|content)"/i,
+        drawer: /role="dialog"|data-drawer/i, "dropdown-menu": /role="menu"|data-dropdown/i,
+        lightbox: /data-ui-slide="0"[\s\S]*role="dialog"/i, "navbar-vertical": /data-ui-navbar-vertical[\s\S]*aria-controls="navbar-vertical-panel"/i,
         popover: /aria-expanded|data-popover/i, "radio-group": /role="radiogroup"|type="radio"|data-radio-group/i, resizable: /role="separator"|data-resizable/i,
         select: /<select\b|role="combobox"|data-select/i, sheet: /role="dialog"|data-sheet/i, slider: /role="slider"|type="range"|data-slider/i,
         switch: /role="switch"|type="checkbox"|data-switch/i, tabs: /role="tablist"[\s\S]*role="tab"|data-tabs/i, toast: /role="(?:status|alert)"|aria-live=|data-toast/i,
         toggle: /aria-pressed|data-toggle/i, tooltip: /role="tooltip"|aria-describedby|data-tooltip/i,
         diff: /type="range"[\s\S]*aria-label=|data-ui-component="diff"/i, "file-input": /type="file"[\s\S]*aria-describedby=/i,
         "number-field": /type="number"[\s\S]*(?:data-ui-part="increment"|aria-label="Increase)/i,
-        rating: /type="radio"[\s\S]*deployment-rating/i, "sortable-list": /draggable="true"[\s\S]*data-ui-part="handle"/i, "split-button": /aria-haspopup="menu"[\s\S]*role="menu"/i,
-        "time-field": /data-ui-part="hour"[\s\S]*data-ui-part="minute"[\s\S]*data-ui-part="period"/i, toolbar: /role="toolbar"[\s\S]*aria-orientation=/i
+        "sortable-list": /draggable="true"[\s\S]*data-ui-part="handle"/i, "split-button": /aria-haspopup="menu"[\s\S]*role="menu"/i,
+        "time-field": /data-ui-part="hour"[\s\S]*data-ui-part="minute"[\s\S]*data-ui-part="period"/i
     };
     Object.entries(needs).forEach(([slug, expression]) => {
         const file = path.join(snippetsDir, `${slug}.html`);
@@ -381,16 +429,14 @@ test("runtime-supported generic hook schemas are present in their snippets", () 
     const schemas = {
         questionnaire: ["data-ui-questionnaire", "data-ui-question", "data-ui-question-next"],
         "message-scroller": ["data-ui-message-scroller", "data-ui-jump"],
-        sidebar: ["data-ui-sidebar"],
+        "navbar-vertical": ["data-ui-navbar-vertical", "data-ui-part"],
         toggle: ["data-ui-toggle"],
-        "toggle-group": ["data-ui-toggle-group", "data-ui-toggle"],
         calendar: ["data-ui-calendar", "data-ui-calendar-day"],
         "data-table": ["data-ui-table"],
         diff: ["data-ui-component", "data-ui-part"],
         "file-input": ["data-ui-component", "data-ui-part"],
         "number-field": ["data-ui-component", "data-ui-part"],
-        toolbar: ["data-ui-component", "data-ui-toggle-group"]
-        ,autocomplete: ["data-ui-component", "data-ui-part"],
+        autocomplete: ["data-ui-component", "data-ui-part"],
         "checkbox-group": ["data-ui-component", "data-ui-part"],
         lightbox: ["data-ui-component", "data-ui-slide"],
         "sortable-list": ["data-ui-component", "data-ui-part"],
@@ -405,7 +451,7 @@ test("runtime-supported generic hook schemas are present in their snippets", () 
             if (!hasHook(html, hook)) failures.push(`${slug}.html: missing runtime-supported hook ${hook}`);
         });
     });
-    ["autocomplete", "checkbox-group", "diff", "file-input", "lightbox", "number-field", "sortable-list", "time-field", "toolbar"].forEach((component) => {
+    ["autocomplete", "checkbox-group", "diff", "file-input", "lightbox", "navbar-vertical", "number-field", "sortable-list", "time-field"].forEach((component) => {
         assert(runtime.includes(`component === "${component}"`), `runtime does not initialize ${component}`);
     });
     assert.deepEqual(failures, [], `interactive snippets must use runtime-supported hooks, not incompatible data-ui-part aliases:\n${failures.join("\n")}`);

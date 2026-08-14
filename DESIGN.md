@@ -1,70 +1,68 @@
 # mewa_ui design contract
 
-This contract applies only to this standalone repository. External products may guide its visual direction, but they are not dependencies and must not be modified as part of library work.
+This contract applies only to this standalone repository. The portfolio and service applications may guide visual judgment, but they are not dependencies and must remain untouched.
 
 ## Foundations
 
-- `src/base.css` owns the compact palette, semantic roles, requested typography, focus treatment, reset, and shared browser primitives.
-- `src/components.css` owns component-specific layout, spacing, structure, variants, and responsive rules.
-- Body sizes are 12, 14, and 16 px. Heading sizes are 16, 20, 24, and 32 px.
-- Line heights are 1.2, 1.4, and 1.6. Weights are 400 and 500.
-- Interface text uses the system monospace stack. Individual components must not introduce web fonts or a proportional sans-serif stack.
-- The palette has monochrome, red, yellow, and green scales. Status colors never decorate neutral actions.
-- Geometry is square. Shadows are forbidden. Circular geometry is limited to objects whose meaning depends on it, such as radio controls, avatars, and status dots.
-- Backdrop blur belongs only to overlapping surfaces: dialogs, sheets, drawers, menus, popovers, tooltips, toasts, and sticky glass headers.
-- Component-local dimensions and spacing are explicit. Do not rebuild a large semantic spacing-token taxonomy.
+- `src/base.css` owns the six OKLCH palettes, generalized semantic roles, typography, geometry, focus, reset, and browser primitives.
+- `src/mewa.css` owns production component layout, spacing, structure, variants, utilities, and responsive rules.
+- `src/demo.css` owns only catalog and snippet presentation.
+- Interface text uses `geist_mono, ui-monospace, monospace` through `--ui-font-mono`.
+- Body sizes are 12, 14, and 16 px. Heading sizes are 16, 24, and 32 px. Line heights are 1.25 and 1.61. Weights are 400 and 550. Tracking is zero.
+- Every palette value is expressed in OKLCH. Components address semantic roles, never raw red, amber, green, or gray steps.
+- Geometry is square. Shadows are forbidden. Circular geometry is limited to objects whose meaning depends on it, such as radios, avatars, and status dots.
+- Backdrop blur belongs only to overlapping surfaces such as dialogs, sheets, drawers, menus, popovers, tooltips, toasts, mobile navigation panels, and sticky glass headers.
+- Component-local dimensions and spacing are explicit. Do not recreate a semantic spacing-token taxonomy.
+- Dashed structural divisions use `--ui-border-dashed`.
 
 ## Markup and behavior
 
-Start from semantic HTML and native controls. A component must remain understandable without JavaScript wherever the platform provides a native path. Use `data-ui-*` only as stable behavior hooks; use classes for styling; use `data-state` only for `ok`, `warning`, `error`, `running`, or `progress`.
+Start with semantic HTML and native controls. A component remains understandable without JavaScript wherever the platform provides a native path. `data-ui-*` attributes are stable behavior hooks; classes are styling hooks. `data-state` is reserved for meaningful status.
 
-`src/components.js` exposes `MewaUI.enhance(root)` and `MewaUI.destroy(root)`. Enhancement must be idempotent, clean up listeners, and preserve native submission and navigation. Custom events use the `mewa-ui:*` prefix.
+`src/components.js` exposes `MewaUI.enhance(root)` and `MewaUI.destroy(root)`. Enhancement is idempotent, cleans up listeners, and preserves native submission and navigation. Custom events use the `mewa-ui:*` prefix.
 
 Interactive patterns follow their platform and ARIA keyboard models:
 
-- Disclosure controls synchronize `aria-expanded`, `aria-controls`, and `hidden`.
-- Tabs, menus, listboxes, toolbars, and composite choices use roving focus and the expected arrow, Home, End, Escape, and activation keys.
+- Disclosures synchronize `aria-expanded`, `aria-controls`, and `hidden`.
+- Tabs, menus, listboxes, and grouped choices expose the expected arrow, Home, End, Escape, and activation behavior.
 - Modal surfaces label their purpose, trap focus, inert background content, close with Escape, and restore focus.
 - Forms keep explicit labels, descriptions, native validation, and live status announcements.
-- Tables retain captions, scopes, and sorting state even when their narrow-screen presentation changes.
+- Tables retain captions, scopes, and sorting state when their narrow-screen presentation changes.
+- Drag interactions provide a keyboard path and a live announcement.
 - Reduced-motion and forced-colors modes remain usable.
 
-## Components
+## Components and catalog
 
-Every manifest entry has exactly one complete document in `snippets/`. Its reusable fragment is delimited by `<!-- mewa-ui-snippet:start -->` and `<!-- mewa-ui-snippet:end -->`. A component is not considered implemented until markup, styles, behavior where needed, focus treatment, narrow-screen behavior, local icons, and contract coverage agree.
+Every entry in `catalog/components.json` has exactly one complete document in `snippets/`. The reusable fragment is delimited by `<!-- mewa-ui-snippet:start -->` and `<!-- mewa-ui-snippet:end -->`. A component is complete only when markup, styling, behavior, focus, narrow-screen treatment, local icons, and contract coverage agree.
 
-The catalog loads exactly `src/base.css`, `src/components.css`, and its own catalog script. It renders only the marked fragment inside the preview, followed by that component's name, description, and copyable source. Snippets load the two stylesheets plus `src/components.js`. Do not create per-component stylesheets or scripts.
+Snippets load `base.css`, `mewa.css`, `demo.css`, then `components.js`. Application layouts load only the production pair and runtime. The catalog renders the marked fragment as a preview plus its name and description; source-code controls do not belong in the catalog UI.
 
-Alert owns both inline and blocking-dialog variants; do not split presentation modes that express the same feedback concept into separate manifest entries. Ghost buttons are the default low-emphasis action inside calendars, date pickers, toolbars, and similar compound controls.
+Alert owns inline and blocking-dialog variants. Progress owns both task progress and bounded meter measurements. Ghost buttons are the default low-emphasis action inside calendars, date pickers, and compound controls. The vertical navbar subsumes the former sidebar component.
+
+## LLM consumption
+
+`llms.txt` is the concise entry point. `catalog/components.json` is the canonical inventory. An LLM should copy only marked snippet fragments, preserve their accessible names and ARIA relationships, load canonical assets in order, and avoid inventing undocumented `ui-*` classes or `data-ui-*` hooks.
+
+Descriptions explain purpose rather than demo content. Examples use realistic variations without product-specific wrappers. Stable file names, marker comments, and hook schemas are covered by contract tests.
 
 ## Icons
 
-Lucide is the primary icon source. Symbols live in `src/lucide.svg`, inherit `currentColor`, and use the shared stroke treatment. Decorative icons use `aria-hidden="true"`; icon-only controls have an `aria-label` or equivalent accessible name. Product marks and content illustration belong to consuming services.
+Lucide is the primary icon source. Symbols live in `src/lucide.svg`, inherit `currentColor`, and use the shared stroke treatment. Decorative icons use `aria-hidden="true"`; icon-only controls have an `aria-label` or equivalent accessible name.
 
 ## Layouts
 
-Two service shells are supported:
+- `.ui-shell.ui-shell--vertical` contains `.ui-frame`, `.ui-navbar--vertical`, and `.ui-shell-main`. At narrow widths the navbar becomes a compact header with a blurred overlapping panel.
+- `.ui-shell.ui-shell--horizontal` contains `.ui-frame`, `.ui-navbar--horizontal`, and `.ui-shell-main`. Route links scroll inside the bar with horizontal scroll-fade treatment.
 
-- `.ui-shell.ui-shell--rail` contains `.ui-frame`, `.ui-rail`, and `.ui-shell-main`; its full vertical navigation becomes a compact sticky bottom row on narrow screens.
-- `.ui-shell.ui-shell--top` contains `.ui-frame`, `.ui-topbar`, `.ui-topnav`, and `.ui-shell-main`; route links scroll inside the horizontal bar rather than widening the page.
+Both layout documents are complete application templates with identity, navigation, account/actions, page hierarchy, status content, and responsive behavior.
 
-Both layout documents are complete application templates with identity, navigation, account/actions, headings, status content, and responsive behavior. They are not empty shell diagrams.
-
-### Service UI reference notes
-
-The service interfaces in [`core/docker/meili_ui`](https://github.com/miloszkolber/core/tree/master/docker/meili_ui), [`core/docker/hf_ui`](https://github.com/miloszkolber/core/tree/master/docker/hf_ui), and [`core/docker/moonlight_ui`](https://github.com/miloszkolber/core/tree/master/docker/moonlight_ui) are visual references only. They remain separate applications and are not copied into or changed by this library.
-
-- `meili_ui` keeps search, filters, and status in a compact tool cluster, then gives the content grid the remaining width. mewa_ui follows the same principle for toolbars, header actions, and dense lists.
-- `hf_ui` uses a framed split workspace, stable label/control alignment, one clear primary action, and an early single-column breakpoint. That informs form, panel, and app-template balance.
-- `moonlight_ui` composes operational rows as indicator, flexible copy, and a predictable action column; its narrow layout turns those actions full-width. That pattern informs status rows, items, and responsive action groups.
-
-Across these references, the adopted rhythm is explicit rather than token-heavy: 16 px framed insets, 12 px row insets, 8–12 px internal gaps, and 40 px primary controls. Larger gaps are reserved for separating page regions, not for padding individual components.
+The visual references in [`core/docker/meili_ui`](https://github.com/miloszkolber/core/tree/master/docker/meili_ui), [`core/docker/hf_ui`](https://github.com/miloszkolber/core/tree/master/docker/hf_ui), and [`core/docker/moonlight_ui`](https://github.com/miloszkolber/core/tree/master/docker/moonlight_ui) remain separate applications. Their compact tool clusters, framed workspaces, stable form alignment, operational rows, and early single-column breakpoints inform balance without being copied into this repository.
 
 ## Contribution checklist
 
-1. Add or update the manifest entry and matching marked snippet together.
-2. Use existing semantic roles and the four color scales; add a foundation token only when multiple unrelated components need it.
+1. Update the manifest and matching marked snippet together.
+2. Reuse semantic roles; add a foundation token only when unrelated components share the need.
 3. Add required Lucide symbols locally.
-4. Cover runtime behavior in `tests/runtime-contract.test.js` and repository contracts in `tests/catalog-contract.test.js`.
-5. Inspect desktop, 200% zoom, keyboard-only operation, and a 320–390 px viewport in a real browser.
+4. Cover runtime behavior and repository contracts.
+5. Inspect desktop, 200% zoom, keyboard-only use, and 320–390 px widths in a real browser.
 6. Run both Node contract suites before handoff.

@@ -5,21 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Vertical navigation application template</title>
     <link rel="stylesheet" href="/ui/src/base.css">
-    <link rel="stylesheet" href="/ui/src/components.css">
+    <link rel="stylesheet" href="/ui/src/mewa.css">
     <script src="/ui/src/components.js" defer></script>
 </head>
-<body class="ui-shell ui-shell--rail">
+<body class="ui-shell ui-shell--vertical">
     <a class="ui-skip-link" href="#main-content">Skip to main content</a>
     <div class="ui-frame">
-        <nav class="ui-rail" aria-label="Workspace navigation">
-            <a class="ui-rail-brand" href="#overview" aria-label="Atlas home"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#layers-3"></use></svg><span>Atlas</span></a>
-            <div class="ui-rail-links">
-                <a href="#overview" aria-current="page"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#layout-dashboard"></use></svg><span>Overview</span></a>
-                <a href="#projects"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#folder-kanban"></use></svg><span>Projects</span></a>
-                <a href="#activity"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#activity"></use></svg><span>Activity</span></a>
-                <a href="#settings"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#settings"></use></svg><span>Settings</span></a>
+        <nav class="ui-navbar ui-navbar--vertical" data-ui-component="navbar-vertical" data-ui-navbar-vertical aria-label="Workspace navigation">
+            <header><a class="ui-navbar-brand" href="#overview" aria-label="Atlas home"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#layers-3"></use></svg><span>Atlas</span></a><button class="ui-icon-button ui-button-ghost ui-navbar-toggle" data-ui-part="trigger" type="button" aria-expanded="true" aria-controls="layout-vertical-navbar-panel" aria-label="Toggle navigation"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#menu"></use></svg></button></header>
+            <div data-ui-part="panel" id="layout-vertical-navbar-panel">
+                <p class="ui-navbar-section-label">Workspace</p>
+                <ul class="ui-navbar-list"><li><a class="ui-navbar-link" href="#overview" aria-current="page"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#layout-dashboard"></use></svg><span class="ui-navbar-label">Overview</span></a></li><li><a class="ui-navbar-link" href="#projects"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#folder-kanban"></use></svg><span class="ui-navbar-label">Projects</span></a></li><li><a class="ui-navbar-link" href="#activity"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#activity"></use></svg><span class="ui-navbar-label">Activity</span></a></li><li><a class="ui-navbar-link" href="#settings"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#settings"></use></svg><span class="ui-navbar-label">Settings</span></a></li></ul>
+                <a class="ui-navbar-account" href="#account"><span class="ui-avatar" aria-hidden="true">AM</span><span><strong>Alex Morgan</strong><small>Owner</small></span></a>
             </div>
-            <a class="ui-rail-account" href="#account"><span class="ui-avatar" aria-hidden="true">AM</span><span>Alex Morgan<small>Owner</small></span></a>
         </nav>
         <main class="ui-shell-main" id="main-content">
             <div class="ui-template-content">

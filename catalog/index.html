@@ -7,25 +7,25 @@
   <link rel="icon" href="data:,">
   <title>mewa_ui catalog</title>
   <link rel="stylesheet" href="/ui/src/base.css">
-  <link rel="stylesheet" href="/ui/src/components.css">
+  <link rel="stylesheet" href="/ui/src/mewa.css"><link rel="stylesheet" href="/ui/src/demo.css">
   <script src="/ui/catalog/catalog.js" defer></script>
 </head>
 <body class="ui-catalog">
   <a class="ui-catalog-skip" href="#catalog-main">Skip to catalog</a>
   <header class="ui-app-header">
-    <div class="ui-container ui-app-header-inner ui-catalog-header">
+    <div class="ui-app-header-inner ui-catalog-header">
       <a class="ui-brand" href="/ui/catalog/" aria-label="mewa_ui catalog home">mewa_ui <span>catalog</span></a>
       <div class="ui-catalog-header-meta">
         <nav class="ui-catalog-layout-links" aria-label="Layout previews">
           <span class="ui-sr-only">Layout previews</span>
-          <a href="/ui/layouts/vertical-rail.html">Vertical rail</a>
-          <a href="/ui/layouts/horizontal-tabs.html">Horizontal tabs</a>
+          <a href="/ui/layouts/vertical-navbar.html">Vertical navbar</a>
+          <a href="/ui/layouts/horizontal-navbar.html">Horizontal navbar</a>
         </nav>
         <p class="ui-catalog-count" id="component-count" aria-live="polite"></p>
       </div>
     </div>
   </header>
-  <main class="ui-container ui-catalog-main" id="catalog-main">
+  <main class="ui-catalog-main" id="catalog-main">
     <div class="ui-catalog-layout">
       <aside class="ui-catalog-sidebar" aria-label="Catalog navigation">
         <label class="ui-field-stack" for="component-search">
@@ -46,12 +46,6 @@
         <div class="ui-catalog-preview-wrap">
           <iframe class="ui-catalog-preview" id="component-preview" title="Component preview" sandbox="allow-scripts allow-forms allow-same-origin" referrerpolicy="same-origin"></iframe>
         </div>
-        <div class="ui-catalog-source-header">
-          <h2 class="ui-title-sm">HTML</h2>
-          <button class="ui-button ui-button-secondary ui-button-small" id="copy-source" type="button">Copy code</button>
-        </div>
-        <p class="ui-meta-text" id="copy-status" role="status"></p>
-        <pre class="ui-code-output ui-code-output-padded ui-catalog-source" id="component-source" tabindex="0"><code></code></pre>
       </section>
     </div>
   </main>

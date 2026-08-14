@@ -1,59 +1,38 @@
 # mewa_ui implementation audit
 
-Audit baseline: 2026-08-13. The portfolio is visual guidance only and is not part of this library or its implementation surface.
+Audit baseline: 2026-08-14. The portfolio and `core/docker` interfaces are visual guidance only and remain outside this repository.
 
-## What the previous implementation already covered
+## Current pass
 
-The 64-entry manifest matched the then-current shadcn component inventory closely. The main problem was not raw component count; it was uneven execution: tiny controls, an over-abstracted token layer, weak hierarchy, inconsistent component framing, narrow-screen table overflow, and interaction examples that looked complete without always having a full keyboard or lifecycle contract.
+- Rebuilt the foundation around six 10-step palettes and generalized semantic roles. All palette values and color interpolation use OKLCH.
+- Verified the red, amber, and green scales against the live Vercel Geist color page in dark mode. Gray retains the requested `#0a0a0a` and `#fafafa` endpoints as equivalent OKLCH values; alpha scales use those same endpoints.
+- Adopted the exact Geist Mono, size, line-height, weight, icon, control, border, focus, and checkbox tokens requested for this pass.
+- Removed text-spacing additions, the relaxed line-height scale, shadows, rounded component geometry, and decorative blur.
+- Renamed production component CSS to `src/mewa.css` and moved all catalog/snippet presentation into `src/demo.css`.
+- Simplified the catalog to name, description, and preview; removed embedded HTML/copy controls and pinned the component list to the left on desktop.
+- Added Scroll Fade and Shimmer utilities, a slower spinner, larger resizable hit area, and a corrected vertical-divider cursor/geometry contract.
+- Replaced Sidebar with Vertical Navbar and added a Horizontal Navbar. Both also ship as full application templates linked from the catalog.
+- Merged Meter into Progress and kept native `<progress>` and `<meter>` semantics.
+- Removed Navigation Menu, Input OTP, Hover Card, Rating, Steps, Toggle Group, and Toolbar from the public inventory. Button Group keeps its own pressed-state behavior without exposing a Toggle Group component.
+- Preserved the previously added Autocomplete, Checkbox Group, Lightbox, Sortable List, Split Button, and Time Field behavior and accessibility coverage.
+- Added `llms.txt` and strengthened machine-readable descriptions, stable snippet markers, canonical asset rules, and contract checks.
+- Completed a fresh visual pass across every component at desktop/tablet and 380 px mobile widths, with targeted 320 px checks for the densest layouts. The sweep found no document overflow, missing media, stray radii or shadows, malformed SVGs, or unlabeled fields.
+- Corrected compact input/date-picker groups, responsive chart labels, diff copy balance, resizable pane overflow and file-name clipping, slider width, progress-label spacing, separator composition, and the vertical-navbar brand target.
+- Moved accordion state marks into explicit `aria-hidden` elements so generated symbols no longer alter trigger or region names, while retaining the larger 24 px visual icon.
+- Removed duplicate button overrides and redundant resizable compatibility selectors without changing the public class or behavior contract.
 
-## Changes in this pass
+The resulting catalog contains 70 components.
 
-- Renamed the product, runtime global, events, source markers, catalog copy, and documentation to `mewa_ui` / `MewaUI` / `mewa-ui:*`.
-- Reduced `base.css` to four color scales, semantic roles, exact requested type sizes and line heights, two weights, focus, and genuinely shared control primitives.
-- Rebalanced type, control heights, padding, borders, field surfaces, cards, feedback, disabled states, and catalog density.
-- Restricted glass blur to overlapping surfaces and removed the decorative radial/striped page treatment.
-- Added meaningful neutral, success, warning, and error surface treatments without turning status colors into decoration.
-- Made the data table responsive while retaining native table semantics, captions, row headers, sort state, and cell labels.
-- Added runtime coverage for diff position announcements, file selection status, bounded number stepping, and toolbar roving focus.
-- Rebuilt the catalog around the reusable fragment itself: component name, description, live variations, and a copy action with a Clipboard API fallback.
-- Standardized the system monospace stack, matched status borders to status text, enlarged disclosure icons, added ghost actions, and repaired chart geometry and narrow-screen containment.
-- Consolidated Alert Dialog into Alert as a blocking variant and removed Bubble, Context Menu, Direction/RTL, Dock, and Menubar from the public inventory.
-- Added Autocomplete, Checkbox Group, Lightbox, Sortable List, Split Button, and Time Field with keyboard, live-region, fallback, responsive, and runtime contracts.
-- Expanded both layout examples into complete application templates for vertical and horizontal navigation.
-- Added contract checks for the trimmed foundation, all 75 snippets, CSS coverage, Lucide references, ARIA hooks, and new runtime behavior.
+## Deliberate boundaries
 
-## Added components
+The library does not reproduce every decorative effect or product-specific widget from its references. Tailwind recipes, framework adapters, theme controllers, device mockups, 3D effects, and product branding remain excluded. Blur is limited to overlapping surfaces. Lucide is local and canonical.
 
-| Component | Primary influence | Why it belongs |
-| --- | --- | --- |
-| Autocomplete | Basecoat / shadcn combobox patterns | Filters suggestions while retaining a useful free-form input value. |
-| Checkbox Group | Coss / native HTML | Groups related choices and exposes a correct select-all mixed state. |
-| Diff | daisyUI | Direct before/after comparison requested in the brief. |
-| Fieldset | Coss / native HTML | Gives related fields a real semantic group and shared description. |
-| File Input | daisyUI / native HTML | Common service workflow missing from the previous form set. |
-| Lightbox | Basecoat-style modal composition | Provides focused media review with thumbnails and directional navigation. |
-| Meter | Coss / native HTML | Represents bounded usage, distinct from task progress. |
-| Number Field | Coss / Basecoat-style structure | Adds bounded stepping without replacing the native number input. |
-| Rating | daisyUI | Useful native-radio scoring pattern with keyboard behavior for free. |
-| Sortable List | Coss interaction model | Supports pointer reordering without excluding keyboard users. |
-| Split Button | Basecoat / shadcn menu composition | Keeps a default action immediate while exposing related alternatives. |
-| Stat | daisyUI | Balanced summary metrics for operational and product dashboards. |
-| Steps | daisyUI | Communicates workflow position separately from interactive tabs. |
-| Time Field | Coss segmented controls | Adds cyclic time stepping while retaining a form-ready native value. |
-| Timeline | daisyUI | Represents ordered events and meaningful status history. |
-| Toolbar | Coss / shadcn interaction model | Groups related actions with composite keyboard navigation. |
+The useful next candidates are requirement-led patterns such as a date-range picker, form-level validation summary, or tree view. They should be added only with full keyboard, fallback, responsive, and test contracts.
 
-The resulting catalog contains 75 components.
+## References reviewed
 
-## Deliberate exclusions and next candidates
-
-The library does not need to reproduce every effect or product-specific widget from every reference. Aura backgrounds, 3D hover effects, rotating text, theme controllers, decorative countdowns, and device mockups conflict with this visual contract or belong in consuming products. Framework adapters and Tailwind recipes are intentionally excluded.
-
-Useful future candidates, if real service requirements appear, are Date Range Picker, Form-level validation summary, and Tree View. These should be added only with full keyboard, fallback, responsive, and test contracts—not to raise the catalog count.
-
-## Reference inventory reviewed
-
-- [shadcn/ui components](https://ui.shadcn.com/docs/components)
+- [shadcn/ui components and utilities](https://ui.shadcn.com/docs)
+- [Vercel Geist colors](https://vercel.com/geist/colors)
 - [daisyUI components](https://daisyui.com/components/)
 - [Basecoat source and patterns](https://github.com/hunvreus/basecoat)
 - [Coss UI component index](https://coss.com/ui/llms.txt)

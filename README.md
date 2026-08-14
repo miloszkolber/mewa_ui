@@ -1,64 +1,70 @@
 # mewa_ui
 
-`mewa_ui` is a standalone, dependency-free component library for personal services. It ships semantic HTML, vanilla CSS, optional JavaScript, and a local Lucide sprite. There is no Tailwind, framework, package install, or frontend build step. All interface text uses the system monospace stack.
+`mewa_ui` is a standalone component library for personal services: semantic HTML, vanilla CSS, optional JavaScript, and a local Lucide SVG sprite. It has no framework, Tailwind, package-install, or build-step dependency.
 
-The visual language is intentionally narrow: monochrome, square, border-led, and shadow-free. Red, yellow, and green are reserved for meaningful status communication. Surfaces use translucent blur only when they overlap other content.
+The visual contract is monochrome, square, border-led, and shadow-free. Red, amber, and green communicate state. Blur is reserved for surfaces that overlap content. Geist Mono is the primary family through the `geist_mono` token, with `ui-monospace` and `monospace` fallbacks.
+
+The portfolio and service interfaces that informed the visual direction remain separate projects. They are references, not dependencies, and are never modified as part of this library.
 
 ## Canonical assets
 
-- `src/base.css` — compact color and type tokens, reset, focus, and browser primitives.
-- `src/components.css` — component structures, variants, states, and responsive behavior.
-- `src/components.js` — progressive enhancement and lifecycle methods.
-- `src/lucide.svg` — same-origin Lucide symbols used by snippets.
-- `catalog/` — searchable live reference with a compact preview, description, and copyable marked fragment for every component.
-- `snippets/` — 75 complete, copy-ready component documents.
-- `layouts/` — complete vertical-navigation and horizontal-navigation application templates.
+- `src/base.css` — six OKLCH palettes, semantic color roles, typography, geometry, focus, reset, and browser primitives.
+- `src/mewa.css` — production component structures, variants, states, utilities, and responsive behavior.
+- `src/components.js` — progressive enhancement with `enhance()` and `destroy()` lifecycle methods.
+- `src/lucide.svg` — same-origin Lucide symbols.
+- `src/demo.css` — catalog and standalone snippet presentation only; consuming applications do not load it.
+- `catalog/components.json` — machine-readable public inventory and behavior metadata.
+- `catalog/` — searchable, preview-only component reference.
+- `snippets/` — 70 complete documents with reusable fragments marked by stable comments.
+- `layouts/` — complete vertical- and horizontal-navbar application templates.
+- `llms.txt` — concise machine-oriented integration guidance.
 
-The root `core-ui.css` is preserved as a legacy migration reference. New work should use only the four `src/` assets above. The portfolio website is not a dependency or part of this repository.
-
-## Foundation
-
-The body scale is 12, 14, and 16 px. The heading scale is 16, 20, 24, and 32 px. Line heights are 1.2, 1.4, and 1.6; font weights are 400 and 500. Component spacing stays local instead of being disguised behind a large semantic spacing scale.
-
-Four color scales support the visual system: monochrome plus red, yellow, and green. Components consume semantic roles such as surface, border, text, danger, warning, and success. `data-state` is limited to `ok`, `warning`, `error`, `running`, and `progress`.
+The root `core-ui.css` remains only as a legacy migration reference. New work uses the canonical `src/` assets.
 
 ## Use
 
 ```html
 <link rel="stylesheet" href="/ui/src/base.css">
-<link rel="stylesheet" href="/ui/src/components.css">
+<link rel="stylesheet" href="/ui/src/mewa.css">
 <script src="/ui/src/components.js" defer></script>
 ```
 
-Copy the marked fragment from a catalog example. JavaScript is optional for static components and progressive enhancement for interactive ones. If markup is inserted dynamically, call:
+Static components do not require JavaScript. Interactive snippets use stable `data-ui-*` hooks and are enhanced automatically. For dynamically inserted markup:
 
 ```js
 MewaUI.enhance(container);
 ```
 
-Call `MewaUI.destroy(container)` before removing a long-lived enhanced subtree. Runtime events use the `mewa-ui:*` namespace.
+Before permanently removing an enhanced subtree:
 
-Lucide icons are served from the local sprite:
+```js
+MewaUI.destroy(container);
+```
+
+Custom events use the `mewa-ui:*` namespace. Lucide icons reference the local sprite:
 
 ```html
 <svg aria-hidden="true"><use href="/ui/src/lucide.svg#search"></use></svg>
 ```
 
-Add a symbol to `src/lucide.svg` before referencing a new icon. Decorative icons stay hidden from assistive technology; icon-only controls require an accessible name.
+Decorative icons stay hidden from assistive technology. Icon-only controls need an accessible name.
 
-Alert includes both inline status messages and the blocking confirmation variant. Buttons include bordered, filled, destructive, and borderless ghost variants. Autocomplete, Checkbox Group, Lightbox, Sortable List, Split Button, and Time Field include their keyboard and live-announcement behavior in the shared runtime.
+## Foundation
 
-## Serve the catalog
+The body scale is 12, 14, and 16 px. Headings use 16, 24, and 32 px. Line heights are 1.25 and 1.61; weights are 400 and 550; tracking is zero. Component spacing remains local instead of being hidden behind a semantic spacing taxonomy.
 
-The library expects to be mounted at `/ui`. One local option is:
+All six palettes use OKLCH: gray, alpha white, alpha black, red, amber, and green. The gray scale runs from the OKLCH equivalent of `#0a0a0a` through `#fafafa`; status scales use Vercel Geist's dark-theme values. Components consume generalized semantic roles rather than palette steps.
 
-```sh
-python3 -m http.server 8080 --directory /path/to/parent
-```
+`--ui-border-dashed` is the shared structural-divider treatment. Ghost buttons have no border or fill at rest. Alert owns inline status and blocking confirmation variants. Progress owns task progress and native meter measurements.
 
-Open `http://localhost:8080/ui/catalog/` when the repository directory is named `ui` under that parent. In a service deployment, mount this repository read-only at `/ui`; deployment configuration remains with the consuming service.
+## Catalog and layouts
 
-The catalog header links directly to the complete [vertical rail](layouts/vertical-rail.html) and [horizontal tabs](layouts/horizontal-tabs.html) layout previews.
+Mount the repository at `/ui`, then open `/ui/catalog/`. The catalog displays the selected component's name, description, and live preview without embedding source-code controls.
+
+Complete application previews:
+
+- [Vertical navbar](layouts/vertical-navbar.html)
+- [Horizontal navbar](layouts/horizontal-navbar.html)
 
 ## Validate
 
@@ -69,6 +75,6 @@ node tests/catalog-contract.test.js
 node tests/runtime-contract.test.js
 ```
 
-The optional Chromium suite uses `MEWA_UI_BASE_URL`, `MEWA_UI_BROWSER_URL`, and `MEWA_UI_SCREENSHOT_DIR`. Static checks do not replace browser, keyboard, zoom, or screen-reader review.
+`tests/browser-smoke.mjs` adds desktop/mobile geometry, focus, interaction, and visual-state checks when a Chromium debugging endpoint is available. Static checks do not replace keyboard, zoom, reduced-motion, forced-colors, or screen-reader review.
 
-See [AUDIT.md](AUDIT.md) for the coverage review and [DESIGN.md](DESIGN.md) for the contribution contract.
+See [AUDIT.md](AUDIT.md) for the implementation review and [DESIGN.md](DESIGN.md) for the contribution contract.

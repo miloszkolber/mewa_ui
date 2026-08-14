@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Horizontal navigation application template</title>
     <link rel="stylesheet" href="/ui/src/base.css">
-    <link rel="stylesheet" href="/ui/src/components.css">
+    <link rel="stylesheet" href="/ui/src/mewa.css">
     <script src="/ui/src/components.js" defer></script>
 </head>
-<body class="ui-shell ui-shell--top">
+<body class="ui-shell ui-shell--horizontal">
     <a class="ui-skip-link" href="#main-content">Skip to main content</a>
     <div class="ui-frame">
-        <header class="ui-topbar">
-            <a class="ui-topbar-brand" href="#overview" aria-label="Atlas home"><svg class="ui-brand-logo" aria-hidden="true"><use href="/ui/src/lucide.svg#layers-3"></use></svg><span>Atlas</span></a>
-            <nav class="ui-topnav" aria-label="Workspace navigation"><a href="#overview" aria-current="page">Overview</a><a href="#projects">Projects</a><a href="#activity">Activity</a><a href="#settings">Settings</a></nav>
-            <div class="ui-topbar-actions"><button class="ui-icon-button ui-button-ghost" type="button" aria-label="Search"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#search"></use></svg></button><a class="ui-avatar" href="#account" aria-label="Alex Morgan account">AM</a></div>
-        </header>
+        <nav class="ui-navbar ui-navbar--horizontal" data-ui-component="navbar-horizontal" aria-label="Workspace navigation">
+            <a class="ui-navbar-brand" href="#overview" aria-label="Atlas home"><svg class="ui-brand-logo" aria-hidden="true"><use href="/ui/src/lucide.svg#layers-3"></use></svg><span>Atlas</span></a>
+            <ul class="ui-navbar-list ui-scroll-fade-x"><li><a class="ui-navbar-link" href="#overview" aria-current="page">Overview</a></li><li><a class="ui-navbar-link" href="#projects">Projects</a></li><li><a class="ui-navbar-link" href="#activity">Activity</a></li><li><a class="ui-navbar-link" href="#settings">Settings</a></li></ul>
+            <div class="ui-navbar-actions"><button class="ui-icon-button ui-button-ghost" type="button" aria-label="Search"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#search"></use></svg></button><a class="ui-avatar" href="#account" aria-label="Alex Morgan account">AM</a></div>
+        </nav>
         <main class="ui-shell-main" id="main-content">
             <div class="ui-template-content">
                 <header class="ui-template-header"><div><p class="ui-eyebrow">Engineering workspace</p><h1 class="ui-page-heading">Overview</h1><p class="ui-description">Track current delivery health and the work that needs attention.</p></div><button class="ui-button ui-button-primary" type="button"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#plus"></use></svg>New project</button></header>

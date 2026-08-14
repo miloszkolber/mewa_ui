@@ -6,99 +6,133 @@
   font-display: swap;
 }
 
-/* foundation */
+/* mewa_ui foundation: palettes, semantic roles, typography, geometry, and browser primitives. */
 :root {
     color-scheme: dark;
-    --ui-mono-0: #050505;
-    --ui-mono-1: #0a0a0a;
-    --ui-mono-2: #111111;
-    --ui-mono-3: #1a1a1a;
-    --ui-mono-4: #292929;
-    --ui-mono-5: #626262;
-    --ui-mono-6: #858585;
-    --ui-mono-7: #a3a3a3;
-    --ui-mono-8: #e5e5e5;
-    --ui-mono-9: #fafafa;
-    --ui-red-0: #26070b;
-    --ui-red-1: #4c0b12;
-    --ui-red-2: #8f1220;
-    --ui-red-3: #c7192d;
-    --ui-red-4: #ed3548;
-    --ui-red-5: #ff9ba6;
-    --ui-yellow-0: #221a03;
-    --ui-yellow-1: #483704;
-    --ui-yellow-2: #80620a;
-    --ui-yellow-3: #c7960d;
-    --ui-yellow-4: #f1bd2b;
-    --ui-yellow-5: #ffe394;
-    --ui-green-0: #031d0e;
-    --ui-green-1: #063b1d;
-    --ui-green-2: #087333;
-    --ui-green-3: #0fac4b;
-    --ui-green-4: #28d66b;
-    --ui-green-5: #94efb5;
 
-    /* semantic */
-    --ui-canvas: var(--ui-mono-0);
-    --ui-surface: var(--ui-mono-1);
-    --ui-surface-raised: var(--ui-mono-2);
-    --ui-glass: color-mix(in srgb, var(--ui-mono-2) 88%, transparent);
-    --ui-muted: var(--ui-mono-3);
-    --ui-accent: var(--ui-mono-4);
-    --ui-accent-foreground: var(--ui-mono-9);
-    --ui-control-bg: var(--ui-mono-2);
-    --ui-control-bg-active: var(--ui-mono-3);
-    --ui-input: var(--ui-mono-5);
-    --ui-border-subtle: var(--ui-mono-3);
-    --ui-border-default: var(--ui-mono-5);
-    --ui-border-hover: var(--ui-mono-6);
-    --ui-text-primary: var(--ui-mono-8);
-    --ui-text-secondary: var(--ui-mono-7);
-    --ui-text-tertiary: var(--ui-mono-6);
-    --ui-text-disabled: var(--ui-mono-5);
-    --ui-text-inverse: var(--ui-mono-0);
-    --ui-focus-ring: var(--ui-mono-9);
-    --ui-ring: var(--ui-focus-ring);
-    --ui-danger: var(--ui-red-3);
-    --ui-danger-hover: var(--ui-red-4);
-    --ui-danger-muted: color-mix(in srgb, var(--ui-red-0) 72%, var(--ui-surface));
-    --ui-text-on-danger: var(--ui-mono-9);
-    --ui-warning: var(--ui-yellow-4);
-    --ui-warning-muted: color-mix(in srgb, var(--ui-yellow-0) 72%, var(--ui-surface));
-    --ui-success: var(--ui-green-3);
-    --ui-success-text: var(--ui-green-5);
-    --ui-success-muted: color-mix(in srgb, var(--ui-green-0) 72%, var(--ui-surface));
-    --ui-dialog-overlay: color-mix(in srgb, var(--ui-mono-0) 76%, transparent);
+    /* Geist-balanced neutral scale with project-specific endpoints. */
+    --ui-gray-000: oklch(14.4788% 0 0);
+    --ui-gray-100: oklch(21.7787% 0 0);
+    --ui-gray-200: oklch(23.9292% 0 0);
+    --ui-gray-300: oklch(28.094% 0 0);
+    --ui-gray-400: oklch(30.1184% 0 0);
+    --ui-gray-500: oklch(39.0421% 0 0);
+    --ui-gray-600: oklch(58.9712% 0 0);
+    --ui-gray-700: oklch(65.0041% 0 0);
+    --ui-gray-800: oklch(94.6105% 0 0);
+    --ui-gray-900: oklch(98.5104% 0 0);
 
-    /* typography */
+    /* Geist alpha scales adapted to the gray endpoints above. */
+    --ui-alpha-white-000: oklch(98.5104% 0 0 / 0.06);
+    --ui-alpha-white-100: oklch(98.5104% 0 0 / 0.09);
+    --ui-alpha-white-200: oklch(98.5104% 0 0 / 0.13);
+    --ui-alpha-white-300: oklch(98.5104% 0 0 / 0.14);
+    --ui-alpha-white-400: oklch(98.5104% 0 0 / 0.24);
+    --ui-alpha-white-500: oklch(98.5104% 0 0 / 0.51);
+    --ui-alpha-white-600: oklch(98.5104% 0 0 / 0.54);
+    --ui-alpha-white-700: oklch(98.5104% 0 0 / 0.47);
+    --ui-alpha-white-800: oklch(98.5104% 0 0 / 0.61);
+    --ui-alpha-white-900: oklch(98.5104% 0 0 / 0.92);
+    --ui-alpha-black-000: oklch(14.4788% 0 0 / 0.05);
+    --ui-alpha-black-100: oklch(14.4788% 0 0 / 0.08);
+    --ui-alpha-black-200: oklch(14.4788% 0 0 / 0.10);
+    --ui-alpha-black-300: oklch(14.4788% 0 0 / 0.08);
+    --ui-alpha-black-400: oklch(14.4788% 0 0 / 0.21);
+    --ui-alpha-black-500: oklch(14.4788% 0 0 / 0.34);
+    --ui-alpha-black-600: oklch(14.4788% 0 0 / 0.44);
+    --ui-alpha-black-700: oklch(14.4788% 0 0 / 0.51);
+    --ui-alpha-black-800: oklch(14.4788% 0 0 / 0.70);
+    --ui-alpha-black-900: oklch(14.4788% 0 0 / 0.91);
+
+    /* Vercel Geist red, amber, and green dark-theme scales. */
+    --ui-red-000: oklch(22.1% 0.0657 15.11);
+    --ui-red-100: oklch(25.93% 0.0834 19.02);
+    --ui-red-200: oklch(31.47% 0.1105 20.96);
+    --ui-red-300: oklch(35.27% 0.1273 21.23);
+    --ui-red-400: oklch(40.68% 0.1479 23.16);
+    --ui-red-500: oklch(62.56% 0.2277 23.03);
+    --ui-red-600: oklch(62.56% 0.2234 23.03);
+    --ui-red-700: oklch(58.01% 0.227 25.12);
+    --ui-red-800: oklch(69.96% 0.2136 22.03);
+    --ui-red-900: oklch(95.6% 0.0293 6.61);
+    --ui-amber-000: oklch(22.46% 0.0538 76.04);
+    --ui-amber-100: oklch(24.95% 0.0642 64.78);
+    --ui-amber-200: oklch(32.34% 0.0837 63.83);
+    --ui-amber-300: oklch(35.53% 0.0903 66.2971);
+    --ui-amber-400: oklch(41.55% 0.1044 67.98);
+    --ui-amber-500: oklch(75.04% 0.1737 74.49);
+    --ui-amber-600: oklch(81.87% 0.1969 76.46);
+    --ui-amber-700: oklch(77.21% 0.1991 64.28);
+    --ui-amber-800: oklch(77.21% 0.1991 64.28);
+    --ui-amber-900: oklch(96.7% 0.0418 84.59);
+    --ui-green-000: oklch(23.09% 0.0716 149.68);
+    --ui-green-100: oklch(27.12% 0.0895 150.09);
+    --ui-green-200: oklch(29.84% 0.096 149.25);
+    --ui-green-300: oklch(34.39% 0.1039 147.78);
+    --ui-green-400: oklch(44.19% 0.1484 147.2);
+    --ui-green-500: oklch(58.11% 0.1815 146.55);
+    --ui-green-600: oklch(64.58% 0.199 147.27);
+    --ui-green-700: oklch(57.81% 0.1776 147.5);
+    --ui-green-800: oklch(73.1% 0.2158 148.29);
+    --ui-green-900: oklch(96.76% 0.056 154.18);
+
+    /* General semantic roles. Components do not address palette steps directly. */
+    --ui-background: var(--ui-gray-000);
+    --ui-foreground: var(--ui-gray-800);
+    --ui-surface: var(--ui-gray-100);
+    --ui-surface-raised: var(--ui-gray-200);
+    --ui-surface-hover: var(--ui-gray-300);
+    --ui-surface-active: var(--ui-gray-400);
+    --ui-border-subtle: var(--ui-alpha-white-100);
+    --ui-border: var(--ui-alpha-white-400);
+    --ui-border-strong: var(--ui-gray-600);
+    --ui-muted-foreground: var(--ui-gray-700);
+    --ui-subtle-foreground: var(--ui-gray-600);
+    --ui-disabled-foreground: var(--ui-gray-500);
+    --ui-inverse-foreground: var(--ui-gray-000);
+    --ui-focus: var(--ui-gray-900);
+    --ui-mask-opaque: var(--ui-gray-000);
+    --ui-glass: color-mix(in oklch, var(--ui-gray-100) 86%, transparent);
+    --ui-overlay: var(--ui-alpha-black-800);
+    --ui-danger: var(--ui-red-700);
+    --ui-danger-strong: var(--ui-red-800);
+    --ui-danger-surface: color-mix(in oklch, var(--ui-red-000) 72%, var(--ui-surface));
+    --ui-on-danger: var(--ui-gray-900);
+    --ui-warning: var(--ui-amber-700);
+    --ui-warning-surface: color-mix(in oklch, var(--ui-amber-000) 72%, var(--ui-surface));
+    --ui-success: var(--ui-green-700);
+    --ui-success-strong: var(--ui-green-800);
+    --ui-success-surface: color-mix(in oklch, var(--ui-green-000) 72%, var(--ui-surface));
+
+    /* Typography. */
     --ui-font-mono: geist_mono, ui-monospace, monospace;
-    --ui-font-size-xs: 0.75rem;
-    --ui-font-size-sm: 0.875rem;
+    --ui-font-size-xsmall: 0.75rem;
+    --ui-font-size-small: 0.875rem;
     --ui-font-size-base: 1rem;
-    --ui-heading-sm: 1rem;
-    --ui-heading-md: 1.25rem;
-    --ui-heading-lg: 1.5rem;
-    --ui-heading-xl: 2rem;
-    --ui-line-height-tight: 1.2;
-    --ui-line-height-normal: 1.4;
-    --ui-line-height-relaxed: 1.6;
+    --ui-heading-base: 1rem;
+    --ui-heading-large: 1.5rem;
+    --ui-heading-xlarge: 2rem;
+    --ui-line-height-tight: 1.25;
+    --ui-line-height-regular: 1.61;
     --ui-font-weight-regular: 400;
     --ui-font-weight-medium: 550;
-    --ui-tracking-tight: -0.01em;
-    --ui-tracking-wide: 0.08em;
+    --ui-tracking: 0;
 
-    /* global geometry */
+    /* Global geometry. */
     --ui-border-width: 1px;
     --ui-focus-ring-width: 2px;
     --ui-control-height: 2.5rem;
     --ui-control-height-sm: 2rem;
     --ui-icon-button-size: 2.5rem;
-    --ui-icon-size-sm: 1rem;
-    --ui-icon-size-md: 1.125rem;
-    --ui-icon-stroke-width: 1.75;
-    --ui-checkbox-size: 1.125rem;
+    --ui-icon-size-small: 1rem;
+    --ui-icon-size-medium: 1.25rem;
+    --ui-icon-size-large: 1.5rem;
+    --ui-icon-stroke-width: 1.5;
+    --ui-checkbox-size: 1.25rem;
+    --ui-border-dashed: var(--ui-border-width) dashed var(--ui-border);
     --ui-status-dot-size: 0.5rem;
-    --ui-duration-fast: 160ms;
+    --ui-transition-duration: 160ms;
+    --ui-spinner-duration: 1.2s;
     --ui-duration-reduced: 0.01ms;
     --ui-ease-standard: ease;
     --ui-backdrop-blur: 1rem;
@@ -115,8 +149,8 @@
 
 html {
     min-inline-size: 0;
-    background: var(--ui-canvas);
-    color: var(--ui-text-primary);
+    background: var(--ui-background);
+    color: var(--ui-foreground);
     font-family: var(--ui-font-mono);
     text-rendering: optimizeLegibility;
 }
@@ -125,11 +159,11 @@ body {
     min-inline-size: 0;
     min-block-size: 100svh;
     margin: 0;
-    background: var(--ui-canvas);
-    color: var(--ui-text-primary);
-    font-size: var(--ui-font-size-sm);
+    background: var(--ui-background);
+    color: var(--ui-foreground);
+    font-size: var(--ui-font-size-small);
     font-weight: var(--ui-font-weight-regular);
-    line-height: var(--ui-line-height-relaxed);
+    line-height: var(--ui-line-height-regular);
     -webkit-font-smoothing: antialiased;
 }
 
@@ -151,13 +185,12 @@ h3,
 h4 {
     font-weight: var(--ui-font-weight-medium);
     line-height: var(--ui-line-height-tight);
-    letter-spacing: var(--ui-tracking-tight);
 }
 
-h1 { font-size: var(--ui-heading-xl); }
-h2 { font-size: var(--ui-heading-lg); }
-h3 { font-size: var(--ui-heading-md); }
-h4 { font-size: var(--ui-heading-sm); }
+h1 { font-size: var(--ui-heading-xlarge); }
+h2 { font-size: var(--ui-heading-large); }
+h3,
+h4 { font-size: var(--ui-heading-base); }
 
 strong,
 b {
@@ -187,7 +220,7 @@ button:disabled,
 }
 
 a {
-    color: var(--ui-text-primary);
+    color: var(--ui-foreground);
     text-underline-offset: 0.2em;
 }
 
@@ -202,8 +235,8 @@ svg {
 }
 
 svg:has(> use) {
-    inline-size: var(--ui-icon-size-md);
-    block-size: var(--ui-icon-size-md);
+    inline-size: var(--ui-icon-size-medium);
+    block-size: var(--ui-icon-size-medium);
     flex: 0 0 auto;
     fill: none;
     stroke: currentColor;
@@ -213,12 +246,12 @@ svg:has(> use) {
 }
 
 ::selection {
-    background: var(--ui-accent);
-    color: var(--ui-accent-foreground);
+    background: var(--ui-surface-active);
+    color: var(--ui-foreground);
 }
 
 :focus-visible {
-    outline: var(--ui-focus-ring-width) solid var(--ui-focus-ring);
+    outline: var(--ui-focus-ring-width) solid var(--ui-focus);
     outline-offset: var(--ui-focus-ring-width);
 }
 

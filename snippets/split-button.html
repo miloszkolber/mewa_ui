@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/ui/src/base.css"><link rel="stylesheet" href="/ui/src/components.css"><script src="/ui/src/components.js" defer></script><title>Split button</title></head><body class="ui-demo">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/ui/src/base.css"><link rel="stylesheet" href="/ui/src/mewa.css"><link rel="stylesheet" href="/ui/src/demo.css"><script src="/ui/src/components.js" defer></script><title>Split button</title></head><body class="ui-demo">
 <!-- mewa-ui-snippet:start -->
 <div class="ui-split-button" data-ui-component="split-button">
   <button class="ui-button ui-button-primary" type="button">Publish</button>
   <button class="ui-icon-button ui-button-primary" data-ui-part="trigger" type="button" aria-label="More publish options" aria-haspopup="menu" aria-expanded="false" aria-controls="split-button-menu"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#chevron-down"></use></svg></button>
-  <ul data-ui-part="content" id="split-button-menu" role="menu" hidden><li role="presentation"><button type="button" role="menuitem">Publish and notify</button></li><li role="presentation"><button type="button" role="menuitem">Schedule publication</button></li><li role="presentation"><button type="button" role="menuitem">Save as template</button></li></ul>
+  <ul data-ui-part="content" data-align="end" id="split-button-menu" role="menu" hidden><li role="presentation"><button type="button" role="menuitem">Publish and notify</button></li><li role="presentation"><button type="button" role="menuitem">Schedule publication</button></li><li role="presentation"><button type="button" role="menuitem">Save as template</button></li></ul>
 </div>
 <!-- mewa-ui-snippet:end -->
 </body></html>
