@@ -16,7 +16,7 @@ The portfolio and service interfaces that informed the visual direction remain s
 - `catalog/components.json` — machine-readable public inventory and behavior metadata.
 - `catalog/` — searchable, preview-only component reference.
 - `snippets/` — 70 complete documents with reusable fragments marked by stable comments.
-- `layouts/` — complete vertical- and horizontal-navbar application templates.
+- `layouts/` — five complete application compositions built from one vertical/horizontal shell contract.
 - `llms.txt` — concise machine-oriented integration guidance.
 
 The root `core-ui.css` remains only as a legacy migration reference. New work uses the canonical `src/` assets.
@@ -67,8 +67,11 @@ Mount the repository at `/ui`, then open `/ui/catalog/`. The catalog displays th
 
 Complete application previews:
 
-- [Vertical navbar](layouts/vertical-navbar.html)
-- [Horizontal navbar](layouts/horizontal-navbar.html)
+- [Vertical navigation](layouts/vertical-navbar.html)
+- [Vertical navigation with right utility rail](layouts/vertical-navbar-utility-end.html)
+- [Vertical navigation with left utility rail](layouts/vertical-navbar-utility-start.html)
+- [Collapsed vertical navigation](layouts/vertical-navbar-collapsed.html)
+- [Horizontal navigation](layouts/horizontal-navbar.html)
 
 ## Validate
 

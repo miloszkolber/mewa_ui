@@ -9,8 +9,11 @@
 - Local icons: `/ui/src/lucide.svg#SYMBOL_ID`
 - Public component inventory: `/ui/catalog/components.json`
 - Complete examples: `/ui/snippets/SLUG.html`
-- Vertical application template: `/ui/layouts/vertical-navbar.html`
-- Horizontal application template: `/ui/layouts/horizontal-navbar.html`
+- Expanded vertical application layout: `/ui/layouts/vertical-navbar.html`
+- Vertical layout with right utility rail: `/ui/layouts/vertical-navbar-utility-end.html`
+- Vertical layout with left utility rail: `/ui/layouts/vertical-navbar-utility-start.html`
+- Collapsed vertical application layout: `/ui/layouts/vertical-navbar-collapsed.html`
+- Horizontal application layout: `/ui/layouts/horizontal-navbar.html`
 - Catalog-only styles: `/ui/src/demo.css` (do not load in consuming applications)
 
 ## Integration contract

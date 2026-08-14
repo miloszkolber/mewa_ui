@@ -125,7 +125,7 @@ function checkMarkupContract(html, filename) {
 function checkCssContract(css, filename, { allowRawColors = false } = {}) {
     if (!allowRawColors) assert(!/(?:#[0-9a-f]{3,8}\b|\brgba?\(|\bhsla?\(|\b(?:white|black|red|green|blue|gray|grey)(?=[^a-z-]|$))/i.test(css), `${filename}: raw color is forbidden`);
     for (const match of css.matchAll(/([^{}]+)\{[^{}]*\bbackdrop-filter\s*:\s*blur\(/gi)) {
-        assert(/\.ui-(?:dialog|app-header|catalog-overlay|autocomplete|navbar--vertical)|\[data-ui-(?:popover-content|menu-content|dialog|alert-dialog|sheet|drawer|toast)\]|\[data-ui-component="(?:autocomplete|popover|dropdown-menu|tooltip|split-button|sheet|drawer|toast)"\]/.test(match[1]), `${filename}: backdrop blur only belongs on an approved overlapping-surface selector`);
+        assert(/\.ui-(?:dialog|app-header|shell-header|catalog-overlay|autocomplete|navbar--vertical)|\[data-ui-(?:popover-content|menu-content|dialog|alert-dialog|sheet|drawer|toast)\]|\[data-ui-component="(?:autocomplete|popover|dropdown-menu|tooltip|split-button|sheet|drawer|toast)"\]/.test(match[1]), `${filename}: backdrop blur only belongs on an approved overlapping-surface selector`);
     }
 }
 
@@ -304,8 +304,9 @@ test("catalog markup uses only canonical source assets", () => {
     assert.match(html, /id="component-search"/);
     assert.match(html, /<nav class="ui-catalog-layout-links"[^>]*aria-label="Catalog resources"/);
     assert.match(html, /href="#colors"[^>]*data-catalog-view="colors"/);
-    assert.match(html, /href="\/ui\/layouts\/vertical-navbar\.html"/);
-    assert.match(html, /href="\/ui\/layouts\/horizontal-navbar\.html"/);
+    ["vertical-navbar.html", "vertical-navbar-utility-end.html", "vertical-navbar-utility-start.html", "vertical-navbar-collapsed.html", "horizontal-navbar.html"].forEach((filename) => {
+        assert.match(html, new RegExp(`href="/ui/layouts/${filename.replace(".", "\\.")}"`), `catalog must link ${filename}`);
+    });
     assert.match(html, /id="palette-view"[^>]*hidden/);
     assert.match(html, /id="palette-scales"/);
     assert.match(html, /APCA values use the current 0\.0\.98G-4g algorithm as design guidance, not as a compliance claim/);
@@ -328,19 +329,24 @@ test("catalog layout keeps its two canonical layout regions", () => {
     ["gray", "red", "amber", "green", "alpha-white", "alpha-black"].forEach((prefix) => assert(script.includes(`prefix: "${prefix}"`), `catalog must render the ${prefix} palette`));
 });
 
-test("layout examples use the two canonical shell variants", () => {
-    const vertical = read(path.join(layoutsDir, "vertical-navbar.html"));
-    const horizontal = read(path.join(layoutsDir, "horizontal-navbar.html"));
-    [[vertical, "vertical-navbar.html"], [horizontal, "horizontal-navbar.html"]].forEach(([html, filename]) => {
+test("layout examples compose the canonical shell variants", () => {
+    const filenames = ["vertical-navbar.html", "vertical-navbar-utility-end.html", "vertical-navbar-utility-start.html", "vertical-navbar-collapsed.html", "horizontal-navbar.html"];
+    const layouts = new Map(filenames.map((filename) => [filename, read(path.join(layoutsDir, filename))]));
+    layouts.forEach((html, filename) => {
         checkMarkupContract(html, filename);
         assert.deepEqual(cssHrefsLoadedBy(html, filename), canonicalProductionStylesheets, `${filename} must load production stylesheets without demo.css`);
         assert.match(html, /<script\b[^>]*\bsrc="\/ui\/src\/components\.js"[^>]*>/i, `${filename} must load the canonical runtime`);
         assert(!html.includes("ui-framed-"), `${filename} must not use legacy framed classes`);
     });
-    assert.match(vertical, /<body class="ui-shell ui-shell--vertical">[\s\S]*<div class="ui-frame">[\s\S]*<nav class="ui-navbar ui-navbar--vertical"[^>]*>[\s\S]*<main class="ui-shell-main"/);
-    assert.match(horizontal, /<body class="ui-shell ui-shell--horizontal">[\s\S]*<div class="ui-frame">[\s\S]*<nav class="ui-navbar ui-navbar--horizontal"[^>]*>[\s\S]*<main class="ui-shell-main"/);
+    for (const filename of filenames.filter((name) => name.startsWith("vertical"))) {
+        assert.match(layouts.get(filename), /<body class="ui-shell ui-shell--vertical"[^>]*data-ui-shell[^>]*>[\s\S]*<div class="ui-frame">[\s\S]*<nav class="ui-navbar ui-navbar--vertical"[^>]*>[\s\S]*<div class="ui-shell-workspace">[\s\S]*<main class="ui-shell-main"/, `${filename} must use the vertical shell structure`);
+    }
+    assert.match(layouts.get("horizontal-navbar.html"), /<body class="ui-shell ui-shell--horizontal"[^>]*data-ui-shell[^>]*>[\s\S]*<div class="ui-frame">[\s\S]*<nav class="ui-navbar ui-navbar--horizontal"[^>]*>[\s\S]*<main class="ui-shell-main"/);
+    assert.match(layouts.get("vertical-navbar-utility-end.html"), /ui-shell-layout ui-shell-layout--utility-end[\s\S]*ui-shell-content[\s\S]*ui-shell-utility/);
+    assert.match(layouts.get("vertical-navbar-utility-start.html"), /ui-shell-layout ui-shell-layout--utility-start[\s\S]*ui-shell-utility[\s\S]*ui-shell-content/);
+    assert.match(layouts.get("vertical-navbar-collapsed.html"), /data-ui-nav-collapsed="true"[\s\S]*data-ui-collapsed="true"/);
     const cssClasses = classDefinitions(read(canonicalComponentCss));
-    ["ui-shell", "ui-shell--vertical", "ui-shell--horizontal", "ui-frame", "ui-navbar", "ui-navbar--vertical", "ui-navbar--horizontal", "ui-shell-main"].forEach((className) => {
+    ["ui-shell", "ui-shell--vertical", "ui-shell--horizontal", "ui-frame", "ui-navbar", "ui-navbar--vertical", "ui-navbar--horizontal", "ui-navbar-mark", "ui-navbar-collapse", "ui-shell-workspace", "ui-shell-header", "ui-shell-main", "ui-shell-layout", "ui-shell-layout--utility-end", "ui-shell-layout--utility-start", "ui-shell-content", "ui-shell-intro", "ui-shell-utility"].forEach((className) => {
         assert(cssClasses.has(className), `src/mewa.css must define layout class ${className}`);
     });
 });

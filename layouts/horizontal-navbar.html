@@ -3,24 +3,33 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Horizontal navigation application template</title>
+    <title>Horizontal navigation application layout</title>
     <link rel="stylesheet" href="/ui/src/base.css">
     <link rel="stylesheet" href="/ui/src/mewa.css">
     <script src="/ui/src/components.js" defer></script>
 </head>
-<body class="ui-shell ui-shell--horizontal">
+<body class="ui-shell ui-shell--horizontal" data-ui-shell>
     <a class="ui-skip-link" href="#main-content">Skip to main content</a>
     <div class="ui-frame">
         <nav class="ui-navbar ui-navbar--horizontal" data-ui-component="navbar-horizontal" aria-label="Workspace navigation">
-            <a class="ui-navbar-brand" href="#overview" aria-label="Atlas home"><svg class="ui-brand-logo" aria-hidden="true"><use href="/ui/src/lucide.svg#layers-3"></use></svg><span>Atlas</span></a>
-            <ul class="ui-navbar-list ui-scroll-fade-x"><li><a class="ui-navbar-link" href="#overview" aria-current="page">Overview</a></li><li><a class="ui-navbar-link" href="#projects">Projects</a></li><li><a class="ui-navbar-link" href="#activity">Activity</a></li><li><a class="ui-navbar-link" href="#settings">Settings</a></li></ul>
-            <div class="ui-navbar-actions"><button class="ui-icon-button ui-button-ghost" type="button" aria-label="Search"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#search"></use></svg></button><a class="ui-avatar" href="#account" aria-label="Alex Morgan account">AM</a></div>
+            <a class="ui-navbar-brand" href="#main-content" aria-label="Atlas home"><span class="ui-navbar-mark" aria-hidden="true">A</span><span class="ui-navbar-label">Atlas</span></a>
+            <ul class="ui-navbar-list ui-scroll-fade-x">
+                <li><a class="ui-navbar-link" href="#main-content" aria-current="page">Tab 1</a></li>
+                <li><a class="ui-navbar-link" href="#tab-2">Tab 2</a></li>
+                <li><a class="ui-navbar-link" href="#tab-3">Tab 3</a></li>
+                <li><a class="ui-navbar-link" href="#tab-4">Tab 4</a></li>
+            </ul>
+            <div class="ui-navbar-actions"><button class="ui-button ui-button-primary" type="button">Button</button></div>
         </nav>
-        <main class="ui-shell-main" id="main-content">
-            <div class="ui-template-content">
-                <header class="ui-template-header"><div><p class="ui-eyebrow">Engineering workspace</p><h1 class="ui-page-heading">Overview</h1><p class="ui-description">Track current delivery health and the work that needs attention.</p></div><button class="ui-button ui-button-primary" type="button"><svg aria-hidden="true"><use href="/ui/src/lucide.svg#plus"></use></svg>New project</button></header>
-                <dl class="ui-stat-grid"><div class="ui-stat-card"><dt>Active projects</dt><dd>12</dd><dd class="ui-meta-text" data-state="ok">+2 this month</dd></div><div class="ui-stat-card"><dt>Needs review</dt><dd>4</dd><dd class="ui-meta-text" data-state="warning">2 due today</dd></div><div class="ui-stat-card"><dt>Failed checks</dt><dd>1</dd><dd class="ui-meta-text" data-state="error">Atlas build</dd></div></dl>
-                <section class="ui-card"><header class="ui-card-header"><div><h2 class="ui-card-title">Projects</h2><p class="ui-card-description">Current state of the team’s active work.</p></div><button class="ui-button ui-button-ghost ui-button-small" type="button">Filter</button></header><div class="ui-card-content"><div class="ui-table-wrap"><table class="ui-table ui-table--responsive"><caption class="ui-sr-only">Active projects</caption><thead><tr><th scope="col">Project</th><th scope="col">Owner</th><th scope="col">Status</th><th scope="col">Updated</th></tr></thead><tbody><tr><th scope="row" data-label="Project">Atlas</th><td data-label="Owner">Alex Morgan</td><td data-label="Status"><span class="ui-badge" data-state="warning">Review</span></td><td data-label="Updated">18 min ago</td></tr><tr><th scope="row" data-label="Project">Beacon</th><td data-label="Owner">Marta Nowak</td><td data-label="Status"><span class="ui-badge" data-state="ok">Live</span></td><td data-label="Updated">1 hr ago</td></tr><tr><th scope="row" data-label="Project">Core</th><td data-label="Owner">Piotr Lis</td><td data-label="Status"><span class="ui-badge">Draft</span></td><td data-label="Updated">Yesterday</td></tr></tbody></table></div></div></section>
+        <main class="ui-shell-main" id="main-content" aria-labelledby="page-title">
+            <div class="ui-shell-layout">
+                <section class="ui-shell-content">
+                    <nav class="ui-shell-breadcrumb-bar" aria-label="Breadcrumb"><span aria-current="page">~ / Breadcrumb</span></nav>
+                    <header class="ui-shell-intro">
+                        <h1 class="ui-page-heading" id="page-title">Download GGUF files</h1>
+                        <p class="ui-description">Resolve repository artifacts and save model, MMProj, and MTP files into the local model library.</p>
+                    </header>
+                </section>
             </div>
         </main>
     </div>

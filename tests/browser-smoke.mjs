@@ -95,7 +95,7 @@ for (const viewport of viewports) {
     if (result.count !== manifest.length || result.overflow > 1) failures.push(`catalog ${viewport.name}: ${JSON.stringify(result)}`);
     if (!result.description || result.previewMain || result.hasSource) failures.push(`catalog ${viewport.name}: catalog must expose description and marked preview without HTML source controls`);
     if (viewport.width > 768 && Math.abs(result.sidebarLeft) > 1) failures.push(`catalog ${viewport.name}: component navigation is not pinned to the left edge`);
-    if (result.layoutLinks.join("|") !== "#colors|/ui/layouts/vertical-navbar.html|/ui/layouts/horizontal-navbar.html") failures.push(`catalog ${viewport.name}: catalog resource links are missing or incorrect`);
+    if (result.layoutLinks.join("|") !== "#colors|/ui/layouts/vertical-navbar.html|/ui/layouts/vertical-navbar-utility-end.html|/ui/layouts/vertical-navbar-utility-start.html|/ui/layouts/vertical-navbar-collapsed.html|/ui/layouts/horizontal-navbar.html") failures.push(`catalog ${viewport.name}: catalog resource links are missing or incorrect`);
     await page.click('[data-catalog-view="colors"]');
     await page.waitForFunction(() => !document.querySelector("#palette-view")?.hidden && document.querySelectorAll(".ui-catalog-palette").length === 6);
     const paletteResult = await page.evaluate(() => ({
@@ -107,27 +107,40 @@ for (const viewport of viewports) {
     if (paletteResult.sections !== 6 || !paletteResult.complete || !paletteResult.textMetrics || paletteResult.overflow > 1) failures.push(`catalog palettes ${viewport.name}: ${JSON.stringify(paletteResult)}`);
     await page.evaluate(() => { window.location.hash = "#accordion"; });
     await page.waitForFunction(() => document.querySelector("#component-title")?.textContent === "Accordion" && !document.querySelector("#component-preview-wrap")?.hidden);
-    for (const [name, href] of [["Vertical navbar", "/ui/layouts/vertical-navbar.html"], ["Horizontal navbar", "/ui/layouts/horizontal-navbar.html"]]) {
+    for (const [name, href] of [["Vertical", "/ui/layouts/vertical-navbar.html"], ["Utility right", "/ui/layouts/vertical-navbar-utility-end.html"], ["Utility left", "/ui/layouts/vertical-navbar-utility-start.html"], ["Collapsed", "/ui/layouts/vertical-navbar-collapsed.html"], ["Horizontal", "/ui/layouts/horizontal-navbar.html"]]) {
         const response = await page.evaluate(async (path) => ({ path, ok: (await fetch(path)).ok }), href);
         if (!response.ok) failures.push(`catalog ${viewport.name}: ${name} preview is unavailable (${response.path})`);
     }
 }
 
-for (const layout of ["vertical-navbar", "horizontal-navbar"]) {
+const layoutPreviews = [
+    { slug: "vertical-navbar", orientation: "vertical" },
+    { slug: "vertical-navbar-utility-end", orientation: "vertical", utility: "end" },
+    { slug: "vertical-navbar-utility-start", orientation: "vertical", utility: "start" },
+    { slug: "vertical-navbar-collapsed", orientation: "vertical", collapsed: true },
+    { slug: "horizontal-navbar", orientation: "horizontal" },
+];
+for (const layout of layoutPreviews) {
     for (const viewport of viewports) {
-        await load(`${base}/layouts/${layout}.html`, viewport);
-        assertCanonicalAssets(await canonicalAssets(), `${layout} ${viewport.name}`, { demo: false });
-        const result = await page.evaluate((name) => {
+        await load(`${base}/layouts/${layout.slug}.html`, viewport);
+        assertCanonicalAssets(await canonicalAssets(), `${layout.slug} ${viewport.name}`, { demo: false });
+        const result = await page.evaluate((orientation) => {
             const main = document.querySelector(".ui-shell-main")?.getBoundingClientRect();
-            const navigation = document.querySelector(name === "vertical-navbar" ? ".ui-navbar--vertical" : ".ui-navbar--horizontal")?.getBoundingClientRect();
+            const workspace = document.querySelector(".ui-shell-workspace")?.getBoundingClientRect();
+            const navigation = document.querySelector(orientation === "vertical" ? ".ui-navbar--vertical" : ".ui-navbar--horizontal")?.getBoundingClientRect();
             const heading = document.querySelector(".ui-page-heading")?.getBoundingClientRect();
-            const content = document.querySelector(".ui-stat-grid,.ui-template-grid,.ui-card")?.getBoundingClientRect();
-            return { main, navigation, heading, content, overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth };
-        }, layout);
-        if (!result.main || !result.navigation || !result.heading || !result.content || result.heading.height < 1 || result.content.height < 1 || result.overflow > 1) failures.push(`${layout} ${viewport.name}: ${JSON.stringify(result)}`);
-        if (layout === "vertical-navbar" && viewport.width > 768 && result.navigation.right > result.main.left + 1) failures.push(`${layout} ${viewport.name}: vertical navigation does not precede main`);
-        if (layout === "vertical-navbar" && viewport.width <= 768 && result.navigation.bottom > result.main.top + 1) failures.push(`${layout} ${viewport.name}: compact vertical navigation does not precede main`);
-        if (layout === "horizontal-navbar" && result.navigation.bottom > result.main.top + 1) failures.push(`${layout} ${viewport.name}: horizontal navigation does not precede main`);
+            const content = document.querySelector(".ui-shell-content")?.getBoundingClientRect();
+            const utility = document.querySelector(".ui-shell-utility")?.getBoundingClientRect();
+            return { main, workspace, navigation, heading, content, utility, collapsed: document.querySelector("[data-ui-navbar-vertical]")?.dataset.uiCollapsed, overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth };
+        }, layout.orientation);
+        if (!result.main || !result.navigation || !result.heading || !result.content || result.heading.height < 1 || result.content.height < 1 || result.overflow > 1) failures.push(`${layout.slug} ${viewport.name}: ${JSON.stringify(result)}`);
+        if (layout.orientation === "vertical" && viewport.width > 768 && (!result.workspace || result.navigation.right > result.workspace.left + 1)) failures.push(`${layout.slug} ${viewport.name}: vertical navigation does not precede workspace`);
+        if (layout.orientation === "vertical" && viewport.width <= 768 && (!result.workspace || result.navigation.bottom > result.workspace.top + 1)) failures.push(`${layout.slug} ${viewport.name}: compact vertical navigation does not precede workspace`);
+        if (layout.orientation === "horizontal" && result.navigation.bottom > result.main.top + 1) failures.push(`${layout.slug} ${viewport.name}: horizontal navigation does not precede main`);
+        if (layout.utility && !result.utility) failures.push(`${layout.slug} ${viewport.name}: utility rail is missing`);
+        if (layout.utility === "end" && viewport.width > 1024 && result.content.right > result.utility.left + 1) failures.push(`${layout.slug} ${viewport.name}: right utility rail is not after content`);
+        if (layout.utility === "start" && viewport.width > 1024 && result.utility.right > result.content.left + 1) failures.push(`${layout.slug} ${viewport.name}: left utility rail is not before content`);
+        if (layout.collapsed && viewport.width > 768 && (Math.abs(result.navigation.width - 64) > 2 || result.collapsed !== "true")) failures.push(`${layout.slug} ${viewport.name}: collapsed navigation geometry or state is incorrect`);
     }
 }
 

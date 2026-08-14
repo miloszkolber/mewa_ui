@@ -56,10 +56,11 @@ Lucide is the primary icon source. Symbols live in `src/lucide.svg`, inherit `cu
 
 ## Layouts
 
-- `.ui-shell.ui-shell--vertical` contains `.ui-frame`, `.ui-navbar--vertical`, and `.ui-shell-main`. At narrow widths the navbar becomes a compact header with a blurred overlapping panel.
-- `.ui-shell.ui-shell--horizontal` contains `.ui-frame`, `.ui-navbar--horizontal`, and `.ui-shell-main`. Route links scroll inside the bar with horizontal scroll-fade treatment.
+- `.ui-shell.ui-shell--vertical` uses a 15rem navigation column and `.ui-shell-workspace`; the navigation can collapse to a 4rem icon rail. At narrow widths it becomes a compact header with a blurred overlapping panel.
+- `.ui-shell.ui-shell--horizontal` places identity, scrollable routes, and actions in the shared 4rem header geometry.
+- `.ui-shell-layout` owns the content region. `--utility-start` and `--utility-end` add a 22.5rem controls rail without changing page-header or intro spacing; the rail stacks after content when space becomes constrained.
 
-Both layout documents are complete application templates with identity, navigation, account/actions, page hierarchy, status content, and responsive behavior.
+Five complete layout documents cover expanded vertical, left-utility, right-utility, collapsed vertical, and horizontal navigation compositions. All use the same dashed frame, header, breadcrumb, intro, action, and responsive behavior.
 
 The visual references in [`core/docker/meili_ui`](https://github.com/miloszkolber/core/tree/master/docker/meili_ui), [`core/docker/hf_ui`](https://github.com/miloszkolber/core/tree/master/docker/hf_ui), and [`core/docker/moonlight_ui`](https://github.com/miloszkolber/core/tree/master/docker/moonlight_ui) remain separate applications. Their compact tool clusters, framed workspaces, stable form alignment, operational rows, and early single-column breakpoints inform balance without being copied into this repository.
 
