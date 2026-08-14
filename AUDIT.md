@@ -6,8 +6,8 @@ Audit baseline: 2026-08-14. The portfolio and `core/docker` interfaces are visua
 
 - Rebuilt the foundation around six theme-specific 11-step role palettes and generalized semantic roles. All palette values and color interpolation use OKLCH; the ramps are deliberately not reversible theme generators.
 - Assigned `050`–`100` to surfaces, `200`–`300` to hover and active backgrounds, `400` to subtle borders, `500`–`700` to borders and decoration, and `800`–`950` to muted through primary text.
-- Rebuilt all opaque palettes on the same `L 17.7`–`94.5` OKLCH lightness curve. Gray defines the APCA baseline against `050`: `500`–`900` target `Lc 15`, `30`, `45`, `60`, and `75`, while `950` reaches approximately `Lc 95`.
-- Fixed red, amber, and green at hues `17`, `75`, and `145`, then shaped separate sRGB-safe chroma curves from the supplied references instead of forcing one chroma value across unrelated hues.
+- Rebuilt all opaque palettes on the same `L 17.7`–`91.9351` OKLCH lightness curve. Gray defines the APCA baseline against `050`: `500`–`950` target `Lc 15`, `30`, `45`, `60`, `75`, and `90`.
+- Fixed red, amber, and green at hues `17`, `75`, and `145`, then harmonized them around one reference-informed chroma envelope with only the hue-specific reductions required to remain inside sRGB.
 - Simplified the catalog palette view to role labels, raw token swatches, absolute lightness or opacity, signed APCA Lc against `050`, and an explicit non-compliance disclaimer. Relative and surface-minimum reporting were removed.
 - Adopted Geist and the established size, line-height, weight, icon, control, border, focus, and checkbox tokens.
 - Removed text-spacing additions, the relaxed line-height scale, shadows, rounded component geometry, and decorative blur.

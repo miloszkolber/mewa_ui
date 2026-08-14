@@ -394,7 +394,7 @@ test("canonical stylesheet responsibilities are enforced", () => {
     assert(!/--ui-(?:gray|alpha-white|alpha-black|red|amber|green)-000\b/.test(baseCss), "obsolete 000 palette steps must not return");
     assert.match(baseCss, /--ui-gray-050:\s*oklch\(17\.7000% 0 0\)/, "gray 050 must start the shared lightness curve at L 17.7");
     assert.match(baseCss, /--ui-gray-100:\s*oklch\(20\.6000% 0 0\)/, "gray 100 must preserve a close surface step");
-    assert.match(baseCss, /--ui-gray-950:\s*oklch\(94\.5000% 0 0\)/, "gray 950 must end the shared lightness curve at L 94.5");
+    assert.match(baseCss, /--ui-gray-950:\s*oklch\(91\.9351% 0 0\)/, "gray 950 must end the shared lightness curve at L 91.9351");
 
     const opaquePrefixes = ["gray", "red", "amber", "green"];
     const opaquePalettes = Object.fromEntries(opaquePrefixes.map((prefix) => [prefix, parseOklchPalette(baseCss, prefix)]));
@@ -425,20 +425,25 @@ test("canonical stylesheet responsibilities are enforced", () => {
         assert(Math.abs(actual - target) <= 0.1, `gray-${step} must define the shared Lc ${target} baseline against gray-050`);
     });
     const grayEndpoint = Math.abs(apcaContrast(gray.get("950"), gray.get("050")));
-    assert(Math.abs(grayEndpoint - 95.4) <= 0.2, "gray-950 must reach approximately Lc 95.4 against gray-050");
+    assert(Math.abs(grayEndpoint - 90) <= 0.1, "gray-950 must reach Lc 90 against gray-050");
 
+    const sharedChromaEnvelope = { "050": 0.045, "100": 0.052, "200": 0.06, "300": 0.07, "400": 0.082, "500": 0.12, "600": 0.155, "700": 0.16, "800": 0.145, "900": 0.105, "950": 0.04 };
     const statusProfiles = {
-        red: { hue: 17, chroma: { "050": 0.049, "100": 0.057, "200": 0.067, "300": 0.078, "400": 0.092, "500": 0.135, "600": 0.175, "700": 0.168, "800": 0.135, "900": 0.082, "950": 0.026 } },
-        amber: { hue: 75, chroma: { "050": 0.035, "100": 0.041, "200": 0.048, "300": 0.056, "400": 0.066, "500": 0.089, "600": 0.114, "700": 0.135, "800": 0.153, "900": 0.128, "950": 0.042 } },
-        green: { hue: 145, chroma: { "050": 0.048, "100": 0.056, "200": 0.066, "300": 0.076, "400": 0.09, "500": 0.135, "600": 0.176, "700": 0.169, "800": 0.153, "900": 0.114, "950": 0.051 } }
+        red: { hue: 17, chroma: { "050": 0.045, "100": 0.052, "200": 0.06, "300": 0.07, "400": 0.082, "500": 0.12, "600": 0.155, "700": 0.16, "800": 0.135, "900": 0.082, "950": 0.04 } },
+        amber: { hue: 75, chroma: { "050": 0.035, "100": 0.041, "200": 0.048, "300": 0.056, "400": 0.066, "500": 0.089, "600": 0.114, "700": 0.135, "800": 0.145, "900": 0.105, "950": 0.04 } },
+        green: { hue: 145, chroma: { "050": 0.045, "100": 0.052, "200": 0.06, "300": 0.07, "400": 0.082, "500": 0.12, "600": 0.155, "700": 0.16, "800": 0.145, "900": 0.105, "950": 0.04 } }
     };
     Object.entries(statusProfiles).forEach(([prefix, profile]) => {
         const palette = opaquePalettes[prefix];
         paletteSteps.forEach((step) => {
             assert.equal(palette.get(step).lightness, gray.get(step).lightness, `${prefix}-${step} must share gray-${step}'s absolute OKLCH lightness`);
-            assert.equal(palette.get(step).chroma, profile.chroma[step], `${prefix}-${step} must follow its reference-shaped chroma curve`);
+            assert.equal(palette.get(step).chroma, profile.chroma[step], `${prefix}-${step} must follow its harmonized chroma profile`);
+            assert(palette.get(step).chroma <= sharedChromaEnvelope[step], `${prefix}-${step} must not exceed the shared chroma envelope`);
             assert.equal(palette.get(step).hue, profile.hue, `${prefix}-${step} must keep the fixed ${profile.hue} hue`);
         });
+    });
+    paletteSteps.forEach((step) => {
+        assert(Object.keys(statusProfiles).some((prefix) => opaquePalettes[prefix].get(step).chroma === sharedChromaEnvelope[step]), `${step}: at least one status family must realize the shared chroma target`);
     });
 
     const alphaWhite = parseOklchPalette(baseCss, "alpha-white");
