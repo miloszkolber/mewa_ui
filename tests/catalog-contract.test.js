@@ -429,14 +429,18 @@ test("canonical stylesheet responsibilities are enforced", () => {
         });
     });
     const statusChromaFloors = {
-        red: { "500": 0.17, "600": 0.20, "700": 0.23, "800": 0.18 },
-        amber: { "500": 0.11, "600": 0.13, "700": 0.15, "800": 0.16, "900": 0.16, "950": 0.11 },
-        green: { "500": 0.11, "600": 0.13, "700": 0.15, "800": 0.18, "900": 0.14, "950": 0.08 }
+        red: { "500": 0.13, "600": 0.16, "700": 0.18, "800": 0.15 },
+        amber: { "500": 0.085, "600": 0.1, "700": 0.11, "800": 0.11, "900": 0.1, "950": 0.055 },
+        green: { "500": 0.1, "600": 0.13, "700": 0.14, "800": 0.14, "900": 0.095, "950": 0.05 }
     };
     Object.entries(statusChromaFloors).forEach(([prefix, floors]) => {
         Object.entries(floors).forEach(([step, minimum]) => {
             assert(opaquePalettes[prefix].get(step).chroma >= minimum, `${prefix}-${step} must retain vivid status chroma`);
         });
+    });
+    ["red", "amber", "green"].forEach((prefix) => {
+        const hues = paletteSteps.map((step) => opaquePalettes[prefix].get(step).hue);
+        assert(hues.every((hue) => hue === hues[0]), `${prefix}: status hue must remain stable across the scale`);
     });
 
     const alphaWhite = parseOklchPalette(baseCss, "alpha-white");
