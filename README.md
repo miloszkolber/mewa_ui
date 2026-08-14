@@ -1,8 +1,8 @@
 # mewa_ui
 
-`mewa_ui` is a standalone component library for personal services: semantic HTML, vanilla CSS, optional JavaScript, and a local Lucide SVG sprite. It has no framework, Tailwind, package-install, or build-step dependency.
+`mewa_ui` is a standalone component library for personal services: semantic HTML, vanilla CSS, optional JavaScript, and a local Lucide SVG sprite. Production use has no framework, Tailwind, package-install, or build-step dependency. The repository has a dev-only package contract for repeatable browser testing.
 
-The visual contract is monochrome, square, border-led, and shadow-free. Red, amber, and green communicate state. Blur is reserved for surfaces that overlap content. Geist is the primary interface family through the `geist` token, with a generic sans-serif fallback.
+The visual contract is monochrome, square, border-led, and shadow-free. Red, amber, and green communicate state. Blur is reserved for surfaces that overlap content. Geist is the primary interface family through `--ui-font`; technical output and keyboard notation use Geist Mono through `--ui-font-mono`.
 
 The portfolio and service interfaces that informed the visual direction remain separate projects. They are references, not dependencies, and are never modified as part of this library.
 
@@ -18,6 +18,7 @@ The portfolio and service interfaces that informed the visual direction remain s
 - `snippets/` — 71 complete documents with reusable fragments marked by stable comments.
 - `layouts/` — six complete application compositions built from one vertical/horizontal shell contract.
 - `llms.txt` — concise machine-oriented integration guidance.
+- `MIGRATION.md` — verified migration boundary for the existing `hf_ui`, `moonlight_ui`, and `meili_ui` consumers.
 
 The root `core-ui.css` remains only as a legacy migration reference. New work uses the canonical `src/` assets.
 
@@ -29,7 +30,7 @@ The root `core-ui.css` remains only as a legacy migration reference. New work us
 <script src="/ui/src/components.js" defer></script>
 ```
 
-Static components do not require JavaScript. Interactive snippets use stable `data-ui-*` hooks and are enhanced automatically. For dynamically inserted markup:
+Read the component's `requiresJs` value in `catalog/components.json`; interaction alone does not imply a runtime dependency because native controls remain native. Snippets that require the runtime use stable `data-ui-*` hooks and are enhanced automatically. For dynamically inserted markup:
 
 ```js
 MewaUI.enhance(container);
@@ -51,7 +52,7 @@ Decorative icons stay hidden from assistive technology. Icon-only controls need 
 
 ## Foundation
 
-The body scale is 12, 14, and 16 px. Headings use 16, 24, and 32 px. Line heights are 1.25 and 1.61; weights are 400 and 550; tracking is zero. Component spacing remains local instead of being hidden behind a semantic spacing taxonomy.
+The body scale is 12, 14, and 16 px. Headings use 16, 24, and 32 px. Line heights are 1.25 and 1.61; weights are 400 and 550; tracking is zero. Component spacing remains local instead of being hidden behind a semantic spacing taxonomy. `geist.woff2` and `geistmono.woff2` are local production assets.
 
 All six palettes use the same theme-specific 11-step `050`–`950` role map: gray, alpha white, alpha black, red, amber, and green. Steps `050`–`100` are surfaces, `200`–`300` are hover and active backgrounds, `400` is the subtle-border step, and `500`–`950` form an APCA contrast ladder. This is deliberately not a reversible dark-to-light ramp.
 
@@ -78,13 +79,13 @@ Description List owns compact metadata, Item owns operational status rows, and S
 
 ## Validate
 
-Run from the repository root:
+Install the locked dev-only browser driver, then run from the repository root:
 
 ```sh
-node tests/catalog-contract.test.js
-node tests/runtime-contract.test.js
+pnpm install --ignore-scripts
+pnpm test
 ```
 
-`tests/browser-smoke.mjs` adds desktop/mobile geometry, focus, interaction, and visual-state checks when a Chromium debugging endpoint is available. Static checks do not replace keyboard, zoom, reduced-motion, forced-colors, or screen-reader review.
+`pnpm test:browser` adds catalog, six-layout, all-71-component desktop/mobile geometry, focus, interaction, and visual-state checks when the documented local server and Chromium debugging endpoints are available. Static checks do not replace keyboard, zoom, reduced-motion, forced-colors, or screen-reader review.
 
-See [AUDIT.md](AUDIT.md) for the implementation review and [DESIGN.md](DESIGN.md) for the contribution contract.
+See [AUDIT.md](AUDIT.md) for the implementation review, [DESIGN.md](DESIGN.md) for the contribution contract, and [MIGRATION.md](MIGRATION.md) for the staged service transition.

@@ -34,6 +34,7 @@
         detail: document.querySelector(".ui-catalog-detail"),
         title: document.querySelector("#component-title"),
         description: document.querySelector("#component-description"),
+        meta: document.querySelector("#component-meta"),
         preview: document.querySelector("#component-preview"),
         previewWrap: document.querySelector("#component-preview-wrap"),
         paletteLink: document.querySelector("[data-catalog-view=\"colors\"]"),
@@ -258,6 +259,8 @@
         elements.previewWrap.hidden = false;
         elements.title.textContent = component.name;
         elements.description.textContent = component.description;
+        elements.meta.textContent = `${component.group} · ${component.requiresJs ? "components.js required" : "CSS and native HTML"}`;
+        elements.meta.hidden = false;
         elements.preview.srcdoc = "";
         elements.preview.title = `${component.name} preview`;
         if (window.location.hash !== `#${component.slug}`) window.history.replaceState(null, "", `#${component.slug}`);
@@ -271,6 +274,7 @@
         selectedSlug = "colors";
         elements.title.textContent = "Color palettes";
         elements.description.textContent = "Theme-specific OKLCH scales organized by interface role and measured with APCA.";
+        elements.meta.hidden = true;
         elements.preview.srcdoc = "";
         elements.previewWrap.hidden = true;
         elements.paletteView.hidden = false;
@@ -305,6 +309,7 @@
             elements.detail.setAttribute("aria-busy", "false");
             elements.title.textContent = "Catalog unavailable";
             elements.description.textContent = error.message;
+            elements.meta.hidden = true;
         }
     }
 
