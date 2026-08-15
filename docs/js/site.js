@@ -21,6 +21,9 @@
   // from ../src/icons/{name}.svg (relative to the page at docs/).
   var iconCache = {};
 
+  // Cache of fetched component skills, keyed by href (see initSpecModal).
+  var specCache = {};
+
   function initLocalIcons() {
     document.querySelectorAll('[data-lucide]:not([data-icon-loaded])').forEach(function (el) {
       var name = el.getAttribute('data-lucide');
@@ -135,19 +138,24 @@
       var href = link.getAttribute('data-spec-href');
       title.textContent = href.split('/').pop();
 
-      var embedded = document.getElementById('spec-md-content');
-      if (embedded) {
-        renderSpec(embedded.textContent, body);
-        specDialog.showModal();
-        return;
-      }
-
+      /* Always fetch the live skill file so md edits show up
+         automatically. A cache keyed by href avoids refetching;
+         failures are cached as null so they are not retried on
+         every click. No embedded copy exists to drift. */
       body.innerHTML = '<p class="text-muted-foreground text-sm">Loading…</p>';
       specDialog.showModal();
+      if (specCache[href] !== undefined) {
+        if (specCache[href]) renderSpec(specCache[href], body);
+        return;
+      }
       fetch(href)
-        .then(function (r) { return r.text(); })
-        .then(function (md) { renderSpec(md, body); })
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.status);
+          return r.text();
+        })
+        .then(function (md) { specCache[href] = md; renderSpec(md, body); })
         .catch(function () {
+          specCache[href] = null;
           body.innerHTML = '<p class="text-muted-foreground text-sm">Failed to load component skill.</p>';
         });
     });

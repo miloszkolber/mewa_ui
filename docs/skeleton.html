@@ -238,40 +238,5 @@
   <script type="module" src="../components/carousel/carousel.js"></script>
   <script type="module" src="../components/slider/slider.js"></script>
   <script type="module" src="../components/sortable/sortable.js"></script>
-    <script type="text/plain" id="spec-md-content"># Skeleton
-
-## Native basis
-
-CSS `@keyframes` pulse animation on placeholder `<div>` elements. No JavaScript required.
-
-## Native Web APIs
-
-- [`@keyframes`](https://developer.mozilla.org/en-US/docs/Web/CSS/@keyframes) — CSS pulse animation for shimmer effect
-
-## Structure
-
-```html
-<!-- Basic skeleton line -->
-<div class="skeleton" style="height: var(--size-04); width: 12rem"></div>
-
-<!-- Skeleton with rounded shape (avatar placeholder) -->
-<div class="skeleton skeleton-round" style="width: var(--size-08); height: var(--size-08)"></div>
-
-<!-- Composition: card skeleton -->
-<div style="display: flex; align-items: center; gap: var(--space-04)">
-  <div class="skeleton skeleton-round" style="width: var(--size-08); height: var(--size-08)"></div>
-  <div style="display: flex; flex-direction: column; gap: var(--space-02); flex: 1">
-    <div class="skeleton" style="height: 0.875rem; width: 60%"></div>
-    <div class="skeleton" style="height: 0.875rem; width: 40%"></div>
-  </div>
-</div>
-```
-
-## Accessibility
-
-- Skeleton elements are decorative — screen readers should skip them
-- Use `aria-hidden="true"` on skeleton containers if they sit alongside real content
-- Announce the loading state separately with `role="status"` if needed
-</script>
 </body>
 </html>
