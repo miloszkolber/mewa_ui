@@ -1,11 +1,7 @@
-/* -- Layout component --------------------------------------- */
-/* Intrinsic layout primitives: container, stack, grid,        */
-/* sidebar, center, split. Pure CSS — no JavaScript or ARIA.   */
-/* All gaps default to the --space-* scale; override with      */
-/* --gap or the data-gap attribute.                            */
+/* -- Layout component ---------------------------------------- */
 
 @layer components {
-  /* -- Gap scale ------------------------------------------- */
+  /* -- Gap scale --------------------------------------------- */
   :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split) {
     --gap: var(--space-04);
   }
@@ -17,8 +13,7 @@
   :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap="lg"]   { --gap: var(--space-06); }
   :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap="xl"]   { --gap: var(--space-08); }
 
-  /* -- Container -------------------------------------------- */
-  /* Constrains content to --container-max and centers it.    */
+  /* -- Container --------------------------------------------- */
   .layout-container {
     width: min(100% - var(--space-08), var(--container-max, 64rem));
     margin-inline: auto;
@@ -26,7 +21,6 @@
   }
 
   /* -- Stack ------------------------------------------------ */
-  /* Vertical rhythm; children separated by --gap.            */
   .layout-stack {
     display: flex;
     flex-direction: column;
@@ -34,8 +28,6 @@
   }
 
   /* -- Grid ------------------------------------------------- */
-  /* Intrinsically responsive grid; columns break to new rows */
-  /* when they reach --min.                                   */
   .layout-grid {
     display: grid;
     gap: var(--gap);
@@ -43,9 +35,6 @@
   }
 
   /* -- Sidebar ---------------------------------------------- */
-  /* App-shell split. Content takes 50%+ of the space; when   */
-  /* the container narrows past the sidebar + content minimum */
-  /* the content wraps below the sidebar (no media queries).  */
   .layout-sidebar {
     display: flex;
     flex-wrap: wrap;
@@ -64,16 +53,12 @@
   }
 
   /* -- Center ----------------------------------------------- */
-  /* Centers children on both axes. Set an explicit size on   */
-  /* the element (e.g. min-block-size) for it to be visible.  */
   .layout-center {
     display: grid;
     place-content: center;
   }
 
   /* -- Split ------------------------------------------------ */
-  /* Two (or more) groups pushed to opposite ends, wrapping    */
-  /* when space runs out.                                     */
   .layout-split {
     display: flex;
     flex-wrap: wrap;

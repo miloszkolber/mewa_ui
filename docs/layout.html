@@ -319,14 +319,10 @@
           <h2 style="font-family:var(--font-display);font-size:1.5rem;font-weight:400;letter-spacing:-0.025em;margin:0 0 0.375rem;">CSS <a href="../components/layout/layout.css" target="_blank" style="font-size:0.75rem;font-weight:400;color:var(--muted-foreground);text-decoration:underline;text-underline-offset:3px;margin-left:0.5rem;">view file</a></h2>
           <div style="position:relative;margin-top:0.5rem;">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
-            <pre><code class="language-scss">/* -- Layout component --------------------------------------- */
-/* Intrinsic layout primitives: container, stack, grid,        */
-/* sidebar, center, split. Pure CSS — no JavaScript or ARIA.   */
-/* All gaps default to the --space-* scale; override with      */
-/* --gap or the data-gap attribute.                            */
+            <pre><code class="language-scss">/* -- Layout component ---------------------------------------- */
 
 @layer components {
-  /* -- Gap scale ------------------------------------------- */
+  /* -- Gap scale --------------------------------------------- */
   :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split) {
     --gap: var(--space-04);
   }
@@ -338,8 +334,7 @@
   :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap=&quot;lg&quot;]   { --gap: var(--space-06); }
   :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap=&quot;xl&quot;]   { --gap: var(--space-08); }
 
-  /* -- Container -------------------------------------------- */
-  /* Constrains content to --container-max and centers it.    */
+  /* -- Container --------------------------------------------- */
   .layout-container {
     width: min(100% - var(--space-08), var(--container-max, 64rem));
     margin-inline: auto;
@@ -347,7 +342,6 @@
   }
 
   /* -- Stack ------------------------------------------------ */
-  /* Vertical rhythm; children separated by --gap.            */
   .layout-stack {
     display: flex;
     flex-direction: column;
@@ -355,8 +349,6 @@
   }
 
   /* -- Grid ------------------------------------------------- */
-  /* Intrinsically responsive grid; columns break to new rows */
-  /* when they reach --min.                                   */
   .layout-grid {
     display: grid;
     gap: var(--gap);
@@ -364,9 +356,6 @@
   }
 
   /* -- Sidebar ---------------------------------------------- */
-  /* App-shell split. Content takes 50%+ of the space; when   */
-  /* the container narrows past the sidebar + content minimum */
-  /* the content wraps below the sidebar (no media queries).  */
   .layout-sidebar {
     display: flex;
     flex-wrap: wrap;
@@ -385,16 +374,12 @@
   }
 
   /* -- Center ----------------------------------------------- */
-  /* Centers children on both axes. Set an explicit size on   */
-  /* the element (e.g. min-block-size) for it to be visible.  */
   .layout-center {
     display: grid;
     place-content: center;
   }
 
   /* -- Split ------------------------------------------------ */
-  /* Two (or more) groups pushed to opposite ends, wrapping    */
-  /* when space runs out.                                     */
   .layout-split {
     display: flex;
     flex-wrap: wrap;
