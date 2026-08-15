@@ -1,0 +1,84 @@
+/* -- Layout component --------------------------------------- */
+/* Intrinsic layout primitives: container, stack, grid,        */
+/* sidebar, center, split. Pure CSS — no JavaScript or ARIA.   */
+/* All gaps default to the --space-* scale; override with      */
+/* --gap or the data-gap attribute.                            */
+
+@layer components {
+  /* -- Gap scale ------------------------------------------- */
+  :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split) {
+    --gap: var(--space-04);
+  }
+
+  :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap="none"] { --gap: 0; }
+  :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap="xs"]   { --gap: var(--space-02); }
+  :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap="sm"]   { --gap: var(--space-03); }
+  :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap="md"]   { --gap: var(--space-04); }
+  :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap="lg"]   { --gap: var(--space-06); }
+  :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap="xl"]   { --gap: var(--space-08); }
+
+  /* -- Container -------------------------------------------- */
+  /* Constrains content to --container-max and centers it.    */
+  .layout-container {
+    width: min(100% - var(--space-08), var(--container-max, 64rem));
+    margin-inline: auto;
+    padding-inline: var(--space-04);
+  }
+
+  /* -- Stack ------------------------------------------------ */
+  /* Vertical rhythm; children separated by --gap.            */
+  .layout-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+  }
+
+  /* -- Grid ------------------------------------------------- */
+  /* Intrinsically responsive grid; columns break to new rows */
+  /* when they reach --min.                                   */
+  .layout-grid {
+    display: grid;
+    gap: var(--gap);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min, 15rem)), 1fr));
+  }
+
+  /* -- Sidebar ---------------------------------------------- */
+  /* App-shell split. Content takes 50%+ of the space; when   */
+  /* the container narrows past the sidebar + content minimum */
+  /* the content wraps below the sidebar (no media queries).  */
+  .layout-sidebar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap);
+
+    & > :first-child {
+      flex-basis: var(--sidebar-width, 14rem);
+      flex-grow: 1;
+    }
+
+    & > :last-child {
+      flex-basis: 0;
+      flex-grow: 999;
+      min-inline-size: 50%;
+    }
+  }
+
+  /* -- Center ----------------------------------------------- */
+  /* Centers children on both axes. Set an explicit size on   */
+  /* the element (e.g. min-block-size) for it to be visible.  */
+  .layout-center {
+    display: grid;
+    place-content: center;
+  }
+
+  /* -- Split ------------------------------------------------ */
+  /* Two (or more) groups pushed to opposite ends, wrapping    */
+  /* when space runs out.                                     */
+  .layout-split {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap);
+  }
+}

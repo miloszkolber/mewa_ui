@@ -47,6 +47,7 @@
   var NAV = [
     { heading: 'Primitives', items: [
       { label: 'Typography', href: 'typography.html' },
+      { label: 'Layout', href: 'layout.html' },
       { label: 'Separator', href: 'separator.html' },
       { label: 'Icon', href: 'icon.html' },
     ]},
@@ -120,7 +121,7 @@
 
   /* Pages that have been built (have a real doc page) */
   var BUILT = new Set([
-    'typography.html', 'separator.html', 'icon.html', 'label.html',
+    'typography.html', 'layout.html', 'separator.html', 'icon.html', 'label.html',
     'button.html', 'toggle.html', 'toggle-group.html', 'button-group.html', 'toolbar.html',
     'input.html', 'textarea.html', 'checkbox.html', 'radio.html', 'switch.html',
     'slider.html', 'select.html', 'number-input.html', 'file-input.html',
