@@ -1,0 +1,53 @@
+/* -- Button Group component ------------------------------------- */
+
+@layer components {
+  .btn-group {
+    display: inline-flex;
+    align-items: stretch;
+
+    /* Collapse borders between adjacent buttons */
+    & > .btn + .btn {
+      margin-inline-start: -1px;
+    }
+
+    /* Ensure hovered/focused button stacks above its neighbors */
+    & > .btn:hover,
+    & > .btn:focus-visible {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* -- Separator ------------------------------------------- */
+    & > [role="separator"] {
+      width: 1px;
+      align-self: stretch;
+      background: var(--border);
+      border: 0;
+      margin: 0;
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    /* -- Vertical orientation -------------------------------- */
+    &[data-orientation="vertical"] {
+      flex-direction: column;
+      align-items: stretch;
+
+      & > .btn + .btn {
+        margin-inline-start: 0;
+        margin-top: -1px;
+      }
+
+      & > [role="separator"] {
+        width: auto;
+        height: 1px;
+      }
+    }
+  }
+
+  @media (forced-colors: active) {
+    .btn-group > [role="separator"] {
+      background: ButtonText;
+    }
+  }
+}

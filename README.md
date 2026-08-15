@@ -1,5 +1,13 @@
 # mewa_ui
 
+## Current state
+
+The repository is transitioning to a new foundation. `base/` is a fork of [shadcn-html](https://github.com/codylindley/shadcn-html) (MIT, upstream commit `0964e09e`), stripped of radii, shadows, and serif fonts to match the square, border-led, shadow-free contract. It is the base that agents extend to build consistent interfaces. See [base/README.md](base/README.md) for provenance, the strip log, and the roadmap.
+
+The hand-rolled mewa_ui assets below remain untouched as the porting source: adapted components move into `base/components/` later, only where they do not duplicate the base.
+
+## Legacy reference (mewa_ui)
+
 `mewa_ui` is a standalone component library for personal services: semantic HTML, vanilla CSS, optional JavaScript, and a local Lucide SVG sprite. Production use has no framework, Tailwind, package-install, or build-step dependency. The repository has a dev-only package contract for repeatable browser testing.
 
 The visual contract is monochrome, square, border-led, and shadow-free. Red, amber, and green communicate state. Blur is reserved for surfaces that overlap content. Geist is the primary interface family through `--ui-font`; technical output and keyboard notation use Geist Mono through `--ui-font-mono`.
