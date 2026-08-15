@@ -87,24 +87,21 @@
 
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
-        <div class="flex items-baseline justify-between mb-1">
-          <p class="text-sm text-muted-foreground" style="font-family: var(--font-mono)">mewa_ui / checkbox</p>
-        </div>
-        <h1 style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 400; letter-spacing: -0.035em; margin: 0 0 var(--space-03)">Checkbox</h1>
+        <h1>Checkbox</h1>
         <p class="text-muted-foreground leading-relaxed mb-6">
           A control that toggles between checked and unchecked. Built on native <code>&lt;input type="checkbox"&gt;</code> with CSS-only checkmark.
         </p>
         <!-- Component skill -->
         <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
-          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: 0.8125rem; font-weight: 600; font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
+          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
             Component skill — <span data-spec-href="../components/checkbox/checkbox.md" style="text-decoration: underline; text-underline-offset: 3px">components/checkbox/checkbox.md</span>
           </summary>
-          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: 1.85">
-            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Native basis</p>
+          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: var(--font-height)">
+            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Native basis</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)"><code>&lt;input type=&quot;checkbox&quot;&gt;</code> element styled with CSS <code>appearance: none</code>.</p>
 
-            <p style="margin: 0 0 0.625rem; font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Web Platform APIs</p>
+            <p style="margin: 0 0 0.625rem; font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Web Platform APIs</p>
             <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox" target="_blank" rel="noopener" title="native toggle control with built-in keyboard and form support" class="api-pill"><code>&lt;input type=&quot;checkbox&quot;&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:checked" target="_blank" rel="noopener" title="matches checked state" class="api-pill"><code>:checked</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
@@ -113,12 +110,12 @@
               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid" target="_blank" rel="noopener" title="post-interaction validation styling" class="api-pill"><code>:user-invalid</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
             </div>
 
-            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Classes</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Classes</p>
             <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <code>.checkbox</code>
             </div>
 
-            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Accessibility</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Accessibility</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• The native <code>&lt;input type=&quot;checkbox&quot;&gt;</code> provides all keyboard and screen reader support.</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Use <code>&lt;label&gt;</code> with <code>for</code> to associate the label text.</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Use <code>&lt;fieldset&gt;</code> + <code>&lt;legend&gt;</code> for checkbox groups.</p>
@@ -126,7 +123,7 @@
             <p class="text-muted-foreground" style="margin: 0 0 0">• Use <code>indeterminate</code> property via JS for the indeterminate (mixed) state.</p>
 
 
-            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Notes</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Notes</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Styled with <code>appearance: none</code> and a custom checkmark via <code>::after</code> pseudo-element.</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• The checkmark uses a CSS-only approach — no SVG or icon font needed.</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Indeterminate state is set via JavaScript: <code>checkbox.indeterminate = true;</code>.</p>
@@ -157,7 +154,7 @@
           <div class="checkbox-item-block">
             <input class="checkbox" type="checkbox" id="d-notify" style="margin-top: 0.125rem">
             <div>
-              <label for="d-notify" style="font-size: var(--font-body-small); font-weight: 500">Enable notifications</label>
+              <label for="d-notify" style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">Enable notifications</label>
               <p class="field-description">You can enable or disable notifications at any time.</p>
             </div>
           </div>
@@ -255,7 +252,7 @@
         <p class="text-xs text-muted-foreground mb-3">Multiple checkboxes in a group using <code>&lt;fieldset&gt;</code> and <code>&lt;legend&gt;</code>.</p>
         <div class="preview">
           <fieldset style="border: none; padding: 0; margin: 0">
-            <legend style="font-size: var(--font-body-small); font-weight: 500; margin-bottom: var(--space-01)">Select items to display on the desktop:</legend>
+            <legend style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong); margin-bottom: var(--space-01)">Select items to display on the desktop:</legend>
             <p class="field-description" style="margin-bottom: var(--space-03)">Choose which items are visible.</p>
             <div style="display: flex; flex-direction: column; gap: var(--space-02)">
               <div class="checkbox-item">
@@ -299,7 +296,7 @@
 
         <!-- -- CSS --------------------------------------- -->
         <section style="margin-top: var(--space-09)" id="source-css">
-          <h2 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; letter-spacing: -0.025em; margin: 0 0 0.375rem">CSS <a href="../components/checkbox/checkbox.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: 400; color: var(--muted-foreground); text-decoration: underline; text-underline-offset: 3px; margin-left: var(--space-02)">view file</a></h2>
+          <h2>CSS <a href="../components/checkbox/checkbox.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: var(--font-weight); color: var(--muted-foreground); text-decoration: underline; text-underline-offset: var(--border-width-02); margin-left: var(--space-02)">view file</a></h2>
           <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-scss">/* -- Checkbox component ----------------------------------------- */

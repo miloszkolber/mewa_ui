@@ -17,37 +17,37 @@
 .ml-auto        { margin-left: auto; }
 
 /* Gap scale (1 = 0.25rem) */
-.gap-1 { gap: 0.25rem; }
-.gap-2 { gap: 0.5rem; }
-.gap-3 { gap: 0.75rem; }
-.gap-4 { gap: 1rem; }
-.gap-6 { gap: 1.5rem; }
-.gap-8 { gap: 2rem; }
+.gap-1 { gap: var(--space-01); }
+.gap-2 { gap: var(--space-02); }
+.gap-3 { gap: var(--space-03); }
+.gap-4 { gap: var(--space-04); }
+.gap-6 { gap: var(--space-06); }
+.gap-8 { gap: var(--space-07); }
 
 /* Margin bottom */
-.mb-1  { margin-bottom: 0.25rem; }
-.mb-2  { margin-bottom: 0.5rem; }
-.mb-3  { margin-bottom: 0.75rem; }
-.mb-4  { margin-bottom: 1rem; }
-.mb-5  { margin-bottom: 1.25rem; }
-.mb-6  { margin-bottom: 1.5rem; }
-.mb-8  { margin-bottom: 2rem; }
-.mb-10 { margin-bottom: 2.5rem; }
-.mb-12 { margin-bottom: 3rem; }
+.mb-1  { margin-bottom: var(--space-01); }
+.mb-2  { margin-bottom: var(--space-02); }
+.mb-3  { margin-bottom: var(--space-03); }
+.mb-4  { margin-bottom: var(--space-04); }
+.mb-5  { margin-bottom: var(--space-05); }
+.mb-6  { margin-bottom: var(--space-06); }
+.mb-8  { margin-bottom: var(--space-07); }
+.mb-10 { margin-bottom: var(--space-08); }
+.mb-12 { margin-bottom: var(--space-09); }
 
 /* Margin top */
-.mt-2 { margin-top: 0.5rem; }
-.mt-6 { margin-top: 1.5rem; }
-.mt-8 { margin-top: 2rem; }
+.mt-2 { margin-top: var(--space-02); }
+.mt-6 { margin-top: var(--space-06); }
+.mt-8 { margin-top: var(--space-07); }
 
 /* Typography */
-.text-sm               { font-size: 0.875rem; line-height: 1.25rem; }
-.text-xs               { font-size: 0.75rem;  line-height: 1rem; }
-.text-lg               { font-size: 1.125rem; line-height: 1.75rem; }
+.text-sm               { font-size: var(--font-body-small); line-height: var(--font-height); }
+.text-xs               { font-size: var(--font-body-xsmall); line-height: var(--font-height); }
+.text-lg               { font-size: var(--font-h3); line-height: var(--font-height); }
 .text-muted-foreground { color: var(--muted-foreground); }
 .text-destructive      { color: var(--destructive); }
-.font-medium           { font-weight: 500; }
-.leading-relaxed       { line-height: 1.625; }
+.font-medium           { font-weight: var(--font-weight-strong); }
+.leading-relaxed       { line-height: var(--font-height); }
 
 /* Accessibility */
 .sr-only {

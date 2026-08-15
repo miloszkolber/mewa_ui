@@ -87,31 +87,28 @@
 
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
-        <div class="flex items-baseline justify-between mb-1">
-          <p class="text-sm text-muted-foreground" style="font-family: var(--font-mono)">mewa_ui / toast</p>
-        </div>
-        <h1 style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 400; letter-spacing: -0.035em; margin: 0 0 var(--space-03)">Toast</h1>
+        <h1>Toast</h1>
         <p class="text-muted-foreground leading-relaxed mb-6">
           Transient notification using <code>popover="manual"</code>. Imperative <code>toast.show()</code> API
           with auto-dismiss, stacking, destructive variant, and action buttons.
         </p>
         <!-- Component skill -->
         <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
-          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: 0.8125rem; font-weight: 600; font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
+          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
             Component skill — <span data-spec-href="../components/toast/toast.md" style="text-decoration: underline; text-underline-offset: 3px">components/toast/toast.md</span>
           </summary>
-          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: 1.85">
-            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Native basis</p>
+          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: var(--font-height)">
+            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Native basis</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)"><code>popover</code> API for top-layer rendering and non-modal behavior.</p>
 
-            <p style="margin: 0 0 0.625rem; font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Web Platform APIs</p>
+            <p style="margin: 0 0 0.625rem; font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Web Platform APIs</p>
             <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <a href="https://developer.mozilla.org/en-US/docs/Web/API/Popover_API" target="_blank" rel="noopener" title="top-layer rendering without light-dismiss for persistent notifications" class="api-pill"><code>Popover API (popover=&quot;manual&quot;)</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-live" target="_blank" rel="noopener" title="announces toast content changes to screen readers" class="api-pill"><code>aria-live regions</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
             </div>
 
-            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Classes</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Classes</p>
             <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <code>.toast-container</code>
               <code>.toast</code>
@@ -124,7 +121,7 @@
               <code>.toast-actions</code>
             </div>
 
-            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Variants (data-variant)</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Variants (data-variant)</p>
             <div style="display: grid; grid-template-columns: auto 1fr; gap: var(--space-01) var(--space-04); margin-bottom: var(--space-05)">
               <code>destructive</code><span class="text-muted-foreground">Alternate background styling</span>
               <code>success</code><span class="text-muted-foreground">Color variation</span>
@@ -132,17 +129,17 @@
               <code>info</code><span class="text-muted-foreground">Color variation</span>
             </div>
 
-            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Data attributes</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Data attributes</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>data-position</code> — values: <code>bottom-right</code>, <code>bottom-left</code>, <code>top-right</code>, <code>top-left</code>, <code>top-center</code>, <code>bottom-center</code></p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>data-toast-close</code></p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">• <code>data-toast-action</code></p>
 
-            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Wiring conventions</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Wiring conventions</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>data-toast-close</code> on any element inside — closes the component</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">• <code>data-toast-action</code> identifies an interactive action element</p>
 
 
-            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Notes</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Notes</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• The toast container should be a direct child of <code>&lt;body&gt;</code></p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Toasts use <code>popover=&quot;manual&quot;</code> so they don't auto-dismiss on outside click</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• The stacking order is newest on top (CSS <code>flex-direction: column-reverse</code> for bottom positions)</p>
@@ -294,7 +291,7 @@ toast.show({
           </div>
         <!-- -- CSS --------------------------------------- -->
         <section style="margin-top: var(--space-09)" id="source-css">
-          <h2 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; letter-spacing: -0.025em; margin: 0 0 0.375rem">CSS <a href="../components/toast/toast.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: 400; color: var(--muted-foreground); text-decoration: underline; text-underline-offset: 3px; margin-left: var(--space-02)">view file</a></h2>
+          <h2>CSS <a href="../components/toast/toast.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: var(--font-weight); color: var(--muted-foreground); text-decoration: underline; text-underline-offset: var(--border-width-02); margin-left: var(--space-02)">view file</a></h2>
           <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-scss">/* -- Toast component ------------------------------------------- */
@@ -440,7 +437,7 @@ toast.show({
 
         <!-- -- JavaScript -------------------------------- -->
         <section style="margin-top: var(--space-09)" id="source-js">
-          <h2 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; letter-spacing: -0.025em; margin: 0 0 0.375rem">JavaScript <a href="../components/toast/toast.js" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: 400; color: var(--muted-foreground); text-decoration: underline; text-underline-offset: 3px; margin-left: var(--space-02)">view file</a></h2>
+          <h2>JavaScript <a href="../components/toast/toast.js" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: var(--font-weight); color: var(--muted-foreground); text-decoration: underline; text-underline-offset: var(--border-width-02); margin-left: var(--space-02)">view file</a></h2>
           <p class="text-muted-foreground text-sm mb-4">Imperative <code>toast.show()</code> API with auto-dismiss, stacking (max 3 visible), variant icons, and action buttons. Container is auto-created if not present in the DOM.</p>
           <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn">

@@ -1,17 +1,5 @@
 /* -- Documentation site overrides -------------------------- */
-/* Custom fonts and styles specific to the docs site.        */
-/* These override the system's generic font stacks.          */
-
-/* -- Self-hosted fonts (no external requests) -------------- */
-/* Only the fonts in src/ are used: Geist and Geist Mono (variable, 400-550). */
-@font-face { font-family: 'Geist'; font-weight: 400 550; font-style: normal; font-display: swap; src: url('../../src/geist.woff2') format('woff2'); }
-@font-face { font-family: 'Geist Mono'; font-weight: 400 550; font-style: normal; font-display: swap; src: url('../../src/geistmono.woff2') format('woff2'); }
-
-:root {
-  --font-sans:               'Geist', sans-serif;
-  --font-mono:               'Geist Mono', monospace;
-  --font-display:            'Geist', sans-serif;
-}
+/* Doc-site-only styles. Fonts come from src/base.css (Geist). */
 
 /* -- Scrollbar --------------------------------------------- */
 ::-webkit-scrollbar { width: 5px; height: 5px; }

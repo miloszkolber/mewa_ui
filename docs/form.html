@@ -87,24 +87,21 @@
 
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
-        <div class="flex items-baseline justify-between mb-1">
-          <p class="text-sm text-muted-foreground" style="font-family: var(--font-mono)">mewa_ui / form</p>
-        </div>
-        <h1 style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 400; letter-spacing: -0.035em; margin: 0 0 var(--space-03)">Form</h1>
+        <h1>Form</h1>
         <p class="text-muted-foreground leading-relaxed mb-6">
           Consistent field layout for forms. Built on native <code>&lt;form&gt;</code> with <code>.form-field</code> spacing, <code>.form-field-inline</code> for checkbox/switch rows, <code>.form-field-row</code> for notification-style items, and <code>.form-fieldset</code> for grouped fields.
         </p>
         <!-- Component skill -->
         <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
-          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: 0.8125rem; font-weight: 600; font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
+          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
             Component skill — <span data-spec-href="../components/form/form.md" style="text-decoration: underline; text-underline-offset: 3px">components/form/form.md</span>
           </summary>
-          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: 1.85">
-            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Native basis</p>
+          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: var(--font-height)">
+            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Native basis</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)"><code>&lt;form&gt;</code> element with consistent field layout using Label, Input, and description/error helpers. Composes with all form control components.</p>
 
-            <p style="margin: 0 0 0.625rem; font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Web Platform APIs</p>
+            <p style="margin: 0 0 0.625rem; font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Web Platform APIs</p>
             <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form" target="_blank" rel="noopener" title="native form with submission, validation, and reset" class="api-pill"><code>&lt;form&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset" target="_blank" rel="noopener" title="groups related fields" class="api-pill"><code>&lt;fieldset&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
@@ -114,7 +111,7 @@
               <a href="https://developer.mozilla.org/en-US/docs/Web/API/FormData" target="_blank" rel="noopener" title="native form serialization" class="api-pill"><code>FormData</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
             </div>
 
-            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Classes</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Classes</p>
             <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <code>.form</code>
               <code>.form-field</code>
@@ -125,14 +122,14 @@
               <code>.form-group</code>
             </div>
 
-            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Data attributes</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Data attributes</p>
             <div style="display: grid; grid-template-columns: auto 1fr; gap: var(--space-01) var(--space-04); margin-bottom: var(--space-05)">
               <code>data-orientation="horizontal"</code><span class="text-muted-foreground">On <code>.form-field</code> — places label beside control</span>
               <code>data-invalid</code><span class="text-muted-foreground">On <code>.form-field</code> — marks field as invalid, description turns destructive</span>
               <code>data-disabled</code><span class="text-muted-foreground">On <code>.form-field-row</code> — reduces row opacity</span>
             </div>
 
-            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Notes</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Notes</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>.form-field</code> provides consistent vertical spacing between fields.</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>.form-field-inline</code> aligns checkbox/switch/radio horizontally with their label.</p>
             <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>.form-field-row</code> creates a card-like row for notification-style switch items.</p>
@@ -518,7 +515,7 @@
 
         <!-- -- CSS --------------------------------------- -->
         <section style="margin-top: var(--space-09)" id="source-css">
-          <h2 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; letter-spacing: -0.025em; margin: 0 0 0.375rem">CSS <a href="../components/form/form.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: 400; color: var(--muted-foreground); text-decoration: underline; text-underline-offset: 3px; margin-left: var(--space-02)">view file</a></h2>
+          <h2>CSS <a href="../components/form/form.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: var(--font-weight); color: var(--muted-foreground); text-decoration: underline; text-underline-offset: var(--border-width-02); margin-left: var(--space-02)">view file</a></h2>
           <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-scss">/* -- Form component --------------------------------------------- */

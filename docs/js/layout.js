@@ -389,12 +389,8 @@
           navigating = false;
         };
 
-        /* Use View Transitions API if available */
-        if (document.startViewTransition) {
-          document.startViewTransition(swap);
-        } else {
-          swap();
-        }
+        /* Instant page swap — no transition */
+        swap();
       })
       .catch(function () {
         location.href = href;
