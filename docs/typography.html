@@ -159,7 +159,7 @@
 
         <!-- Headings -->
         <p class="text-sm font-medium mb-2 mt-6">Headings</p>
-        <p class="text-xs text-muted-foreground mb-3">Four heading levels — h1 is extrabold, h2 includes a bottom border, h3 and h4 are semibold.</p>
+        <p class="text-xs text-muted-foreground mb-3">Four heading levels — sized from the --font-h1..h4 tokens, h2 includes a bottom border.</p>
         <div class="preview" style="text-align:left;padding:2.5rem;">
           <div style="max-width:32rem;margin:0 auto;display:flex;flex-direction:column;gap:1.5rem;">
             <h1 class="h1">h1 — Taxing Laughter</h1>
@@ -356,18 +356,18 @@
   /* -- Headings ---------------------------------------------- */
   .h1 {
     scroll-margin-top: var(--space-12);
-    font-size: 2.25rem;
-    font-weight: 800;
+    font-size: var(--font-h1);
+    font-weight: var(--font-weight-strong);
     letter-spacing: -0.025em;
-    line-height: 1.15;
+    line-height: var(--font-height-tight);
     text-wrap: balance;
     color: var(--foreground);
   }
 
   .h2 {
     scroll-margin-top: var(--space-12);
-    font-size: 1.875rem;
-    font-weight: 600;
+    font-size: var(--font-h2);
+    font-weight: var(--font-weight-strong);
     letter-spacing: -0.02em;
     line-height: var(--font-height-tight);
     text-wrap: balance;
@@ -380,19 +380,19 @@
 
   .h3 {
     scroll-margin-top: var(--space-12);
-    font-size: 1.5rem;
-    font-weight: 600;
+    font-size: var(--font-h3);
+    font-weight: var(--font-weight-strong);
     letter-spacing: -0.01em;
-    line-height: 1.3;
+    line-height: var(--font-height-tight);
     text-wrap: balance;
     color: var(--foreground);
   }
 
   .h4 {
     scroll-margin-top: var(--space-12);
-    font-size: 1.25rem;
-    font-weight: 600;
-    line-height: 1.4;
+    font-size: var(--font-h4);
+    font-weight: var(--font-weight-strong);
+    line-height: var(--font-height-tight);
     text-wrap: balance;
     color: var(--foreground);
   }
@@ -601,10 +601,10 @@ Pure CSS — no JavaScript or ARIA required.
 
 | Class | Element | Description |
 |---|---|---|
-| `.h1` | `<h1>` or any | 2.25rem extrabold heading, tight tracking, balanced wrapping |
-| `.h2` | `<h2>` or any | 1.875rem semibold heading with bottom border |
-| `.h3` | `<h3>` or any | 1.5rem semibold heading |
-| `.h4` | `<h4>` or any | 1.25rem semibold heading |
+| `.h1` | `<h1>` or any | 2.25rem semibold heading (--font-h1), tight line-height, balanced wrapping |
+| `.h2` | `<h2>` or any | 1.75rem semibold heading (--font-h2) with bottom border |
+| `.h3` | `<h3>` or any | 1.25rem semibold heading (--font-h3) |
+| `.h4` | `<h4>` or any | 1rem semibold heading (--font-h4) |
 | `.p` | `<p>` | Body text, 1.75 line-height, auto-spacing between siblings |
 | `.lead` | `<p>` | 1.25rem muted intro paragraph |
 | `.large` | `<div>` or any | 1.125rem semibold text |

@@ -73,10 +73,10 @@ Pure CSS — no JavaScript or ARIA required.
 
 | Class | Element | Description |
 |---|---|---|
-| `.h1` | `<h1>` or any | 2.25rem extrabold heading, tight tracking, balanced wrapping |
-| `.h2` | `<h2>` or any | 1.875rem semibold heading with bottom border |
-| `.h3` | `<h3>` or any | 1.5rem semibold heading |
-| `.h4` | `<h4>` or any | 1.25rem semibold heading |
+| `.h1` | `<h1>` or any | 2.25rem semibold heading (--font-h1), tight line-height, balanced wrapping |
+| `.h2` | `<h2>` or any | 1.75rem semibold heading (--font-h2) with bottom border |
+| `.h3` | `<h3>` or any | 1.25rem semibold heading (--font-h3) |
+| `.h4` | `<h4>` or any | 1rem semibold heading (--font-h4) |
 | `.p` | `<p>` | Body text, 1.75 line-height, auto-spacing between siblings |
 | `.lead` | `<p>` | 1.25rem muted intro paragraph |
 | `.large` | `<div>` or any | 1.125rem semibold text |
