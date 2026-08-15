@@ -351,6 +351,14 @@
           /* Swap main content */
           oldMain.innerHTML = newMain.innerHTML;
 
+          /* Sync body-level component dialogs — the wiring convention
+             places them as direct children of <body>, so the innerHTML
+             swap above does not cover them. Keep the persistent spec
+             modal, replace the previous page's dialogs, and let the
+             component modules' MutationObservers wire the new ones. */
+          document.querySelectorAll('body > dialog:not(.spec-modal)').forEach(function (d) { d.remove(); });
+          doc.querySelectorAll('body > dialog:not(.spec-modal)').forEach(function (d) { document.body.appendChild(d); });
+
           /* Update document title */
           document.title = doc.title;
 
