@@ -36,7 +36,7 @@
         </summary>
         <nav class="sidebar-nav">
           <a class="sidebar-link" href="#" aria-current="page">
-            <i data-lucide="home"></i> <span>Dashboard</span>
+            <i data-lucide="house"></i> <span>Dashboard</span>
           </a>
           <a class="sidebar-link" href="#">
             <i data-lucide="inbox"></i> <span>Inbox</span>
@@ -134,7 +134,7 @@
   <nav class="sidebar-nav">
     <span class="sidebar-section-title">Main</span>
     <a class="sidebar-link" data-active="true" href="#">
-      <i data-lucide="home"></i> Dashboard
+      <i data-lucide="house"></i> Dashboard
     </a>
     <a class="sidebar-link" href="#">
       <i data-lucide="settings"></i> Settings

@@ -18,7 +18,7 @@
 
   // -- Local icons ------------------------------------------
   // Replaces <i data-lucide="name"> with the matching inline SVG
-  // from ../../src/icons/{name}.svg (relative to the page at docs/).
+  // from ../src/icons/{name}.svg (relative to the page at docs/).
   var iconCache = {};
 
   function initLocalIcons() {
@@ -38,11 +38,19 @@
         }
         el.replaceWith(svg);
       };
-      if (iconCache[name]) { apply(iconCache[name]); return; }
+      /* Known-missing icons (null) are skipped so failed fetches
+         are not repeated on every SPA navigation. */
+      if (iconCache[name] !== undefined) {
+        if (iconCache[name]) apply(iconCache[name]);
+        return;
+      }
       fetch('../src/icons/' + name + '.svg')
-        .then(function (r) { return r.text(); })
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.status);
+          return r.text();
+        })
         .then(function (text) { iconCache[name] = text; apply(text); })
-        .catch(function () { /* icon missing — leave the placeholder */ });
+        .catch(function () { iconCache[name] = null; });
     });
   }
 

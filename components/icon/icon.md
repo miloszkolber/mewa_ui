@@ -60,7 +60,7 @@ Copy the file contents where the icon is used. Attributes on the `<i>` (`data-si
 
 ### With accessible label (aria-label)
 ```html
-<i data-lucide="alert-triangle" aria-label="Warning" role="img"></i>
+<i data-lucide="triangle-alert" aria-label="Warning" role="img"></i>
 ```
 
 ### With visually-hidden text (preferred for accessibility)

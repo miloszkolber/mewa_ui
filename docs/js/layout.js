@@ -474,13 +474,29 @@
     tocObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          tocLinks.forEach(function (l) { l.classList.remove('active'); });
+          tocLinks.forEach(function (l) {
+            l.classList.remove('active');
+            l.removeAttribute('aria-current');
+          });
           var active = tocContent.querySelector('.toc-link[href="#' + entry.target.id + '"]');
-          if (active) active.classList.add('active');
+          if (active) {
+            active.classList.add('active');
+            active.setAttribute('aria-current', 'true');
+          }
         }
       });
     }, { rootMargin: '-80px 0px -60% 0px' });
     headings.forEach(function (item) { tocObserver.observe(item.el); });
+
+    /* On initial load (and after SPA navigation, which scrolls to
+       top) the first heading often sits below the scroll-spy band,
+       so no link would be active. Highlight the first entry until
+       the user scrolls; the observer overrides it once a heading
+       actually enters the band. */
+    if (window.scrollY === 0 && tocLinks.length) {
+      tocLinks[0].classList.add('active');
+      tocLinks[0].setAttribute('aria-current', 'true');
+    }
   }
 
   function buildPrevNext() {
