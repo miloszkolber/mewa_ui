@@ -170,20 +170,12 @@
     connectedCallback() {
       this.style.display = 'contents';
       var html = '<aside class="site-sidebar">';
-      html += '<div class="sidebar-scroll">';
-      html += '<div class="nav-filter-wrap" style="padding:0 0.375rem 0.75rem;">' +
-        '<input type="text" class="nav-filter-input" placeholder="Filter components..." ' +
-          'aria-label="Filter components" autocomplete="off" spellcheck="false" ' +
-          'style="' +
-            'width:100%;box-sizing:border-box;' +
-            'padding:0.375rem 0.625rem;' +
-            'font-size:0.8125rem;font-family:var(--font-sans);' +
-            'border:1px solid var(--sidebar-border);' +
-            'background:var(--sidebar);' +
-            'color:var(--foreground);' +
-            'outline:none;' +
-          '">' +
+      html += '<div class="nav-filter-wrap">' +
+        '<input type="text" class="input nav-filter-input" data-size="sm" ' +
+          'placeholder="Filter components..." aria-label="Filter components" ' +
+          'autocomplete="off" spellcheck="false">' +
       '</div>';
+      html += '<div class="sidebar-scroll">';
       NAV.forEach(function (section, i) {
         html += '<div class="nav-section" style="margin-bottom:1.25rem;">';
         html += '<p class="nav-heading">' + section.heading + '</p>';
@@ -401,11 +393,11 @@
       });
   }
 
-  /* Intercept nav clicks (sidebar links, header logo, prev/next) */
+  /* Intercept nav clicks (sidebar links, header logo) */
   document.addEventListener('click', function (e) {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     if (e.defaultPrevented) return;
-    var link = e.target.closest('a.nav-link:not(.disabled), .site-header a[href="typography.html"], a.page-nav-link');
+    var link = e.target.closest('a.nav-link:not(.disabled), .site-header a[href="typography.html"]');
     if (!link) return;
     var href = link.getAttribute('href');
     if (!href || href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:')) return;
@@ -419,15 +411,7 @@
     navigateTo(page, false);
   });
 
-  /* -- Page extras: TOC, prev/next --------------------------- */
-
-  /* Flat ordered list of all navigable pages */
-  var allPages = [];
-  NAV.forEach(function (section) {
-    section.items.forEach(function (item) {
-      if (BUILT.has(item.href)) allPages.push(item);
-    });
-  });
+  /* -- Page extras: TOC ------------------------------------ */
 
   var tocObserver = null;
 
@@ -448,8 +432,9 @@
     var candidates = main.querySelectorAll('h2, p.text-sm.font-medium');
     var headings = [];
     candidates.forEach(function (el) {
-      /* Skip headings inside collapsed details/page-header */
-      if (el.closest('.page-header details')) return;
+      /* Skip headings inside collapsed details/page-header and
+         anything inside demo previews or code blocks */
+      if (el.closest('.page-header details, .preview, pre, code')) return;
       var text = getHeadingText(el);
       if (text) headings.push({ el: el, text: text });
     });
@@ -499,39 +484,6 @@
     }
   }
 
-  function buildPrevNext() {
-    var existing = document.querySelector('.page-nav');
-    if (existing) existing.remove();
-    var idx = -1;
-    for (var i = 0; i < allPages.length; i++) {
-      if (allPages[i].href === currentPage) { idx = i; break; }
-    }
-    if (idx === -1) return;
-    var prev = idx > 0 ? allPages[idx - 1] : null;
-    var next = idx < allPages.length - 1 ? allPages[idx + 1] : null;
-    if (!prev && !next) return;
-    var html = '<nav class="page-nav">';
-    if (prev) {
-      html += '<a class="page-nav-link page-nav-prev" href="' + prev.href + '">' +
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>' +
-        '<div><span class="page-nav-label">Previous</span>' +
-        '<span class="page-nav-title">' + prev.label + '</span></div></a>';
-    } else {
-      html += '<div></div>';
-    }
-    if (next) {
-      html += '<a class="page-nav-link page-nav-next" href="' + next.href + '">' +
-        '<div><span class="page-nav-label">Next</span>' +
-        '<span class="page-nav-title">' + next.label + '</span></div>' +
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>';
-    }
-    html += '</nav>';
-    var main = document.querySelector('main');
-    if (main) main.insertAdjacentHTML('beforeend', html);
-  }
-
-
-
   /* One-time setup on DOMContentLoaded */
   document.addEventListener('DOMContentLoaded', function () {
     /* Inject TOC sidebar before building it (listener order matters) */
@@ -542,12 +494,10 @@
       );
     }
     buildToc();
-    buildPrevNext();
   });
 
   /* Per-page init (runs on initial load + after each SPA navigation) */
   window.onPageReady(function () {
     buildToc();
-    buildPrevNext();
   });
 })();

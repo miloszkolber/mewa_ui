@@ -29,7 +29,7 @@ ui_library/
 │   ├── css/docs-theme.css           ← doc-site font overrides (Geist from src/, not part of the system)
 │   ├── css/layout.css               ← doc-site layout (not part of the system)
 │   ├── js/layout.js                 ← SPA router, <site-header>/<site-nav> web components
-│   ├── js/site.js                   ← doc-site-only JS (tabs, copy buttons, skill modal, code collapse)
+│   ├── js/site.js                   ← doc-site-only JS (copy buttons, skill modal, spec details)
 │   ├── js/shiki-highlight.js        ← Shiki-based syntax highlighting (ES module, CDN)
 │   └── js/sync-css-snippets.js, sync-js-snippets.js ← snippet sync scripts (node, no deps)
 ├── legacy/                          ← previous hand-rolled mewa_ui (porting source only)
