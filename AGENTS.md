@@ -3,7 +3,7 @@
 You are working on the **mewa_ui** design system, a fork of
 [shadcn-html](https://github.com/codylindley/shadcn-html) at upstream commit
 `0964e09e` (v0.7.13-alpha), MIT. The consumer-facing system lives at the
-repository root: `components/`, `src/tokens.css`, and the `docs/` site.
+repository root: `components/`, `src/base.css`, and the `docs/` site.
 
 Radii, shadows, and serif fonts are deliberately removed. Geometry is square;
 circular geometry exists only where meaning requires it (avatars, radios,
@@ -15,7 +15,7 @@ switches, progress). Elevation is expressed with `--border`, never shadows.
 
 ```
 ui_library/
-├── src/tokens.css                   ← design tokens (source of truth for colors, spacing, tracking)
+├── src/base.css                   ← base layer (primitive + semantic tokens; source of truth for colors, spacing, tracking)
 ├── src/geist.woff2, geistmono.woff2 ← the only fonts (Geist variable, 400–550)
 ├── src/icons/                         ← the full Lucide icon set (standalone SVGs, no CDN)
 ├── components/                      ← self-contained component folders
@@ -201,11 +201,12 @@ are the actual implementation — edit them directly, no build step needed.
 
 ### Tokens are the source of truth for design values
 
-`src/tokens.css` defines all CSS custom properties. These must match
+`src/base.css` defines all CSS custom properties. These must match
 the shape of tweakcn.com theme exports so color themes are drop-in compatible.
 
 The token file provides:
-- Color pairs (surface + foreground) for light and dark modes
+- Primitive color tokens (Tailwind v4 palette: red, amber, green, neutral, black, white)
+- Semantic color pairs (surface + foreground) for light and dark modes
 - Font stacks (generic sans + mono — overridden by the doc site; serif removed)
 - Spacing and tracking
 
@@ -240,10 +241,10 @@ these imports must be added to **every** HTML file.
 
 ### Include pattern
 
-Link `src/tokens.css` first, then the stylesheets of only the components you use:
+Link `src/base.css` first, then the stylesheets of only the components you use:
 
 ```html
-<link rel="stylesheet" href="src/tokens.css">
+<link rel="stylesheet" href="src/base.css">
 <link rel="stylesheet" href="components/button/button.css">
 <link rel="stylesheet" href="components/dialog/dialog.css">
 <!-- JS — only when the component needs it -->
@@ -262,7 +263,7 @@ must never load the Lucide CDN; copy the loader or inline the SVG directly.
 
 ### Theming
 
-All design values live in `src/tokens.css` as `:root` (light) and `.dark` (dark)
+All design values live in `src/base.css` as `:root` (light) and `.dark` (dark)
 custom properties, in the tweakcn.com export format. Swap both blocks with an
 exported theme and every component updates instantly. To override individual
 tokens, add a stylesheet *after* the tokens link.
@@ -289,7 +290,7 @@ overrides outside the layers always win.
 
 ### Visual contract
 
-- Semantic color pairs (surface + foreground) from `src/tokens.css`; red, amber,
+- Semantic color pairs (surface + foreground) from `src/base.css`; red, amber,
   and green communicate status.
 - Focus rings via `--ring` with `:focus-visible`. All animation respects
   `prefers-reduced-motion`, `prefers-contrast: more`, and `forced-colors: active`.
@@ -375,7 +376,7 @@ support status of newer APIs (`popover`, anchor positioning, `@starting-style`, 
   auto-initialize new elements when the DOM changes — no manual re-import needed.
   Doc-site-only scripts (site.js) use `window.onPageReady(fn)` for their own re-init.
 - **Font stacks**: The system tokens use generic font stacks. The doc site overrides
-  them in `css/docs-theme.css`. Don't put custom fonts in `src/tokens.css`.
+  them in `css/docs-theme.css`. Don't put custom fonts in `src/base.css`.
 - **Icons**: All icons ship locally in `src/icons/` — never load the Lucide CDN.
   The doc site inlines `src/icons/{name}.svg` for `<i data-lucide="name">` via `js/site.js`.
 - **Sentence case**: Use sentence case for every heading and label in docs, skills,

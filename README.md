@@ -22,7 +22,7 @@ What is kept, unchanged from upstream: all color tokens (light + dark, sidebar, 
 
 ```
 ui_library/
-├── src/tokens.css                   ← design tokens (colors, spacing, tracking)
+├── src/base.css                   ← base layer (primitive + semantic tokens; colors, spacing, tracking)
 ├── src/geist.woff2, geistmono.woff2 ← the only fonts
 ├── src/icons/                        ← the full Lucide icon set (standalone SVGs, no CDN)
 ├── components/                      ← 55 self-contained component folders
@@ -39,7 +39,7 @@ ui_library/
 ## Use
 
 ```html
-<link rel="stylesheet" href="/ui/src/tokens.css">
+<link rel="stylesheet" href="/ui/src/base.css">
 <link rel="stylesheet" href="/ui/components/button/button.css">
 <!-- Icons: fetch src/icons/{name}.svg and inline it for <i data-lucide="name"> -->
 ```
@@ -78,7 +78,7 @@ The doc site is static: serve `docs/` with any static server (e.g. `python3 -m h
 - `legacy/snippets/` — complete documents with reusable fragments marked by stable comments.
 - `legacy/layouts/` — complete application compositions built from one vertical/horizontal shell contract.
 
-The root `core-ui.css` remains only as a legacy migration reference. New work uses `src/tokens.css` and `components/`.
+The root `core-ui.css` remains only as a legacy migration reference. New work uses `src/base.css` and `components/`.
 
 ## Use (legacy)
 
