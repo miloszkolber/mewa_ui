@@ -16,13 +16,14 @@ The visual contract is monochrome, square, border-led, and shadow-free, with Gei
 - **Shadows** — the `--shadow-*` token scale and every elevation `box-shadow`. Elevated surfaces (dialog, dropdown, tabs) keep a `0 0 0 1px var(--border)` ring. `box-shadow: none` and focus halos built on `var(--ring)` are kept.
 - **Serif fonts** — `--font-serif` and the `--font-display` serif stack. The only fonts are `src/geist.woff2` and `src/geistmono.woff2` (Geist variable, 400–550).
 
-What is kept, unchanged from upstream: all color tokens (light + dark, sidebar, chart), `--spacing`, `--tracking-normal`, component markup/APIs, and the five-layer skill structure. The Lucide CDN is retired — the full icon set ships locally in `src/icons/`.
+What is kept, unchanged from upstream: component markup/APIs and the five-layer skill structure. Static primitives live in `src/base.css`; theme-dependent semantic color roles live in `src/tokens.css`. The Lucide CDN is retired — the full icon set ships locally in `src/icons/`.
 
 ## Structure
 
 ```
 ui_library/
-├── src/base.css                   ← base layer (primitive + semantic tokens; colors, spacing, tracking)
+├── src/base.css                   ← static foundation (palette, fonts, typography, geometry)
+├── src/tokens.css                 ← theme-dependent semantic color tokens
 ├── src/geist.woff2, geistmono.woff2 ← the only fonts
 ├── src/icons/                        ← the full Lucide icon set (standalone SVGs, no CDN)
 ├── components/                      ← 55 self-contained component folders
@@ -40,6 +41,7 @@ ui_library/
 
 ```html
 <link rel="stylesheet" href="/ui/src/base.css">
+<link rel="stylesheet" href="/ui/src/tokens.css">
 <link rel="stylesheet" href="/ui/components/button/button.css">
 <!-- Icons: fetch src/icons/{name}.svg and inline it for <i data-lucide="name"> -->
 ```
@@ -48,7 +50,8 @@ Components are configured with `data-*` attributes (`data-variant`, `data-size`,
 
 Icons: write `<i data-lucide="name">` and inline the matching SVG from `src/icons/` (the doc site's `js/site.js` shows a fetch-and-inline loader). Never load the Lucide CDN.
 
-Dark mode: add or remove `class="dark"` on `<html>`. Every token switches automatically.
+Dark mode: add or remove `class="dark"` on `<html>`. The semantic values in
+`src/tokens.css` switch automatically.
 
 ## Documentation
 
@@ -78,7 +81,7 @@ The doc site is static: serve `docs/` with any static server (e.g. `python3 -m h
 - `legacy/snippets/` — complete documents with reusable fragments marked by stable comments.
 - `legacy/layouts/` — complete application compositions built from one vertical/horizontal shell contract.
 
-The root `core-ui.css` remains only as a legacy migration reference. New work uses `src/base.css` and `components/`.
+The root `core-ui.css` remains only as a legacy migration reference. New work uses `src/base.css`, `src/tokens.css`, and `components/`.
 
 ## Use (legacy)
 

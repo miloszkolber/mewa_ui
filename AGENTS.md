@@ -3,7 +3,7 @@
 You are working on the **mewa_ui** design system, a fork of
 [shadcn-html](https://github.com/codylindley/shadcn-html) at upstream commit
 `0964e09e` (v0.7.13-alpha), MIT. The consumer-facing system lives at the
-repository root: `components/`, `src/base.css`, and the `docs/` site.
+repository root: `components/`, `src/base.css`, `src/tokens.css`, and the `docs/` site.
 
 Radii, shadows, and serif fonts are deliberately removed. Geometry is square;
 circular geometry exists only where meaning requires it (avatars, radios,
@@ -15,7 +15,8 @@ switches, progress). Elevation is expressed with `--border`, never shadows.
 
 ```
 ui_library/
-├── src/base.css                   ← base layer (primitive + semantic tokens; source of truth for colors, spacing, tracking)
+├── src/base.css                   ← static foundation (palette, fonts, typography, geometry)
+├── src/tokens.css                 ← theme-dependent semantic color tokens
 ├── src/geist.woff2, geistmono.woff2 ← the only fonts (Geist variable, 400–550)
 ├── src/icons/                         ← the full Lucide icon set (standalone SVGs, no CDN)
 ├── components/                      ← self-contained component folders
@@ -201,14 +202,18 @@ are the actual implementation — edit them directly, no build step needed.
 
 ### Tokens are the source of truth for design values
 
-`src/base.css` defines all CSS custom properties. These must match
-the shape of tweakcn.com theme exports so color themes are drop-in compatible.
+`src/base.css` defines static CSS custom properties and font faces. `src/tokens.css`
+defines theme-dependent semantic color tokens. Load `base.css` first and
+`tokens.css` second so the semantic tokens can reference the static primitives.
+
+The base file provides:
+- Primitive color tokens (Tailwind v4 palette: red, amber, green, neutral, black, white)
+- Font faces, font stacks, typography sizes, line heights, weights, and tracking
+- Border-width tokens
 
 The token file provides:
-- Primitive color tokens (Tailwind v4 palette: red, amber, green, neutral, black, white)
 - Semantic color pairs (surface + foreground) for light and dark modes
-- Font stacks (generic sans + mono — overridden by the doc site; serif removed)
-- Spacing and tracking
+- Sidebar and chart roles for light and dark modes
 
 Radii, shadows, and serif fonts were deliberately removed in this fork. Never
 reintroduce `--radius-*`, `--shadow-*`, or serif font tokens; components must
@@ -231,9 +236,10 @@ The doc site is a **SPA-style multi-page app** with no landing/overview page. `l
 the `NAV` array and the `BUILT` set in that one file — individual HTML pages
 do not contain nav markup.
 
-Each HTML page duplicates the full list of component CSS `<link>` tags in `<head>`
-and component JS `<script>` tags at end of `<body>`. When adding a new component,
-these imports must be added to **every** HTML file.
+Each HTML page loads `src/base.css` followed by `src/tokens.css`, then duplicates
+the full list of component CSS `<link>` tags in `<head>` and component JS
+`<script>` tags at end of `<body>`. When adding a new component, these imports
+must be added to **every** HTML file.
 
 ---
 
@@ -241,10 +247,12 @@ these imports must be added to **every** HTML file.
 
 ### Include pattern
 
-Link `src/base.css` first, then the stylesheets of only the components you use:
+Link `src/base.css` first, `src/tokens.css` second, then the stylesheets of only
+the components you use:
 
 ```html
 <link rel="stylesheet" href="src/base.css">
+<link rel="stylesheet" href="src/tokens.css">
 <link rel="stylesheet" href="components/button/button.css">
 <link rel="stylesheet" href="components/dialog/dialog.css">
 <!-- JS — only when the component needs it -->
@@ -263,10 +271,10 @@ must never load the Lucide CDN; copy the loader or inline the SVG directly.
 
 ### Theming
 
-All design values live in `src/base.css` as `:root` (light) and `.dark` (dark)
-custom properties, in the tweakcn.com export format. Swap both blocks with an
-exported theme and every component updates instantly. To override individual
-tokens, add a stylesheet *after* the tokens link.
+Static design values live in `src/base.css`. Theme-dependent semantic values live
+in `src/tokens.css` as `:root` (light) and `.dark` (dark) custom properties.
+Swap the token blocks with an exported theme and every component updates
+instantly. To override individual tokens, add a stylesheet *after* the tokens link.
 
 ### Dark mode
 
@@ -290,7 +298,7 @@ overrides outside the layers always win.
 
 ### Visual contract
 
-- Semantic color pairs (surface + foreground) from `src/base.css`; red, amber,
+- Semantic color pairs (surface + foreground) from `src/tokens.css`; red, amber,
   and green communicate status.
 - Focus rings via `--ring` with `:focus-visible`. All animation respects
   `prefers-reduced-motion`, `prefers-contrast: more`, and `forced-colors: active`.
@@ -375,8 +383,8 @@ support status of newer APIs (`popover`, anchor positioning, `@starting-style`, 
 - **SPA re-initialization**: Component JS modules use `MutationObserver` to
   auto-initialize new elements when the DOM changes — no manual re-import needed.
   Doc-site-only scripts (site.js) use `window.onPageReady(fn)` for their own re-init.
-- **Font stacks**: The system tokens use generic font stacks. The doc site overrides
-  them in `css/docs-theme.css`. Don't put custom fonts in `src/base.css`.
+- **Font stacks**: Static font faces and stacks live in `src/base.css`. The doc
+  site may override their family variables in `css/docs-theme.css`.
 - **Icons**: All icons ship locally in `src/icons/` — never load the Lucide CDN.
   The doc site inlines `src/icons/{name}.svg` for `<i data-lucide="name">` via `js/site.js`.
 - **Sentence case**: Use sentence case for every heading and label in docs, skills,
@@ -386,4 +394,3 @@ support status of newer APIs (`popover`, anchor positioning, `@starting-style`, 
   `<pre><code>` blocks. These must always match the actual files. After editing any
   component `.css` or `.js`, run `node docs/js/sync-css-snippets.js` and
   `node docs/js/sync-js-snippets.js` to update all doc pages automatically.
-

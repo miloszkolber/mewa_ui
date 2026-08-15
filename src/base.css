@@ -1,17 +1,25 @@
-/**
- * mewa_ui — Base layer
- * Primitive color tokens (Tailwind v4 palette, OKLCH) and semantic tokens
- * in the tweakcn.com export format. Semantic tokens reference primitives,
- * so swapping the :root / .dark blocks rethemes every component.
- */
+/* mewa_ui — Base */
+
+@font-face {
+  font-family: "geist";
+  src: url("geist.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400 550;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "geist-mono";
+  src: url("geistmono.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400 550;
+  font-display: swap;
+}
 
 :root {
-  color-scheme: light;
-
-  /* -- Primitives: Tailwind v4 -------------------------------- */
+/* colors */
   --color-black:           oklch(0% 0 0);
   --color-white:           oklch(100% 0 0);
-
   --color-red-50:          oklch(97.1% 0.013 17.38);
   --color-red-100:         oklch(93.6% 0.032 17.717);
   --color-red-200:         oklch(88.5% 0.062 18.334);
@@ -23,7 +31,6 @@
   --color-red-800:         oklch(44.4% 0.177 26.899);
   --color-red-900:         oklch(39.6% 0.141 25.723);
   --color-red-950:         oklch(25.8% 0.092 26.042);
-
   --color-amber-50:        oklch(98.7% 0.022 95.277);
   --color-amber-100:       oklch(96.2% 0.059 95.617);
   --color-amber-200:       oklch(92.4% 0.12 95.746);
@@ -35,7 +42,6 @@
   --color-amber-800:       oklch(47.3% 0.137 46.201);
   --color-amber-900:       oklch(41.4% 0.112 45.904);
   --color-amber-950:       oklch(27.9% 0.077 45.635);
-
   --color-green-50:        oklch(98.2% 0.018 155.826);
   --color-green-100:       oklch(96.2% 0.044 156.743);
   --color-green-200:       oklch(92.5% 0.084 155.995);
@@ -47,7 +53,6 @@
   --color-green-800:       oklch(44.8% 0.119 151.328);
   --color-green-900:       oklch(39.3% 0.095 152.535);
   --color-green-950:       oklch(26.6% 0.065 152.934);
-
   --color-neutral-50:      oklch(98.5% 0 0);
   --color-neutral-100:     oklch(97% 0 0);
   --color-neutral-200:     oklch(92.2% 0 0);
@@ -60,101 +65,25 @@
   --color-neutral-900:     oklch(20.5% 0 0);
   --color-neutral-950:     oklch(14.5% 0 0);
 
-  /* -- Semantic tokens: light ---------------------------------- */
-  --background:              var(--color-white);
-  --foreground:              var(--color-neutral-950);
+  /* typography */
+  --font-sans: geist, sans-serif;
+  --font-mono: geist-mono, monospace;
+  --font-body-xsmall: 0.75rem;
+  --font-body-small: 0.875rem;
+  --font-body-regular: 1rem;
+  --font-heading-1: 2.25rem;
+  --font-heading-2: 1.75rem;
+  --font-heading-3: 1.25rem;
+  --font-heading-4: 1rem;
+  --font-height-tight: 1.25;
+  --font-height-regular: 1.61;
+  --font-weight-regular: 400;
+  --font-weight-semibold: 550;
+  --font-tracking: 0;
+  --font-spacing: 0.25rem;
 
-  --card:                    var(--color-white);
-  --card-foreground:         var(--color-neutral-950);
-
-  --popover:                 var(--color-white);
-  --popover-foreground:      var(--color-neutral-950);
-
-  --primary:                 var(--color-neutral-900);
-  --primary-foreground:      var(--color-neutral-50);
-
-  --secondary:               var(--color-neutral-100);
-  --secondary-foreground:    var(--color-neutral-900);
-
-  --muted:                   var(--color-neutral-100);
-  --muted-foreground:        var(--color-neutral-500);
-
-  --accent:                  var(--color-neutral-100);
-  --accent-foreground:       var(--color-neutral-900);
-
-  --destructive:             var(--color-red-600);
-  --destructive-foreground:  var(--color-white);
-
-  --border:                  var(--color-neutral-200);
-  --input:                   var(--color-neutral-200);
-  --ring:                    var(--color-neutral-400);
-
-  --sidebar:                 var(--color-neutral-50);
-  --sidebar-foreground:      var(--color-neutral-950);
-  --sidebar-primary:         var(--color-neutral-900);
-  --sidebar-primary-foreground: var(--color-neutral-50);
-  --sidebar-accent:          var(--color-neutral-100);
-  --sidebar-accent-foreground: var(--color-neutral-900);
-  --sidebar-border:          var(--color-neutral-200);
-  --sidebar-ring:            var(--color-neutral-400);
-
-  --chart-1:                 var(--color-neutral-600);
-  --chart-2:                 var(--color-neutral-500);
-  --chart-3:                 var(--color-neutral-400);
-  --chart-4:                 var(--color-neutral-300);
-  --chart-5:                 var(--color-neutral-200);
-
-  --font-sans:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-mono:  ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-
-  --spacing:                 0.25rem;
-  --tracking-normal:         0em;
-}
-
-/* -- Semantic tokens: dark ------------------------------------ */
-.dark {
-  color-scheme: dark;
-
-  --background:              var(--color-neutral-950);
-  --foreground:              var(--color-neutral-50);
-
-  --card:                    var(--color-neutral-900);
-  --card-foreground:         var(--color-neutral-50);
-
-  --popover:                 var(--color-neutral-800);
-  --popover-foreground:      var(--color-neutral-50);
-
-  --primary:                 var(--color-neutral-200);
-  --primary-foreground:      var(--color-neutral-900);
-
-  --secondary:               var(--color-neutral-800);
-  --secondary-foreground:    var(--color-neutral-50);
-
-  --muted:                   var(--color-neutral-800);
-  --muted-foreground:        var(--color-neutral-400);
-
-  --accent:                  var(--color-neutral-700);
-  --accent-foreground:       var(--color-neutral-50);
-
-  --destructive:             var(--color-red-400);
-  --destructive-foreground:  var(--color-neutral-50);
-
-  --border:                  var(--color-neutral-800);
-  --input:                   var(--color-neutral-700);
-  --ring:                    var(--color-neutral-500);
-
-  --sidebar:                 var(--color-neutral-900);
-  --sidebar-foreground:      var(--color-neutral-50);
-  --sidebar-primary:         var(--color-neutral-600);
-  --sidebar-primary-foreground: var(--color-neutral-50);
-  --sidebar-accent:          var(--color-neutral-800);
-  --sidebar-accent-foreground: var(--color-neutral-50);
-  --sidebar-border:          var(--color-neutral-800);
-  --sidebar-ring:            var(--color-neutral-600);
-
-  --chart-1:                 var(--color-neutral-600);
-  --chart-2:                 var(--color-neutral-500);
-  --chart-3:                 var(--color-neutral-400);
-  --chart-4:                 var(--color-neutral-300);
-  --chart-5:                 var(--color-neutral-200);
+  /* border */
+  --border-width-regular: 1px;
+  --border-width-medium: 1.5px;
+  --border-width-thick: 2px;
 }
