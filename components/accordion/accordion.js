@@ -1,5 +1,4 @@
 // -- Accordion -----------------------------------------------
-// Single-open accordion behavior using native <details> elements.
 
 function init() {
   document.querySelectorAll('.accordion[data-type="single"]:not([data-init])').forEach((accordion) => {

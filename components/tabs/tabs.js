@@ -1,5 +1,4 @@
 // -- Tabs -----------------------------------------------------
-// ARIA-compliant keyboard navigation for [role="tablist"] elements.
 
 const activateTab = (tab, triggers) => {
   triggers.forEach((t) => {

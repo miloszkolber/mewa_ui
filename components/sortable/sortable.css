@@ -7,7 +7,6 @@
     flex-direction: column;
     gap: var(--space-01);
 
-    /* Horizontal orientation */
     &[data-orientation="horizontal"] {
       flex-direction: row;
       flex-wrap: wrap;
@@ -30,27 +29,23 @@
 
     &:active { cursor: grabbing; }
 
-    /* Keyboard focus (roving tabindex) */
     &:focus-visible {
       outline: var(--border-width-02) solid var(--ring);
       outline-offset: 2px;
     }
 
-    /* Active descendant highlight (keyboard navigation) */
     &[data-active] {
       border-color: var(--ring);
       background-color: var(--accent);
       color: var(--accent-foreground);
     }
 
-    /* Drag in progress */
     &[data-dragging] {
       opacity: 0.5;
 
       border-style: dashed;
     }
 
-    /* Drop target indicator */
     &[data-over="before"] {
       border-top: var(--border-width-02) solid var(--primary);
     }
@@ -58,7 +53,6 @@
       border-bottom: var(--border-width-02) solid var(--primary);
     }
 
-    /* Horizontal drop indicators */
     .sortable[data-orientation="horizontal"] &[data-over="before"] {
       border-top: var(--border-width-01) solid var(--border);
       border-inline-start: var(--border-width-02) solid var(--primary);
@@ -68,7 +62,6 @@
       border-inline-end: var(--border-width-02) solid var(--primary);
     }
 
-    /* Disabled */
     &[aria-disabled="true"] {
       opacity: 0.5;
       cursor: not-allowed;
@@ -89,7 +82,6 @@
     & svg { width: var(--size-04); height: var(--size-04); }
   }
 
-  /* Live region for screen reader announcements */
   .sortable-live {
     position: absolute;
     width: 1px;

@@ -1,7 +1,5 @@
 // -- Command --------------------------------------------------
-// Command palette dialog with search filtering, keyboard navigation, and Cmd/Ctrl+K shortcut.
 
-/* Cmd/Ctrl+K handler — added once at module level */
 let commandKeydownAdded = false;
 if (!commandKeydownAdded) {
   commandKeydownAdded = true;

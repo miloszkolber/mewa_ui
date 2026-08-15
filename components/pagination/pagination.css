@@ -12,7 +12,6 @@
     &:focus-visible { outline: var(--border-width-02) solid var(--ring); outline-offset: 2px; }
     & svg { width: var(--size-04); height: var(--size-04); flex-shrink: 0; }
 
-    /* Disabled state for prev/next at boundaries */
     &[aria-disabled="true"], &.disabled {
       pointer-events: none;
       opacity: 0.5;

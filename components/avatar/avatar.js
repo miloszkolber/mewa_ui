@@ -1,5 +1,4 @@
 // -- Avatar ---------------------------------------------------
-// Hides broken avatar images and shows the fallback.
 
 function init() {
   document.querySelectorAll('.avatar-image:not([data-init])').forEach((img) => {

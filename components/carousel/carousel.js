@@ -1,6 +1,4 @@
 // -- Carousel -------------------------------------------------
-// Scroll-snap carousel with keyboard navigation, prev/next buttons,
-// dot indicators, loop, autoplay, and ARIA.
 
 function init() {
 document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
@@ -62,13 +60,11 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
     if (!allSlides.length) return;
     currentIndex = index;
 
-    // Prev/next disabled states (non-loop)
     if (!isLoop) {
       if (prevBtn) prevBtn.disabled = currentIndex <= 0;
       if (nextBtn) nextBtn.disabled = currentIndex >= allSlides.length - 1;
     }
 
-    // Dot indicators
     if (dotsContainer) {
       const dots = dotsContainer.querySelectorAll('.carousel-dot');
       dots.forEach((dot, i) => {
@@ -76,12 +72,10 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
       });
     }
 
-    // Counter
     if (counter) {
       counter.textContent = `Slide ${currentIndex + 1} of ${allSlides.length}`;
     }
 
-    // ARIA labels on slides
     allSlides.forEach((slide, i) => {
       slide.setAttribute('aria-label', `${i + 1} of ${allSlides.length}`);
     });
@@ -112,7 +106,6 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
   // ── Dot click handlers ──────────────────────
   if (dotsContainer) {
     const allSlides = slides();
-    // Generate dots if empty
     if (!dotsContainer.children.length && allSlides.length) {
       allSlides.forEach((_, i) => {
         const dot = document.createElement('button');
@@ -142,7 +135,6 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
     if (e.key === 'End') { e.preventDefault(); scrollToIndex(slides().length - 1); }
   });
 
-  // Make carousel focusable if not already
   if (!carousel.hasAttribute('tabindex')) {
     carousel.setAttribute('tabindex', '0');
   }
@@ -165,7 +157,6 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
 
   if (autoplayDelay) {
     startAutoplay();
-    // Pause on hover and focus (WAI-ARIA APG requirement)
     carousel.addEventListener('mouseenter', stopAutoplay);
     carousel.addEventListener('mouseleave', startAutoplay);
     carousel.addEventListener('focusin', stopAutoplay);

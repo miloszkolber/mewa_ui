@@ -399,8 +399,6 @@
               Copy
             </button>
             <pre><code class="language-javascript">// -- Toggle ---------------------------------------------------
-// Toggles aria-pressed on .toggle buttons.
-// Skips toggles inside .toggle-group — those are managed by toggle-group.js.
 
 function init() {
   document.querySelectorAll('.toggle:not([data-init]):not(.toggle-group .toggle)').forEach((toggle) =&gt; {
@@ -448,7 +446,8 @@ new MutationObserver(init).observe(document, { childList: true, subtree: true })
   <script type="module" src="../components/carousel/carousel.js"></script>
   <script type="module" src="../components/slider/slider.js"></script>
   <script type="module" src="../components/sortable/sortable.js"></script>
-    <script type="text/plain" id="spec-md-content"># Pattern: Toggle
+    <script type="text/plain" id="spec-md-content">
+# Pattern: Toggle
 
 ## Native basis
 `<button>` element with `aria-pressed`. The browser provides click and keyboard
@@ -531,10 +530,11 @@ buttons (bold, italic, underline) or feature toggles.
 
 ## Notes
 
+- Toggles inside a `.toggle-group` are managed by toggle-group.js and skipped by toggle.js.
 - The toggle is just a button with `aria-pressed` — no custom elements needed.
 - Icon-only toggles must have `aria-label` for screen readers.
 - For toggle groups (e.g., text alignment), wrap in a container with `role="group"` and `aria-label`.
-- The pressed state uses `--accent` / `--accent-foreground` to match the system’s conventions.
+- The pressed state uses `--accent` / `--accent-foreground` to match the system’s semantic token conventions.
 </script>
 </body>
 </html>

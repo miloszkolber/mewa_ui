@@ -13,7 +13,6 @@
       margin-bottom: 0.375rem;
     }
 
-    /* Horizontal layout */
     &[data-orientation="horizontal"] {
       flex-direction: row;
       flex-wrap: wrap;
@@ -162,7 +161,6 @@
     }
   }
 
-  /* Helper text for group-level descriptions */
   .radio-group-description {
     font-size: 0.8125rem;
     color: var(--muted-foreground);

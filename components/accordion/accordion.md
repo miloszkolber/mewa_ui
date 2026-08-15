@@ -144,6 +144,8 @@ These are all browser-native — no JS needed.
 
 ## Notes
 
+- `<details name="group">` groups accordions — only one item in the group stays open at a time
+- The default `<details>` marker is removed; the chevron indicates state instead
 - `<details>/<summary>` is the most accessible accordion implementation — it works with zero JS and zero ARIA
 - For single-open behavior, the `toggle` event on `<details>` fires after the state changes
 - The `open` attribute is the source of truth for whether an item is expanded

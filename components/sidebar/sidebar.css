@@ -1,6 +1,4 @@
 /* -- Sidebar component ------------------------------------------ */
-/* Application sidebar with collapsible state, mobile sheet overlay, */
-/* collapsible groups, submenus, and keyboard shortcut (Cmd+B).      */
 
 @layer components {
 
@@ -27,14 +25,12 @@
     overflow: hidden;
     z-index: 30;
 
-    /* Right side */
     &[data-side="right"] {
       border-right: none;
       border-left: var(--border-width-01) solid var(--sidebar-border);
       order: 1;
     }
 
-    /* Collapsed — icon-only rail */
     &[data-state="collapsed"] {
       width: var(--sidebar-width-collapsed, var(--size-10));
 
@@ -52,7 +48,6 @@
       & .sidebar-group > summary svg:last-child { display: none; }
     }
 
-    /* Hidden on mobile by default — shown via dialog */
     @media (max-width: 767px) {
       display: none;
     }

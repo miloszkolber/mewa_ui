@@ -329,7 +329,6 @@
     }
   }
 
-  /* Remove default details marker */
   .accordion-trigger {
     display: flex;
     align-items: center;
@@ -349,7 +348,6 @@
     &amp;:hover { text-decoration: underline; }
   }
 
-  /* Chevron rotation */
   .accordion-chevron {
     color: var(--muted-foreground);
     transition: transform 200ms ease;
@@ -360,7 +358,6 @@
     }
   }
 
-  /* Content */
   .accordion-content {
     padding-bottom: var(--space-04);
     font-size: var(--font-body-small);
@@ -384,7 +381,6 @@
               Copy
             </button>
             <pre><code class="language-javascript">// -- Accordion -----------------------------------------------
-// Single-open accordion behavior using native &lt;details&gt; elements.
 
 function init() {
   document.querySelectorAll('.accordion[data-type=&quot;single&quot;]:not([data-init])').forEach((accordion) =&gt; {
@@ -441,7 +437,8 @@ new MutationObserver(init).observe(document, { childList: true, subtree: true })
   <script type="module" src="../components/carousel/carousel.js"></script>
   <script type="module" src="../components/slider/slider.js"></script>
   <script type="module" src="../components/sortable/sortable.js"></script>
-    <script type="text/plain" id="spec-md-content"># Pattern: Accordion
+    <script type="text/plain" id="spec-md-content">
+# Pattern: Accordion
 
 ## Native basis
 `<details>` / `<summary>` elements. The browser provides:
@@ -562,7 +559,7 @@ These are all browser-native — no JS needed.
 ### Bordered
 
 ```html
-<div class="accordion" style="border: var(--border-width-01) solid var(--border); padding: 0 var(--space-04)">
+<div class="accordion" style="border:1px solid var(--border);padding:0 1rem;">
   <!-- items -->
 </div>
 ```
@@ -587,6 +584,8 @@ These are all browser-native — no JS needed.
 
 ## Notes
 
+- `<details name="group">` groups accordions — only one item in the group stays open at a time
+- The default `<details>` marker is removed; the chevron indicates state instead
 - `<details>/<summary>` is the most accessible accordion implementation — it works with zero JS and zero ARIA
 - For single-open behavior, the `toggle` event on `<details>` fires after the state changes
 - The `open` attribute is the source of truth for whether an item is expanded

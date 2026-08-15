@@ -1,5 +1,4 @@
 // -- Number Input ---------------------------------------------
-// Increment/decrement buttons for .number-input containers.
 
 function init() {
   document.querySelectorAll('.number-input:not([data-init])').forEach((wrapper) => {

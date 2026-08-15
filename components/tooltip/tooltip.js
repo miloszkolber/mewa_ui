@@ -1,6 +1,4 @@
 // -- Tooltip --------------------------------------------------
-// Popover API tooltips with delay, group behavior, ARIA wiring,
-// CSS anchor positioning, and scroll dismiss.
 
 const DELAY_DEFAULT = 700;      // ms before first tooltip opens
 const CLOSE_DELAY_DEFAULT = 0;  // ms before tooltip closes
@@ -25,12 +23,10 @@ document.querySelectorAll('[data-tooltip-trigger]:not([data-init])').forEach((tr
   const tip = document.getElementById(trigger.dataset.tooltipTrigger);
   if (!tip) return;
 
-  // CSS anchor positioning — unique name per trigger-tooltip pair
   const anchorId = `--tooltip-${tip.id}`;
   trigger.style.anchorName = anchorId;
   tip.style.positionAnchor = anchorId;
 
-  // ARIA — link trigger to tooltip
   trigger.setAttribute('aria-describedby', tip.id);
 
   const delay = Number(trigger.dataset.delay ?? DELAY_DEFAULT);
@@ -69,7 +65,6 @@ init();
 new MutationObserver(init).observe(document, { childList: true, subtree: true });
 
 // -- Scroll dismiss -------------------------------------------
-// Hide any open tooltip when the page scrolls.
 if (!document.__tooltipScrollInit) {
   document.__tooltipScrollInit = true;
   document.addEventListener('scroll', () => {

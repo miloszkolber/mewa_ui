@@ -1,6 +1,4 @@
 // -- Toolbar --------------------------------------------------
-// Roving tabindex for role="toolbar" containers.
-// Arrow keys move focus between focusable children.
 
 function init() {
   document.querySelectorAll('.toolbar[role="toolbar"]:not([data-init])').forEach((toolbar) => {

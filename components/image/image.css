@@ -50,7 +50,6 @@
       }
     }
 
-    /* Hide fallback when image loads successfully */
     &:has(> img:not([data-error])) > .image-fallback {
       display: none;
     }

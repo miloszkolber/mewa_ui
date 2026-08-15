@@ -1,5 +1,4 @@
 // -- Toggle Group ---------------------------------------------
-// Manages single/multiple selection and roving tabindex across .toggle buttons.
 
 function init() {
   document.querySelectorAll('.toggle-group:not([data-init])').forEach((group) => {
@@ -8,7 +7,6 @@ function init() {
 
   const getToggles = () => Array.from(group.querySelectorAll('.toggle:not(:disabled)'));
 
-  // Roving tabindex: only one item tabbable at a time
   const initTabindex = () => {
     const toggles = getToggles();
     if (toggles.length === 0) return;
@@ -35,7 +33,6 @@ function init() {
       toggle.setAttribute('aria-pressed', String(!pressed));
     }
 
-    // Update roving tabindex to current item
     toggles.forEach((t) => t.setAttribute('tabindex', t === toggle ? '0' : '-1'));
   });
 

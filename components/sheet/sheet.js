@@ -1,5 +1,4 @@
 // -- Sheet ----------------------------------------------------
-// Wires [data-sheet-trigger] buttons to <dialog class="sheet"> elements.
 
 function init() {
 document.querySelectorAll('[data-sheet-trigger]:not([data-init])').forEach((trigger) => {

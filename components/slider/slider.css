@@ -14,7 +14,6 @@
     border: none;
     accent-color: var(--primary);
 
-    /* Track — WebKit (filled via gradient) */
     &::-webkit-slider-runnable-track {
       height: var(--size-02);
       border-radius: 9999px;
@@ -27,7 +26,6 @@
       );
     }
 
-    /* Track — Firefox */
     &::-moz-range-track {
       height: var(--size-02);
       border-radius: 9999px;
@@ -35,14 +33,12 @@
       border: none;
     }
 
-    /* Filled portion — Firefox */
     &::-moz-range-progress {
       height: var(--size-02);
       border-radius: 9999px;
       background: var(--primary);
     }
 
-    /* Thumb — WebKit */
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: var(--size-05);
@@ -55,7 +51,6 @@
       transition: transform 150ms;
     }
 
-    /* Thumb — Firefox */
     &::-moz-range-thumb {
       width: var(--size-05);
       height: var(--size-05);
@@ -66,7 +61,6 @@
       transition: transform 150ms;
     }
 
-    /* Hover */
     &:hover:not(:disabled) {
       &::-webkit-slider-thumb {
         box-shadow: 0 0 0 4px color-mix(in oklch, var(--primary) 15%, transparent);
@@ -76,7 +70,6 @@
       }
     }
 
-    /* Focus */
     &:focus-visible {
       &::-webkit-slider-thumb {
         outline: var(--border-width-02) solid var(--ring);
@@ -88,7 +81,6 @@
       }
     }
 
-    /* Disabled */
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
@@ -97,7 +89,6 @@
       &::-moz-range-thumb { cursor: not-allowed; }
     }
 
-    /* Vertical orientation */
     &[data-orientation="vertical"] {
       writing-mode: vertical-lr;
       direction: rtl;
@@ -122,7 +113,6 @@
     }
   }
 
-  /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .slider {
       &::-webkit-slider-thumb { transition: none; }
@@ -130,7 +120,6 @@
     }
   }
 
-  /* High contrast */
   @media (prefers-contrast: more) {
     .slider {
       &::-webkit-slider-thumb {
@@ -142,7 +131,6 @@
     }
   }
 
-  /* Forced colors (Windows High Contrast Mode) */
   @media (forced-colors: active) {
     .slider {
       &::-webkit-slider-runnable-track {

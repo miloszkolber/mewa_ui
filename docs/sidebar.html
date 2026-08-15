@@ -239,8 +239,6 @@
           <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-scss">/* -- Sidebar component ------------------------------------------ */
-/* Application sidebar with collapsible state, mobile sheet overlay, */
-/* collapsible groups, submenus, and keyboard shortcut (Cmd+B).      */
 
 @layer components {
 
@@ -267,14 +265,12 @@
     overflow: hidden;
     z-index: 30;
 
-    /* Right side */
     &amp;[data-side=&quot;right&quot;] {
       border-right: none;
       border-left: var(--border-width-01) solid var(--sidebar-border);
       order: 1;
     }
 
-    /* Collapsed — icon-only rail */
     &amp;[data-state=&quot;collapsed&quot;] {
       width: var(--sidebar-width-collapsed, var(--size-10));
 
@@ -292,7 +288,6 @@
       &amp; .sidebar-group &gt; summary svg:last-child { display: none; }
     }
 
-    /* Hidden on mobile by default — shown via dialog */
     @media (max-width: 767px) {
       display: none;
     }
@@ -600,7 +595,6 @@
           <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-javascript">// -- Sidebar --------------------------------------------------
-// Toggle collapse, keyboard shortcut (Cmd+B), and mobile dialog.
 
 function init() {
 document.querySelectorAll('.app-sidebar:not([data-init])').forEach((sidebar) =&gt; {
@@ -626,7 +620,6 @@ document.querySelectorAll('[data-sidebar-mobile]:not([data-init])').forEach((tri
     dialog.showModal();
   });
 
-  // Close button inside the dialog
   dialog.querySelectorAll('.sidebar-mobile-close').forEach((btn) =&gt; {
     btn.addEventListener('click', () =&gt; { dialog.close(); });
   });
@@ -642,7 +635,6 @@ if (!document.__sidebarKbInit) {
   document.addEventListener('keydown', (e) =&gt; {
     if ((e.metaKey || e.ctrlKey) &amp;&amp; e.key === 'b') {
       e.preventDefault();
-      // Toggle the first sidebar found on the page
       const sidebar = document.querySelector('.app-sidebar');
       if (sidebar) {
         sidebar.dataset.state = sidebar.dataset.state === 'collapsed' ? 'expanded' : 'collapsed';

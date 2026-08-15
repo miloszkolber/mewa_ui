@@ -1,8 +1,6 @@
 /* -- Typography component --------------------------------------- */
 
 /* -- Base text ---------------------------------------------- */
-/* Sets the default font size for the entire page.            */
-/* All typography classes are sized relative to this baseline. */
 @layer base {
   body {
     font-size: var(--font-body-small);

@@ -1,5 +1,4 @@
 // -- Calendar -------------------------------------------------
-// Interactive calendar grid with month navigation and day selection.
 
 const DAYS = Array.from({ length: 7 }, (_, i) =>
   new Intl.DateTimeFormat(undefined, { weekday: 'short' }).format(new Date(2024, 0, i))
@@ -22,11 +21,9 @@ const renderCalendar = (el, year, month, selectedDay) => {
   const startDay = firstDayOfMonth(year, month);
   const prevTotal = daysInMonth(year, month - 1);
 
-  /* Header */
   const heading = el.querySelector('.calendar-heading');
   if (heading) heading.textContent = `${MONTHS[month]} ${year}`;
 
-  /* Grid */
   const grid = el.querySelector('.calendar-grid');
   if (!grid) return;
 
@@ -77,7 +74,6 @@ document.querySelectorAll('.calendar:not([data-init])').forEach((cal) => {
 
     renderCalendar(cal, state.year, state.month, state.selected);
 
-    /* Navigation */
     cal.addEventListener('click', (e) => {
       const nav = e.target.closest('.calendar-nav');
       if (nav) {
@@ -95,7 +91,6 @@ document.querySelectorAll('.calendar:not([data-init])').forEach((cal) => {
         return;
       }
 
-      /* Day selection */
       const dayBtn = e.target.closest('.calendar-day button');
       if (dayBtn && !dayBtn.closest('[data-disabled]')) {
         const day = parseInt(dayBtn.dataset.day, 10);
@@ -113,7 +108,6 @@ document.querySelectorAll('.calendar:not([data-init])').forEach((cal) => {
         }
         renderCalendar(cal, state.year, state.month, state.selected);
 
-        /* Dispatch custom event */
         cal.dispatchEvent(new CustomEvent('calendar:select', {
           detail: { date: new Date(state.year, state.month, state.selected) },
           bubbles: true
@@ -121,7 +115,6 @@ document.querySelectorAll('.calendar:not([data-init])').forEach((cal) => {
       }
     });
 
-    /* Keyboard navigation in grid */
     cal.addEventListener('keydown', (e) => {
       const dayBtn = e.target.closest('.calendar-day button');
       if (!dayBtn) return;

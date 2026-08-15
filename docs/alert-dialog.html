@@ -242,7 +242,6 @@
     position: fixed;
     inset: 0;
 
-    /* Entry/exit animation */
     opacity: 0;
     transform: translateY(-0.5rem) scale(0.98);
     transition: opacity 200ms ease, transform 200ms ease, display 200ms allow-discrete;
@@ -263,7 +262,6 @@
       backdrop-filter: blur(3px);
     }
 
-    /* Block Escape key — user must choose an action */
     &amp;::backdrop {
       pointer-events: auto;
     }
@@ -319,11 +317,8 @@
           <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-javascript">// -- Alert Dialog ----------------------------------------------
-// Wires [data-alert-dialog-trigger] buttons to &lt;dialog class=&quot;alert-dialog&quot;&gt;.
-// Unlike regular dialogs: no backdrop-close, Escape key blocked.
 
 function init() {
-/* Wire triggers */
 document.querySelectorAll('[data-alert-dialog-trigger]:not([data-init])').forEach((trigger) =&gt; {
   trigger.dataset.init = '';
   const dialog = document.getElementById(trigger.dataset.alertDialogTrigger);
@@ -334,22 +329,18 @@ document.querySelectorAll('[data-alert-dialog-trigger]:not([data-init])').forEac
   });
 });
 
-/* Wire close buttons and block Escape */
 document.querySelectorAll('dialog.alert-dialog:not([data-init])').forEach((dialog) =&gt; {
   dialog.dataset.init = '';
-  /* Block Escape key */
   dialog.addEventListener('cancel', (e) =&gt; {
     e.preventDefault();
   });
 
-  /* Wire close buttons */
   dialog.querySelectorAll('[data-alert-dialog-close]').forEach((btn) =&gt; {
     btn.addEventListener('click', () =&gt; {
       dialog.close();
     });
   });
 
-  /* Return focus to trigger */
   dialog.addEventListener('close', () =&gt; {
     if (dialog._trigger) dialog._trigger.focus();
   });

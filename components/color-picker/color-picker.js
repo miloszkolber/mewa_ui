@@ -1,5 +1,4 @@
 // -- Color Picker ---------------------------------------------
-// Syncs the hex value display with the color input.
 
 function init() {
   document.querySelectorAll('.color-picker:not([data-init])').forEach((picker) => {

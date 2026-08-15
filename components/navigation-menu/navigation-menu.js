@@ -1,5 +1,4 @@
 // -- Navigation Menu -----------------------------------------
-// CSS anchor positioning for dropdown navigation menus.
 
 function init() {
   document.querySelectorAll('.nav-menu:not([data-init])').forEach((nav) => {
@@ -9,7 +8,6 @@ function init() {
     const content = document.getElementById(id);
     if (!content) return;
 
-    // CSS anchor positioning - unique name per trigger-content pair
     const anchorId = `--nav-menu-${id}`;
     trigger.style.anchorName = anchorId;
     content.style.positionAnchor = anchorId;

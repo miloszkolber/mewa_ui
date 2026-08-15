@@ -343,8 +343,6 @@
             <pre><code class="language-scss">/* -- Typography component --------------------------------------- */
 
 /* -- Base text ---------------------------------------------- */
-/* Sets the default font size for the entire page.            */
-/* All typography classes are sized relative to this baseline. */
 @layer base {
   body {
     font-size: var(--font-body-small);
@@ -526,7 +524,8 @@
   <script type="module" src="../components/carousel/carousel.js"></script>
   <script type="module" src="../components/slider/slider.js"></script>
   <script type="module" src="../components/sortable/sortable.js"></script>
-    <script type="text/plain" id="spec-md-content"># Pattern: Typography
+    <script type="text/plain" id="spec-md-content">
+# Pattern: Typography
 
 ## Native basis
 Native HTML text elements: `<h1>`–`<h4>`, `<p>`, `<blockquote>`, `<code>`, `<small>`.
@@ -614,6 +613,10 @@ Pure CSS — no JavaScript or ARIA required.
 | `.code` | `<code>` | Monospace inline code with muted background |
 
 ---
+
+## Notes
+
+- The `body` rule sets the baseline font size; all typography classes are sized relative to it.
 
 ## Accessibility
 

@@ -448,8 +448,6 @@ toast.show({
               Copy
             </button>
             <pre><code class="language-javascript">// -- Toast -----------------------------------------------------
-// Programmatic toast notification API.
-// Exposes window.toast with show/success/warning/info/error/dismiss.
 
 const DURATION = 4000;
 const MAX_VISIBLE = 3;
@@ -487,7 +485,6 @@ const toastCreate = (options) =&gt; {
     info: '&lt;svg class=&quot;toast-icon&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;10&quot;/&gt;&lt;path d=&quot;M12 16v-4&quot;/&gt;&lt;path d=&quot;M12 8h.01&quot;/&gt;&lt;/svg&gt;',
     destructive: '&lt;svg class=&quot;toast-icon&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;&lt;circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;10&quot;/&gt;&lt;path d=&quot;m15 9-6 6&quot;/&gt;&lt;path d=&quot;m9 9 6 6&quot;/&gt;&lt;/svg&gt;'
   };
-  // Build toast DOM safely (no innerHTML with user content)
   const contentEl = document.createElement('div');
   contentEl.className = 'toast-content';
   if (variant &amp;&amp; icons[variant]) {
@@ -562,7 +559,8 @@ window.toast = {
   <script type="module" src="../components/carousel/carousel.js"></script>
   <script type="module" src="../components/slider/slider.js"></script>
   <script type="module" src="../components/sortable/sortable.js"></script>
-    <script type="text/plain" id="spec-md-content"># Pattern: Toast
+    <script type="text/plain" id="spec-md-content">
+# Pattern: Toast
 
 ## Native basis
 `popover` API for top-layer rendering and non-modal behavior.
@@ -666,6 +664,8 @@ Set `data-position` on the `.toast-container`:
 ## Notes
 
 - The toast container should be a direct child of `<body>`
+- `window.toast` exposes `show`, `success`, `warning`, `info`, `error`, and `dismiss`
+- Toast markup is built via DOM APIs, never `innerHTML`, so user content stays safe
 - Toasts use `popover="manual"` so they don't auto-dismiss on outside click
 - The stacking order is newest on top (CSS `flex-direction: column-reverse` for bottom positions)
 - Maximum visible toasts defaults to 3 — older toasts are dismissed

@@ -11,14 +11,12 @@
     background: var(--background);
     width: fit-content;
 
-    /* Vertical separators stretch to fill toolbar height */
     & > .separator[data-orientation="vertical"] {
       align-self: stretch;
       height: auto;
       margin: var(--space-01) var(--space-01);
     }
 
-    /* Vertical toolbar */
     &[aria-orientation="vertical"] {
       flex-direction: column;
 

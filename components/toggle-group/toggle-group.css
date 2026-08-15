@@ -22,7 +22,6 @@
       }
     }
 
-    /* Collapse double borders on connected outline items */
     &[data-variant="outline"]:not([data-spacing]) > .toggle:not(:first-child) {
       margin-inline-start: -1px;
     }

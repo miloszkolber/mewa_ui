@@ -1,6 +1,4 @@
 // -- Toast -----------------------------------------------------
-// Programmatic toast notification API.
-// Exposes window.toast with show/success/warning/info/error/dismiss.
 
 const DURATION = 4000;
 const MAX_VISIBLE = 3;
@@ -38,7 +36,6 @@ const toastCreate = (options) => {
     info: '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
     destructive: '<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>'
   };
-  // Build toast DOM safely (no innerHTML with user content)
   const contentEl = document.createElement('div');
   contentEl.className = 'toast-content';
   if (variant && icons[variant]) {

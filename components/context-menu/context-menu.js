@@ -1,5 +1,4 @@
 // -- Context Menu ---------------------------------------------
-// Right-click context menu using the Popover API.
 
 function init() {
   document.querySelectorAll('[data-context-menu]:not([data-init])').forEach((trigger) => {

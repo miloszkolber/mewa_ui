@@ -1,6 +1,4 @@
 /* -- Icon component ---------------------------------------- */
-/* Styling for local icons (<i data-lucide="name"> replaced by   */
-/* an inline SVG from src/icons/). These styles target that.     */
 
 @layer components {
   [data-lucide] {

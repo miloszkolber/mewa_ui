@@ -29,7 +29,6 @@
     }
   }
 
-  /* Remove default details marker */
   .accordion-trigger {
     display: flex;
     align-items: center;
@@ -49,7 +48,6 @@
     &:hover { text-decoration: underline; }
   }
 
-  /* Chevron rotation */
   .accordion-chevron {
     color: var(--muted-foreground);
     transition: transform 200ms ease;
@@ -60,7 +58,6 @@
     }
   }
 
-  /* Content */
   .accordion-content {
     padding-bottom: var(--space-04);
     font-size: var(--font-body-small);

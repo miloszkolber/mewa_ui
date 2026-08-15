@@ -1,5 +1,4 @@
 // -- Combobox -------------------------------------------------
-// Searchable select with keyboard navigation and popover positioning.
 
 function init() {
   document.querySelectorAll('.combobox:not([data-init])').forEach((wrapper) => {
@@ -15,7 +14,6 @@ function init() {
     const allItems = Array.from(listbox.querySelectorAll('[role="option"]'));
     let highlighted = -1;
 
-    // CSS anchor positioning - unique name per trigger-popover pair
     const anchorId = `--combobox-${popover.id}`;
     trigger.style.anchorName = anchorId;
     popover.style.positionAnchor = anchorId;

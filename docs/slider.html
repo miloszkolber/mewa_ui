@@ -272,7 +272,6 @@
     border: none;
     accent-color: var(--primary);
 
-    /* Track — WebKit (filled via gradient) */
     &amp;::-webkit-slider-runnable-track {
       height: var(--size-02);
       border-radius: 9999px;
@@ -285,7 +284,6 @@
       );
     }
 
-    /* Track — Firefox */
     &amp;::-moz-range-track {
       height: var(--size-02);
       border-radius: 9999px;
@@ -293,14 +291,12 @@
       border: none;
     }
 
-    /* Filled portion — Firefox */
     &amp;::-moz-range-progress {
       height: var(--size-02);
       border-radius: 9999px;
       background: var(--primary);
     }
 
-    /* Thumb — WebKit */
     &amp;::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: var(--size-05);
@@ -313,7 +309,6 @@
       transition: transform 150ms;
     }
 
-    /* Thumb — Firefox */
     &amp;::-moz-range-thumb {
       width: var(--size-05);
       height: var(--size-05);
@@ -324,7 +319,6 @@
       transition: transform 150ms;
     }
 
-    /* Hover */
     &amp;:hover:not(:disabled) {
       &amp;::-webkit-slider-thumb {
         box-shadow: 0 0 0 4px color-mix(in oklch, var(--primary) 15%, transparent);
@@ -334,7 +328,6 @@
       }
     }
 
-    /* Focus */
     &amp;:focus-visible {
       &amp;::-webkit-slider-thumb {
         outline: var(--border-width-02) solid var(--ring);
@@ -346,7 +339,6 @@
       }
     }
 
-    /* Disabled */
     &amp;:disabled {
       opacity: 0.5;
       cursor: not-allowed;
@@ -355,7 +347,6 @@
       &amp;::-moz-range-thumb { cursor: not-allowed; }
     }
 
-    /* Vertical orientation */
     &amp;[data-orientation=&quot;vertical&quot;] {
       writing-mode: vertical-lr;
       direction: rtl;
@@ -380,7 +371,6 @@
     }
   }
 
-  /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .slider {
       &amp;::-webkit-slider-thumb { transition: none; }
@@ -388,7 +378,6 @@
     }
   }
 
-  /* High contrast */
   @media (prefers-contrast: more) {
     .slider {
       &amp;::-webkit-slider-thumb {
@@ -400,7 +389,6 @@
     }
   }
 
-  /* Forced colors (Windows High Contrast Mode) */
   @media (forced-colors: active) {
     .slider {
       &amp;::-webkit-slider-runnable-track {

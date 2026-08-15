@@ -1,5 +1,4 @@
 /* -- Image component ----------------------------------------- */
-/* Fallback on error + lightbox preview for [data-preview].    */
 
 function init() {
 /* -- Fallback: mark images that fail to load ----------------- */
@@ -63,7 +62,6 @@ function getLightbox() {
 
   lightboxImg = lightbox.querySelector('.image-lightbox-content > img');
 
-  /* Toolbar actions */
   lightbox.querySelector('.image-lightbox-toolbar').addEventListener('click', (e) => {
     const btn = e.target.closest('[data-action]');
     if (!btn) return;
@@ -79,7 +77,6 @@ function getLightbox() {
     applyTransform();
   });
 
-  /* Close on backdrop click */
   lightbox.addEventListener('click', (e) => {
     if (e.target === lightbox) lightbox.close();
   });

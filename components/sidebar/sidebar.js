@@ -1,5 +1,4 @@
 // -- Sidebar --------------------------------------------------
-// Toggle collapse, keyboard shortcut (Cmd+B), and mobile dialog.
 
 function init() {
 document.querySelectorAll('.app-sidebar:not([data-init])').forEach((sidebar) => {
@@ -25,7 +24,6 @@ document.querySelectorAll('[data-sidebar-mobile]:not([data-init])').forEach((tri
     dialog.showModal();
   });
 
-  // Close button inside the dialog
   dialog.querySelectorAll('.sidebar-mobile-close').forEach((btn) => {
     btn.addEventListener('click', () => { dialog.close(); });
   });
@@ -41,7 +39,6 @@ if (!document.__sidebarKbInit) {
   document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'b') {
       e.preventDefault();
-      // Toggle the first sidebar found on the page
       const sidebar = document.querySelector('.app-sidebar');
       if (sidebar) {
         sidebar.dataset.state = sidebar.dataset.state === 'collapsed' ? 'expanded' : 'collapsed';

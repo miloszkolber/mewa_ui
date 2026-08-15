@@ -1,7 +1,4 @@
 // -- Sortable -------------------------------------------------
-// Drag-and-drop + keyboard reordering for sortable lists.
-// Keyboard: Arrow keys navigate, Alt+Arrow reorders, Home/End jump.
-// Live region announces position changes to screen readers.
 
 function init() {
 document.querySelectorAll('.sortable:not([data-init])').forEach((list) => {
@@ -96,7 +93,6 @@ document.querySelectorAll('.sortable:not([data-init])').forEach((list) => {
         ? rect.left + rect.width / 2
         : rect.top + rect.height / 2;
       const pos = isHorizontal ? e.clientX : e.clientY;
-      // Clear other indicators
       list.querySelectorAll('[data-over]').forEach((el) => {
         if (el !== item) el.removeAttribute('data-over');
       });
@@ -138,7 +134,6 @@ document.querySelectorAll('.sortable:not([data-init])').forEach((list) => {
     const items = getItems();
     const idx = items.indexOf(active);
 
-    // Arrow navigation
     if (e.key === NEXT_KEY && !e.altKey) {
       e.preventDefault();
       const next = items[idx + 1];
@@ -154,7 +149,6 @@ document.querySelectorAll('.sortable:not([data-init])').forEach((list) => {
       e.preventDefault();
       if (items.length) setActive(items[items.length - 1]);
 
-    // Alt+Arrow reorders
     } else if (e.key === NEXT_KEY && e.altKey) {
       e.preventDefault();
       if (idx < items.length - 1) {

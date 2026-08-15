@@ -1,6 +1,4 @@
 // -- Toggle ---------------------------------------------------
-// Toggles aria-pressed on .toggle buttons.
-// Skips toggles inside .toggle-group — those are managed by toggle-group.js.
 
 function init() {
   document.querySelectorAll('.toggle:not([data-init]):not(.toggle-group .toggle)').forEach((toggle) => {

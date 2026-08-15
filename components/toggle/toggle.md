@@ -81,6 +81,7 @@ buttons (bold, italic, underline) or feature toggles.
 
 ## Notes
 
+- Toggles inside a `.toggle-group` are managed by toggle-group.js and skipped by toggle.js.
 - The toggle is just a button with `aria-pressed` — no custom elements needed.
 - Icon-only toggles must have `aria-label` for screen readers.
 - For toggle groups (e.g., text alignment), wrap in a container with `role="group"` and `aria-label`.

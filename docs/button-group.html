@@ -302,12 +302,10 @@
     display: inline-flex;
     align-items: stretch;
 
-    /* Collapse borders between adjacent buttons */
     &amp; &gt; .btn + .btn {
       margin-inline-start: -1px;
     }
 
-    /* Ensure hovered/focused button stacks above its neighbors */
     &amp; &gt; .btn:hover,
     &amp; &gt; .btn:focus-visible {
       position: relative;
@@ -382,7 +380,8 @@
   <script type="module" src="../components/carousel/carousel.js"></script>
   <script type="module" src="../components/slider/slider.js"></script>
   <script type="module" src="../components/sortable/sortable.js"></script>
-    <script type="text/plain" id="spec-md-content"># Pattern: Button Group
+    <script type="text/plain" id="spec-md-content">
+# Pattern: Button Group
 
 ## Native basis
 `<div>` container with `.btn` buttons. Visually merges adjacent buttons with connected borders.
@@ -442,6 +441,7 @@
 ## Notes
 
 - Button groups work best with the `outline` variant — the connected borders create a cohesive unit.
+- Hovered or focused buttons are raised above their neighbors so the focus ring and hover border stay visible.
 - Adjacent button borders collapse so only one border renders between buttons.
 - Use `<hr role="separator">` to visually divide non-outline buttons (e.g., `default` variant).
 - Outline buttons already have visible borders and don't need separators.

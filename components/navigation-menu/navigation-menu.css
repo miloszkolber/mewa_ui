@@ -12,7 +12,6 @@
     & svg { width: 0.875rem; height: 0.875rem; color: var(--muted-foreground); transition: transform 200ms ease; }
   }
 
-  /* Rotate chevron when popover is open */
   .nav-menu-trigger:has(+ .nav-menu-content:popover-open) svg {
     transform: rotate(180deg);
   }

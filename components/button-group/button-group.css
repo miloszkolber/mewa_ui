@@ -5,12 +5,10 @@
     display: inline-flex;
     align-items: stretch;
 
-    /* Collapse borders between adjacent buttons */
     & > .btn + .btn {
       margin-inline-start: -1px;
     }
 
-    /* Ensure hovered/focused button stacks above its neighbors */
     & > .btn:hover,
     & > .btn:focus-visible {
       position: relative;

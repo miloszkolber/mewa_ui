@@ -12,7 +12,6 @@
     position: fixed;
     inset: 0;
 
-    /* Entry/exit animation */
     opacity: 0;
     transform: translateY(-0.5rem) scale(0.98);
     transition: opacity 200ms ease, transform 200ms ease, display 200ms allow-discrete;
@@ -33,7 +32,6 @@
       backdrop-filter: blur(3px);
     }
 
-    /* Block Escape key — user must choose an action */
     &::backdrop {
       pointer-events: auto;
     }

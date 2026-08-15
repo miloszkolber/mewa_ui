@@ -248,7 +248,6 @@
     &amp; svg { width: 0.875rem; height: 0.875rem; color: var(--muted-foreground); transition: transform 200ms ease; }
   }
 
-  /* Rotate chevron when popover is open */
   .nav-menu-trigger:has(+ .nav-menu-content:popover-open) svg {
     transform: rotate(180deg);
   }
@@ -303,7 +302,6 @@
           <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-javascript">// -- Navigation Menu -----------------------------------------
-// CSS anchor positioning for dropdown navigation menus.
 
 function init() {
   document.querySelectorAll('.nav-menu:not([data-init])').forEach((nav) =&gt; {
@@ -313,7 +311,6 @@ function init() {
     const content = document.getElementById(id);
     if (!content) return;
 
-    // CSS anchor positioning - unique name per trigger-content pair
     const anchorId = `--nav-menu-${id}`;
     trigger.style.anchorName = anchorId;
     content.style.positionAnchor = anchorId;

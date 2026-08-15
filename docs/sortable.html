@@ -324,7 +324,6 @@
     flex-direction: column;
     gap: var(--space-01);
 
-    /* Horizontal orientation */
     &amp;[data-orientation=&quot;horizontal&quot;] {
       flex-direction: row;
       flex-wrap: wrap;
@@ -347,27 +346,23 @@
 
     &amp;:active { cursor: grabbing; }
 
-    /* Keyboard focus (roving tabindex) */
     &amp;:focus-visible {
       outline: var(--border-width-02) solid var(--ring);
       outline-offset: 2px;
     }
 
-    /* Active descendant highlight (keyboard navigation) */
     &amp;[data-active] {
       border-color: var(--ring);
       background-color: var(--accent);
       color: var(--accent-foreground);
     }
 
-    /* Drag in progress */
     &amp;[data-dragging] {
       opacity: 0.5;
 
       border-style: dashed;
     }
 
-    /* Drop target indicator */
     &amp;[data-over=&quot;before&quot;] {
       border-top: var(--border-width-02) solid var(--primary);
     }
@@ -375,7 +370,6 @@
       border-bottom: var(--border-width-02) solid var(--primary);
     }
 
-    /* Horizontal drop indicators */
     .sortable[data-orientation=&quot;horizontal&quot;] &amp;[data-over=&quot;before&quot;] {
       border-top: var(--border-width-01) solid var(--border);
       border-inline-start: var(--border-width-02) solid var(--primary);
@@ -385,7 +379,6 @@
       border-inline-end: var(--border-width-02) solid var(--primary);
     }
 
-    /* Disabled */
     &amp;[aria-disabled=&quot;true&quot;] {
       opacity: 0.5;
       cursor: not-allowed;
@@ -406,7 +399,6 @@
     &amp; svg { width: var(--size-04); height: var(--size-04); }
   }
 
-  /* Live region for screen reader announcements */
   .sortable-live {
     position: absolute;
     width: 1px;
@@ -456,9 +448,6 @@
           <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-javascript">// -- Sortable -------------------------------------------------
-// Drag-and-drop + keyboard reordering for sortable lists.
-// Keyboard: Arrow keys navigate, Alt+Arrow reorders, Home/End jump.
-// Live region announces position changes to screen readers.
 
 function init() {
 document.querySelectorAll('.sortable:not([data-init])').forEach((list) =&gt; {
@@ -553,7 +542,6 @@ document.querySelectorAll('.sortable:not([data-init])').forEach((list) =&gt; {
         ? rect.left + rect.width / 2
         : rect.top + rect.height / 2;
       const pos = isHorizontal ? e.clientX : e.clientY;
-      // Clear other indicators
       list.querySelectorAll('[data-over]').forEach((el) =&gt; {
         if (el !== item) el.removeAttribute('data-over');
       });
@@ -595,7 +583,6 @@ document.querySelectorAll('.sortable:not([data-init])').forEach((list) =&gt; {
     const items = getItems();
     const idx = items.indexOf(active);
 
-    // Arrow navigation
     if (e.key === NEXT_KEY &amp;&amp; !e.altKey) {
       e.preventDefault();
       const next = items[idx + 1];
@@ -611,7 +598,6 @@ document.querySelectorAll('.sortable:not([data-init])').forEach((list) =&gt; {
       e.preventDefault();
       if (items.length) setActive(items[items.length - 1]);
 
-    // Alt+Arrow reorders
     } else if (e.key === NEXT_KEY &amp;&amp; e.altKey) {
       e.preventDefault();
       if (idx &lt; items.length - 1) {

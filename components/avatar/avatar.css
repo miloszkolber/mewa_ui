@@ -45,7 +45,6 @@
     inset: 0;
   }
 
-  /* Hide fallback when image is loaded */
   .avatar:has(.avatar-image:not([data-error])) .avatar-fallback {
     display: none;
   }
@@ -61,7 +60,6 @@
     border: var(--border-width-02) solid var(--background);
   }
 
-  /* Avatar group */
   .avatar-group {
     display: flex;
     align-items: center;

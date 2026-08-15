@@ -87,6 +87,10 @@ Pure CSS — no JavaScript or ARIA required.
 
 ---
 
+## Notes
+
+- The `body` rule sets the baseline font size; all typography classes are sized relative to it.
+
 ## Accessibility
 
 - Use heading levels in order (`h1` → `h2` → `h3`). Do not skip levels.

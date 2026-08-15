@@ -11,7 +11,6 @@
     background-color: var(--secondary);
   }
 
-  /* WebKit (Chrome, Safari, Edge) */
   .progress::-webkit-progress-bar {
     background-color: var(--secondary);
     border-radius: 9999px;
@@ -23,13 +22,11 @@
     transition: width 300ms ease;
   }
 
-  /* Firefox */
   .progress::-moz-progress-bar {
     background-color: var(--primary);
     border-radius: 9999px;
   }
 
-  /* Indeterminate state */
   .progress:indeterminate {
     background: linear-gradient(
       90deg,

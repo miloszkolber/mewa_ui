@@ -58,6 +58,7 @@
 ## Notes
 
 - Button groups work best with the `outline` variant — the connected borders create a cohesive unit.
+- Hovered or focused buttons are raised above their neighbors so the focus ring and hover border stay visible.
 - Adjacent button borders collapse so only one border renders between buttons.
 - Use `<hr role="separator">` to visually divide non-outline buttons (e.g., `default` variant).
 - Outline buttons already have visible borders and don't need separators.

@@ -102,6 +102,8 @@ Set `data-position` on the `.toast-container`:
 ## Notes
 
 - The toast container should be a direct child of `<body>`
+- `window.toast` exposes `show`, `success`, `warning`, `info`, `error`, and `dismiss`
+- Toast markup is built via DOM APIs, never `innerHTML`, so user content stays safe
 - Toasts use `popover="manual"` so they don't auto-dismiss on outside click
 - The stacking order is newest on top (CSS `flex-direction: column-reverse` for bottom positions)
 - Maximum visible toasts defaults to 3 — older toasts are dismissed

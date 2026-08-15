@@ -75,7 +75,6 @@
       border: none;
     }
 
-    /* Arrow placement — default (top side): arrow at bottom center */
     &:not([data-side]), &[data-side="top"] {
       & [data-arrow] { bottom: -4px; left: 50%; margin-left: -4px; }
     }

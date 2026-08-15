@@ -1,5 +1,4 @@
 // -- Dialog ---------------------------------------------------
-// Wires [data-dialog-trigger] buttons to <dialog> elements.
 
 function init() {
 document.querySelectorAll('[data-dialog-trigger]:not([data-init])').forEach((trigger) => {
