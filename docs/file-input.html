@@ -21,7 +21,6 @@
   <link rel="stylesheet" href="css/docs-theme.css">
   <link rel="stylesheet" href="css/docs-utilities.css">
   <link rel="stylesheet" href="css/layout.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.7/marked.min.js" defer integrity="sha384-H+hy9ULve6xfxRkWIh/YOtvDdpXgV2fmAGQkIDTxIgZwNoaoBal14Di2YTMR6MzR" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="../components/button/button.css">
   <link rel="stylesheet" href="../components/card/card.css">
   <link rel="stylesheet" href="../components/dialog/dialog.css">
@@ -91,34 +90,6 @@
         <p class="text-muted-foreground leading-relaxed mb-6">
           A styled file picker. Built on native <code>&lt;input type="file"&gt;</code> with custom <code>::file-selector-button</code> styling.
         </p>
-        <!-- Component skill -->
-        <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
-          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
-            Component skill — <span data-spec-href="../components/file-input/file-input.md" style="text-decoration: underline; text-underline-offset: 3px">components/file-input/file-input.md</span>
-          </summary>
-          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: var(--font-height)">
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Native basis</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)"><code>&lt;input type=&quot;file&quot;&gt;</code> element with custom <code>::file-selector-button</code> styling.</p>
-
-            <p style="margin: 0 0 0.625rem; font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Web Platform APIs</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
-              <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file" target="_blank" rel="noopener" title="native file picker with drag-and-drop support" class="api-pill"><code>&lt;input type=&quot;file&quot;&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/::file-selector-button" target="_blank" rel="noopener" title="styles the native Choose File button" class="api-pill"><code>::file-selector-button</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-            </div>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Classes</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
-              <code>.file-input</code>
-            </div>
-
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Notes</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Reuses the <code>.input</code> styling pattern for consistency.</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• The <code>::file-selector-button</code> is styled as a muted button with hover effect.</p>
-            <p class="text-muted-foreground" style="margin: 0 0 0">• The existing <code>.input[type=&quot;file&quot;]</code> already covers this — the file-input component provides a standalone class.</p>
-          </div>
-        </details>
       </div>
         <p class="text-sm font-medium mb-2 mt-6">Default</p>
         <p class="text-xs text-muted-foreground mb-3">Single file selection.</p>
@@ -167,58 +138,6 @@
         </div>
 
         <!-- -- CSS --------------------------------------- -->
-        <section style="margin-top: var(--space-09)" id="source-css">
-          <h2>CSS <a href="../components/file-input/file-input.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: var(--font-weight); color: var(--muted-foreground); text-decoration: underline; text-underline-offset: var(--border-width-02); margin-left: var(--space-02)">view file</a></h2>
-          <div style="position: relative; margin-top: var(--space-02)">
-            <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
-            <pre><code class="language-scss">/* -- File Input component --------------------------------------- */
-
-@layer components {
-  .file-input {
-    width: 100%;
-    height: var(--size-08);
-    border: var(--border-width-01) solid var(--input);
-
-    background: var(--background);
-    font-size: var(--font-body-small);
-    font-family: var(--font-sans);
-    color: var(--foreground);
-    outline: none;
-
-    transition: border-color 150ms;
-    padding: 0;
-    cursor: pointer;
-
-    &amp;::file-selector-button {
-      height: 100%;
-      border: none;
-      border-right: var(--border-width-01) solid var(--input);
-      background: var(--muted);
-      color: var(--foreground);
-      font-size: var(--font-body-small);
-      font-weight: 500;
-      font-family: var(--font-sans);
-      padding: 0 var(--space-03);
-      margin-right: var(--space-03);
-      cursor: pointer;
-      transition: background 150ms;
-
-      &amp;:hover { background: var(--accent); }
-    }
-
-    &amp;:focus {
-      border-color: var(--ring);
-      box-shadow: 0 0 0 2px oklch(from var(--ring) l c h / 0.2);
-    }
-
-    &amp;:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-  }
-}</code></pre>
-          </div>
-        </section>
 
     </main>
   </div>

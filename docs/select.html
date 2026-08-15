@@ -21,7 +21,6 @@
   <link rel="stylesheet" href="css/docs-theme.css">
   <link rel="stylesheet" href="css/docs-utilities.css">
   <link rel="stylesheet" href="css/layout.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.7/marked.min.js" defer integrity="sha384-H+hy9ULve6xfxRkWIh/YOtvDdpXgV2fmAGQkIDTxIgZwNoaoBal14Di2YTMR6MzR" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="../components/button/button.css">
   <link rel="stylesheet" href="../components/card/card.css">
   <link rel="stylesheet" href="../components/dialog/dialog.css">
@@ -91,45 +90,6 @@
         <p class="text-muted-foreground leading-relaxed mb-6">
           A native dropdown for choosing from a list of options. Built on <code>&lt;select&gt;</code> with <code>appearance: none</code> and a custom chevron.
         </p>
-        <!-- Component skill -->
-        <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
-          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
-            Component skill — <span data-spec-href="../components/select/select.md" style="text-decoration: underline; text-underline-offset: 3px">components/select/select.md</span>
-          </summary>
-          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: var(--font-height)">
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Native basis</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)"><code>&lt;select&gt;</code> element with custom styling via <code>appearance: none</code>.</p>
-
-            <p style="margin: 0 0 0.625rem; font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Web Platform APIs</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
-              <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/select" target="_blank" rel="noopener" title="native dropdown with keyboard navigation and form integration" class="api-pill"><code>&lt;select&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/optgroup" target="_blank" rel="noopener" title="groups options with a label" class="api-pill"><code>&lt;optgroup&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-            </div>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Classes</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
-              <code>.select</code>
-            </div>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Sizes (data-size)</p>
-            <div style="display: grid; grid-template-columns: auto 1fr; gap: var(--space-01) var(--space-04); margin-bottom: var(--space-05)">
-              <code>sm</code><span class="text-muted-foreground">Height: 2rem</span>
-              <code>lg</code><span class="text-muted-foreground">Height: 2.75rem</span>
-            </div>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Accessibility</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Native <code>&lt;select&gt;</code> provides full keyboard navigation (arrow keys, type-ahead).</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Use <code>&lt;label&gt;</code> with <code>for</code> for description.</p>
-            <p class="text-muted-foreground" style="margin: 0 0 0">• Use <code>disabled</code> on <code>&lt;option&gt;</code> elements for placeholder text.</p>
-
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Notes</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Uses <code>appearance: none</code> with a custom chevron via <code>background-image</code> SVG.</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• The dropdown list is rendered by the browser — it cannot be styled.</p>
-            <p class="text-muted-foreground" style="margin: 0 0 0">• For a fully custom dropdown, use the Combobox component instead.</p>
-          </div>
-        </details>
       </div>
         <p class="text-sm font-medium mb-2 mt-6">Default</p>
         <p class="text-xs text-muted-foreground mb-3">Native select with placeholder.</p>
@@ -205,60 +165,6 @@
         </div>
 
         <!-- -- CSS --------------------------------------- -->
-        <section style="margin-top: var(--space-09)" id="source-css">
-          <h2>CSS <a href="../components/select/select.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: var(--font-weight); color: var(--muted-foreground); text-decoration: underline; text-underline-offset: var(--border-width-02); margin-left: var(--space-02)">view file</a></h2>
-          <div style="position: relative; margin-top: var(--space-02)">
-            <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
-            <pre><code class="language-scss">/* -- Select component ------------------------------------------- */
-
-@layer components {
-  .select {
-    appearance: none;
-    height: var(--size-08);
-    width: 100%;
-    border: var(--border-width-01) solid var(--input);
-
-    background: var(--background);
-    padding: 0 var(--space-07) 0 var(--space-03);
-    font-size: var(--font-body-small);
-    font-family: var(--font-sans);
-    color: var(--foreground);
-    outline: none;
-
-    cursor: pointer;
-    transition: border-color 150ms;
-
-    background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E&quot;);
-    background-repeat: no-repeat;
-    background-position: right 0.5rem center;
-    background-size: 1rem;
-
-    &amp;:focus {
-      border-color: var(--ring);
-      box-shadow: 0 0 0 2px oklch(from var(--ring) l c h / 0.2);
-    }
-
-    &amp;:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    &amp;:is([aria-invalid=&quot;true&quot;], :user-invalid) {
-      border-color: var(--destructive);
-
-      &amp;:focus {
-        border-color: var(--destructive);
-        box-shadow: 0 0 0 2px oklch(from var(--destructive) l c h / 0.2);
-      }
-    }
-
-    /* -- Sizes ----------------------------------------------- */
-    &amp;[data-size=&quot;sm&quot;] { height: var(--size-07);    padding-left: 0.625rem; font-size: 0.8125rem; }
-    &amp;[data-size=&quot;lg&quot;] { height: 2.75rem; padding-left: var(--space-04);     font-size: var(--font-body); }
-  }
-}</code></pre>
-          </div>
-        </section>
 
     </main>
   </div>

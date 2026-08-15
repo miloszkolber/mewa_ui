@@ -21,7 +21,6 @@
   <link rel="stylesheet" href="css/docs-theme.css">
   <link rel="stylesheet" href="css/docs-utilities.css">
   <link rel="stylesheet" href="css/layout.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.7/marked.min.js" defer integrity="sha384-H+hy9ULve6xfxRkWIh/YOtvDdpXgV2fmAGQkIDTxIgZwNoaoBal14Di2YTMR6MzR" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="../components/button/button.css">
   <link rel="stylesheet" href="../components/card/card.css">
   <link rel="stylesheet" href="../components/dialog/dialog.css">
@@ -91,39 +90,6 @@
         <p class="text-muted-foreground leading-relaxed mb-6">
           A figure-based image component with fallback, lightbox preview, aspect ratio control, and caption. Built on <code>&lt;figure&gt;</code>, <code>&lt;dialog&gt;</code>, and native CSS.
         </p>
-        <!-- Component skill -->
-        <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
-          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
-            Component skill — <span data-spec-href="../components/image/image.md" style="text-decoration: underline; text-underline-offset: 3px">components/image/image.md</span>
-          </summary>
-          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: var(--font-height)">
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Native basis</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)"><code>&lt;figure&gt;</code> wrapping <code>&lt;img&gt;</code> with optional <code>&lt;figcaption&gt;</code>. Uses <code>&lt;dialog&gt;</code> for fullscreen lightbox.</p>
-
-            <p style="margin: 0 0 0.625rem; font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Web Platform APIs</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
-              <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/figure" target="_blank" rel="noopener" title="self-contained content with optional caption" class="api-pill"><code>&lt;figure&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog" target="_blank" rel="noopener" title="native modal for lightbox preview" class="api-pill"><code>&lt;dialog&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio" target="_blank" rel="noopener" title="intrinsic aspect ratio control" class="api-pill"><code>aspect-ratio</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style" target="_blank" rel="noopener" title="entry animation for lightbox" class="api-pill"><code>@starting-style</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-            </div>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Classes</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
-              <code>.image</code>
-              <code>.image-caption</code>
-              <code>.image-fallback</code>
-              <code>.image-lightbox</code>
-            </div>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Data attributes</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>data-preview</code> — enables click-to-preview lightbox</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>data-ratio</code> — values: <code>1/1</code>, <code>4/3</code>, <code>3/2</code>, <code>16/9</code>, <code>21/9</code>, <code>3/4</code></p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>data-fit</code> — values: <code>contain</code>, <code>fill</code>, <code>none</code></p>
-            <p class="text-muted-foreground" style="margin: 0 0 0">• <code>data-radius</code> — value: <code>full</code> (circular, avatar-style)</p>
-          </div>
-        </details>
       </div>
 
         <!-- Default -->
@@ -304,24 +270,8 @@
         </div>
 
         <!-- -- CSS --------------------------------------- -->
-        <section style="margin-top: var(--space-09)" id="source-css">
-          <h2>CSS <a href="../components/image/image.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: var(--font-weight); color: var(--muted-foreground); text-decoration: underline; text-underline-offset: var(--border-width-02); margin-left: var(--space-02)">view file</a></h2>
-          <p class="text-muted-foreground text-sm mb-4">Styles for figure, caption, fallback, and lightbox dialog.</p>
-          <div style="position: relative; margin-top: var(--space-02)">
-            <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
-            <pre><code class="language-scss" data-src="../components/image/image.css"></code></pre>
-          </div>
-        </section>
 
         <!-- -- JS --------------------------------------- -->
-        <section style="margin-top: var(--space-09)" id="source-js">
-          <h2>JavaScript <a href="../components/image/image.js" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: var(--font-weight); color: var(--muted-foreground); text-decoration: underline; text-underline-offset: var(--border-width-02); margin-left: var(--space-02)">view file</a></h2>
-          <p class="text-muted-foreground text-sm mb-4">Fallback error detection and lightbox preview with zoom/rotate.</p>
-          <div style="position: relative; margin-top: var(--space-02)">
-            <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
-            <pre><code class="language-javascript" data-src="../components/image/image.js"></code></pre>
-          </div>
-        </section>
 
     </main>
   </div>

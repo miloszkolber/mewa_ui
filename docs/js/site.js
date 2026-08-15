@@ -21,9 +21,6 @@
   // from ../src/icons/{name}.svg (relative to the page at docs/).
   var iconCache = {};
 
-  // Cache of fetched component skills, keyed by href (see initSpecModal).
-  var specCache = {};
-
   function initLocalIcons() {
     document.querySelectorAll('[data-lucide]:not([data-icon-loaded])').forEach(function (el) {
       var name = el.getAttribute('data-lucide');
@@ -100,82 +97,6 @@
   // (runs on initial load AND after each SPA navigation)
   window.onPageReady(initPageContent);
 
-  // -- Spec modal viewer (runs once, uses delegation) ------
-  function initSpecModal() {
-    var specDialog = document.createElement('dialog');
-    specDialog.className = 'dialog spec-modal';
-    specDialog.setAttribute('role', 'dialog');
-    specDialog.setAttribute('aria-modal', 'true');
-    specDialog.setAttribute('aria-label', 'Component skill');
-    specDialog.innerHTML =
-      '<div class="dialog-content spec-modal-content">' +
-        '<div class="dialog-header" style="display:flex;justify-content:space-between;align-items:center;">' +
-          '<h2 class="dialog-title" id="spec-modal-title">Component Skill</h2>' +
-          '<button class="btn" data-variant="ghost" data-size="sm" data-dialog-close aria-label="Close" style="padding:0.25rem;">' +
-            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>' +
-          '</button>' +
-        '</div>' +
-        '<div id="spec-modal-body" class="spec-modal-body" style="margin-top:1rem;overflow-y:auto;max-height:calc(80vh - 5rem);"></div>' +
-      '</div>';
-    document.body.appendChild(specDialog);
-
-    specDialog.addEventListener('click', function (e) {
-      if (e.target === specDialog) specDialog.close();
-    });
-    specDialog.querySelector('[data-dialog-close]').addEventListener('click', function () {
-      specDialog.close();
-    });
-
-    // Uses document-level delegation — works automatically with SPA
-    document.addEventListener('click', function (e) {
-      var link = e.target.closest('[data-spec-href]');
-      if (!link) return;
-      e.preventDefault();
-      e.stopPropagation();
-
-      var body = document.getElementById('spec-modal-body');
-      var title = document.getElementById('spec-modal-title');
-      var href = link.getAttribute('data-spec-href');
-      title.textContent = href.split('/').pop();
-
-      /* Always fetch the live skill file so md edits show up
-         automatically. A cache keyed by href avoids refetching;
-         failures are cached as null so they are not retried on
-         every click. No embedded copy exists to drift. */
-      body.innerHTML = '<p class="text-muted-foreground text-sm">Loading…</p>';
-      specDialog.showModal();
-      if (specCache[href] !== undefined) {
-        if (specCache[href]) renderSpec(specCache[href], body);
-        return;
-      }
-      fetch(href)
-        .then(function (r) {
-          if (!r.ok) throw new Error(r.status);
-          return r.text();
-        })
-        .then(function (md) { specCache[href] = md; renderSpec(md, body); })
-        .catch(function () {
-          specCache[href] = null;
-          body.innerHTML = '<p class="text-muted-foreground text-sm">Failed to load component skill.</p>';
-        });
-    });
-
-    function renderSpec(md, body) {
-      if (window.marked) {
-        body.innerHTML = marked.parse(md);
-        // Shiki highlighting for spec modal code blocks
-        if (window.__shikiHighlightAll) window.__shikiHighlightAll();
-      } else {
-        var pre = document.createElement('pre');
-        pre.style.whiteSpace = 'pre-wrap';
-        pre.style.fontSize = '0.8125rem';
-        pre.textContent = md;
-        body.innerHTML = '';
-        body.appendChild(pre);
-      }
-    }
-  }
-
   // -- On DOM ready (one-time setup + initial content init) -
   document.addEventListener('DOMContentLoaded', function () {
     // Sync dark mode icon state
@@ -188,9 +109,6 @@
     // Bind theme toggle (once — header persists across SPA navs)
     var themeBtn = document.getElementById('theme-toggle');
     if (themeBtn) themeBtn.addEventListener('click', toggleDark);
-
-    // Create spec modal (once — persists across SPA navs)
-    initSpecModal();
 
     // Handle hash-link clicks (TOC links, etc.)
     // Default anchor scroll doesn't always work after SPA navigation

@@ -21,7 +21,6 @@
   <link rel="stylesheet" href="css/docs-theme.css">
   <link rel="stylesheet" href="css/docs-utilities.css">
   <link rel="stylesheet" href="css/layout.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.7/marked.min.js" defer integrity="sha384-H+hy9ULve6xfxRkWIh/YOtvDdpXgV2fmAGQkIDTxIgZwNoaoBal14Di2YTMR6MzR" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="../components/button/button.css">
   <link rel="stylesheet" href="../components/card/card.css">
   <link rel="stylesheet" href="../components/dialog/dialog.css">
@@ -91,37 +90,6 @@
         <p class="text-muted-foreground leading-relaxed mb-6">
           A numeric input with increment/decrement buttons. Built on <code>&lt;input type="number"&gt;</code> with custom stepper controls.
         </p>
-        <!-- Component skill -->
-        <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
-          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
-            Component skill — <span data-spec-href="../components/number-input/number-input.md" style="text-decoration: underline; text-underline-offset: 3px">components/number-input/number-input.md</span>
-          </summary>
-          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: var(--font-height)">
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Native basis</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)"><code>&lt;input type=&quot;number&quot;&gt;</code> with custom increment/decrement buttons.</p>
-
-            <p style="margin: 0 0 0.625rem; font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Web Platform APIs</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
-              <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/number" target="_blank" rel="noopener" title="native number input with built-in validation and step increment" class="api-pill"><code>&lt;input type=&quot;number&quot;&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-            </div>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Classes</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
-              <code>.number-input</code>
-            </div>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Data attributes</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">• <code>data-action</code></p>
-
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Notes</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Reuses the <code>.input</code> class for consistent styling.</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Native spinner buttons are hidden with <code>::-webkit-inner-spin-button</code>.</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Use <code>min</code>, <code>max</code>, and <code>step</code> for range constraints.</p>
-            <p class="text-muted-foreground" style="margin: 0 0 0">• Keyboard: arrow keys increment/decrement by step value.</p>
-          </div>
-        </details>
       </div>
         <p class="text-sm font-medium mb-2 mt-6">Default</p>
         <p class="text-xs text-muted-foreground mb-3">Number input with +/- buttons.</p>
@@ -167,113 +135,8 @@
         </div>
 
         <!-- -- CSS --------------------------------------- -->
-        <section style="margin-top: var(--space-09)" id="source-css">
-          <h2>CSS <a href="../components/number-input/number-input.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: var(--font-weight); color: var(--muted-foreground); text-decoration: underline; text-underline-offset: var(--border-width-02); margin-left: var(--space-02)">view file</a></h2>
-          <div style="position: relative; margin-top: var(--space-02)">
-            <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
-            <pre><code class="language-scss">/* -- Number Input component ------------------------------------- */
-
-@layer components {
-  .number-input {
-    display: inline-flex;
-    align-items: center;
-    border: var(--border-width-01) solid var(--input);
-
-    background: var(--background);
-
-    overflow: hidden;
-
-    &amp; input {
-      border: none;
-      outline: none;
-      background: transparent;
-      height: var(--size-08);
-      width: var(--size-11);
-      text-align: center;
-      font-size: var(--font-body-small);
-      font-family: var(--font-sans);
-      color: var(--foreground);
-      -moz-appearance: textfield;
-
-      &amp;::-webkit-inner-spin-button,
-      &amp;::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-      }
-    }
-
-    &amp; button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: var(--size-07);
-      height: var(--size-08);
-      border: none;
-      background: transparent;
-      color: var(--muted-foreground);
-      cursor: pointer;
-      font-size: var(--font-body);
-      font-family: var(--font-sans);
-      transition: background 150ms, color 150ms;
-      flex-shrink: 0;
-
-      &amp;:hover {
-        background: var(--accent);
-        color: var(--accent-foreground);
-      }
-
-      &amp;:first-child {
-        border-right: var(--border-width-01) solid var(--input);
-      }
-
-      &amp;:last-child {
-        border-left: var(--border-width-01) solid var(--input);
-      }
-    }
-
-    &amp;:focus-within {
-      border-color: var(--ring);
-      box-shadow: 0 0 0 2px oklch(from var(--ring) l c h / 0.2);
-    }
-  }
-}</code></pre>
-          </div>
-        </section>
 
         <!-- -- JavaScript -------------------------------- -->
-        <section style="margin-top: var(--space-09)" id="source-js">
-          <h2>JavaScript <a href="../components/number-input/number-input.js" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: var(--font-weight); color: var(--muted-foreground); text-decoration: underline; text-underline-offset: var(--border-width-02); margin-left: var(--space-02)">view file</a></h2>
-          <p class="text-muted-foreground text-sm mb-4">Number Input</p>
-          <div style="position: relative; margin-top: var(--space-02)">
-            <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
-            <pre><code class="language-javascript">// -- Number Input ---------------------------------------------
-
-function init() {
-  document.querySelectorAll('.number-input:not([data-init])').forEach((wrapper) =&gt; {
-  wrapper.dataset.init = '';
-  const input = wrapper.querySelector('input[type=&quot;number&quot;]');
-  const decBtn = wrapper.querySelector('[data-action=&quot;decrement&quot;]');
-  const incBtn = wrapper.querySelector('[data-action=&quot;increment&quot;]');
-  if (!input) return;
-
-  const update = (direction) =&gt; {
-    try {
-      if (direction &gt; 0) input.stepUp();
-      else input.stepDown();
-      input.dispatchEvent(new Event('input', { bubbles: true }));
-      input.dispatchEvent(new Event('change', { bubbles: true }));
-    } catch(e) { /* min/max boundary */ }
-  };
-
-  if (decBtn) decBtn.addEventListener('click', () =&gt; { update(-1); });
-  if (incBtn) incBtn.addEventListener('click', () =&gt; { update(1); });
-});
-}
-
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });</code></pre>
-          </div>
-        </section>
 
     </main>
   </div>

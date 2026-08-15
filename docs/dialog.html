@@ -21,7 +21,6 @@
   <link rel="stylesheet" href="css/docs-theme.css">
   <link rel="stylesheet" href="css/docs-utilities.css">
   <link rel="stylesheet" href="css/layout.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.7/marked.min.js" defer integrity="sha384-H+hy9ULve6xfxRkWIh/YOtvDdpXgV2fmAGQkIDTxIgZwNoaoBal14Di2YTMR6MzR" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="../components/button/button.css">
   <link rel="stylesheet" href="../components/card/card.css">
   <link rel="stylesheet" href="../components/dialog/dialog.css">
@@ -92,60 +91,6 @@
           Modal window built on native <code>&lt;dialog&gt;</code> + <code>showModal()</code>.
           Focus trap, Escape key, and backdrop are all browser-native. Animated with <code>@starting-style</code>.
         </p>
-        <!-- Component skill -->
-        <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
-          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
-            Component skill — <span data-spec-href="../components/dialog/dialog.md" style="text-decoration: underline; text-underline-offset: 3px">components/dialog/dialog.md</span>
-          </summary>
-          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: var(--font-height)">
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Native basis</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)"><code>&lt;dialog&gt;</code> element + <code>showModal()</code>. The browser provides:</p>
-
-            <p style="margin: 0 0 0.625rem; font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Web Platform APIs</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
-              <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog" target="_blank" rel="noopener" title="native modal element with built-in focus trap and Escape-to-close" class="api-pill"><code>&lt;dialog&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal" target="_blank" rel="noopener" title="opens dialog as modal in the top layer with backdrop" class="api-pill"><code>HTMLDialogElement.showModal()</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop" target="_blank" rel="noopener" title="pseudo-element for the overlay behind the modal" class="api-pill"><code>::backdrop</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style" target="_blank" rel="noopener" title="defines entry animation starting values" class="api-pill"><code>@starting-style</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-            </div>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Classes</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
-              <code>.dialog</code>
-              <code>.dialog-content</code>
-              <code>.dialog-header</code>
-              <code>.dialog-title</code>
-              <code>.dialog-description</code>
-              <code>.dialog-body</code>
-              <code>.dialog-footer</code>
-            </div>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Sizes (data-size)</p>
-            <div style="display: grid; grid-template-columns: auto 1fr; gap: var(--space-01) var(--space-04); margin-bottom: var(--space-05)">
-              <code>sm</code><span class="text-muted-foreground">max-width: 24rem</span>
-              <code>lg</code><span class="text-muted-foreground">max-width: 32rem</span>
-              <code>xl</code><span class="text-muted-foreground">max-width: 40rem</span>
-              <code>full</code><span class="text-muted-foreground">max-width: calc(100vw - 2rem)</span>
-            </div>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Data attributes</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>data-dialog-trigger</code></p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">• <code>data-dialog-close</code></p>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Wiring conventions</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>data-dialog-trigger=&quot;[id]&quot;</code> on any element → opens that dialog</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>data-dialog-close</code> on any element inside → closes the dialog</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Click on backdrop → closes (click lands on <code>&lt;dialog&gt;</code> itself)</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">• Place <code>&lt;dialog&gt;</code> elements as direct children of <code>&lt;body&gt;</code></p>
-
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Notes</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Animation uses CSS-only enter via <code>@starting-style</code> and exit via <code>transition</code> + <code>allow-discrete</code>.</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• The selector is <code>dialog.dialog</code> (element + class) to avoid styling native <code>&lt;dialog&gt;</code> elements used elsewhere.</p>
-            <p class="text-muted-foreground" style="margin: 0 0 0">• For forms inside dialogs, use the <code>dialog-body</code> wrapper for the form content.</p>
-          </div>
-        </details>
       </div>
 
         <!-- Form dialog -->
@@ -229,116 +174,8 @@
 &lt;/dialog&gt;</code></pre>
         </div>
         <!-- -- CSS --------------------------------------- -->
-        <section style="margin-top: var(--space-09)" id="source-css">
-          <h2>CSS <a href="../components/dialog/dialog.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: var(--font-weight); color: var(--muted-foreground); text-decoration: underline; text-underline-offset: var(--border-width-02); margin-left: var(--space-02)">view file</a></h2>
-          <div style="position: relative; margin-top: var(--space-02)">
-            <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
-            <pre><code class="language-scss">/* -- Dialog component ------------------------------------------ */
-
-@layer components {
-  dialog.dialog {
-    border: none;
-
-    background-color: var(--popover);
-    color: var(--popover-foreground);
-    padding: 0;
-    margin: auto;
-    position: fixed;
-    inset: 0;
-    max-width: 28rem;
-    width: calc(100vw - 2rem);
-    max-height: calc(100vh - 2rem);
-    box-shadow: 0 0 0 1px var(--border);
-    opacity: 0;
-    transform: translateY(-0.5rem) scale(0.98);
-    transition: opacity 200ms ease, transform 200ms ease, display 200ms allow-discrete;
-
-    &amp;[open] {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    /* -- Sizes ------------------------------------------------ */
-    &amp;[data-size=&quot;sm&quot;]   { max-width: 24rem; }
-    &amp;[data-size=&quot;lg&quot;]   { max-width: 32rem; }
-    &amp;[data-size=&quot;xl&quot;]   { max-width: 40rem; }
-    &amp;[data-size=&quot;full&quot;] { max-width: calc(100vw - 2rem); }
-
-    /* -- Backdrop --------------------------------------------- */
-    &amp;::backdrop {
-      background: oklch(0 0 0 / 0);
-      backdrop-filter: blur(0px);
-      transition: all 200ms ease, display 200ms allow-discrete;
-    }
-
-    &amp;[open]::backdrop {
-      background: oklch(0 0 0 / 0.45);
-      backdrop-filter: blur(3px);
-    }
-  }
-
-  @starting-style {
-    dialog.dialog[open] {
-      opacity: 0;
-      transform: translateY(-0.5rem) scale(0.98);
-    }
-
-    dialog.dialog[open]::backdrop {
-      background: oklch(0 0 0 / 0);
-      backdrop-filter: blur(0px);
-    }
-  }
-
-  /* -- Content sections ------------------------------------- */
-  .dialog-content { padding: var(--space-06); }
-  .dialog-header  { margin-bottom: var(--space-04); }
-  .dialog-title   { font-size: 1.0625rem; font-weight: 600; margin: 0 0 0.375rem; letter-spacing: -0.01em; }
-  .dialog-description { font-size: var(--font-body-small); color: var(--muted-foreground); margin: 0; line-height: 1.6; }
-  .dialog-body    { margin-top: var(--space-04); }
-  .dialog-footer  { display: flex; justify-content: flex-end; gap: var(--space-02); margin-top: var(--space-06); }
-}</code></pre>
-          </div>
-        </section>
 
         <!-- -- JavaScript -------------------------------- -->
-        <section style="margin-top: var(--space-09)" id="source-js">
-          <h2>JavaScript <a href="../components/dialog/dialog.js" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: var(--font-weight); color: var(--muted-foreground); text-decoration: underline; text-underline-offset: var(--border-width-02); margin-left: var(--space-02)">view file</a></h2>
-          <p class="text-muted-foreground text-sm mb-4">Wire triggers via <code>data-dialog-trigger</code>, close buttons via <code>data-dialog-close</code>, and backdrop click. Focus returns to trigger on close.</p>
-          <div style="position: relative; margin-top: var(--space-02)">
-            <button class="copy-btn">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-              Copy
-            </button>
-            <pre><code class="language-javascript">// -- Dialog ---------------------------------------------------
-
-function init() {
-document.querySelectorAll('[data-dialog-trigger]:not([data-init])').forEach((trigger) =&gt; {
-  trigger.dataset.init = '';
-  const dialog = document.getElementById(trigger.dataset.dialogTrigger);
-  if (!dialog) return;
-  trigger.addEventListener('click', () =&gt; {
-    dialog._trigger = trigger;
-    dialog.showModal();
-  });
-});
-document.querySelectorAll('dialog:not(.alert-dialog):not(.sheet):not([data-init])').forEach((dialog) =&gt; {
-  dialog.dataset.init = '';
-  dialog.addEventListener('click', (e) =&gt; {
-    if (e.target === dialog) dialog.close();
-  });
-  dialog.querySelectorAll('[data-dialog-close]').forEach((btn) =&gt; {
-    btn.addEventListener('click', () =&gt; { dialog.close(); });
-  });
-  dialog.addEventListener('close', () =&gt; {
-    if (dialog._trigger) dialog._trigger.focus();
-  });
-});
-}
-
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });</code></pre>
-          </div>
-        </section>
 
     </main>
   </div>

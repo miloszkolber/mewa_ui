@@ -21,7 +21,6 @@
   <link rel="stylesheet" href="css/docs-theme.css">
   <link rel="stylesheet" href="css/docs-utilities.css">
   <link rel="stylesheet" href="css/layout.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.7/marked.min.js" defer integrity="sha384-H+hy9ULve6xfxRkWIh/YOtvDdpXgV2fmAGQkIDTxIgZwNoaoBal14Di2YTMR6MzR" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="../components/button/button.css">
   <link rel="stylesheet" href="../components/card/card.css">
   <link rel="stylesheet" href="../components/dialog/dialog.css">
@@ -92,59 +91,6 @@
           Intrinsic layout primitives: container, stack, grid, sidebar, center, and split.
           Built on CSS Grid and Flexbox — responsive by default, no breakpoints, no JavaScript.
         </p>
-        <!-- Component skill -->
-        <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
-          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
-            Component skill — <span data-spec-href="../components/layout/layout.md" style="text-decoration: underline; text-underline-offset: 3px">components/layout/layout.md</span>
-          </summary>
-          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: var(--font-height)">
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Native basis</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">CSS Grid and Flexbox layout primitives — no JavaScript or ARIA required.</p>
-
-            <p style="margin: 0 0 0.625rem; font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Web Platform APIs</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout" target="_blank" rel="noopener" title="auto-fit / minmax() intrinsic column wrapping" class="api-pill"><code>CSS Grid</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout" target="_blank" rel="noopener" title="stacking, app-shell splits, wrapping" class="api-pill"><code>Flexbox</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min" target="_blank" rel="noopener" title="fluid container width that cannot overflow" class="api-pill"><code>min()</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/fit-content" target="_blank" rel="noopener" title="sidebar sizing up to a cap" class="api-pill"><code>fit-content()</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties" target="_blank" rel="noopener" title="--gap, --min, --container-max, --sidebar-width configuration" class="api-pill"><code>custom properties</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values" target="_blank" rel="noopener" title="margin-inline, padding-inline for RTL support" class="api-pill"><code>logical properties</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting" target="_blank" rel="noopener" title="child selectors in the sidebar split" class="api-pill"><code>CSS nesting</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-            </div>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Classes</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
-              <code>.layout-container</code>
-              <code>.layout-stack</code>
-              <code>.layout-grid</code>
-              <code>.layout-sidebar</code>
-              <code>.layout-center</code>
-              <code>.layout-split</code>
-            </div>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Custom properties</p>
-            <div style="display: grid; grid-template-columns: auto auto 1fr; gap: var(--space-01) var(--space-04); margin-bottom: var(--space-05)">
-              <code>--gap</code><code>var(--space-04)</code><span class="text-muted-foreground">Gap between children — all primitives</span>
-              <code>--min</code><code>15rem</code><span class="text-muted-foreground">Minimum column width — grid</span>
-              <code>--container-max</code><code>64rem</code><span class="text-muted-foreground">Maximum width — container</span>
-              <code>--sidebar-width</code><code>14rem</code><span class="text-muted-foreground">Maximum sidebar width — sidebar</span>
-            </div>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Data attributes</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">• <code>data-gap</code> — values: <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code>, <code>xl</code> (0 / 0.5 / 0.75 / 1 / 1.5 / 2.5rem)</p>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">ARIA</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">None required — purely visual layout containers. Semantics come from the elements inside.</p>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Notes</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• All primitives are intrinsic — they respond to container width, not breakpoints.</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Default gaps use the <code>--space-*</code> scale from <code>base.css</code>.</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>.layout-sidebar</code> requires exactly two children: first = sidebar, last = content.</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>.layout-center</code> needs an explicit size on the element to visibly center.</p>
-            <p class="text-muted-foreground" style="margin: 0 0 0">• Pure CSS — no JavaScript file exists for this component.</p>
-          </div>
-        </details>
       </div>
 
         <!-- Container -->
@@ -312,81 +258,6 @@
         <!-- Spec link -->
 
         <!-- -- CSS --------------------------------------- -->
-        <section style="margin-top: var(--space-09)" id="source-css">
-          <h2>CSS <a href="../components/layout/layout.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: var(--font-weight); color: var(--muted-foreground); text-decoration: underline; text-underline-offset: var(--border-width-02); margin-left: var(--space-02)">view file</a></h2>
-          <div style="position: relative; margin-top: var(--space-02)">
-            <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
-            <pre><code class="language-scss">/* -- Layout component ---------------------------------------- */
-
-@layer components {
-  /* -- Gap scale --------------------------------------------- */
-  :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split) {
-    --gap: var(--space-04);
-  }
-
-  :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap=&quot;none&quot;] { --gap: 0; }
-  :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap=&quot;xs&quot;]   { --gap: var(--space-02); }
-  :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap=&quot;sm&quot;]   { --gap: var(--space-03); }
-  :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap=&quot;md&quot;]   { --gap: var(--space-04); }
-  :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap=&quot;lg&quot;]   { --gap: var(--space-06); }
-  :where(.layout-container, .layout-stack, .layout-grid, .layout-sidebar, .layout-center, .layout-split)[data-gap=&quot;xl&quot;]   { --gap: var(--space-08); }
-
-  /* -- Container --------------------------------------------- */
-  .layout-container {
-    width: min(100% - var(--space-08), var(--container-max, 64rem));
-    margin-inline: auto;
-    padding-inline: var(--space-04);
-  }
-
-  /* -- Stack ------------------------------------------------ */
-  .layout-stack {
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap);
-  }
-
-  /* -- Grid ------------------------------------------------- */
-  .layout-grid {
-    display: grid;
-    gap: var(--gap);
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min, 15rem)), 1fr));
-  }
-
-  /* -- Sidebar ---------------------------------------------- */
-  .layout-sidebar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--gap);
-
-    &amp; &gt; :first-child {
-      flex-basis: var(--sidebar-width, 14rem);
-      flex-grow: 1;
-    }
-
-    &amp; &gt; :last-child {
-      flex-basis: 0;
-      flex-grow: 999;
-      min-inline-size: 50%;
-    }
-  }
-
-  /* -- Center ----------------------------------------------- */
-  .layout-center {
-    display: grid;
-    place-content: center;
-  }
-
-  /* -- Split ------------------------------------------------ */
-  .layout-split {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--gap);
-  }
-}</code></pre>
-          </div>
-        </section>
 
     </main>
   </div>

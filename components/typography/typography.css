@@ -3,8 +3,8 @@
 /* -- Base text ---------------------------------------------- */
 @layer base {
   body {
-    font-size: var(--font-body-small);
-    line-height: 1.5;
+    font-size: var(--font-body);
+    line-height: var(--font-height);
   }
 }
 
@@ -14,7 +14,6 @@
     scroll-margin-top: var(--space-12);
     font-size: var(--font-h1);
     font-weight: var(--font-weight-strong);
-    letter-spacing: -0.025em;
     line-height: var(--font-height-tight);
     text-wrap: balance;
     color: var(--foreground);
@@ -24,24 +23,22 @@
     scroll-margin-top: var(--space-12);
     font-size: var(--font-h2);
     font-weight: var(--font-weight-strong);
-    letter-spacing: -0.02em;
     line-height: var(--font-height-tight);
     text-wrap: balance;
     color: var(--foreground);
-    border-bottom: var(--border-width-01) solid var(--border);
-    padding-bottom: var(--space-02);
 
-    &:first-child { margin-top: 0; }
+    &:not(:first-child) { margin-top: var(--space-06);}
   }
 
   .h3 {
     scroll-margin-top: var(--space-12);
     font-size: var(--font-h3);
     font-weight: var(--font-weight-strong);
-    letter-spacing: -0.01em;
     line-height: var(--font-height-tight);
     text-wrap: balance;
     color: var(--foreground);
+
+    &:not(:first-child) { margin-top: var(--space-05);}
   }
 
   .h4 {
@@ -51,51 +48,52 @@
     line-height: var(--font-height-tight);
     text-wrap: balance;
     color: var(--foreground);
+
+    &:not(:first-child) { margin-top: var(--space-04);}
   }
 
   /* -- Paragraph --------------------------------------------- */
   .p {
-    font-size: var(--font-body-small);
-    line-height: 1.75;
+    font-size: var(--font-body);
+    line-height: var(--font-height);
     text-wrap: pretty;
     color: var(--foreground);
 
-    &:not(:first-child) { margin-top: var(--space-06); }
+    &:not(:first-child) { margin-top: var(--space-04); }
   }
 
   /* -- Lead --------------------------------------------------- */
   .lead {
-    font-size: 1.25rem;
-    line-height: 1.6;
+    font-size: var(--font-body);
+    line-height: var(--font-height);
     color: var(--muted-foreground);
     text-wrap: pretty;
   }
 
   /* -- Large -------------------------------------------------- */
   .large {
-    font-size: 1.125rem;
-    font-weight: 600;
+    font-size: var(--font-body);
+    font-weight: var(--font-weight-strong);
     color: var(--foreground);
   }
 
   /* -- Small -------------------------------------------------- */
   .small {
     font-size: var(--font-body-small);
-    font-weight: 500;
-    line-height: 1;
+    font-weight: var(--font-weight-strong);
+    line-height: var(--font-height-tight);
     color: var(--foreground);
   }
 
   /* -- Muted -------------------------------------------------- */
   .muted {
-    font-size: var(--font-body-small);
     color: var(--muted-foreground);
   }
 
   /* -- Blockquote --------------------------------------------- */
   .blockquote {
     margin-top: var(--space-06);
-    border-inline-start: var(--border-width-02) solid var(--border);
+    border-inline-start: var(--border-width-03) solid var(--border);
     padding-inline-start: var(--space-06);
     font-style: italic;
     hanging-punctuation: first last;
@@ -107,12 +105,11 @@
   /* -- Inline code -------------------------------------------- */
   .code {
     position: relative;
-
     background: var(--muted);
-    padding: 0.2rem 0.3rem;
+    padding: var(--space-01);
     font-family: var(--font-mono);
-    font-size: 0.875em;
-    font-weight: 600;
+    font-size: var(--font-body-small);
+    font-weight: var(--font-weight-strong);
     color: var(--foreground);
   }
 
@@ -124,7 +121,7 @@
     }
 
     .blockquote {
-      border-inline-start-width: 3px;
+      border-inline-start-width: var(--border-width-03);
     }
 
     .code {

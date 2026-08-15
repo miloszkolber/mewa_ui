@@ -21,7 +21,6 @@
   <link rel="stylesheet" href="css/docs-theme.css">
   <link rel="stylesheet" href="css/docs-utilities.css">
   <link rel="stylesheet" href="css/layout.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/15.0.7/marked.min.js" defer integrity="sha384-H+hy9ULve6xfxRkWIh/YOtvDdpXgV2fmAGQkIDTxIgZwNoaoBal14Di2YTMR6MzR" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="../components/button/button.css">
   <link rel="stylesheet" href="../components/card/card.css">
   <link rel="stylesheet" href="../components/dialog/dialog.css">
@@ -91,43 +90,6 @@
         <p class="text-muted-foreground leading-relaxed mb-6">
           The full <a href="https://lucide.dev/icons/" target="_blank" style="color: var(--primary); text-decoration: underline; text-underline-offset: 4px">Lucide</a> icon set ships locally in <code>src/icons/</code>. Write <code>&lt;i data-lucide="name"&gt;</code> — the loader in <code>js/site.js</code> fetches the matching SVG and inlines it at page load. No CDN.
         </p>
-        <!-- Component skill -->
-        <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
-          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
-            Component skill — <span data-spec-href="../components/icon/icon.md" style="text-decoration: underline; text-underline-offset: 3px">components/icon/icon.md</span>
-          </summary>
-          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: var(--font-height)">
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Native basis</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)"><code>&lt;i&gt;</code> element with <code>data-lucide</code> attribute. Icons are provided by the [Lucide](https://lucide.dev) icon library via CDN. Lucide replaces each <code>&lt;i data-lucide=&quot;name&quot;&gt;</code> with an inline SVG on page load.</p>
-
-            <p style="margin: 0 0 0.625rem; font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Web Platform APIs</p>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
-              <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg" target="_blank" rel="noopener" title="inline scalable vector graphics (injected by Lucide)" class="api-pill"><code>&lt;svg&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-hidden" target="_blank" rel="noopener" title="hides decorative icons from screen readers" class="api-pill"><code>aria-hidden</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#currentcolor_keyword" target="_blank" rel="noopener" title="icons inherit stroke color from the parent's color property" class="api-pill"><code>currentColor</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion" target="_blank" rel="noopener" title="suppresses icon animations when user prefers reduced motion" class="api-pill"><code>prefers-reduced-motion</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors" target="_blank" rel="noopener" title="maps icon color to system CanvasText in Windows High Contrast Mode" class="api-pill"><code>forced-colors</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-              <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast" target="_blank" rel="noopener" title="increases stroke width when user requests more contrast" class="api-pill"><code>prefers-contrast</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
-            </div>
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Data attributes</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>data-lucide</code> — icon name (required)</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>data-size</code> — <code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code> | <code>xl</code></p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">• <code>data-animate</code> — <code>spin</code></p>
-
-
-            <p style="margin: 0 0 var(--space-02); font-weight: var(--font-weight-strong); font-size: var(--font-body-xsmall); font-family: var(--font-mono)">Notes</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Icons inherit <code>currentColor</code> for stroke — they automatically match the parent's text color</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Browse all available icons at <a href="https://lucide.dev/icons/" target="_blank" style="color: var(--primary); text-decoration: underline; text-underline-offset: 4px">lucide.dev/icons</a></p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Lucide provides ~1,500 icons covering every common web app need</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• The CDN script replaces <code>&lt;i data-lucide=&quot;name&quot;&gt;</code> elements with inline SVGs on page load</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Use <code>stroke-width</code> attribute to adjust line thickness (default: <code>2</code>)</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Prefer visually-hidden text (<code>.sr-only</code>) over <code>aria-label</code> for accessible standalone icons</p>
-            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Animations (e.g., <code>data-animate=&quot;spin&quot;</code>) are suppressed when the user has <code>prefers-reduced-motion</code> enabled</p>
-            <p class="text-muted-foreground" style="margin: 0 0 0">• <code>prefers-contrast: more</code> increases stroke width to 2.5 for better visibility</p>
-          </div>
-        </details>
       </div>
 
         <!-- -- Example: Basic ------------------------------------ -->
@@ -362,63 +324,6 @@
           </a>
 
         <!-- -- CSS --------------------------------------- -->
-        <section style="margin-top: var(--space-09)" id="source-css">
-          <h2>CSS <a href="../components/icon/icon.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: var(--font-weight); color: var(--muted-foreground); text-decoration: underline; text-underline-offset: var(--border-width-02); margin-left: var(--space-02)">view file</a></h2>
-          <div style="position: relative; margin-top: var(--space-02)">
-            <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
-            <pre><code class="language-scss">/* -- Icon component ---------------------------------------- */
-
-@layer components {
-  [data-lucide] {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    vertical-align: middle;
-    width: var(--size-04);
-    height: var(--size-04);
-    pointer-events: none;
-
-    /* -- Sizes via data-size --------------------------------- */
-    &amp;[data-size=&quot;xs&quot;] { width: var(--size-03); height: var(--size-03); }
-    &amp;[data-size=&quot;sm&quot;] { width: 0.875rem; height: 0.875rem; }
-    &amp;[data-size=&quot;md&quot;] { width: var(--size-05); height: var(--size-05); }
-    &amp;[data-size=&quot;lg&quot;] { width: var(--size-06); height: var(--size-06); }
-    &amp;[data-size=&quot;xl&quot;] { width: var(--size-07); height: var(--size-07); }
-
-    /* -- Spin animation ------------------------------------- */
-    &amp;[data-animate=&quot;spin&quot;] {
-      animation: icon-spin 1s linear infinite;
-    }
-  }
-
-  @keyframes icon-spin {
-    to { transform: rotate(360deg); }
-  }
-
-  /* ---- Accessibility ---------------------------------------- */
-
-  @media (prefers-reduced-motion: reduce) {
-    [data-lucide] {
-      animation: none !important;
-      transition: none !important;
-    }
-  }
-
-  @media (prefers-contrast: more) {
-    [data-lucide] {
-      stroke-width: 2.5;
-    }
-  }
-
-  @media (forced-colors: active) {
-    [data-lucide] {
-      color: CanvasText;
-    }
-  }
-}</code></pre>
-          </div>
-        </section>
 
     </main>
   </div>
