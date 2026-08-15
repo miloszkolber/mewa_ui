@@ -206,7 +206,7 @@
 
   :focus-visible {
     outline: var(--border-width-02) solid var(--ring);
-    outline-offset: var(--border-width-01);
+    outline-offset: var(--border-width-02);
   }
 
   [hidden] {
