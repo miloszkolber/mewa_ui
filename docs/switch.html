@@ -82,30 +82,30 @@
 <body>
   <site-header></site-header>
 
-  <div class="flex" style="margin-top: 3.5rem; min-height: calc(100vh - 3.5rem);">
+  <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
 
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: 2rem 3.5rem 8rem;">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
         <div class="flex items-baseline justify-between mb-1">
-          <p class="text-sm text-muted-foreground" style="font-family:var(--font-mono);">mewa_ui / switch</p>
+          <p class="text-sm text-muted-foreground" style="font-family: var(--font-mono)">mewa_ui / switch</p>
         </div>
-        <h1 style="font-family:var(--font-display);font-size:2.5rem;font-weight:400;letter-spacing:-0.035em;margin:0 0 0.75rem;">Switch</h1>
+        <h1 style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 400; letter-spacing: -0.035em; margin: 0 0 var(--space-03)">Switch</h1>
         <p class="text-muted-foreground leading-relaxed mb-6">
           A toggle control for on/off states. Built on native <code>&lt;input type="checkbox" role="switch"&gt;</code> with CSS-only thumb animation.
         </p>
         <!-- Component skill -->
-        <details style="margin-bottom:2rem;border:1px solid var(--border);overflow:hidden;">
-          <summary style="padding:0.875rem 1.25rem;background:var(--muted);cursor:pointer;font-size:0.8125rem;font-weight:600;font-family:var(--font-mono);color:var(--muted-foreground);list-style:none;display:flex;align-items:center;gap:0.5rem;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;"><path d="m9 18 6-6-6-6"/></svg>
-            Component skill — <span data-spec-href="../components/switch/switch.md" style="text-decoration:underline;text-underline-offset:3px;">components/switch/switch.md</span>
+        <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
+          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: 0.8125rem; font-weight: 600; font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
+            Component skill — <span data-spec-href="../components/switch/switch.md" style="text-decoration: underline; text-underline-offset: 3px">components/switch/switch.md</span>
           </summary>
-          <div style="padding:1.5rem;font-size:0.875rem;line-height:1.85;">
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Native basis</p>
-            <p class="text-muted-foreground" style="margin:0 0 1.25rem;"><code>&lt;input type=&quot;checkbox&quot; role=&quot;switch&quot;&gt;</code> element styled as a toggle switch.</p>
+          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: 1.85">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Native basis</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)"><code>&lt;input type=&quot;checkbox&quot; role=&quot;switch&quot;&gt;</code> element styled as a toggle switch.</p>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Web Platform APIs</p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Web Platform APIs</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox" target="_blank" rel="noopener" title="native toggle control" class="api-pill"><code>&lt;input type=&quot;checkbox&quot;&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/switch_role" target="_blank" rel="noopener" title="communicates on/off semantics" class="api-pill"><code>role=&quot;switch&quot;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:checked" target="_blank" rel="noopener" title="matches the on state" class="api-pill"><code>:checked</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
@@ -115,33 +115,33 @@
               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors" target="_blank" rel="noopener" title="Windows High Contrast Mode support" class="api-pill"><code>forced-colors</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Classes</p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Classes</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <code>.switch</code>
               <code>.switch-item</code>
               <code>.switch-item-block</code>
               <code>.switch-description</code>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Sizes (data-size)</p>
-            <div style="display:grid;grid-template-columns:auto 1fr;gap:0.25rem 1rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Sizes (data-size)</p>
+            <div style="display: grid; grid-template-columns: auto 1fr; gap: var(--space-01) var(--space-04); margin-bottom: var(--space-05)">
               <code>sm</code><span class="text-muted-foreground">Height: 1rem</span>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Accessibility</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>role=&quot;switch&quot;</code> tells screen readers this is an on/off toggle, not a checkbox.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>aria-checked</code> is automatically set by the browser for <code>type=&quot;checkbox&quot;</code>.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>:focus-visible</code> provides keyboard-only focus ring.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>prefers-reduced-motion</code> disables all transitions.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0;">• <code>forced-colors</code> provides Windows High Contrast Mode support.</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Accessibility</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>role=&quot;switch&quot;</code> tells screen readers this is an on/off toggle, not a checkbox.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>aria-checked</code> is automatically set by the browser for <code>type=&quot;checkbox&quot;</code>.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>:focus-visible</code> provides keyboard-only focus ring.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>prefers-reduced-motion</code> disables all transitions.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 0">• <code>forced-colors</code> provides Windows High Contrast Mode support.</p>
 
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Notes</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Pure CSS — no JavaScript needed.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• The thumb slides via <code>:checked</code> and <code>translateX()</code>.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Uses <code>appearance: none</code> with <code>::after</code> for the thumb.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Wrap in <code>.switch-item</code> for auto disabled label styling via <code>:has()</code>.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0;">• <code>aria-invalid=&quot;true&quot;</code> shows the track in the destructive color.</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Notes</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Pure CSS — no JavaScript needed.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• The thumb slides via <code>:checked</code> and <code>translateX()</code>.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Uses <code>appearance: none</code> with <code>::after</code> for the thumb.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Wrap in <code>.switch-item</code> for auto disabled label styling via <code>:has()</code>.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 0">• <code>aria-invalid=&quot;true&quot;</code> shows the track in the destructive color.</p>
           </div>
         </details>
       </div>
@@ -153,7 +153,7 @@
             <label for="d-airplane">Airplane Mode</label>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -167,13 +167,13 @@
         <p class="text-sm font-medium mb-2 mt-8">With description</p>
         <p class="text-xs text-muted-foreground mb-3">Switch with label and description text using <code>.switch-item-block</code>.</p>
         <div class="preview">
-          <div class="switch-item-block" style="max-width:22rem;">
+          <div class="switch-item-block" style="max-width: 22rem">
             <label for="d-share">Share across devices</label>
             <input class="switch" type="checkbox" role="switch" id="d-share" checked>
             <span class="switch-description">Focus is shared across devices, and turns off when you leave the app.</span>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -189,10 +189,10 @@
         <div class="preview">
           <div class="switch-item">
             <input class="switch" type="checkbox" role="switch" id="d-sm-sw" data-size="sm">
-            <label for="d-sm-sw" style="font-size:0.8125rem;">Small switch</label>
+            <label for="d-sm-sw" style="font-size: 0.8125rem">Small switch</label>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -210,7 +210,7 @@
             <label for="d-notif">Notifications</label>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -229,7 +229,7 @@
             <label for="d-dis-sw">Disabled</label>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -243,13 +243,13 @@
         <p class="text-sm font-medium mb-2 mt-8">Invalid</p>
         <p class="text-xs text-muted-foreground mb-3">Validation error state with <code>aria-invalid="true"</code>.</p>
         <div class="preview">
-          <div class="switch-item-block" style="max-width:22rem;">
+          <div class="switch-item-block" style="max-width: 22rem">
             <label for="d-terms">Accept terms and conditions</label>
             <input class="switch" type="checkbox" role="switch" id="d-terms" aria-invalid="true">
-            <span class="switch-description" style="color:var(--destructive);">You must accept the terms and conditions to continue.</span>
+            <span class="switch-description" style="color: var(--destructive)">You must accept the terms and conditions to continue.</span>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -257,14 +257,14 @@
           <pre><code class="language-markup">&lt;div class="switch-item-block"&gt;
   &lt;label for="terms"&gt;Accept terms and conditions&lt;/label&gt;
   &lt;input class="switch" type="checkbox" role="switch" id="terms" aria-invalid="true"&gt;
-  &lt;span class="switch-description" style="color:var(--destructive);"&gt;You must accept the terms.&lt;/span&gt;
+  &lt;span class="switch-description" style="color: var(--destructive)"&gt;You must accept the terms.&lt;/span&gt;
 &lt;/div&gt;</code></pre>
         </div>
 
         <!-- -- CSS --------------------------------------- -->
-        <section style="margin-top:3rem;" id="source-css">
-          <h2 style="font-family:var(--font-display);font-size:1.5rem;font-weight:400;letter-spacing:-0.025em;margin:0 0 0.375rem;">CSS <a href="../components/switch/switch.css" target="_blank" style="font-size:0.75rem;font-weight:400;color:var(--muted-foreground);text-decoration:underline;text-underline-offset:3px;margin-left:0.5rem;">view file</a></h2>
-          <div style="position:relative;margin-top:0.5rem;">
+        <section style="margin-top: var(--space-09)" id="source-css">
+          <h2 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; letter-spacing: -0.025em; margin: 0 0 0.375rem">CSS <a href="../components/switch/switch.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: 400; color: var(--muted-foreground); text-decoration: underline; text-underline-offset: 3px; margin-left: var(--space-02)">view file</a></h2>
+          <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-scss">/* -- Switch component ------------------------------------------- */
 
@@ -484,10 +484,10 @@
 ### With description
 
 ```html
-<div class="switch-item" style="display:grid;grid-template-columns:1fr auto;gap:0 0.75rem;align-items:center;">
-  <label for="share" style="font-size:0.875rem;font-weight:500;">Share across devices</label>
-  <input class="switch" type="checkbox" role="switch" id="share" style="grid-row:1/3;">
-  <span style="font-size:0.8125rem;color:var(--muted-foreground);">Sync settings across all your devices.</span>
+<div class="switch-item" style="display: grid; grid-template-columns: 1fr auto; gap: 0 var(--space-03); align-items: center">
+  <label for="share" style="font-size: var(--font-body-small); font-weight: 500">Share across devices</label>
+  <input class="switch" type="checkbox" role="switch" id="share" style="grid-row: 1/3">
+  <span style="font-size: 0.8125rem; color: var(--muted-foreground)">Sync settings across all your devices.</span>
 </div>
 ```
 

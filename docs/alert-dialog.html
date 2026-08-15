@@ -81,37 +81,37 @@
 </head>
 <body>
   <site-header></site-header>
-  <div class="flex" style="margin-top: 3.5rem; min-height: calc(100vh - 3.5rem);">
+  <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: 2rem 3.5rem 8rem;">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
         <div class="flex items-baseline justify-between mb-1">
-          <p class="text-sm text-muted-foreground" style="font-family:var(--font-mono);">mewa_ui / alert-dialog</p>
+          <p class="text-sm text-muted-foreground" style="font-family: var(--font-mono)">mewa_ui / alert-dialog</p>
         </div>
-        <h1 style="font-family:var(--font-display);font-size:2.5rem;font-weight:400;letter-spacing:-0.035em;margin:0 0 0.75rem;">Alert dialog</h1>
+        <h1 style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 400; letter-spacing: -0.035em; margin: 0 0 var(--space-03)">Alert dialog</h1>
         <p class="text-muted-foreground leading-relaxed mb-6">
           A modal dialog that interrupts the user and requires a response. Unlike a standard dialog, users cannot dismiss it by clicking the backdrop or pressing Escape — they must choose an action. Built on native <code>&lt;dialog&gt;</code>.
         </p>
         <!-- Component skill -->
-        <details style="margin-bottom:2rem;border:1px solid var(--border);overflow:hidden;">
-          <summary style="padding:0.875rem 1.25rem;background:var(--muted);cursor:pointer;font-size:0.8125rem;font-weight:600;font-family:var(--font-mono);color:var(--muted-foreground);list-style:none;display:flex;align-items:center;gap:0.5rem;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;"><path d="m9 18 6-6-6-6"/></svg>
-            Component skill — <span data-spec-href="../components/alert-dialog/alert-dialog.md" style="text-decoration:underline;text-underline-offset:3px;">components/alert-dialog/alert-dialog.md</span>
+        <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
+          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: 0.8125rem; font-weight: 600; font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
+            Component skill — <span data-spec-href="../components/alert-dialog/alert-dialog.md" style="text-decoration: underline; text-underline-offset: 3px">components/alert-dialog/alert-dialog.md</span>
           </summary>
-          <div style="padding:1.5rem;font-size:0.875rem;line-height:1.85;">
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Native basis</p>
-            <p class="text-muted-foreground" style="margin:0 0 1.25rem;"><code>&lt;dialog&gt;</code> element used as a modal that requires user response. Unlike a standard dialog, it has no backdrop-close and no close button — the user must choose an action.</p>
+          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: 1.85">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Native basis</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)"><code>&lt;dialog&gt;</code> element used as a modal that requires user response. Unlike a standard dialog, it has no backdrop-close and no close button — the user must choose an action.</p>
 
-            <p style="margin:0 0 0.625rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Web Platform APIs</p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 0.625rem; font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Web Platform APIs</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog" target="_blank" rel="noopener" title="native modal with focus trap and Escape-to-close" class="api-pill"><code>&lt;dialog&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal" target="_blank" rel="noopener" title="opens as modal with backdrop" class="api-pill"><code>showModal()</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop" target="_blank" rel="noopener" title="native backdrop pseudo-element" class="api-pill"><code>::backdrop</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style" target="_blank" rel="noopener" title="entry animation starting values" class="api-pill"><code>@starting-style</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Classes</p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Classes</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <code>.alert-dialog</code>
               <code>.alert-dialog-content</code>
               <code>.alert-dialog-header</code>
@@ -120,20 +120,20 @@
               <code>.alert-dialog-footer</code>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Data attributes</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>data-alert-dialog-trigger</code></p>
-            <p class="text-muted-foreground" style="margin:0 0 1.25rem;">• <code>data-alert-dialog-close</code></p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Data attributes</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>data-alert-dialog-trigger</code></p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">• <code>data-alert-dialog-close</code></p>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Wiring conventions</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>data-alert-dialog-trigger</code> on any element — opens the component</p>
-            <p class="text-muted-foreground" style="margin:0 0 1.25rem;">• <code>data-alert-dialog-close</code> on any element inside — closes the component</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Wiring conventions</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>data-alert-dialog-trigger</code> on any element — opens the component</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">• <code>data-alert-dialog-close</code> on any element inside — closes the component</p>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Accessibility</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Uses <code>role=&quot;alertdialog&quot;</code> instead of <code>role=&quot;dialog&quot;</code> — signals interruption</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>aria-labelledby</code> and <code>aria-describedby</code> link to title and description</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• No backdrop click dismiss — user must make an explicit choice</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Escape key is disabled — user must use the action buttons</p>
-            <p class="text-muted-foreground" style="margin:0 0 0;">• Focus is trapped inside the dialog via native <code>showModal()</code></p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Accessibility</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Uses <code>role=&quot;alertdialog&quot;</code> instead of <code>role=&quot;dialog&quot;</code> — signals interruption</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>aria-labelledby</code> and <code>aria-describedby</code> link to title and description</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• No backdrop click dismiss — user must make an explicit choice</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Escape key is disabled — user must use the action buttons</p>
+            <p class="text-muted-foreground" style="margin: 0 0 0">• Focus is trapped inside the dialog via native <code>showModal()</code></p>
           </div>
         </details>
       </div>
@@ -156,7 +156,7 @@
             </div>
           </dialog>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -207,7 +207,7 @@
             </div>
           </dialog>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -223,10 +223,10 @@
         </div>
 
         <!-- -- CSS --------------------------------------- -->
-        <section style="margin-top:3rem;" id="source-css">
-          <h2 style="font-family:var(--font-display);font-size:1.5rem;font-weight:400;letter-spacing:-0.025em;margin:0 0 0.375rem;">CSS <a href="../components/alert-dialog/alert-dialog.css" target="_blank" style="font-size:0.75rem;font-weight:400;color:var(--muted-foreground);text-decoration:underline;text-underline-offset:3px;margin-left:0.5rem;">view file</a></h2>
+        <section style="margin-top: var(--space-09)" id="source-css">
+          <h2 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; letter-spacing: -0.025em; margin: 0 0 0.375rem">CSS <a href="../components/alert-dialog/alert-dialog.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: 400; color: var(--muted-foreground); text-decoration: underline; text-underline-offset: 3px; margin-left: var(--space-02)">view file</a></h2>
           <p class="text-muted-foreground text-sm mb-4">Entry/exit animation</p>
-          <div style="position:relative;margin-top:0.5rem;">
+          <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-scss">@layer components {
   dialog.alert-dialog {
@@ -313,10 +313,10 @@
         </section>
 
         <!-- -- JavaScript -------------------------------- -->
-        <section style="margin-top:3rem;" id="source-js">
-          <h2 style="font-family:var(--font-display);font-size:1.5rem;font-weight:400;letter-spacing:-0.025em;margin:0 0 0.375rem;">JavaScript <a href="../components/alert-dialog/alert-dialog.js" target="_blank" style="font-size:0.75rem;font-weight:400;color:var(--muted-foreground);text-decoration:underline;text-underline-offset:3px;margin-left:0.5rem;">view file</a></h2>
+        <section style="margin-top: var(--space-09)" id="source-js">
+          <h2 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; letter-spacing: -0.025em; margin: 0 0 0.375rem">JavaScript <a href="../components/alert-dialog/alert-dialog.js" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: 400; color: var(--muted-foreground); text-decoration: underline; text-underline-offset: 3px; margin-left: var(--space-02)">view file</a></h2>
           <p class="text-muted-foreground text-sm mb-4">Alert Dialog</p>
-          <div style="position:relative;margin-top:0.5rem;">
+          <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-javascript">// -- Alert Dialog ----------------------------------------------
 // Wires [data-alert-dialog-trigger] buttons to &lt;dialog class=&quot;alert-dialog&quot;&gt;.

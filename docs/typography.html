@@ -82,31 +82,31 @@
 <body>
   <site-header></site-header>
 
-  <div class="flex" style="margin-top: 3.5rem; min-height: calc(100vh - 3.5rem);">
+  <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
 
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: 2rem 3.5rem 8rem;">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
         <div class="flex items-baseline justify-between mb-1">
-          <p class="text-sm text-muted-foreground" style="font-family:var(--font-mono);">mewa_ui / typography</p>
+          <p class="text-sm text-muted-foreground" style="font-family: var(--font-mono)">mewa_ui / typography</p>
         </div>
-        <h1 style="font-family:var(--font-display);font-size:2.5rem;font-weight:400;letter-spacing:-0.035em;margin:0 0 0.75rem;">Typography</h1>
+        <h1 style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 400; letter-spacing: -0.035em; margin: 0 0 var(--space-03)">Typography</h1>
         <p class="text-muted-foreground leading-relaxed mb-6">
           Styles for headings, paragraphs, lists, blockquotes, and inline code. Built on native HTML text elements
           with utility classes. No JavaScript required.
         </p>
         <!-- Component skill -->
-        <details style="margin-bottom:2rem;border:1px solid var(--border);overflow:hidden;">
-          <summary style="padding:0.875rem 1.25rem;background:var(--muted);cursor:pointer;font-size:0.8125rem;font-weight:600;font-family:var(--font-mono);color:var(--muted-foreground);list-style:none;display:flex;align-items:center;gap:0.5rem;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;"><path d="m9 18 6-6-6-6"/></svg>
-            Component skill — <span data-spec-href="../components/typography/typography.md" style="text-decoration:underline;text-underline-offset:3px;">components/typography/typography.md</span>
+        <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
+          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: 0.8125rem; font-weight: 600; font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
+            Component skill — <span data-spec-href="../components/typography/typography.md" style="text-decoration: underline; text-underline-offset: 3px">components/typography/typography.md</span>
           </summary>
-          <div style="padding:1.5rem;font-size:0.875rem;line-height:1.85;">
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Native basis</p>
-            <p class="text-muted-foreground" style="margin:0 0 1.25rem;">Native HTML text elements: <code>&lt;h1&gt;</code>–<code>&lt;h4&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;blockquote&gt;</code>, <code>&lt;code&gt;</code>, <code>&lt;small&gt;</code>.</p>
+          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: 1.85">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Native basis</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">Native HTML text elements: <code>&lt;h1&gt;</code>–<code>&lt;h4&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;blockquote&gt;</code>, <code>&lt;code&gt;</code>, <code>&lt;small&gt;</code>.</p>
 
-            <p style="margin:0 0 0.625rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Web Platform APIs</p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 0.625rem; font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Web Platform APIs</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements" target="_blank" rel="noopener" title="semantic heading hierarchy" class="api-pill"><code>&lt;h1&gt;–&lt;h6&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blockquote" target="_blank" rel="noopener" title="quoted block content" class="api-pill"><code>&lt;blockquote&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/code" target="_blank" rel="noopener" title="inline code fragment" class="api-pill"><code>&lt;code&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
@@ -119,8 +119,8 @@
               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors" target="_blank" rel="noopener" title="Windows High Contrast Mode with system colors" class="api-pill"><code>forced-colors</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Classes</p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Classes</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <code>.h1</code>
               <code>.h2</code>
               <code>.h3</code>
@@ -134,25 +134,25 @@
               <code>.code</code>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Accessibility</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Use heading levels in order (<code>h1</code> → <code>h2</code> → <code>h3</code>). Do not skip levels.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Headings create the document outline used by screen readers for navigation.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>&lt;blockquote&gt;</code> is announced as a quote by assistive technology — no extra ARIA needed.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>&lt;code&gt;</code> is announced as code — no extra ARIA needed.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>prefers-contrast: more</code> — removes tight letter-spacing, adds outline to inline code, thickens blockquote border, promotes muted text to foreground color.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0;">• <code>forced-colors: active</code> — blockquote border and inline code adapt to system colors.</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Accessibility</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Use heading levels in order (<code>h1</code> → <code>h2</code> → <code>h3</code>). Do not skip levels.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Headings create the document outline used by screen readers for navigation.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>&lt;blockquote&gt;</code> is announced as a quote by assistive technology — no extra ARIA needed.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>&lt;code&gt;</code> is announced as code — no extra ARIA needed.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>prefers-contrast: more</code> — removes tight letter-spacing, adds outline to inline code, thickens blockquote border, promotes muted text to foreground color.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 0">• <code>forced-colors: active</code> — blockquote border and inline code adapt to system colors.</p>
 
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Notes</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• These are utility classes for prose content — not a component with variants/sizes.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• The <code>.h1</code>–<code>.h4</code> classes allow applying heading styles to non-heading elements when semantic headings aren't appropriate.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Typography classes compose freely with other components (Card content, Dialog body, Alert description).</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>text-wrap: balance</code> is used on all headings (h1–h4) for better visual line distribution.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>text-wrap: pretty</code> is used on paragraphs and lead text for orphan prevention.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>hanging-punctuation</code> is used on blockquotes for optical quote alignment.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Blockquote uses logical properties (<code>border-inline-start</code>, <code>padding-inline-start</code>) for automatic RTL support.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• For lists, use the List component (<code>list.css</code>) — typography does not ship its own list styles.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0;">• For prose tables, use the Table component (<code>table.css</code>) — typography does not ship its own table styles.</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Notes</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• These are utility classes for prose content — not a component with variants/sizes.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• The <code>.h1</code>–<code>.h4</code> classes allow applying heading styles to non-heading elements when semantic headings aren't appropriate.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Typography classes compose freely with other components (Card content, Dialog body, Alert description).</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>text-wrap: balance</code> is used on all headings (h1–h4) for better visual line distribution.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>text-wrap: pretty</code> is used on paragraphs and lead text for orphan prevention.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>hanging-punctuation</code> is used on blockquotes for optical quote alignment.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Blockquote uses logical properties (<code>border-inline-start</code>, <code>padding-inline-start</code>) for automatic RTL support.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• For lists, use the List component (<code>list.css</code>) — typography does not ship its own list styles.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 0">• For prose tables, use the Table component (<code>table.css</code>) — typography does not ship its own table styles.</p>
           </div>
         </details>
       </div>
@@ -160,15 +160,15 @@
         <!-- Headings -->
         <p class="text-sm font-medium mb-2 mt-6">Headings</p>
         <p class="text-xs text-muted-foreground mb-3">Four heading levels — sized from the --font-h1..h4 tokens, h2 includes a bottom border.</p>
-        <div class="preview" style="text-align:left;padding:2.5rem;">
-          <div style="max-width:32rem;margin:0 auto;display:flex;flex-direction:column;gap:1.5rem;">
+        <div class="preview" style="text-align: left; padding: var(--space-08)">
+          <div style="max-width: 32rem; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-06)">
             <h1 class="h1">h1 — Taxing Laughter</h1>
-            <h2 class="h2" style="margin:0;">h2 — The People of the Kingdom</h2>
+            <h2 class="h2" style="margin: 0">h2 — The People of the Kingdom</h2>
             <h3 class="h3">h3 — The Joke Tax</h3>
             <h4 class="h4">h4 — People stopped telling jokes</h4>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -182,10 +182,10 @@
         <!-- Paragraph -->
         <p class="text-sm font-medium mb-2 mt-8">Paragraph</p>
         <p class="text-xs text-muted-foreground mb-3">Standard body text with generous line height.</p>
-        <div class="preview" style="text-align:left;padding:2.5rem;">
-          <p class="p" style="max-width:32rem;margin:0 auto;">The king, seeing how much happier his subjects were, realized the error of his ways and repealed the joke tax.</p>
+        <div class="preview" style="text-align: left; padding: var(--space-08)">
+          <p class="p" style="max-width: 32rem; margin: 0 auto">The king, seeing how much happier his subjects were, realized the error of his ways and repealed the joke tax.</p>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -196,10 +196,10 @@
         <!-- Lead -->
         <p class="text-sm font-medium mb-2 mt-8">Lead</p>
         <p class="text-xs text-muted-foreground mb-3">Larger, muted intro paragraph.</p>
-        <div class="preview" style="text-align:left;padding:2.5rem;">
-          <p class="lead" style="max-width:32rem;margin:0 auto;">A modal dialog that interrupts the user with important content and expects a response.</p>
+        <div class="preview" style="text-align: left; padding: var(--space-08)">
+          <p class="lead" style="max-width: 32rem; margin: 0 auto">A modal dialog that interrupts the user with important content and expects a response.</p>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -211,13 +211,13 @@
         <p class="text-sm font-medium mb-2 mt-8">Large / small / muted</p>
         <p class="text-xs text-muted-foreground mb-3">Text size variations.</p>
         <div class="preview">
-          <div style="display:flex;flex-direction:column;gap:0.75rem;align-items:center;">
+          <div style="display: flex; flex-direction: column; gap: var(--space-03); align-items: center">
             <div class="large">Are you absolutely sure?</div>
             <small class="small">Email address</small>
-            <p class="muted" style="margin:0;">Enter your email address.</p>
+            <p class="muted" style="margin: 0">Enter your email address.</p>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -230,12 +230,12 @@
         <!-- Blockquote -->
         <p class="text-sm font-medium mb-2 mt-8">Blockquote</p>
         <p class="text-xs text-muted-foreground mb-3">Quoted block with left border and italic style.</p>
-        <div class="preview" style="text-align:left;padding:2.5rem;">
-          <blockquote class="blockquote" style="max-width:32rem;margin:0 auto;">
+        <div class="preview" style="text-align: left; padding: var(--space-08)">
+          <blockquote class="blockquote" style="max-width: 32rem; margin: 0 auto">
             <p>"After all," he said, "everyone enjoys a good joke, so it's only fair that they should pay for the privilege."</p>
           </blockquote>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -251,7 +251,7 @@
         <div class="preview">
           <p>Edit the <code class="code">base.css</code> file to customize your theme.</p>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -262,21 +262,21 @@
         <!-- Prose Composition -->
         <p class="text-sm font-medium mb-2 mt-8">Prose composition</p>
         <p class="text-xs text-muted-foreground mb-3">All typography classes combined in a full prose layout — matching the design-system demo.</p>
-        <div class="preview" style="text-align:left;padding:2.5rem;">
-          <div style="max-width:38rem;margin:0 auto;">
-            <h1 class="h1" style="text-align:center;">Taxing Laughter: The Joke Tax Chronicles</h1>
+        <div class="preview" style="text-align: left; padding: var(--space-08)">
+          <div style="max-width: 38rem; margin: 0 auto">
+            <h1 class="h1" style="text-align: center">Taxing Laughter: The Joke Tax Chronicles</h1>
             <p class="p">Once upon a time, in a far-off land, there was a very lazy king who spent all day lounging on his throne. One day, his advisors came to him with a problem: the kingdom was running out of money.</p>
             <h2 class="h2">The King's Plan</h2>
-            <p class="p">The king thought long and hard, and finally came up with <a href="#" style="text-decoration:underline;text-underline-offset:4px;">a brilliant plan</a>: he would tax the jokes in the kingdom.</p>
+            <p class="p">The king thought long and hard, and finally came up with <a href="#" style="text-decoration: underline; text-underline-offset: 4px">a brilliant plan</a>: he would tax the jokes in the kingdom.</p>
             <blockquote class="blockquote">
               <p>"After all," he said, "everyone enjoys a good joke, so it's only fair that they should pay for the privilege."</p>
             </blockquote>
             <h3 class="h3">The Joke Tax</h3>
             <p class="p">The king's subjects were not amused. They grumbled and complained, but the king was firm:</p>
-            <ul class="list" style="margin:1.5rem 0 1.5rem 1.5rem;list-style:disc;">
-              <li style="margin-top:0.5rem;">1st level of puns: 5 gold coins</li>
-              <li style="margin-top:0.5rem;">2nd level of jokes: 10 gold coins</li>
-              <li style="margin-top:0.5rem;">3rd level of one-liners: 20 gold coins</li>
+            <ul class="list" style="margin: var(--space-06) 0 var(--space-06) var(--space-06); list-style: disc">
+              <li style="margin-top: var(--space-02)">1st level of puns: 5 gold coins</li>
+              <li style="margin-top: var(--space-02)">2nd level of jokes: 10 gold coins</li>
+              <li style="margin-top: var(--space-02)">3rd level of one-liners: 20 gold coins</li>
             </ul>
             <p class="p">As a result, people stopped telling jokes, and the kingdom fell into a gloom. But there was one person who refused to let the king's foolishness get him down: a court jester named Jokester.</p>
             <h3 class="h3">Jokester's Revolt</h3>
@@ -288,12 +288,12 @@
             <p class="p">The moral of the story is: never underestimate the power of a good laugh and always be careful of bad ideas.</p>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
-          <pre><code class="language-markup">&lt;h1 class="h1" style="text-align:center;"&gt;Taxing Laughter&lt;/h1&gt;
+          <pre><code class="language-markup">&lt;h1 class="h1" style="text-align: center"&gt;Taxing Laughter&lt;/h1&gt;
 &lt;p class="p"&gt;Once upon a time...&lt;/p&gt;
 &lt;h2 class="h2"&gt;The King's Plan&lt;/h2&gt;
 &lt;p class="p"&gt;The king thought long and hard...&lt;/p&gt;
@@ -312,16 +312,16 @@
         <!-- RTL Support -->
         <p class="text-sm font-medium mb-2 mt-8">RTL support</p>
         <p class="text-xs text-muted-foreground mb-3">Blockquotes use logical properties (<code>border-inline-start</code>, <code>padding-inline-start</code>) — they flip automatically in RTL contexts.</p>
-        <div class="preview" style="text-align:left;padding:2.5rem;">
-          <div dir="rtl" style="max-width:32rem;margin:0 auto;">
-            <h3 class="h3" style="margin-bottom:0.75rem;">ضريبة النكتة</h3>
-            <p class="p" style="margin-top:0;">فكر الملك طويلاً وبجد، وأخيراً توصل إلى خطة عبقرية: سيفرض ضريبة على النكات في المملكة.</p>
+        <div class="preview" style="text-align: left; padding: var(--space-08)">
+          <div dir="rtl" style="max-width: 32rem; margin: 0 auto">
+            <h3 class="h3" style="margin-bottom: var(--space-03)">ضريبة النكتة</h3>
+            <p class="p" style="margin-top: 0">فكر الملك طويلاً وبجد، وأخيراً توصل إلى خطة عبقرية: سيفرض ضريبة على النكات في المملكة.</p>
             <blockquote class="blockquote">
               <p>"في النهاية،" قال، "الجميع يستمتع بنكتة جيدة، لذا من العدل أن يدفعوا مقابل هذا الامتياز."</p>
             </blockquote>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -336,9 +336,9 @@
         </div>
 
         <!-- -- CSS --------------------------------------- -->
-        <section style="margin-top:3rem;" id="source-css">
-          <h2 style="font-family:var(--font-display);font-size:1.5rem;font-weight:400;letter-spacing:-0.025em;margin:0 0 0.375rem;">CSS <a href="../components/typography/typography.css" target="_blank" style="font-size:0.75rem;font-weight:400;color:var(--muted-foreground);text-decoration:underline;text-underline-offset:3px;margin-left:0.5rem;">view file</a></h2>
-          <div style="position:relative;margin-top:0.5rem;">
+        <section style="margin-top: var(--space-09)" id="source-css">
+          <h2 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; letter-spacing: -0.025em; margin: 0 0 0.375rem">CSS <a href="../components/typography/typography.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: 400; color: var(--muted-foreground); text-decoration: underline; text-underline-offset: 3px; margin-left: var(--space-02)">view file</a></h2>
+          <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-scss">/* -- Typography component --------------------------------------- */
 

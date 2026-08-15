@@ -82,30 +82,30 @@
 <body>
   <site-header></site-header>
 
-  <div class="flex" style="margin-top: 3.5rem; min-height: calc(100vh - 3.5rem);">
+  <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
 
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: 2rem 3.5rem 8rem;">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
         <div class="flex items-baseline justify-between mb-1">
-          <p class="text-sm text-muted-foreground" style="font-family:var(--font-mono);">mewa_ui / radio</p>
+          <p class="text-sm text-muted-foreground" style="font-family: var(--font-mono)">mewa_ui / radio</p>
         </div>
-        <h1 style="font-family:var(--font-display);font-size:2.5rem;font-weight:400;letter-spacing:-0.035em;margin:0 0 0.75rem;">Radio group</h1>
+        <h1 style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 400; letter-spacing: -0.035em; margin: 0 0 var(--space-03)">Radio group</h1>
         <p class="text-muted-foreground leading-relaxed mb-6">
           A set of mutually exclusive options. Built on native <code>&lt;input type="radio"&gt;</code> with <code>&lt;fieldset&gt;</code> grouping.
         </p>
         <!-- Component skill -->
-        <details style="margin-bottom:2rem;border:1px solid var(--border);overflow:hidden;">
-          <summary style="padding:0.875rem 1.25rem;background:var(--muted);cursor:pointer;font-size:0.8125rem;font-weight:600;font-family:var(--font-mono);color:var(--muted-foreground);list-style:none;display:flex;align-items:center;gap:0.5rem;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;"><path d="m9 18 6-6-6-6"/></svg>
-            Component skill — <span data-spec-href="../components/radio/radio.md" style="text-decoration:underline;text-underline-offset:3px;">components/radio/radio.md</span>
+        <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
+          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: 0.8125rem; font-weight: 600; font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
+            Component skill — <span data-spec-href="../components/radio/radio.md" style="text-decoration: underline; text-underline-offset: 3px">components/radio/radio.md</span>
           </summary>
-          <div style="padding:1.5rem;font-size:0.875rem;line-height:1.85;">
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Native basis</p>
-            <p class="text-muted-foreground" style="margin:0 0 1.25rem;"><code>&lt;input type=&quot;radio&quot;&gt;</code> elements with shared <code>name</code> attribute for mutual exclusivity.</p>
+          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: 1.85">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Native basis</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)"><code>&lt;input type=&quot;radio&quot;&gt;</code> elements with shared <code>name</code> attribute for mutual exclusivity.</p>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Web Platform APIs</p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Web Platform APIs</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio" target="_blank" rel="noopener" title="native radio button with group exclusivity via name" class="api-pill"><code>&lt;input type=&quot;radio&quot;&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset" target="_blank" rel="noopener" title="semantic group container with native disabled propagation" class="api-pill"><code>&lt;fieldset&gt;</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:checked" target="_blank" rel="noopener" title="matches selected state" class="api-pill"><code>:checked</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
@@ -115,8 +115,8 @@
               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors" target="_blank" rel="noopener" title="Windows High Contrast Mode support" class="api-pill"><code>forced-colors</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Classes</p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Classes</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <code>.radio-group</code>
               <code>.radio-item</code>
               <code>.radio-item-block</code>
@@ -126,28 +126,28 @@
               <code>.radio-group-description</code>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Data Attributes</p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Data Attributes</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <code>data-orientation="horizontal"</code>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Accessibility</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Native <code>&lt;fieldset&gt;</code> + <code>&lt;legend&gt;</code> provides group labeling.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Radio buttons sharing the same <code>name</code> are mutually exclusive by default.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Arrow keys navigate between options (native browser behavior).</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>:focus-visible</code> provides keyboard-only focus rings.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>prefers-reduced-motion</code> disables transitions.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0;">• <code>forced-colors</code> provides Windows High Contrast Mode support.</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Accessibility</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Native <code>&lt;fieldset&gt;</code> + <code>&lt;legend&gt;</code> provides group labeling.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Radio buttons sharing the same <code>name</code> are mutually exclusive by default.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Arrow keys navigate between options (native browser behavior).</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>:focus-visible</code> provides keyboard-only focus rings.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>prefers-reduced-motion</code> disables transitions.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 0">• <code>forced-colors</code> provides Windows High Contrast Mode support.</p>
 
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Notes</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Styled with <code>appearance: none</code> and a custom dot via <code>::after</code>.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• The <code>name</code> attribute is required for mutual exclusivity.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• No JavaScript needed — browsers handle group behavior natively.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Use <code>.radio-item</code> for simple label. Use <code>.radio-item-block</code> for label + description.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Use <code>.radio-card</code> for card-style selection with <code>:has()</code> highlight.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Add <code>data-orientation="horizontal"</code> for horizontal layout.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0;">• <code>&lt;fieldset disabled&gt;</code> disables all radios in the group natively.</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Notes</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Styled with <code>appearance: none</code> and a custom dot via <code>::after</code>.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• The <code>name</code> attribute is required for mutual exclusivity.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• No JavaScript needed — browsers handle group behavior natively.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Use <code>.radio-item</code> for simple label. Use <code>.radio-item-block</code> for label + description.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Use <code>.radio-card</code> for card-style selection with <code>:has()</code> highlight.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Add <code>data-orientation="horizontal"</code> for horizontal layout.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 0">• <code>&lt;fieldset disabled&gt;</code> disables all radios in the group natively.</p>
           </div>
         </details>
       </div>
@@ -170,7 +170,7 @@
             </div>
           </fieldset>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -195,7 +195,7 @@
         <p class="text-sm font-medium mb-2 mt-8">With description</p>
         <p class="text-xs text-muted-foreground mb-3">Radio items with label and description text using <code>.radio-item-block</code>.</p>
         <div class="preview">
-          <fieldset class="radio-group" style="max-width:22rem;">
+          <fieldset class="radio-group" style="max-width: 22rem">
             <legend class="label">Spacing</legend>
             <div class="radio-item-block">
               <input class="radio" type="radio" name="d-spacing" id="d-sp-default" value="default" checked>
@@ -214,7 +214,7 @@
             </div>
           </fieldset>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -237,7 +237,7 @@
         <p class="text-sm font-medium mb-2 mt-8">Choice card</p>
         <p class="text-xs text-muted-foreground mb-3">Card-style radios using <code>.radio-card</code> with <code>:has()</code> for checked highlight.</p>
         <div class="preview">
-          <fieldset class="radio-group" style="max-width:22rem;">
+          <fieldset class="radio-group" style="max-width: 22rem">
             <legend class="label">Select a plan</legend>
             <label class="radio-card" for="d-c-plus">
               <input class="radio" type="radio" name="d-card" id="d-c-plus" value="plus">
@@ -256,7 +256,7 @@
             </label>
           </fieldset>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -295,7 +295,7 @@
             </div>
           </fieldset>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -332,7 +332,7 @@
             </div>
           </fieldset>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -353,7 +353,7 @@
         <p class="text-sm font-medium mb-2 mt-8">Invalid</p>
         <p class="text-xs text-muted-foreground mb-3">Validation error state with <code>aria-invalid="true"</code>.</p>
         <div class="preview">
-          <fieldset class="radio-group" style="max-width:22rem;">
+          <fieldset class="radio-group" style="max-width: 22rem">
             <legend class="label">Notification Preferences</legend>
             <p class="radio-group-description">Choose how you want to receive notifications.</p>
             <div class="radio-item">
@@ -370,7 +370,7 @@
             </div>
           </fieldset>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -390,9 +390,9 @@
         </div>
 
         <!-- -- CSS --------------------------------------- -->
-        <section style="margin-top:3rem;" id="source-css">
-          <h2 style="font-family:var(--font-display);font-size:1.5rem;font-weight:400;letter-spacing:-0.025em;margin:0 0 0.375rem;">CSS <a href="../components/radio/radio.css" target="_blank" style="font-size:0.75rem;font-weight:400;color:var(--muted-foreground);text-decoration:underline;text-underline-offset:3px;margin-left:0.5rem;">view file</a></h2>
-          <div style="position:relative;margin-top:0.5rem;">
+        <section style="margin-top: var(--space-09)" id="source-css">
+          <h2 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; letter-spacing: -0.025em; margin: 0 0 0.375rem">CSS <a href="../components/radio/radio.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: 400; color: var(--muted-foreground); text-decoration: underline; text-underline-offset: 3px; margin-left: var(--space-02)">view file</a></h2>
+          <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-scss">/* -- Radio Group component -------------------------------------- */
 

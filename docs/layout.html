@@ -82,31 +82,31 @@
 <body>
   <site-header></site-header>
 
-  <div class="flex" style="margin-top: 3.5rem; min-height: calc(100vh - 3.5rem);">
+  <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
 
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: 2rem 3.5rem 8rem;">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
         <div class="flex items-baseline justify-between mb-1">
-          <p class="text-sm text-muted-foreground" style="font-family:var(--font-mono);">mewa_ui / layout</p>
+          <p class="text-sm text-muted-foreground" style="font-family: var(--font-mono)">mewa_ui / layout</p>
         </div>
-        <h1 style="font-family:var(--font-display);font-size:2.5rem;font-weight:400;letter-spacing:-0.035em;margin:0 0 0.75rem;">Layout</h1>
+        <h1 style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 400; letter-spacing: -0.035em; margin: 0 0 var(--space-03)">Layout</h1>
         <p class="text-muted-foreground leading-relaxed mb-6">
           Intrinsic layout primitives: container, stack, grid, sidebar, center, and split.
           Built on CSS Grid and Flexbox — responsive by default, no breakpoints, no JavaScript.
         </p>
         <!-- Component skill -->
-        <details style="margin-bottom:2rem;border:1px solid var(--border);overflow:hidden;">
-          <summary style="padding:0.875rem 1.25rem;background:var(--muted);cursor:pointer;font-size:0.8125rem;font-weight:600;font-family:var(--font-mono);color:var(--muted-foreground);list-style:none;display:flex;align-items:center;gap:0.5rem;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;"><path d="m9 18 6-6-6-6"/></svg>
-            Component skill — <span data-spec-href="../components/layout/layout.md" style="text-decoration:underline;text-underline-offset:3px;">components/layout/layout.md</span>
+        <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
+          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: 0.8125rem; font-weight: 600; font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
+            Component skill — <span data-spec-href="../components/layout/layout.md" style="text-decoration: underline; text-underline-offset: 3px">components/layout/layout.md</span>
           </summary>
-          <div style="padding:1.5rem;font-size:0.875rem;line-height:1.85;">
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Native basis</p>
-            <p class="text-muted-foreground" style="margin:0 0 1.25rem;">CSS Grid and Flexbox layout primitives — no JavaScript or ARIA required.</p>
+          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: 1.85">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Native basis</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">CSS Grid and Flexbox layout primitives — no JavaScript or ARIA required.</p>
 
-            <p style="margin:0 0 0.625rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Web Platform APIs</p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 0.625rem; font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Web Platform APIs</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout" target="_blank" rel="noopener" title="auto-fit / minmax() intrinsic column wrapping" class="api-pill"><code>CSS Grid</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout" target="_blank" rel="noopener" title="stacking, app-shell splits, wrapping" class="api-pill"><code>Flexbox</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min" target="_blank" rel="noopener" title="fluid container width that cannot overflow" class="api-pill"><code>min()</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
@@ -116,8 +116,8 @@
               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting" target="_blank" rel="noopener" title="child selectors in the sidebar split" class="api-pill"><code>CSS nesting</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Classes</p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Classes</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <code>.layout-container</code>
               <code>.layout-stack</code>
               <code>.layout-grid</code>
@@ -126,26 +126,26 @@
               <code>.layout-split</code>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Custom properties</p>
-            <div style="display:grid;grid-template-columns:auto auto 1fr;gap:0.25rem 1rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Custom properties</p>
+            <div style="display: grid; grid-template-columns: auto auto 1fr; gap: var(--space-01) var(--space-04); margin-bottom: var(--space-05)">
               <code>--gap</code><code>var(--space-04)</code><span class="text-muted-foreground">Gap between children — all primitives</span>
               <code>--min</code><code>15rem</code><span class="text-muted-foreground">Minimum column width — grid</span>
               <code>--container-max</code><code>64rem</code><span class="text-muted-foreground">Maximum width — container</span>
               <code>--sidebar-width</code><code>14rem</code><span class="text-muted-foreground">Maximum sidebar width — sidebar</span>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Data attributes</p>
-            <p class="text-muted-foreground" style="margin:0 0 1.25rem;">• <code>data-gap</code> — values: <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code>, <code>xl</code> (0 / 0.5 / 0.75 / 1 / 1.5 / 2.5rem)</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Data attributes</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">• <code>data-gap</code> — values: <code>none</code>, <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code>, <code>xl</code> (0 / 0.5 / 0.75 / 1 / 1.5 / 2.5rem)</p>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">ARIA</p>
-            <p class="text-muted-foreground" style="margin:0 0 1.25rem;">None required — purely visual layout containers. Semantics come from the elements inside.</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">ARIA</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">None required — purely visual layout containers. Semantics come from the elements inside.</p>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Notes</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• All primitives are intrinsic — they respond to container width, not breakpoints.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Default gaps use the <code>--space-*</code> scale from <code>base.css</code>.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>.layout-sidebar</code> requires exactly two children: first = sidebar, last = content.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>.layout-center</code> needs an explicit size on the element to visibly center.</p>
-            <p class="text-muted-foreground" style="margin:0 0 0;">• Pure CSS — no JavaScript file exists for this component.</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Notes</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• All primitives are intrinsic — they respond to container width, not breakpoints.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Default gaps use the <code>--space-*</code> scale from <code>base.css</code>.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>.layout-sidebar</code> requires exactly two children: first = sidebar, last = content.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>.layout-center</code> needs an explicit size on the element to visibly center.</p>
+            <p class="text-muted-foreground" style="margin: 0 0 0">• Pure CSS — no JavaScript file exists for this component.</p>
           </div>
         </details>
       </div>
@@ -154,11 +154,11 @@
         <p class="text-sm font-medium mb-2 mt-6">Container</p>
         <p class="text-xs text-muted-foreground mb-3">Constrains content to a centered max width (<code>--container-max</code>, default 64rem).</p>
         <div class="preview">
-          <div class="layout-container" style="border:1px dashed var(--border);text-align:center;">
-            <p style="margin:1rem 0;font-size:0.875rem;">Centered, constrained content.</p>
+          <div class="layout-container" style="border: var(--border-width-01) dashed var(--border); text-align: center">
+            <p style="margin: var(--space-04) 0; font-size: var(--font-body-small)">Centered, constrained content.</p>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -172,15 +172,15 @@
         <p class="text-sm font-medium mb-2 mt-8">Stack</p>
         <p class="text-xs text-muted-foreground mb-3">Vertical rhythm for arbitrary content — children separated by the gap.</p>
         <div class="preview">
-          <div style="width:100%;max-width:24rem;text-align:left;">
+          <div style="width: 100%; max-width: 24rem; text-align: left">
             <div class="layout-stack">
-              <p style="font-weight:600;margin:0;">Profile</p>
-              <p class="text-muted-foreground" style="font-size:0.875rem;margin:0;">A short description of the account and its permissions.</p>
-              <button class="btn" data-variant="outline" style="align-self:flex-start;">Edit profile</button>
+              <p style="font-weight: 600; margin: 0">Profile</p>
+              <p class="text-muted-foreground" style="font-size: var(--font-body-small); margin: 0">A short description of the account and its permissions.</p>
+              <button class="btn" data-variant="outline" style="align-self: flex-start">Edit profile</button>
             </div>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -196,16 +196,16 @@
         <p class="text-sm font-medium mb-2 mt-8">Grid</p>
         <p class="text-xs text-muted-foreground mb-3">Intrinsically responsive columns (<code>--min</code>, default 15rem). Resize the window to watch them wrap.</p>
         <div class="preview">
-          <div style="width:100%;text-align:left;">
+          <div style="width: 100%; text-align: left">
             <div class="layout-grid">
-              <div style="border:1px solid var(--border);padding:1rem;font-size:0.875rem;">Card 1</div>
-              <div style="border:1px solid var(--border);padding:1rem;font-size:0.875rem;">Card 2</div>
-              <div style="border:1px solid var(--border);padding:1rem;font-size:0.875rem;">Card 3</div>
-              <div style="border:1px solid var(--border);padding:1rem;font-size:0.875rem;">Card 4</div>
+              <div style="border: var(--border-width-01) solid var(--border); padding: var(--space-04); font-size: var(--font-body-small)">Card 1</div>
+              <div style="border: var(--border-width-01) solid var(--border); padding: var(--space-04); font-size: var(--font-body-small)">Card 2</div>
+              <div style="border: var(--border-width-01) solid var(--border); padding: var(--space-04); font-size: var(--font-body-small)">Card 3</div>
+              <div style="border: var(--border-width-01) solid var(--border); padding: var(--space-04); font-size: var(--font-body-small)">Card 4</div>
             </div>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -222,18 +222,18 @@
         <p class="text-sm font-medium mb-2 mt-8">Sidebar</p>
         <p class="text-xs text-muted-foreground mb-3">App-shell split. Content wraps below the sidebar when the container narrows — no media queries.</p>
         <div class="preview">
-          <div class="layout-sidebar" style="width:100%;text-align:left;">
-            <nav style="border:1px solid var(--border);padding:1rem;font-size:0.875rem;">
-              <p style="font-weight:600;margin:0 0 0.5rem;">Navigation</p>
-              <p class="text-muted-foreground" style="margin:0;font-size:0.75rem;">Item 1<br>Item 2<br>Item 3</p>
+          <div class="layout-sidebar" style="width: 100%; text-align: left">
+            <nav style="border: var(--border-width-01) solid var(--border); padding: var(--space-04); font-size: var(--font-body-small)">
+              <p style="font-weight: 600; margin: 0 0 var(--space-02)">Navigation</p>
+              <p class="text-muted-foreground" style="margin: 0; font-size: var(--font-body-xsmall)">Item 1<br>Item 2<br>Item 3</p>
             </nav>
-            <main style="border:1px dashed var(--border);padding:1rem;font-size:0.875rem;">
-              <p style="font-weight:600;margin:0 0 0.5rem;">Main content</p>
-              <p class="text-muted-foreground" style="margin:0;font-size:0.75rem;">Takes the remaining space; wraps below the sidebar on narrow containers.</p>
+            <main style="border: var(--border-width-01) dashed var(--border); padding: var(--space-04); font-size: var(--font-body-small)">
+              <p style="font-weight: 600; margin: 0 0 var(--space-02)">Main content</p>
+              <p class="text-muted-foreground" style="margin: 0; font-size: var(--font-body-xsmall)">Takes the remaining space; wraps below the sidebar on narrow containers.</p>
             </main>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -248,16 +248,16 @@
         <p class="text-sm font-medium mb-2 mt-8">Center</p>
         <p class="text-xs text-muted-foreground mb-3">Centers children on both axes. Give the element an explicit size.</p>
         <div class="preview">
-          <div class="layout-center" style="min-block-size:10rem;border:1px dashed var(--border);">
-            <p style="font-size:0.875rem;">Centered content</p>
+          <div class="layout-center" style="min-block-size: 10rem; border: var(--border-width-01) dashed var(--border)">
+            <p style="font-size: var(--font-body-small)">Centered content</p>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
-          <pre><code class="language-markup">&lt;div class="layout-center" style="min-block-size:16rem;"&gt;
+          <pre><code class="language-markup">&lt;div class="layout-center" style="min-block-size: 16rem"&gt;
   &lt;p&gt;Centered content&lt;/p&gt;
 &lt;/div&gt;</code></pre>
         </div>
@@ -266,17 +266,17 @@
         <p class="text-sm font-medium mb-2 mt-8">Split</p>
         <p class="text-xs text-muted-foreground mb-3">Opposite-end groups that wrap when space runs out. Useful for page headers.</p>
         <div class="preview">
-          <div style="width:100%;max-width:32rem;text-align:left;">
-            <div class="layout-split" style="border:1px solid var(--border);padding:1rem;">
+          <div style="width: 100%; max-width: 32rem; text-align: left">
+            <div class="layout-split" style="border: var(--border-width-01) solid var(--border); padding: var(--space-04)">
               <div>
-                <p style="font-weight:600;margin:0;">Project settings</p>
-                <p class="text-muted-foreground" style="margin:0.25rem 0 0;font-size:0.75rem;">Manage preferences and permissions.</p>
+                <p style="font-weight: 600; margin: 0">Project settings</p>
+                <p class="text-muted-foreground" style="margin: var(--space-01) 0 0; font-size: var(--font-body-xsmall)">Manage preferences and permissions.</p>
               </div>
               <button class="btn" data-variant="outline">Save changes</button>
             </div>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -294,14 +294,14 @@
         <p class="text-sm font-medium mb-2 mt-8">Gaps</p>
         <p class="text-xs text-muted-foreground mb-3">Named gap values via <code>data-gap</code>, mapped to the <code>--space-*</code> scale.</p>
         <div class="preview">
-          <div style="width:100%;text-align:left;">
-            <div class="layout-stack" data-gap="sm" style="border:1px dashed var(--border);padding:0.75rem;">
-              <div style="border:1px solid var(--border);padding:0.5rem;font-size:0.75rem;">data-gap="sm" — 0.75rem</div>
-              <div style="border:1px solid var(--border);padding:0.5rem;font-size:0.75rem;">data-gap="sm" — 0.75rem</div>
+          <div style="width: 100%; text-align: left">
+            <div class="layout-stack" data-gap="sm" style="border: var(--border-width-01) dashed var(--border); padding: var(--space-03)">
+              <div style="border: var(--border-width-01) solid var(--border); padding: var(--space-02); font-size: var(--font-body-xsmall)">data-gap="sm" — 0.75rem</div>
+              <div style="border: var(--border-width-01) solid var(--border); padding: var(--space-02); font-size: var(--font-body-xsmall)">data-gap="sm" — 0.75rem</div>
             </div>
           </div>
         </div>
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -315,9 +315,9 @@
         <!-- Spec link -->
 
         <!-- -- CSS --------------------------------------- -->
-        <section style="margin-top:3rem;" id="source-css">
-          <h2 style="font-family:var(--font-display);font-size:1.5rem;font-weight:400;letter-spacing:-0.025em;margin:0 0 0.375rem;">CSS <a href="../components/layout/layout.css" target="_blank" style="font-size:0.75rem;font-weight:400;color:var(--muted-foreground);text-decoration:underline;text-underline-offset:3px;margin-left:0.5rem;">view file</a></h2>
-          <div style="position:relative;margin-top:0.5rem;">
+        <section style="margin-top: var(--space-09)" id="source-css">
+          <h2 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; letter-spacing: -0.025em; margin: 0 0 0.375rem">CSS <a href="../components/layout/layout.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: 400; color: var(--muted-foreground); text-decoration: underline; text-underline-offset: 3px; margin-left: var(--space-02)">view file</a></h2>
+          <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-scss">/* -- Layout component ---------------------------------------- */
 
@@ -483,7 +483,7 @@ App-shell split. The first child is the sidebar (up to `--sidebar-width`), the l
 ### Center
 Centers children on both axes. Give the element an explicit size (for example `min-block-size: 50vh` or a fixed height) or it shrinks to its content.
 ```html
-<div class="layout-center" style="min-block-size: 16rem;">
+<div class="layout-center" style="min-block-size: 16rem">
   <p>Centered content</p>
 </div>
 ```

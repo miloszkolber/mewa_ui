@@ -82,31 +82,31 @@
 <body>
   <site-header></site-header>
 
-  <div class="flex" style="margin-top: 3.5rem; min-height: calc(100vh - 3.5rem);">
+  <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
 
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: 2rem 3.5rem 8rem;">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
         <div class="flex items-baseline justify-between mb-1">
-          <p class="text-sm text-muted-foreground" style="font-family:var(--font-mono);">mewa_ui / dropdown-menu</p>
+          <p class="text-sm text-muted-foreground" style="font-family: var(--font-mono)">mewa_ui / dropdown-menu</p>
         </div>
-        <h1 style="font-family:var(--font-display);font-size:2.5rem;font-weight:400;letter-spacing:-0.035em;margin:0 0 0.75rem;">Dropdown menu</h1>
+        <h1 style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 400; letter-spacing: -0.035em; margin: 0 0 var(--space-03)">Dropdown menu</h1>
         <p class="text-muted-foreground leading-relaxed mb-6">
           Context menu built on the <code>popover</code> API. Light-dismiss is automatic.
           Supports groups, shortcuts, separators, and destructive items. Animated with <code>@starting-style</code>.
         </p>
         <!-- Component skill -->
-        <details style="margin-bottom:2rem;border:1px solid var(--border);overflow:hidden;">
-          <summary style="padding:0.875rem 1.25rem;background:var(--muted);cursor:pointer;font-size:0.8125rem;font-weight:600;font-family:var(--font-mono);color:var(--muted-foreground);list-style:none;display:flex;align-items:center;gap:0.5rem;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;"><path d="m9 18 6-6-6-6"/></svg>
-            Component skill — <span data-spec-href="../components/dropdown/dropdown.md" style="text-decoration:underline;text-underline-offset:3px;">components/dropdown/dropdown.md</span>
+        <details style="margin-bottom: var(--space-07); border: var(--border-width-01) solid var(--border); overflow: hidden">
+          <summary style="padding: 0.875rem var(--space-05); background: var(--muted); cursor: pointer; font-size: 0.8125rem; font-weight: 600; font-family: var(--font-mono); color: var(--muted-foreground); list-style: none; display: flex; align-items: center; gap: var(--space-02)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 200ms"><path d="m9 18 6-6-6-6"/></svg>
+            Component skill — <span data-spec-href="../components/dropdown/dropdown.md" style="text-decoration: underline; text-underline-offset: 3px">components/dropdown/dropdown.md</span>
           </summary>
-          <div style="padding:1.5rem;font-size:0.875rem;line-height:1.85;">
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Native basis</p>
-            <p class="text-muted-foreground" style="margin:0 0 1.25rem;"><code>popover</code> API + <code>&lt;button&gt;</code> trigger. The browser provides light-dismiss</p>
+          <div style="padding: var(--space-06); font-size: var(--font-body-small); line-height: 1.85">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Native basis</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)"><code>popover</code> API + <code>&lt;button&gt;</code> trigger. The browser provides light-dismiss</p>
 
-            <p style="margin:0 0 0.625rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Web Platform APIs</p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 0.625rem; font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Web Platform APIs</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <a href="https://developer.mozilla.org/en-US/docs/Web/API/Popover_API" target="_blank" rel="noopener" title="top-layer rendering and light-dismiss (click outside to close)" class="api-pill"><code>Popover API</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning" target="_blank" rel="noopener" title="positions dropdown relative to trigger without JavaScript" class="api-pill"><code>CSS Anchor Positioning</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
               <a href="https://www.w3.org/WAI/ARIA/apg/patterns/menubar/" target="_blank" rel="noopener" title="keyboard navigation and role contract for menu items" class="api-pill"><code>WAI-ARIA Menu pattern</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
@@ -115,8 +115,8 @@
               <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors" target="_blank" rel="noopener" title="maps to system colors" class="api-pill"><code>forced-colors</code><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Classes</p>
-            <div style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Classes</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.375rem; margin-bottom: var(--space-05)">
               <code>.dropdown-content</code>
               <code>.dropdown-item</code>
               <code>.dropdown-separator</code>
@@ -124,29 +124,29 @@
               <code>.dropdown-shortcut</code>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Variants (data-variant)</p>
-            <div style="display:grid;grid-template-columns:auto 1fr;gap:0.25rem 1rem;margin-bottom:1.25rem;">
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Variants (data-variant)</p>
+            <div style="display: grid; grid-template-columns: auto 1fr; gap: var(--space-01) var(--space-04); margin-bottom: var(--space-05)">
               <code>destructive</code><span class="text-muted-foreground">Alternate background styling</span>
             </div>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Data attributes</p>
-            <p class="text-muted-foreground" style="margin:0 0 1.25rem;">• <code>data-dropdown-trigger</code></p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Data attributes</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">• <code>data-dropdown-trigger</code></p>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">State attributes (managed by JS)</p>
-            <p class="text-muted-foreground" style="margin:0 0 1.25rem;">• <code>data-highlighted</code></p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">State attributes (managed by JS)</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">• <code>data-highlighted</code></p>
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Wiring conventions</p>
-            <p class="text-muted-foreground" style="margin:0 0 1.25rem;">• <code>data-dropdown-trigger</code> on any element — opens the component</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Wiring conventions</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-05)">• <code>data-dropdown-trigger</code> on any element — opens the component</p>
 
 
-            <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Notes</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Always use <code>popover</code> attribute for the menu — it renders in the top layer and avoids overflow clipping</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• CSS anchor positioning (<code>position-anchor</code>, <code>anchor()</code>) handles placement — no JS positioning needed</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• <code>position-try: flip-block</code> automatically flips the menu above the trigger if there's no room below</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• The <code>popover</code> API handles light-dismiss (click outside) automatically</p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• For submenus, nest another <code>[popover]</code> element triggered by a <code>menuitem</code> with <code>aria-haspopup=&quot;menu&quot;</code></p>
-            <p class="text-muted-foreground" style="margin:0 0 0.25rem;">• Escape closes the menu and returns focus to the trigger</p>
-            <p class="text-muted-foreground" style="margin:0 0 0;">• Menu items use <code>tabindex=&quot;-1&quot;</code> — only arrow keys move focus (roving focus pattern)</p>
+            <p style="margin: 0 0 var(--space-02); font-weight: 600; font-size: 0.8125rem; font-family: var(--font-mono)">Notes</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Always use <code>popover</code> attribute for the menu — it renders in the top layer and avoids overflow clipping</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• CSS anchor positioning (<code>position-anchor</code>, <code>anchor()</code>) handles placement — no JS positioning needed</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• <code>position-try: flip-block</code> automatically flips the menu above the trigger if there's no room below</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• The <code>popover</code> API handles light-dismiss (click outside) automatically</p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• For submenus, nest another <code>[popover]</code> element triggered by a <code>menuitem</code> with <code>aria-haspopup=&quot;menu&quot;</code></p>
+            <p class="text-muted-foreground" style="margin: 0 0 var(--space-01)">• Escape closes the menu and returns focus to the trigger</p>
+            <p class="text-muted-foreground" style="margin: 0 0 0">• Menu items use <code>tabindex=&quot;-1&quot;</code> — only arrow keys move focus (roving focus pattern)</p>
           </div>
         </details>
       </div>
@@ -157,7 +157,7 @@
         <p class="text-sm font-medium mb-2 mt-6">Standard menu</p>
         <p class="text-xs text-muted-foreground mb-3">Full-featured menu with icons, keyboard shortcuts, groups, separators, a disabled item, and a destructive action.</p>
 
-        <div class="preview" style="gap:0.75rem;min-height:14rem;align-items:flex-start;padding-top:2.5rem;">
+        <div class="preview" style="gap: var(--space-03); min-height: 14rem; align-items: flex-start; padding-top: var(--space-08)">
           <button class="btn" data-variant="default"
                   aria-haspopup="menu" aria-expanded="false"
                   aria-controls="demo-dropdown"
@@ -166,7 +166,7 @@
             <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
           </button>
 
-          <div id="demo-dropdown" role="menu" popover class="dropdown-content" aria-label="Options menu" style="min-width:12rem;">
+          <div id="demo-dropdown" role="menu" popover class="dropdown-content" aria-label="Options menu" style="min-width: 12rem">
             <div class="dropdown-label">My Account</div>
             <div role="group" aria-label="Navigation">
               <button role="menuitem" class="dropdown-item" tabindex="-1">
@@ -201,7 +201,7 @@
           </div>
         </div>
 
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -221,7 +221,7 @@
 &lt;!-- Menu --&gt;
 &lt;div id="demo-dropdown" role="menu" popover
      class="dropdown-content" aria-label="Options menu"
-     style="min-width:12rem;"&gt;
+     style="min-width: 12rem"&gt;
   &lt;div class="dropdown-label"&gt;My Account&lt;/div&gt;
   &lt;div role="group" aria-label="Navigation"&gt;
     &lt;button role="menuitem" class="dropdown-item" tabindex="-1"&gt;
@@ -264,7 +264,7 @@
         <p class="text-sm font-medium mb-2 mt-6">Checkbox & radio</p>
         <p class="text-xs text-muted-foreground mb-3">Use <code>menuitemcheckbox</code> for toggleable options and <code>menuitemradio</code> inside a <code>role="group"</code> for exclusive choices.</p>
 
-        <div class="preview" style="gap:0.75rem;min-height:14rem;align-items:flex-start;padding-top:2.5rem;">
+        <div class="preview" style="gap: var(--space-03); min-height: 14rem; align-items: flex-start; padding-top: var(--space-08)">
           <button class="btn" data-variant="outline"
                   aria-haspopup="menu" aria-expanded="false"
                   aria-controls="demo-dropdown-checks"
@@ -273,7 +273,7 @@
             <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
           </button>
 
-          <div id="demo-dropdown-checks" role="menu" popover class="dropdown-content" aria-label="View options" style="min-width:11rem;">
+          <div id="demo-dropdown-checks" role="menu" popover class="dropdown-content" aria-label="View options" style="min-width: 11rem">
             <div class="dropdown-label">Appearance</div>
             <div role="group" aria-label="Toggle columns">
               <button role="menuitemcheckbox" class="dropdown-item dropdown-check" aria-checked="true" tabindex="-1">Status Bar</button>
@@ -289,7 +289,7 @@
           </div>
         </div>
 
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -309,7 +309,7 @@
 &lt;!-- Checkbox / Radio Menu --&gt;
 &lt;div id="demo-dropdown-checks" role="menu" popover
      class="dropdown-content" aria-label="View options"
-     style="min-width:11rem;"&gt;
+     style="min-width: 11rem"&gt;
   &lt;div class="dropdown-label"&gt;Appearance&lt;/div&gt;
   &lt;div role="group" aria-label="Toggle columns"&gt;
     &lt;button role="menuitemcheckbox"
@@ -341,7 +341,7 @@
         <p class="text-sm font-medium mb-2 mt-6">Trigger variants</p>
         <p class="text-xs text-muted-foreground mb-3">Any button variant can serve as a dropdown trigger. Here a <code>secondary</code> button and a <code>ghost</code> icon-only button open simple menus.</p>
 
-        <div class="preview" style="gap:0.75rem;min-height:14rem;align-items:flex-start;padding-top:2.5rem;">
+        <div class="preview" style="gap: var(--space-03); min-height: 14rem; align-items: flex-start; padding-top: var(--space-08)">
           <!-- Secondary trigger -->
           <button class="btn" data-variant="secondary"
                   aria-haspopup="menu" aria-expanded="false"
@@ -361,7 +361,7 @@
           </button>
 
           <!-- Simple menu for "More" (secondary trigger) -->
-          <div id="demo-dropdown-3" role="menu" popover class="dropdown-content" aria-label="More options" style="min-width:10rem;">
+          <div id="demo-dropdown-3" role="menu" popover class="dropdown-content" aria-label="More options" style="min-width: 10rem">
             <button role="menuitem" class="dropdown-item" tabindex="-1">Copy</button>
             <button role="menuitem" class="dropdown-item" tabindex="-1">Paste</button>
             <div class="dropdown-separator" role="separator"></div>
@@ -369,7 +369,7 @@
           </div>
 
           <!-- Simple menu for icon trigger -->
-          <div id="demo-dropdown-4" role="menu" popover class="dropdown-content" aria-label="Actions" style="min-width:10rem;">
+          <div id="demo-dropdown-4" role="menu" popover class="dropdown-content" aria-label="Actions" style="min-width: 10rem">
             <button role="menuitem" class="dropdown-item" tabindex="-1">Edit</button>
             <button role="menuitem" class="dropdown-item" tabindex="-1">Duplicate</button>
             <div class="dropdown-separator" role="separator"></div>
@@ -377,7 +377,7 @@
           </div>
         </div>
 
-        <div style="position:relative;margin-top:0.5rem;">
+        <div style="position: relative; margin-top: var(--space-02)">
           <button class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -396,7 +396,7 @@
 
 &lt;div id="demo-dropdown-3" role="menu" popover
      class="dropdown-content" aria-label="More options"
-     style="min-width:10rem;"&gt;
+     style="min-width: 10rem"&gt;
   &lt;button role="menuitem" class="dropdown-item" tabindex="-1"&gt;Copy&lt;/button&gt;
   &lt;button role="menuitem" class="dropdown-item" tabindex="-1"&gt;Paste&lt;/button&gt;
   &lt;div class="dropdown-separator" role="separator"&gt;&lt;/div&gt;
@@ -420,7 +420,7 @@
 
 &lt;div id="demo-dropdown-4" role="menu" popover
      class="dropdown-content" aria-label="Actions"
-     style="min-width:10rem;"&gt;
+     style="min-width: 10rem"&gt;
   &lt;button role="menuitem" class="dropdown-item" tabindex="-1"&gt;Edit&lt;/button&gt;
   &lt;button role="menuitem" class="dropdown-item" tabindex="-1"&gt;Duplicate&lt;/button&gt;
   &lt;div class="dropdown-separator" role="separator"&gt;&lt;/div&gt;
@@ -429,9 +429,9 @@
 &lt;/div&gt;</code></pre>
         </div>
         <!-- -- CSS --------------------------------------- -->
-        <section style="margin-top:3rem;" id="source-css">
-          <h2 style="font-family:var(--font-display);font-size:1.5rem;font-weight:400;letter-spacing:-0.025em;margin:0 0 0.375rem;">CSS <a href="../components/dropdown/dropdown.css" target="_blank" style="font-size:0.75rem;font-weight:400;color:var(--muted-foreground);text-decoration:underline;text-underline-offset:3px;margin-left:0.5rem;">view file</a></h2>
-          <div style="position:relative;margin-top:0.5rem;">
+        <section style="margin-top: var(--space-09)" id="source-css">
+          <h2 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; letter-spacing: -0.025em; margin: 0 0 0.375rem">CSS <a href="../components/dropdown/dropdown.css" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: 400; color: var(--muted-foreground); text-decoration: underline; text-underline-offset: 3px; margin-left: var(--space-02)">view file</a></h2>
+          <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-scss">/* -- Dropdown component ---------------------------------------- */
 
@@ -585,10 +585,10 @@
         </section>
 
         <!-- -- JavaScript -------------------------------- -->
-        <section style="margin-top:3rem;" id="source-js">
-          <h2 style="font-family:var(--font-display);font-size:1.5rem;font-weight:400;letter-spacing:-0.025em;margin:0 0 0.375rem;">JavaScript <a href="../components/dropdown/dropdown.js" target="_blank" style="font-size:0.75rem;font-weight:400;color:var(--muted-foreground);text-decoration:underline;text-underline-offset:3px;margin-left:0.5rem;">view file</a></h2>
+        <section style="margin-top: var(--space-09)" id="source-js">
+          <h2 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; letter-spacing: -0.025em; margin: 0 0 0.375rem">JavaScript <a href="../components/dropdown/dropdown.js" target="_blank" style="font-size: var(--font-body-xsmall); font-weight: 400; color: var(--muted-foreground); text-decoration: underline; text-underline-offset: 3px; margin-left: var(--space-02)">view file</a></h2>
           <p class="text-muted-foreground text-sm mb-4">Wires triggers to popover menus. CSS anchor positioning handles placement. Keyboard navigation (Arrow keys, Home/End, Escape, Enter/Space), typeahead, and checkbox/radio state management.</p>
-          <div style="position:relative;margin-top:0.5rem;">
+          <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
               Copy
