@@ -287,18 +287,6 @@ html.dark pre.shiki span {
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
-/* -- Token swatch ------------------------------------------ */
-.swatch-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.625rem 1rem;
-  border: 1px solid var(--border);
-  
-  min-width: 0;
-  overflow: hidden;
-}
-
 /* -- Copy button ------------------------------------------- */
 .copy-btn {
   position: absolute;
@@ -526,11 +514,6 @@ html.dark pre.shiki span {
   /* Sticky page header: reduce top offset for mobile */
   .page-header {
     padding: 0.75rem 0;
-  }
-
-  /* Swatch rows */
-  .swatch-row {
-    flex-wrap: wrap;
   }
 
   /* Spec modal: full-width on mobile */

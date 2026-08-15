@@ -6,15 +6,15 @@
   <meta name="color-scheme" content="light dark">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <meta name="description" content="Tabs component — tabbed content panels with keyboard navigation.">
-  <meta property="og:title" content="Tabs — mewa base">
+  <meta property="og:title" content="Tabs — mewa_ui">
   <meta property="og:description" content="Tabs component — tabbed content panels with keyboard navigation.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mewa.local/tabs.html">
-  <meta property="og:site_name" content="mewa base">
+  <meta property="og:site_name" content="mewa_ui">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Tabs — mewa base">
+  <meta name="twitter:title" content="Tabs — mewa_ui">
   <meta name="twitter:description" content="Tabs component — tabbed content panels with keyboard navigation.">
-  <title>Tabs — mewa base</title>
+  <title>Tabs — mewa_ui</title>
       <script src="js/layout.js"></script>
   <link rel="stylesheet" href="../src/tokens.css">
   <link rel="stylesheet" href="css/docs-theme.css">
@@ -86,7 +86,7 @@
     <main style="flex: 1; min-width: 0; max-width: 44rem; padding: 2rem 3.5rem 8rem;">
       <div class="page-header">
         <div class="flex items-baseline justify-between mb-1">
-          <p class="text-sm text-muted-foreground" style="font-family:var(--font-mono);">mewa base / tabs</p>
+          <p class="text-sm text-muted-foreground" style="font-family:var(--font-mono);">mewa_ui / tabs</p>
           <div style="display:flex;align-items:baseline;gap:0.375rem;"><span class="text-xs text-muted-foreground" style="font-family:var(--font-mono);white-space:nowrap;">Built with:</span> <a href="#source-css" class="badge built-with-pill" data-variant="outline">CSS</a> <a href="#source-js" class="badge built-with-pill" data-variant="outline">JS</a></div>
         </div>
         <h1 style="font-family:var(--font-display);font-size:2.5rem;font-weight:400;letter-spacing:-0.035em;margin:0 0 0.75rem;">Tabs</h1>
@@ -94,11 +94,11 @@
           Organize content into switchable panels. Uses WAI-ARIA Tabs pattern with
           roving <code>tabindex</code> and arrow key navigation. Available in pill and line variants.
         </p>
-        <!-- Component Skill -->
+        <!-- Component skill -->
         <details style="margin-bottom:2rem;border:1px solid var(--border);overflow:hidden;">
           <summary style="padding:0.875rem 1.25rem;background:var(--muted);cursor:pointer;font-size:0.8125rem;font-weight:600;font-family:var(--font-mono);color:var(--muted-foreground);list-style:none;display:flex;align-items:center;gap:0.5rem;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;"><path d="m9 18 6-6-6-6"/></svg>
-            Component Skill — <span data-spec-href="../components/tabs/component-skill.md" style="text-decoration:underline;text-underline-offset:3px;">components/tabs/component-skill.md</span>
+            Component skill — <span data-spec-href="../components/tabs/tabs.md" style="text-decoration:underline;text-underline-offset:3px;">components/tabs/tabs.md</span>
           </summary>
           <div style="padding:1.5rem;font-size:0.875rem;line-height:1.85;">
             <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Native basis</p>
@@ -153,7 +153,7 @@
       </div>
 
         <!-- Pill variant (default) -->
-        <p class="text-sm font-medium mb-2 mt-6">Pill Variant (Default)</p>
+        <p class="text-sm font-medium mb-2 mt-6">Pill variant (default)</p>
         <p class="text-xs text-muted-foreground mb-3">Default style with <code>--muted</code> background. Active tab gets <code>--background</code> fill and shadow.</p>
         <div class="preview" style="flex-direction:column;align-items:stretch;padding:2rem 2.5rem;">
           <div class="tabs">
@@ -276,7 +276,7 @@
         </div>
 
         <!-- Line variant -->
-        <p class="text-sm font-medium mb-2 mt-8">Line Variant with Disabled Tab</p>
+        <p class="text-sm font-medium mb-2 mt-8">Line variant with disabled tab</p>
         <p class="text-xs text-muted-foreground mb-3">Add <code>data-variant="line"</code> to the <code>.tab-list</code> for an underline style. Disabled tabs use the native <code>disabled</code> attribute.</p>
         <div class="preview" style="flex-direction:column;align-items:stretch;padding:2rem 2.5rem;">
           <div class="tabs">
@@ -349,7 +349,7 @@
         </div>
 
         <!-- Vertical orientation -->
-        <p class="text-sm font-medium mb-2 mt-8">Vertical Orientation</p>
+        <p class="text-sm font-medium mb-2 mt-8">Vertical orientation</p>
         <p class="text-xs text-muted-foreground mb-3">Set <code>aria-orientation="vertical"</code> on the tablist. CSS uses <code>:has()</code> to switch to a side-by-side layout automatically.</p>
         <div class="preview" style="flex-direction:column;align-items:stretch;padding:2rem 2.5rem;">
           <div class="tabs">
@@ -715,9 +715,7 @@ new MutationObserver(init).observe(document, { childList: true, subtree: true })
   <script type="module" src="../components/carousel/carousel.js"></script>
   <script type="module" src="../components/slider/slider.js"></script>
   <script type="module" src="../components/sortable/sortable.js"></script>
-  <script src="https://unpkg.com/lucide@1.8.0" integrity="sha384-+8nbzwDAyu5kAjqtR/XKxIgPHQD2TflvbZgeDZn5t3JP+OOogNH1jXnfel8ZAgzS" crossorigin="anonymous"></script>
-  <script>lucide.createIcons();</script>
-<script type="text/plain" id="spec-md-content"># Pattern: Tabs
+    <script type="text/plain" id="spec-md-content"># Pattern: Tabs
 
 ## Native basis
 `role="tablist"` + `role="tab"` + `role="tabpanel"`. No native HTML element

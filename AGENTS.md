@@ -1,6 +1,6 @@
-# mewa base — Maintainer Instructions
+# mewa_ui — Maintainer Instructions
 
-You are working on the **mewa base** design system, a fork of
+You are working on the **mewa_ui** design system, a fork of
 [shadcn-html](https://github.com/codylindley/shadcn-html) at upstream commit
 `0964e09e` (v0.7.13-alpha), MIT. The consumer-facing system lives at the
 repository root: `components/`, `src/tokens.css`, and the `docs/` site.
@@ -17,20 +17,21 @@ switches, progress). Elevation is expressed with `--border`, never shadows.
 ui_library/
 ├── src/tokens.css                   ← design tokens (source of truth for colors, spacing, tracking)
 ├── src/geist.woff2, geistmono.woff2 ← the only fonts (Geist variable, 400–550)
+├── src/icons/                         ← the full Lucide icon set (standalone SVGs, no CDN)
 ├── components/                      ← self-contained component folders
 │   └── {name}/
-│       ├── component-skill.md        ← component skill (HTML structure & ARIA reference)
+│       ├── {name}.md                ← component skill (HTML structure & ARIA reference)
 │       ├── {name}.css               ← component stylesheet (edit directly)
 │       └── {name}.js                ← interaction JS (only for interactive components)
-├── docs/                            ← doc site (one page per component + single Overview page)
-│   ├── *.html                       ← component pages + index.html (overview)
+├── docs/                            ← doc site (one page per component, no overview page)
+│   ├── *.html                       ← component pages (no index.html)
 │   ├── css/docs-utilities.css       ← hand-written utility classes for doc pages
 │   ├── css/docs-theme.css           ← doc-site font overrides (Geist from src/, not part of the system)
 │   ├── css/layout.css               ← doc-site layout (not part of the system)
 │   ├── js/layout.js                 ← SPA router, <site-header>/<site-nav> web components
 │   ├── js/site.js                   ← doc-site-only JS (tabs, copy buttons, skill modal, code collapse)
 │   ├── js/shiki-highlight.js        ← Shiki-based syntax highlighting (ES module, CDN)
-│   └── scripts/                     ← snippet sync scripts (node, no deps)
+│   └── js/sync-css-snippets.js, sync-js-snippets.js ← snippet sync scripts (node, no deps)
 ├── legacy/                          ← previous hand-rolled mewa_ui (porting source only)
 └── AGENTS.md                        ← this file (maintainer instructions)
 ```
@@ -191,11 +192,11 @@ if (!document.__myComponentInit) {
 ### Each component is a self-contained folder
 
 Each component at `components/{name}/` contains:
-- `component-skill.md` — component skill: HTML structure, attributes, ARIA, and usage notes
+- `{name}.md` — component skill: HTML structure, attributes, ARIA, and usage notes
 - `{name}.css` — the component stylesheet (edit directly)
 - `{name}.js` — interaction JS (only for interactive components, edit directly)
 
-The component skill `.md` file documents **how to build the HTML**. The `.css` and `.js` files
+The component skill `{name}.md` file documents **how to build the HTML**. The `.css` and `.js` files
 are the actual implementation — edit them directly, no build step needed.
 
 ### Tokens are the source of truth for design values
@@ -217,7 +218,7 @@ stay square and border-led.
 The doc site is fully static. Serve `docs/` with any static
 server (e.g. `python3 -m http.server` or `bunx serve`) and open a page.
 
-The doc site is a **SPA-style multi-page app**. `layout.js` loads synchronously in
+The doc site is a **SPA-style multi-page app** with no landing/overview page. `layout.js` loads synchronously in
 `<head>` and provides:
 
 - `<site-header>` — renders the fixed header (brand, dark mode toggle)
@@ -232,6 +233,71 @@ do not contain nav markup.
 Each HTML page duplicates the full list of component CSS `<link>` tags in `<head>`
 and component JS `<script>` tags at end of `<body>`. When adding a new component,
 these imports must be added to **every** HTML file.
+
+---
+
+## Using the system
+
+### Include pattern
+
+Link `src/tokens.css` first, then the stylesheets of only the components you use:
+
+```html
+<link rel="stylesheet" href="src/tokens.css">
+<link rel="stylesheet" href="components/button/button.css">
+<link rel="stylesheet" href="components/dialog/dialog.css">
+<!-- JS — only when the component needs it -->
+<script type="module" src="components/dialog/dialog.js"></script>
+```
+
+Read the component skill, copy the HTML pattern, fill in your content. Serve over
+HTTP — ES modules do not run from `file://`.
+
+### Icons
+
+All icons ship locally as standalone SVGs in `src/icons/`. Write
+`<i data-lucide="name">` and let the doc site's loader in `docs/js/site.js`
+fetch `src/icons/{name}.svg` and inline it at page load — no CDN. Consumers
+must never load the Lucide CDN; copy the loader or inline the SVG directly.
+
+### Theming
+
+All design values live in `src/tokens.css` as `:root` (light) and `.dark` (dark)
+custom properties, in the tweakcn.com export format. Swap both blocks with an
+exported theme and every component updates instantly. To override individual
+tokens, add a stylesheet *after* the tokens link.
+
+### Dark mode
+
+Add or remove `class="dark"` on the `<html>` element. Every token switches
+automatically via `color-scheme` and the `.dark` block. The doc site header
+toggle shows the pattern: a `prefers-color-scheme` media query for the default,
+`localStorage` for the user's manual choice, and a button that flips the class.
+
+### Data attribute API
+
+Components are configured with `data-*` attributes instead of props:
+`data-variant`, `data-size`, `data-state`, and component-specific ones like
+`data-ratio`. The CSS and JS react to these attributes directly, so markup is
+the only API. Each component skill documents its attributes.
+
+### CSS architecture
+
+Component stylesheets live in `@layer components` (typography additionally uses
+`@layer base`); tokens are plain custom properties outside any layer. Author
+overrides outside the layers always win.
+
+### Visual contract
+
+- Semantic color pairs (surface + foreground) from `src/tokens.css`; red, amber,
+  and green communicate status.
+- Focus rings via `--ring` with `:focus-visible`. All animation respects
+  `prefers-reduced-motion`, `prefers-contrast: more`, and `forced-colors: active`.
+- Keep native form submission and fallback behavior. Do not remove labels,
+  `aria-*` relationships, live regions, or keyboard instructions. Provide a
+  keyboard path for drag or pointer interactions.
+- Keep the square, border-led contract: no radii, no shadows, circular geometry
+  only where meaning requires it.
 
 ---
 
@@ -263,7 +329,7 @@ support status of newer APIs (`popover`, anchor positioning, `@starting-style`, 
 
 1. **Create the component folder** → `components/{name}/`
 
-2. **Write the component skill** → `components/{name}/component-skill.md`
+2. **Write the component skill** → `components/{name}/{name}.md`
    - Follow the template: Native basis → Native Web APIs → Structure → Variants → Sizes → ARIA → Notes
    - Documents the HTML pattern, not CSS/JS (those are the actual files)
    - Cross-check variants, sizes, and states against the reference sites above
@@ -289,8 +355,8 @@ support status of newer APIs (`popover`, anchor positioning, `@starting-style`, 
 7. **Add CSS/JS imports to all HTML pages** → add the new component's `<link>` and
    `<script>` tags to every HTML file in `docs/`
 
-8. **Sync inline source snippets** → run `node docs/scripts/sync-css-snippets.js` and
-    `node docs/scripts/sync-js-snippets.js` to replace the inline `<pre><code>` blocks in
+8. **Sync inline source snippets** → run `node docs/js/sync-css-snippets.js` and
+    `node docs/js/sync-js-snippets.js` to replace the inline `<pre><code>` blocks in
     every doc page with the actual contents of each component's `.css` and `.js` files.
     This must be done after any change to a component's CSS or JS — not just for new components.
 
@@ -309,9 +375,14 @@ support status of newer APIs (`popover`, anchor positioning, `@starting-style`, 
   auto-initialize new elements when the DOM changes — no manual re-import needed.
   Doc-site-only scripts (site.js) use `window.onPageReady(fn)` for their own re-init.
 - **Font stacks**: The system tokens use generic font stacks. The doc site overrides
-  them in `css/docs-theme.css`. Don't put custom fonts in `default-semantic-tokens.css`.
+  them in `css/docs-theme.css`. Don't put custom fonts in `src/tokens.css`.
+- **Icons**: All icons ship locally in `src/icons/` — never load the Lucide CDN.
+  The doc site inlines `src/icons/{name}.svg` for `<i data-lucide="name">` via `js/site.js`.
+- **Sentence case**: Use sentence case for every heading and label in docs, skills,
+  and demo content (first word capitalized, rest lowercase; acronyms like HTML, CSS,
+  API, ARIA stay uppercase).
 - **Inline source snippet drift**: Doc pages show the component's CSS and JS in
   `<pre><code>` blocks. These must always match the actual files. After editing any
-  component `.css` or `.js`, run `node scripts/sync-css-snippets.js` and
-  `node scripts/sync-js-snippets.js` to update all doc pages automatically.
+  component `.css` or `.js`, run `node docs/js/sync-css-snippets.js` and
+  `node docs/js/sync-js-snippets.js` to update all doc pages automatically.
 

@@ -45,9 +45,6 @@
 
   /* -- Navigation data ---------------------------------------- */
   var NAV = [
-    { heading: 'Overview', items: [
-      { label: 'Overview', href: 'index.html' },
-    ]},
     { heading: 'Primitives', items: [
       { label: 'Typography', href: 'typography.html' },
       { label: 'Separator', href: 'separator.html' },
@@ -56,27 +53,27 @@
     { heading: 'Actions', items: [
       { label: 'Button', href: 'button.html' },
       { label: 'Toggle', href: 'toggle.html' },
-      { label: 'Toggle Group', href: 'toggle-group.html' },
-      { label: 'Button Group', href: 'button-group.html' },
+      { label: 'Toggle group', href: 'toggle-group.html' },
+      { label: 'Button group', href: 'button-group.html' },
       { label: 'Toolbar', href: 'toolbar.html' },
     ]},
-    { heading: 'Forms &amp; Inputs', items: [
+    { heading: 'Forms &amp; inputs', items: [
       { label: 'Label', href: 'label.html' },
       { label: 'Input', href: 'input.html' },
       { label: 'Textarea', href: 'textarea.html' },
       { label: 'Checkbox', href: 'checkbox.html' },
-      { label: 'Radio Group', href: 'radio.html' },
+      { label: 'Radio group', href: 'radio.html' },
       { label: 'Switch', href: 'switch.html' },
       { label: 'Slider', href: 'slider.html' },
       { label: 'Select', href: 'select.html' },
-      { label: 'Number Input', href: 'number-input.html' },
-      { label: 'File Input', href: 'file-input.html' },
-      { label: 'Color Picker', href: 'color-picker.html' },
-      { label: 'Date Picker', href: 'date-picker.html' },
+      { label: 'Number input', href: 'number-input.html' },
+      { label: 'File input', href: 'file-input.html' },
+      { label: 'Color picker', href: 'color-picker.html' },
+      { label: 'Date picker', href: 'date-picker.html' },
       { label: 'Combobox', href: 'combobox.html' },
       { label: 'Form', href: 'form.html' },
     ]},
-    { heading: 'Data Display', items: [
+    { heading: 'Data display', items: [
       { label: 'Badge', href: 'badge.html' },
       { label: 'Avatar', href: 'avatar.html' },
       { label: 'Card', href: 'card.html' },
@@ -85,24 +82,24 @@
       { label: 'Table', href: 'table.html' },
       { label: 'Collapsible', href: 'collapsible.html' },
       { label: 'Timeline', href: 'timeline.html' },
-      { label: 'Tree View', href: 'tree-view.html' },
+      { label: 'Tree view', href: 'tree-view.html' },
       { label: 'Calendar', href: 'calendar.html' },
       { label: 'Carousel', href: 'carousel.html' },
-      { label: 'Scroll Area', href: 'scroll-area.html' },
+      { label: 'Scroll area', href: 'scroll-area.html' },
       { label: 'Sortable', href: 'sortable.html' },
     ]},
-    { heading: 'Feedback &amp; Status', items: [
+    { heading: 'Feedback &amp; status', items: [
       { label: 'Spinner', href: 'spinner.html' },
       { label: 'Skeleton', href: 'skeleton.html' },
       { label: 'Progress', href: 'progress.html' },
       { label: 'Alert', href: 'alert.html' },
-      { label: 'Alert Dialog', href: 'alert-dialog.html' },
+      { label: 'Alert dialog', href: 'alert-dialog.html' },
       { label: 'Toast', href: 'toast.html' },
     ]},
     { heading: 'Overlays', items: [
       { label: 'Popover', href: 'popover.html' },
       { label: 'Tooltip', href: 'tooltip.html' },
-      { label: 'Context Menu', href: 'context-menu.html' },
+      { label: 'Context menu', href: 'context-menu.html' },
       { label: 'Dialog', href: 'dialog.html' },
       { label: 'Sheet', href: 'sheet.html' },
       { label: 'Accordion', href: 'accordion.html' },
@@ -113,8 +110,8 @@
       { label: 'Pagination', href: 'pagination.html' },
       { label: 'Steps', href: 'steps.html' },
       { label: 'Tabs', href: 'tabs.html' },
-      { label: 'Dropdown Menu', href: 'dropdown.html' },
-      { label: 'Navigation Menu', href: 'navigation-menu.html' },
+      { label: 'Dropdown menu', href: 'dropdown.html' },
+      { label: 'Navigation menu', href: 'navigation-menu.html' },
     ]},
     { heading: 'Application', items: [
       { label: 'Sidebar', href: 'sidebar.html' },
@@ -123,7 +120,6 @@
 
   /* Pages that have been built (have a real doc page) */
   var BUILT = new Set([
-    'index.html',
     'typography.html', 'separator.html', 'icon.html', 'label.html',
     'button.html', 'toggle.html', 'toggle-group.html', 'button-group.html', 'toolbar.html',
     'input.html', 'textarea.html', 'checkbox.html', 'radio.html', 'switch.html',
@@ -143,7 +139,7 @@
   ]);
 
   /* Detect current filename */
-  var currentPage = location.pathname.split('/').pop() || 'index.html';
+  var currentPage = location.pathname.split('/').pop() || 'typography.html';
 
   /* -- <site-header> ------------------------------------------ */
   class SiteHeader extends HTMLElement {
@@ -154,15 +150,14 @@
           '<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle navigation menu">' +
             '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>' +
           '</button>' +
-          '<a href="index.html" class="header-brand">' +
-            '<span class="header-brand-name">mewa base</span>' +
+          '<a href="typography.html" class="header-brand">' +
+            '<span class="header-brand-name">mewa_ui</span>' +
           '</a>' +
           '<div style="flex:1;"></div>' +
           '<nav style="display:flex;align-items:center;gap:0.25rem;">' +
             '<button id="theme-toggle" class="header-action theme-toggle-btn" aria-label="Toggle dark mode">' +
               '<svg id="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>' +
               '<svg id="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>' +
-            '</button>' +
             '</button>' +
           '</nav>' +
         '</header>';
@@ -176,36 +171,29 @@
       this.style.display = 'contents';
       var html = '<aside class="site-sidebar">';
       html += '<div class="sidebar-scroll">';
+      html += '<div class="nav-filter-wrap" style="padding:0 0.375rem 0.75rem;">' +
+        '<input type="text" class="nav-filter-input" placeholder="Filter components..." ' +
+          'aria-label="Filter components" autocomplete="off" spellcheck="false" ' +
+          'style="' +
+            'width:100%;box-sizing:border-box;' +
+            'padding:0.375rem 0.625rem;' +
+            'font-size:0.8125rem;font-family:var(--font-sans);' +
+            'border:1px solid var(--sidebar-border);' +
+            'background:var(--sidebar);' +
+            'color:var(--foreground);' +
+            'outline:none;' +
+          '">' +
+      '</div>';
       NAV.forEach(function (section, i) {
         html += '<div class="nav-section" style="margin-bottom:1.25rem;">';
         html += '<p class="nav-heading">' + section.heading + '</p>';
-        var isComponentSection = (i > 0);
         section.items.forEach(function (item) {
           var cls = 'nav-link';
           if (item.href === currentPage) cls += ' active';
           else if (!BUILT.has(item.href)) cls += ' disabled';
-          var badge = isComponentSection
-            ? ' <span style="font-size:0.5625rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:var(--muted-foreground);opacity:0.7;margin-left:auto;flex-shrink:0;">PREVIEW</span>'
-            : '';
-          html += '<a class="' + cls + '" href="' + item.href + '" style="display:flex;align-items:center;gap:0.375rem;">' + item.label + badge + '</a>';
+          html += '<a class="' + cls + '" href="' + item.href + '" style="display:flex;align-items:center;gap:0.375rem;">' + item.label + '</a>';
         });
         html += '</div>';
-        /* Insert filter input after Overview section */
-        if (i === 0) {
-          html += '<div class="nav-filter-wrap" style="padding:0 0.375rem 0.75rem;">' +
-            '<input type="text" class="nav-filter-input" placeholder="Filter components..." ' +
-              'aria-label="Filter components" autocomplete="off" spellcheck="false" ' +
-              'style="' +
-                'width:100%;box-sizing:border-box;' +
-                'padding:0.375rem 0.625rem;' +
-                'font-size:0.8125rem;font-family:var(--font-sans);' +
-                'border:1px solid var(--sidebar-border);' +
-                'background:var(--sidebar);' +
-                'color:var(--foreground);' +
-                'outline:none;' +
-              '">' +
-          '</div>';
-        }
       });
       html += '</div>';
       html += '</aside>';
@@ -217,8 +205,7 @@
       if (input && sections.length) {
         input.addEventListener('input', function () {
           var q = input.value.toLowerCase().trim();
-          /* Skip the first section (Overview) — always visible */
-          for (var s = 1; s < sections.length; s++) {
+          for (var s = 0; s < sections.length; s++) {
             var sec = sections[s];
             var links = sec.querySelectorAll('.nav-link');
             var anyVisible = false;
@@ -305,7 +292,7 @@
   var SCROLL_KEY = 'mewa-nav-scroll';
 
   document.addEventListener('click', function (e) {
-    var link = e.target.closest('a.nav-link, .site-header a[href="index.html"]');
+    var link = e.target.closest('a.nav-link, .site-header a[href="typography.html"]');
     if (!link) return;
     var sidebar = document.querySelector('.sidebar-scroll');
     if (sidebar) sessionStorage.setItem(SCROLL_KEY, sidebar.scrollTop);
@@ -418,7 +405,7 @@
   document.addEventListener('click', function (e) {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     if (e.defaultPrevented) return;
-    var link = e.target.closest('a.nav-link:not(.disabled), .site-header a[href="index.html"], a.page-nav-link');
+    var link = e.target.closest('a.nav-link:not(.disabled), .site-header a[href="typography.html"], a.page-nav-link');
     if (!link) return;
     var href = link.getAttribute('href');
     if (!href || href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:')) return;
@@ -428,11 +415,11 @@
 
   /* Handle browser back/forward */
   window.addEventListener('popstate', function () {
-    var page = location.pathname.split('/').pop() || 'index.html';
+    var page = location.pathname.split('/').pop() || 'typography.html';
     navigateTo(page, false);
   });
 
-  /* -- Page extras: footer, TOC, prev/next, edit link, stars -- */
+  /* -- Page extras: TOC, prev/next --------------------------- */
 
   /* Flat ordered list of all navigable pages */
   var allPages = [];
@@ -474,7 +461,7 @@
     }
 
     tocContent.parentElement.style.display = '';
-    var html = '<p class="toc-title">On This Page</p>';
+    var html = '<p class="toc-title">On this page</p>';
     headings.forEach(function (item) {
       var id = item.el.id || 'toc-' + item.text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
       if (!item.el.id) item.el.id = id;
@@ -531,26 +518,18 @@
 
   /* One-time setup on DOMContentLoaded */
   document.addEventListener('DOMContentLoaded', function () {
-    /* Inject TOC sidebar */
+    /* Inject TOC sidebar before building it (listener order matters) */
     var layoutWrap = document.querySelector('main') && document.querySelector('main').parentElement;
     if (layoutWrap) {
       layoutWrap.insertAdjacentHTML('beforeend',
         '<aside class="site-toc"><div class="site-toc-content"></div></aside>'
       );
     }
-
-    /* Inject footer */
-    if (layoutWrap) {
-      layoutWrap.insertAdjacentHTML('afterend',
-        '<footer class="site-footer">' +
-          '<p>mewa base · MIT Licensed</p>' +
-        '</footer>'
-      );
-    }
-
+    buildToc();
+    buildPrevNext();
   });
 
-  /* Per-page init (runs on DOMContentLoaded + after each SPA navigation) */
+  /* Per-page init (runs on initial load + after each SPA navigation) */
   window.onPageReady(function () {
     buildToc();
     buildPrevNext();

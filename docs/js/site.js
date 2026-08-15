@@ -1,6 +1,6 @@
 // -- site.js -------------------------------------------------
-// Doc-site-only script for the mewa base documentation site.
-// Component behavior lives in dist/components/*.js.
+// Doc-site-only script for the mewa_ui documentation site.
+// Component behavior lives in components/*.js.
 // No ES modules — works with file:// protocol.
 // Include via <script src="js/site.js" defer></script>
 
@@ -14,41 +14,36 @@
     document.getElementById('icon-sun').style.display  = isDark ? 'block' : 'none';
     document.getElementById('icon-moon').style.display = isDark ? 'none'  : 'block';
     localStorage.setItem('mewa-theme', isDark ? 'light' : 'dark');
-    // Re-apply color theme for the new mode
-    if (window.__activeColorTheme && window.__activeColorTheme !== 'default' && window.applyTheme) {
-      window.applyTheme(window.__activeColorTheme);
-    }
-    // Update favicon for new mode
-    if (window.updateFavicon) window.updateFavicon();
   }
 
-  // -- Token swatches (theming page only) ------------------
-  function initTokenSwatches() {
-    var swatchContainer = document.getElementById('swatch-container');
-    if (swatchContainer && !swatchContainer.hasChildNodes()) {
-      var pairs = [['background','foreground'],['primary','primary-foreground'],['secondary','secondary-foreground'],['muted','muted-foreground'],['accent','accent-foreground'],['card','card-foreground'],['popover','popover-foreground'],['destructive','destructive-foreground']];
-      pairs.forEach(function (p) {
-        var surface = p[0], fg = p[1];
-        var row = document.createElement('div'); row.className = 'swatch-row';
-        row.innerHTML = '<div style="display:flex;gap:0.375rem;flex-shrink:0;"><div style="width:1.875rem;height:1.875rem;background:var(--' + surface + ');border:1px solid var(--border);"></div><div style="width:1.875rem;height:1.875rem;background:var(--' + fg + ');border:1px solid var(--border);"></div></div><div><p style="margin:0;font-size:0.8125rem;font-family:var(--font-mono);">--' + surface + '</p><p style="margin:0;font-size:0.75rem;color:var(--muted-foreground);font-family:var(--font-mono);">--' + fg + '</p></div><span style="margin-left:auto;font-size:0.75rem;color:var(--muted-foreground);font-family:var(--font-mono);">var(--' + surface + ') var(--' + fg + ')</span>';
-        swatchContainer.appendChild(row);
-      });
-    }
-    var sidebarSwatchContainer = document.getElementById('sidebar-swatch-container');
-    if (sidebarSwatchContainer && !sidebarSwatchContainer.hasChildNodes()) {
-      [['sidebar','sidebar-foreground'],['sidebar-primary','sidebar-primary-foreground'],['sidebar-accent','sidebar-accent-foreground']].forEach(function (p) {
-        var surface = p[0], fg = p[1];
-        var row = document.createElement('div'); row.className = 'swatch-row';
-        row.innerHTML = '<div style="display:flex;gap:0.375rem;flex-shrink:0;"><div style="width:1.875rem;height:1.875rem;background:var(--' + surface + ');border:1px solid var(--border);"></div><div style="width:1.875rem;height:1.875rem;background:var(--' + fg + ');border:1px solid var(--border);"></div></div><div><p style="margin:0;font-size:0.8125rem;font-family:var(--font-mono);">--' + surface + '</p><p style="margin:0;font-size:0.75rem;color:var(--muted-foreground);font-family:var(--font-mono);">--' + fg + '</p></div><span style="margin-left:auto;font-size:0.75rem;color:var(--muted-foreground);font-family:var(--font-mono);">var(--' + surface + ') var(--' + fg + ')</span>';
-        sidebarSwatchContainer.appendChild(row);
-      });
-      [['sidebar-border','border-sidebar-border'],['sidebar-ring','ring-sidebar-ring']].forEach(function (p) {
-        var token = p[0], utility = p[1];
-        var row = document.createElement('div'); row.className = 'swatch-row';
-        row.innerHTML = '<div style="width:1.875rem;height:1.875rem;background:var(--' + token + ');border:1px solid var(--border);flex-shrink:0;"></div><code>--' + token + '</code><span class="text-sm text-muted-foreground ml-auto">var(--' + token + ')</span>';
-        sidebarSwatchContainer.appendChild(row);
-      });
-    }
+  // -- Local icons ------------------------------------------
+  // Replaces <i data-lucide="name"> with the matching inline SVG
+  // from ../../src/icons/{name}.svg (relative to the page at docs/).
+  var iconCache = {};
+
+  function initLocalIcons() {
+    document.querySelectorAll('[data-lucide]:not([data-icon-loaded])').forEach(function (el) {
+      var name = el.getAttribute('data-lucide');
+      if (!name) return;
+      el.dataset.iconLoaded = '';
+      var apply = function (svgText) {
+        var wrapper = document.createElement('div');
+        wrapper.innerHTML = svgText.trim();
+        var svg = wrapper.firstElementChild;
+        if (!svg || svg.tagName.toLowerCase() !== 'svg') return;
+        for (var i = 0; i < el.attributes.length; i++) {
+          var attr = el.attributes[i];
+          if (attr.name === 'data-icon-loaded') continue;
+          svg.setAttribute(attr.name, attr.value);
+        }
+        el.replaceWith(svg);
+      };
+      if (iconCache[name]) { apply(iconCache[name]); return; }
+      fetch('../src/icons/' + name + '.svg')
+        .then(function (r) { return r.text(); })
+        .then(function (text) { iconCache[name] = text; apply(text); })
+        .catch(function () { /* icon missing — leave the placeholder */ });
+    });
   }
 
   // -- Code collapse/expand ---------------------------------
@@ -142,22 +137,6 @@
   function initPageContent() {
     // Syntax highlighting handled by shiki-highlight.js module
 
-    // Doc tabs (Preview / Pattern / HTML)
-    document.querySelectorAll('.doc-tablist[role="tablist"]').forEach(function (tabList) {
-      var buttons = Array.from(tabList.querySelectorAll('.tab-btn'));
-      buttons.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var panelId = btn.getAttribute('aria-controls');
-          var group = btn.dataset.group;
-          buttons.forEach(function (t) { t.setAttribute('aria-selected', 'false'); });
-          btn.setAttribute('aria-selected', 'true');
-          document.querySelectorAll('[data-tab-group="' + group + '"]').forEach(function (p) { p.classList.remove('active'); });
-          var panel = document.getElementById(panelId);
-          if (panel) panel.classList.add('active');
-        });
-      });
-    });
-
     // Copy buttons
     document.querySelectorAll('.copy-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -172,11 +151,8 @@
       });
     });
 
-    // Lucide icons
-    if (window.lucide) lucide.createIcons();
-
-    // Token swatches
-    initTokenSwatches();
+    // Local icons (<i data-lucide="name"> → inline SVG from src/icons)
+    initLocalIcons();
 
     // Code collapse/expand toggles
     initCodeCollapse();
@@ -192,7 +168,7 @@
     specDialog.className = 'dialog spec-modal';
     specDialog.setAttribute('role', 'dialog');
     specDialog.setAttribute('aria-modal', 'true');
-    specDialog.setAttribute('aria-label', 'Component Skill');
+    specDialog.setAttribute('aria-label', 'Component skill');
     specDialog.innerHTML =
       '<div class="dialog-content spec-modal-content">' +
         '<div class="dialog-header" style="display:flex;justify-content:space-between;align-items:center;">' +

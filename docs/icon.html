@@ -6,15 +6,15 @@
   <meta name="color-scheme" content="light dark">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <meta name="description" content="Icon component — Lucide icons sized and colored with CSS custom properties.">
-  <meta property="og:title" content="Icon — mewa base">
+  <meta property="og:title" content="Icon — mewa_ui">
   <meta property="og:description" content="Icon component — Lucide icons sized and colored with CSS custom properties.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mewa.local/icon.html">
-  <meta property="og:site_name" content="mewa base">
+  <meta property="og:site_name" content="mewa_ui">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Icon — mewa base">
+  <meta name="twitter:title" content="Icon — mewa_ui">
   <meta name="twitter:description" content="Icon component — Lucide icons sized and colored with CSS custom properties.">
-  <title>Icon — mewa base</title>
+  <title>Icon — mewa_ui</title>
       <script src="js/layout.js"></script>
   <link rel="stylesheet" href="../src/tokens.css">
   <link rel="stylesheet" href="css/docs-theme.css">
@@ -86,18 +86,18 @@
     <main style="flex: 1; min-width: 0; max-width: 44rem; padding: 2rem 3.5rem 8rem;">
       <div class="page-header">
         <div class="flex items-baseline justify-between mb-1">
-          <p class="text-sm text-muted-foreground" style="font-family:var(--font-mono);">mewa base / icon</p>
+          <p class="text-sm text-muted-foreground" style="font-family:var(--font-mono);">mewa_ui / icon</p>
           <div style="display:flex;align-items:baseline;gap:0.375rem;"><span style="font-size:0.75rem;color:var(--muted-foreground);font-family:var(--font-mono);white-space:nowrap;">Built with:</span> <a href="#source-css" class="badge built-with-pill" data-variant="outline">CSS</a></div>
         </div>
         <h1 style="font-family:var(--font-display);font-size:2.5rem;font-weight:400;letter-spacing:-0.035em;margin:0 0 0.75rem;">Icon</h1>
         <p class="text-muted-foreground leading-relaxed mb-6">
-          ~1,500 <a href="https://lucide.dev/icons/" target="_blank" style="color:var(--primary);text-decoration:underline;text-underline-offset:4px;">Lucide</a> icons via CDN. Write <code>&lt;i data-lucide="name"&gt;</code> — the Lucide CDN script replaces it with an inline SVG at page load. Requires the Lucide <code>&lt;script&gt;</code> tag (see <a href="index.html#use" style="color:var(--primary);text-decoration:underline;text-underline-offset:4px;">Use</a>).
+          The full <a href="https://lucide.dev/icons/" target="_blank" style="color:var(--primary);text-decoration:underline;text-underline-offset:4px;">Lucide</a> icon set ships locally in <code>src/icons/</code>. Write <code>&lt;i data-lucide="name"&gt;</code> — the loader in <code>js/site.js</code> fetches the matching SVG and inlines it at page load. No CDN.
         </p>
-        <!-- Component Skill -->
+        <!-- Component skill -->
         <details style="margin-bottom:2rem;border:1px solid var(--border);overflow:hidden;">
           <summary style="padding:0.875rem 1.25rem;background:var(--muted);cursor:pointer;font-size:0.8125rem;font-weight:600;font-family:var(--font-mono);color:var(--muted-foreground);list-style:none;display:flex;align-items:center;gap:0.5rem;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 200ms;"><path d="m9 18 6-6-6-6"/></svg>
-            Component Skill — <span data-spec-href="../components/icon/component-skill.md" style="text-decoration:underline;text-underline-offset:3px;">components/icon/component-skill.md</span>
+            Component skill — <span data-spec-href="../components/icon/icon.md" style="text-decoration:underline;text-underline-offset:3px;">components/icon/icon.md</span>
           </summary>
           <div style="padding:1.5rem;font-size:0.875rem;line-height:1.85;">
             <p style="margin:0 0 0.5rem;font-weight:600;font-size:0.8125rem;font-family:var(--font-mono);">Native basis</p>
@@ -356,8 +356,8 @@
           </div>
 
         <!-- -- Browse all icons ---------------------------------- -->
-          <p class="text-sm font-medium mb-2 mt-6">Browse all icons</p>
-          <p class="text-xs text-muted-foreground mb-3">Lucide provides ~1,500 icons. Browse and search the full set at:</p>
+          <p class="text-sm font-medium mb-2 mt-6">Local icon files</p>
+          <p class="text-xs text-muted-foreground mb-3">Every icon is a standalone SVG in <code>src/icons/</code>. Browse the full set at:</p>
           <a href="https://lucide.dev/icons/" target="_blank" class="btn" data-variant="outline" style="text-decoration:none;">
             <i data-lucide="external-link"></i>
             lucide.dev/icons
@@ -369,8 +369,8 @@
           <div style="position:relative;margin-top:0.5rem;">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-scss">/* -- Icon component ---------------------------------------- */
-/* Styling for Lucide CDN icons (&lt;i data-lucide=&quot;name&quot;&gt;).     */
-/* Lucide replaces &lt;i&gt; with &lt;svg&gt;, these styles target that.  */
+/* Styling for local icons (&lt;i data-lucide=&quot;name&quot;&gt; replaced by   */
+/* an inline SVG from src/icons/). These styles target that.     */
 
 @layer components {
   [data-lucide] {
@@ -455,18 +455,16 @@
   <script type="module" src="../components/carousel/carousel.js"></script>
   <script type="module" src="../components/slider/slider.js"></script>
   <script type="module" src="../components/sortable/sortable.js"></script>
-  <script src="https://unpkg.com/lucide@1.8.0" integrity="sha384-+8nbzwDAyu5kAjqtR/XKxIgPHQD2TflvbZgeDZn5t3JP+OOogNH1jXnfel8ZAgzS" crossorigin="anonymous"></script>
-  <script>lucide.createIcons();</script>
-<script type="text/plain" id="spec-md-content"># Pattern: Icon
+    <script type="text/plain" id="spec-md-content"># Pattern: Icon
 
 ## Native basis
-`<i>` element with `data-lucide` attribute. Icons are provided by the [Lucide](https://lucide.dev) icon library via CDN. Lucide replaces each `<i data-lucide="name">` with an inline SVG on page load.
+`<i>` element with a `data-lucide` attribute. The full Lucide icon set ships locally in `src/icons/` as standalone SVG files (one per icon). A small loader fetches `src/icons/{name}.svg` and replaces each `<i data-lucide="name">` with an inline SVG — no CDN, no external request.
 
 ---
 
 ## Native Web APIs
-- [`<svg>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg) — inline scalable vector graphics (injected by Lucide)
-- [`aria-hidden`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-hidden) — hides decorative icons from screen readers (Lucide sets this by default)
+- [`<svg>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg) — inline scalable vector graphics (inlined from the local file)
+- [`aria-hidden`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-hidden) — hides decorative icons from screen readers
 - [`currentColor`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#currentcolor_keyword) — icons inherit stroke color from the parent's `color` property
 - [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — suppresses icon animations (e.g., spinning loaders) when user prefers reduced motion
 - [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — maps icon color to system `CanvasText` in Windows High Contrast Mode
@@ -476,12 +474,27 @@
 
 ## Setup
 
-Include the Lucide CDN script and call `createIcons()`:
+All icons live in `src/icons/` (e.g. `src/icons/search.svg`). Two ways to use them:
+
+### 1. Loader (recommended for many icons)
+Keep `data-lucide` markup and let a tiny loader inline the SVG. The doc site ships one in `docs/js/site.js` (path relative to the page):
 
 ```html
-<script src="https://unpkg.com/lucide@latest"><\/script>
-<script>lucide.createIcons();<\/script>
+<i data-lucide="search"></i>
 ```
+
+```js
+// page-relative path: ../src/icons/{name}.svg from docs/, adjust for your layout
+document.querySelectorAll('[data-lucide]').forEach(function (el) {
+  var name = el.getAttribute('data-lucide');
+  fetch('../src/icons/' + name + '.svg')
+    .then(function (r) { return r.text(); })
+    .then(function (svg) { el.outerHTML = svg; });
+});
+```
+
+### 2. Inline the SVG directly (no JavaScript)
+Copy the file contents where the icon is used. Attributes on the `<i>` (`data-size`, `stroke-width`, `fill`, `style`, `aria-*`) move onto the `<svg>`.
 
 ---
 
@@ -599,7 +612,7 @@ Icons inherit `currentColor` for stroke. Change color with inline styles or toke
 
 | Attribute | When | Value |
 |-----------|------|-------|
-| (none) | Decorative (icon next to text) | Lucide adds `aria-hidden="true"` by default |
+| (none) | Decorative (icon next to text) | The icon carries no accessible name, so assistive tech ignores it |
 | `role="img"` + `aria-label` | Meaningful (icon conveys info alone) | Describes the icon's purpose |
 | Visually-hidden `<span>` | Meaningful (preferred alternative) | Provides screen reader text via `.sr-only` |
 
@@ -608,14 +621,12 @@ Icons inherit `currentColor` for stroke. Change color with inline styles or toke
 ## Notes
 
 - Icons inherit `currentColor` for stroke — they automatically match the parent's text color
-- Browse all available icons at [lucide.dev/icons](https://lucide.dev/icons/)
-- Lucide provides ~1,500 icons covering every common web app need
-- The CDN script replaces `<i data-lucide="name">` elements with inline SVGs on page load
+- The full Lucide set is local in `src/icons/`; browse names at [lucide.dev/icons](https://lucide.dev/icons/)
+- The loader fetches `src/icons/{name}.svg` (page-relative path) and inlines it; missing icons leave the placeholder untouched
 - Use `stroke-width` attribute to adjust line thickness (default: `2`)
 - Prefer visually-hidden text (`.sr-only`) over `aria-label` for accessible standalone icons — `aria-label` may not be translated by browser translation tools
-- Add `pointer-events: none` is set in CSS — icons don't capture clicks, so the parent element handles interaction
+- `pointer-events: none` is set in CSS — icons don't capture clicks, so the parent element handles interaction
 - Animations (e.g., `data-animate="spin"` on a loader icon) are suppressed when the user has `prefers-reduced-motion` enabled
-- `prefers-contrast: more` increases stroke width to 2.5 for better visibility
-</script>
+- `prefers-contrast: more` increases stroke width to 2.5 for better visibility</script>
 </body>
 </html>

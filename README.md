@@ -1,6 +1,6 @@
-# mewa base
+# mewa_ui
 
-The UI library's foundation: a fork of [shadcn-html](https://github.com/codylindley/shadcn-html), stripped to a square, border-led, shadow-free design system built with vanilla HTML, CSS, and JavaScript only — no framework, no build step.
+The UI library: a fork of [shadcn-html](https://github.com/codylindley/shadcn-html), stripped to a square, border-led, shadow-free design system built with vanilla HTML, CSS, and JavaScript only — no framework, no build step.
 
 The visual contract is monochrome, square, border-led, and shadow-free, with Geist typography. Red, amber, and green communicate state. Circular geometry exists only where meaning requires it (avatars, radios, switches, progress).
 
@@ -16,7 +16,7 @@ The visual contract is monochrome, square, border-led, and shadow-free, with Gei
 - **Shadows** — the `--shadow-*` token scale and every elevation `box-shadow`. Elevated surfaces (dialog, dropdown, tabs) keep a `0 0 0 1px var(--border)` ring. `box-shadow: none` and focus halos built on `var(--ring)` are kept.
 - **Serif fonts** — `--font-serif` and the `--font-display` serif stack. The only fonts are `src/geist.woff2` and `src/geistmono.woff2` (Geist variable, 400–550).
 
-What is kept, unchanged from upstream: all color tokens (light + dark, sidebar, chart), `--spacing`, `--tracking-normal`, component markup/APIs, the five-layer skill structure, and the Lucide CDN (to be replaced with a downloaded local package later).
+What is kept, unchanged from upstream: all color tokens (light + dark, sidebar, chart), `--spacing`, `--tracking-normal`, component markup/APIs, and the five-layer skill structure. The Lucide CDN is retired — the full icon set ships locally in `src/icons/`.
 
 ## Structure
 
@@ -24,13 +24,14 @@ What is kept, unchanged from upstream: all color tokens (light + dark, sidebar, 
 ui_library/
 ├── src/tokens.css                   ← design tokens (colors, spacing, tracking)
 ├── src/geist.woff2, geistmono.woff2 ← the only fonts
+├── src/icons/                        ← the full Lucide icon set (standalone SVGs, no CDN)
 ├── components/                      ← 55 self-contained component folders
 │   └── {name}/
-│       ├── component-skill.md       ← skill: markup, variants, ARIA, wiring
+│       ├── {name}.md                ← skill: markup, variants, ARIA, wiring
 │       ├── {name}.css               ← component stylesheet
 │       └── {name}.js                ← interaction JS (only when needed)
-├── docs/                            ← doc site (one page per component + Overview)
-│   └── scripts/                     ← snippet sync scripts (node, no deps)
+├── docs/                            ← doc site (one page per component, no overview)
+│   └── js/                          ← layout, site JS, and snippet sync scripts (node, no deps)
 ├── legacy/                          ← previous mewa_ui (porting source only)
 └── AGENTS.md                        ← maintainer instructions
 ```
@@ -40,22 +41,24 @@ ui_library/
 ```html
 <link rel="stylesheet" href="/ui/src/tokens.css">
 <link rel="stylesheet" href="/ui/components/button/button.css">
-<script src="https://unpkg.com/lucide@1.8.0" defer></script>
+<!-- Icons: fetch src/icons/{name}.svg and inline it for <i data-lucide="name"> -->
 ```
 
-Components are configured with `data-*` attributes (`data-variant`, `data-size`, `data-state`, ...) — markup is the only API. Read the component's `component-skill.md` for the HTML pattern, attributes, and ARIA requirements. Load a component's `<script type="module" src=".../{name}.js">` only when the component folder contains one; interaction alone does not imply a runtime dependency because native controls stay native. After the Lucide CDN script, call `lucide.createIcons()`.
+Components are configured with `data-*` attributes (`data-variant`, `data-size`, `data-state`, ...) — markup is the only API. Read the component's `{name}.md` skill for the HTML pattern, attributes, and ARIA requirements. Load a component's `<script type="module" src=".../{name}.js">` only when the component folder contains one; interaction alone does not imply a runtime dependency because native controls stay native.
+
+Icons: write `<i data-lucide="name">` and inline the matching SVG from `src/icons/` (the doc site's `js/site.js` shows a fetch-and-inline loader). Never load the Lucide CDN.
 
 Dark mode: add or remove `class="dark"` on `<html>`. Every token switches automatically.
 
 ## Documentation
 
-The doc site is static: serve `docs/` with any static server (e.g. `python3 -m http.server` or `bunx serve`) and open `index.html`. It is a SPA-style multi-page app — one page per component plus a single Overview page. Doc pages embed component CSS/JS in copyable snippets; after editing a component, re-run `node docs/scripts/sync-css-snippets.js` and `node docs/scripts/sync-js-snippets.js` from the repository root.
+The doc site is static: serve `docs/` with any static server (e.g. `python3 -m http.server` or `bunx serve`) and open a page (there is no `index.html`; start at `typography.html`). It is a SPA-style multi-page app — one page per component, no overview page. Doc pages embed component CSS/JS in copyable snippets; after editing a component, re-run `node docs/js/sync-css-snippets.js` and `node docs/js/sync-js-snippets.js` from the repository root.
 
 ## Roadmap
 
 1. Port adapted mewa_ui components into `components/` where they do not duplicate the base (source lives in `legacy/`).
 2. Adapt tokens (fonts, spacing, palette) to the mewa_ui contract.
-3. Replace the Lucide CDN with a downloaded local sprite.
+3. ~~Replace the Lucide CDN with a downloaded local sprite~~ — done: the full set ships in `src/icons/`.
 4. Retire `legacy/` once the ports are complete.
 
 ---
