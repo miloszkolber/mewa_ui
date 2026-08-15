@@ -1,68 +1,37 @@
-# mewa_ui
+# mewa base
 
-> Standalone monochrome component library built with semantic HTML, vanilla CSS, optional JavaScript, and a local Lucide SVG sprite. No Tailwind or framework dependency.
+> UI component system built with semantic HTML, design tokens, and vanilla CSS. No framework, no build step. Square, border-led, shadow-free.
 
 ## Canonical files
 
-- Production styles, in order: `/ui/src/base.css`, `/ui/src/mewa.css`
-- Progressive enhancement: `/ui/src/components.js`
-- Local icons: `/ui/src/lucide.svg#SYMBOL_ID`
-- Public component inventory: `/ui/catalog/components.json`
-- Complete examples: `/ui/snippets/SLUG.html`
-- Expanded vertical application layout: `/ui/layouts/vertical-navbar.html`
-- Vertical layout with right utility rail: `/ui/layouts/vertical-navbar-utility-end.html`
-- Vertical layout with left utility rail: `/ui/layouts/vertical-navbar-utility-start.html`
-- Collapsed vertical application layout: `/ui/layouts/vertical-navbar-collapsed.html`
-- Horizontal application layout: `/ui/layouts/horizontal-navbar.html`
-- Operations workspace layout: `/ui/layouts/operations-workspace.html`
-- Catalog-only styles: `/ui/src/demo.css` (do not load in consuming applications)
-- Existing-service migration map: `/ui/MIGRATION.md`
+- Design tokens: `/ui/src/tokens.css` (light `:root` + dark `.dark`, tweakcn-compatible)
+- Fonts: `/ui/src/geist.woff2`, `/ui/src/geistmono.woff2` (Geist variable, 400-550; the only fonts)
+- Components: `/ui/components/{name}/{name}.css` (+ `{name}.js` only when interaction is needed)
+- Component API reference: `/ui/components/{name}/component-skill.md` (markup, variants, ARIA, wiring)
+- Documentation: `/ui/docs/` — one page per component plus a single Overview page (`index.html`)
+- Legacy porting source: `/ui/legacy/` (previous hand-rolled mewa_ui; do not use for new work)
 
 ## Integration contract
 
-1. Read `catalog/components.json` to choose a component by purpose, group, behavior, and the explicit `requiresJs` boolean.
-2. Open the matching snippet and copy only content between `<!-- mewa-ui-snippet:start -->` and `<!-- mewa-ui-snippet:end -->`.
-3. Preserve native elements, labels, ids, `aria-*` relationships, live regions, and `data-ui-*` hooks.
-4. Replace example content and ids as needed, keeping every reference unique and valid.
-5. Do not invent `ui-*` classes, `data-ui-*` hooks, palette-step usage, or external icon dependencies.
-6. Load `components.js` only when at least one selected manifest entry has `requiresJs: true`. A component can be interactive through native HTML while still having `requiresJs: false`.
-7. For dynamically inserted markup call `MewaUI.enhance(container)`. Before permanently removing an enhanced subtree call `MewaUI.destroy(container)`.
+1. Link `src/tokens.css`, then the stylesheets of the components you use:
+   `<link rel="stylesheet" href="/ui/src/tokens.css">` and `<link rel="stylesheet" href="/ui/components/button/button.css">`.
+2. Load a component's `<script type="module" src=".../{name}.js">` only when it exists (interaction alone does not imply a runtime dependency; native controls stay native).
+3. Read the component skill and copy its HTML pattern. Components are configured with `data-*` attributes (`data-variant`, `data-size`, `data-state`, ...) — markup is the only API.
+4. Icons: Lucide via the CDN script (`https://unpkg.com/lucide@1.8.0`), then `lucide.createIcons()`.
+5. Dark mode: add or remove `class="dark"` on `<html>`. Every token switches automatically.
+6. Do not invent tokens, radius/shadow values, or serif fonts. Geometry is square; circular shapes exist only where meaning requires it (avatars, radios, switches, progress).
 
 ## Visual contract
 
-- Geist first: `geist, sans-serif` through `--ui-font`; technical output and keyboard notation use Geist Mono through `--ui-font-mono`.
-- Square, border-led, shadow-free geometry.
-- Blur only for surfaces that overlap content.
-- Six theme-specific 11-step OKLCH role palettes (`050`–`950`): gray, alpha white, alpha black, red, amber, green. Do not reverse them to synthesize a light theme.
-- `050`–`100` are surfaces; `200`–`300` are hover and active backgrounds; `400` is the subtle-border step; `500`–`700` are borders and decoration; `800`–`950` are muted through primary text.
-- Opaque palettes share the same absolute OKLCH lightness curve. Gray defines the APCA baseline against `050`; APCA remains design guidance, not a compliance claim.
-- Components consume semantic roles from `base.css`; red, amber, and green communicate status. Dark-surface hover and active roles map to `200` and `300`; relative OKLCH modifiers are reserved for light controls and status actions where another palette step is not the correct state change.
-- Use `--ui-border-dashed` for structural section division.
-- Ghost buttons have no border or fill at rest.
-- Lucide icons use the local sprite and `currentColor`. Decorative SVGs are `aria-hidden="true"`; icon-only controls require an accessible name.
-
-## Consolidated patterns
-
-- Alert includes inline status and blocking confirmation variants.
-- Progress includes task progress and bounded native meter examples.
-- Navbar Vertical replaces the former Sidebar component.
-- Button Group may use the internal grouped-toggle behavior; Toggle Group is not a public component.
-- Description List owns compact key/value metadata. Item owns operational status rows with visible state and independent trailing actions. Scroll Area owns bounded diagnostic logs. Search, filter, and action clusters are compositions of existing controls.
-
-## Inventory
-
-The catalog contains 71 snippets and six complete layouts.
-
-## Removed public components
-
-Bubble, Context Menu, Direction/RTL demo, Dock, Hover Card, Input OTP, Menubar, Navigation Menu, Rating, Sidebar, Steps, Toggle Group, Toolbar.
+- Square, border-led, shadow-free. Elevation is expressed with `--border`, never shadows.
+- Semantic color pairs (surface + foreground) from `src/tokens.css`; red, amber, and green communicate status.
+- Focus rings via `--ring` with `:focus-visible`. All animation respects `prefers-reduced-motion`.
+- Components live in `@layer components` (typography also uses `@layer base`); author overrides outside the layers always win.
 
 ## Accessibility
 
-Keep native form submission and fallback behavior. Do not remove captions, legends, explicit labels, descriptions, focusability, `aria-live` output, `aria-expanded`, `aria-controls`, `aria-selected`, or keyboard instructions present in snippets. Respect reduced motion and forced colors. Provide a keyboard path for drag or pointer interactions.
+Keep native form submission and fallback behavior. Do not remove labels, `aria-*` relationships, live regions, or keyboard instructions. Use `<dialog>` for modals, the popover API for dropdowns/tooltips, `<details>` for accordions. Respect reduced motion and forced colors. Provide a keyboard path for drag or pointer interactions.
 
-Modal Dialog, Alert Dialog, Drawer, Sheet, and Lightbox examples use native `<dialog>` and the runtime's `showModal()` lifecycle. Do not replace them with generic containers. Keep one announcement owner for each update; for example, Toast announces from the toast item rather than nesting live regions.
+## Legacy
 
-## Existing services
-
-`hf_ui`, `moonlight_ui`, and both `meili_ui` pages still consume the legacy `/ui/core-ui.css`. Follow `/ui/MIGRATION.md`; do not invent compatibility aliases or load the legacy and canonical component styles together.
+`legacy/` holds the previous hand-rolled mewa_ui (`src/`, `snippets/`, `layouts/`, `catalog/`) as porting source only. Adapted components move into `components/` where they do not duplicate the base. Documentation lives in `docs/`, not `legacy/catalog/`.
