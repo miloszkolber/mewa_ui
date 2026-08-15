@@ -5,7 +5,7 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: var(--space-01);
 
     /* Horizontal orientation */
     &[data-orientation="horizontal"] {
@@ -17,12 +17,12 @@
   .sortable-item {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--border);
-    
+    gap: var(--space-02);
+    padding: var(--space-02) var(--space-03);
+    border: var(--border-width-01) solid var(--border);
+
     background-color: var(--card);
-    font-size: 0.875rem;
+    font-size: var(--font-body-small);
     color: var(--foreground);
     cursor: grab;
     transition: opacity 150ms ease, border-color 150ms ease;
@@ -32,7 +32,7 @@
 
     /* Keyboard focus (roving tabindex) */
     &:focus-visible {
-      outline: 2px solid var(--ring);
+      outline: var(--border-width-02) solid var(--ring);
       outline-offset: 2px;
     }
 
@@ -46,26 +46,26 @@
     /* Drag in progress */
     &[data-dragging] {
       opacity: 0.5;
-      
+
       border-style: dashed;
     }
 
     /* Drop target indicator */
     &[data-over="before"] {
-      border-top: 2px solid var(--primary);
+      border-top: var(--border-width-02) solid var(--primary);
     }
     &[data-over="after"] {
-      border-bottom: 2px solid var(--primary);
+      border-bottom: var(--border-width-02) solid var(--primary);
     }
 
     /* Horizontal drop indicators */
     .sortable[data-orientation="horizontal"] &[data-over="before"] {
-      border-top: 1px solid var(--border);
-      border-inline-start: 2px solid var(--primary);
+      border-top: var(--border-width-01) solid var(--border);
+      border-inline-start: var(--border-width-02) solid var(--primary);
     }
     .sortable[data-orientation="horizontal"] &[data-over="after"] {
-      border-bottom: 1px solid var(--border);
-      border-inline-end: 2px solid var(--primary);
+      border-bottom: var(--border-width-01) solid var(--border);
+      border-inline-end: var(--border-width-02) solid var(--primary);
     }
 
     /* Disabled */
@@ -79,14 +79,14 @@
   .sortable-handle {
     color: var(--muted-foreground);
     cursor: grab;
-    font-size: 1rem;
+    font-size: var(--font-body);
     line-height: 1;
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
 
     &:active { cursor: grabbing; }
-    & svg { width: 1rem; height: 1rem; }
+    & svg { width: var(--size-04); height: var(--size-04); }
   }
 
   /* Live region for screen reader announcements */
@@ -108,8 +108,8 @@
 
   @media (prefers-contrast: more) {
     .sortable-item {
-      border-width: 2px;
-      &[data-active] { outline: 2px solid LinkText; }
+      border-width: var(--border-width-02);
+      &[data-active] { outline: var(--border-width-02) solid LinkText; }
       &[data-over="before"] { border-top-width: 3px; }
       &[data-over="after"] { border-bottom-width: 3px; }
     }

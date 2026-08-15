@@ -1,15 +1,15 @@
 @layer components {
-  .steps { display: flex; gap: 0.5rem; list-style: none; margin: 0; padding: 0; }
+  .steps { display: flex; gap: var(--space-02); list-style: none; margin: 0; padding: 0; }
   .step {
-    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; position: relative; text-align: center;
-    &:not(:last-child)::after { content: ''; position: absolute; top: 1rem; left: calc(50% + 1.25rem); right: calc(-50% + 1.25rem); height: 2px; background-color: var(--border); }
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--space-02); position: relative; text-align: center;
+    &:not(:last-child)::after { content: ''; position: absolute; top: var(--space-04); left: calc(50% + 1.25rem); right: calc(-50% + 1.25rem); height: 2px; background-color: var(--border); }
     &[data-status='complete']::after { background-color: var(--primary); }
     &[data-status='error']::after { background-color: var(--destructive); }
   }
   .step-indicator {
-    display: flex; align-items: center; justify-content: center; width: 2rem; height: 2rem;
-    border-radius: 9999px; font-size: 0.75rem; font-weight: 500;
-    border: 2px solid var(--border); color: var(--muted-foreground); background-color: var(--background); position: relative; z-index: 1;
+    display: flex; align-items: center; justify-content: center; width: var(--size-07); height: var(--size-07);
+    border-radius: 9999px; font-size: var(--font-body-xsmall); font-weight: 500;
+    border: var(--border-width-02) solid var(--border); color: var(--muted-foreground); background-color: var(--background); position: relative; z-index: 1;
     .step[data-status='current'] & { border-color: var(--primary); color: var(--primary); }
     .step[data-status='complete'] & { border-color: var(--primary); background-color: var(--primary); color: var(--primary-foreground); }
     .step[data-status='error'] & { border-color: var(--destructive); background-color: var(--destructive); color: var(--destructive-foreground); }
@@ -18,7 +18,7 @@
   }
   .step-content { display: flex; flex-direction: column; gap: 0.125rem; }
   .step-title { margin: 0; font-size: 0.8125rem; font-weight: 500; color: var(--foreground); }
-  .step-description { margin: 0; font-size: 0.75rem; color: var(--muted-foreground); }
+  .step-description { margin: 0; font-size: var(--font-body-xsmall); color: var(--muted-foreground); }
 
   /* -- Clickable steps ---------------------------------------- */
   .step[data-clickable] .step-indicator {
@@ -28,18 +28,18 @@
 
   /* -- Size variants ------------------------------------------ */
   .steps[data-size='sm'] {
-    & .step:not(:last-child)::after { top: 0.75rem; left: calc(50% + 1rem); right: calc(-50% + 1rem); }
-    & .step-indicator { width: 1.5rem; height: 1.5rem; font-size: 0.6875rem; }
-    & .step-indicator svg { width: 0.75rem; height: 0.75rem; }
-    & .step-title { font-size: 0.75rem; }
+    & .step:not(:last-child)::after { top: var(--space-03); left: calc(50% + 1rem); right: calc(-50% + 1rem); }
+    & .step-indicator { width: var(--size-06); height: var(--size-06); font-size: 0.6875rem; }
+    & .step-indicator svg { width: var(--size-03); height: var(--size-03); }
+    & .step-title { font-size: var(--font-body-xsmall); }
     & .step-description { font-size: 0.6875rem; }
     &[data-orientation='vertical'] .step:not(:last-child)::after { top: 1.75rem; left: 0.6875rem; height: calc(100% - 1.75rem); }
   }
 
   .steps[data-size='lg'] {
-    & .step:not(:last-child)::after { top: 1.25rem; left: calc(50% + 1.5rem); right: calc(-50% + 1.5rem); }
-    & .step-indicator { width: 2.5rem; height: 2.5rem; font-size: 0.875rem; }
-    & .step-indicator svg { width: 1rem; height: 1rem; }
+    & .step:not(:last-child)::after { top: var(--space-05); left: calc(50% + 1.5rem); right: calc(-50% + 1.5rem); }
+    & .step-indicator { width: var(--size-08); height: var(--size-08); font-size: var(--font-body-small); }
+    & .step-indicator svg { width: var(--size-04); height: var(--size-04); }
     & .step-title { font-size: 0.9375rem; }
     & .step-description { font-size: 0.8125rem; }
     &[data-orientation='vertical'] .step:not(:last-child)::after { top: 2.75rem; left: 1.1875rem; height: calc(100% - 2.75rem); }
@@ -54,7 +54,7 @@
       flex-direction: row;
       align-items: flex-start;
       text-align: left;
-      padding-bottom: 1.5rem;
+      padding-bottom: var(--space-06);
 
       &:not(:last-child)::after {
         top: 2.25rem;
@@ -65,7 +65,7 @@
       }
     }
 
-    & .step-content { padding-top: 0.25rem; }
+    & .step-content { padding-top: var(--space-01); }
   }
 
   /* -- Accessibility ------------------------------------------ */

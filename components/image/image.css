@@ -2,7 +2,7 @@
   .image {
     position: relative;
     overflow: hidden;
-    
+
     margin: 0;
 
     & > img {
@@ -44,8 +44,8 @@
       color: var(--muted-foreground);
 
       & > svg {
-        width: 2.5rem;
-        height: 2.5rem;
+        width: var(--size-08);
+        height: var(--size-08);
         opacity: 0.5;
       }
     }
@@ -58,7 +58,7 @@
 
   /* -- Caption ----------------------------------------------- */
   .image-caption {
-    padding: 0.625rem 0 0.25rem;
+    padding: 0.625rem 0 var(--space-01);
     font-size: 0.8125rem;
     line-height: 1.4;
     color: var(--muted-foreground);
@@ -117,7 +117,7 @@
       max-width: 90vw;
       max-height: 85vh;
       object-fit: contain;
-      
+
       transition: transform 200ms ease;
       user-select: none;
       -webkit-user-drag: none;
@@ -126,10 +126,10 @@
 
   .image-lightbox-toolbar {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: var(--space-04);
+    right: var(--space-04);
     display: flex;
-    gap: 0.25rem;
+    gap: var(--space-01);
     z-index: 1;
   }
 
@@ -140,7 +140,7 @@
     width: 2.25rem;
     height: 2.25rem;
     border: none;
-    
+
     background: oklch(0 0 0 / 0.5);
     color: white;
     cursor: pointer;
@@ -151,13 +151,13 @@
     }
 
     &:focus-visible {
-      outline: 2px solid var(--ring);
+      outline: var(--border-width-02) solid var(--ring);
       outline-offset: 2px;
     }
 
     & > svg {
-      width: 1rem;
-      height: 1rem;
+      width: var(--size-04);
+      height: var(--size-04);
     }
   }
 

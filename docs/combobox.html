@@ -368,7 +368,7 @@
     white-space: nowrap;
     flex: 1;
     text-align: left;
-    font-weight: 400;
+    font-weight: var(--font-weight);
   }
 
   .combobox-value[data-placeholder] {
@@ -388,9 +388,9 @@
     padding: 0;
     background-color: var(--popover);
     color: var(--popover-foreground);
-    border: 1px solid var(--border);
-    
-    
+    border: var(--border-width-01) solid var(--border);
+
+
     overflow: hidden;
 
     /* -- Anchor positioning -- */
@@ -422,9 +422,9 @@
   .combobox-search {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.75rem;
-    border-bottom: 1px solid var(--border);
+    gap: var(--space-02);
+    padding: var(--space-02) var(--space-03);
+    border-bottom: var(--border-width-01) solid var(--border);
   }
 
   .combobox-search-icon {
@@ -436,7 +436,7 @@
     width: 100%;
     border: none;
     background: transparent;
-    font-size: 0.875rem;
+    font-size: var(--font-body-small);
     font-family: var(--font-sans);
     color: var(--foreground);
     outline: none;
@@ -448,16 +448,16 @@
     max-height: 16rem;
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 0.25rem;
+    padding: var(--space-01);
   }
 
   .combobox-item {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.375rem 0.5rem;
-    
-    font-size: 0.875rem;
+    gap: var(--space-02);
+    padding: 0.375rem var(--space-02);
+
+    font-size: var(--font-body-small);
     cursor: pointer;
     outline: none;
     transition: background 100ms;
@@ -470,8 +470,8 @@
     &amp;[aria-selected=&quot;true&quot;]::before {
       content: '';
       display: inline-block;
-      width: 1rem;
-      height: 1rem;
+      width: var(--size-04);
+      height: var(--size-04);
       background-image: url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E&quot;);
       background-size: contain;
       flex-shrink: 0;
@@ -484,15 +484,15 @@
   }
 
   .combobox-empty {
-    padding: 1.5rem 0.5rem;
+    padding: var(--space-06) var(--space-02);
     text-align: center;
-    font-size: 0.875rem;
+    font-size: var(--font-body-small);
     color: var(--muted-foreground);
   }
 
   .combobox-group-label {
-    padding: 0.375rem 0.5rem;
-    font-size: 0.75rem;
+    padding: 0.375rem var(--space-02);
+    font-size: var(--font-body-xsmall);
     font-weight: 600;
     color: var(--muted-foreground);
   }
@@ -500,7 +500,7 @@
   .combobox-separator {
     height: 1px;
     background: var(--border);
-    margin: 0.25rem -0.25rem;
+    margin: var(--space-01) -0.25rem;
   }
 
   /* -- Accessibility ------------------------------------------ */

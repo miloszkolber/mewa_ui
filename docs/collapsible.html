@@ -228,8 +228,8 @@
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-scss">@layer components {
   .collapsible {
-    border: 1px solid var(--border);
-    
+    border: var(--border-width-01) solid var(--border);
+
     overflow: hidden;
 
     &amp; ::details-content {
@@ -254,8 +254,8 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 0.75rem 1rem;
-    font-size: 0.875rem;
+    padding: var(--space-03) var(--space-04);
+    font-size: var(--font-body-small);
     font-weight: 500;
     cursor: pointer;
     color: var(--foreground);
@@ -266,7 +266,7 @@
     }
 
     &amp;:focus-visible {
-      outline: 2px solid var(--ring);
+      outline: var(--border-width-02) solid var(--ring);
       outline-offset: -2px;
     }
 
@@ -276,8 +276,8 @@
   }
 
   .collapsible-chevron {
-    width: 1rem;
-    height: 1rem;
+    width: var(--size-04);
+    height: var(--size-04);
     color: var(--muted-foreground);
     transition: transform 200ms ease;
     flex-shrink: 0;
@@ -288,8 +288,8 @@
   }
 
   .collapsible-content {
-    padding: 0 1rem 0.75rem;
-    font-size: 0.875rem;
+    padding: 0 var(--space-04) var(--space-03);
+    font-size: var(--font-body-small);
     color: var(--muted-foreground);
     line-height: 1.6;
   }

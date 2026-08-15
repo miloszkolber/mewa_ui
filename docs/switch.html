@@ -272,7 +272,7 @@
   .switch {
     appearance: none;
     width: 2.25rem;
-    height: 1.25rem;
+    height: var(--size-05);
     border-radius: 9999px;
     background: var(--input);
     cursor: pointer;
@@ -293,7 +293,7 @@
       border-radius: 50%;
       background: var(--background);
       transition: transform 150ms;
-      
+
     }
 
     &amp;:checked {
@@ -305,7 +305,7 @@
     }
 
     &amp;:focus-visible {
-      outline: 2px solid var(--ring);
+      outline: var(--border-width-02) solid var(--ring);
       outline-offset: 2px;
     }
 
@@ -325,7 +325,7 @@
     /* -- Sizes ----------------------------------------------- */
     &amp;[data-size=&quot;sm&quot;] {
       width: 1.75rem;
-      height: 1rem;
+      height: var(--size-04);
 
       &amp;::after {
         width: calc(1rem - 4px);
@@ -342,10 +342,10 @@
   .switch-item {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-02);
 
     &amp; &gt; label {
-      font-size: 0.875rem;
+      font-size: var(--font-body-small);
       cursor: pointer;
     }
   }
@@ -354,7 +354,7 @@
   .switch-item-block {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 0 0.75rem;
+    gap: 0 var(--space-03);
     align-items: center;
 
     &amp; &gt; .switch {
@@ -362,7 +362,7 @@
     }
 
     &amp; &gt; label {
-      font-size: 0.875rem;
+      font-size: var(--font-body-small);
       font-weight: 500;
       cursor: pointer;
     }
@@ -392,7 +392,7 @@
   @media (forced-colors: active) {
     .switch {
       background: ButtonFace;
-      border: 1px solid ButtonText;
+      border: var(--border-width-01) solid ButtonText;
 
       &amp;::after {
         background: ButtonText;

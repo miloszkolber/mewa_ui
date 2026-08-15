@@ -180,20 +180,20 @@
   .number-input {
     display: inline-flex;
     align-items: center;
-    border: 1px solid var(--input);
-    
+    border: var(--border-width-01) solid var(--input);
+
     background: var(--background);
-    
+
     overflow: hidden;
 
     &amp; input {
       border: none;
       outline: none;
       background: transparent;
-      height: 2.5rem;
-      width: 4rem;
+      height: var(--size-08);
+      width: var(--size-11);
       text-align: center;
-      font-size: 0.875rem;
+      font-size: var(--font-body-small);
       font-family: var(--font-sans);
       color: var(--foreground);
       -moz-appearance: textfield;
@@ -209,13 +209,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 2rem;
-      height: 2.5rem;
+      width: var(--size-07);
+      height: var(--size-08);
       border: none;
       background: transparent;
       color: var(--muted-foreground);
       cursor: pointer;
-      font-size: 1rem;
+      font-size: var(--font-body);
       font-family: var(--font-sans);
       transition: background 150ms, color 150ms;
       flex-shrink: 0;
@@ -226,11 +226,11 @@
       }
 
       &amp;:first-child {
-        border-right: 1px solid var(--input);
+        border-right: var(--border-width-01) solid var(--input);
       }
 
       &amp;:last-child {
-        border-left: 1px solid var(--input);
+        border-left: var(--border-width-01) solid var(--input);
       }
     }
 

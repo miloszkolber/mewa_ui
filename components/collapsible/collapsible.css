@@ -1,7 +1,7 @@
 @layer components {
   .collapsible {
-    border: 1px solid var(--border);
-    
+    border: var(--border-width-01) solid var(--border);
+
     overflow: hidden;
 
     & ::details-content {
@@ -26,8 +26,8 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 0.75rem 1rem;
-    font-size: 0.875rem;
+    padding: var(--space-03) var(--space-04);
+    font-size: var(--font-body-small);
     font-weight: 500;
     cursor: pointer;
     color: var(--foreground);
@@ -38,7 +38,7 @@
     }
 
     &:focus-visible {
-      outline: 2px solid var(--ring);
+      outline: var(--border-width-02) solid var(--ring);
       outline-offset: -2px;
     }
 
@@ -48,8 +48,8 @@
   }
 
   .collapsible-chevron {
-    width: 1rem;
-    height: 1rem;
+    width: var(--size-04);
+    height: var(--size-04);
     color: var(--muted-foreground);
     transition: transform 200ms ease;
     flex-shrink: 0;
@@ -60,8 +60,8 @@
   }
 
   .collapsible-content {
-    padding: 0 1rem 0.75rem;
-    font-size: 0.875rem;
+    padding: 0 var(--space-04) var(--space-03);
+    font-size: var(--font-body-small);
     color: var(--muted-foreground);
     line-height: 1.6;
   }

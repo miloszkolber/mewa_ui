@@ -216,10 +216,10 @@
   .toolbar {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem;
-    border: 1px solid var(--border);
-    
+    gap: var(--space-01);
+    padding: var(--space-01);
+    border: var(--border-width-01) solid var(--border);
+
     background: var(--background);
     width: fit-content;
 
@@ -227,7 +227,7 @@
     &amp; &gt; .separator[data-orientation=&quot;vertical&quot;] {
       align-self: stretch;
       height: auto;
-      margin: 0.25rem 0.25rem;
+      margin: var(--space-01) var(--space-01);
     }
 
     /* Vertical toolbar */
@@ -237,8 +237,8 @@
       &amp; &gt; .separator[data-orientation=&quot;horizontal&quot;],
       &amp; &gt; .separator:not([data-orientation]) {
         height: 1px;
-        width: 1.5rem;
-        margin: 0.25rem 0;
+        width: var(--size-06);
+        margin: var(--space-01) 0;
       }
     }
   }

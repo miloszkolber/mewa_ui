@@ -3,13 +3,13 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    font-size: 0.875rem;
+    font-size: var(--font-body-small);
   }
 
   .tree-group {
     list-style: none;
     margin: 0;
-    padding: 0 0 0 1.25rem;
+    padding: 0 0 0 var(--space-05);
   }
 
   .tree-item {
@@ -40,8 +40,8 @@
     display: flex;
     align-items: center;
     gap: 0.375rem;
-    padding: 0.25rem 0.5rem;
-    
+    padding: var(--space-01) var(--space-02);
+
     cursor: pointer;
     color: var(--foreground);
     list-style: none;
@@ -51,7 +51,7 @@
     }
 
     &:focus-visible {
-      outline: 2px solid var(--ring);
+      outline: var(--border-width-02) solid var(--ring);
       outline-offset: -2px;
     }
 
@@ -60,8 +60,8 @@
     }
 
     & svg {
-      width: 1rem;
-      height: 1rem;
+      width: var(--size-04);
+      height: var(--size-04);
       flex-shrink: 0;
     }
 
@@ -81,9 +81,9 @@
     display: flex;
     align-items: center;
     gap: 0.375rem;
-    padding: 0.25rem 0.5rem;
+    padding: var(--space-01) var(--space-02);
     padding-left: calc(0.5rem + 0.875rem + 0.375rem);
-    
+
     color: var(--foreground);
     cursor: default;
 
@@ -92,8 +92,8 @@
     }
 
     & svg {
-      width: 1rem;
-      height: 1rem;
+      width: var(--size-04);
+      height: var(--size-04);
       flex-shrink: 0;
       color: var(--muted-foreground);
     }

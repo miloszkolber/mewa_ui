@@ -212,9 +212,9 @@
   .calendar {
     display: inline-flex;
     flex-direction: column;
-    padding: 0.75rem;
-    border: 1px solid var(--border);
-    
+    padding: var(--space-03);
+    border: var(--border-width-01) solid var(--border);
+
     background-color: var(--card);
     user-select: none;
   }
@@ -223,11 +223,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 0.25rem 0.5rem;
+    padding: 0 var(--space-01) var(--space-02);
   }
 
   .calendar-heading {
-    font-size: 0.875rem;
+    font-size: var(--font-body-small);
     font-weight: 500;
     color: var(--foreground);
   }
@@ -239,8 +239,8 @@
     width: 1.75rem;
     height: 1.75rem;
     padding: 0;
-    border: 1px solid var(--border);
-    
+    border: var(--border-width-01) solid var(--border);
+
     background-color: transparent;
     color: var(--foreground);
     cursor: pointer;
@@ -251,7 +251,7 @@
     }
 
     &amp;:focus-visible {
-      outline: 2px solid var(--ring);
+      outline: var(--border-width-02) solid var(--ring);
       outline-offset: 2px;
     }
 
@@ -269,8 +269,8 @@
   .calendar-day-label {
     width: 2.25rem;
     height: 2.25rem;
-    font-size: 0.75rem;
-    font-weight: 400;
+    font-size: var(--font-body-xsmall);
+    font-weight: var(--font-weight);
     color: var(--muted-foreground);
     text-align: center;
     vertical-align: middle;
@@ -287,11 +287,11 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 2rem;
-      height: 2rem;
+      width: var(--size-07);
+      height: var(--size-07);
       font-size: 0.8125rem;
       border: none;
-      
+
       background-color: transparent;
       color: var(--foreground);
       cursor: pointer;
@@ -302,7 +302,7 @@
       }
 
       &amp;:focus-visible {
-        outline: 2px solid var(--ring);
+        outline: var(--border-width-02) solid var(--ring);
         outline-offset: 2px;
       }
     }

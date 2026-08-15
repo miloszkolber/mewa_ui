@@ -2,7 +2,7 @@
 
 @layer components {
   .label {
-    font-size: 0.875rem;
+    font-size: var(--font-body-small);
     font-weight: 500;
     font-family: var(--font-sans);
     line-height: 1;
@@ -27,7 +27,7 @@
 
   /* -- Hint text (optional, required indicators) ----------- */
   .label-hint {
-    font-weight: 400;
+    font-weight: var(--font-weight);
     font-size: 0.8125rem;
     color: var(--muted-foreground);
   }

@@ -179,15 +179,15 @@
 @layer components {
   .file-input {
     width: 100%;
-    height: 2.5rem;
-    border: 1px solid var(--input);
-    
+    height: var(--size-08);
+    border: var(--border-width-01) solid var(--input);
+
     background: var(--background);
-    font-size: 0.875rem;
+    font-size: var(--font-body-small);
     font-family: var(--font-sans);
     color: var(--foreground);
     outline: none;
-    
+
     transition: border-color 150ms;
     padding: 0;
     cursor: pointer;
@@ -195,14 +195,14 @@
     &amp;::file-selector-button {
       height: 100%;
       border: none;
-      border-right: 1px solid var(--input);
+      border-right: var(--border-width-01) solid var(--input);
       background: var(--muted);
       color: var(--foreground);
-      font-size: 0.875rem;
+      font-size: var(--font-body-small);
       font-weight: 500;
       font-family: var(--font-sans);
-      padding: 0 0.75rem;
-      margin-right: 0.75rem;
+      padding: 0 var(--space-03);
+      margin-right: var(--space-03);
       cursor: pointer;
       transition: background 150ms;
 

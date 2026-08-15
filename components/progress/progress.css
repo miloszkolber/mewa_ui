@@ -4,7 +4,7 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     width: 100%;
-    height: 0.5rem;
+    height: var(--size-02);
     border: none;
     border-radius: 9999px;
     overflow: hidden;

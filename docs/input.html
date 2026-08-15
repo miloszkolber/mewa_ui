@@ -414,17 +414,17 @@
 
 @layer components {
   .input {
-    height: 2.5rem;
+    height: var(--size-08);
     width: 100%;
-    border: 1px solid var(--input);
-    
+    border: var(--border-width-01) solid var(--input);
+
     background: var(--background);
-    padding: 0 0.75rem;
-    font-size: 0.875rem;
+    padding: 0 var(--space-03);
+    font-size: var(--font-body-small);
     font-family: var(--font-sans);
     color: var(--foreground);
     outline: none;
-    
+
     transition: border-color 150ms;
 
     &amp;:focus {
@@ -447,7 +447,7 @@
 
       &amp;:focus {
         border-color: var(--input);
-        
+
       }
     }
 
@@ -464,19 +464,19 @@
     /* -- File input ------------------------------------------ */
     &amp;[type=&quot;file&quot;] {
       padding: 0;
-      font-size: 0.875rem;
+      font-size: var(--font-body-small);
 
       &amp;::file-selector-button {
         height: 100%;
         border: none;
-        border-right: 1px solid var(--input);
+        border-right: var(--border-width-01) solid var(--input);
         background: var(--muted);
         color: var(--foreground);
-        font-size: 0.875rem;
+        font-size: var(--font-body-small);
         font-weight: 500;
         font-family: var(--font-sans);
-        padding: 0 0.75rem;
-        margin-right: 0.75rem;
+        padding: 0 var(--space-03);
+        margin-right: var(--space-03);
         cursor: pointer;
         transition: background 150ms;
 
@@ -485,16 +485,16 @@
     }
 
     /* -- Sizes ----------------------------------------------- */
-    &amp;[data-size=&quot;sm&quot;] { height: 2rem;    padding: 0 0.625rem; font-size: 0.8125rem; }
-    &amp;[data-size=&quot;lg&quot;] { height: 2.75rem; padding: 0 1rem;     font-size: 1rem; }
+    &amp;[data-size=&quot;sm&quot;] { height: var(--size-07);    padding: 0 0.625rem; font-size: 0.8125rem; }
+    &amp;[data-size=&quot;lg&quot;] { height: 2.75rem; padding: 0 var(--space-04);     font-size: var(--font-body); }
   }
 
   /* -- Auto-growing textarea --------------------------------- */
   textarea.input {
     field-sizing: content;
-    min-height: 5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    min-height: var(--size-12);
+    padding-top: var(--space-02);
+    padding-bottom: var(--space-02);
   }
 
   /* -- Field description ------------------------------------- */
@@ -524,7 +524,7 @@
 
   @media (prefers-contrast: more) {
     .input {
-      border-width: 2px;
+      border-width: var(--border-width-02);
     }
 
     .input:disabled {
@@ -540,7 +540,7 @@
     }
 
     .input:focus {
-      outline: 2px solid Highlight;
+      outline: var(--border-width-02) solid Highlight;
       outline-offset: 1px;
     }
 

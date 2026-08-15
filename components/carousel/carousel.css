@@ -8,7 +8,7 @@
       display: flex;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
-      gap: 1rem;
+      gap: var(--space-04);
       overscroll-behavior-x: contain;
       scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
@@ -33,22 +33,22 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 2rem;
-      height: 2rem;
-      border: 1px solid var(--border);
+      width: var(--size-07);
+      height: var(--size-07);
+      border: var(--border-width-01) solid var(--border);
       border-radius: 9999px;
       background-color: var(--background);
       color: var(--foreground);
       cursor: pointer;
-      
+
       transition: background-color 150ms ease, opacity 150ms ease;
-      font-size: 0.875rem;
+      font-size: var(--font-body-small);
       z-index: 1;
 
       &:hover { background-color: var(--accent); }
-      &:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+      &:focus-visible { outline: var(--border-width-02) solid var(--ring); outline-offset: 2px; }
       &:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
-      & svg { width: 1rem; height: 1rem; }
+      & svg { width: var(--size-04); height: var(--size-04); }
     }
 
     & .carousel-prev { left: -1rem; }
@@ -58,13 +58,13 @@
     & .carousel-dots {
       display: flex;
       justify-content: center;
-      gap: 0.5rem;
-      padding-block: 0.75rem;
+      gap: var(--space-02);
+      padding-block: var(--space-03);
     }
 
     & .carousel-dot {
-      width: 0.5rem;
-      height: 0.5rem;
+      width: var(--size-02);
+      height: var(--size-02);
       border-radius: 9999px;
       border: none;
       padding: 0;
@@ -82,7 +82,7 @@
       }
 
       &:focus-visible {
-        outline: 2px solid var(--ring);
+        outline: var(--border-width-02) solid var(--ring);
         outline-offset: 2px;
       }
     }
@@ -92,7 +92,7 @@
       text-align: center;
       font-size: 0.8125rem;
       color: var(--muted-foreground);
-      padding-block-start: 0.5rem;
+      padding-block-start: var(--space-02);
     }
 
     /* ── Vertical orientation ──────────────────── */
@@ -131,17 +131,17 @@
   @media (prefers-contrast: more) {
     .carousel .carousel-prev,
     .carousel .carousel-next {
-      border-width: 2px;
+      border-width: var(--border-width-02);
     }
     .carousel .carousel-dot {
-      border: 1px solid var(--foreground);
+      border: var(--border-width-01) solid var(--foreground);
     }
   }
 
   @media (forced-colors: active) {
     .carousel .carousel-prev,
     .carousel .carousel-next {
-      border: 1px solid ButtonText;
+      border: var(--border-width-01) solid ButtonText;
       background: ButtonFace;
       color: ButtonText;
     }

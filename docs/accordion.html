@@ -307,7 +307,7 @@
   }
 
   .accordion-item {
-    border-bottom: 1px solid var(--border);
+    border-bottom: var(--border-width-01) solid var(--border);
 
     &amp;:last-child { border-bottom: none; }
 
@@ -335,7 +335,7 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 1rem 0;
+    padding: var(--space-04) 0;
     font-size: 0.9375rem;
     font-weight: 500;
     text-align: left;
@@ -362,8 +362,8 @@
 
   /* Content */
   .accordion-content {
-    padding-bottom: 1rem;
-    font-size: 0.875rem;
+    padding-bottom: var(--space-04);
+    font-size: var(--font-body-small);
     line-height: 1.7;
     color: var(--muted-foreground);
     overflow: hidden;

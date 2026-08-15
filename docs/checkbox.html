@@ -309,8 +309,8 @@
     appearance: none;
     width: 1.125rem;
     height: 1.125rem;
-    border: 1px solid var(--border);
-    
+    border: var(--border-width-01) solid var(--border);
+
     background: var(--background);
     cursor: pointer;
     flex-shrink: 0;
@@ -329,7 +329,7 @@
         width: 6px;
         height: 10px;
         border: solid var(--primary-foreground);
-        border-width: 0 2px 2px 0;
+        border-width: 0 var(--border-width-02) var(--border-width-02) 0;
         transform: translate(-50%, -50%) rotate(45deg);
       }
     }
@@ -351,7 +351,7 @@
     }
 
     &amp;:focus-visible {
-      outline: 2px solid var(--ring);
+      outline: var(--border-width-02) solid var(--ring);
       outline-offset: 2px;
     }
 
@@ -369,10 +369,10 @@
   .checkbox-item {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-02);
 
     &amp; &gt; label {
-      font-size: 0.875rem;
+      font-size: var(--font-body-small);
       cursor: pointer;
     }
   }
@@ -380,10 +380,10 @@
   .checkbox-item-block {
     display: flex;
     align-items: flex-start;
-    gap: 0.5rem;
+    gap: var(--space-02);
 
     &amp; &gt; label {
-      font-size: 0.875rem;
+      font-size: var(--font-body-small);
       cursor: pointer;
     }
 
@@ -408,7 +408,7 @@
 
   @media (prefers-contrast: more) {
     .checkbox {
-      border-width: 2px;
+      border-width: var(--border-width-02);
     }
 
     .checkbox:disabled {

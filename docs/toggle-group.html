@@ -380,7 +380,7 @@
 
     /* -- Outline variant: propagate border to children ---------- */
     &amp;[data-variant=&quot;outline&quot;] &gt; .toggle {
-      border: 1px solid var(--input);
+      border: var(--border-width-01) solid var(--input);
       background: transparent;
 
       &amp;:hover {
@@ -406,17 +406,17 @@
 
     /* -- Sizes: propagate to child toggles ---------------------- */
     &amp;[data-size=&quot;sm&quot;] &gt; .toggle {
-      height: 2rem;
+      height: var(--size-07);
       padding: 0 0.375rem;
-      min-width: 2rem;
+      min-width: var(--size-07);
 
       &amp; svg { width: 0.875rem; height: 0.875rem; }
     }
 
     &amp;[data-size=&quot;lg&quot;] &gt; .toggle {
-      height: 2.5rem;
+      height: var(--size-08);
       padding: 0 0.625rem;
-      min-width: 2.5rem;
+      min-width: var(--size-08);
 
       &amp; svg { width: 1.125rem; height: 1.125rem; }
     }
@@ -428,7 +428,7 @@
 
     /* -- Spacing: adds gap between individual toggles ----------- */
     &amp;[data-spacing] {
-      gap: 0.25rem;
+      gap: var(--space-01);
     }
 
     /* -- Disabled group ----------------------------------------- */

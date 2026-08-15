@@ -24,11 +24,11 @@
 
   .statistic-description {
     margin: 0;
-    font-size: 0.75rem;
+    font-size: var(--font-body-xsmall);
     color: var(--muted-foreground);
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: var(--space-01);
   }
 
   .statistic-trend {
@@ -38,8 +38,8 @@
     font-weight: 500;
 
     & svg {
-      width: 0.75rem;
-      height: 0.75rem;
+      width: var(--size-03);
+      height: var(--size-03);
     }
 
     &[data-trend="up"] {

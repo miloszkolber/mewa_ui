@@ -322,7 +322,7 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: var(--space-01);
 
     /* Horizontal orientation */
     &amp;[data-orientation=&quot;horizontal&quot;] {
@@ -334,12 +334,12 @@
   .sortable-item {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--border);
-    
+    gap: var(--space-02);
+    padding: var(--space-02) var(--space-03);
+    border: var(--border-width-01) solid var(--border);
+
     background-color: var(--card);
-    font-size: 0.875rem;
+    font-size: var(--font-body-small);
     color: var(--foreground);
     cursor: grab;
     transition: opacity 150ms ease, border-color 150ms ease;
@@ -349,7 +349,7 @@
 
     /* Keyboard focus (roving tabindex) */
     &amp;:focus-visible {
-      outline: 2px solid var(--ring);
+      outline: var(--border-width-02) solid var(--ring);
       outline-offset: 2px;
     }
 
@@ -363,26 +363,26 @@
     /* Drag in progress */
     &amp;[data-dragging] {
       opacity: 0.5;
-      
+
       border-style: dashed;
     }
 
     /* Drop target indicator */
     &amp;[data-over=&quot;before&quot;] {
-      border-top: 2px solid var(--primary);
+      border-top: var(--border-width-02) solid var(--primary);
     }
     &amp;[data-over=&quot;after&quot;] {
-      border-bottom: 2px solid var(--primary);
+      border-bottom: var(--border-width-02) solid var(--primary);
     }
 
     /* Horizontal drop indicators */
     .sortable[data-orientation=&quot;horizontal&quot;] &amp;[data-over=&quot;before&quot;] {
-      border-top: 1px solid var(--border);
-      border-inline-start: 2px solid var(--primary);
+      border-top: var(--border-width-01) solid var(--border);
+      border-inline-start: var(--border-width-02) solid var(--primary);
     }
     .sortable[data-orientation=&quot;horizontal&quot;] &amp;[data-over=&quot;after&quot;] {
-      border-bottom: 1px solid var(--border);
-      border-inline-end: 2px solid var(--primary);
+      border-bottom: var(--border-width-01) solid var(--border);
+      border-inline-end: var(--border-width-02) solid var(--primary);
     }
 
     /* Disabled */
@@ -396,14 +396,14 @@
   .sortable-handle {
     color: var(--muted-foreground);
     cursor: grab;
-    font-size: 1rem;
+    font-size: var(--font-body);
     line-height: 1;
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
 
     &amp;:active { cursor: grabbing; }
-    &amp; svg { width: 1rem; height: 1rem; }
+    &amp; svg { width: var(--size-04); height: var(--size-04); }
   }
 
   /* Live region for screen reader announcements */
@@ -425,8 +425,8 @@
 
   @media (prefers-contrast: more) {
     .sortable-item {
-      border-width: 2px;
-      &amp;[data-active] { outline: 2px solid LinkText; }
+      border-width: var(--border-width-02);
+      &amp;[data-active] { outline: var(--border-width-02) solid LinkText; }
       &amp;[data-over=&quot;before&quot;] { border-top-width: 3px; }
       &amp;[data-over=&quot;after&quot;] { border-bottom-width: 3px; }
     }

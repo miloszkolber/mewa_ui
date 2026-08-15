@@ -308,23 +308,23 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: var(--size-08);
+    height: var(--size-08);
     border-radius: 9999px;
     overflow: hidden;
     flex-shrink: 0;
     background-color: var(--muted);
 
     &amp;[data-size=&quot;sm&quot;] {
-      width: 2rem;
-      height: 2rem;
+      width: var(--size-07);
+      height: var(--size-07);
       font-size: 0.6875rem;
     }
 
     &amp;[data-size=&quot;lg&quot;] {
-      width: 3rem;
-      height: 3rem;
-      font-size: 0.875rem;
+      width: var(--size-09);
+      height: var(--size-09);
+      font-size: var(--font-body-small);
     }
   }
 
@@ -341,7 +341,7 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-    font-size: 0.75rem;
+    font-size: var(--font-body-xsmall);
     font-weight: 500;
     color: var(--muted-foreground);
     background-color: var(--muted);
@@ -362,7 +362,7 @@
     height: 0.625rem;
     border-radius: 9999px;
     background-color: #16a34a;
-    border: 2px solid var(--background);
+    border: var(--border-width-02) solid var(--background);
   }
 
   /* Avatar group */
@@ -371,7 +371,7 @@
     align-items: center;
 
     &amp; .avatar {
-      border: 2px solid var(--background);
+      border: var(--border-width-02) solid var(--background);
       margin-left: -0.5rem;
 
       &amp;:first-child {
@@ -384,14 +384,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: var(--size-08);
+    height: var(--size-08);
     border-radius: 9999px;
     background-color: var(--muted);
     color: var(--muted-foreground);
-    font-size: 0.75rem;
+    font-size: var(--font-body-xsmall);
     font-weight: 500;
-    border: 2px solid var(--background);
+    border: var(--border-width-02) solid var(--background);
     margin-left: -0.5rem;
   }
 }</code></pre>

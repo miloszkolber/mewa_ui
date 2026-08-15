@@ -5,7 +5,7 @@
 /* All typography classes are sized relative to this baseline. */
 @layer base {
   body {
-    font-size: 0.875rem;
+    font-size: var(--font-body-small);
     line-height: 1.5;
   }
 }
@@ -13,7 +13,7 @@
 @layer components {
   /* -- Headings ---------------------------------------------- */
   .h1 {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: var(--space-12);
     font-size: 2.25rem;
     font-weight: 800;
     letter-spacing: -0.025em;
@@ -23,21 +23,21 @@
   }
 
   .h2 {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: var(--space-12);
     font-size: 1.875rem;
     font-weight: 600;
     letter-spacing: -0.02em;
-    line-height: 1.25;
+    line-height: var(--font-height-tight);
     text-wrap: balance;
     color: var(--foreground);
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 0.5rem;
+    border-bottom: var(--border-width-01) solid var(--border);
+    padding-bottom: var(--space-02);
 
     &:first-child { margin-top: 0; }
   }
 
   .h3 {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: var(--space-12);
     font-size: 1.5rem;
     font-weight: 600;
     letter-spacing: -0.01em;
@@ -47,7 +47,7 @@
   }
 
   .h4 {
-    scroll-margin-top: 5rem;
+    scroll-margin-top: var(--space-12);
     font-size: 1.25rem;
     font-weight: 600;
     line-height: 1.4;
@@ -57,12 +57,12 @@
 
   /* -- Paragraph --------------------------------------------- */
   .p {
-    font-size: 0.875rem;
+    font-size: var(--font-body-small);
     line-height: 1.75;
     text-wrap: pretty;
     color: var(--foreground);
 
-    &:not(:first-child) { margin-top: 1.5rem; }
+    &:not(:first-child) { margin-top: var(--space-06); }
   }
 
   /* -- Lead --------------------------------------------------- */
@@ -82,7 +82,7 @@
 
   /* -- Small -------------------------------------------------- */
   .small {
-    font-size: 0.875rem;
+    font-size: var(--font-body-small);
     font-weight: 500;
     line-height: 1;
     color: var(--foreground);
@@ -90,15 +90,15 @@
 
   /* -- Muted -------------------------------------------------- */
   .muted {
-    font-size: 0.875rem;
+    font-size: var(--font-body-small);
     color: var(--muted-foreground);
   }
 
   /* -- Blockquote --------------------------------------------- */
   .blockquote {
-    margin-top: 1.5rem;
-    border-inline-start: 2px solid var(--border);
-    padding-inline-start: 1.5rem;
+    margin-top: var(--space-06);
+    border-inline-start: var(--border-width-02) solid var(--border);
+    padding-inline-start: var(--space-06);
     font-style: italic;
     hanging-punctuation: first last;
     color: var(--foreground);
@@ -109,7 +109,7 @@
   /* -- Inline code -------------------------------------------- */
   .code {
     position: relative;
-    
+
     background: var(--muted);
     padding: 0.2rem 0.3rem;
     font-family: var(--font-mono);
@@ -130,7 +130,7 @@
     }
 
     .code {
-      outline: 1px solid var(--border);
+      outline: var(--border-width-01) solid var(--border);
     }
 
     .muted {
@@ -145,7 +145,7 @@
 
     .code {
       background: Canvas;
-      outline: 1px solid CanvasText;
+      outline: var(--border-width-01) solid CanvasText;
       color: CanvasText;
     }
   }

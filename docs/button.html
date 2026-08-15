@@ -371,21 +371,21 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: var(--space-02);
     white-space: nowrap;
-    font-size: 0.875rem;
+    font-size: var(--font-body-small);
     font-weight: 500;
     font-family: var(--font-sans);
     line-height: 1;
-    
-    border: 1px solid transparent;
+
+    border: var(--border-width-01) solid transparent;
     cursor: pointer;
     text-decoration: none;
     transition: all 150ms ease;
     outline: none;
     flex-shrink: 0;
     height: 2.25rem;
-    padding: 0 1rem;
+    padding: 0 var(--space-04);
     background-color: var(--primary);
     color: var(--primary-foreground);
 
@@ -393,11 +393,11 @@
       pointer-events: none;
       flex-shrink: 0;
 
-      &amp;:not([class*=&quot;size-&quot;]) { width: 1rem; height: 1rem; }
+      &amp;:not([class*=&quot;size-&quot;]) { width: var(--size-04); height: var(--size-04); }
     }
 
     &amp;:focus-visible {
-      outline: 2px solid var(--ring);
+      outline: var(--border-width-02) solid var(--ring);
       outline-offset: 2px;
     }
 
@@ -424,8 +424,8 @@
     &amp;[data-variant=&quot;outline&quot;] {
       background-color: var(--background);
       color: var(--foreground);
-      border: 1px solid var(--border);
-      
+      border: var(--border-width-01) solid var(--border);
+
 
       &amp;:hover {
         background-color: var(--accent);
@@ -462,12 +462,12 @@
     }
 
     /* -- Sizes ----------------------------------------------- */
-    &amp;[data-size=&quot;xs&quot;]      { height: 1.75rem; padding: 0 0.5rem;  font-size: 0.75rem;  }
-    &amp;[data-size=&quot;sm&quot;]      { height: 2rem;    padding: 0 0.75rem; font-size: 0.8125rem; }
-    &amp;[data-size=&quot;lg&quot;]      { height: 2.75rem; padding: 0 2rem;    font-size: 1rem; }
+    &amp;[data-size=&quot;xs&quot;]      { height: 1.75rem; padding: 0 var(--space-02);  font-size: var(--font-body-xsmall);  }
+    &amp;[data-size=&quot;sm&quot;]      { height: var(--size-07);    padding: 0 var(--space-03); font-size: 0.8125rem; }
+    &amp;[data-size=&quot;lg&quot;]      { height: 2.75rem; padding: 0 var(--space-07);    font-size: var(--font-body); }
     &amp;[data-size=&quot;icon&quot;]    { height: 2.25rem; width: 2.25rem;  padding: 0; }
     &amp;[data-size=&quot;icon-xs&quot;] { height: 1.75rem; width: 1.75rem;  padding: 0;  }
-    &amp;[data-size=&quot;icon-sm&quot;] { height: 2rem;    width: 2rem;     padding: 0; }
+    &amp;[data-size=&quot;icon-sm&quot;] { height: var(--size-07);    width: var(--size-07);     padding: 0; }
     &amp;[data-size=&quot;icon-lg&quot;] { height: 2.75rem; width: 2.75rem;  padding: 0; }
   }
 
@@ -479,7 +479,7 @@
 
   @media (prefers-contrast: more) {
     .btn {
-      border: 2px solid transparent;
+      border: var(--border-width-02) solid transparent;
 
       &amp;[data-variant=&quot;default&quot;],
       &amp;[data-variant=&quot;secondary&quot;],
@@ -496,7 +496,7 @@
 
   @media (forced-colors: active) {
     .btn {
-      border: 1px solid ButtonText;
+      border: var(--border-width-01) solid ButtonText;
 
       &amp;:disabled, &amp;[aria-disabled=&quot;true&quot;] {
         border-color: GrayText;

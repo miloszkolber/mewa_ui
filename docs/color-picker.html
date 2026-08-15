@@ -186,20 +186,20 @@
   .color-picker {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    border: 1px solid var(--input);
-    
+    gap: var(--space-02);
+    border: var(--border-width-01) solid var(--input);
+
     background: var(--background);
-    padding: 0.25rem 0.75rem 0.25rem 0.25rem;
-    
+    padding: var(--space-01) var(--space-03) var(--space-01) var(--space-01);
+
 
     &amp; input[type=&quot;color&quot;] {
       -webkit-appearance: none;
       appearance: none;
-      width: 2rem;
-      height: 2rem;
-      border: 1px solid var(--border);
-      
+      width: var(--size-07);
+      height: var(--size-07);
+      border: var(--border-width-01) solid var(--border);
+
       cursor: pointer;
       padding: 0;
       background: none;
@@ -207,11 +207,11 @@
       &amp;::-webkit-color-swatch-wrapper { padding: 0; }
       &amp;::-webkit-color-swatch {
         border: none;
-        
+
       }
       &amp;::-moz-color-swatch {
         border: none;
-        
+
       }
     }
 

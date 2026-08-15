@@ -235,16 +235,16 @@
           <div style="position:relative;margin-top:0.5rem;">
             <button class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
             <pre><code class="language-scss">@layer components {
-  .nav-menu-list { display: flex; align-items: center; gap: 0.25rem; list-style: none; margin: 0; padding: 0; }
+  .nav-menu-list { display: flex; align-items: center; gap: var(--space-01); list-style: none; margin: 0; padding: 0; }
   .nav-menu-link, .nav-menu-trigger {
-    display: inline-flex; align-items: center; gap: 0.25rem;
-    padding: 0.5rem 0.75rem; border: none; 
-    background: transparent; color: var(--foreground); font-size: 0.875rem; font-weight: 500;
+    display: inline-flex; align-items: center; gap: var(--space-01);
+    padding: var(--space-02) var(--space-03); border: none;
+    background: transparent; color: var(--foreground); font-size: var(--font-body-small); font-weight: 500;
     font-family: inherit; text-decoration: none; cursor: pointer;
     transition: background-color 150ms ease, color 150ms ease;
     outline: none;
     &amp;:hover { background-color: var(--accent); color: var(--accent-foreground); }
-    &amp;:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+    &amp;:focus-visible { outline: var(--border-width-02) solid var(--ring); outline-offset: 2px; }
     &amp; svg { width: 0.875rem; height: 0.875rem; color: var(--muted-foreground); transition: transform 200ms ease; }
   }
 
@@ -255,9 +255,9 @@
 
   .nav-menu-content {
     position: fixed; inset: auto;
-    margin: 0; border: 1px solid var(--border); 
+    margin: 0; border: var(--border-width-01) solid var(--border);
     background-color: var(--popover); color: var(--popover-foreground);
-    padding: 1rem;  min-width: 14rem;
+    padding: var(--space-04);  min-width: 14rem;
     opacity: 0; transform: translateY(-4px);
     transition: opacity 150ms ease, transform 150ms ease, display 150ms allow-discrete;
 
@@ -269,12 +269,12 @@
   }
   @starting-style { .nav-menu-content:popover-open { opacity: 0; transform: translateY(-4px); } }
   .nav-menu-content-link {
-    display: block; padding: 0.5rem 0.75rem; 
-    text-decoration: none; color: var(--foreground); font-size: 0.875rem;
+    display: block; padding: var(--space-02) var(--space-03);
+    text-decoration: none; color: var(--foreground); font-size: var(--font-body-small);
     transition: background-color 150ms ease;
     &amp;:hover { background-color: var(--accent); }
-    &amp;:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
-    &amp; p { margin: 0.125rem 0 0; font-size: 0.75rem; color: var(--muted-foreground); font-weight: 400; }
+    &amp;:focus-visible { outline: var(--border-width-02) solid var(--ring); outline-offset: 2px; }
+    &amp; p { margin: 0.125rem 0 0; font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-weight: var(--font-weight); }
   }
 
   /* -- Accessibility ------------------------------------------ */

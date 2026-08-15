@@ -231,13 +231,13 @@
             <pre><code class="language-scss">@layer components {
   dialog.alert-dialog {
     border: none;
-    
+
     background: var(--background);
     color: var(--foreground);
     padding: 0;
     max-width: 28rem;
     width: calc(100% - 2rem);
-    
+
     margin: auto;
     position: fixed;
     inset: 0;
@@ -281,11 +281,11 @@
   }
 
   .alert-dialog-content {
-    padding: 1.5rem;
+    padding: var(--space-06);
   }
 
   .alert-dialog-header {
-    margin-bottom: 1.25rem;
+    margin-bottom: var(--space-05);
   }
 
   .alert-dialog-title {
@@ -297,8 +297,8 @@
   }
 
   .alert-dialog-description {
-    margin: 0.5rem 0 0;
-    font-size: 0.875rem;
+    margin: var(--space-02) 0 0;
+    font-size: var(--font-body-small);
     color: var(--muted-foreground);
     line-height: 1.5;
   }
@@ -306,7 +306,7 @@
   .alert-dialog-footer {
     display: flex;
     justify-content: flex-end;
-    gap: 0.5rem;
+    gap: var(--space-02);
   }
 }</code></pre>
           </div>
