@@ -29,11 +29,11 @@
 
 ### With description
 ```html
-<div style="display:flex;align-items:flex-start;gap:0.5rem;">
-  <input class="checkbox" type="checkbox" id="notify" style="margin-top:0.125rem;">
+<div class="checkbox-item-block">
+  <input class="checkbox" type="checkbox" id="notify">
   <div>
-    <label class="label" for="notify" style="margin:0;">Enable notifications</label>
-    <p class="field-description">You can enable or disable notifications at any time.</p>
+    <label for="notify">Enable notifications</label>
+    <p class="checkbox-description">You can enable or disable notifications at any time.</p>
   </div>
 </div>
 ```
@@ -96,5 +96,6 @@ All keyboard behavior is provided natively by `<input type="checkbox">`.
 
 - Styled with `appearance: none` and a custom checkmark via `::after` pseudo-element.
 - The checkmark uses a CSS-only approach — no SVG or icon font needed.
+- Use `.checkbox-description` inside `.checkbox-item-block` for helper text; it is part of the checkbox component and does not depend on other components' classes.
 - Indeterminate state is set via JavaScript: `checkbox.indeterminate = true;`.
 - In `forced-colors: active`, the checkbox reverts to `appearance: auto` so Windows High Contrast Mode controls rendering.

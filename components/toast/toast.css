@@ -80,6 +80,12 @@
   }
 
   /* -- Inner elements ------------------------------------------- */
+  .toast svg {
+    width: var(--size-04);
+    height: var(--size-04);
+    flex-shrink: 0;
+  }
+
   .toast-content {
     display: flex;
     align-items: flex-start;

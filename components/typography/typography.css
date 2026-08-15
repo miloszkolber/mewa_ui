@@ -6,6 +6,22 @@
     font-size: var(--font-body);
     line-height: var(--font-height);
   }
+
+  /* -- Lists ------------------------------------------------- */
+  /* Scoped to classless lists so component lists (steps,
+     pagination, navigation-menu, ...) keep their own layout. */
+  :where(ul:not([class]), ol:not([class])) {
+    margin-block: 0;
+    padding-inline-start: var(--space-05);
+  }
+
+  :where(ul:not([class]), ol:not([class])) > li {
+    margin-block: var(--space-01);
+  }
+
+  :where(ul:not([class]), ol:not([class])) > li > :where(ul, ol) {
+    margin-top: var(--space-01);
+  }
 }
 
 @layer components {
@@ -113,6 +129,18 @@
     color: var(--foreground);
   }
 
+  /* -- Keyboard input ----------------------------------------- */
+  .kbd {
+    display: inline-block;
+    padding: 0.125rem 0.375rem;
+    background: var(--muted);
+    border: var(--border-width-01) solid var(--border);
+    color: var(--foreground);
+    font-family: var(--font-mono);
+    font-size: var(--font-body-xsmall);
+    line-height: var(--font-height-tight);
+  }
+
   /* -- Accessibility ------------------------------------------ */
 
   @media (prefers-contrast: more) {
@@ -142,6 +170,12 @@
       background: Canvas;
       outline: var(--border-width-01) solid CanvasText;
       color: CanvasText;
+    }
+
+    .kbd {
+      background: ButtonFace;
+      border-color: ButtonText;
+      color: ButtonText;
     }
   }
 }

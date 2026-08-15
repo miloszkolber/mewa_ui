@@ -55,14 +55,10 @@
 
 | `data-size` | Height    | Padding       | Font size    |
 |-------------|-----------|---------------|--------------|
-| `xs`        | `1.75rem` | `0 0.5rem`    | `0.75rem`    |
 | `sm`        | `2rem`    | `0 0.75rem`   | `0.8125rem`  |
 | *(default)* | `2.25rem` | `0 1rem`      | `0.875rem`   |
-| `lg`        | `2.75rem` | `0 2rem`      | `1rem`       |
 | `icon`      | `2.25rem` | `0` (square)  | —            |
-| `icon-xs`   | `1.75rem` | `0` (square)  | —            |
 | `icon-sm`   | `2rem`    | `0` (square)  | —            |
-| `icon-lg`   | `2.75rem` | `0` (square)  | —            |
 
 ---
 

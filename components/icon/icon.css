@@ -12,8 +12,6 @@
     pointer-events: none;
 
     /* -- Sizes via data-size --------------------------------- */
-    &[data-size="xs"] { width: var(--size-03); height: var(--size-03); }
-    &[data-size="sm"] { width: 0.875rem; height: 0.875rem; }
     &[data-size="md"] { width: var(--size-05); height: var(--size-05); }
     &[data-size="lg"] { width: var(--size-06); height: var(--size-06); }
     &[data-size="xl"] { width: var(--size-07); height: var(--size-07); }

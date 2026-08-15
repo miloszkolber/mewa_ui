@@ -21,7 +21,7 @@
       align-self: stretch;
       background: var(--border);
       border: 0;
-      margin: 0;
+      margin: 0 calc(-1 * var(--border-width-01));
       padding: 0;
       flex-shrink: 0;
     }
@@ -39,6 +39,7 @@
       & > [role="separator"] {
         width: auto;
         height: 1px;
+        margin: calc(-1 * var(--border-width-01)) 0;
       }
     }
   }

@@ -43,7 +43,6 @@
 
 | `data-size` | Track width | Track height |
 |-------------|-------------|--------------|
-| `sm`        | `1.75rem`   | `1rem`       |
 | *(default)* | `2.25rem`   | `1.25rem`    |
 
 ---

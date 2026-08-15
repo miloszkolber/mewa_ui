@@ -35,9 +35,10 @@
           <i data-lucide="chevron-right"></i>
         </summary>
         <nav class="sidebar-nav">
-          <a class="sidebar-link" href="#" aria-current="page">
+          <a class="sidebar-link" href="#" aria-current="page" data-tooltip-trigger="side-tip-dashboard">
             <i data-lucide="house"></i> <span>Dashboard</span>
           </a>
+          <div class="tooltip" id="side-tip-dashboard" popover="hint" role="tooltip">Dashboard</div>
           <a class="sidebar-link" href="#">
             <i data-lucide="inbox"></i> <span>Inbox</span>
             <span class="sidebar-badge">12</span>
@@ -66,24 +67,35 @@
   </dialog>
 
   <main style="flex:1;min-width:0;">
-    <button class="sidebar-trigger" data-sidebar-trigger="main-sidebar">
+    <button class="sidebar-trigger" data-sidebar-trigger="main-sidebar" aria-label="Toggle sidebar">
       <i data-lucide="panel-left"></i>
     </button>
   </main>
 </div>
 ```
 
+### Collapsed
+```html
+<aside class="app-sidebar" id="main-sidebar" data-state="collapsed">
+  <!-- rail: 3.5rem wide, icons centered, labels hidden -->
+</aside>
+```
+
+The collapse toggle is a `button.sidebar-trigger` with `data-sidebar-trigger="<sidebar-id>"` placed next to the sidebar (or anywhere in the layout) — it stays reachable in both states. `sidebar.js` toggles `data-state` on the `<aside>`; the CSS does the rest.
+
 ## Variants
 
 | `data-state`   | Width    | Behavior                              |
 | -------------- | -------- | ------------------------------------- |
 | `expanded`     | 16rem    | Full sidebar with labels              |
-| `collapsed`    | 3.5rem   | Icons only, text hidden               |
+| `collapsed`    | 3.5rem   | Icon rail: labels, badges, footer, logo text, section titles and group/submenu labels hidden; links centered |
 
 | `data-side`    | Position                              |
 | -------------- | ------------------------------------- |
 | *(none)*       | Left (default)                        |
 | `right`        | Right side, border on left            |
+
+In collapsed mode nested submenu nav flattens (no indent, no border) so every icon sits centered on the rail. Pair collapsed links with tooltips — the sidebar demo does this with the Tooltip component so the icon rail stays discoverable.
 
 ## ARIA
 
@@ -106,69 +118,9 @@
 
 - **Mobile**: Desktop sidebar hidden below 768px. Use `<dialog class="sidebar-mobile">` for slide-in sheet.
 - **Collapsible groups**: `<details class="sidebar-group">` — native toggle, no JS.
-- **Submenus**: `<details class="sidebar-submenu">` for nested nav with left border.
-- **Badges**: `<span class="sidebar-badge">` for notification counts.
-- **Collapsed state**: Labels, titles, badges, footer, logo text hidden — icons remain.
+- **Submenus**: `<details class="sidebar-submenu">` for nested nav with left border (flattened when collapsed).
+- **Badges**: `<span class="sidebar-badge">` for notification counts (hidden when collapsed).
+- **Collapsed state**: Icons remain and stay centered; labels, titles, badges, footer, and logo text are hidden.
+- **Toggle**: `sidebar.js` flips `data-state` on click and on `Cmd+B`/`Ctrl+B`. The toggle button lives outside the sidebar so it is always reachable.
 - **Sidebar tokens**: Uses `--sidebar-*` token group.
-# Sidebar
-
-## Native basis
-
-`<aside>` + `<nav>` for application sidebar navigation with collapsible state.
-
-## Native Web APIs
-
-- [`<aside>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/aside) — complementary content landmark
-- [`<nav>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav) — navigation landmark for assistive technology
-- [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus ring on nav links
-- [`overscroll-behavior`](https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior) — prevents scroll chaining in nav area
-- [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — suppresses width transition
-
-## Structure
-
-```html
-<aside class="app-sidebar">
-  <div class="sidebar-header">
-    <span class="sidebar-logo">App</span>
-  </div>
-  <nav class="sidebar-nav">
-    <span class="sidebar-section-title">Main</span>
-    <a class="sidebar-link" data-active="true" href="#">
-      <i data-lucide="house"></i> Dashboard
-    </a>
-    <a class="sidebar-link" href="#">
-      <i data-lucide="settings"></i> Settings
-    </a>
-  </nav>
-  <div class="sidebar-footer">
-    <p>© 2026 App</p>
-  </div>
-</aside>
-```
-
-### Collapsed
-```html
-<aside class="app-sidebar" data-state="collapsed">
-  <!-- content truncates at 3.5rem width -->
-</aside>
-```
-
-## Variants
-
-| `data-state`   | Width    | Behavior                    |
-| -------------- | -------- | --------------------------- |
-| *(default)*    | 16rem    | Full sidebar with labels    |
-| `collapsed`    | 3.5rem   | Icons only, overflow hidden |
-
-## ARIA
-
-- `<aside>` provides complementary landmark automatically.
-- `<nav>` provides navigation landmark automatically.
-- Active link uses `data-active="true"` for styling; consider `aria-current="page"` for better screen reader support.
-
-## Notes
-
-- Sidebar uses design tokens from the `--sidebar-*` token group.
-- The nav area has `overflow-y: auto` and `overscroll-behavior: contain` for scroll containment.
-- Width transition is suppressed for users who prefer reduced motion.
-- Pure CSS — no JavaScript required for rendering. Collapse toggle would need JS to toggle `data-state`.
+- **Self-contained**: The sidebar needs no other component CSS for its core layout. Tooltips on collapsed icons are an optional enhancement that requires the Tooltip component.

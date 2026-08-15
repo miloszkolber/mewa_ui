@@ -7,6 +7,7 @@
 
   .combobox-trigger {
     width: 100%;
+    height: var(--size-08);
     justify-content: space-between;
   }
 

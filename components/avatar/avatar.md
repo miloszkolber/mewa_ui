@@ -57,3 +57,8 @@
 - `<img>` must have an `alt` attribute describing the user
 - Fallback text should be initials or a meaningful abbreviation
 - Avatar badge should use `aria-label` to convey status when meaningful
+
+## Notes
+
+- The badge sits on the bottom-right edge of the circle and extends beyond it, so the avatar itself never clips its children.
+- Image and fallback content is clipped to the circle by their own `overflow: hidden` and `border-radius: inherit`.

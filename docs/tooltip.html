@@ -199,9 +199,9 @@
             <i data-lucide="save" style="width: 16px; height: 16px"></i>
             Save
           </button>
-          <div class="tooltip" id="tip-kbd" popover="hint" role="tooltip" style="display: flex; align-items: center; gap: var(--space-02)" data-side="bottom">
+          <div class="tooltip" id="tip-kbd" popover="hint" role="tooltip" data-side="bottom">
             Save document
-            <kbd style="font-size: var(--font-body-xsmall); padding: 0.125rem 0.375rem; background: oklch(from var(--primary-foreground) l c h / 0.15); color: var(--primary-foreground); font-family: var(--font-mono); pointer-events: none">⌘S</kbd>
+            <kbd class="kbd" style="background: oklch(from var(--primary-foreground) l c h / 0.15); border-color: oklch(from var(--primary-foreground) l c h / 0.2); color: var(--primary-foreground)">⌘S</kbd>
           </div>
         </div>
       </div>
@@ -211,10 +211,9 @@
           Copy
         </button>
         <pre><code class="language-markup">&lt;button class="btn" data-variant="outline" data-tooltip-trigger="tip-kbd"&gt;Save&lt;/button&gt;
-&lt;div class="tooltip" id="tip-kbd" popover="hint" role="tooltip"
-     style="display: flex; align-items: center; gap: var(--space-02)" data-side="bottom"&gt;
+&lt;div class="tooltip" id="tip-kbd" popover="hint" role="tooltip" data-side="bottom"&gt;
   Save document
-  &lt;kbd style="font-size: 0.625rem; padding: 0.125rem 0.375rem; background: oklch(from var(--primary-foreground) l c h / 0.15); color: var(--primary-foreground); font-family: var(--font-mono)"&gt;⌘S&lt;/kbd&gt;
+  &lt;kbd class="kbd" style="background: oklch(from var(--primary-foreground) l c h / 0.15); border-color: oklch(from var(--primary-foreground) l c h / 0.2); color: var(--primary-foreground)"&gt;⌘S&lt;/kbd&gt;
 &lt;/div&gt;</code></pre>
       </div>
 

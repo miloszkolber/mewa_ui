@@ -102,6 +102,11 @@
     background-repeat: no-repeat;
   }
 
+  .dropdown-check[aria-checked="true"]::before,
+  .dropdown-radio[aria-checked="true"]::before {
+    color: var(--primary);
+  }
+
   .dropdown-separator {
     height: 1px;
     background: var(--border);

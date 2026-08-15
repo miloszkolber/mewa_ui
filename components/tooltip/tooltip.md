@@ -89,8 +89,10 @@ Popover API (`popover="hint"`) for hover/focus hint popups with CSS anchor posit
 - **Close delay**: Default is 0 ms (instant close). Set `data-close-delay` on the trigger to override.
 - **Group behavior**: Once any tooltip becomes visible, subsequent tooltips in the document open instantly (skip delay). After 400 ms with no tooltip visible, the delay resets.
 - **Collision avoidance**: Uses `position-try-fallbacks: flip-block, flip-inline` to automatically reposition when near viewport edges.
+- **Fallback placement**: In engines without `position-area` support the tooltip is placed with explicit coordinates relative to the trigger, so it never falls back to an off-screen static position.
 - **Scroll dismiss**: Open tooltips are automatically hidden when the page scrolls.
 - **Escape dismiss**: Handled natively by `popover="hint"` — no extra JS needed.
 - **Keyboard**: Tooltip shows on focus, hides on blur. Focus stays on trigger.
 - **Disabled triggers**: Wrap a disabled button in a `<span>` with `data-tooltip-trigger` since disabled elements don't fire mouse/focus events.
 - **Arrow**: Add `<div data-arrow></div>` inside the tooltip for a connecting caret. Arrow positioning is automatic based on `data-side`.
+- **Do not set `display` on `.tooltip`**: The closed state relies on `display: none` (set by the component layer). Author `display` values (e.g. `display: flex`) override it and leave an invisible phantom in the layout. Put custom internal layout on a wrapper element inside the tooltip instead.

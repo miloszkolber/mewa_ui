@@ -46,7 +46,7 @@ Copy the file contents where the icon is used. Attributes on the `<i>` (`data-si
 | Attribute | Values | Description |
 |-----------|--------|-------------|
 | `data-lucide` | any icon name | Icon to render (required) |
-| `data-size` | `xs`, `sm`, `md`, `lg`, `xl` | Controls icon dimensions |
+| `data-size` | `md`, `lg`, `xl` | Controls icon dimensions |
 | `data-animate` | `spin` | Applies continuous rotation animation |
 
 ---
@@ -103,8 +103,6 @@ The component CSS sets a default size of `1rem` (16px). Available sizes via `dat
 
 | `data-size` | Size |
 |-------------|------|
-| `xs` | 12px (0.75rem) |
-| `sm` | 14px (0.875rem) |
 | *(default)* | 16px (1rem) |
 | `md` | 20px (1.25rem) |
 | `lg` | 24px (1.5rem) |
@@ -117,10 +115,8 @@ The component CSS sets a default size of `1rem` (16px). Available sizes via `dat
 Adjust stroke weight with the `stroke-width` attribute on the `<i>` element:
 
 ```html
-<i data-lucide="heart" stroke-width="1"></i>
 <i data-lucide="heart" stroke-width="1.5"></i>
 <i data-lucide="heart" stroke-width="2"></i>
-<i data-lucide="heart" stroke-width="3"></i>
 ```
 
 Default stroke width is `2`.
@@ -133,7 +129,7 @@ Use the `fill` attribute for filled icon variants. Set `stroke-width="0"` for fi
 
 ```html
 <i data-lucide="star" fill="currentColor" stroke-width="0"></i>
-<i data-lucide="heart" fill="currentColor" stroke-width="1"></i>
+<i data-lucide="heart" fill="currentColor" stroke-width="1.5"></i>
 ```
 
 ---

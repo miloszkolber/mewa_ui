@@ -1,7 +1,7 @@
 # Pattern: Typography
 
 ## Native basis
-Native HTML text elements: `<h1>`–`<h4>`, `<p>`, `<blockquote>`, `<code>`, `<small>`.
+Native HTML text elements: `<h1>`–`<h4>`, `<p>`, `<blockquote>`, `<code>`, `<small>`, `<kbd>`, `<ul>`/`<ol>`.
 Pure CSS — no JavaScript or ARIA required.
 
 ---
@@ -10,6 +10,8 @@ Pure CSS — no JavaScript or ARIA required.
 - [`<h1>`–`<h6>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements) — semantic heading hierarchy
 - [`<blockquote>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blockquote) — quoted block content
 - [`<code>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/code) — inline code fragment
+- [`<kbd>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/kbd) — keyboard input keycap
+- [`<ul>`/`<ol>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ul) — unordered and ordered lists
 - [`<small>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/small) — side comments and small print
 - [`text-wrap: balance`](https://developer.mozilla.org/en-US/docs/Web/CSS/text-wrap) — balanced line wrapping for headings
 - [`text-wrap: pretty`](https://developer.mozilla.org/en-US/docs/Web/CSS/text-wrap) — orphan prevention for body text
@@ -67,23 +69,49 @@ Pure CSS — no JavaScript or ARIA required.
 <code class="code">base.css</code>
 ```
 
+### Keyboard input
+```html
+Press <kbd class="kbd">⌘S</kbd> to save
+```
+
+### Lists
+```html
+<ul>
+  <li>First item</li>
+  <li>Second item
+    <ul>
+      <li>Nested item</li>
+    </ul>
+  </li>
+</ul>
+```
+
 ---
 
 ## Classes
 
 | Class | Element | Description |
 |---|---|---|
-| `.h1` | `<h1>` or any | 2.25rem semibold heading (--font-h1), tight line-height, balanced wrapping |
-| `.h2` | `<h2>` or any | 1.75rem semibold heading (--font-h2) with bottom border |
-| `.h3` | `<h3>` or any | 1.25rem semibold heading (--font-h3) |
+| `.h1` | `<h1>` or any | 2.5rem semibold heading (--font-h1), tight line-height, balanced wrapping |
+| `.h2` | `<h2>` or any | 2rem semibold heading (--font-h2) |
+| `.h3` | `<h3>` or any | 1.5rem semibold heading (--font-h3) |
 | `.h4` | `<h4>` or any | 1rem semibold heading (--font-h4) |
-| `.p` | `<p>` | Body text, 1.75 line-height, auto-spacing between siblings |
-| `.lead` | `<p>` | 1.25rem muted intro paragraph |
-| `.large` | `<div>` or any | 1.125rem semibold text |
-| `.small` | `<small>` or any | 0.875rem medium text, line-height 1 |
-| `.muted` | `<p>` or any | 0.875rem muted-foreground text |
+| `.p` | `<p>` | Body text, 1.61 line-height, auto-spacing between siblings |
+| `.lead` | `<p>` | Muted intro paragraph |
+| `.large` | `<div>` or any | Semibold text |
+| `.small` | `<small>` or any | 0.875rem medium text |
+| `.muted` | `<p>` or any | Muted-foreground text |
 | `.blockquote` | `<blockquote>` | Italic block with inline-start border, hanging punctuation |
 | `.code` | `<code>` | Monospace inline code with muted background |
+| `.kbd` | `<kbd>` | Monospace keycap: muted background, 1px border, xsmall size |
+
+### Element styles (`@layer base`)
+
+| Element | Description |
+|---|---|
+| `body` | Baseline font size and line height |
+| `ul`, `ol` (classless) | `padding-inline-start: var(--space-05)`, no block margin |
+| `li` (classless lists) | `margin-block: var(--space-01)`; nested lists get `margin-top: var(--space-01)` |
 
 ---
 
@@ -98,7 +126,7 @@ Pure CSS — no JavaScript or ARIA required.
 - `<blockquote>` is announced as a quote by assistive technology — no extra ARIA needed.
 - `<code>` is announced as code — no extra ARIA needed.
 - `prefers-contrast: more` — removes tight letter-spacing on headings, adds outline to inline code, thickens blockquote border, and promotes muted text to foreground color.
-- `forced-colors: active` — blockquote border and inline code adapt to system colors (`CanvasText`, `Canvas`).
+- `forced-colors: active` — blockquote border, inline code, and keycaps adapt to system colors (`CanvasText`, `Canvas`, `ButtonFace`, `ButtonText`).
 
 ---
 
@@ -111,5 +139,6 @@ Pure CSS — no JavaScript or ARIA required.
 - `text-wrap: pretty` is used on paragraphs and lead text for orphan prevention.
 - `hanging-punctuation: first last` is used on blockquotes for optical quote alignment.
 - Blockquote uses `border-inline-start` / `padding-inline-start` (logical properties) for automatic RTL support.
-- For lists, use the List component (`list.css`) — typography does not ship its own list styles.
+- Lists are styled by typography itself in `@layer base` (`ul`/`ol`/`li` rules) — no separate list component. Nested lists keep the same indentation rhythm. Rules are scoped to classless lists so component lists (steps, pagination, navigation menu, …) keep their own layout.
 - For prose tables, use the Table component (`table.css`) — typography does not ship its own table styles.
+- `<mark>` highlighting is intentionally not covered: there is no semantic highlight token, and the amber primitives are reserved for status colors. Use `.muted` or inline styles if you need emphasis.

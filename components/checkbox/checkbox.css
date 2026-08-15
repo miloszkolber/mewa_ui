@@ -84,7 +84,13 @@
     }
 
     & > .checkbox {
-      margin-top: 0.125rem;
+      margin-top: var(--space-01);
+    }
+
+    & .checkbox-description {
+      font-size: var(--font-body-xsmall);
+      color: var(--muted-foreground);
+      margin-top: var(--space-01);
     }
   }
 

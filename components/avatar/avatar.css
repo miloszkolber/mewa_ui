@@ -7,7 +7,7 @@
     width: var(--size-08);
     height: var(--size-08);
     border-radius: 9999px;
-    overflow: hidden;
+    overflow: visible;
     flex-shrink: 0;
     background-color: var(--muted);
 
@@ -29,6 +29,7 @@
     height: 100%;
     object-fit: cover;
     border-radius: inherit;
+    overflow: hidden;
   }
 
   .avatar-fallback {
@@ -43,6 +44,8 @@
     background-color: var(--muted);
     position: absolute;
     inset: 0;
+    border-radius: inherit;
+    overflow: hidden;
   }
 
   .avatar:has(.avatar-image:not([data-error])) .avatar-fallback {

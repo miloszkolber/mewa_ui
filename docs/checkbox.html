@@ -112,10 +112,10 @@
         <p class="text-xs text-muted-foreground mb-3">Checkbox with helper text.</p>
         <div class="preview">
           <div class="checkbox-item-block">
-            <input class="checkbox" type="checkbox" id="d-notify" style="margin-top: 0.125rem">
+            <input class="checkbox" type="checkbox" id="d-notify">
             <div>
               <label for="d-notify" style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">Enable notifications</label>
-              <p class="field-description">You can enable or disable notifications at any time.</p>
+              <p class="checkbox-description">You can enable or disable notifications at any time.</p>
             </div>
           </div>
         </div>
@@ -124,10 +124,12 @@
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
-          <pre><code class="language-markup">&lt;input class="checkbox" type="checkbox" id="notify"&gt;
-&lt;div&gt;
-  &lt;label for="notify"&gt;Enable notifications&lt;/label&gt;
-  &lt;p class="field-description"&gt;...&lt;/p&gt;
+          <pre><code class="language-markup">&lt;div class="checkbox-item-block"&gt;
+  &lt;input class="checkbox" type="checkbox" id="notify"&gt;
+  &lt;div&gt;
+    &lt;label for="notify"&gt;Enable notifications&lt;/label&gt;
+    &lt;p class="checkbox-description"&gt;...&lt;/p&gt;
+  &lt;/div&gt;
 &lt;/div&gt;</code></pre>
         </div>
 

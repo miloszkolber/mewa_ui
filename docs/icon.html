@@ -121,14 +121,6 @@
           <p class="text-xs text-muted-foreground mb-3">Use <code>data-size</code> to control icon size.</p>
           <div class="preview" style="gap: var(--space-07); align-items: center">
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-02)">
-              <i data-lucide="star" data-size="xs"></i>
-              <span style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-family: var(--font-mono)">xs (12px)</span>
-            </div>
-            <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-02)">
-              <i data-lucide="star" data-size="sm"></i>
-              <span style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-family: var(--font-mono)">sm (14px)</span>
-            </div>
-            <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-02)">
               <i data-lucide="star"></i>
               <span style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-family: var(--font-mono)">default (16px)</span>
             </div>
@@ -150,9 +142,7 @@
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
               Copy
             </button>
-            <pre><code class="language-markup">&lt;i data-lucide="star" data-size="xs"&gt;&lt;/i&gt;
-&lt;i data-lucide="star" data-size="sm"&gt;&lt;/i&gt;
-&lt;i data-lucide="star"&gt;&lt;/i&gt;
+            <pre><code class="language-markup">&lt;i data-lucide="star"&gt;&lt;/i&gt;
 &lt;i data-lucide="star" data-size="md"&gt;&lt;/i&gt;
 &lt;i data-lucide="star" data-size="lg"&gt;&lt;/i&gt;
 &lt;i data-lucide="star" data-size="xl"&gt;&lt;/i&gt;</code></pre>
@@ -218,10 +208,6 @@
           <p class="text-xs text-muted-foreground mb-3">Adjust line thickness with the <code>stroke-width</code> attribute. Default is <code>2</code>.</p>
           <div class="preview" style="gap: var(--space-07); align-items: center">
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-02)">
-              <i data-lucide="heart" data-size="lg" stroke-width="1"></i>
-              <span style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-family: var(--font-mono)">1</span>
-            </div>
-            <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-02)">
               <i data-lucide="heart" data-size="lg" stroke-width="1.5"></i>
               <span style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-family: var(--font-mono)">1.5</span>
             </div>
@@ -229,20 +215,14 @@
               <i data-lucide="heart" data-size="lg" stroke-width="2"></i>
               <span style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-family: var(--font-mono)">2</span>
             </div>
-            <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-02)">
-              <i data-lucide="heart" data-size="lg" stroke-width="3"></i>
-              <span style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-family: var(--font-mono)">3</span>
-            </div>
           </div>
           <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
               Copy
             </button>
-            <pre><code class="language-markup">&lt;i data-lucide="heart" data-size="lg" stroke-width="1"&gt;&lt;/i&gt;
-&lt;i data-lucide="heart" data-size="lg" stroke-width="1.5"&gt;&lt;/i&gt;
-&lt;i data-lucide="heart" data-size="lg" stroke-width="2"&gt;&lt;/i&gt;
-&lt;i data-lucide="heart" data-size="lg" stroke-width="3"&gt;&lt;/i&gt;</code></pre>
+            <pre><code class="language-markup">&lt;i data-lucide="heart" data-size="lg" stroke-width="1.5"&gt;&lt;/i&gt;
+&lt;i data-lucide="heart" data-size="lg" stroke-width="2"&gt;&lt;/i&gt;</code></pre>
           </div>
 
         <!-- -- Example: Accessible icon --------------------------- -->
@@ -301,7 +281,7 @@
             <i data-lucide="heart" data-size="lg" fill="currentColor" stroke-width="0"></i>
             <i data-lucide="circle" data-size="lg" fill="currentColor" stroke-width="0"></i>
             <i data-lucide="bookmark" data-size="lg" fill="currentColor" stroke-width="0"></i>
-            <i data-lucide="star" data-size="lg" fill="currentColor" stroke-width="1" style="color: oklch(0.77 0.17 75)"></i>
+            <i data-lucide="star" data-size="lg" fill="currentColor" stroke-width="1.5" style="color: oklch(0.77 0.17 75)"></i>
           </div>
           <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn">
@@ -312,16 +292,8 @@
 &lt;i data-lucide="heart" data-size="lg" fill="currentColor" stroke-width="0"&gt;&lt;/i&gt;
 
 &lt;!-- Filled with stroke outline --&gt;
-&lt;i data-lucide="star" data-size="lg" fill="currentColor" stroke-width="1"&gt;&lt;/i&gt;</code></pre>
+&lt;i data-lucide="star" data-size="lg" fill="currentColor" stroke-width="1.5"&gt;&lt;/i&gt;</code></pre>
           </div>
-
-        <!-- -- Browse all icons ---------------------------------- -->
-          <p class="text-sm font-medium mb-2 mt-6">Local icon files</p>
-          <p class="text-xs text-muted-foreground mb-3">Every icon is a standalone SVG in <code>src/icons/</code>. Browse the full set at:</p>
-          <a href="https://lucide.dev/icons/" target="_blank" class="btn" data-variant="outline" style="text-decoration: none">
-            <i data-lucide="external-link"></i>
-            lucide.dev/icons
-          </a>
 
         <!-- -- CSS --------------------------------------- -->
 

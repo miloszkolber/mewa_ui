@@ -96,9 +96,8 @@ Also covers `<textarea>` with auto-grow via `field-sizing: content`.
 
 | `data-size` | Height    | Padding       | Font size    |
 |-------------|-----------|---------------|--------------|
-| `sm`        | `2rem`    | `0 0.625rem`  | `0.8125rem`  |
+| `sm`        | `2rem`    | `0 0.625rem`  | `0.75rem`    |
 | *(default)* | `2.5rem`  | `0 0.75rem`   | `0.875rem`   |
-| `lg`        | `2.75rem` | `0 1rem`      | `1rem`       |
 
 ---
 

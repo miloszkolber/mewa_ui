@@ -90,7 +90,7 @@
         </p>
       </div>
         <p class="text-sm font-medium mb-2 mt-6">Default</p>
-        <p class="text-muted-foreground text-sm mb-4">Full sidebar with collapsible groups, submenus, badges, and toggle button. Press <kbd style="font-size: var(--font-body-xsmall); padding: 0.125rem var(--space-01); border: var(--border-width-01) solid var(--border); background: var(--muted); font-family: var(--font-mono)">⌘B</kbd> to toggle.</p>
+        <p class="text-muted-foreground text-sm mb-4">Full sidebar with collapsible groups, submenus, badges, and toggle button. Press <kbd class="kbd">⌘B</kbd> to toggle.</p>
         <div class="preview" style="padding: 0; overflow: hidden; height: 24rem">
           <div style="display: flex; height: 100%; overflow: hidden">
             <aside class="app-sidebar" id="demo-sidebar" data-state="expanded" style="position: relative; height: 100%">
@@ -107,22 +107,33 @@
                     <i data-lucide="chevron-right" style="width: 0.875rem; height: 0.875rem"></i>
                   </summary>
                   <nav class="sidebar-nav">
-                    <a class="sidebar-link" href="#" aria-current="page">
+                    <a class="sidebar-link" href="#" aria-current="page" data-tooltip-trigger="side-tip-dashboard">
                       <i data-lucide="house"></i> <span>Dashboard</span>
                     </a>
-                    <a class="sidebar-link" href="#">
+                    <div class="tooltip" id="side-tip-dashboard" popover="hint" role="tooltip">Dashboard</div>
+                    <a class="sidebar-link" href="#" data-tooltip-trigger="side-tip-inbox">
                       <i data-lucide="inbox"></i> <span>Inbox</span>
                       <span class="sidebar-badge">12</span>
                     </a>
+                    <div class="tooltip" id="side-tip-inbox" popover="hint" role="tooltip">Inbox</div>
                     <details class="sidebar-submenu">
                       <summary>
                         <i data-lucide="settings"></i> <span>Settings</span>
                         <i data-lucide="chevron-right" style="width: 0.875rem; height: 0.875rem"></i>
                       </summary>
                       <nav class="sidebar-nav">
-                        <a class="sidebar-link" href="#"><span>General</span></a>
-                        <a class="sidebar-link" href="#"><span>Team</span></a>
-                        <a class="sidebar-link" href="#"><span>Billing</span></a>
+                        <a class="sidebar-link" href="#" data-tooltip-trigger="side-tip-general">
+                          <i data-lucide="user"></i> <span>General</span>
+                        </a>
+                        <div class="tooltip" id="side-tip-general" popover="hint" role="tooltip">General</div>
+                        <a class="sidebar-link" href="#" data-tooltip-trigger="side-tip-team">
+                          <i data-lucide="users"></i> <span>Team</span>
+                        </a>
+                        <div class="tooltip" id="side-tip-team" popover="hint" role="tooltip">Team</div>
+                        <a class="sidebar-link" href="#" data-tooltip-trigger="side-tip-billing">
+                          <i data-lucide="credit-card"></i> <span>Billing</span>
+                        </a>
+                        <div class="tooltip" id="side-tip-billing" popover="hint" role="tooltip">Billing</div>
                       </nav>
                     </details>
                   </nav>
@@ -133,12 +144,14 @@
                     <i data-lucide="chevron-right" style="width: 0.875rem; height: 0.875rem"></i>
                   </summary>
                   <nav class="sidebar-nav">
-                    <a class="sidebar-link" href="#">
+                    <a class="sidebar-link" href="#" data-tooltip-trigger="side-tip-design">
                       <i data-lucide="folder"></i> <span>Design System</span>
                     </a>
-                    <a class="sidebar-link" href="#">
+                    <div class="tooltip" id="side-tip-design" popover="hint" role="tooltip">Design System</div>
+                    <a class="sidebar-link" href="#" data-tooltip-trigger="side-tip-marketing">
                       <i data-lucide="folder"></i> <span>Marketing</span>
                     </a>
+                    <div class="tooltip" id="side-tip-marketing" popover="hint" role="tooltip">Marketing</div>
                   </nav>
                 </details>
               </div>
