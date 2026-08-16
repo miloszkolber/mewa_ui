@@ -61,12 +61,12 @@
     & > div {
       display: flex;
       flex-direction: column;
-      gap: 0.125rem;
+      gap: var(--space-01);
     }
 
     & > div > .label {
       margin-bottom: 0;
-      line-height: 1.4;
+      line-height: var(--font-height);
     }
 
     & > div > .field-description {
@@ -74,7 +74,7 @@
     }
 
     &[data-disabled] {
-      opacity: 0.6;
+      opacity: var(--opacity-06);
     }
   }
 
@@ -97,7 +97,7 @@
 
     & > legend {
       font-size: var(--font-body-small);
-      font-weight: 500;
+      font-weight: var(--font-weight-strong);
       font-family: var(--font-sans);
       color: var(--foreground);
       padding: 0;

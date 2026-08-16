@@ -4,7 +4,7 @@
   .toggle-group {
     display: inline-flex;
     align-items: center;
-    gap: 0.0625rem;
+    gap: var(--space-00);
 
     /* -- Outline variant: propagate border to children ---------- */
     &[data-variant="outline"] > .toggle {
@@ -34,7 +34,7 @@
     /* -- Sizes: propagate to child toggles ---------------------- */
     &[data-size="sm"] > .toggle {
       height: var(--size-07);
-      padding: 0 0.375rem;
+      padding: 0 var(--space-02);
       min-width: var(--size-07);
 
       & svg { width: 0.875rem; height: 0.875rem; }
@@ -42,7 +42,7 @@
 
     &[data-size="lg"] > .toggle {
       height: var(--size-08);
-      padding: 0 0.625rem;
+      padding: 0 var(--space-03);
       min-width: var(--size-08);
 
       & svg { width: 1.125rem; height: 1.125rem; }
@@ -64,7 +64,7 @@
 
       & > .toggle {
         pointer-events: none;
-        opacity: 0.5;
+        opacity: var(--opacity-05);
       }
     }
   }

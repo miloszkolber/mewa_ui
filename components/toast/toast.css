@@ -4,7 +4,7 @@
   /* -- Container ------------------------------------------------ */
   .toast-container {
     position: fixed;
-    z-index: 100;
+    z-index: var(--z-toast);
     display: flex;
     flex-direction: column-reverse;
     gap: var(--space-02);
@@ -32,8 +32,8 @@
 
     pointer-events: auto;
     opacity: 0;
-    transform: translateY(0.5rem);
-    transition: opacity 200ms ease, transform 200ms ease;
+    transform: translateY(var(--size-02));
+    transition: opacity var(--duration-base) ease, transform var(--duration-base) ease;
 
     &:popover-open {
       opacity: 1;
@@ -48,34 +48,34 @@
 
       & .toast-description {
         color: var(--destructive-foreground);
-        opacity: 0.85;
+        opacity: var(--opacity-09);
       }
     }
 
     /* -- Semantic variants (border + icon color) ----------------- */
     &[data-variant="success"] {
-      border-color: oklch(0.65 0.2 145);
+      border-color: var(--success);
 
-      & .toast-icon { color: oklch(0.65 0.2 145); }
+      & .toast-icon { color: var(--success); }
     }
 
     &[data-variant="warning"] {
-      border-color: oklch(0.75 0.18 75);
+      border-color: var(--warning);
 
-      & .toast-icon { color: oklch(0.75 0.18 75); }
+      & .toast-icon { color: var(--warning); }
     }
 
     &[data-variant="info"] {
-      border-color: oklch(0.6 0.15 250);
+      border-color: var(--info);
 
-      & .toast-icon { color: oklch(0.6 0.15 250); }
+      & .toast-icon { color: var(--info); }
     }
   }
 
   @starting-style {
     .toast:popover-open {
       opacity: 0;
-      transform: translateY(0.5rem);
+      transform: translateY(var(--size-02));
     }
   }
 
@@ -99,16 +99,16 @@
 
   .toast-title {
     font-size: var(--font-body-small);
-    font-weight: 500;
+    font-weight: var(--font-weight-strong);
     margin: 0;
-    line-height: 1.4;
+    line-height: var(--font-height);
   }
 
   .toast-description {
-    font-size: 0.8125rem;
+    font-size: var(--font-body-small);
     color: var(--muted-foreground);
-    margin: 0.125rem 0 0;
-    line-height: 1.5;
+    margin: var(--space-01) 0 0;
+    line-height: var(--font-height);
   }
 
   .toast-close {
@@ -123,7 +123,7 @@
     cursor: pointer;
     flex-shrink: 0;
 
-    transition: color 150ms, background 150ms;
+    transition: color var(--duration-fast), background var(--duration-fast);
 
     &:hover {
       color: var(--foreground);
@@ -133,7 +133,7 @@
 
   .toast-icon {
     flex-shrink: 0;
-    margin-top: 0.125rem;
+    margin-top: var(--space-01);
   }
 
   .toast-actions {

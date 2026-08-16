@@ -21,10 +21,10 @@
     background-color: var(--sidebar);
     border-right: var(--border-width-01) solid var(--sidebar-border);
     flex-shrink: 0;
-    transition: width 200ms ease;
+    transition: width var(--duration-base) ease;
     overflow-x: clip;   /* clip without clipping focus rings or creating a scroller */
     overflow-y: hidden;
-    z-index: 30;
+    z-index: var(--z-sidebar);
 
     &[data-side="right"] {
       border-right: none;
@@ -78,7 +78,7 @@
     align-items: center;
     gap: var(--space-02);
     font-size: var(--font-body-small);
-    font-weight: 600;
+    font-weight: var(--font-weight-strong);
     color: var(--sidebar-foreground);
     text-decoration: none;
   }
@@ -100,7 +100,7 @@
   .sidebar-nav {
     display: flex;
     flex-direction: column;
-    gap: 0.125rem;
+    gap: var(--space-01);
   }
 
   /* ── Nav links ────────────────────────────────────────────── */
@@ -113,7 +113,7 @@
     font-size: var(--font-body-small);
     color: var(--sidebar-foreground);
     text-decoration: none;
-    transition: background-color 150ms ease;
+    transition: background-color var(--duration-fast) ease;
     position: relative;
 
     &:hover {
@@ -125,7 +125,7 @@
     &[aria-current="page"] {
       background-color: var(--sidebar-accent);
       color: var(--sidebar-accent-foreground);
-      font-weight: 500;
+      font-weight: var(--font-weight-strong);
     }
 
     &:focus-visible {
@@ -143,20 +143,20 @@
   /* ── Menu badge ───────────────────────────────────────────── */
   .sidebar-badge {
     margin-left: auto;
-    font-size: 0.6875rem;
-    font-weight: 500;
-    padding: 0.125rem 0.375rem;
+    font-size: var(--font-body-xsmall);
+    font-weight: var(--font-weight-strong);
+    padding: var(--space-01) var(--space-02);
 
     background-color: var(--sidebar-primary);
     color: var(--sidebar-primary-foreground);
-    line-height: 1;
+    line-height: var(--font-height-none);
   }
 
   /* ── Section title ────────────────────────────────────────── */
   .sidebar-section-title {
-    padding: var(--space-03) var(--space-03) 0.375rem;
-    font-size: 0.6875rem;
-    font-weight: 600;
+    padding: var(--space-03) var(--space-03) var(--space-02);
+    font-size: var(--font-body-xsmall);
+    font-weight: var(--font-weight-strong);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--muted-foreground);
@@ -169,15 +169,15 @@
       align-items: center;
       gap: var(--space-02);
       padding: var(--space-02) var(--space-03);
-      font-size: 0.6875rem;
-      font-weight: 600;
+      font-size: var(--font-body-xsmall);
+      font-weight: var(--font-weight-strong);
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--muted-foreground);
       cursor: pointer;
       list-style: none;
 
-      transition: background-color 150ms ease;
+      transition: background-color var(--duration-fast) ease;
 
       &:hover { background-color: var(--sidebar-accent); }
       &::-webkit-details-marker { display: none; }
@@ -186,7 +186,7 @@
         width: 0.875rem;
         height: 0.875rem;
         margin-left: auto;
-        transition: rotate 200ms ease;
+        transition: rotate var(--duration-base) ease;
       }
     }
 
@@ -206,7 +206,7 @@
       color: var(--sidebar-foreground);
       cursor: pointer;
       list-style: none;
-      transition: background-color 150ms ease;
+      transition: background-color var(--duration-fast) ease;
 
       &:hover {
         background-color: var(--sidebar-accent);
@@ -218,7 +218,7 @@
         width: 0.875rem;
         height: 0.875rem;
         margin-left: auto;
-        transition: rotate 200ms ease;
+        transition: rotate var(--duration-base) ease;
       }
     }
 
@@ -234,7 +234,7 @@
   /* ── Group action button ──────────────────────────────────── */
   .sidebar-group-action {
     margin-left: auto;
-    padding: 0.125rem;
+    padding: var(--space-01);
     border: none;
     background: transparent;
     color: var(--muted-foreground);
@@ -249,7 +249,7 @@
   .sidebar-footer {
     padding: var(--space-03) var(--space-04);
     border-top: var(--border-width-01) solid var(--sidebar-border);
-    font-size: 0.8125rem;
+    font-size: var(--font-body-small);
     color: var(--sidebar-foreground);
     flex-shrink: 0;
     & p { margin: 0; }
@@ -285,15 +285,15 @@
     height: 100%;
     background-color: var(--sidebar);
     color: var(--sidebar-foreground);
-    z-index: 50;
+    z-index: var(--z-sidebar-mobile);
     overflow: hidden;
     display: flex;
     flex-direction: column;
 
     opacity: 0;
     translate: -100% 0;
-    transition: opacity 200ms ease, translate 200ms ease,
-                display 200ms allow-discrete;
+    transition: opacity var(--duration-base) ease, translate var(--duration-base) ease,
+                display var(--duration-base) allow-discrete;
 
     &[open] {
       opacity: 1;
@@ -308,9 +308,9 @@
     }
 
     &::backdrop {
-      background: oklch(0 0 0 / 0.5);
+      background: var(--overlay);
       opacity: 0;
-      transition: opacity 200ms ease, display 200ms allow-discrete;
+      transition: opacity var(--duration-base) ease, display var(--duration-base) allow-discrete;
     }
 
     &[open]::backdrop { opacity: 1; }

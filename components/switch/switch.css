@@ -5,12 +5,12 @@
     appearance: none;
     width: 2.25rem;
     height: var(--size-05);
-    border-radius: 9999px;
+    border-radius: var(--radius-full);
     background: var(--input);
     cursor: pointer;
     position: relative;
     flex-shrink: 0;
-    transition: background-color 150ms;
+    transition: background-color var(--duration-fast);
     border: none;
     outline: none;
 
@@ -19,11 +19,11 @@
       position: absolute;
       top: 2px;
       left: 2px;
-      width: calc(1.25rem - 4px);
-      height: calc(1.25rem - 4px);
+      width: calc(var(--size-05) - var(--size-01));
+      height: calc(var(--size-05) - var(--size-01));
       border-radius: 50%;
       background: var(--background);
-      transition: transform 150ms;
+      transition: transform var(--duration-fast);
 
     }
 
@@ -31,7 +31,7 @@
       background: var(--primary);
 
       &::after {
-        transform: translateX(1rem);
+        transform: translateX(var(--size-04));
       }
     }
 
@@ -41,7 +41,7 @@
     }
 
     &:disabled {
-      opacity: 0.5;
+      opacity: var(--opacity-05);
       cursor: not-allowed;
     }
 
@@ -78,20 +78,20 @@
 
     & > label {
       font-size: var(--font-body-small);
-      font-weight: 500;
+      font-weight: var(--font-weight-strong);
       cursor: pointer;
     }
 
     & > .switch-description {
-      font-size: 0.8125rem;
+      font-size: var(--font-body-small);
       color: var(--muted-foreground);
-      line-height: 1.5;
+      line-height: var(--font-height);
     }
   }
 
   .switch-item:has(.switch:disabled),
   .switch-item-block:has(.switch:disabled) {
-    opacity: 0.5;
+    opacity: var(--opacity-05);
     cursor: not-allowed;
   }
 

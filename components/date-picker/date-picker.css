@@ -15,7 +15,7 @@
     color: var(--foreground);
     outline: none;
 
-    transition: border-color 150ms;
+    transition: border-color var(--duration-fast);
     cursor: pointer;
 
     &:focus {
@@ -24,7 +24,7 @@
     }
 
     &:disabled {
-      opacity: 0.5;
+      opacity: var(--opacity-05);
       cursor: not-allowed;
     }
 
@@ -37,8 +37,8 @@
       width: var(--space-08);
       height: auto;
       cursor: pointer;
-      opacity: 0.6;
-      transition: opacity 150ms;
+      opacity: var(--opacity-06);
+      transition: opacity var(--duration-fast);
 
       &:hover { opacity: 1; }
     }

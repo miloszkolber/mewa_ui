@@ -7,7 +7,7 @@
     & ::details-content {
       block-size: 0;
       overflow-y: clip;
-      transition: block-size 200ms ease, content-visibility 200ms allow-discrete;
+      transition: block-size var(--duration-base) ease, content-visibility var(--duration-base) allow-discrete;
     }
 
     &[open] ::details-content {
@@ -28,7 +28,7 @@
     width: 100%;
     padding: var(--space-03) var(--space-04);
     font-size: var(--font-body-small);
-    font-weight: 500;
+    font-weight: var(--font-weight-strong);
     cursor: pointer;
     color: var(--foreground);
     list-style: none;
@@ -51,7 +51,7 @@
     width: var(--size-04);
     height: var(--size-04);
     color: var(--muted-foreground);
-    transition: transform 200ms ease;
+    transition: transform var(--duration-base) ease;
     flex-shrink: 0;
 
     details[open] > summary > & {
@@ -63,6 +63,6 @@
     padding: 0 var(--space-04) var(--space-03);
     font-size: var(--font-body-small);
     color: var(--muted-foreground);
-    line-height: 1.6;
+    line-height: var(--font-height);
   }
 }

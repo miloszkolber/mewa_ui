@@ -6,15 +6,15 @@
     color: var(--foreground);
     padding: 0;
     max-width: 28rem;
-    width: calc(100% - 2rem);
+    width: calc(100% - var(--size-07));
 
     margin: auto;
     position: fixed;
     inset: 0;
 
     opacity: 0;
-    transform: translateY(-0.5rem) scale(0.98);
-    transition: opacity 200ms ease, transform 200ms ease, display 200ms allow-discrete;
+    transform: translateY(calc(-1 * var(--size-02))) scale(0.98);
+    transition: opacity var(--duration-base) ease, transform var(--duration-base) ease, display var(--duration-base) allow-discrete;
 
     &[open] {
       opacity: 1;
@@ -24,12 +24,12 @@
     &::backdrop {
       background: oklch(0 0 0 / 0);
       backdrop-filter: blur(0px);
-      transition: all 200ms ease, display 200ms allow-discrete;
+      transition: all var(--duration-base) ease, display var(--duration-base) allow-discrete;
     }
 
     &[open]::backdrop {
-      background: oklch(0 0 0 / 0.45);
-      backdrop-filter: blur(3px);
+      background: var(--overlay);
+      backdrop-filter: blur(var(--blur-01));
     }
 
     &::backdrop {
@@ -40,7 +40,7 @@
   @starting-style {
     dialog.alert-dialog[open] {
       opacity: 0;
-      transform: translateY(-0.5rem) scale(0.98);
+      transform: translateY(calc(-1 * var(--size-02))) scale(0.98);
     }
     dialog.alert-dialog[open]::backdrop {
       background: oklch(0 0 0 / 0);
@@ -58,17 +58,17 @@
 
   .alert-dialog-title {
     margin: 0;
-    font-size: 1.125rem;
-    font-weight: 600;
+    font-size: var(--font-h4);
+    font-weight: var(--font-weight-strong);
     letter-spacing: -0.01em;
-    line-height: 1.3;
+    line-height: var(--font-height-tight);
   }
 
   .alert-dialog-description {
     margin: var(--space-02) 0 0;
     font-size: var(--font-body-small);
     color: var(--muted-foreground);
-    line-height: 1.5;
+    line-height: var(--font-height);
   }
 
   .alert-dialog-footer {

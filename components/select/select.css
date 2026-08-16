@@ -15,12 +15,12 @@
     outline: none;
 
     cursor: pointer;
-    transition: border-color 150ms;
+    transition: border-color var(--duration-fast);
 
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 0.5rem center;
-    background-size: 1rem;
+    background-position: right var(--size-02) center;
+    background-size: var(--size-04);
 
     &:focus {
       border-color: var(--ring);
@@ -28,7 +28,7 @@
     }
 
     &:disabled {
-      opacity: 0.5;
+      opacity: var(--opacity-05);
       cursor: not-allowed;
     }
 
@@ -42,7 +42,7 @@
     }
 
     /* -- Sizes ----------------------------------------------- */
-    &[data-size="sm"] { height: var(--size-07);    padding-left: 0.625rem; font-size: 0.8125rem; }
+    &[data-size="sm"] { height: var(--size-07);    padding-left: var(--space-03); font-size: var(--font-body-small); }
     &[data-size="lg"] { height: 2.75rem; padding-left: var(--space-04);     font-size: var(--font-body); }
   }
 }

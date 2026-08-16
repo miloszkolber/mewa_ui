@@ -8,19 +8,19 @@
 
     background-color: var(--primary);
     color: var(--primary-foreground);
-    padding: 0.375rem var(--space-03);
+    padding: var(--space-02) var(--space-03);
     font-size: var(--font-body-xsmall);
-    line-height: 1.4;
+    line-height: var(--font-height);
 
     pointer-events: none;
     max-width: 16rem;
     width: max-content;
     opacity: 0;
-    transition: opacity 150ms ease, translate 150ms ease, display 150ms allow-discrete;
+    transition: opacity var(--duration-fast) ease, translate var(--duration-fast) ease, display var(--duration-fast) allow-discrete;
 
     /* -- Default: top center -- */
     position-area: top;
-    margin-bottom: 6px;
+    margin-bottom: var(--space-02);
     translate: 0 2px;
     position-try-fallbacks: flip-block, flip-inline;
 
@@ -34,7 +34,7 @@
     &[data-side="bottom"] {
       position-area: bottom;
       margin-bottom: 0;
-      margin-top: 6px;
+      margin-top: var(--space-02);
       translate: 0 -2px;
       &:popover-open { translate: 0 0; }
     }
@@ -42,7 +42,7 @@
     &[data-side="left"] {
       position-area: left;
       margin-bottom: 0;
-      margin-right: 6px;
+      margin-right: var(--space-02);
       translate: 2px 0;
       &:popover-open { translate: 0 0; }
     }
@@ -50,7 +50,7 @@
     &[data-side="right"] {
       position-area: right;
       margin-bottom: 0;
-      margin-left: 6px;
+      margin-left: var(--space-02);
       translate: -2px 0;
       &:popover-open { translate: 0 0; }
     }
@@ -73,24 +73,24 @@
     /* ----- Arrow ----- */
     & [data-arrow] {
       position: absolute;
-      width: 8px;
-      height: 8px;
+      width: var(--size-02);
+      height: var(--size-02);
       background: inherit;
       rotate: 45deg;
       border: none;
     }
 
     &:not([data-side]), &[data-side="top"] {
-      & [data-arrow] { bottom: -4px; left: 50%; margin-left: -4px; }
+      & [data-arrow] { bottom: calc(-1 * var(--size-01)); left: 50%; margin-left: calc(-1 * var(--space-01)); }
     }
     &[data-side="bottom"] {
-      & [data-arrow] { top: -4px; left: 50%; margin-left: -4px; }
+      & [data-arrow] { top: calc(-1 * var(--size-01)); left: 50%; margin-left: calc(-1 * var(--space-01)); }
     }
     &[data-side="left"] {
-      & [data-arrow] { right: -4px; top: 50%; margin-top: -4px; }
+      & [data-arrow] { right: calc(-1 * var(--size-01)); top: 50%; margin-top: calc(-1 * var(--space-01)); }
     }
     &[data-side="right"] {
-      & [data-arrow] { left: -4px; top: 50%; margin-top: -4px; }
+      & [data-arrow] { left: calc(-1 * var(--size-01)); top: 50%; margin-top: calc(-1 * var(--space-01)); }
     }
   }
 }

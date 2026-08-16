@@ -5,7 +5,7 @@
     overscroll-behavior: contain;
     scrollbar-gutter: stable;
 
-    &::-webkit-scrollbar { width: 6px; height: 6px; }
+    &::-webkit-scrollbar { width: var(--space-02); height: var(--space-02); }
     &::-webkit-scrollbar-track { background: transparent; }
     &::-webkit-scrollbar-thumb {
       background-color: var(--border);

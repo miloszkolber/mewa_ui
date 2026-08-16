@@ -2,15 +2,15 @@
   .skeleton {
     background-color: var(--accent);
 
-    animation: skeleton-pulse 2s ease-in-out infinite;
+    animation: skeleton-pulse var(--duration-pulse) ease-in-out infinite;
   }
 
   .skeleton-round {
-    border-radius: 9999px;
+    border-radius: var(--radius-full);
   }
 
   @keyframes skeleton-pulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+    50% { opacity: var(--opacity-04); }
   }
 }

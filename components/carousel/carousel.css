@@ -36,23 +36,23 @@
       width: var(--size-07);
       height: var(--size-07);
       border: var(--border-width-01) solid var(--border);
-      border-radius: 9999px;
+      border-radius: var(--radius-full);
       background-color: var(--background);
       color: var(--foreground);
       cursor: pointer;
 
-      transition: background-color 150ms ease, opacity 150ms ease;
+      transition: background-color var(--duration-fast) ease, opacity var(--duration-fast) ease;
       font-size: var(--font-body-small);
-      z-index: 1;
+      z-index: var(--z-raised);
 
       &:hover { background-color: var(--accent); }
       &:focus-visible { outline: var(--border-width-02) solid var(--ring); outline-offset: 2px; }
-      &:disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+      &:disabled { opacity: var(--opacity-05); cursor: not-allowed; pointer-events: none; }
       & svg { width: var(--size-04); height: var(--size-04); }
     }
 
-    & .carousel-prev { left: -1rem; }
-    & .carousel-next { right: -1rem; }
+    & .carousel-prev { left: calc(-1 * var(--size-04)); }
+    & .carousel-next { right: calc(-1 * var(--size-04)); }
 
     /* ── Dot indicators ────────────────────────── */
     & .carousel-dots {
@@ -65,12 +65,12 @@
     & .carousel-dot {
       width: var(--size-02);
       height: var(--size-02);
-      border-radius: 9999px;
+      border-radius: var(--radius-full);
       border: none;
       padding: 0;
       cursor: pointer;
       background-color: var(--border);
-      transition: background-color 150ms ease, scale 150ms ease;
+      transition: background-color var(--duration-fast) ease, scale var(--duration-fast) ease;
 
       &[aria-current="true"] {
         background-color: var(--foreground);
@@ -90,7 +90,7 @@
     /* ── Counter text ──────────────────────────── */
     & .carousel-counter {
       text-align: center;
-      font-size: 0.8125rem;
+      font-size: var(--font-body-small);
       color: var(--muted-foreground);
       padding-block-start: var(--space-02);
     }
@@ -113,8 +113,8 @@
         translate: -50% 0;
         top: auto;
       }
-      & .carousel-prev { top: -1rem; bottom: auto; }
-      & .carousel-next { bottom: -1rem; top: auto; }
+      & .carousel-prev { top: calc(-1 * var(--size-04)); bottom: auto; }
+      & .carousel-next { bottom: calc(-1 * var(--size-04)); top: auto; }
 
       & .carousel-dots { flex-direction: column; }
     }

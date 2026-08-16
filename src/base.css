@@ -50,6 +50,17 @@
      --color-green-800: oklch(44.8% 0.119 151.328);
      --color-green-900: oklch(39.3% 0.095 152.535);
      --color-green-950: oklch(26.6% 0.065 152.934);
+     --color-blue-50: oklch(97% 0.014 254.604);
+     --color-blue-100: oklch(93.2% 0.032 255.585);
+     --color-blue-200: oklch(88.2% 0.059 254.128);
+     --color-blue-300: oklch(80.9% 0.105 251.813);
+     --color-blue-400: oklch(70.7% 0.165 254.624);
+     --color-blue-500: oklch(62.3% 0.214 259.815);
+     --color-blue-600: oklch(54.6% 0.245 262.881);
+     --color-blue-700: oklch(48.8% 0.243 264.376);
+     --color-blue-800: oklch(42.4% 0.199 265.638);
+     --color-blue-900: oklch(37.9% 0.146 265.522);
+     --color-blue-950: oklch(28.2% 0.091 267.935);
      --color-neutral-50: oklch(98.5% 0 0);
      --color-neutral-100: oklch(97% 0 0);
      --color-neutral-200: oklch(92.2% 0 0);
@@ -73,6 +84,7 @@
      --font-h4: 1rem;
      --font-height: 1.61;
      --font-height-tight: 1.25;
+     --font-height-none: 1;
      --font-weight: 400;
      --font-weight-strong: 550;
      --font-tracking: 0;
@@ -83,6 +95,33 @@
      --border-width-01: 1px;
      --border-width-02: 2px;
      --border-width-03: 4px;
+    /* radius */
+     --radius-full: 9999px;
+    /* duration */
+     --duration-instant: 100ms;
+     --duration-fast: 150ms;
+     --duration-base: 200ms;
+     --duration-slow: 300ms;
+     --duration-spin: 1s;
+     --duration-progress: 1.5s;
+     --duration-pulse: 2s;
+    /* opacity */
+     --opacity-00: 0;
+     --opacity-01: 0.1;
+     --opacity-02: 0.2;
+     --opacity-03: 0.3;
+     --opacity-04: 0.4;
+     --opacity-05: 0.5;
+     --opacity-06: 0.6;
+     --opacity-07: 0.7;
+     --opacity-08: 0.8;
+     --opacity-09: 0.9;
+     --opacity-10: 1;
+    /* z-index */
+     --z-raised: 1;
+     --z-sidebar: 30;
+     --z-sidebar-mobile: 50;
+     --z-toast: 100;
     /* spacing */
      --space-00: 0;
      --space-01: 0.25rem;
@@ -118,7 +157,8 @@
      --size-14: 7rem;
      --size-15: 8rem;
     /* other */
-      --blur: 1rem;
+      --blur-01: 0.25rem;
+      --blur-02: 0.5rem;
       --duration-reduced: 0.01ms;
  }
 

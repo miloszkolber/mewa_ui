@@ -13,7 +13,7 @@
     color: var(--foreground);
     outline: none;
 
-    transition: border-color 150ms;
+    transition: border-color var(--duration-fast);
     resize: vertical;
     field-sizing: content;
 
@@ -25,7 +25,7 @@
     &::placeholder { color: var(--muted-foreground); }
 
     &:disabled {
-      opacity: 0.5;
+      opacity: var(--opacity-05);
       cursor: not-allowed;
       resize: none;
     }
@@ -53,7 +53,7 @@
     }
 
     .textarea:disabled {
-      opacity: 0.7;
+      opacity: var(--opacity-07);
     }
   }
 

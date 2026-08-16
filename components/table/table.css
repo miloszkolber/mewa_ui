@@ -17,14 +17,14 @@
 
   .table-caption {
     padding: var(--space-03) var(--space-04);
-    font-size: 0.8125rem;
+    font-size: var(--font-body-small);
     color: var(--muted-foreground);
     text-align: center;
   }
 
   .table-head {
     padding: var(--space-03) var(--space-04);
-    font-weight: 500;
+    font-weight: var(--font-weight-strong);
     color: var(--muted-foreground);
     background-color: var(--muted);
     white-space: nowrap;
@@ -41,7 +41,7 @@
 
   .table-row {
     border-bottom: var(--border-width-01) solid var(--border);
-    transition: background-color 150ms ease;
+    transition: background-color var(--duration-fast) ease;
 
     &:last-child {
       border-bottom: none;
@@ -61,7 +61,7 @@
   tfoot .table-row {
     background-color: var(--muted);
     border-top: var(--border-width-01) solid var(--border);
-    font-weight: 500;
+    font-weight: var(--font-weight-strong);
   }
 
   tfoot .table-cell:first-child {
@@ -75,6 +75,6 @@
   /* -- Container query: compact table in narrow containers -- */
   @container (max-width: 480px){
     .table-head,
-    .table-cell { padding: var(--space-02) var(--space-03); font-size: 0.8125rem; }
+    .table-cell { padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); }
   }
 }

@@ -134,9 +134,9 @@
 
 | `data-size` | Indicator | Title font | Description font |
 |-------------|-----------|------------|------------------|
-| `sm` | 1.5rem | 0.75rem | 0.6875rem |
-| *(none)* | 2rem | 0.8125rem | 0.75rem |
-| `lg` | 2.5rem | 0.9375rem | 0.8125rem |
+| `sm` | 1.5rem | var(--font-body-xsmall) | var(--font-body-xsmall) |
+| *(none)* | 2rem | var(--font-body-small) | var(--font-body-xsmall) |
+| `lg` | 2.5rem | var(--font-h4) | var(--font-body-small) |
 
 ---
 

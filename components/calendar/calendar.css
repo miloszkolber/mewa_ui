@@ -18,7 +18,7 @@
 
   .calendar-heading {
     font-size: var(--font-body-small);
-    font-weight: 500;
+    font-weight: var(--font-weight-strong);
     color: var(--foreground);
   }
 
@@ -34,7 +34,7 @@
     background-color: transparent;
     color: var(--foreground);
     cursor: pointer;
-    transition: background-color 150ms ease;
+    transition: background-color var(--duration-fast) ease;
 
     &:hover {
       background-color: var(--accent);
@@ -79,13 +79,13 @@
       justify-content: center;
       width: var(--size-07);
       height: var(--size-07);
-      font-size: 0.8125rem;
+      font-size: var(--font-body-small);
       border: none;
 
       background-color: transparent;
       color: var(--foreground);
       cursor: pointer;
-      transition: background-color 150ms ease, color 150ms ease;
+      transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease;
 
       &:hover {
         background-color: var(--accent);
@@ -99,7 +99,7 @@
 
     &[data-today] button {
       background-color: var(--accent);
-      font-weight: 600;
+      font-weight: var(--font-weight-strong);
     }
 
     &[data-selected] button {
@@ -107,18 +107,18 @@
       color: var(--primary-foreground);
 
       &:hover {
-        opacity: 0.9;
+        opacity: var(--opacity-09);
       }
     }
 
     &[data-outside] button {
       color: var(--muted-foreground);
-      opacity: 0.5;
+      opacity: var(--opacity-05);
     }
 
     &[data-disabled] button {
       color: var(--muted-foreground);
-      opacity: 0.35;
+      opacity: var(--opacity-04);
       cursor: not-allowed;
     }
   }

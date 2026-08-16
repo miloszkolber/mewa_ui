@@ -15,7 +15,7 @@
     & ::details-content {
       block-size: 0;
       overflow-y: clip;
-      transition: block-size 200ms ease, content-visibility 200ms allow-discrete;
+      transition: block-size var(--duration-base) ease, content-visibility var(--duration-base) allow-discrete;
     }
 
     &[open] ::details-content {
@@ -35,13 +35,13 @@
     justify-content: space-between;
     width: 100%;
     padding: var(--space-04) 0;
-    font-size: 0.9375rem;
-    font-weight: 500;
+    font-size: var(--font-body);
+    font-weight: var(--font-weight-strong);
     text-align: left;
     cursor: pointer;
     list-style: none;
     color: var(--foreground);
-    transition: color 150ms;
+    transition: color var(--duration-fast);
 
     &::-webkit-details-marker { display: none; }
     &::marker { content: ''; }
@@ -50,7 +50,7 @@
 
   .accordion-chevron {
     color: var(--muted-foreground);
-    transition: transform 200ms ease;
+    transition: transform var(--duration-base) ease;
     flex-shrink: 0;
 
     details[open] > .accordion-trigger & {
@@ -61,7 +61,7 @@
   .accordion-content {
     padding-bottom: var(--space-04);
     font-size: var(--font-body-small);
-    line-height: 1.7;
+    line-height: var(--font-height);
     color: var(--muted-foreground);
     overflow: hidden;
 

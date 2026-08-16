@@ -12,7 +12,7 @@
     color: var(--foreground);
     outline: none;
 
-    transition: border-color 150ms;
+    transition: border-color var(--duration-fast);
     padding: 0;
     cursor: pointer;
 
@@ -23,12 +23,12 @@
       background: var(--muted);
       color: var(--foreground);
       font-size: var(--font-body-small);
-      font-weight: 500;
+      font-weight: var(--font-weight-strong);
       font-family: var(--font-sans);
       padding: 0 var(--space-03);
       margin-right: var(--space-03);
       cursor: pointer;
-      transition: background 150ms;
+      transition: background var(--duration-fast);
 
       &:hover { background: var(--accent); }
     }
@@ -39,7 +39,7 @@
     }
 
     &:disabled {
-      opacity: 0.5;
+      opacity: var(--opacity-05);
       cursor: not-allowed;
     }
   }

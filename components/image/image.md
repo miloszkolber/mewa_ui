@@ -83,7 +83,7 @@
 | Value  | Effect                       |
 | ------ | ---------------------------- |
 | *(default)* | Square (no radius)      |
-| `full` | Circular (`9999px`) — avatar-style images only |
+| `full` | Circular (`var(--radius-full)`) — avatar-style images only |
 
 ## Attributes
 

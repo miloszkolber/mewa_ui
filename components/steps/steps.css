@@ -2,47 +2,47 @@
   .steps { display: flex; gap: var(--space-02); list-style: none; margin: 0; padding: 0; }
   .step {
     flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--space-02); position: relative; text-align: center;
-    &:not(:last-child)::after { content: ''; position: absolute; top: var(--space-04); left: calc(50% + 1.25rem); right: calc(-50% + 1.25rem); height: 2px; background-color: var(--border); }
+    &:not(:last-child)::after { content: ''; position: absolute; top: var(--space-04); left: calc(50% + var(--space-05)); right: calc(-50% + var(--space-05)); height: 2px; background-color: var(--border); }
     &[data-status='complete']::after { background-color: var(--primary); }
     &[data-status='error']::after { background-color: var(--destructive); }
   }
   .step-indicator {
     display: flex; align-items: center; justify-content: center; width: var(--size-07); height: var(--size-07);
-    border-radius: 9999px; font-size: var(--font-body-xsmall); font-weight: 500;
-    border: var(--border-width-02) solid var(--border); color: var(--muted-foreground); background-color: var(--background); position: relative; z-index: 1;
+    border-radius: var(--radius-full); font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong);
+    border: var(--border-width-02) solid var(--border); color: var(--muted-foreground); background-color: var(--background); position: relative; z-index: var(--z-raised);
     .step[data-status='current'] & { border-color: var(--primary); color: var(--primary); }
     .step[data-status='complete'] & { border-color: var(--primary); background-color: var(--primary); color: var(--primary-foreground); }
     .step[data-status='error'] & { border-color: var(--destructive); background-color: var(--destructive); color: var(--destructive-foreground); }
 
     & svg { width: 0.875rem; height: 0.875rem; pointer-events: none; }
   }
-  .step-content { display: flex; flex-direction: column; gap: 0.125rem; }
-  .step-title { margin: 0; font-size: 0.8125rem; font-weight: 500; color: var(--foreground); }
+  .step-content { display: flex; flex-direction: column; gap: var(--space-01); }
+  .step-title { margin: 0; font-size: var(--font-body-small); font-weight: var(--font-weight-strong); color: var(--foreground); }
   .step-description { margin: 0; font-size: var(--font-body-xsmall); color: var(--muted-foreground); }
 
   /* -- Clickable steps ---------------------------------------- */
   .step[data-clickable] .step-indicator {
     cursor: pointer;
-    &:hover { opacity: 0.85; }
+    &:hover { opacity: var(--opacity-09); }
   }
 
   /* -- Size variants ------------------------------------------ */
   .steps[data-size='sm'] {
-    & .step:not(:last-child)::after { top: var(--space-03); left: calc(50% + 1rem); right: calc(-50% + 1rem); }
-    & .step-indicator { width: var(--size-06); height: var(--size-06); font-size: 0.6875rem; }
+    & .step:not(:last-child)::after { top: var(--space-03); left: calc(50% + var(--space-04)); right: calc(-50% + var(--space-04)); }
+    & .step-indicator { width: var(--size-06); height: var(--size-06); font-size: var(--font-body-xsmall); }
     & .step-indicator svg { width: var(--size-03); height: var(--size-03); }
     & .step-title { font-size: var(--font-body-xsmall); }
-    & .step-description { font-size: 0.6875rem; }
-    &[data-orientation='vertical'] .step:not(:last-child)::after { top: 1.75rem; left: 0.6875rem; height: calc(100% - 1.75rem); }
+    & .step-description { font-size: var(--font-body-xsmall); }
+    &[data-orientation='vertical'] .step:not(:last-child)::after { top: 1.75rem; left: var(--space-03); height: calc(100% - 1.75rem); }
   }
 
   .steps[data-size='lg'] {
-    & .step:not(:last-child)::after { top: var(--space-05); left: calc(50% + 1.5rem); right: calc(-50% + 1.5rem); }
+    & .step:not(:last-child)::after { top: var(--space-05); left: calc(50% + var(--space-06)); right: calc(-50% + var(--space-06)); }
     & .step-indicator { width: var(--size-08); height: var(--size-08); font-size: var(--font-body-small); }
     & .step-indicator svg { width: var(--size-04); height: var(--size-04); }
-    & .step-title { font-size: 0.9375rem; }
-    & .step-description { font-size: 0.8125rem; }
-    &[data-orientation='vertical'] .step:not(:last-child)::after { top: 2.75rem; left: 1.1875rem; height: calc(100% - 2.75rem); }
+    & .step-title { font-size: var(--font-h4); }
+    & .step-description { font-size: var(--font-body-small); }
+    &[data-orientation='vertical'] .step:not(:last-child)::after { top: 2.75rem; left: var(--space-05); height: calc(100% - 2.75rem); }
   }
 
   /* -- Vertical orientation ---------------------------------- */
@@ -58,7 +58,7 @@
 
       &:not(:last-child)::after {
         top: 2.25rem;
-        left: 0.9375rem;
+        left: var(--space-04);
         right: auto;
         width: 2px;
         height: calc(100% - 2.25rem);

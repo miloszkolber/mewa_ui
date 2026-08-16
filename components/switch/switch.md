@@ -31,9 +31,9 @@
 
 ```html
 <div class="switch-item" style="display:grid;grid-template-columns:1fr auto;gap:0 0.75rem;align-items:center;">
-  <label for="share" style="font-size:0.875rem;font-weight:500;">Share across devices</label>
+  <label for="share" style="font-size:0.875rem;font-weight:var(--font-weight-strong);">Share across devices</label>
   <input class="switch" type="checkbox" role="switch" id="share" style="grid-row:1/3;">
-  <span style="font-size:0.8125rem;color:var(--muted-foreground);">Sync settings across all your devices.</span>
+  <span style="font-size:var(--font-body-small);color:var(--muted-foreground);">Sync settings across all your devices.</span>
 </div>
 ```
 

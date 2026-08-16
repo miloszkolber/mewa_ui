@@ -2,23 +2,23 @@
   .statistic {
     display: flex;
     flex-direction: column;
-    gap: 0.125rem;
+    gap: var(--space-01);
   }
 
   .statistic-title {
     margin: 0;
-    font-size: 0.8125rem;
-    font-weight: 500;
+    font-size: var(--font-body-small);
+    font-weight: var(--font-weight-strong);
     color: var(--muted-foreground);
     letter-spacing: 0.01em;
   }
 
   .statistic-value {
     margin: 0;
-    font-size: 1.875rem;
-    font-weight: 700;
+    font-size: var(--font-h2);
+    font-weight: var(--font-weight-strong);
     letter-spacing: -0.025em;
-    line-height: 1.2;
+    line-height: var(--font-height-tight);
     color: var(--foreground);
   }
 
@@ -34,8 +34,8 @@
   .statistic-trend {
     display: inline-flex;
     align-items: center;
-    gap: 0.125rem;
-    font-weight: 500;
+    gap: var(--space-01);
+    font-weight: var(--font-weight-strong);
 
     & svg {
       width: var(--size-03);
@@ -43,11 +43,11 @@
     }
 
     &[data-trend="up"] {
-      color: #16a34a;
+      color: var(--success);
     }
 
     &[data-trend="down"] {
-      color: #dc2626;
+      color: var(--destructive);
     }
   }
 }

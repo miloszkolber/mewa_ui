@@ -2,7 +2,7 @@
   .spinner {
     width: var(--size-04);
     height: var(--size-04);
-    animation: spinner-rotate 1s linear infinite;
+    animation: spinner-rotate var(--duration-spin) linear infinite;
     color: var(--muted-foreground);
     flex-shrink: 0;
 

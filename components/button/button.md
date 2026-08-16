@@ -55,7 +55,7 @@
 
 | `data-size` | Height    | Padding       | Font size    |
 |-------------|-----------|---------------|--------------|
-| `sm`        | `2rem`    | `0 0.75rem`   | `0.8125rem`  |
+| `sm`        | `2rem`    | `0 0.75rem`   | `var(--font-body-small)` |
 | *(default)* | `2.25rem` | `0 1rem`      | `0.875rem`   |
 | `icon`      | `2.25rem` | `0` (square)  | —            |
 | `icon-sm`   | `2rem`    | `0` (square)  | —            |

@@ -24,7 +24,7 @@
     font-size: var(--font-body-small);
     color: var(--foreground);
     cursor: grab;
-    transition: opacity 150ms ease, border-color 150ms ease;
+    transition: opacity var(--duration-fast) ease, border-color var(--duration-fast) ease;
     user-select: none;
 
     &:active { cursor: grabbing; }
@@ -41,7 +41,7 @@
     }
 
     &[data-dragging] {
-      opacity: 0.5;
+      opacity: var(--opacity-05);
 
       border-style: dashed;
     }
@@ -63,7 +63,7 @@
     }
 
     &[aria-disabled="true"] {
-      opacity: 0.5;
+      opacity: var(--opacity-05);
       cursor: not-allowed;
       pointer-events: none;
     }
@@ -73,7 +73,7 @@
     color: var(--muted-foreground);
     cursor: grab;
     font-size: var(--font-body);
-    line-height: 1;
+    line-height: var(--font-height-none);
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;

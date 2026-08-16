@@ -13,7 +13,7 @@
     color: var(--foreground);
     outline: none;
 
-    transition: border-color 150ms;
+    transition: border-color var(--duration-fast);
 
     &:focus {
       border-color: var(--ring);
@@ -23,7 +23,7 @@
     &::placeholder { color: var(--muted-foreground); }
 
     &:disabled {
-      opacity: 0.5;
+      opacity: var(--opacity-05);
       cursor: not-allowed;
     }
 
@@ -31,7 +31,7 @@
     &:read-only:not([type="file"]) {
       background: var(--muted);
       cursor: default;
-      opacity: 0.7;
+      opacity: var(--opacity-07);
 
       &:focus {
         border-color: var(--input);
@@ -61,19 +61,19 @@
         background: var(--muted);
         color: var(--foreground);
         font-size: var(--font-body-small);
-        font-weight: 500;
+        font-weight: var(--font-weight-strong);
         font-family: var(--font-sans);
         padding: 0 var(--space-03);
         margin-right: var(--space-03);
         cursor: pointer;
-        transition: background 150ms;
+        transition: background var(--duration-fast);
 
         &:hover { background: var(--accent); }
       }
     }
 
     /* -- Sizes ----------------------------------------------- */
-    &[data-size="sm"] { height: var(--size-07); padding: 0 0.625rem; font-size: var(--font-body-xsmall); }
+    &[data-size="sm"] { height: var(--size-07); padding: 0 var(--space-03); font-size: var(--font-body-xsmall); }
   }
 
   /* -- Auto-growing textarea --------------------------------- */
@@ -88,14 +88,14 @@
   .field-description {
     font-size: var(--font-body-xsmall);
     color: var(--muted-foreground);
-    margin: 0.375rem 0 0;
+    margin: var(--space-02) 0 0;
   }
 
   /* -- Field error ------------------------------------------- */
   .field-error {
     font-size: var(--font-body-xsmall);
     color: var(--destructive);
-    margin: 0.375rem 0 0;
+    margin: var(--space-02) 0 0;
   }
 
   /* -- Accessibility ---------------------------------------- */
@@ -115,7 +115,7 @@
     }
 
     .input:disabled {
-      opacity: 0.7;
+      opacity: var(--opacity-07);
     }
   }
 

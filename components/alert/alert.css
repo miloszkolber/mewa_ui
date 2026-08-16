@@ -21,7 +21,7 @@
 
       & .alert-description {
         color: var(--destructive);
-        opacity: 0.9;
+        opacity: var(--opacity-09);
       }
 
       & .alert-icon {
@@ -34,7 +34,7 @@
     width: var(--size-04);
     height: var(--size-04);
     flex-shrink: 0;
-    margin-top: 0.125rem;
+    margin-top: var(--space-01);
     color: var(--foreground);
   }
 
@@ -46,16 +46,16 @@
   .alert-title {
     margin: 0;
     font-size: var(--font-body-small);
-    font-weight: 500;
-    line-height: 1.4;
+    font-weight: var(--font-weight-strong);
+    line-height: var(--font-height);
     letter-spacing: -0.01em;
     color: var(--foreground);
   }
 
   .alert-description {
     margin: var(--space-01) 0 0;
-    font-size: 0.8125rem;
-    line-height: 1.5;
+    font-size: var(--font-body-small);
+    line-height: var(--font-height);
     color: var(--muted-foreground);
   }
 

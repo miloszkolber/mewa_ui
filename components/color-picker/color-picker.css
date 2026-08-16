@@ -34,7 +34,7 @@
     }
 
     & .color-picker-value {
-      font-size: 0.8125rem;
+      font-size: var(--font-body-small);
       font-family: var(--font-mono);
       color: var(--muted-foreground);
     }

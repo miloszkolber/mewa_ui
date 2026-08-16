@@ -26,7 +26,7 @@
     &[data-ratio="3/4"]  { aspect-ratio: 3 / 4; }
 
     /* -- Circular variant (avatar-style images only) ----------- */
-    &[data-radius="full"] { border-radius: 9999px; }
+    &[data-radius="full"] { border-radius: var(--radius-full); }
 
     /* -- Preview cursor -------------------------------------- */
     &[data-preview] {
@@ -46,7 +46,7 @@
       & > svg {
         width: var(--size-08);
         height: var(--size-08);
-        opacity: 0.5;
+        opacity: var(--opacity-05);
       }
     }
 
@@ -57,9 +57,9 @@
 
   /* -- Caption ----------------------------------------------- */
   .image-caption {
-    padding: 0.625rem 0 var(--space-01);
-    font-size: 0.8125rem;
-    line-height: 1.4;
+    padding: var(--space-03) 0 var(--space-01);
+    font-size: var(--font-body-small);
+    line-height: var(--font-height);
     color: var(--muted-foreground);
     text-wrap: pretty;
   }
@@ -78,7 +78,7 @@
     height: 100vh;
     overflow: hidden;
     opacity: 0;
-    transition: opacity 200ms ease, display 200ms allow-discrete;
+    transition: opacity var(--duration-base) ease, display var(--duration-base) allow-discrete;
 
     &[open] {
       opacity: 1;
@@ -86,11 +86,11 @@
 
     &::backdrop {
       background: oklch(0 0 0 / 0);
-      transition: all 200ms ease, display 200ms allow-discrete;
+      transition: all var(--duration-base) ease, display var(--duration-base) allow-discrete;
     }
 
     &[open]::backdrop {
-      background: oklch(0 0 0 / 0.85);
+      background: var(--overlay);
     }
   }
 
@@ -117,7 +117,7 @@
       max-height: 85vh;
       object-fit: contain;
 
-      transition: transform 200ms ease;
+      transition: transform var(--duration-base) ease;
       user-select: none;
       -webkit-user-drag: none;
     }
@@ -129,7 +129,7 @@
     right: var(--space-04);
     display: flex;
     gap: var(--space-01);
-    z-index: 1;
+    z-index: var(--z-raised);
   }
 
   .image-lightbox-btn {
@@ -140,13 +140,13 @@
     height: 2.25rem;
     border: none;
 
-    background: oklch(0 0 0 / 0.5);
-    color: white;
+    background: var(--overlay);
+    color: var(--foreground);
     cursor: pointer;
-    transition: background 150ms ease;
+    transition: background var(--duration-fast) ease;
 
     &:hover {
-      background: oklch(0 0 0 / 0.7);
+      background: color-mix(in oklch, var(--overlay), var(--color-black) 25%);
     }
 
     &:focus-visible {
