@@ -9,7 +9,12 @@
     cursor: pointer; outline: none;
     transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease; gap: var(--space-01);
     &:hover { background-color: var(--accent); }
-    &:focus-visible { outline: var(--border-width-02) solid var(--ring); outline-offset: 2px; }
+    &:focus-visible {
+      outline: none;
+      box-shadow:
+        0 0 0 var(--focus-ring-width) var(--background),
+        0 0 0 var(--focus-ring-outer-width) var(--ring);
+    }
     & svg { width: var(--size-04); height: var(--size-04); flex-shrink: 0; }
 
     &[aria-disabled="true"], &.disabled {

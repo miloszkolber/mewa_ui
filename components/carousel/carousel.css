@@ -46,7 +46,12 @@
       z-index: var(--z-raised);
 
       &:hover { background-color: var(--accent); }
-      &:focus-visible { outline: var(--border-width-02) solid var(--ring); outline-offset: 2px; }
+      &:focus-visible {
+        outline: none;
+        box-shadow:
+          0 0 0 var(--focus-ring-width) var(--background),
+          0 0 0 var(--focus-ring-outer-width) var(--ring);
+      }
       &:disabled { opacity: var(--opacity-05); cursor: not-allowed; pointer-events: none; }
       & svg { width: var(--size-04); height: var(--size-04); }
     }
@@ -82,8 +87,10 @@
       }
 
       &:focus-visible {
-        outline: var(--border-width-02) solid var(--ring);
-        outline-offset: 2px;
+        outline: none;
+        box-shadow:
+          0 0 0 var(--focus-ring-width) var(--background),
+          0 0 0 var(--focus-ring-outer-width) var(--ring);
       }
     }
 

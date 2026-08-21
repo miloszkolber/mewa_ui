@@ -27,7 +27,12 @@
     transition: background-color var(--duration-instant) ease;
 
     &:hover, &[data-highlighted] { background-color: var(--accent); color: var(--accent-foreground); }
-    &:focus-visible { outline: var(--border-width-02) solid var(--ring); outline-offset: -2px; }
+    &:focus-visible {
+      outline: none;
+      box-shadow:
+        0 0 0 var(--focus-ring-width) var(--background),
+        0 0 0 var(--focus-ring-outer-width) var(--ring);
+    }
   }
 
   .context-menu-separator { height: 1px; background-color: var(--border); margin: var(--space-01) -0.25rem; }

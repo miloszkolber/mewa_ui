@@ -72,12 +72,16 @@
 
     &:focus-visible {
       &::-webkit-slider-thumb {
-        outline: var(--border-width-02) solid var(--ring);
-        outline-offset: 2px;
+        outline: none;
+        box-shadow:
+          0 0 0 var(--focus-ring-width) var(--background),
+          0 0 0 var(--focus-ring-outer-width) var(--ring);
       }
       &::-moz-range-thumb {
-        outline: var(--border-width-02) solid var(--ring);
-        outline-offset: 2px;
+        outline: none;
+        box-shadow:
+          0 0 0 var(--focus-ring-width) var(--background),
+          0 0 0 var(--focus-ring-outer-width) var(--ring);
       }
     }
 

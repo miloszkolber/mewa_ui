@@ -129,8 +129,10 @@
     }
 
     &:focus-visible {
-      outline: var(--border-width-02) solid var(--sidebar-ring);
-      outline-offset: -2px;
+      outline: none;
+      box-shadow:
+        0 0 0 var(--focus-ring-width) var(--background),
+        0 0 0 var(--focus-ring-outer-width) var(--sidebar-ring);
     }
 
     & svg {
@@ -269,7 +271,12 @@
 
 
     &:hover { background-color: var(--accent); }
-    &:focus-visible { outline: var(--border-width-02) solid var(--ring); outline-offset: 2px; }
+    &:focus-visible {
+      outline: none;
+      box-shadow:
+        0 0 0 var(--focus-ring-width) var(--background),
+        0 0 0 var(--focus-ring-outer-width) var(--ring);
+    }
     & svg { width: var(--size-04); height: var(--size-04); }
   }
 

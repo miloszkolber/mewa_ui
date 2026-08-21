@@ -10,7 +10,12 @@
      outline: none;
     transition: color var(--duration-fast) ease;
     &:hover { color: var(--foreground); }
-    &:focus-visible { outline: var(--border-width-02) solid var(--ring); outline-offset: 2px; }
+     &:focus-visible {
+       outline: none;
+       box-shadow:
+         0 0 0 var(--focus-ring-width) var(--background),
+         0 0 0 var(--focus-ring-outer-width) var(--ring);
+     }
   }
   .breadcrumb-separator {
     color: var(--muted-foreground); font-size: var(--font-body-xsmall);

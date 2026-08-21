@@ -8,7 +8,12 @@
     transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease;
     outline: none;
     &:hover { background-color: var(--accent); color: var(--accent-foreground); }
-    &:focus-visible { outline: var(--border-width-02) solid var(--ring); outline-offset: 2px; }
+    &:focus-visible {
+      outline: none;
+      box-shadow:
+        0 0 0 var(--focus-ring-width) var(--background),
+        0 0 0 var(--focus-ring-outer-width) var(--ring);
+    }
     & svg { width: 0.875rem; height: 0.875rem; color: var(--muted-foreground); transition: transform var(--duration-base) ease; }
   }
 
@@ -36,7 +41,12 @@
     text-decoration: none; color: var(--foreground); font-size: var(--font-body-small);
     transition: background-color var(--duration-fast) ease;
     &:hover { background-color: var(--accent); }
-    &:focus-visible { outline: var(--border-width-02) solid var(--ring); outline-offset: 2px; }
+    &:focus-visible {
+      outline: none;
+      box-shadow:
+        0 0 0 var(--focus-ring-width) var(--background),
+        0 0 0 var(--focus-ring-outer-width) var(--ring);
+    }
     & p { margin: var(--space-01) 0 0; font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-weight: var(--font-weight); }
   }
 

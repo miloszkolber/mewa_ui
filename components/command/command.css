@@ -40,7 +40,12 @@
     background: transparent; color: var(--foreground); font-size: var(--font-body-small);
     font-family: inherit; text-align: left; cursor: pointer; outline: none;
     &:hover, &[data-highlighted] { background-color: var(--accent); }
-    &:focus-visible { outline: var(--border-width-02) solid var(--ring); outline-offset: -2px; }
+    &:focus-visible {
+      outline: none;
+      box-shadow:
+        0 0 0 var(--focus-ring-width) var(--background),
+        0 0 0 var(--focus-ring-outer-width) var(--ring);
+    }
     &[aria-disabled="true"] { pointer-events: none; opacity: var(--opacity-05); }
     & svg { width: var(--size-04); height: var(--size-04); color: var(--muted-foreground); flex-shrink: 0; }
   }

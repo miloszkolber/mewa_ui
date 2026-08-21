@@ -69,8 +69,10 @@
     }
 
     &:focus-visible {
-      outline: var(--border-width-02) solid var(--ring);
-      outline-offset: 2px;
+      outline: none;
+      box-shadow:
+        0 0 0 var(--focus-ring-width) var(--background),
+        0 0 0 var(--focus-ring-outer-width) var(--ring);
     }
 
     &:disabled {
@@ -96,8 +98,10 @@
     margin-top: var(--space-03);
 
     &:focus-visible {
-      outline: var(--border-width-02) solid var(--ring);
-      outline-offset: 2px;
+      outline: none;
+      box-shadow:
+        0 0 0 var(--focus-ring-width) var(--background),
+        0 0 0 var(--focus-ring-outer-width) var(--ring);
     }
 
     &[hidden] { display: none; }

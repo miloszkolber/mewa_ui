@@ -20,7 +20,9 @@
 
     &:focus {
       border-color: var(--ring);
-      box-shadow: 0 0 0 2px oklch(from var(--ring) l c h / 0.2);
+      box-shadow:
+        0 0 0 var(--focus-ring-width) var(--background),
+        0 0 0 var(--focus-ring-outer-width) var(--ring);
     }
 
     &:disabled {
