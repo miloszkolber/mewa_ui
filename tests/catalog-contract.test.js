@@ -410,6 +410,30 @@ test("current source does not import retired trees or hooks", () => {
   assert.deepEqual(matches, [], `retired source references remain: ${matches.join(", ")}`);
 });
 
+test("native fallback and SPA enhancement contracts stay explicit", () => {
+  const router = read(path.join(docsDir, "js", "layout.js"));
+  assert.match(router, /loadPageModules/);
+  assert.match(router, /import\(url\)/);
+  assert(!/class=['"]input nav-filter-input/.test(router), "the docs filter must use the current Text Field hook");
+
+  const textField = read(path.join(componentsDir, "text-field", "text-field.md"));
+  [
+    /id="username-description"/, /aria-describedby="username-description"/,
+    /id="bad-email-error"/, /aria-errormessage="bad-email-error"/,
+    /for="icon-search"/, /id="icon-search"/,
+    /for="button-search"/, /id="button-search"/
+  ].forEach((pattern) => assert.match(textField, pattern, `text-field skill is missing ${pattern}`));
+
+  const dataTable = read(path.join(docsDir, "data-table.html"));
+  assert.match(dataTable, /<form class="data-table-filter-group"/);
+  assert.match(dataTable, /data-table-clear type="reset"/);
+  assert.match(dataTable, /<a class="data-table-sort"[^>]+href=/);
+
+  const resizable = read(path.join(docsDir, "resizable.html"));
+  assert.match(resizable, /<div class="resizable-handle" role="separator"/);
+  assert(!/<button[^>]+class="resizable-handle"/.test(resizable), "the no-JavaScript divider must not expose a dead button");
+});
+
 test("package scripts remain dependency-free for production", () => {
   const packageJson = JSON.parse(read(path.join(root, "package.json")));
   assert.equal(packageJson.private, true);

@@ -134,7 +134,7 @@ Press <kbd class="kbd">⌘S</kbd> to save
 
 - These are utility classes for prose content — not a component with variants/sizes.
 - The `.h1`–`.h4` classes allow applying heading styles to non-heading elements when semantic headings aren't appropriate.
-- Typography classes compose freely with other components (Card content, Dialog body, Alert description).
+- Typography classes compose freely with other components (Card content, Dialog body, Callout description).
 - `text-wrap: balance` is used on all headings (h1–h4) for better visual line distribution.
 - `text-wrap: pretty` is used on paragraphs and lead text for orphan prevention.
 - `hanging-punctuation: first last` is used on blockquotes for optical quote alignment.

@@ -444,6 +444,34 @@ async function runTargetedInteractions(base) {
   const desktop = viewports[0];
 
   await loadPage(base, "/docs/typography.html", desktop);
+  for (const destination of ["data-table.html", "date-range-picker.html", "resizable.html"]) {
+    await page.click(`a.nav-link[href="${destination}"]`);
+    const title = destination.replace(/\.html$/, "").replaceAll("-", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+    await page.waitForFunction((expected) => document.querySelector("main h1")?.textContent.trim() === expected, { timeout: 5000 }, title);
+    assertCurrentAssets(await snapshotAssets(page), `docs router ${destination}`);
+
+    if (destination === "data-table.html") {
+      await page.type("#projects-filter", "Atlas");
+      await page.waitForFunction(() => document.querySelector("[data-table-status]")?.textContent.includes("1 project"), { timeout: 5000 });
+      assert.equal(await page.$$eval("#projects-table tbody tr", (rows) => rows.filter((row) => !row.hidden).length), 1);
+    } else if (destination === "date-range-picker.html") {
+      await page.$eval("[data-range-start]", (input) => {
+        input.value = "2026-08-21";
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+      await page.$eval("[data-range-end]", (input) => {
+        input.value = "2026-08-10";
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+      await page.waitForFunction(() => document.querySelector(".date-range-picker[data-range-order-invalid]"), { timeout: 5000 });
+    } else {
+      await page.focus(".resizable-handle");
+      const before = await page.$eval(".resizable-handle", (handle) => handle.getAttribute("aria-valuenow"));
+      await page.keyboard.press("ArrowRight");
+      assert.notEqual(await page.$eval(".resizable-handle", (handle) => handle.getAttribute("aria-valuenow")), before);
+    }
+  }
+
   if (await hasSelector('a.nav-link[href="button.html"]')) {
     await page.click('a.nav-link[href="button.html"]');
     await page.waitForFunction(() => document.querySelector("main h1")?.textContent.trim() === "Button", { timeout: 5000 });
@@ -545,6 +573,76 @@ async function runQuestionnaireChecks(base) {
   }
 }
 
+async function runNoJavaScriptChecks(base) {
+  const javascriptPage = page;
+  const noJsPage = await browser.newPage();
+  page = noJsPage;
+  try {
+    noJsPage.setDefaultNavigationTimeout(30000);
+    await observePage(noJsPage);
+    await noJsPage.setJavaScriptEnabled(false);
+
+    await loadPage(base, "/docs/data-table.html", viewports[0], "no-js-data-table");
+    const dataTableFallback = await noJsPage.evaluate(() => ({
+      filterForm: document.querySelector(".preview .data-table-filter-group")?.tagName === "FORM",
+      clearType: document.querySelector(".preview [data-table-clear]")?.getAttribute("type"),
+      sortLinks: [...document.querySelectorAll(".preview .data-table-sort")].every((node) => node.tagName === "A" && node.hasAttribute("href")),
+      paginationLinks: document.querySelectorAll(".preview .data-table-pagination-link[href]").length
+    }));
+    assert.equal(dataTableFallback.filterForm, true, "Data Table keeps a native filter form without JavaScript");
+    assert.equal(dataTableFallback.clearType, "reset", "Data Table keeps a native reset action without JavaScript");
+    assert.equal(dataTableFallback.sortLinks, true, "Data Table keeps native sort destinations without JavaScript");
+    assert(dataTableFallback.paginationLinks > 0, "Data Table keeps native pagination links without JavaScript");
+
+    await loadPage(base, "/docs/resizable.html", viewports[0], "no-js-resizable");
+    const resizableFallback = await noJsPage.$eval(".preview .resizable-handle", (handle) => ({
+      tagName: handle.tagName,
+      role: handle.getAttribute("role"),
+      tabIndex: handle.getAttribute("tabindex")
+    }));
+    assert.equal(resizableFallback.tagName, "DIV", "Resizable keeps a static divider without JavaScript");
+    assert.equal(resizableFallback.role, "separator", "Resizable keeps separator semantics without JavaScript");
+    assert.equal(resizableFallback.tabIndex, null, "Resizable does not expose a dead focus target without JavaScript");
+  } finally {
+    await noJsPage.close().catch(() => {});
+    page = javascriptPage;
+  }
+}
+
+async function runLayoutChecks(base) {
+  const layouts = [
+    { route: "/layouts/vertical-navbar.html", name: "vertical", selector: ".app-sidebar" },
+    { route: "/layouts/horizontal-navbar.html", name: "horizontal", selector: ".layout-top-nav" }
+  ];
+
+  for (const layout of layouts) {
+    for (const viewport of viewports) {
+      await loadPage(base, layout.route, viewport, `layout-${layout.name}`, { requireAllComponentCss: false });
+      assert(await hasSelector(layout.selector), `${layout.name}: canonical shell is missing`);
+      if (layout.name === "vertical") {
+        assert.equal(await page.$eval(".app-sidebar", (sidebar) => sidebar.dataset.state), "expanded");
+        if (viewport.name === "mobile") {
+          await page.click(".layout-header-mobile-trigger");
+          await page.waitForFunction(() => document.querySelector(".sidebar-mobile")?.open === true, { timeout: 5000 });
+          await page.click(".sidebar-mobile-close");
+          await page.waitForFunction(() => document.querySelector(".sidebar-mobile")?.open === false, { timeout: 5000 });
+        } else {
+          await page.click(".app-sidebar .sidebar-trigger");
+          await page.waitForFunction(() => document.querySelector(".app-sidebar")?.dataset.state === "collapsed", { timeout: 5000 });
+          assert.equal(await page.$eval(".app-sidebar .sidebar-trigger", (button) => button.getAttribute("aria-expanded")), "false");
+        }
+      } else {
+        assert.equal(await page.$$eval(".layout-top-nav a", (links) => links.length >= 4), true, "horizontal shell must expose native route links");
+        assert.equal(await page.$eval(".layout-top-nav", (nav) => nav.querySelector('[role="tab"], [role="tablist"]') === null), true, "route navigation must not use tab roles");
+        await page.click("[data-layout-theme-toggle]");
+        await page.waitForFunction(() => document.documentElement.classList.contains("dark"), { timeout: 5000 });
+        await page.click("[data-layout-theme-toggle]");
+        await page.waitForFunction(() => !document.documentElement.classList.contains("dark"), { timeout: 5000 });
+      }
+    }
+  }
+}
+
 const serverInfo = shouldStartServer ? await startLocalServer() : null;
 activeBaseUrl = serverInfo?.baseUrl || baseUrl;
 if (screenshotDir) fs.mkdirSync(screenshotDir, { recursive: true });
@@ -559,16 +657,18 @@ try {
   await observePage(page);
 
   const base = serverInfo?.baseUrl || baseUrl;
+  await runTargetedInteractions(base);
+  await runQuestionnaireChecks(base);
+  await runNoJavaScriptChecks(base);
+  await runLayoutChecks(base);
+
   for (const component of components) {
     const route = `/${component.docs}`;
     for (const viewport of viewports) await loadPage(base, route, viewport);
   }
 
-  await runTargetedInteractions(base);
-  await runQuestionnaireChecks(base);
-
   if (failures.length) throw new Error(failures.join("\n"));
-  console.log(`browser smoke passed for ${components.length} registry docs pages and both layouts at desktop and mobile`);
+  console.log(`browser smoke passed for ${components.length} registry docs pages, both layouts, SPA enhancements, and no-JavaScript fallbacks`);
 } finally {
   if (page) await page.close().catch(() => {});
   if (browser) {

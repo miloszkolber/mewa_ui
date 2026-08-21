@@ -1,7 +1,7 @@
 # Pattern: Form
 
 ## Native basis
-`<form>` element with consistent field layout using Label, Input, and description/error helpers. Composes with all form control components (Input, Textarea, Select, Checkbox, Radio, Switch, Slider, etc.).
+`<form>` element with consistent field layout using Label, Text Field, and description/error helpers. Composes with all form control components (Text Field, Textarea, Select, Checkbox, Radio Group, Switch, Slider, etc.).
 
 ---
 
@@ -129,6 +129,6 @@
 - `.form-group` is a vertical stack for grouping multiple inline fields.
 - No JavaScript needed for basic forms — use native Constraint Validation.
 - Prefer `:user-valid` / `:user-invalid` for post-interaction validation styling (defined in text-field.css).
-- Compose with Label, Input, Textarea, Select, Checkbox, Radio Group, Switch, Slider, etc.
+- Compose with Label, Text Field, Textarea, Select, Checkbox, Radio Group, Switch, Slider, etc.
 - `data-invalid` on `.form-field` turns the description text to destructive color; use alongside `aria-invalid="true"` on the control.
 - For custom JS validation, set `data-invalid` on the field wrapper and `aria-invalid="true"` on the input programmatically.

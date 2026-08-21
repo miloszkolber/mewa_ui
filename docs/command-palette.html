@@ -97,29 +97,29 @@
         <p class="text-sm font-medium mb-2 mt-6">Default</p>
         <p class="text-xs text-muted mb-3">Click the button or press <kbd class="kbd">⌘K</kbd> to open. Use Arrow keys to navigate, Enter to select, Escape to close.</p>
         <div class="preview">
-          <button class="btn" type="button" data-variant="outline" data-command-trigger="demo-cmd">Open Command Menu</button>
-          <dialog id="demo-cmd" class="command" role="dialog" aria-modal="true" aria-label="Command menu">
-            <div class="command-content">
-              <div class="command-input-wrapper">
+          <button class="btn" type="button" data-variant="outline" data-command-palette-trigger="demo-cmd">Open Command Menu</button>
+          <dialog id="demo-cmd" class="command-palette" role="dialog" aria-modal="true" aria-label="Command menu">
+            <div class="command-palette-content">
+              <div class="command-palette-input-wrapper">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <input class="command-input" type="text" aria-label="Command search" placeholder="Type a command or search..." autocomplete="off" autocorrect="off" spellcheck="false">
+                <input class="command-palette-input" type="text" aria-label="Command search" placeholder="Type a command or search..." autocomplete="off" autocorrect="off" spellcheck="false">
               </div>
-              <div class="command-list">
-                <div class="command-group">
-                  <p class="command-group-heading">Suggestions</p>
-                  <button class="command-item" type="button">Calendar</button>
-                  <button class="command-item" type="button">Search Emoji</button>
-                  <button class="command-item" type="button">Calculator</button>
+              <div class="command-palette-list">
+                <div class="command-palette-group">
+                  <p class="command-palette-group-heading">Suggestions</p>
+                  <button class="command-palette-item" type="button">Calendar</button>
+                  <button class="command-palette-item" type="button">Search Emoji</button>
+                  <button class="command-palette-item" type="button">Calculator</button>
                 </div>
-                <div class="command-separator"></div>
-                <div class="command-group">
-                  <p class="command-group-heading">Settings</p>
-                  <button class="command-item" type="button">Profile <span class="command-shortcut">⌘P</span></button>
-                  <button class="command-item" type="button">Billing <span class="command-shortcut">⌘B</span></button>
-                  <button class="command-item" type="button">Settings <span class="command-shortcut">⌘S</span></button>
+                <div class="command-palette-separator"></div>
+                <div class="command-palette-group">
+                  <p class="command-palette-group-heading">Settings</p>
+                  <button class="command-palette-item" type="button">Profile <span class="command-palette-shortcut">⌘P</span></button>
+                  <button class="command-palette-item" type="button">Billing <span class="command-palette-shortcut">⌘B</span></button>
+                  <button class="command-palette-item" type="button">Settings <span class="command-palette-shortcut">⌘S</span></button>
                 </div>
               </div>
-              <div class="command-empty" hidden>No results found.</div>
+              <div class="command-palette-empty" hidden>No results found.</div>
             </div>
           </dialog>
         </div>
@@ -128,17 +128,17 @@
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
-           <pre><code class="language-markup">&lt;button class="btn" type="button" data-command-trigger="cmd"&gt;Open&lt;/button&gt;
-&lt;dialog id="cmd" class="command" role="dialog" aria-modal="true"&gt;
-  &lt;div class="command-content"&gt;
-    &lt;div class="command-input-wrapper"&gt;
+           <pre><code class="language-markup">&lt;button class="btn" type="button" data-command-palette-trigger="cmd"&gt;Open&lt;/button&gt;
+&lt;dialog id="cmd" class="command-palette" role="dialog" aria-modal="true"&gt;
+  &lt;div class="command-palette-content"&gt;
+    &lt;div class="command-palette-input-wrapper"&gt;
       &lt;svg&gt;...search...&lt;/svg&gt;
-      &lt;input class="command-input" type="text" aria-label="Command search" placeholder="Type a command..."&gt;
+      &lt;input class="command-palette-input" type="text" aria-label="Command search" placeholder="Type a command..."&gt;
     &lt;/div&gt;
-    &lt;div class="command-list"&gt;
-      &lt;div class="command-group"&gt;
-        &lt;p class="command-group-heading"&gt;Suggestions&lt;/p&gt;
-       &lt;button class="command-item" type="button"&gt;Calendar&lt;/button&gt;
+    &lt;div class="command-palette-list"&gt;
+      &lt;div class="command-palette-group"&gt;
+        &lt;p class="command-palette-group-heading"&gt;Suggestions&lt;/p&gt;
+       &lt;button class="command-palette-item" type="button"&gt;Calendar&lt;/button&gt;
       &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;

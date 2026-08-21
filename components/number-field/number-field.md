@@ -14,7 +14,7 @@
 
 ```html
 <label class="label" for="quantity">Quantity</label>
-<div class="number-input">
+<div class="number-field">
   <input type="number" id="quantity" min="0" max="100" step="1" value="1">
   <button type="button" data-action="increment" aria-label="Increase quantity">+</button>
   <button type="button" data-action="decrement" aria-label="Decrease quantity">−</button>

@@ -189,7 +189,7 @@ This is the complete current inventory, grouped by the same purpose groups used 
 |---|---|---|---|
 | Sidebar | `<aside>` and `<nav>` with a `<dialog>` mobile overlay, a flat link list, and a footer collapse button | Yes | [`components/sidebar/sidebar.md`](components/sidebar/sidebar.md) · [`docs/sidebar.html`](docs/sidebar.html) |
 | Message Scroller | Focusable `role="log"` containing an ordered message list and a native composer form | Optional | [`components/message-scroller/message-scroller.md`](components/message-scroller/message-scroller.md) · [`docs/message-scroller.html`](docs/message-scroller.html) |
-| Resizable | Two panels separated by a keyboard-operable `role="separator"` with pointer and keyboard resizing | Optional | [`components/resizable/resizable.md`](components/resizable/resizable.md) · [`docs/resizable.html`](docs/resizable.html) |
+| Resizable | Two panels separated by a static `role="separator"`; the optional module adds the keyboard and pointer resizing behavior | Optional | [`components/resizable/resizable.md`](components/resizable/resizable.md) · [`docs/resizable.html`](docs/resizable.html) |
 
 ## Migration candidates and coverage gaps
 
@@ -210,7 +210,7 @@ The Kernel UI catalog is a useful parity checklist, not a requirement to add eve
 
 ## Documentation site
 
-The current documentation site is static and has one page per component. There is no `docs/index.html`; serve `docs/` over HTTP and start at `typography.html`. The site navigation and router are centralized in `docs/js/layout.js`. Navigation swaps `<main>` content immediately and deliberately has no View Transition or other animation. `docs/js/site.js` owns doc-site-only behavior such as local icon inlining, copy buttons, and page-ready hooks.
+The current documentation site is static and has one page per component. There is no `docs/index.html`; serve `docs/` over HTTP and start at `typography.html`. The site navigation and router are centralized in `docs/js/layout.js`. Navigation imports destination module scripts before swapping `<main>` immediately and deliberately has no View Transition or other animation. `docs/js/site.js` owns doc-site-only behavior such as local icon inlining, copy buttons, and page-ready hooks.
 
 Doc pages load the current component styles and modules so every cross-page example works. Consumers should load only the assets listed by the component inventory. The pages show copyable HTML examples, not generated CSS or JavaScript source. The old CSS/JS snippet synchronizers in `docs/js/` are not part of the current documentation workflow and must not be treated as a required post-edit step.
 

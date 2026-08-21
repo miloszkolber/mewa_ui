@@ -1,7 +1,7 @@
 /* -- Command Palette component ---------------------------------- */
 
 @layer components {
-  dialog.command {
+  dialog.command-palette {
     border: var(--border-width-01) solid var(--border-secondary);
     background: var(--surface-primary); color: var(--text-primary);
     padding: 0; max-width: 32rem; width: calc(100% - var(--size-07));
@@ -13,7 +13,7 @@
     }
   }
 
-  .command-input-wrapper {
+  .command-palette-input-wrapper {
     display: flex; align-items: center; gap: var(--space-02);
     width: 100%;
     min-block-size: var(--size-08);
@@ -34,18 +34,18 @@
     }
   }
 
-  .command-input {
+  .command-palette-input {
     flex: 1; border: none; background: transparent;
     min-width: 0;
     font-size: var(--font-body-small); color: var(--text-primary); outline: none; font-family: inherit;
     &::placeholder { color: var(--text-muted); }
   }
 
-  .command-list { max-height: 18rem; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-01); }
-  .command-group { padding: var(--space-01) 0; }
-  .command-group-heading { margin: 0; padding: var(--space-02) var(--space-02); font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); color: var(--text-muted); }
+  .command-palette-list { max-height: 18rem; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-01); }
+  .command-palette-group { padding: var(--space-01) 0; }
+  .command-palette-group-heading { margin: 0; padding: var(--space-02) var(--space-02); font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); color: var(--text-muted); }
 
-  .command-item {
+  .command-palette-item {
     display: flex; align-items: center; gap: var(--space-02); width: 100%;
     min-block-size: var(--size-08);
     padding: var(--space-02) var(--space-02); border: none;
@@ -60,22 +60,22 @@
     & svg { width: var(--size-04); height: var(--size-04); color: var(--text-muted); flex-shrink: 0; }
   }
 
-  .command-separator { height: 1px; background-color: var(--border-primary); margin: var(--space-01) -0.25rem; }
-  .command-shortcut { margin-inline-start: auto; font-size: var(--font-body-xsmall); color: var(--text-muted); font-family: var(--font-mono); }
-  .command-empty { padding: var(--space-06); text-align: center; font-size: var(--font-body-small); color: var(--text-muted); }
+  .command-palette-separator { height: 1px; background-color: var(--border-primary); margin: var(--space-01) -0.25rem; }
+  .command-palette-shortcut { margin-inline-start: auto; font-size: var(--font-body-xsmall); color: var(--text-muted); font-family: var(--font-mono); }
+  .command-palette-empty { padding: var(--space-06); text-align: center; font-size: var(--font-body-small); color: var(--text-muted); }
 
   @media (prefers-contrast: more) {
-    dialog.command { border: var(--border-width-02) solid var(--border-primary); }
-    .command-item {
+    dialog.command-palette { border: var(--border-width-02) solid var(--border-primary); }
+    .command-palette-item {
       &:hover, &[data-highlighted] { outline: var(--border-width-01) solid var(--text-primary); }
     }
   }
 
   @media (forced-colors: active) {
-    dialog.command { border: var(--border-width-02) solid CanvasText; }
-    .command-item {
+    dialog.command-palette { border: var(--border-width-02) solid CanvasText; }
+    .command-palette-item {
       &:hover, &[data-highlighted] { forced-color-adjust: none; background: Highlight; color: HighlightText; }
     }
-    .command-separator { background-color: CanvasText; }
+    .command-palette-separator { background-color: CanvasText; }
   }
 }

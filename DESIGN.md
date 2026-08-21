@@ -51,6 +51,8 @@ Lucide is the primary icon source. Standalone SVG files live in `src/icons/` and
 
 `layouts/horizontal-navbar.html` is the canonical top-navigation shell. It uses a semantic `<header>`, a labelled `<nav>` of native route links, and an action cluster. Route navigation is not a tablist. `layouts/layouts.css` owns template-only rules, and `layouts/layouts.js` provides local icon inlining and the optional theme toggle. Both shells use current components and tokens, remain responsive, and are immediate and motionless.
 
+The documentation router in `docs/js/layout.js` imports module scripts declared by the destination page before swapping `<main>`. Component modules therefore remain available when SPA navigation enters a page whose enhancement was not loaded on the entry page.
+
 ## Validation
 
 - Verify referenced assets and documentation paths against the repository tree before handoff.

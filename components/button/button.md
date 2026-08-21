@@ -57,7 +57,7 @@
 | `sm`        | `var(--size-07)` | `0 var(--space-03)` | `var(--font-body-small)` |
 | *(default)* | `var(--size-08)` | `0 var(--space-04)` | `var(--font-body-small)` |
 | `icon`      | `var(--size-08)` | `0` (square)         | —                         |
-| `icon-sm`   | `var(--size-08)` | `0` (square)         | —                         |
+| `icon-sm`   | `var(--size-07)` | `0` (square)         | —                         |
 
 ---
 

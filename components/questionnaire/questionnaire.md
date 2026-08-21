@@ -155,7 +155,7 @@ The event bubbles so an application can listen above the form. It is a step-coor
 - Keep progress in an `output` or a status region with `aria-live="polite"`. The module updates it immediately without motion.
 - Inactive steps use the native `hidden` state, so they are removed from the visual, focus, and assistive-technology paths. The active fieldset receives focus after Back or Continue.
 - Keep the footer controls labelled with visible text. Use `button` elements, not clickable generic elements.
-- Retain visible `:focus-visible` styles. The component stylesheet includes higher-contrast and forced-colors mappings, while composed Input, Radio, Steps, and Button styles supply their own control focus states.
+- Retain visible `:focus-visible` styles. The component stylesheet includes higher-contrast and forced-colors mappings, while composed Text Field, Radio Group, Steps, and Button styles supply their own control focus states.
 
 ## Limitations
 

@@ -20,29 +20,29 @@
 ## Structure
 
 ```html
-<button class="btn" type="button" data-command-trigger="cmd">Open Command</button>
-<dialog id="cmd" class="command" role="dialog" aria-modal="true" aria-label="Command menu">
-  <div class="command-content">
-    <div class="command-input-wrapper">
+<button class="btn" type="button" data-command-palette-trigger="cmd">Open Command</button>
+<dialog id="cmd" class="command-palette" role="dialog" aria-modal="true" aria-label="Command menu">
+  <div class="command-palette-content">
+    <div class="command-palette-input-wrapper">
       <svg aria-hidden="true"><!-- search icon --></svg>
-      <input class="command-input" type="text" aria-label="Command search"
+      <input class="command-palette-input" type="text" aria-label="Command search"
              placeholder="Type a command or search..."
              autocomplete="off" autocorrect="off" spellcheck="false">
     </div>
-    <div class="command-list">
-      <div class="command-group">
-        <p class="command-group-heading">Suggestions</p>
-        <button class="command-item" type="button">Calendar</button>
-        <button class="command-item" type="button">Search Emoji</button>
+    <div class="command-palette-list">
+      <div class="command-palette-group">
+        <p class="command-palette-group-heading">Suggestions</p>
+        <button class="command-palette-item" type="button">Calendar</button>
+        <button class="command-palette-item" type="button">Search Emoji</button>
       </div>
-      <div class="command-separator"></div>
-      <div class="command-group">
-        <p class="command-group-heading">Settings</p>
-        <button class="command-item" type="button">Profile <span class="command-shortcut">⌘P</span></button>
-        <button class="command-item" type="button">Settings <span class="command-shortcut">⌘S</span></button>
+      <div class="command-palette-separator"></div>
+      <div class="command-palette-group">
+        <p class="command-palette-group-heading">Settings</p>
+        <button class="command-palette-item" type="button">Profile <span class="command-palette-shortcut">⌘P</span></button>
+        <button class="command-palette-item" type="button">Settings <span class="command-palette-shortcut">⌘S</span></button>
       </div>
     </div>
-    <div class="command-empty" hidden>No results found.</div>
+    <div class="command-palette-empty" hidden>No results found.</div>
   </div>
 </dialog>
 ```
@@ -79,9 +79,9 @@
 ## Notes
 
 - The search input filters items by text content — groups with no matching items are hidden automatically.
-- When all items are filtered out, the `.command-empty` element is shown.
+- When all items are filtered out, the `.command-palette-empty` element is shown.
 - Separators are hidden during filtering to avoid visual orphans.
-- The `data-command-trigger` attribute on any element wires it as a trigger button via JS.
+- The `data-command-palette-trigger` attribute on any element wires it as a trigger button via JS.
 - `Cmd/Ctrl+K` is registered as a global keyboard shortcut.
 - Items with `aria-disabled="true"` are excluded from keyboard navigation and filtering.
 - The dialog uses `showModal()` — focus is trapped inside and Escape closes it natively.

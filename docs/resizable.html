@@ -113,7 +113,7 @@
                 </ul>
               </nav>
             </aside>
-            <button class="resizable-handle" type="button" role="separator" tabindex="0" aria-orientation="vertical" aria-label="Resize file list" aria-controls="workspace-files workspace-document" aria-valuemin="20" aria-valuemax="80" aria-valuenow="35" aria-valuetext="File list width: 35 percent" data-value-label="File list width"></button>
+            <div class="resizable-handle" role="separator" aria-orientation="vertical" aria-label="Resize file list" aria-controls="workspace-files workspace-document" aria-valuemin="20" aria-valuemax="80" aria-valuenow="35" aria-valuetext="File list width: 35 percent" data-value-label="File list width"></div>
             <article class="resizable-panel" id="workspace-document" aria-label="Document preview">
               <p class="text-muted" style="font-family: var(--font-mono); font-size: var(--font-body-xsmall); margin: 0 0 var(--space-02)">brief.md</p>
               <h3 class="text-sm" style="margin: 0 0 var(--space-03)">Launch brief</h3>
@@ -137,11 +137,11 @@
         <pre><code class="language-markup">&lt;section class="resizable"&gt;
   &lt;div class="resizable-group" data-orientation="vertical"&gt;
     &lt;aside class="resizable-panel" id="files"&gt;Files&lt;/aside&gt;
-    &lt;button class="resizable-handle" type="button" role="separator" tabindex="0"
+    &lt;div class="resizable-handle" role="separator"
       aria-orientation="vertical" aria-label="Resize file list"
       aria-controls="files document" aria-valuemin="20" aria-valuemax="80"
       aria-valuenow="35" aria-valuetext="File list width: 35 percent"
-      data-value-label="File list width"&gt;&lt;/button&gt;
+      data-value-label="File list width"&gt;&lt;/div&gt;
     &lt;article class="resizable-panel" id="document"&gt;Document&lt;/article&gt;
   &lt;/div&gt;
   &lt;output class="resizable-output" aria-live="polite"&gt;File list width: 35 percent&lt;/output&gt;
@@ -157,7 +157,7 @@
               <p style="font-weight: var(--font-weight-strong); margin: 0 0 var(--space-02)">Inspector</p>
               <p class="text-muted" style="margin: 0">Properties and metadata for the selected file.</p>
             </section>
-            <button class="resizable-handle" type="button" role="separator" tabindex="0" aria-orientation="horizontal" aria-label="Resize inspector" aria-valuemin="25" aria-valuemax="75" aria-valuenow="45" aria-valuetext="Inspector height: 45 percent" data-value-label="Inspector height"></button>
+            <div class="resizable-handle" role="separator" aria-orientation="horizontal" aria-label="Resize inspector" aria-valuemin="25" aria-valuemax="75" aria-valuenow="45" aria-valuetext="Inspector height: 45 percent" data-value-label="Inspector height"></div>
             <section class="resizable-panel">
               <p style="font-weight: var(--font-weight-strong); margin: 0 0 var(--space-02)">Preview</p>
               <p class="text-muted" style="margin: 0">Rendered content remains in the second panel.</p>

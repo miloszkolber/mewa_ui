@@ -133,10 +133,13 @@ Use `.text-field-input` for standalone native inputs and textareas. Use `.text-f
 ### With description
 
 ```html
-<div>
-  <label class="label" for="username">Username</label>
-  <input class="text-field-input" type="text" id="username" placeholder="codylindley">
-  <p class="field-description">Choose a unique username for your account.</p>
+<div class="text-field">
+  <label class="text-field-label" for="username">Username</label>
+  <input class="text-field-input" type="text" id="username" placeholder="codylindley"
+         aria-describedby="username-description">
+  <p class="text-field-description" id="username-description">
+    Choose a unique username for your account.
+  </p>
 </div>
 ```
 
@@ -148,17 +151,21 @@ Use `.text-field-input` for standalone native inputs and textareas. Use `.text-f
 </label>
 <input class="text-field-input" type="text" id="name" required placeholder="Jane Doe">
 
-<label class="label" for="bad-email">Email</label>
-<input class="text-field-input" type="email" id="bad-email" aria-invalid="true" value="not-an-email">
-<p class="field-error">Please enter a valid email address.</p>
+<div class="text-field" data-invalid>
+  <label class="text-field-label" for="bad-email">Email</label>
+  <input class="text-field-input" type="email" id="bad-email" aria-invalid="true"
+         aria-describedby="bad-email-error" aria-errormessage="bad-email-error" value="not-an-email">
+  <p class="text-field-error" id="bad-email-error" role="alert">Please enter a valid email address.</p>
+</div>
 ```
 
 ### With icon
 
 ```html
-<div style="position:relative;">
+<div class="text-field" style="position:relative;">
+  <label class="text-field-label" data-hidden for="icon-search">Search</label>
   <i data-lucide="search" aria-hidden="true" style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--text-muted);width:1rem;height:1rem;"></i>
-  <input class="text-field-input" type="search" placeholder="Search..." style="padding-left:2.25rem;">
+  <input class="text-field-input" id="icon-search" type="search" placeholder="Search..." style="padding-left:2.25rem;">
 </div>
 ```
 
@@ -178,10 +185,11 @@ Use `.text-field-input` for standalone native inputs and textareas. Use `.text-f
 ### With button
 
 ```html
-<div style="display:flex;gap:0.5rem;">
-  <input class="text-field-input" type="search" placeholder="Search...">
-  <button class="btn" type="button" data-variant="default">Search</button>
-</div>
+<form role="search" aria-label="Search" style="display:flex;gap:0.5rem;">
+  <label class="text-field-label" data-hidden for="button-search">Search</label>
+  <input class="text-field-input" id="button-search" type="search" placeholder="Search...">
+  <button class="btn" type="submit" data-variant="default">Search</button>
+</form>
 ```
 
 ### Textarea

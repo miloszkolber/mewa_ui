@@ -1,7 +1,7 @@
 /* -- Dropdown Menu component ------------------------------------ */
 
 @layer components {
-  .dropdown-content {
+  .dropdown-menu-content {
      background-color: var(--surface-primary);
     color: var(--text-primary);
     border: var(--border-width-01) solid var(--border-primary);
@@ -20,7 +20,7 @@
 
   }
 
-  .dropdown-item {
+  .dropdown-menu-item {
     display: flex;
     align-items: center;
     gap: var(--space-02);
@@ -55,8 +55,8 @@
   }
 
   /* -- Checkbox / Radio indicators ----------------------------- */
-  .dropdown-check,
-  .dropdown-radio {
+  .dropdown-menu-check,
+  .dropdown-menu-radio {
     padding-inline-start: var(--space-06);
     position: relative;
 
@@ -71,39 +71,39 @@
     }
   }
 
-  .dropdown-check[aria-checked="true"]::before {
+  .dropdown-menu-check[aria-checked="true"]::before {
     content: '';
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
     background-size: contain;
     background-repeat: no-repeat;
   }
 
-  .dropdown-radio[aria-checked="true"]::before {
+  .dropdown-menu-radio[aria-checked="true"]::before {
     content: '';
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='5'/%3E%3C/svg%3E");
     background-size: contain;
     background-repeat: no-repeat;
   }
 
-  .dropdown-check[aria-checked="true"]::before,
-  .dropdown-radio[aria-checked="true"]::before {
+  .dropdown-menu-check[aria-checked="true"]::before,
+  .dropdown-menu-radio[aria-checked="true"]::before {
     color: var(--text-primary);
   }
 
-  .dropdown-separator {
+  .dropdown-menu-separator {
     height: 1px;
     background: var(--border-primary);
     margin: var(--space-01) -0.25rem;
   }
 
-  .dropdown-label {
+  .dropdown-menu-label {
     padding: var(--space-02) var(--space-02);
     font-size: var(--font-body-xsmall);
     font-weight: var(--font-weight-strong);
     color: var(--text-muted);
   }
 
-  .dropdown-shortcut {
+  .dropdown-menu-shortcut {
     margin-inline-start: auto;
     font-size: var(--font-body-xsmall);
     color: var(--text-muted);
@@ -111,10 +111,10 @@
   }
 
   @media (forced-colors: active) {
-    .dropdown-content {
+    .dropdown-menu-content {
       border-color: ButtonText;
     }
-    .dropdown-item {
+    .dropdown-menu-item {
       &:hover, &[data-highlighted] {
         forced-color-adjust: none;
         background: Highlight;

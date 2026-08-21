@@ -12,31 +12,31 @@
 
 ```html
 <!-- Default alert -->
-<div class="alert" role="alert">
-  <svg class="alert-icon"><!-- icon --></svg>
-  <div class="alert-content">
-    <h5 class="alert-title">Heads up!</h5>
-    <p class="alert-description">You can add components using the CLI.</p>
+<div class="callout" role="alert">
+  <svg class="callout-icon"><!-- icon --></svg>
+  <div class="callout-content">
+    <h5 class="callout-title">Heads up!</h5>
+    <p class="callout-description">You can add components using the CLI.</p>
   </div>
 </div>
 
 <!-- Destructive alert -->
-<div class="alert" data-variant="destructive" role="alert">
-  <svg class="alert-icon"><!-- icon --></svg>
-  <div class="alert-content">
-    <h5 class="alert-title">Error</h5>
-    <p class="alert-description">Your session has expired.</p>
+<div class="callout" data-variant="destructive" role="alert">
+  <svg class="callout-icon"><!-- icon --></svg>
+  <div class="callout-content">
+    <h5 class="callout-title">Error</h5>
+    <p class="callout-description">Your session has expired.</p>
   </div>
 </div>
 
 <!-- Alert with action -->
-<div class="alert" role="alert">
-  <svg class="alert-icon"><!-- icon --></svg>
-  <div class="alert-content">
-    <h5 class="alert-title">New feature available</h5>
-    <p class="alert-description">Dark mode is now available.</p>
+<div class="callout" role="alert">
+  <svg class="callout-icon"><!-- icon --></svg>
+  <div class="callout-content">
+    <h5 class="callout-title">New feature available</h5>
+    <p class="callout-description">Dark mode is now available.</p>
   </div>
-  <div class="alert-action">
+  <div class="callout-action">
      <button class="btn" type="button" data-variant="outline" data-size="sm">Enable</button>
   </div>
 </div>

@@ -95,4 +95,4 @@ The label auto-dims when the adjacent control is disabled — no `data-disabled`
 - The `.label` class is intentionally minimal — it styles the label text with appropriate font size, weight, and color.
 - Labels auto-detect disabled state from adjacent controls via `:has(+ :disabled)` — the explicit `data-disabled` attribute is also supported.
 - For inline use with checkboxes, switches, or radios, add `style="margin:0;"` to remove the default bottom margin.
-- Labels compose with Input, Textarea, Select, Checkbox, Radio, Switch, and all other form controls.
+- Labels compose with Text Field, Textarea, Select, Checkbox, Radio Group, Switch, and all other form controls.

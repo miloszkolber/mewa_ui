@@ -75,8 +75,8 @@ function init() {
     });
   });
 
-  document.querySelectorAll('.sidebar-mobile:not([data-dialog-init])').forEach((dialog) => {
-    dialog.dataset.dialogInit = '';
+  document.querySelectorAll('.sidebar-mobile:not([data-init])').forEach((dialog) => {
+    dialog.dataset.init = '';
 
     dialog.querySelectorAll('.sidebar-mobile-close:not([data-init])').forEach((button) => {
       button.dataset.init = '';

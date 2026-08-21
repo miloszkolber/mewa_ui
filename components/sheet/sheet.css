@@ -4,7 +4,8 @@
   /* -- Base -------------------------------------------------- */
   dialog.sheet {
     border: none;
-    background-color: var(--background);
+    background-color: var(--surface-primary-glass);
+    backdrop-filter: blur(var(--blur-01));
     color: var(--text-primary);
     padding: 0;
     margin: 0;

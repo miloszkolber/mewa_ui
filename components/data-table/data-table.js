@@ -261,6 +261,7 @@ function init() {
       }
 
       if (target.matches('[data-table-clear]')) {
+        event.preventDefault();
         filters().forEach((input) => { input.value = ''; });
         currentPage = 1;
         emitFilter();
@@ -301,6 +302,14 @@ function init() {
     root.addEventListener('input', (event) => {
       const target = event.target;
       if (!target.matches?.('[data-table-filter], .data-table-filter')) return;
+      currentPage = 1;
+      emitFilter();
+    });
+
+    root.addEventListener('submit', (event) => {
+      const form = event.target.closest?.('form');
+      if (!form || !root.contains(form) || !filters().some((input) => form.contains(input))) return;
+      event.preventDefault();
       currentPage = 1;
       emitFilter();
     });

@@ -1,7 +1,7 @@
 // -- Number Field ---------------------------------------------
 
 function init() {
-  document.querySelectorAll('.number-input:not([data-init])').forEach((wrapper) => {
+  document.querySelectorAll('.number-field:not([data-init])').forEach((wrapper) => {
   wrapper.dataset.init = '';
   const input = wrapper.querySelector('input[type="number"]');
   const decBtn = wrapper.querySelector('[data-action="decrement"]');

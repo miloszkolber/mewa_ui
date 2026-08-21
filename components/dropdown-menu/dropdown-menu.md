@@ -24,7 +24,7 @@ Requires JavaScript for keyboard navigation and ARIA management.
         aria-haspopup="menu"
         aria-expanded="false"
         aria-controls="my-menu"
-        data-dropdown-trigger="my-menu">
+        data-dropdown-menu-trigger="my-menu">
   Options
   <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24"
        fill="none" stroke="currentColor" stroke-width="2">
@@ -34,27 +34,27 @@ Requires JavaScript for keyboard navigation and ARIA management.
 
 <!-- Menu -->
 <div id="my-menu" role="menu" popover
-     class="dropdown-content"
+     class="dropdown-menu-content"
      aria-label="Options menu">
 
   <div role="group" aria-label="Navigation">
-    <button role="menuitem" class="dropdown-item" type="button" tabindex="-1">
+    <button role="menuitem" class="dropdown-menu-item" type="button" tabindex="-1">
       Profile
     </button>
-    <button role="menuitem" class="dropdown-item" type="button" tabindex="-1">
+    <button role="menuitem" class="dropdown-menu-item" type="button" tabindex="-1">
       Settings
     </button>
   </div>
 
-  <div class="dropdown-separator" role="separator"></div>
+  <div class="dropdown-menu-separator" role="separator"></div>
 
   <div role="group" aria-label="Actions">
-    <button role="menuitem" class="dropdown-item" type="button" tabindex="-1">
+    <button role="menuitem" class="dropdown-menu-item" type="button" tabindex="-1">
       <svg aria-hidden="true" width="16" height="16">...</svg>
       Export
-      <span class="dropdown-shortcut">⌘E</span>
+      <span class="dropdown-menu-shortcut">⌘E</span>
     </button>
-    <button role="menuitem" class="dropdown-item" type="button" data-variant="destructive" tabindex="-1">
+    <button role="menuitem" class="dropdown-menu-item" type="button" data-variant="destructive" tabindex="-1">
       Delete
     </button>
   </div>
@@ -86,9 +86,9 @@ For checkbox/radio items in the menu, use `aria-checked`:
 
 ```html
 <!-- Checkbox item -->
-<button role="menuitemcheckbox" class="dropdown-item" type="button"
+<button role="menuitemcheckbox" class="dropdown-menu-item" type="button"
         aria-checked="true" tabindex="-1">
-  <svg class="dropdown-check" aria-hidden="true" width="16" height="16">
+  <svg class="dropdown-menu-check" aria-hidden="true" width="16" height="16">
     <path d="M20 6 9 17l-5-5"/>
   </svg>
   Show Sidebar
@@ -96,13 +96,13 @@ For checkbox/radio items in the menu, use `aria-checked`:
 
 <!-- Radio group -->
 <div role="group" aria-label="Sort order">
-  <div class="dropdown-label">Sort by</div>
-  <button role="menuitemradio" class="dropdown-item" type="button"
+  <div class="dropdown-menu-label">Sort by</div>
+  <button role="menuitemradio" class="dropdown-menu-item" type="button"
           aria-checked="true" tabindex="-1">
-    <svg class="dropdown-check" aria-hidden="true">...</svg>
+    <svg class="dropdown-menu-check" aria-hidden="true">...</svg>
     Date
   </button>
-  <button role="menuitemradio" class="dropdown-item" type="button"
+  <button role="menuitemradio" class="dropdown-menu-item" type="button"
           aria-checked="false" tabindex="-1">
     Name
   </button>

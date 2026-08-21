@@ -21,8 +21,7 @@ document.querySelectorAll('.sortable:not([data-init])').forEach((list) => {
   }
 
   function announce(msg) {
-    liveRegion.textContent = '';
-    requestAnimationFrame(() => { liveRegion.textContent = msg; });
+    liveRegion.textContent = msg;
   }
 
   function getItems() {

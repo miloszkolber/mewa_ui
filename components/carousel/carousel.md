@@ -86,14 +86,6 @@ Add `data-loop` to the carousel container to enable infinite circular navigation
 </div>
 ```
 
-### Autoplay
-Add `data-autoplay="3000"` (milliseconds) to auto-advance slides. Auto-rotation pauses on hover and focus per WAI-ARIA requirements:
-```html
-<div class="carousel" data-autoplay="3000" data-loop role="region" aria-roledescription="carousel" aria-label="Auto-rotating slides">
-  …
-</div>
-```
-
 ### Multi-slide sizing
 Set `flex-basis` on `.carousel-slide` to control per-slide width:
 ```html
@@ -111,7 +103,6 @@ Set `flex-basis` on `.carousel-slide` to control per-slide width:
 | `data-orientation` | *(omitted)* | Horizontal scrolling; Left/Right arrows |
 | `data-orientation` | `vertical` | Vertical scrolling; Up/Down arrows |
 | `data-loop` | *(presence)* | Enables circular/infinite navigation |
-| `data-autoplay` | `"3000"` | Auto-advances every N ms; pauses on hover/focus |
 
 ## ARIA
 
@@ -123,7 +114,7 @@ Set `flex-basis` on `.carousel-slide` to control per-slide width:
 | `role="group"` | `.carousel-slide` | Groups slide content |
 | `aria-roledescription="slide"` | `.carousel-slide` | Announces as "slide" instead of "group" |
 | `aria-label="X of Y"` | `.carousel-slide` | Positional label for each slide |
-| `aria-live="polite"` | `.carousel-viewport` | Announces slide changes (set to `off` during autoplay) |
+| `aria-live="polite"` | `.carousel-viewport` | Announces user-triggered slide changes |
 | `aria-label` | `.carousel-prev` | "Previous slide" |
 | `aria-label` | `.carousel-next` | "Next slide" |
 | `disabled` | `.carousel-prev/.next` | Set when at boundary (non-loop only) |
@@ -146,7 +137,7 @@ Set `flex-basis` on `.carousel-slide` to control per-slide width:
 - **Slide sizing** — default is `flex: 0 0 100%`. Override `flex` on `.carousel-slide` to show multiple slides (e.g., `calc(33.333% - 0.667rem)` for 3-up).
 - **Gap / spacing** — controlled by the `gap` property on `.carousel-viewport` (default `1rem`).
 - **Dot auto-generation** — if `.carousel-dots` is present but empty, dots are auto-created by JS from the slide count.
-- **Autoplay pauses** — on `mouseenter` and `focusin`, restarts on `mouseleave` and `focusout` (per WAI-ARIA APG).
+- **No autoplay** — slides change only through explicit keyboard, pointer, or touch interaction.
 - **Immediate state changes** — carousel controls update without smooth scrolling or transitions.
 - **Scroll containment** — `overscroll-behavior: contain` prevents parent page scrolling when at carousel edges.
 - **Buttons disabled at edges** — in non-loop mode, prev is disabled at first slide, next at last slide.

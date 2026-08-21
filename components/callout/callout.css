@@ -1,5 +1,5 @@
 @layer components {
-  .alert {
+  .callout {
     position: relative;
     display: flex;
     align-items: flex-start;
@@ -15,22 +15,22 @@
       border-color: var(--text-negative);
       color: var(--text-negative);
 
-      & .alert-title {
+      & .callout-title {
         color: var(--text-negative);
       }
 
-      & .alert-description {
+      & .callout-description {
         color: var(--text-negative);
         opacity: var(--opacity-09);
       }
 
-      & .alert-icon {
+      & .callout-icon {
         color: var(--text-negative);
       }
     }
   }
 
-  .alert-icon {
+  .callout-icon {
     width: var(--size-04);
     height: var(--size-04);
     flex-shrink: 0;
@@ -38,12 +38,12 @@
     color: var(--text-primary);
   }
 
-  .alert-content {
+  .callout-content {
     flex: 1;
     min-width: 0;
   }
 
-  .alert-title {
+  .callout-title {
     margin: 0;
     font-size: var(--font-body-small);
     font-weight: var(--font-weight-strong);
@@ -52,14 +52,14 @@
     color: var(--text-primary);
   }
 
-  .alert-description {
+  .callout-description {
     margin: var(--space-01) 0 0;
     font-size: var(--font-body-small);
     line-height: var(--font-height);
     color: var(--text-muted);
   }
 
-  .alert-action {
+  .callout-action {
     flex-shrink: 0;
     margin-left: auto;
     align-self: center;

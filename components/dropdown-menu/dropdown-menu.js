@@ -1,12 +1,12 @@
 // -- Dropdown Menu --------------------------------------------
 
 function init() {
-  document.querySelectorAll('[data-dropdown-trigger]:not([data-init])').forEach((trigger) => {
+  document.querySelectorAll('[data-dropdown-menu-trigger]:not([data-init])').forEach((trigger) => {
     trigger.dataset.init = '';
-    const menu = document.getElementById(trigger.dataset.dropdownTrigger);
+    const menu = document.getElementById(trigger.dataset.dropdownMenuTrigger);
     if (!menu) return;
 
-    const anchorId = `--dropdown-${menu.id}`;
+    const anchorId = `--dropdown-menu-${menu.id}`;
     trigger.style.anchorName = anchorId;
     menu.style.positionAnchor = anchorId;
 

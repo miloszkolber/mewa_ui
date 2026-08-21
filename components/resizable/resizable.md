@@ -2,12 +2,12 @@
 
 ## Native basis
 
-Two semantic panels in a flex container, separated by a focusable `<button role="separator">`. The separator uses the ARIA separator value properties, native Pointer Events, and a native `<output>` live region. CSS keeps both panels usable when JavaScript is unavailable.
+Two semantic panels in a flex container, separated by a static `<div role="separator">`. When the module loads it upgrades the divider with a keyboard focus target, ARIA separator value properties, native Pointer Events, and a native `<output>` live region. CSS keeps both panels usable when JavaScript is unavailable.
 
 ## Native Web APIs
 
 - [`role="separator"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/separator_role) — identifies a focusable, movable divider and exposes its value
-- [`<button>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) — provides a native focus target and disabled state for the separator control
+- [`tabindex`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) — added by the module so the separator is focusable only when resizing behavior is available
 - [Pointer Events](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events) — one pointer model for mouse, pen, and touch dragging
 - [`setPointerCapture()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/setPointerCapture) — keeps a drag active when the pointer leaves the handle
 - [`<output>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/output) — native status output that can be announced as a live region
@@ -31,11 +31,9 @@ The matching shadcn/ui reference describes a panel-group, panel, and handle comp
     <aside class="resizable-panel" id="file-panel" aria-label="Project files">
       File list
     </aside>
-    <button
+    <div
       class="resizable-handle"
-      type="button"
       role="separator"
-      tabindex="0"
       aria-orientation="vertical"
       aria-label="Resize file list"
       aria-controls="file-panel document-panel"
@@ -44,7 +42,7 @@ The matching shadcn/ui reference describes a panel-group, panel, and handle comp
       aria-valuenow="35"
       aria-valuetext="File list width: 35 percent"
       data-value-label="File list width"
-    ></button>
+    ></div>
     <article class="resizable-panel" id="document-panel">
       Document content
     </article>
@@ -63,18 +61,16 @@ The group must contain exactly two `.resizable-panel` elements and one `.resizab
 <div class="resizable" data-orientation="horizontal">
   <div class="resizable-group" data-orientation="horizontal">
     <section class="resizable-panel">Inspector</section>
-    <button
+    <div
       class="resizable-handle"
-      type="button"
       role="separator"
-      tabindex="0"
       aria-orientation="horizontal"
       aria-label="Resize inspector"
       aria-valuemin="25"
       aria-valuemax="75"
       aria-valuenow="50"
       aria-valuetext="Inspector height: 50 percent"
-    ></button>
+    ></div>
     <section class="resizable-panel">Preview</section>
   </div>
 </div>
@@ -105,7 +101,7 @@ The separator's `aria-valuemin`, `aria-valuemax`, and `aria-valuenow` values are
 |-------|---------|----------|
 | Initial | `.resizable` | CSS lays out two panels even before JavaScript runs. |
 | Resizing | `.resizable` and `.resizable-handle` with `data-resizing` | Pointer drag is active and text selection is disabled on the handle. |
-| Disabled | `.resizable-handle[disabled]` or `[aria-disabled="true"]` | The divider cannot be dragged or adjusted by keyboard. |
+| Disabled | `.resizable-handle[aria-disabled="true"]` or a button handle with `[disabled]` | The divider cannot be dragged or adjusted by keyboard. |
 | Narrow group | `.resizable-group` | Panels keep `min-inline-size: 0` and scroll their own content instead of forcing a second viewport. |
 | No JavaScript | `.resizable-group` | Both panels remain visible using the default 35/65 flex split. The divider is static. |
 
@@ -113,7 +109,7 @@ The separator's `aria-valuemin`, `aria-valuemax`, and `aria-valuenow` values are
 
 ## Keyboard
 
-Focus the separator with `Tab`. Every handled key prevents the browser's default page action.
+When the module is loaded, it adds `tabindex="0"` so the separator can receive focus with `Tab`. Every handled key prevents the browser's default page action. Without JavaScript the divider remains static and is not a dead interactive control.
 
 | Key | Vertical divider | Horizontal divider |
 |-----|------------------|--------------------|
@@ -145,7 +141,7 @@ Arrow keys use `data-step` (one percentage point by default). Values stop at `ar
 | `aria-live="polite"` | `.resizable-output` | Announces the latest value without moving focus. |
 | `aria-atomic="true"` | `.resizable-output` | Announces the complete value sentence. |
 
-The button element supplies a native focus target. The explicit separator role is the semantic role exposed to assistive technology, and the handle's descendants are decorative only.
+The module supplies the focus target when resizing behavior is available. The explicit separator role is the semantic role exposed to assistive technology, and the handle's descendants are decorative only.
 
 ---
 

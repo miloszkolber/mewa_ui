@@ -103,13 +103,13 @@
         <section class="data-table" data-page-size="3" aria-labelledby="projects-title">
           <h2 id="projects-title" class="text-base font-medium">Projects</h2>
           <div class="data-table-toolbar">
-            <div class="data-table-filter-group" role="search" aria-label="Filter projects">
+            <form class="data-table-filter-group" role="search" aria-label="Filter projects" method="get" action="">
               <div class="text-field data-table-filter-field">
                 <label class="text-field-label" for="projects-filter">Filter projects</label>
                 <input class="text-field-input data-table-filter" data-table-filter id="projects-filter" name="q" type="search" placeholder="Search project names" aria-controls="projects-table" aria-describedby="projects-status">
               </div>
-              <button class="btn" data-variant="outline" data-table-clear type="button">Clear</button>
-            </div>
+              <button class="btn" data-variant="outline" data-table-clear type="reset">Clear</button>
+            </form>
             <p class="data-table-summary" data-table-status data-singular="project" data-plural="projects" id="projects-status" role="status" aria-live="polite">5 projects</p>
           </div>
           <div class="table-container">
@@ -118,13 +118,13 @@
               <thead>
                 <tr class="table-row">
                   <th class="table-head" scope="col" aria-sort="ascending">
-                    <button class="data-table-sort" data-table-sort type="button" aria-label="Sort by project">Project</button>
+                    <a class="data-table-sort" data-table-sort href="?sort=project" aria-label="Sort by project">Project</a>
                   </th>
                   <th class="table-head" scope="col" aria-sort="none" data-sort-type="text">
-                    <button class="data-table-sort" data-table-sort type="button" aria-label="Sort by owner">Owner</button>
+                    <a class="data-table-sort" data-table-sort href="?sort=owner" aria-label="Sort by owner">Owner</a>
                   </th>
                   <th class="table-head" scope="col" aria-sort="none" data-sort-type="number" style="text-align: right">
-                    <button class="data-table-sort" data-table-sort type="button" aria-label="Sort by seats">Seats</button>
+                    <a class="data-table-sort" data-table-sort href="?sort=seats" aria-label="Sort by seats">Seats</a>
                   </th>
                 </tr>
               </thead>
@@ -172,13 +172,14 @@
       <div style="position: relative; margin-top: var(--space-02)">
         <button class="copy-btn" type="button">Copy</button>
         <pre><code class="language-markup">&lt;section class="data-table" data-page-size="3"&gt;
-  &lt;div class="data-table-toolbar"&gt;
+  &lt;form class="data-table-filter-group" role="search" method="get" action=""&gt;
     &lt;div class="text-field data-table-filter-field"&gt;
       &lt;label class="text-field-label" for="projects-filter"&gt;Filter projects&lt;/label&gt;
       &lt;input class="text-field-input data-table-filter" data-table-filter id="projects-filter" type="search"&gt;
     &lt;/div&gt;
     &lt;p class="data-table-summary" data-table-status role="status"&gt;5 projects&lt;/p&gt;
-  &lt;/div&gt;
+    &lt;button class="btn" data-table-clear type="reset"&gt;Clear&lt;/button&gt;
+  &lt;/form&gt;
   &lt;div class="table-container"&gt;
     &lt;table class="table"&gt;
       &lt;caption class="table-caption"&gt;Projects and their current owners.&lt;/caption&gt;

@@ -115,7 +115,7 @@ Both shells must be responsive without adding motion. Keep the keyboard path and
 
 ## Documentation site architecture
 
-The doc site is static and has one HTML page per current component. There is no landing page or `docs/index.html`; serve `docs/` over HTTP and start at `typography.html`. `docs/js/layout.js` loads synchronously, defines `<site-header>` and `<site-nav>`, centralizes `NAV` and `BUILT`, and runs an SPA-style main-content swap. The swap is explicitly instant and has no View Transition or other animation. `docs/js/site.js` owns doc-site-only icon loading, copy buttons, table-of-contents links, and page-ready hooks.
+The doc site is static and has one HTML page per current component. There is no landing page or `docs/index.html`; serve `docs/` over HTTP and start at `typography.html`. `docs/js/layout.js` loads synchronously, defines `<site-header>` and `<site-nav>`, centralizes `NAV` and `BUILT`, imports destination module scripts before an SPA-style main-content swap, and keeps the swap explicitly instant with no View Transition or other animation. `docs/js/site.js` owns doc-site-only icon loading, copy buttons, table-of-contents links, and page-ready hooks.
 
 Every doc page currently loads the foundation styles and the complete current component CSS list, then the current component modules needed by the doc demos. This is a documentation-site convenience, not the consumer include pattern. When adding a component, add its CSS link and module script to every existing HTML page where the doc-site convention requires them, add the page to `NAV` and `BUILT`, and verify that all referenced files exist. Consumers should load only the assets for the components they use.
 

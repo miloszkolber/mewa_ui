@@ -1,7 +1,7 @@
 /* -- Number Field component ------------------------------------- */
 
 @layer components {
-  .number-input {
+  .number-field {
     display: inline-grid;
     grid-template-columns: minmax(0, var(--size-11)) var(--size-07);
     grid-template-rows: repeat(2, minmax(0, 1fr));

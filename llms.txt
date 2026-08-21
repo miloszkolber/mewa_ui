@@ -127,7 +127,7 @@ Every item links to its current documentation page and the machine-readable regi
 
 - **Sidebar** (`sidebar`) — [docs](docs/sidebar.html) · [registry](registry.json) — Collapsible desktop rail and mobile navigation dialog.
 - **Message Scroller** (`message-scroller`) — [docs](docs/message-scroller.html) · [registry](registry.json) — Focusable message log and native composer with optional follow-latest behavior.
-- **Resizable** (`resizable`) — [docs](docs/resizable.html) · [registry](registry.json) — Two-panel split with optional pointer and keyboard resizing.
+- **Resizable** (`resizable`) — [docs](docs/resizable.html) · [registry](registry.json) — Two-panel split with a static separator and optional pointer and keyboard resizing.
 
 ## JavaScript and progressive enhancement
 

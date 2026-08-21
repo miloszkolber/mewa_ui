@@ -148,6 +148,29 @@
   /* Detect current filename */
   var currentPage = location.pathname.split('/').pop() || 'typography.html';
 
+  /* Component modules are loaded by the destination page's markup. The SPA
+     swap keeps the document head, so import any destination modules that were
+     not present on the entry page before replacing <main>. */
+  var loadedModules = new Set(
+    Array.from(document.querySelectorAll('script[type="module"][src]'))
+      .map(function (script) { return new URL(script.getAttribute('src'), location.href).href; })
+  );
+
+  function loadPageModules(doc, href) {
+    var pageUrl = new URL(href, location.href);
+    var imports = Array.from(doc.querySelectorAll('script[type="module"][src]'))
+      .map(function (script) { return new URL(script.getAttribute('src'), pageUrl).href; })
+      .filter(function (url) {
+        return new URL(url).origin === location.origin && !loadedModules.has(url);
+      });
+
+    return Promise.all(imports.map(function (url) {
+      return import(url).then(function () {
+        loadedModules.add(url);
+      });
+    }));
+  }
+
   /* -- <site-header> ------------------------------------------ */
   class SiteHeader extends HTMLElement {
     connectedCallback() {
@@ -178,7 +201,7 @@
       this.style.display = 'contents';
       var html = '<aside class="site-sidebar">';
       html += '<div class="nav-filter-wrap">' +
-        '<input type="text" class="input nav-filter-input" data-size="sm" ' +
+        '<input type="text" class="text-field-input nav-filter-input" data-size="sm" ' +
           'placeholder="Filter components..." aria-label="Filter components" ' +
           'autocomplete="off" spellcheck="false">' +
       '</div>';
@@ -343,7 +366,7 @@
         if (!r.ok) throw new Error(r.status);
         return r.text();
       })
-      .then(function (html) {
+      .then(async function (html) {
         var parser = new DOMParser();
         var doc = parser.parseFromString(html, 'text/html');
         var newMain = doc.querySelector('main');
@@ -394,6 +417,8 @@
 
           navigating = false;
         };
+
+        await loadPageModules(doc, href);
 
         /* Instant page swap — no transition */
         swap();

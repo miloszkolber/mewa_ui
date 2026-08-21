@@ -14,10 +14,8 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
   const slides = () => Array.from(viewport.querySelectorAll('.carousel-slide'));
   const isVertical = carousel.dataset.orientation === 'vertical';
   const isLoop = carousel.hasAttribute('data-loop');
-  const autoplayDelay = carousel.dataset.autoplay ? parseInt(carousel.dataset.autoplay, 10) : 0;
 
   let currentIndex = 0;
-  let autoplayTimer = null;
 
   // ── ARIA setup ───────────────────────────────
   if (!carousel.hasAttribute('role')) carousel.setAttribute('role', 'region');
@@ -137,31 +135,7 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
     carousel.setAttribute('tabindex', '0');
   }
 
-  // ── Autoplay ────────────────────────────────
-  const startAutoplay = () => {
-    if (!autoplayDelay) return;
-    stopAutoplay();
-    autoplayTimer = setInterval(goNext, autoplayDelay);
-    viewport.setAttribute('aria-live', 'off');
-  };
-
-  const stopAutoplay = () => {
-    if (autoplayTimer) {
-      clearInterval(autoplayTimer);
-      autoplayTimer = null;
-    }
-    viewport.setAttribute('aria-live', 'polite');
-  };
-
-  if (autoplayDelay) {
-    startAutoplay();
-    carousel.addEventListener('mouseenter', stopAutoplay);
-    carousel.addEventListener('mouseleave', startAutoplay);
-    carousel.addEventListener('focusin', stopAutoplay);
-    carousel.addEventListener('focusout', startAutoplay);
-  } else {
-    viewport.setAttribute('aria-live', 'polite');
-  }
+  viewport.setAttribute('aria-live', 'polite');
 
   // ── Initial state ───────────────────────────
   updateState(0);
