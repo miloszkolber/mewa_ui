@@ -598,11 +598,17 @@ async function runNoJavaScriptChecks(base) {
     const resizableFallback = await noJsPage.$eval(".preview .resizable-handle", (handle) => ({
       tagName: handle.tagName,
       role: handle.getAttribute("role"),
-      tabIndex: handle.getAttribute("tabindex")
+      tabIndex: handle.getAttribute("tabindex"),
+      cursor: getComputedStyle(handle).cursor,
+      touchAction: getComputedStyle(handle).touchAction,
+      userSelect: getComputedStyle(handle).userSelect
     }));
     assert.equal(resizableFallback.tagName, "DIV", "Resizable keeps a static divider without JavaScript");
     assert.equal(resizableFallback.role, "separator", "Resizable keeps separator semantics without JavaScript");
     assert.equal(resizableFallback.tabIndex, null, "Resizable does not expose a dead focus target without JavaScript");
+    assert.equal(resizableFallback.cursor, "auto", "Resizable keeps a neutral cursor without JavaScript");
+    assert.equal(resizableFallback.touchAction, "auto", "Resizable keeps native touch behavior without JavaScript");
+    assert.equal(resizableFallback.userSelect, "auto", "Resizable keeps native selection behavior without JavaScript");
   } finally {
     await noJsPage.close().catch(() => {});
     page = javascriptPage;

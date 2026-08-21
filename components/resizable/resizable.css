@@ -62,10 +62,6 @@
       transparent calc(50% + (var(--border-width-01) / 2))
     );
     color: var(--text-muted);
-    cursor: col-resize;
-    touch-action: none;
-    user-select: none;
-
     &::after {
       position: absolute;
       inset-block-start: 50%;
@@ -78,9 +74,15 @@
       transform: translate(-50%, -50%);
     }
 
-    &:hover,
-    &:focus-visible,
-    &[data-resizing] {
+    .resizable[data-init] & {
+      cursor: col-resize;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .resizable[data-init] &:hover,
+    .resizable[data-init] &:focus-visible,
+    .resizable[data-init] &[data-resizing] {
       background: linear-gradient(
         to right,
         transparent calc(50% - (var(--border-width-02) / 2)),
@@ -91,13 +93,13 @@
       color: var(--text-primary);
     }
 
-    &:focus-visible {
+    .resizable[data-init] &:focus-visible {
       outline: var(--focus-ring-width) solid var(--border-ring);
       outline-offset: var(--border-width-01);
     }
 
-    &:disabled,
-    &[aria-disabled="true"] {
+    .resizable[data-init] &:disabled,
+    .resizable[data-init] &[aria-disabled="true"] {
       cursor: not-allowed;
       opacity: var(--opacity-05);
     }
@@ -117,7 +119,9 @@
       var(--border-primary) calc(50% + (var(--border-width-01) / 2)),
       transparent calc(50% + (var(--border-width-01) / 2))
     );
-    cursor: row-resize;
+    .resizable[data-init] & {
+      cursor: row-resize;
+    }
 
     &::after {
       inline-size: var(--size-08);
@@ -126,9 +130,9 @@
       border-block: var(--border-width-01) solid currentColor;
     }
 
-    &:hover,
-    &:focus-visible,
-    &[data-resizing] {
+    .resizable[data-init] &:hover,
+    .resizable[data-init] &:focus-visible,
+    .resizable[data-init] &[data-resizing] {
       background: linear-gradient(
         to bottom,
         transparent calc(50% - (var(--border-width-02) / 2)),
@@ -184,15 +188,15 @@
       border-inline: var(--border-width-01) solid ButtonBorder;
       color: ButtonText;
 
-      &:hover,
-      &:focus-visible,
-      &[data-resizing] {
+      .resizable[data-init] &:hover,
+      .resizable[data-init] &:focus-visible,
+      .resizable[data-init] &[data-resizing] {
         background: Highlight;
         border-color: Highlight;
         color: HighlightText;
       }
 
-      &:focus-visible {
+      .resizable[data-init] &:focus-visible {
         outline-color: Highlight;
       }
     }

@@ -423,6 +423,11 @@ test("native fallback and SPA enhancement contracts stay explicit", () => {
     /for="icon-search"/, /id="icon-search"/,
     /for="button-search"/, /id="button-search"/
   ].forEach((pattern) => assert.match(textField, pattern, `text-field skill is missing ${pattern}`));
+  const textFieldDoc = read(path.join(docsDir, "text-field.html"));
+  [
+    /id="text-field-legacy-email-help"/, /aria-describedby="text-field-legacy-email-help"/,
+    /id="password"/, /for="password"/, /id="text-field-form-email-help"/, /aria-describedby="text-field-form-email-help"/
+  ].forEach((pattern) => assert.match(textFieldDoc, pattern, `text-field docs are missing ${pattern}`));
 
   const dataTable = read(path.join(docsDir, "data-table.html"));
   assert.match(dataTable, /<form class="data-table-filter-group"/);
