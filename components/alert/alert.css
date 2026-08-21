@@ -4,28 +4,28 @@
     display: flex;
     align-items: flex-start;
     gap: var(--space-03);
-    border: var(--border-width-01) solid var(--border);
+    border: var(--border-width-01) solid var(--border-primary);
 
     padding: var(--space-04) var(--space-05);
     font-size: var(--font-body-small);
-    color: var(--foreground);
+    color: var(--text-primary);
     background-color: var(--background);
 
     &[data-variant="destructive"] {
-      border-color: var(--destructive);
-      color: var(--destructive);
+      border-color: var(--text-negative);
+      color: var(--text-negative);
 
       & .alert-title {
-        color: var(--destructive);
+        color: var(--text-negative);
       }
 
       & .alert-description {
-        color: var(--destructive);
+        color: var(--text-negative);
         opacity: var(--opacity-09);
       }
 
       & .alert-icon {
-        color: var(--destructive);
+        color: var(--text-negative);
       }
     }
   }
@@ -35,7 +35,7 @@
     height: var(--size-04);
     flex-shrink: 0;
     margin-top: var(--space-01);
-    color: var(--foreground);
+    color: var(--text-primary);
   }
 
   .alert-content {
@@ -49,14 +49,14 @@
     font-weight: var(--font-weight-strong);
     line-height: var(--font-height);
     letter-spacing: -0.01em;
-    color: var(--foreground);
+    color: var(--text-primary);
   }
 
   .alert-description {
     margin: var(--space-01) 0 0;
     font-size: var(--font-body-small);
     line-height: var(--font-height);
-    color: var(--muted-foreground);
+    color: var(--text-muted);
   }
 
   .alert-action {

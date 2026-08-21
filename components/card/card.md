@@ -115,7 +115,7 @@ No JavaScript required.
 ## Notes
 
 - Card is a container pattern — its children define its purpose
-- Avoid deeply nesting cards (card inside card) — use `--muted` surface instead
+- Avoid deeply nesting cards (card inside card) — use `--surface-secondary` instead
 - For interactive cards (click to navigate), wrap in `<a>` and apply card classes to it
 - `card-footer` uses `padding-top: 0` to avoid double-spacing with `card-content`
 - For a card grid, use CSS Grid on the parent — the card itself has no layout opinion

@@ -30,7 +30,7 @@
     /* -- Invalid state -------------------------------------- */
     &[data-invalid] {
       & > .field-description {
-        color: var(--destructive);
+        color: var(--text-negative);
       }
     }
   }
@@ -53,7 +53,7 @@
     align-items: start;
     justify-content: space-between;
     gap: var(--space-04);
-    border: var(--border-width-01) solid var(--border);
+    border: var(--border-width-01) solid var(--border-primary);
 
     padding: var(--space-04);
 
@@ -99,7 +99,7 @@
       font-size: var(--font-body-small);
       font-weight: var(--font-weight-strong);
       font-family: var(--font-sans);
-      color: var(--foreground);
+      color: var(--text-primary);
       padding: 0;
       margin-bottom: var(--space-01);
     }

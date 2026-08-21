@@ -87,14 +87,14 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
         <h1>Icon</h1>
-        <p class="text-muted-foreground leading-relaxed mb-6">
-          The full <a href="https://lucide.dev/icons/" target="_blank" style="color: var(--primary); text-decoration: underline; text-underline-offset: 4px">Lucide</a> icon set ships locally in <code>src/icons/</code>. Write <code>&lt;i data-lucide="name"&gt;</code> — the loader in <code>js/site.js</code> fetches the matching SVG and inlines it at page load. No CDN.
+        <p class="text-muted leading-relaxed mb-6">
+          The full <a href="https://lucide.dev/icons/" target="_blank" style="color: var(--text-primary); text-decoration: underline; text-underline-offset: 4px">Lucide</a> icon set ships locally in <code>src/icons/</code>. Write <code>&lt;i data-lucide="name"&gt;</code> — the loader in <code>js/site.js</code> fetches the matching SVG and inlines it at page load. No CDN.
         </p>
       </div>
 
         <!-- -- Example: Basic ------------------------------------ -->
           <p class="text-sm font-medium mb-2 mt-6">Basic usage</p>
-          <p class="text-xs text-muted-foreground mb-3">Use <code>data-lucide</code> with any icon name from <a href="https://lucide.dev/icons/" target="_blank" style="color: var(--primary); text-decoration: underline; text-underline-offset: 4px">lucide.dev/icons</a>.</p>
+          <p class="text-xs text-muted mb-3">Use <code>data-lucide</code> with any icon name from <a href="https://lucide.dev/icons/" target="_blank" style="color: var(--text-primary); text-decoration: underline; text-underline-offset: 4px">lucide.dev/icons</a>.</p>
           <div class="preview" style="gap: var(--space-06)">
             <i data-lucide="house"></i>
             <i data-lucide="settings"></i>
@@ -118,23 +118,23 @@
 
         <!-- -- Example: Sizes ------------------------------------ -->
           <p class="text-sm font-medium mb-2 mt-6">Sizes</p>
-          <p class="text-xs text-muted-foreground mb-3">Use <code>data-size</code> to control icon size.</p>
+          <p class="text-xs text-muted mb-3">Use <code>data-size</code> to control icon size.</p>
           <div class="preview" style="gap: var(--space-07); align-items: center">
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-02)">
               <i data-lucide="star"></i>
-              <span style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-family: var(--font-mono)">default (16px)</span>
+              <span style="font-size: var(--font-body-xsmall); color: var(--text-muted); font-family: var(--font-mono)">default (16px)</span>
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-02)">
               <i data-lucide="star" data-size="md"></i>
-              <span style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-family: var(--font-mono)">md (20px)</span>
+              <span style="font-size: var(--font-body-xsmall); color: var(--text-muted); font-family: var(--font-mono)">md (20px)</span>
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-02)">
               <i data-lucide="star" data-size="lg"></i>
-              <span style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-family: var(--font-mono)">lg (24px)</span>
+              <span style="font-size: var(--font-body-xsmall); color: var(--text-muted); font-family: var(--font-mono)">lg (24px)</span>
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-02)">
               <i data-lucide="star" data-size="xl"></i>
-              <span style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-family: var(--font-mono)">xl (32px)</span>
+              <span style="font-size: var(--font-body-xsmall); color: var(--text-muted); font-family: var(--font-mono)">xl (32px)</span>
             </div>
           </div>
           <div style="position: relative; margin-top: var(--space-02)">
@@ -150,7 +150,7 @@
 
         <!-- -- Example: With Button ------------------------------ -->
           <p class="text-sm font-medium mb-2 mt-6">With buttons</p>
-          <p class="text-xs text-muted-foreground mb-3">Icons inside buttons inherit the button's color.</p>
+          <p class="text-xs text-muted mb-3">Icons inside buttons inherit the button's color.</p>
           <div class="preview">
             <button class="btn" data-variant="default">
               <i data-lucide="save"></i>
@@ -185,12 +185,12 @@
 
         <!-- -- Example: Color ------------------------------------ -->
           <p class="text-sm font-medium mb-2 mt-6">Color</p>
-          <p class="text-xs text-muted-foreground mb-3">Icons inherit <code>currentColor</code>. Change color with text color utilities.</p>
+          <p class="text-xs text-muted mb-3">Icons inherit <code>currentColor</code>. Change color with text color utilities.</p>
           <div class="preview" style="gap: var(--space-06)">
             <i data-lucide="circle-check" data-size="lg" style="color: oklch(0.72 0.19 142)"></i>
             <i data-lucide="triangle-alert" data-size="lg" style="color: oklch(0.77 0.17 75)"></i>
-            <i data-lucide="circle-x" data-size="lg" style="color: var(--destructive)"></i>
-            <i data-lucide="info" data-size="lg" style="color: var(--info)"></i>
+            <i data-lucide="circle-x" data-size="lg" style="color: var(--text-negative)"></i>
+            <i data-lucide="info" data-size="lg" style="color: var(--text-secondary)"></i>
           </div>
           <div style="position: relative; margin-top: var(--space-02)">
             <button class="copy-btn">
@@ -199,21 +199,21 @@
             </button>
             <pre><code class="language-markup">&lt;i data-lucide="circle-check" data-size="lg" style="color: oklch(0.72 0.19 142)"&gt;&lt;/i&gt;
 &lt;i data-lucide="triangle-alert" data-size="lg" style="color: oklch(0.77 0.17 75)"&gt;&lt;/i&gt;
-&lt;i data-lucide="circle-x" data-size="lg" style="color: var(--destructive)"&gt;&lt;/i&gt;
-&lt;i data-lucide="info" data-size="lg" style="color: var(--info)"&gt;&lt;/i&gt;</code></pre>
+&lt;i data-lucide="circle-x" data-size="lg" style="color: var(--text-negative)"&gt;&lt;/i&gt;
+&lt;i data-lucide="info" data-size="lg" style="color: var(--text-secondary)"&gt;&lt;/i&gt;</code></pre>
           </div>
 
         <!-- -- Example: Stroke Width ------------------------------ -->
           <p class="text-sm font-medium mb-2 mt-6">Stroke width</p>
-          <p class="text-xs text-muted-foreground mb-3">Adjust line thickness with the <code>stroke-width</code> attribute. Default is <code>2</code>.</p>
+          <p class="text-xs text-muted mb-3">Adjust line thickness with the <code>stroke-width</code> attribute. Default is <code>2</code>.</p>
           <div class="preview" style="gap: var(--space-07); align-items: center">
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-02)">
               <i data-lucide="heart" data-size="lg" stroke-width="1.5"></i>
-              <span style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-family: var(--font-mono)">1.5</span>
+              <span style="font-size: var(--font-body-xsmall); color: var(--text-muted); font-family: var(--font-mono)">1.5</span>
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-02)">
               <i data-lucide="heart" data-size="lg" stroke-width="2"></i>
-              <span style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-family: var(--font-mono)">2</span>
+              <span style="font-size: var(--font-body-xsmall); color: var(--text-muted); font-family: var(--font-mono)">2</span>
             </div>
           </div>
           <div style="position: relative; margin-top: var(--space-02)">
@@ -227,7 +227,7 @@
 
         <!-- -- Example: Accessible icon --------------------------- -->
           <p class="text-sm font-medium mb-2 mt-6">Accessible icon</p>
-          <p class="text-xs text-muted-foreground mb-3">For standalone icons that convey meaning, use visually-hidden text or <code>aria-label</code>.</p>
+          <p class="text-xs text-muted mb-3">For standalone icons that convey meaning, use visually-hidden text or <code>aria-label</code>.</p>
           <div class="preview" style="gap: var(--space-07); align-items: center">
             <span style="display: inline-flex; align-items: center">
               <i data-lucide="phone" data-size="md" aria-hidden="true"></i>
@@ -252,7 +252,7 @@
 
         <!-- -- Example: Animated ---------------------------------- -->
           <p class="text-sm font-medium mb-2 mt-6">Animated (spinner)</p>
-          <p class="text-xs text-muted-foreground mb-3">Add <code>data-animate=&quot;spin&quot;</code> for loading indicators. Animation is suppressed when the user has <code>prefers-reduced-motion</code> enabled.</p>
+          <p class="text-xs text-muted mb-3">Add <code>data-animate=&quot;spin&quot;</code> for loading indicators. Animation is suppressed when the user has <code>prefers-reduced-motion</code> enabled.</p>
           <div class="preview" style="gap: var(--space-07); align-items: center">
             <i data-lucide="loader-circle" data-size="md" data-animate="spin"></i>
             <button class="btn" data-variant="outline" disabled>
@@ -275,7 +275,7 @@
 
         <!-- -- Browse all icons ---------------------------------- -->
           <p class="text-sm font-medium mb-2 mt-6">Filled icons</p>
-          <p class="text-xs text-muted-foreground mb-3">Use the <code>fill</code> and <code>stroke-width</code> attributes for filled icon variants. Works well with simple shapes.</p>
+          <p class="text-xs text-muted mb-3">Use the <code>fill</code> and <code>stroke-width</code> attributes for filled icon variants. Works well with simple shapes.</p>
           <div class="preview" style="gap: var(--space-06); align-items: center">
             <i data-lucide="star" data-size="lg" fill="currentColor" stroke-width="0"></i>
             <i data-lucide="heart" data-size="lg" fill="currentColor" stroke-width="0"></i>

@@ -42,12 +42,12 @@
 
 | `data-variant`  | Surface              | Text                     | Hover                          |
 |-----------------|----------------------|--------------------------|--------------------------------|
-| `default`       | `--primary`          | `--primary-foreground`   | `opacity: 0.88`               |
-| `secondary`     | `--secondary`        | `--secondary-foreground` | `opacity: 0.8`                |
-| `outline`       | `--background` + border | `--foreground`  | `--accent` bg                  |
-| `ghost`         | transparent          | `--foreground`           | `--accent` bg                  |
-| `destructive`   | `--destructive`      | `--destructive-foreground` | `opacity: 0.88`             |
-| `link`          | transparent          | `--primary`              | underline                      |
+| `default`       | `--surface-inverted` | `--text-inverted`       | `opacity: 0.88`               |
+| `secondary`     | `--surface-secondary`| `--text-primary`        | `opacity: 0.8`                |
+| `outline`       | `--background` + border | `--text-primary`     | `--surface-secondary` bg       |
+| `ghost`         | transparent          | `--text-primary`         | `--surface-secondary` bg       |
+| `destructive`   | `--surface-negative` | `--text-inverted`        | `opacity: 0.88`                |
+| `link`          | transparent          | `--text-primary`         | underline                      |
 
 ---
 

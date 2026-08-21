@@ -18,8 +18,8 @@
     height: 100dvh;
     position: sticky;
     top: 0;
-    background-color: var(--sidebar);
-    border-right: var(--border-width-01) solid var(--sidebar-border);
+    background-color: var(--surface-primary);
+    border-right: var(--border-width-01) solid var(--border-muted);
     flex-shrink: 0;
     overflow-x: clip;   /* clip without clipping focus rings or creating a scroller */
     overflow-y: hidden;
@@ -27,7 +27,7 @@
 
     &[data-side="right"] {
       border-right: none;
-      border-left: var(--border-width-01) solid var(--sidebar-border);
+      border-left: var(--border-width-01) solid var(--border-muted);
       order: 1;
     }
 
@@ -81,7 +81,7 @@
     align-items: center;
     padding: var(--space-04);
     gap: var(--space-02);
-    border-bottom: var(--border-width-01) solid var(--sidebar-border);
+    border-bottom: var(--border-width-01) solid var(--border-muted);
     flex-shrink: 0;
   }
 
@@ -91,7 +91,7 @@
     gap: var(--space-02);
     font-size: var(--font-body-small);
     font-weight: var(--font-weight-strong);
-    color: var(--sidebar-foreground);
+    color: var(--text-primary);
     text-decoration: none;
   }
 
@@ -105,7 +105,7 @@
     padding: var(--space-02);
     gap: var(--space-02);
     scrollbar-width: thin;
-    scrollbar-color: var(--sidebar-border) transparent;
+    scrollbar-color: var(--border-muted) transparent;
   }
 
   /* ── Sidebar nav ──────────────────────────────────────────── */
@@ -123,19 +123,19 @@
     padding: var(--space-02) var(--space-03);
 
     font-size: var(--font-body-small);
-    color: var(--sidebar-foreground);
+    color: var(--text-primary);
     text-decoration: none;
     position: relative;
 
     &:hover {
-      background-color: var(--sidebar-accent);
-      color: var(--sidebar-accent-foreground);
+      background-color: var(--surface-secondary);
+      color: var(--text-primary);
     }
 
     &[data-active="true"],
     &[aria-current="page"] {
-      background-color: var(--sidebar-accent);
-      color: var(--sidebar-accent-foreground);
+      background-color: var(--surface-secondary);
+      color: var(--text-primary);
       font-weight: var(--font-weight-strong);
     }
 
@@ -143,7 +143,7 @@
       outline: none;
       box-shadow:
         0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--sidebar-ring);
+        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
 
     & svg {
@@ -160,8 +160,8 @@
     font-weight: var(--font-weight-strong);
     padding: var(--space-01) var(--space-02);
 
-    background-color: var(--sidebar-primary);
-    color: var(--sidebar-primary-foreground);
+    background-color: var(--surface-inverted);
+    color: var(--text-inverted);
     line-height: var(--font-height-none);
   }
 
@@ -172,7 +172,7 @@
     font-weight: var(--font-weight-strong);
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--muted-foreground);
+    color: var(--text-muted);
   }
 
   /* ── Collapsible group (uses <details>) ────────────────────── */
@@ -186,11 +186,11 @@
       font-weight: var(--font-weight-strong);
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: var(--muted-foreground);
+      color: var(--text-muted);
       cursor: pointer;
       list-style: none;
 
-      &:hover { background-color: var(--sidebar-accent); }
+      &:hover { background-color: var(--surface-secondary); }
       &::-webkit-details-marker { display: none; }
 
       & svg:last-child {
@@ -214,13 +214,13 @@
       padding: var(--space-02) var(--space-03);
 
       font-size: var(--font-body-small);
-      color: var(--sidebar-foreground);
+      color: var(--text-primary);
       cursor: pointer;
       list-style: none;
 
       &:hover {
-        background-color: var(--sidebar-accent);
-        color: var(--sidebar-accent-foreground);
+        background-color: var(--surface-secondary);
+        color: var(--text-primary);
       }
       &::-webkit-details-marker { display: none; }
 
@@ -236,7 +236,7 @@
 
     & > .sidebar-nav {
       padding: var(--space-01) 0 var(--space-01) var(--space-06);
-      border-left: var(--border-width-01) solid var(--sidebar-border);
+      border-left: var(--border-width-01) solid var(--border-muted);
       margin-left: var(--space-03);
     }
   }
@@ -247,11 +247,11 @@
     padding: var(--space-01);
     border: none;
     background: transparent;
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     cursor: pointer;
 
 
-    &:hover { color: var(--sidebar-foreground); background-color: var(--sidebar-accent); }
+    &:hover { color: var(--text-primary); background-color: var(--surface-secondary); }
     & svg { width: 0.875rem; height: 0.875rem; }
   }
 
@@ -276,7 +276,7 @@
       display: block;
       inline-size: var(--border-width-01);
       block-size: 100%;
-      background: var(--sidebar-border);
+      background: var(--border-muted);
       opacity: var(--opacity-00);
     }
 
@@ -288,8 +288,8 @@
     &:focus-visible {
       outline: none;
       box-shadow:
-        inset 0 0 0 var(--focus-ring-width) var(--sidebar),
-        inset 0 0 0 var(--focus-ring-outer-width) var(--sidebar-ring);
+        inset 0 0 0 var(--focus-ring-width) var(--surface-secondary),
+        inset 0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
   }
 
@@ -302,9 +302,9 @@
   /* ── Sidebar footer ───────────────────────────────────────── */
   .sidebar-footer {
     padding: var(--space-03) var(--space-04);
-    border-top: var(--border-width-01) solid var(--sidebar-border);
+    border-top: var(--border-width-01) solid var(--border-muted);
     font-size: var(--font-body-small);
-    color: var(--sidebar-foreground);
+    color: var(--text-primary);
     flex-shrink: 0;
     & p { margin: 0; }
   }
@@ -318,16 +318,16 @@
     height: var(--size-07);
     border: none;
     background: transparent;
-    color: var(--foreground);
+    color: var(--text-primary);
     cursor: pointer;
 
 
-    &:hover { background-color: var(--accent); }
+    &:hover { background-color: var(--surface-secondary); }
     &:focus-visible {
       outline: none;
       box-shadow:
         0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--ring);
+        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
     & svg { width: var(--size-04); height: var(--size-04); }
   }
@@ -342,8 +342,8 @@
     width: var(--sidebar-width, 16rem);
     max-width: 80vw;
     height: 100%;
-    background-color: var(--sidebar);
-    color: var(--sidebar-foreground);
+    background-color: var(--surface-primary);
+    color: var(--text-primary);
     z-index: var(--z-sidebar-mobile);
     overflow: hidden;
     display: flex;
@@ -364,7 +364,7 @@
     }
 
     &::backdrop {
-      background: var(--overlay);
+      background: var(--surface-overlay);
     }
 
     & .sidebar-mobile-close {
@@ -375,14 +375,14 @@
       height: var(--size-06);
       border: none;
       background: transparent;
-      color: var(--sidebar-foreground);
+      color: var(--text-primary);
       cursor: pointer;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      &:hover { background-color: var(--sidebar-accent); }
+      &:hover { background-color: var(--surface-secondary); }
       & svg { width: 0.875rem; height: 0.875rem; }
     }
 

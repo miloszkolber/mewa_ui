@@ -8,12 +8,12 @@
     &::-webkit-scrollbar { width: var(--space-02); height: var(--space-02); }
     &::-webkit-scrollbar-track { background: transparent; }
     &::-webkit-scrollbar-thumb {
-      background-color: var(--border);
+      background-color: var(--border-primary);
 
-      &:hover { background-color: var(--muted-foreground); }
+      &:hover { background-color: var(--text-muted); }
     }
 
     scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
+    scrollbar-color: var(--border-primary) transparent;
   }
 }

@@ -35,21 +35,21 @@
       justify-content: center;
       width: var(--size-07);
       height: var(--size-07);
-      border: var(--border-width-01) solid var(--border);
+      border: var(--border-width-01) solid var(--border-primary);
       border-radius: var(--radius-full);
       background-color: var(--background);
-      color: var(--foreground);
+      color: var(--text-primary);
       cursor: pointer;
 
       font-size: var(--font-body-small);
       z-index: var(--z-raised);
 
-      &:hover { background-color: var(--accent); }
+      &:hover { background-color: var(--surface-secondary); }
       &:focus-visible {
         outline: none;
         box-shadow:
           0 0 0 var(--focus-ring-width) var(--background),
-          0 0 0 var(--focus-ring-outer-width) var(--ring);
+          0 0 0 var(--focus-ring-outer-width) var(--border-ring);
       }
       &:disabled { opacity: var(--opacity-05); cursor: not-allowed; pointer-events: none; }
       & svg { width: var(--size-04); height: var(--size-04); }
@@ -73,23 +73,23 @@
       border: none;
       padding: 0;
       cursor: pointer;
-      background-color: var(--border);
+      background-color: var(--border-primary);
       transition: scale var(--duration-fast) ease;
 
       &[aria-current="true"] {
-        background-color: var(--foreground);
+        background-color: var(--text-primary);
         scale: 1.25;
       }
 
       &:hover:not([aria-current="true"]) {
-        background-color: var(--muted-foreground);
+        background-color: var(--text-muted);
       }
 
       &:focus-visible {
         outline: none;
         box-shadow:
           0 0 0 var(--focus-ring-width) var(--background),
-          0 0 0 var(--focus-ring-outer-width) var(--ring);
+          0 0 0 var(--focus-ring-outer-width) var(--border-ring);
       }
     }
 
@@ -97,7 +97,7 @@
     & .carousel-counter {
       text-align: center;
       font-size: var(--font-body-small);
-      color: var(--muted-foreground);
+      color: var(--text-muted);
       padding-block-start: var(--space-02);
     }
 
@@ -140,7 +140,7 @@
       border-width: var(--border-width-02);
     }
     .carousel .carousel-dot {
-      border: var(--border-width-01) solid var(--foreground);
+      border: var(--border-width-01) solid var(--text-primary);
     }
   }
 

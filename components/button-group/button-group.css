@@ -19,7 +19,7 @@
     & > [role="separator"] {
       width: 1px;
       align-self: stretch;
-      background: var(--border);
+      background: var(--border-primary);
       border: 0;
       margin: 0 calc(-1 * var(--border-width-01));
       padding: 0;

@@ -40,8 +40,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: var(--muted);
-      color: var(--muted-foreground);
+      background-color: var(--surface-secondary);
+      color: var(--text-muted);
 
       & > svg {
         width: var(--size-08);
@@ -60,7 +60,7 @@
     padding: var(--space-03) 0 var(--space-01);
     font-size: var(--font-body-small);
     line-height: var(--font-height);
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     text-wrap: pretty;
   }
 
@@ -87,7 +87,7 @@
     }
 
     &[open]::backdrop {
-      background: var(--overlay);
+      background: var(--surface-overlay);
     }
   }
 
@@ -137,18 +137,18 @@
     height: 2.25rem;
     border: none;
 
-    background: var(--overlay);
-    color: var(--foreground);
+    background: var(--surface-overlay);
+    color: var(--text-primary);
     cursor: pointer;
     &:hover {
-      background: color-mix(in oklch, var(--overlay), var(--color-black) 25%);
+      background: color-mix(in oklch, var(--surface-overlay), var(--color-black) 25%);
     }
 
     &:focus-visible {
       outline: none;
       box-shadow:
         0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--ring);
+        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
 
     & > svg {

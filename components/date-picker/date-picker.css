@@ -5,23 +5,23 @@
     position: relative;
     height: var(--size-08);
     width: 100%;
-    border: var(--border-width-01) solid var(--input);
+    border: var(--border-width-01) solid var(--border-secondary);
 
     background: var(--background);
     padding: 0 var(--space-03);
     padding-inline-end: var(--space-08);
     font-size: var(--font-body-small);
     font-family: var(--font-sans);
-    color: var(--foreground);
+    color: var(--text-primary);
     outline: none;
 
     cursor: pointer;
 
     &:focus {
-      border-color: var(--ring);
+      border-color: var(--border-ring);
       box-shadow:
         0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--ring);
+        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
 
     &:disabled {
@@ -44,7 +44,7 @@
 
     /* -- Date text: explicit colors, no browser default blue ---- */
     &::-webkit-datetime-edit {
-      color: var(--foreground);
+      color: var(--text-primary);
     }
 
     &::-webkit-datetime-edit-fields-wrapper,
@@ -52,7 +52,7 @@
     &::-webkit-datetime-edit-day-field,
     &::-webkit-datetime-edit-month-field,
     &::-webkit-datetime-edit-year-field {
-      color: var(--foreground);
+      color: var(--text-primary);
     }
   }
 }

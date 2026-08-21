@@ -21,12 +21,12 @@
   }
 
   .combobox-value[data-placeholder] {
-    color: var(--muted-foreground);
+    color: var(--text-muted);
   }
 
   .combobox-chevron {
     flex-shrink: 0;
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     opacity: var(--opacity-05);
   }
 
@@ -35,9 +35,9 @@
     inset: auto;
     margin: 0;
     padding: 0;
-    background-color: var(--popover);
-    color: var(--popover-foreground);
-    border: var(--border-width-01) solid var(--border);
+    background-color: var(--surface-primary-glass);
+    color: var(--text-primary);
+    border: var(--border-width-01) solid var(--border-primary);
 
 
     overflow: hidden;
@@ -72,12 +72,12 @@
     align-items: center;
     gap: var(--space-02);
     padding: var(--space-02) var(--space-03);
-    border-bottom: var(--border-width-01) solid var(--border);
+    border-bottom: var(--border-width-01) solid var(--border-primary);
   }
 
   .combobox-search-icon {
     flex-shrink: 0;
-    color: var(--muted-foreground);
+    color: var(--text-muted);
   }
 
   .combobox-search-input {
@@ -86,10 +86,10 @@
     background: transparent;
     font-size: var(--font-body-small);
     font-family: var(--font-sans);
-    color: var(--foreground);
+    color: var(--text-primary);
     outline: none;
 
-    &::placeholder { color: var(--muted-foreground); }
+    &::placeholder { color: var(--text-muted); }
   }
 
   .combobox-listbox {
@@ -109,8 +109,8 @@
     cursor: pointer;
     outline: none;
     &:hover, &[data-highlighted] {
-      background-color: var(--accent);
-      color: var(--accent-foreground);
+      background-color: var(--surface-secondary);
+      color: var(--text-primary);
     }
 
     &[aria-selected="true"]::before {
@@ -133,19 +133,19 @@
     padding: var(--space-06) var(--space-02);
     text-align: center;
     font-size: var(--font-body-small);
-    color: var(--muted-foreground);
+    color: var(--text-muted);
   }
 
   .combobox-group-label {
     padding: var(--space-02) var(--space-02);
     font-size: var(--font-body-xsmall);
     font-weight: var(--font-weight-strong);
-    color: var(--muted-foreground);
+    color: var(--text-muted);
   }
 
   .combobox-separator {
     height: 1px;
-    background: var(--border);
+    background: var(--border-primary);
     margin: var(--space-01) -0.25rem;
   }
 

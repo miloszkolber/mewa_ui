@@ -126,5 +126,5 @@ In collapsed mode nested submenu nav flattens (no indent, no border) so every ic
 - **Collapsed state**: Icons remain and stay centered; labels, titles, badges, footer, and logo text are hidden.
 - **Toggle**: `sidebar.js` flips `data-state` on click and on `Cmd+B`/`Ctrl+B`. The toggle button lives outside the sidebar so it is always reachable.
 - **Rail**: Add `.sidebar-rail` inside the sidebar for a full-height edge toggle. Set `data-sidebar-trigger` to the sidebar ID and keep `aria-expanded` on the button.
-- **Sidebar tokens**: Uses `--sidebar-*` token group.
+- **Sidebar tokens**: Uses the shared `--surface-*`, `--text-*`, and `--border-*` roles.
 - **Self-contained**: The sidebar needs no other component CSS for its core layout. Tooltips on collapsed icons are an optional enhancement that requires the Tooltip component.

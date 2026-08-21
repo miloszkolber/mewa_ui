@@ -9,7 +9,7 @@
     margin: 0;
     font-size: var(--font-body-small);
     font-weight: var(--font-weight-strong);
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     letter-spacing: 0.01em;
   }
 
@@ -19,13 +19,13 @@
     font-weight: var(--font-weight-strong);
     letter-spacing: -0.025em;
     line-height: var(--font-height-tight);
-    color: var(--foreground);
+    color: var(--text-primary);
   }
 
   .statistic-description {
     margin: 0;
     font-size: var(--font-body-xsmall);
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     display: flex;
     align-items: center;
     gap: var(--space-01);
@@ -43,11 +43,11 @@
     }
 
     &[data-trend="up"] {
-      color: var(--success);
+      color: var(--text-positive);
     }
 
     &[data-trend="down"] {
-      color: var(--destructive);
+      color: var(--text-negative);
     }
   }
 }

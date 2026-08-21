@@ -85,7 +85,7 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
         <h1>Carousel</h1>
-        <p class="text-muted-foreground leading-relaxed mb-6">
+        <p class="text-muted leading-relaxed mb-6">
           A scrollable content slider built on CSS scroll-snap with keyboard navigation, dot indicators, loop, and autoplay support. No libraries needed.
         </p>
       </div>
@@ -95,11 +95,11 @@
         <div class="preview" style="padding: var(--space-08) var(--space-09)">
           <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Default demo" style="max-width: 24rem; margin: 0 auto">
             <div class="carousel-viewport" aria-live="polite">
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">1</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">2</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">3</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">4</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">5</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">1</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">2</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">3</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">4</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">5</div>
             </div>
             <button class="carousel-prev" aria-label="Previous slide"><i data-lucide="chevron-left"></i></button>
             <button class="carousel-next" aria-label="Next slide"><i data-lucide="chevron-right"></i></button>
@@ -123,19 +123,19 @@
 
         <!-- ═══ Sizes (multi-slide) ════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">Sizes</p>
-        <p class="text-xs text-muted-foreground mb-4">Set <code>flex</code> on <code>.carousel-slide</code> to show multiple slides. Use <code>calc()</code> to account for the gap.</p>
+        <p class="text-xs text-muted mb-4">Set <code>flex</code> on <code>.carousel-slide</code> to show multiple slides. Use <code>calc()</code> to account for the gap.</p>
         <div class="preview" style="padding: var(--space-08) var(--space-09)">
           <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Multi-slide demo" style="max-width: 30rem; margin: 0 auto">
             <div class="carousel-viewport" aria-live="polite">
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">1</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">2</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">3</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">4</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">5</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="6 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">6</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="7 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">7</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="8 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">8</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="9 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">9</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">1</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">2</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">3</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">4</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">5</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="6 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">6</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="7 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">7</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="8 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">8</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="9 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">9</div>
             </div>
             <button class="carousel-prev" aria-label="Previous slide"><i data-lucide="chevron-left"></i></button>
             <button class="carousel-next" aria-label="Next slide"><i data-lucide="chevron-right"></i></button>
@@ -152,15 +152,15 @@
 
         <!-- ═══ With Dots ══════════════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">With dot indicators</p>
-        <p class="text-xs text-muted-foreground mb-4">Add an empty <code>.carousel-dots</code> container — dots are auto-generated from the slide count.</p>
+        <p class="text-xs text-muted mb-4">Add an empty <code>.carousel-dots</code> container — dots are auto-generated from the slide count.</p>
         <div class="preview" style="padding: var(--space-08) var(--space-09)">
           <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Dots demo" style="max-width: 24rem; margin: 0 auto">
             <div class="carousel-viewport" aria-live="polite">
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">1</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">2</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">3</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">4</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">5</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">1</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">2</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">3</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">4</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">5</div>
             </div>
             <button class="carousel-prev" aria-label="Previous slide"><i data-lucide="chevron-left"></i></button>
             <button class="carousel-next" aria-label="Next slide"><i data-lucide="chevron-right"></i></button>
@@ -184,15 +184,15 @@
 
         <!-- ═══ With Counter ═══════════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">With counter</p>
-        <p class="text-xs text-muted-foreground mb-4">Add a <code>.carousel-counter</code> element — JS updates it automatically.</p>
+        <p class="text-xs text-muted mb-4">Add a <code>.carousel-counter</code> element — JS updates it automatically.</p>
         <div class="preview" style="padding: var(--space-08) var(--space-09)">
           <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Counter demo" style="max-width: 24rem; margin: 0 auto">
             <div class="carousel-viewport" aria-live="polite">
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">1</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">2</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">3</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">4</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">5</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">1</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">2</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">3</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">4</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">5</div>
             </div>
             <button class="carousel-prev" aria-label="Previous slide"><i data-lucide="chevron-left"></i></button>
             <button class="carousel-next" aria-label="Next slide"><i data-lucide="chevron-right"></i></button>
@@ -211,15 +211,15 @@
 
         <!-- ═══ Vertical ══════════════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">Vertical</p>
-        <p class="text-xs text-muted-foreground mb-4">Set <code>data-orientation="vertical"</code> and give the viewport a fixed height.</p>
+        <p class="text-xs text-muted mb-4">Set <code>data-orientation="vertical"</code> and give the viewport a fixed height.</p>
         <div class="preview" style="padding: var(--space-08) var(--space-09)">
           <div class="carousel" data-orientation="vertical" role="region" aria-roledescription="carousel" aria-label="Vertical demo" style="max-width: 24rem; margin: var(--space-07) auto">
             <div class="carousel-viewport" aria-live="polite" style="height: 14rem">
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 5" style="flex: 0 0 100%; min-height: 14rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">1</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" style="flex: 0 0 100%; min-height: 14rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">2</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 5" style="flex: 0 0 100%; min-height: 14rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">3</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 14rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">4</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 14rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">5</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 5" style="flex: 0 0 100%; min-height: 14rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">1</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" style="flex: 0 0 100%; min-height: 14rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">2</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 5" style="flex: 0 0 100%; min-height: 14rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">3</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 14rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">4</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 14rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">5</div>
             </div>
             <button class="carousel-prev" aria-label="Previous slide"><i data-lucide="chevron-up"></i></button>
             <button class="carousel-next" aria-label="Next slide"><i data-lucide="chevron-down"></i></button>
@@ -238,15 +238,15 @@
 
         <!-- ═══ Loop ═══════════════════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">Loop</p>
-        <p class="text-xs text-muted-foreground mb-4">Add <code>data-loop</code> for infinite circular navigation — buttons never disable.</p>
+        <p class="text-xs text-muted mb-4">Add <code>data-loop</code> for infinite circular navigation — buttons never disable.</p>
         <div class="preview" style="padding: var(--space-08) var(--space-09)">
           <div class="carousel" data-loop role="region" aria-roledescription="carousel" aria-label="Loop demo" style="max-width: 24rem; margin: 0 auto">
             <div class="carousel-viewport" aria-live="polite">
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">1</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">2</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">3</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">4</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">5</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">1</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">2</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">3</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">4</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">5</div>
             </div>
             <button class="carousel-prev" aria-label="Previous slide"><i data-lucide="chevron-left"></i></button>
             <button class="carousel-next" aria-label="Next slide"><i data-lucide="chevron-right"></i></button>
@@ -265,15 +265,15 @@
 
         <!-- ═══ Autoplay ═══════════════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">Autoplay</p>
-        <p class="text-xs text-muted-foreground mb-4">Set <code>data-autoplay="3000"</code> (in milliseconds). Pauses on hover and focus per WAI-ARIA requirements.</p>
+        <p class="text-xs text-muted mb-4">Set <code>data-autoplay="3000"</code> (in milliseconds). Pauses on hover and focus per WAI-ARIA requirements.</p>
         <div class="preview" style="padding: var(--space-08) var(--space-09)">
           <div class="carousel" data-autoplay="3000" data-loop role="region" aria-roledescription="carousel" aria-label="Auto-rotating demo" style="max-width: 24rem; margin: 0 auto">
             <div class="carousel-viewport" aria-live="off">
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">1</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">2</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">3</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">4</div>
-              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border); background: var(--card); font-size: var(--font-body-small); color: var(--foreground)">5</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">1</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">2</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">3</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">4</div>
+              <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-01) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-body-small); color: var(--text-primary)">5</div>
             </div>
             <button class="carousel-prev" aria-label="Previous slide"><i data-lucide="chevron-left"></i></button>
             <button class="carousel-next" aria-label="Next slide"><i data-lucide="chevron-right"></i></button>
@@ -292,7 +292,7 @@
 
         <!-- ═══ With Cards ═════════════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">With cards</p>
-        <p class="text-xs text-muted-foreground mb-4">Compose with the Card component for richer slide content.</p>
+        <p class="text-xs text-muted mb-4">Compose with the Card component for richer slide content.</p>
         <div class="preview" style="padding: var(--space-08) var(--space-09)">
           <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Card carousel" style="max-width: 24rem; margin: 0 auto">
             <div class="carousel-viewport" aria-live="polite">
@@ -303,7 +303,7 @@
                     <p class="card-description">A new design system built from scratch</p>
                   </div>
                   <div class="card-content">
-                    <p class="text-muted-foreground" style="font-size: var(--font-body-small)">Built with modern CSS and native web APIs. No frameworks, no libraries — just the platform.</p>
+                    <p class="text-muted" style="font-size: var(--font-body-small)">Built with modern CSS and native web APIs. No frameworks, no libraries — just the platform.</p>
                   </div>
                 </div>
               </div>
@@ -314,7 +314,7 @@
                     <p class="card-description">Performance-first component library</p>
                   </div>
                   <div class="card-content">
-                    <p class="text-muted-foreground" style="font-size: var(--font-body-small)">Zero JavaScript for static components. Interaction JS only where HTML and CSS can't express it.</p>
+                    <p class="text-muted" style="font-size: var(--font-body-small)">Zero JavaScript for static components. Interaction JS only where HTML and CSS can't express it.</p>
                   </div>
                 </div>
               </div>
@@ -325,7 +325,7 @@
                     <p class="card-description">Accessible by default</p>
                   </div>
                   <div class="card-content">
-                    <p class="text-muted-foreground" style="font-size: var(--font-body-small)">WAI-ARIA patterns, keyboard navigation, reduced motion, high contrast — all built in.</p>
+                    <p class="text-muted" style="font-size: var(--font-body-small)">WAI-ARIA patterns, keyboard navigation, reduced motion, high contrast — all built in.</p>
                   </div>
                 </div>
               </div>

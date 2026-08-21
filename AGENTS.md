@@ -7,7 +7,7 @@ repository root: `components/`, `src/base.css`, `src/tokens.css`, and the `docs/
 
 Radii, shadows, and serif fonts are deliberately removed. Geometry is square;
 circular geometry exists only where meaning requires it (avatars, radios,
-switches, progress). Elevation is expressed with `--border`, never shadows.
+switches, progress). Elevation is expressed with `--border-primary`, never shadows.
 
 ---
 
@@ -212,7 +212,7 @@ The base file provides:
 - Border-width tokens
 
 The token file provides:
-- Semantic color pairs (surface + foreground) for light and dark modes
+- Semantic color roles (`--surface-*`, `--text-*`, and `--border-*`) for light and dark modes
 - Sidebar and chart roles for light and dark modes
 
 Radii, shadows, and serif fonts were deliberately removed in this fork. Never
@@ -298,7 +298,7 @@ overrides outside the layers always win.
 
 ### Visual contract
 
-- Semantic color pairs (surface + foreground) from `src/tokens.css`; red, amber,
+- Semantic color roles from `src/tokens.css`; red, amber,
   and green communicate status.
 - Focus rings via `--ring` with `:focus-visible`. All animation respects
   `prefers-reduced-motion`, `prefers-contrast: more`, and `forced-colors: active`.

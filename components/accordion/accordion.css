@@ -7,7 +7,7 @@
   }
 
   .accordion-item {
-    border-bottom: var(--border-width-01) solid var(--border);
+    border-bottom: var(--border-width-01) solid var(--border-primary);
 
     &:last-child { border-bottom: none; }
 
@@ -40,14 +40,14 @@
     text-align: left;
     cursor: pointer;
     list-style: none;
-    color: var(--foreground);
+    color: var(--text-primary);
     &::-webkit-details-marker { display: none; }
     &::marker { content: ''; }
     &:hover { text-decoration: underline; }
   }
 
   .accordion-chevron {
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     transition: transform var(--duration-base) ease;
     flex-shrink: 0;
 
@@ -60,7 +60,7 @@
     padding-bottom: var(--space-04);
     font-size: var(--font-body-small);
     line-height: var(--font-height);
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     overflow: hidden;
 
     & p { margin: 0; }

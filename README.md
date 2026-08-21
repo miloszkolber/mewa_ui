@@ -13,7 +13,7 @@ The visual contract is monochrome, square, border-led, and shadow-free, with Gei
 ## What was stripped
 
 - **Radii** — every `--radius-*` token and every `border-radius` declaration that used it, including `calc()` variants and logical-property corner radii. Geometry is square. Circular geometry remains only where meaning requires it: avatars, radios, switches, sliders, progress, badges, timeline, steps, skeleton, carousel (`9999px` / `50%`).
-- **Shadows** — the `--shadow-*` token scale and every elevation `box-shadow`. Elevated surfaces (dialog, dropdown, tabs) keep a `0 0 0 1px var(--border)` ring. `box-shadow: none` and focus halos built on `var(--ring)` are kept.
+- **Shadows** — the `--shadow-*` token scale and every elevation `box-shadow`. Elevated surfaces (dialog, dropdown, tabs) keep a `0 0 0 1px var(--border-primary)` ring. `box-shadow: none` and focus halos built on `var(--border-ring)` are kept.
 - **Serif fonts** — `--font-serif` and the `--font-display` serif stack. The only fonts are `src/geist.woff2` and `src/geistmono.woff2` (Geist variable, 400–550).
 
 What is kept, unchanged from upstream: component markup/APIs and the five-layer skill structure. Static primitives live in `src/base.css`; theme-dependent semantic color roles live in `src/tokens.css`. The Lucide CDN is retired — the full icon set ships locally in `src/icons/`.
@@ -52,6 +52,8 @@ Icons: write `<i data-lucide="name">` and inline the matching SVG from `src/icon
 
 Dark mode: add or remove `class="dark"` on `<html>`. The semantic values in
 `src/tokens.css` switch automatically.
+
+Semantic color roles are separated by purpose: `--background*` for page backdrops, `--surface-*` for containers and state fills, `--text-*` for content, `--border-*` for outlines and focus rings, and `--chart-1` through `--chart-5` for data visualization. The canonical roles include primary, secondary, muted, disabled, inverted, positive, negative, and caution variants without foreground-style aliases.
 
 ## Documentation
 

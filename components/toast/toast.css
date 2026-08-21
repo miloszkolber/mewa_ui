@@ -22,9 +22,9 @@
 
   /* -- Toast ---------------------------------------------------- */
   .toast {
-    background-color: var(--popover);
-    color: var(--popover-foreground);
-    border: var(--border-width-01) solid var(--border);
+    background-color: var(--surface-primary-glass);
+    color: var(--text-primary);
+    border: var(--border-width-01) solid var(--border-primary);
 
     padding: var(--space-04);
     min-width: 20rem;
@@ -42,33 +42,33 @@
 
     /* -- Variants ------------------------------------------------- */
     &[data-variant="destructive"] {
-      background-color: var(--destructive);
-      color: var(--destructive-foreground);
-      border-color: var(--destructive);
+      background-color: var(--surface-negative);
+      color: var(--text-inverted);
+      border-color: var(--text-negative);
 
       & .toast-description {
-        color: var(--destructive-foreground);
+        color: var(--text-inverted);
         opacity: var(--opacity-09);
       }
     }
 
     /* -- Semantic variants (border + icon color) ----------------- */
     &[data-variant="success"] {
-      border-color: var(--success);
+      border-color: var(--text-positive);
 
-      & .toast-icon { color: var(--success); }
+      & .toast-icon { color: var(--text-positive); }
     }
 
     &[data-variant="warning"] {
-      border-color: var(--warning);
+      border-color: var(--text-caution);
 
-      & .toast-icon { color: var(--warning); }
+      & .toast-icon { color: var(--text-caution); }
     }
 
     &[data-variant="info"] {
-      border-color: var(--info);
+      border-color: var(--text-secondary);
 
-      & .toast-icon { color: var(--info); }
+      & .toast-icon { color: var(--text-secondary); }
     }
   }
 
@@ -106,7 +106,7 @@
 
   .toast-description {
     font-size: var(--font-body-small);
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     margin: var(--space-01) 0 0;
     line-height: var(--font-height);
   }
@@ -119,13 +119,13 @@
     height: var(--size-05);
     border: none;
     background: transparent;
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     cursor: pointer;
     flex-shrink: 0;
 
     &:hover {
-      color: var(--foreground);
-      background: var(--accent);
+      color: var(--text-primary);
+      background: var(--surface-secondary);
     }
   }
 

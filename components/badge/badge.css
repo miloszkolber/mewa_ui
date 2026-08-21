@@ -10,18 +10,18 @@
     line-height: var(--font-height-tight);
 
     &[data-variant="outline"] {
-      border: var(--border-width-01) solid var(--border);
-      color: var(--muted-foreground);
+      border: var(--border-width-01) solid var(--border-primary);
+      color: var(--text-muted);
     }
 
     &[data-variant="secondary"] {
-      background: var(--secondary);
-      color: var(--secondary-foreground);
+      background: var(--surface-secondary);
+      color: var(--text-primary);
     }
 
     &[data-variant="default"] {
-      background: var(--primary);
-      color: var(--primary-foreground);
+      background: var(--surface-inverted);
+      color: var(--text-inverted);
     }
   }
 }

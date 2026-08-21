@@ -3,7 +3,7 @@
     width: var(--size-04);
     height: var(--size-04);
     animation: spinner-rotate var(--duration-spin) linear infinite;
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     flex-shrink: 0;
 
     &[data-size="sm"] {

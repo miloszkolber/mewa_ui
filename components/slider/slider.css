@@ -8,35 +8,35 @@
     width: 100%;
     height: var(--size-02);
     border-radius: var(--radius-full);
-    background: var(--secondary);
+    background: var(--surface-secondary);
     cursor: pointer;
     outline: none;
     border: none;
-    accent-color: var(--primary);
+    accent-color: var(--surface-inverted);
 
     &::-webkit-slider-runnable-track {
       height: var(--size-02);
       border-radius: var(--radius-full);
       background: linear-gradient(
         to right,
-        var(--primary) 0%,
-        var(--primary) var(--slider-value),
-        var(--secondary) var(--slider-value),
-        var(--secondary) 100%
+        var(--surface-inverted) 0%,
+        var(--surface-inverted) var(--slider-value),
+        var(--surface-secondary) var(--slider-value),
+        var(--surface-secondary) 100%
       );
     }
 
     &::-moz-range-track {
       height: var(--size-02);
       border-radius: var(--radius-full);
-      background: var(--secondary);
+      background: var(--surface-secondary);
       border: none;
     }
 
     &::-moz-range-progress {
       height: var(--size-02);
       border-radius: var(--radius-full);
-      background: var(--primary);
+      background: var(--surface-inverted);
     }
 
     &::-webkit-slider-thumb {
@@ -45,7 +45,7 @@
       height: var(--size-05);
       border-radius: 50%;
       background: var(--background);
-      border: var(--border-width-02) solid var(--primary);
+      border: var(--border-width-02) solid var(--surface-inverted);
       margin-top: calc(-1 * var(--space-02));
       cursor: pointer;
       transition: transform var(--duration-fast);
@@ -56,17 +56,17 @@
       height: var(--size-05);
       border-radius: 50%;
       background: var(--background);
-      border: var(--border-width-02) solid var(--primary);
+      border: var(--border-width-02) solid var(--surface-inverted);
       cursor: pointer;
       transition: transform var(--duration-fast);
     }
 
     &:hover:not(:disabled) {
       &::-webkit-slider-thumb {
-        box-shadow: 0 0 0 4px color-mix(in oklch, var(--primary) 15%, transparent);
+        box-shadow: 0 0 0 4px color-mix(in oklch, var(--surface-inverted) 15%, transparent);
       }
       &::-moz-range-thumb {
-        box-shadow: 0 0 0 4px color-mix(in oklch, var(--primary) 15%, transparent);
+        box-shadow: 0 0 0 4px color-mix(in oklch, var(--surface-inverted) 15%, transparent);
       }
     }
 
@@ -75,13 +75,13 @@
         outline: none;
         box-shadow:
           0 0 0 var(--focus-ring-width) var(--background),
-          0 0 0 var(--focus-ring-outer-width) var(--ring);
+          0 0 0 var(--focus-ring-outer-width) var(--border-ring);
       }
       &::-moz-range-thumb {
         outline: none;
         box-shadow:
           0 0 0 var(--focus-ring-width) var(--background),
-          0 0 0 var(--focus-ring-outer-width) var(--ring);
+          0 0 0 var(--focus-ring-outer-width) var(--border-ring);
       }
     }
 
@@ -103,10 +103,10 @@
         width: var(--size-02);
         background: linear-gradient(
           to top,
-          var(--primary) 0%,
-          var(--primary) var(--slider-value),
-          var(--secondary) var(--slider-value),
-          var(--secondary) 100%
+          var(--surface-inverted) 0%,
+          var(--surface-inverted) var(--slider-value),
+          var(--surface-secondary) var(--slider-value),
+          var(--surface-secondary) 100%
         );
       }
 

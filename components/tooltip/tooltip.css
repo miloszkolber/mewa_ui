@@ -6,8 +6,8 @@
     border: none;
     display: none;  /* protect closed state from author display resets */
 
-    background-color: var(--primary);
-    color: var(--primary-foreground);
+    background-color: var(--surface-inverted);
+    color: var(--text-inverted);
     padding: var(--space-02) var(--space-03);
     font-size: var(--font-body-xsmall);
     line-height: var(--font-height);

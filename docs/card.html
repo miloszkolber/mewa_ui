@@ -87,7 +87,7 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
         <h1>Card</h1>
-        <p class="text-muted-foreground leading-relaxed mb-6">
+        <p class="text-muted leading-relaxed mb-6">
           Content container with header, body, and footer regions.
           Use <code>&lt;div&gt;</code> for layout grouping or <code>&lt;article&gt;</code> for standalone content.
         </p>
@@ -95,7 +95,7 @@
 
         <!-- Standard card -->
         <p class="text-sm font-medium mb-2 mt-6">Standard</p>
-        <p class="text-xs text-muted-foreground mb-3">Header, content with form fields, and footer with actions.</p>
+        <p class="text-xs text-muted mb-3">Header, content with form fields, and footer with actions.</p>
         <div class="preview" style="justify-content: center">
           <div class="card" style="max-width: 22rem; width: 100%">
             <div class="card-header">
@@ -151,12 +151,12 @@
 
         <!-- Metric card -->
         <p class="text-sm font-medium mb-2 mt-8">Metric</p>
-        <p class="text-xs text-muted-foreground mb-3">Compact card for dashboard stats. Header row with icon.</p>
+        <p class="text-xs text-muted mb-3">Compact card for dashboard stats. Header row with icon.</p>
         <div class="preview" style="justify-content: center">
           <div class="card" style="max-width: 16rem; width: 100%">
             <div class="card-header" style="flex-direction: row; align-items: center; justify-content: space-between; padding-bottom: var(--space-02)">
-              <p class="card-description" style="font-weight: var(--font-weight-strong); color: var(--foreground); font-size: var(--font-body-xsmall)">Total Revenue</p>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted-foreground)"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <p class="card-description" style="font-weight: var(--font-weight-strong); color: var(--text-primary); font-size: var(--font-body-xsmall)">Total Revenue</p>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-muted)"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
             </div>
             <div class="card-content" style="padding-top: var(--space-01)">
               <p style="font-size: var(--font-h2); font-weight: var(--font-weight-strong); margin: 0; letter-spacing: var(--font-tracking)">$45,231</p>
@@ -173,7 +173,7 @@
   &lt;div class="card-header"
        style="flex-direction: row; align-items: center; justify-content: space-between; padding-bottom: var(--space-02)"&gt;
     &lt;p class="card-description"
-       style="font-weight: var(--font-weight-strong); color: var(--foreground); font-size: var(--font-body-small)"&gt;Total Revenue&lt;/p&gt;
+       style="font-weight: var(--font-weight-strong); color: var(--text-primary); font-size: var(--font-body-small)"&gt;Total Revenue&lt;/p&gt;
     &lt;svg width="14" height="14" ...&gt;...&lt;/svg&gt;
   &lt;/div&gt;
   &lt;div class="card-content" style="padding-top: var(--space-01)"&gt;
@@ -186,7 +186,7 @@
 
         <!-- Image card -->
         <p class="text-sm font-medium mb-2 mt-8">With image</p>
-        <p class="text-xs text-muted-foreground mb-3">Use <code>&lt;article&gt;</code> for standalone content. Image as first child.</p>
+        <p class="text-xs text-muted mb-3">Use <code>&lt;article&gt;</code> for standalone content. Image as first child.</p>
         <div class="preview" style="justify-content: center">
           <article class="card" style="max-width: 20rem; width: 100%">
             <img src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=600&h=300&fit=crop" alt="Abstract shapes" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block">
@@ -195,7 +195,7 @@
               <p class="card-description">Exploring minimal aesthetics through form and color.</p>
             </div>
             <div class="card-content" style="padding-top: 0">
-              <p style="margin: 0; font-size: var(--font-body-small); color: var(--muted-foreground); line-height: var(--font-height)">A deep dive into the principles that guide contemporary visual design.</p>
+              <p style="margin: 0; font-size: var(--font-body-small); color: var(--text-muted); line-height: var(--font-height)">A deep dive into the principles that guide contemporary visual design.</p>
             </div>
             <div class="card-footer">
               <button class="btn" data-variant="default" data-size="sm">Read more</button>
@@ -216,7 +216,7 @@
     &lt;p class="card-description"&gt;Exploring minimal aesthetics.&lt;/p&gt;
   &lt;/div&gt;
   &lt;div class="card-content" style="padding-top: 0"&gt;
-    &lt;p style="margin: 0; font-size: var(--font-body-small); color: var(--muted-foreground)"&gt;Body text...&lt;/p&gt;
+    &lt;p style="margin: 0; font-size: var(--font-body-small); color: var(--text-muted)"&gt;Body text...&lt;/p&gt;
   &lt;/div&gt;
   &lt;div class="card-footer"&gt;
     &lt;button class="btn" data-variant="default" data-size="sm"&gt;Read more&lt;/button&gt;
@@ -227,7 +227,7 @@
 
         <!-- Header action card -->
         <p class="text-sm font-medium mb-2 mt-8">Header action</p>
-        <p class="text-xs text-muted-foreground mb-3">Action button in the header for settings or overflow menus.</p>
+        <p class="text-xs text-muted mb-3">Action button in the header for settings or overflow menus.</p>
         <div class="preview" style="justify-content: center">
           <div class="card" style="max-width: 20rem; width: 100%">
             <div class="card-header" style="flex-direction: row; align-items: center; justify-content: space-between">
@@ -241,15 +241,15 @@
             </div>
             <div class="card-content" style="display: flex; flex-direction: column; gap: var(--space-03)">
               <div style="display: flex; align-items: center; gap: var(--space-03)">
-                <div style="width: var(--size-07); height: var(--size-07); border-radius: var(--radius-full); background: var(--primary); display: flex; align-items: center; justify-content: center; font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); color: var(--primary-foreground); flex-shrink: 0">CL</div>
-                <div style="margin: 0; font-size: var(--font-body-small); font-weight: var(--font-weight-strong); margin: 0; font-size: var(--font-body-xsmall); color: var(--muted-foreground)" ><p>Cody Lindley</p><p>Owner</p></div>
+                <div style="width: var(--size-07); height: var(--size-07); border-radius: var(--radius-full); background: var(--surface-inverted); display: flex; align-items: center; justify-content: center; font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); color: var(--text-inverted); flex-shrink: 0">CL</div>
+                <div style="margin: 0; font-size: var(--font-body-small); font-weight: var(--font-weight-strong); margin: 0; font-size: var(--font-body-xsmall); color: var(--text-muted)" ><p>Cody Lindley</p><p>Owner</p></div>
               </div>
               <div style="display: flex; align-items: center; gap: var(--space-03)">
-                <div style="width: var(--size-07); height: var(--size-07); border-radius: var(--radius-full); background: var(--secondary); display: flex; align-items: center; justify-content: center; font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); color: var(--secondary-foreground); flex-shrink: 0">JD</div>
-                <div style="margin: 0; font-size: var(--font-body-small); font-weight: var(--font-weight-strong); margin: 0; font-size: var(--font-body-xsmall); color: var(--muted-foreground)" ><p>Jane Doe</p><p>Editor</p></div>
+                <div style="width: var(--size-07); height: var(--size-07); border-radius: var(--radius-full); background: var(--surface-secondary); display: flex; align-items: center; justify-content: center; font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); color: var(--text-primary); flex-shrink: 0">JD</div>
+                <div style="margin: 0; font-size: var(--font-body-small); font-weight: var(--font-weight-strong); margin: 0; font-size: var(--font-body-xsmall); color: var(--text-muted)" ><p>Jane Doe</p><p>Editor</p></div>
               </div>
             </div>
-            <div class="card-footer" style="padding-top: var(--space-04); border-top: var(--border-width-01) solid var(--border)">
+            <div class="card-footer" style="padding-top: var(--space-04); border-top: var(--border-width-01) solid var(--border-primary)">
               <button class="btn" data-variant="outline" data-size="sm" style="width: 100%">
                 <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
                 Invite member
@@ -278,7 +278,7 @@
     &lt;!-- list items --&gt;
   &lt;/div&gt;
   &lt;div class="card-footer"
-       style="padding-top: var(--space-04); border-top: var(--border-width-01) solid var(--border)"&gt;
+       style="padding-top: var(--space-04); border-top: var(--border-width-01) solid var(--border-primary)"&gt;
     &lt;button class="btn" data-variant="outline" data-size="sm"
             style="width: 100%"&gt;
       &lt;svg aria-hidden="true" ...&gt;...&lt;/svg&gt;

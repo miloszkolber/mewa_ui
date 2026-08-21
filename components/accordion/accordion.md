@@ -119,7 +119,7 @@ These are all browser-native — no JS needed.
 ### Bordered
 
 ```html
-<div class="accordion" style="border:1px solid var(--border);padding:0 1rem;">
+<div class="accordion" style="border:1px solid var(--border-primary);padding:0 1rem;">
   <!-- items -->
 </div>
 ```

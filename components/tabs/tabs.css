@@ -5,7 +5,7 @@
   .tab-list {
     display: inline-flex;
     align-items: center;
-    background: var(--muted);
+    background: var(--surface-secondary);
 
     padding: var(--space-01);
     gap: var(--space-01);
@@ -16,7 +16,7 @@
       border-radius: var(--border-radius);
       padding: 0;
       gap: 0;
-      border-bottom: var(--border-width-01) solid var(--border);
+      border-bottom: var(--border-width-01) solid var(--border-primary);
 
       & .tab-trigger {
         border-radius: var(--border-radius);
@@ -26,8 +26,8 @@
 
         &[aria-selected="true"] {
           background: transparent;
-          color: var(--foreground);
-          border-bottom-color: var(--primary);
+          color: var(--text-primary);
+          border-bottom-color: var(--surface-inverted);
           box-shadow: none;
         }
       }
@@ -56,22 +56,22 @@
     font-weight: var(--font-weight-strong);
     border: none;
     background: transparent;
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     cursor: pointer;
     white-space: nowrap;
     outline: none;
 
     &[aria-selected="true"] {
       background: var(--background);
-      color: var(--foreground);
-      box-shadow: 0 0 0 1px var(--border);
+      color: var(--text-primary);
+      box-shadow: 0 0 0 1px var(--border-primary);
     }
 
     &:focus-visible {
       outline: none;
       box-shadow:
         0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--ring);
+        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
 
     &:disabled {
@@ -100,7 +100,7 @@
       outline: none;
       box-shadow:
         0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--ring);
+        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
 
     &[hidden] { display: none; }

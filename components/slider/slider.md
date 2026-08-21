@@ -37,7 +37,7 @@
 ```html
 <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
   <label class="label" for="temp" style="margin:0;">Temperature</label>
-  <output class="text-sm text-muted-foreground" style="font-family:var(--font-mono);" for="temp">0.5</output>
+  <output class="text-sm text-muted" style="font-family:var(--font-mono);" for="temp">0.5</output>
 </div>
 <input class="slider" type="range" id="temp" min="0" max="1" step="0.1" value="0.5">
 ```

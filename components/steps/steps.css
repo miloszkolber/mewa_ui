@@ -2,23 +2,23 @@
   .steps { display: flex; gap: var(--space-02); list-style: none; margin: 0; padding: 0; }
   .step {
     flex: 1; display: flex; flex-direction: column; align-items: center; gap: var(--space-02); position: relative; text-align: center;
-    &:not(:last-child)::after { content: ''; position: absolute; top: var(--space-04); left: calc(50% + var(--space-05)); right: calc(-50% + var(--space-05)); height: 2px; background-color: var(--border); }
-    &[data-status='complete']::after { background-color: var(--primary); }
-    &[data-status='error']::after { background-color: var(--destructive); }
+    &:not(:last-child)::after { content: ''; position: absolute; top: var(--space-04); left: calc(50% + var(--space-05)); right: calc(-50% + var(--space-05)); height: 2px; background-color: var(--border-primary); }
+    &[data-status='complete']::after { background-color: var(--surface-inverted); }
+    &[data-status='error']::after { background-color: var(--surface-negative); }
   }
   .step-indicator {
     display: flex; align-items: center; justify-content: center; width: var(--size-07); height: var(--size-07);
     border-radius: var(--radius-full); font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong);
-    border: var(--border-width-02) solid var(--border); color: var(--muted-foreground); background-color: var(--background); position: relative; z-index: var(--z-raised);
-    .step[data-status='current'] & { border-color: var(--primary); color: var(--primary); }
-    .step[data-status='complete'] & { border-color: var(--primary); background-color: var(--primary); color: var(--primary-foreground); }
-    .step[data-status='error'] & { border-color: var(--destructive); background-color: var(--destructive); color: var(--destructive-foreground); }
+    border: var(--border-width-02) solid var(--border-primary); color: var(--text-muted); background-color: var(--background); position: relative; z-index: var(--z-raised);
+    .step[data-status='current'] & { border-color: var(--surface-inverted); color: var(--text-primary); }
+    .step[data-status='complete'] & { border-color: var(--surface-inverted); background-color: var(--surface-inverted); color: var(--text-inverted); }
+    .step[data-status='error'] & { border-color: var(--text-negative); background-color: var(--surface-negative); color: var(--text-inverted); }
 
     & svg { width: 0.875rem; height: 0.875rem; pointer-events: none; }
   }
   .step-content { display: flex; flex-direction: column; gap: var(--space-01); }
-  .step-title { margin: 0; font-size: var(--font-body-small); font-weight: var(--font-weight-strong); color: var(--foreground); }
-  .step-description { margin: 0; font-size: var(--font-body-xsmall); color: var(--muted-foreground); }
+  .step-title { margin: 0; font-size: var(--font-body-small); font-weight: var(--font-weight-strong); color: var(--text-primary); }
+  .step-description { margin: 0; font-size: var(--font-body-xsmall); color: var(--text-muted); }
 
   /* -- Clickable steps ---------------------------------------- */
   .step[data-clickable] .step-indicator {

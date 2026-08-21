@@ -5,13 +5,13 @@
     appearance: none;
     height: var(--size-08);
     width: 100%;
-    border: var(--border-width-01) solid var(--input);
+    border: var(--border-width-01) solid var(--border-secondary);
 
     background: var(--background);
     padding: 0 var(--space-07) 0 var(--space-03);
     font-size: var(--font-body-small);
     font-family: var(--font-sans);
-    color: var(--foreground);
+    color: var(--text-primary);
     outline: none;
 
     cursor: pointer;
@@ -21,10 +21,10 @@
     background-size: var(--size-04);
 
     &:focus {
-      border-color: var(--ring);
+      border-color: var(--border-ring);
       box-shadow:
         0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--ring);
+        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
 
     &:disabled {
@@ -33,13 +33,13 @@
     }
 
     &:is([aria-invalid="true"], :user-invalid) {
-      border-color: var(--destructive);
+      border-color: var(--text-negative);
 
       &:focus {
-        border-color: var(--destructive);
+        border-color: var(--text-negative);
         box-shadow:
           0 0 0 var(--focus-ring-width) var(--background),
-          0 0 0 var(--focus-ring-outer-width) var(--destructive);
+          0 0 0 var(--focus-ring-outer-width) var(--text-negative);
       }
     }
 

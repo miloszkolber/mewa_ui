@@ -43,18 +43,18 @@
     padding: var(--space-01) var(--space-02);
 
     cursor: pointer;
-    color: var(--foreground);
+    color: var(--text-primary);
     list-style: none;
 
     &:hover {
-      background-color: var(--accent);
+      background-color: var(--surface-secondary);
     }
 
     &:focus-visible {
       outline: none;
       box-shadow:
         0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--ring);
+        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
 
     &::-webkit-details-marker {
@@ -70,7 +70,7 @@
     & svg:first-child {
       width: 0.875rem;
       height: 0.875rem;
-      color: var(--muted-foreground);
+      color: var(--text-muted);
       transition: transform var(--duration-base) ease;
     }
   }
@@ -86,18 +86,18 @@
     padding: var(--space-01) var(--space-02);
     padding-left: calc(var(--space-02) + 0.875rem + var(--space-02));
 
-    color: var(--foreground);
+    color: var(--text-primary);
     cursor: default;
 
     &:hover {
-      background-color: var(--accent);
+      background-color: var(--surface-secondary);
     }
 
     & svg {
       width: var(--size-04);
       height: var(--size-04);
       flex-shrink: 0;
-      color: var(--muted-foreground);
+      color: var(--text-muted);
     }
   }
 }

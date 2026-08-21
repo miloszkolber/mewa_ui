@@ -85,4 +85,4 @@ buttons (bold, italic, underline) or feature toggles.
 - The toggle is just a button with `aria-pressed` — no custom elements needed.
 - Icon-only toggles must have `aria-label` for screen readers.
 - For toggle groups (e.g., text alignment), wrap in a container with `role="group"` and `aria-label`.
-- The pressed state uses `--accent` / `--accent-foreground` to match the system’s semantic token conventions.
+- The pressed state uses `--surface-secondary` / `--text-primary` to match the system’s semantic token conventions.

@@ -139,9 +139,9 @@ Use the `fill` attribute for filled icon variants. Set `stroke-width="0"` for fi
 Icons inherit `currentColor` for stroke. Change color with inline styles or token references:
 
 ```html
-<i data-lucide="star" style="color:var(--primary);"></i>
-<i data-lucide="star" style="color:var(--muted-foreground);"></i>
-<i data-lucide="star" style="color:var(--destructive);"></i>
+<i data-lucide="star" style="color:var(--text-primary);"></i>
+<i data-lucide="star" style="color:var(--text-muted);"></i>
+<i data-lucide="star" style="color:var(--text-negative);"></i>
 <i data-lucide="star" style="color:oklch(0.72 0.19 142);"></i>
 ```
 

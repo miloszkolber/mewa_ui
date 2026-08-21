@@ -14,7 +14,7 @@
 
     border: var(--border-width-01) solid transparent;
     background: transparent;
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     cursor: pointer;
     outline: none;
     flex-shrink: 0;
@@ -23,16 +23,16 @@
     min-width: 2.25rem;
 
     &:hover {
-      background-color: var(--muted);
-      color: var(--muted-foreground);
+      background-color: var(--surface-secondary);
+      color: var(--text-muted);
     }
 
     &[aria-pressed="true"] {
-      background-color: var(--accent);
-      color: var(--accent-foreground);
+      background-color: var(--surface-secondary);
+      color: var(--text-primary);
 
       &:hover {
-        background-color: color-mix(in oklch, var(--accent) 85%, var(--foreground));
+        background-color: color-mix(in oklch, var(--surface-secondary) 85%, var(--text-primary));
       }
     }
 
@@ -40,7 +40,7 @@
       outline: none;
       box-shadow:
         0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--ring);
+        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
 
     &:disabled {
@@ -57,21 +57,21 @@
 
     /* -- Variants -------------------------------------------- */
     &[data-variant="outline"] {
-      border: var(--border-width-01) solid var(--input);
+      border: var(--border-width-01) solid var(--border-secondary);
       background: transparent;
 
 
       &:hover {
-        background-color: var(--accent);
-        color: var(--accent-foreground);
+        background-color: var(--surface-secondary);
+        color: var(--text-primary);
       }
 
       &[aria-pressed="true"] {
-        background-color: var(--accent);
-        color: var(--accent-foreground);
+        background-color: var(--surface-secondary);
+        color: var(--text-primary);
 
         &:hover {
-          background-color: color-mix(in oklch, var(--accent) 85%, var(--foreground));
+          background-color: color-mix(in oklch, var(--surface-secondary) 85%, var(--text-primary));
         }
       }
     }
@@ -90,7 +90,7 @@
       border: var(--border-width-02) solid transparent;
 
       &[data-variant="outline"] {
-        border-color: var(--foreground);
+        border-color: var(--text-primary);
       }
 
       &[aria-pressed="true"] {

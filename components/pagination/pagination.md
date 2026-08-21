@@ -63,7 +63,7 @@
       <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"
            stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
     </a></li>
-    <li><span style="font-size:0.875rem;color:var(--muted-foreground);padding:0 0.5rem;">Page 1 of 10</span></li>
+    <li><span style="font-size:0.875rem;color:var(--text-muted);padding:0 0.5rem;">Page 1 of 10</span></li>
     <li><a class="pagination-next" href="#" aria-label="Go to next page">
       <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"
            stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>

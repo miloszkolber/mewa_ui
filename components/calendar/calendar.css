@@ -3,9 +3,9 @@
     display: inline-flex;
     flex-direction: column;
     padding: var(--space-03);
-    border: var(--border-width-01) solid var(--border);
+    border: var(--border-width-01) solid var(--border-primary);
 
-    background-color: var(--card);
+    background-color: var(--surface-primary);
     user-select: none;
   }
 
@@ -19,7 +19,7 @@
   .calendar-heading {
     font-size: var(--font-body-small);
     font-weight: var(--font-weight-strong);
-    color: var(--foreground);
+    color: var(--text-primary);
   }
 
   .calendar-nav {
@@ -29,20 +29,20 @@
     width: 1.75rem;
     height: 1.75rem;
     padding: 0;
-    border: var(--border-width-01) solid var(--border);
+    border: var(--border-width-01) solid var(--border-primary);
 
     background-color: transparent;
-    color: var(--foreground);
+    color: var(--text-primary);
     cursor: pointer;
     &:hover {
-      background-color: var(--accent);
+      background-color: var(--surface-secondary);
     }
 
     &:focus-visible {
       outline: none;
       box-shadow:
         0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--ring);
+        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
 
     & svg {
@@ -61,7 +61,7 @@
     height: 2.25rem;
     font-size: var(--font-body-xsmall);
     font-weight: var(--font-weight);
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     text-align: center;
     vertical-align: middle;
   }
@@ -83,28 +83,28 @@
       border: none;
 
       background-color: transparent;
-      color: var(--foreground);
+      color: var(--text-primary);
       cursor: pointer;
       &:hover {
-        background-color: var(--accent);
+        background-color: var(--surface-secondary);
       }
 
       &:focus-visible {
         outline: none;
         box-shadow:
           0 0 0 var(--focus-ring-width) var(--background),
-          0 0 0 var(--focus-ring-outer-width) var(--ring);
+          0 0 0 var(--focus-ring-outer-width) var(--border-ring);
       }
     }
 
     &[data-today] button {
-      background-color: var(--accent);
+      background-color: var(--surface-secondary);
       font-weight: var(--font-weight-strong);
     }
 
     &[data-selected] button {
-      background-color: var(--primary);
-      color: var(--primary-foreground);
+      background-color: var(--surface-inverted);
+      color: var(--text-inverted);
 
       &:hover {
         opacity: var(--opacity-09);
@@ -112,12 +112,12 @@
     }
 
     &[data-outside] button {
-      color: var(--muted-foreground);
+      color: var(--text-muted);
       opacity: var(--opacity-05);
     }
 
     &[data-disabled] button {
-      color: var(--muted-foreground);
+      color: var(--text-muted);
       opacity: var(--opacity-04);
       cursor: not-allowed;
     }

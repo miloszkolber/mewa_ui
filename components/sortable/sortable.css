@@ -18,11 +18,11 @@
     align-items: center;
     gap: var(--space-02);
     padding: var(--space-02) var(--space-03);
-    border: var(--border-width-01) solid var(--border);
+    border: var(--border-width-01) solid var(--border-primary);
 
-    background-color: var(--card);
+    background-color: var(--surface-primary);
     font-size: var(--font-body-small);
-    color: var(--foreground);
+    color: var(--text-primary);
     cursor: grab;
     user-select: none;
 
@@ -32,13 +32,13 @@
       outline: none;
       box-shadow:
         0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--ring);
+        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
 
     &[data-active] {
-      border-color: var(--ring);
-      background-color: var(--accent);
-      color: var(--accent-foreground);
+      border-color: var(--border-ring);
+      background-color: var(--surface-secondary);
+      color: var(--text-primary);
     }
 
     &[data-dragging] {
@@ -48,19 +48,19 @@
     }
 
     &[data-over="before"] {
-      border-top: var(--border-width-02) solid var(--primary);
+      border-top: var(--border-width-02) solid var(--surface-inverted);
     }
     &[data-over="after"] {
-      border-bottom: var(--border-width-02) solid var(--primary);
+      border-bottom: var(--border-width-02) solid var(--surface-inverted);
     }
 
     .sortable[data-orientation="horizontal"] &[data-over="before"] {
-      border-top: var(--border-width-01) solid var(--border);
-      border-inline-start: var(--border-width-02) solid var(--primary);
+      border-top: var(--border-width-01) solid var(--border-primary);
+      border-inline-start: var(--border-width-02) solid var(--surface-inverted);
     }
     .sortable[data-orientation="horizontal"] &[data-over="after"] {
-      border-bottom: var(--border-width-01) solid var(--border);
-      border-inline-end: var(--border-width-02) solid var(--primary);
+      border-bottom: var(--border-width-01) solid var(--border-primary);
+      border-inline-end: var(--border-width-02) solid var(--surface-inverted);
     }
 
     &[aria-disabled="true"] {
@@ -71,7 +71,7 @@
   }
 
   .sortable-handle {
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     cursor: grab;
     font-size: var(--font-body);
     line-height: var(--font-height-none);

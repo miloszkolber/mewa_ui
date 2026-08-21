@@ -2,7 +2,7 @@
   .table-container {
     width: 100%;
     overflow-x: auto;
-    border: var(--border-width-01) solid var(--border);
+    border: var(--border-width-01) solid var(--border-primary);
 
     container-type: inline-size;
   }
@@ -18,17 +18,17 @@
   .table-caption {
     padding: var(--space-03) var(--space-04);
     font-size: var(--font-body-small);
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     text-align: center;
   }
 
   .table-head {
     padding: var(--space-03) var(--space-04);
     font-weight: var(--font-weight-strong);
-    color: var(--muted-foreground);
-    background-color: var(--muted);
+    color: var(--text-muted);
+    background-color: var(--surface-secondary);
     white-space: nowrap;
-    border-bottom: var(--border-width-01) solid var(--border);
+    border-bottom: var(--border-width-01) solid var(--border-primary);
 
     &:first-child {
 
@@ -40,25 +40,25 @@
   }
 
   .table-row {
-    border-bottom: var(--border-width-01) solid var(--border);
+    border-bottom: var(--border-width-01) solid var(--border-primary);
     &:last-child {
       border-bottom: none;
     }
 
     tbody &:hover {
-      background-color: var(--muted);
+      background-color: var(--surface-secondary);
     }
   }
 
   .table-cell {
     padding: var(--space-03) var(--space-04);
     vertical-align: middle;
-    color: var(--foreground);
+    color: var(--text-primary);
   }
 
   tfoot .table-row {
-    background-color: var(--muted);
-    border-top: var(--border-width-01) solid var(--border);
+    background-color: var(--surface-secondary);
+    border-top: var(--border-width-01) solid var(--border-primary);
     font-weight: var(--font-weight-strong);
   }
 

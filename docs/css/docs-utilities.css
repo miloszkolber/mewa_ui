@@ -43,8 +43,8 @@
 /* Typography */
 .text-sm               { font-size: var(--font-body); line-height: var(--font-height); }
 .text-xs               { font-size: var(--font-body-small); line-height: var(--font-height); }
-.text-muted-foreground { color: var(--muted-foreground); }
-.text-destructive      { color: var(--destructive); }
+.text-muted { color: var(--text-muted); }
+.text-negative      { color: var(--text-negative); }
 .font-medium           { font-weight: var(--font-weight-strong); }
 .leading-relaxed       { line-height: var(--font-height); }
 

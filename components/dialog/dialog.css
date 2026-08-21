@@ -4,8 +4,8 @@
   dialog.dialog {
     border: none;
 
-    background-color: var(--popover);
-    color: var(--popover-foreground);
+    background-color: var(--surface-primary-glass);
+    color: var(--text-primary);
     padding: 0;
     margin: auto;
     position: fixed;
@@ -13,7 +13,7 @@
     max-width: 28rem;
     width: calc(100vw - var(--size-07));
     max-height: calc(100vh - var(--size-07));
-    box-shadow: 0 0 0 1px var(--border);
+    box-shadow: 0 0 0 1px var(--border-primary);
     opacity: 0;
     transform: translateY(calc(-1 * var(--size-02))) scale(0.98);
     transition: transform var(--duration-base) ease;
@@ -36,7 +36,7 @@
     }
 
     &[open]::backdrop {
-      background: var(--overlay);
+      background: var(--surface-overlay);
       backdrop-filter: blur(var(--blur-01));
     }
   }
@@ -57,7 +57,7 @@
   .dialog-content { padding: var(--space-06); }
   .dialog-header  { margin-bottom: var(--space-04); }
   .dialog-title   { font-size: var(--font-h4); font-weight: var(--font-weight-strong); margin: 0 0 var(--space-02); letter-spacing: -0.01em; }
-  .dialog-description { font-size: var(--font-body-small); color: var(--muted-foreground); margin: 0; line-height: var(--font-height); }
+  .dialog-description { font-size: var(--font-body-small); color: var(--text-muted); margin: 0; line-height: var(--font-height); }
   .dialog-body    { margin-top: var(--space-04); }
   .dialog-footer  { display: flex; justify-content: flex-end; gap: var(--space-02); margin-top: var(--space-06); }
 }

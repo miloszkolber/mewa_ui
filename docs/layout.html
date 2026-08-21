@@ -87,7 +87,7 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
         <h1>Layout</h1>
-        <p class="text-muted-foreground leading-relaxed mb-6">
+        <p class="text-muted leading-relaxed mb-6">
           Intrinsic layout primitives: container, stack, grid, sidebar, center, and split.
           Built on CSS Grid and Flexbox — responsive by default, no breakpoints, no JavaScript.
         </p>
@@ -95,9 +95,9 @@
 
         <!-- Container -->
         <p class="text-sm font-medium mb-2 mt-6">Container</p>
-        <p class="text-xs text-muted-foreground mb-3">Constrains content to a centered max width (<code>--container-max</code>, default 64rem).</p>
+        <p class="text-xs text-muted mb-3">Constrains content to a centered max width (<code>--container-max</code>, default 64rem).</p>
         <div class="preview">
-          <div class="layout-container" style="border: var(--border-width-01) dashed var(--border); text-align: center">
+          <div class="layout-container" style="border: var(--border-width-01) dashed var(--border-subtle); text-align: center">
             <p style="margin: var(--space-04) 0; font-size: var(--font-body-small)">Centered, constrained content.</p>
           </div>
         </div>
@@ -113,12 +113,12 @@
 
         <!-- Stack -->
         <p class="text-sm font-medium mb-2 mt-8">Stack</p>
-        <p class="text-xs text-muted-foreground mb-3">Vertical rhythm for arbitrary content — children separated by the gap.</p>
+        <p class="text-xs text-muted mb-3">Vertical rhythm for arbitrary content — children separated by the gap.</p>
         <div class="preview">
           <div style="width: 100%; max-width: 24rem; text-align: left">
             <div class="layout-stack">
               <p style="font-weight: var(--font-weight-strong); margin: 0">Profile</p>
-              <p class="text-muted-foreground" style="font-size: var(--font-body-small); margin: 0">A short description of the account and its permissions.</p>
+              <p class="text-muted" style="font-size: var(--font-body-small); margin: 0">A short description of the account and its permissions.</p>
               <button class="btn" data-variant="outline" style="align-self: flex-start">Edit profile</button>
             </div>
           </div>
@@ -137,14 +137,14 @@
 
         <!-- Grid -->
         <p class="text-sm font-medium mb-2 mt-8">Grid</p>
-        <p class="text-xs text-muted-foreground mb-3">Intrinsically responsive columns (<code>--min</code>, default 15rem). Resize the window to watch them wrap.</p>
+        <p class="text-xs text-muted mb-3">Intrinsically responsive columns (<code>--min</code>, default 15rem). Resize the window to watch them wrap.</p>
         <div class="preview">
           <div style="width: 100%; text-align: left">
             <div class="layout-grid">
-              <div style="border: var(--border-width-01) solid var(--border); padding: var(--space-04); font-size: var(--font-body-small)">Card 1</div>
-              <div style="border: var(--border-width-01) solid var(--border); padding: var(--space-04); font-size: var(--font-body-small)">Card 2</div>
-              <div style="border: var(--border-width-01) solid var(--border); padding: var(--space-04); font-size: var(--font-body-small)">Card 3</div>
-              <div style="border: var(--border-width-01) solid var(--border); padding: var(--space-04); font-size: var(--font-body-small)">Card 4</div>
+              <div style="border: var(--border-width-01) solid var(--border-primary); padding: var(--space-04); font-size: var(--font-body-small)">Card 1</div>
+              <div style="border: var(--border-width-01) solid var(--border-primary); padding: var(--space-04); font-size: var(--font-body-small)">Card 2</div>
+              <div style="border: var(--border-width-01) solid var(--border-primary); padding: var(--space-04); font-size: var(--font-body-small)">Card 3</div>
+              <div style="border: var(--border-width-01) solid var(--border-primary); padding: var(--space-04); font-size: var(--font-body-small)">Card 4</div>
             </div>
           </div>
         </div>
@@ -163,16 +163,16 @@
 
         <!-- Sidebar -->
         <p class="text-sm font-medium mb-2 mt-8">Sidebar</p>
-        <p class="text-xs text-muted-foreground mb-3">App-shell split. Content wraps below the sidebar when the container narrows — no media queries.</p>
+        <p class="text-xs text-muted mb-3">App-shell split. Content wraps below the sidebar when the container narrows — no media queries.</p>
         <div class="preview">
           <div class="layout-sidebar" style="width: 100%; text-align: left">
-            <nav style="border: var(--border-width-01) solid var(--border); padding: var(--space-04); font-size: var(--font-body-small)">
+            <nav style="border: var(--border-width-01) solid var(--border-primary); padding: var(--space-04); font-size: var(--font-body-small)">
               <p style="font-weight: var(--font-weight-strong); margin: 0 0 var(--space-02)">Navigation</p>
-              <p class="text-muted-foreground" style="margin: 0; font-size: var(--font-body-xsmall)">Item 1<br>Item 2<br>Item 3</p>
+              <p class="text-muted" style="margin: 0; font-size: var(--font-body-xsmall)">Item 1<br>Item 2<br>Item 3</p>
             </nav>
-            <main style="border: var(--border-width-01) dashed var(--border); padding: var(--space-04); font-size: var(--font-body-small)">
+            <main style="border: var(--border-width-01) dashed var(--border-subtle); padding: var(--space-04); font-size: var(--font-body-small)">
               <p style="font-weight: var(--font-weight-strong); margin: 0 0 var(--space-02)">Main content</p>
-              <p class="text-muted-foreground" style="margin: 0; font-size: var(--font-body-xsmall)">Takes the remaining space; wraps below the sidebar on narrow containers.</p>
+              <p class="text-muted" style="margin: 0; font-size: var(--font-body-xsmall)">Takes the remaining space; wraps below the sidebar on narrow containers.</p>
             </main>
           </div>
         </div>
@@ -189,9 +189,9 @@
 
         <!-- Center -->
         <p class="text-sm font-medium mb-2 mt-8">Center</p>
-        <p class="text-xs text-muted-foreground mb-3">Centers children on both axes. Give the element an explicit size.</p>
+        <p class="text-xs text-muted mb-3">Centers children on both axes. Give the element an explicit size.</p>
         <div class="preview">
-          <div class="layout-center" style="min-block-size: 10rem; border: var(--border-width-01) dashed var(--border)">
+          <div class="layout-center" style="min-block-size: 10rem; border: var(--border-width-01) dashed var(--border-subtle)">
             <p style="font-size: var(--font-body-small)">Centered content</p>
           </div>
         </div>
@@ -207,13 +207,13 @@
 
         <!-- Split -->
         <p class="text-sm font-medium mb-2 mt-8">Split</p>
-        <p class="text-xs text-muted-foreground mb-3">Opposite-end groups that wrap when space runs out. Useful for page headers.</p>
+        <p class="text-xs text-muted mb-3">Opposite-end groups that wrap when space runs out. Useful for page headers.</p>
         <div class="preview">
           <div style="width: 100%; max-width: 32rem; text-align: left">
-            <div class="layout-split" style="border: var(--border-width-01) solid var(--border); padding: var(--space-04)">
+            <div class="layout-split" style="border: var(--border-width-01) solid var(--border-primary); padding: var(--space-04)">
               <div>
                 <p style="font-weight: var(--font-weight-strong); margin: 0">Project settings</p>
-                <p class="text-muted-foreground" style="margin: var(--space-01) 0 0; font-size: var(--font-body-xsmall)">Manage preferences and permissions.</p>
+                <p class="text-muted" style="margin: var(--space-01) 0 0; font-size: var(--font-body-xsmall)">Manage preferences and permissions.</p>
               </div>
               <button class="btn" data-variant="outline">Save changes</button>
             </div>
@@ -235,12 +235,12 @@
 
         <!-- Gaps -->
         <p class="text-sm font-medium mb-2 mt-8">Gaps</p>
-        <p class="text-xs text-muted-foreground mb-3">Named gap values via <code>data-gap</code>, mapped to the <code>--space-*</code> scale.</p>
+        <p class="text-xs text-muted mb-3">Named gap values via <code>data-gap</code>, mapped to the <code>--space-*</code> scale.</p>
         <div class="preview">
           <div style="width: 100%; text-align: left">
-            <div class="layout-stack" data-gap="sm" style="border: var(--border-width-01) dashed var(--border); padding: var(--space-03)">
-              <div style="border: var(--border-width-01) solid var(--border); padding: var(--space-02); font-size: var(--font-body-xsmall)">data-gap="sm" — 0.75rem</div>
-              <div style="border: var(--border-width-01) solid var(--border); padding: var(--space-02); font-size: var(--font-body-xsmall)">data-gap="sm" — 0.75rem</div>
+            <div class="layout-stack" data-gap="sm" style="border: var(--border-width-01) dashed var(--border-subtle); padding: var(--space-03)">
+              <div style="border: var(--border-width-01) solid var(--border-primary); padding: var(--space-02); font-size: var(--font-body-xsmall)">data-gap="sm" — 0.75rem</div>
+              <div style="border: var(--border-width-01) solid var(--border-primary); padding: var(--space-02); font-size: var(--font-body-xsmall)">data-gap="sm" — 0.75rem</div>
             </div>
           </div>
         </div>

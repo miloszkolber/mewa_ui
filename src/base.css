@@ -173,7 +173,7 @@
   :where(html) {
     min-inline-size: 0;
     background: var(--background);
-    color: var(--foreground);
+    color: var(--text-primary);
     font-family: var(--font-sans);
     text-rendering: optimizeLegibility;
   }
@@ -183,7 +183,7 @@
     min-block-size: 100svh;
     margin: 0;
     background: var(--background);
-    color: var(--foreground);
+    color: var(--text-primary);
     font-size: var(--font-body-small);
     font-weight: var(--font-weight);
     line-height: var(--font-height);
@@ -229,7 +229,7 @@
   }
 
   :where(a) {
-    color: var(--foreground);
+    color: var(--text-primary);
     text-underline-offset: 0.2em;
   }
 
@@ -243,15 +243,15 @@
   }
 
   ::selection {
-    background: var(--accent);
-    color: var(--accent-foreground);
+    background: var(--surface-secondary);
+    color: var(--text-primary);
   }
 
   :focus-visible {
     outline: none;
     box-shadow:
       0 0 0 var(--focus-ring-width) var(--background),
-      0 0 0 var(--focus-ring-outer-width) var(--ring);
+      0 0 0 var(--focus-ring-outer-width) var(--border-ring);
   }
 
   [hidden] {

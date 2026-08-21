@@ -1,7 +1,7 @@
 @layer components {
   dialog.command {
     border: none;
-    background: var(--popover); color: var(--popover-foreground);
+    background: var(--surface-primary-glass); color: var(--text-primary);
     padding: 0; max-width: 32rem; width: calc(100% - var(--size-07));
      margin: auto; position: fixed; inset: 0;
     top: 15%; bottom: auto; overflow: hidden;
@@ -10,7 +10,7 @@
 
     &[open] { opacity: 1; transform: scale(1); }
     &::backdrop { background: oklch(0 0 0 / 0); }
-    &[open]::backdrop { background: var(--overlay); }
+    &[open]::backdrop { background: var(--surface-overlay); }
   }
 
   @starting-style {
@@ -20,39 +20,39 @@
 
   .command-input-wrapper {
     display: flex; align-items: center; gap: var(--space-02);
-    padding: var(--space-03) var(--space-04); border-bottom: var(--border-width-01) solid var(--border);
-    & svg { width: var(--size-04); height: var(--size-04); color: var(--muted-foreground); flex-shrink: 0; }
+    padding: var(--space-03) var(--space-04); border-bottom: var(--border-width-01) solid var(--border-primary);
+    & svg { width: var(--size-04); height: var(--size-04); color: var(--text-muted); flex-shrink: 0; }
   }
 
   .command-input {
     flex: 1; border: none; background: transparent;
-    font-size: var(--font-body-small); color: var(--foreground); outline: none; font-family: inherit;
-    &::placeholder { color: var(--muted-foreground); }
+    font-size: var(--font-body-small); color: var(--text-primary); outline: none; font-family: inherit;
+    &::placeholder { color: var(--text-muted); }
   }
 
   .command-list { max-height: 18rem; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-01); }
   .command-group { padding: var(--space-01) 0; }
-  .command-group-heading { margin: 0; padding: var(--space-02) var(--space-02); font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); color: var(--muted-foreground); }
+  .command-group-heading { margin: 0; padding: var(--space-02) var(--space-02); font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); color: var(--text-muted); }
 
   .command-item {
     display: flex; align-items: center; gap: var(--space-02); width: 100%;
     padding: var(--space-02) var(--space-02); border: none;
-    background: transparent; color: var(--foreground); font-size: var(--font-body-small);
+    background: transparent; color: var(--text-primary); font-size: var(--font-body-small);
     font-family: inherit; text-align: left; cursor: pointer; outline: none;
-    &:hover, &[data-highlighted] { background-color: var(--accent); }
+    &:hover, &[data-highlighted] { background-color: var(--surface-secondary); }
     &:focus-visible {
       outline: none;
       box-shadow:
         0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--ring);
+        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
     &[aria-disabled="true"] { pointer-events: none; opacity: var(--opacity-05); }
-    & svg { width: var(--size-04); height: var(--size-04); color: var(--muted-foreground); flex-shrink: 0; }
+    & svg { width: var(--size-04); height: var(--size-04); color: var(--text-muted); flex-shrink: 0; }
   }
 
-  .command-separator { height: 1px; background-color: var(--border); margin: var(--space-01) -0.25rem; }
-  .command-shortcut { margin-inline-start: auto; font-size: var(--font-body-xsmall); color: var(--muted-foreground); font-family: var(--font-mono); }
-  .command-empty { padding: var(--space-06); text-align: center; font-size: var(--font-body-small); color: var(--muted-foreground); }
+  .command-separator { height: 1px; background-color: var(--border-primary); margin: var(--space-01) -0.25rem; }
+  .command-shortcut { margin-inline-start: auto; font-size: var(--font-body-xsmall); color: var(--text-muted); font-family: var(--font-mono); }
+  .command-empty { padding: var(--space-06); text-align: center; font-size: var(--font-body-small); color: var(--text-muted); }
 
   /* -- Accessibility ------------------------------------------ */
 
@@ -62,9 +62,9 @@
   }
 
   @media (prefers-contrast: more) {
-    dialog.command { border: var(--border-width-02) solid var(--border); }
+    dialog.command { border: var(--border-width-02) solid var(--border-primary); }
     .command-item {
-      &:hover, &[data-highlighted] { outline: var(--border-width-01) solid var(--foreground); }
+      &:hover, &[data-highlighted] { outline: var(--border-width-01) solid var(--text-primary); }
     }
   }
 

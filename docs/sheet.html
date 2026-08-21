@@ -87,7 +87,7 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
         <h1>Sheet</h1>
-        <p class="text-muted-foreground leading-relaxed mb-6">
+        <p class="text-muted leading-relaxed mb-6">
           Extends the dialog pattern to display content that slides in from the edge of the screen.
           Built on native <code>&lt;dialog&gt;</code> + <code>showModal()</code> with CSS-only slide animations via <code>@starting-style</code>.
           Supports four sides: <code>right</code>, <code>left</code>, <code>top</code>, <code>bottom</code>.
@@ -96,7 +96,7 @@
 
         <!-- -- Example: Right ---------------------------------- -->
           <p class="text-sm font-medium mb-2 mt-6">Right</p>
-          <p class="text-xs text-muted-foreground mb-3">Default side. The sheet slides in from the right edge — commonly used for edit-profile or settings panels.</p>
+          <p class="text-xs text-muted mb-3">Default side. The sheet slides in from the right edge — commonly used for edit-profile or settings panels.</p>
           <div class="preview">
             <button class="btn" data-variant="outline" data-sheet-trigger="sheet-right" aria-haspopup="dialog">Open Right Sheet</button>
           </div>
@@ -147,7 +147,7 @@
 
         <!-- -- Example: Left ----------------------------------- -->
           <p class="text-sm font-medium mb-2 mt-6">Left</p>
-          <p class="text-xs text-muted-foreground mb-3">Slides in from the left edge — ideal for navigation menus or sidebar-style panels.</p>
+          <p class="text-xs text-muted mb-3">Slides in from the left edge — ideal for navigation menus or sidebar-style panels.</p>
           <div class="preview">
             <button class="btn" data-variant="outline" data-sheet-trigger="sheet-left" aria-haspopup="dialog">Open Left Sheet</button>
           </div>
@@ -172,10 +172,10 @@
     &lt;/div&gt;
     &lt;div class="sheet-body"&gt;
       &lt;nav style="display: flex; flex-direction: column; gap: var(--space-01)"&gt;
-        &lt;a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--foreground); transition: background 150ms" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background=''"&gt;Home&lt;/a&gt;
-        &lt;a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--foreground); transition: background 150ms" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background=''"&gt;Dashboard&lt;/a&gt;
-        &lt;a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--foreground); transition: background 150ms" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background=''"&gt;Settings&lt;/a&gt;
-        &lt;a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--foreground); transition: background 150ms" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background=''"&gt;Help&lt;/a&gt;
+        &lt;a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--text-primary); transition: background 150ms" onmouseover="this.style.background='var(--surface-secondary)'" onmouseout="this.style.background=''"&gt;Home&lt;/a&gt;
+        &lt;a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--text-primary); transition: background 150ms" onmouseover="this.style.background='var(--surface-secondary)'" onmouseout="this.style.background=''"&gt;Dashboard&lt;/a&gt;
+        &lt;a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--text-primary); transition: background 150ms" onmouseover="this.style.background='var(--surface-secondary)'" onmouseout="this.style.background=''"&gt;Settings&lt;/a&gt;
+        &lt;a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--text-primary); transition: background 150ms" onmouseover="this.style.background='var(--surface-secondary)'" onmouseout="this.style.background=''"&gt;Help&lt;/a&gt;
       &lt;/nav&gt;
     &lt;/div&gt;
   &lt;/div&gt;
@@ -190,7 +190,7 @@
 
         <!-- -- Example: Top ------------------------------------ -->
           <p class="text-sm font-medium mb-2 mt-6">Top</p>
-          <p class="text-xs text-muted-foreground mb-3">Slides down from the top edge — useful for notifications or announcement banners.</p>
+          <p class="text-xs text-muted mb-3">Slides down from the top edge — useful for notifications or announcement banners.</p>
           <div class="preview">
             <button class="btn" data-variant="outline" data-sheet-trigger="sheet-top" aria-haspopup="dialog">Open Top Sheet</button>
           </div>
@@ -215,17 +215,17 @@
     &lt;/div&gt;
     &lt;div class="sheet-body"&gt;
       &lt;div style="display: flex; flex-direction: column; gap: var(--space-03)"&gt;
-        &lt;div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--muted), transparent 50%)"&gt;
-          &lt;div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--primary); margin-top: var(--space-02); flex-shrink: 0"&gt;&lt;/div&gt;
-          &lt;div&gt;&lt;p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)"&gt;New comment on your post&lt;/p&gt;&lt;p style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); margin-top: var(--space-01)"&gt;2 minutes ago&lt;/p&gt;&lt;/div&gt;
+        &lt;div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--surface-secondary), transparent 50%)"&gt;
+          &lt;div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--surface-inverted); margin-top: var(--space-02); flex-shrink: 0"&gt;&lt;/div&gt;
+          &lt;div&gt;&lt;p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)"&gt;New comment on your post&lt;/p&gt;&lt;p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)"&gt;2 minutes ago&lt;/p&gt;&lt;/div&gt;
         &lt;/div&gt;
-        &lt;div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--muted), transparent 50%)"&gt;
-          &lt;div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--primary); margin-top: var(--space-02); flex-shrink: 0"&gt;&lt;/div&gt;
-          &lt;div&gt;&lt;p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)"&gt;Deployment successful&lt;/p&gt;&lt;p style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); margin-top: var(--space-01)"&gt;15 minutes ago&lt;/p&gt;&lt;/div&gt;
+        &lt;div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--surface-secondary), transparent 50%)"&gt;
+          &lt;div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--surface-inverted); margin-top: var(--space-02); flex-shrink: 0"&gt;&lt;/div&gt;
+          &lt;div&gt;&lt;p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)"&gt;Deployment successful&lt;/p&gt;&lt;p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)"&gt;15 minutes ago&lt;/p&gt;&lt;/div&gt;
         &lt;/div&gt;
-        &lt;div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--muted), transparent 50%)"&gt;
-          &lt;div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--muted-foreground); margin-top: var(--space-02); flex-shrink: 0"&gt;&lt;/div&gt;
-          &lt;div&gt;&lt;p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)"&gt;Team invitation accepted&lt;/p&gt;&lt;p style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); margin-top: var(--space-01)"&gt;1 hour ago&lt;/p&gt;&lt;/div&gt;
+        &lt;div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--surface-secondary), transparent 50%)"&gt;
+          &lt;div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--text-muted); margin-top: var(--space-02); flex-shrink: 0"&gt;&lt;/div&gt;
+          &lt;div&gt;&lt;p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)"&gt;Team invitation accepted&lt;/p&gt;&lt;p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)"&gt;1 hour ago&lt;/p&gt;&lt;/div&gt;
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -244,7 +244,7 @@
 
         <!-- -- Example: Bottom --------------------------------- -->
           <p class="text-sm font-medium mb-2 mt-6">Bottom</p>
-          <p class="text-xs text-muted-foreground mb-3">Slides up from the bottom edge — great for cookie consent, action sheets, or preference panels.</p>
+          <p class="text-xs text-muted mb-3">Slides up from the bottom edge — great for cookie consent, action sheets, or preference panels.</p>
           <div class="preview">
             <button class="btn" data-variant="outline" data-sheet-trigger="sheet-bottom" aria-haspopup="dialog">Open Bottom Sheet</button>
           </div>
@@ -270,15 +270,15 @@
     &lt;div class="sheet-body"&gt;
       &lt;div style="display: flex; flex-direction: column; gap: var(--space-04)"&gt;
         &lt;div style="display: flex; align-items: center; justify-content: space-between"&gt;
-          &lt;div&gt;&lt;p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)"&gt;Essential Cookies&lt;/p&gt;&lt;p style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); margin-top: var(--space-01)"&gt;Required for the website to function.&lt;/p&gt;&lt;/div&gt;
-          &lt;span style="font-size: var(--font-body-xsmall); color: var(--muted-foreground)"&gt;Always on&lt;/span&gt;
+          &lt;div&gt;&lt;p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)"&gt;Essential Cookies&lt;/p&gt;&lt;p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)"&gt;Required for the website to function.&lt;/p&gt;&lt;/div&gt;
+          &lt;span style="font-size: var(--font-body-xsmall); color: var(--text-muted)"&gt;Always on&lt;/span&gt;
         &lt;/div&gt;
         &lt;div style="display: flex; align-items: center; justify-content: space-between"&gt;
-          &lt;div&gt;&lt;p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)"&gt;Analytics Cookies&lt;/p&gt;&lt;p style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); margin-top: var(--space-01)"&gt;Help us improve our website.&lt;/p&gt;&lt;/div&gt;
+          &lt;div&gt;&lt;p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)"&gt;Analytics Cookies&lt;/p&gt;&lt;p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)"&gt;Help us improve our website.&lt;/p&gt;&lt;/div&gt;
           &lt;input type="checkbox" checked&gt;
         &lt;/div&gt;
         &lt;div style="display: flex; align-items: center; justify-content: space-between"&gt;
-          &lt;div&gt;&lt;p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)"&gt;Marketing Cookies&lt;/p&gt;&lt;p style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); margin-top: var(--space-01)"&gt;Used for targeted advertising.&lt;/p&gt;&lt;/div&gt;
+          &lt;div&gt;&lt;p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)"&gt;Marketing Cookies&lt;/p&gt;&lt;p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)"&gt;Used for targeted advertising.&lt;/p&gt;&lt;/div&gt;
           &lt;input type="checkbox"&gt;
         &lt;/div&gt;
       &lt;/div&gt;
@@ -343,10 +343,10 @@
       </div>
       <div class="sheet-body">
         <nav style="display: flex; flex-direction: column; gap: var(--space-01)">
-          <a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--foreground); transition: background 150ms" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background=''">Home</a>
-          <a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--foreground); transition: background 150ms" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background=''">Dashboard</a>
-          <a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--foreground); transition: background 150ms" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background=''">Settings</a>
-          <a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--foreground); transition: background 150ms" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background=''">Help</a>
+          <a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--text-primary); transition: background 150ms" onmouseover="this.style.background='var(--surface-secondary)'" onmouseout="this.style.background=''">Home</a>
+          <a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--text-primary); transition: background 150ms" onmouseover="this.style.background='var(--surface-secondary)'" onmouseout="this.style.background=''">Dashboard</a>
+          <a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--text-primary); transition: background 150ms" onmouseover="this.style.background='var(--surface-secondary)'" onmouseout="this.style.background=''">Settings</a>
+          <a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--text-primary); transition: background 150ms" onmouseover="this.style.background='var(--surface-secondary)'" onmouseout="this.style.background=''">Help</a>
         </nav>
       </div>
     </div>
@@ -364,17 +364,17 @@
       </div>
       <div class="sheet-body">
         <div style="display: flex; flex-direction: column; gap: var(--space-03)">
-          <div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--muted), transparent 50%)">
-            <div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--primary); margin-top: var(--space-02); flex-shrink: 0"></div>
-            <div><p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">New comment on your post</p><p style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); margin-top: var(--space-01)">2 minutes ago</p></div>
+          <div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--surface-secondary), transparent 50%)">
+            <div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--surface-inverted); margin-top: var(--space-02); flex-shrink: 0"></div>
+            <div><p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">New comment on your post</p><p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)">2 minutes ago</p></div>
           </div>
-          <div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--muted), transparent 50%)">
-            <div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--primary); margin-top: var(--space-02); flex-shrink: 0"></div>
-            <div><p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">Deployment successful</p><p style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); margin-top: var(--space-01)">15 minutes ago</p></div>
+          <div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--surface-secondary), transparent 50%)">
+            <div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--surface-inverted); margin-top: var(--space-02); flex-shrink: 0"></div>
+            <div><p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">Deployment successful</p><p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)">15 minutes ago</p></div>
           </div>
-          <div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--muted), transparent 50%)">
-            <div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--muted-foreground); margin-top: var(--space-02); flex-shrink: 0"></div>
-            <div><p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">Team invitation accepted</p><p style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); margin-top: var(--space-01)">1 hour ago</p></div>
+          <div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--surface-secondary), transparent 50%)">
+            <div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--text-muted); margin-top: var(--space-02); flex-shrink: 0"></div>
+            <div><p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">Team invitation accepted</p><p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)">1 hour ago</p></div>
           </div>
         </div>
       </div>
@@ -397,15 +397,15 @@
       <div class="sheet-body">
         <div style="display: flex; flex-direction: column; gap: var(--space-04)">
           <div style="display: flex; align-items: center; justify-content: space-between">
-            <div><p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">Essential Cookies</p><p style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); margin-top: var(--space-01)">Required for the website to function.</p></div>
-            <span style="font-size: var(--font-body-xsmall); color: var(--muted-foreground)">Always on</span>
+            <div><p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">Essential Cookies</p><p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)">Required for the website to function.</p></div>
+            <span style="font-size: var(--font-body-xsmall); color: var(--text-muted)">Always on</span>
           </div>
           <div style="display: flex; align-items: center; justify-content: space-between">
-            <div><p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">Analytics Cookies</p><p style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); margin-top: var(--space-01)">Help us improve our website.</p></div>
+            <div><p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">Analytics Cookies</p><p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)">Help us improve our website.</p></div>
             <input type="checkbox" checked>
           </div>
           <div style="display: flex; align-items: center; justify-content: space-between">
-            <div><p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">Marketing Cookies</p><p style="font-size: var(--font-body-xsmall); color: var(--muted-foreground); margin-top: var(--space-01)">Used for targeted advertising.</p></div>
+            <div><p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">Marketing Cookies</p><p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)">Used for targeted advertising.</p></div>
             <input type="checkbox">
           </div>
         </div>

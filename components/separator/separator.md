@@ -89,5 +89,5 @@
 - The vertical separator requires the parent to be a flex container.
 - The labeled separator uses a flex layout with two `<hr>` elements flanking the label text.
 - In `forced-colors` mode, the separator uses `CanvasText` system color for visibility.
-- In `prefers-contrast: more` mode, the separator uses `--foreground` and doubles in thickness (2px) for visibility.
+- In `prefers-contrast: more` mode, the separator uses `--text-primary` and doubles in thickness (2px) for visibility.
 - Separators are purely visual — no JavaScript required.

@@ -87,12 +87,12 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
         <h1>Switch</h1>
-        <p class="text-muted-foreground leading-relaxed mb-6">
+        <p class="text-muted leading-relaxed mb-6">
           A toggle control for on/off states. Built on native <code>&lt;input type="checkbox" role="switch"&gt;</code> with CSS-only thumb animation.
         </p>
       </div>
         <p class="text-sm font-medium mb-2 mt-6">Default</p>
-        <p class="text-xs text-muted-foreground mb-3">Toggle switch with label.</p>
+        <p class="text-xs text-muted mb-3">Toggle switch with label.</p>
         <div class="preview">
           <div class="switch-item">
             <input class="switch" type="checkbox" role="switch" id="d-airplane">
@@ -111,7 +111,7 @@
         </div>
 
         <p class="text-sm font-medium mb-2 mt-8">With description</p>
-        <p class="text-xs text-muted-foreground mb-3">Switch with label and description text using <code>.switch-item-block</code>.</p>
+        <p class="text-xs text-muted mb-3">Switch with label and description text using <code>.switch-item-block</code>.</p>
         <div class="preview">
           <div class="switch-item-block" style="max-width: 22rem">
             <label for="d-share">Share across devices</label>
@@ -150,7 +150,7 @@
         </div>
 
         <p class="text-sm font-medium mb-2 mt-8">Disabled</p>
-        <p class="text-xs text-muted-foreground mb-3">Disabled state — <code>.switch-item</code> auto-dims the label via <code>:has()</code>.</p>
+        <p class="text-xs text-muted mb-3">Disabled state — <code>.switch-item</code> auto-dims the label via <code>:has()</code>.</p>
         <div class="preview">
           <div class="switch-item">
             <input class="switch" type="checkbox" role="switch" id="d-dis-sw" disabled>
@@ -169,12 +169,12 @@
         </div>
 
         <p class="text-sm font-medium mb-2 mt-8">Invalid</p>
-        <p class="text-xs text-muted-foreground mb-3">Validation error state with <code>aria-invalid="true"</code>.</p>
+        <p class="text-xs text-muted mb-3">Validation error state with <code>aria-invalid="true"</code>.</p>
         <div class="preview">
           <div class="switch-item-block" style="max-width: 22rem">
             <label for="d-terms">Accept terms and conditions</label>
             <input class="switch" type="checkbox" role="switch" id="d-terms" aria-invalid="true">
-            <span class="switch-description" style="color: var(--destructive)">You must accept the terms and conditions to continue.</span>
+            <span class="switch-description" style="color: var(--text-negative)">You must accept the terms and conditions to continue.</span>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
@@ -185,7 +185,7 @@
           <pre><code class="language-markup">&lt;div class="switch-item-block"&gt;
   &lt;label for="terms"&gt;Accept terms and conditions&lt;/label&gt;
   &lt;input class="switch" type="checkbox" role="switch" id="terms" aria-invalid="true"&gt;
-  &lt;span class="switch-description" style="color: var(--destructive)"&gt;You must accept the terms.&lt;/span&gt;
+  &lt;span class="switch-description" style="color: var(--text-negative)"&gt;You must accept the terms.&lt;/span&gt;
 &lt;/div&gt;</code></pre>
         </div>
 

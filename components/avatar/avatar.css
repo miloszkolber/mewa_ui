@@ -9,7 +9,7 @@
     border-radius: var(--radius-full);
     overflow: visible;
     flex-shrink: 0;
-    background-color: var(--muted);
+    background-color: var(--surface-secondary);
 
     &[data-size="sm"] {
       width: var(--size-07);
@@ -40,8 +40,8 @@
     height: 100%;
     font-size: var(--font-body-xsmall);
     font-weight: var(--font-weight-strong);
-    color: var(--muted-foreground);
-    background-color: var(--muted);
+    color: var(--text-muted);
+    background-color: var(--surface-secondary);
     position: absolute;
     inset: 0;
     border-radius: inherit;
@@ -59,7 +59,7 @@
     width: 0.625rem;
     height: 0.625rem;
     border-radius: var(--radius-full);
-    background-color: var(--success);
+    background-color: var(--surface-positive);
     border: var(--border-width-02) solid var(--background);
   }
 
@@ -84,8 +84,8 @@
     width: var(--size-08);
     height: var(--size-08);
     border-radius: var(--radius-full);
-    background-color: var(--muted);
-    color: var(--muted-foreground);
+    background-color: var(--surface-secondary);
+    color: var(--text-muted);
     font-size: var(--font-body-xsmall);
     font-weight: var(--font-weight-strong);
     border: var(--border-width-02) solid var(--background);

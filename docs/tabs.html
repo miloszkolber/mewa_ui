@@ -87,7 +87,7 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
         <h1>Tabs</h1>
-        <p class="text-muted-foreground leading-relaxed mb-6">
+        <p class="text-muted leading-relaxed mb-6">
           Organize content into switchable panels. Uses WAI-ARIA Tabs pattern with
           roving <code>tabindex</code> and arrow key navigation. Available in pill and line variants.
         </p>
@@ -95,7 +95,7 @@
 
         <!-- Pill variant (default) -->
         <p class="text-sm font-medium mb-2 mt-6">Pill variant (default)</p>
-        <p class="text-xs text-muted-foreground mb-3">Default style with <code>--muted</code> background. Active tab gets <code>--background</code> fill and shadow.</p>
+        <p class="text-xs text-muted mb-3">Default style with <code>--surface-secondary</code> background. Active tab gets <code>--background</code> fill and shadow.</p>
         <div class="preview" style="flex-direction: column; align-items: stretch; padding: var(--space-07) var(--space-08)">
           <div class="tabs">
             <div class="tab-list" role="tablist" aria-label="Account settings" id="demo-tablist-pill">
@@ -218,7 +218,7 @@
 
         <!-- Line variant -->
         <p class="text-sm font-medium mb-2 mt-8">Line variant with disabled tab</p>
-        <p class="text-xs text-muted-foreground mb-3">Add <code>data-variant="line"</code> to the <code>.tab-list</code> for an underline style. Disabled tabs use the native <code>disabled</code> attribute.</p>
+        <p class="text-xs text-muted mb-3">Add <code>data-variant="line"</code> to the <code>.tab-list</code> for an underline style. Disabled tabs use the native <code>disabled</code> attribute.</p>
         <div class="preview" style="flex-direction: column; align-items: stretch; padding: var(--space-07) var(--space-08)">
           <div class="tabs">
             <div class="tab-list" role="tablist" aria-label="Dashboard" data-variant="line" id="demo-tablist-line">
@@ -227,13 +227,13 @@
               <button class="tab-trigger" role="tab" aria-selected="false" aria-controls="line-panel-reports" id="line-tab-reports" tabindex="-1" disabled>Reports</button>
             </div>
             <div class="tab-content" role="tabpanel" id="line-panel-overview" aria-labelledby="line-tab-overview" tabindex="0">
-              <p class="text-muted-foreground" style="font-size: var(--font-body-small); padding: var(--space-04) 0" >Overview dashboard content goes here. This is the default active panel.</p>
+              <p class="text-muted" style="font-size: var(--font-body-small); padding: var(--space-04) 0" >Overview dashboard content goes here. This is the default active panel.</p>
             </div>
             <div class="tab-content" role="tabpanel" id="line-panel-analytics" aria-labelledby="line-tab-analytics" tabindex="0" hidden>
-              <p class="text-muted-foreground" style="font-size: var(--font-body-small); padding: var(--space-04) 0" >Analytics panel with charts and metrics.</p>
+              <p class="text-muted" style="font-size: var(--font-body-small); padding: var(--space-04) 0" >Analytics panel with charts and metrics.</p>
             </div>
             <div class="tab-content" role="tabpanel" id="line-panel-reports" aria-labelledby="line-tab-reports" tabindex="0" hidden>
-              <p class="text-muted-foreground" style="font-size: var(--font-body-small); padding: var(--space-04) 0" >Reports panel with exportable data tables.</p>
+              <p class="text-muted" style="font-size: var(--font-body-small); padding: var(--space-04) 0" >Reports panel with exportable data tables.</p>
             </div>
           </div>
         </div>
@@ -266,7 +266,7 @@
        id="line-panel-overview"
        aria-labelledby="line-tab-overview"
        tabindex="0"&gt;
-    &lt;p class="text-muted-foreground" style="font-size: var(--font-body-small)" style="padding: var(--space-04) 0"&gt;
+    &lt;p class="text-muted" style="font-size: var(--font-body-small)" style="padding: var(--space-04) 0"&gt;
       Overview dashboard content goes here.
     &lt;/p&gt;
   &lt;/div&gt;
@@ -274,7 +274,7 @@
        id="line-panel-analytics"
        aria-labelledby="line-tab-analytics"
        tabindex="0" hidden&gt;
-    &lt;p class="text-muted-foreground" style="font-size: var(--font-body-small)" style="padding: var(--space-04) 0"&gt;
+    &lt;p class="text-muted" style="font-size: var(--font-body-small)" style="padding: var(--space-04) 0"&gt;
       Analytics panel with charts and metrics.
     &lt;/p&gt;
   &lt;/div&gt;
@@ -282,7 +282,7 @@
        id="line-panel-reports"
        aria-labelledby="line-tab-reports"
        tabindex="0" hidden&gt;
-    &lt;p class="text-muted-foreground" style="font-size: var(--font-body-small)" style="padding: var(--space-04) 0"&gt;
+    &lt;p class="text-muted" style="font-size: var(--font-body-small)" style="padding: var(--space-04) 0"&gt;
       Reports panel with exportable data tables.
     &lt;/p&gt;
   &lt;/div&gt;
@@ -291,7 +291,7 @@
 
         <!-- Vertical orientation -->
         <p class="text-sm font-medium mb-2 mt-8">Vertical orientation</p>
-        <p class="text-xs text-muted-foreground mb-3">Set <code>aria-orientation="vertical"</code> on the tablist. CSS uses <code>:has()</code> to switch to a side-by-side layout automatically.</p>
+        <p class="text-xs text-muted mb-3">Set <code>aria-orientation="vertical"</code> on the tablist. CSS uses <code>:has()</code> to switch to a side-by-side layout automatically.</p>
         <div class="preview" style="flex-direction: column; align-items: stretch; padding: var(--space-07) var(--space-08)">
           <div class="tabs">
             <div class="tab-list" role="tablist" aria-label="Settings" aria-orientation="vertical" id="demo-tablist-vert">
@@ -324,7 +324,7 @@
                   <p class="card-description">Configure your security settings.</p>
                 </div>
                 <div class="card-content">
-                  <p class="text-muted-foreground" style="font-size: var(--font-body-small)">Two-factor authentication, session management, and login history.</p>
+                  <p class="text-muted" style="font-size: var(--font-body-small)">Two-factor authentication, session management, and login history.</p>
                 </div>
               </div>
             </div>
@@ -335,7 +335,7 @@
                   <p class="card-description">Choose what you want to be notified about.</p>
                 </div>
                 <div class="card-content">
-                  <p class="text-muted-foreground" style="font-size: var(--font-body-small)">Email notifications, push alerts, and digest preferences.</p>
+                  <p class="text-muted" style="font-size: var(--font-body-small)">Email notifications, push alerts, and digest preferences.</p>
                 </div>
               </div>
             </div>
@@ -398,7 +398,7 @@
         &lt;p class="card-description"&gt;Configure your security settings.&lt;/p&gt;
       &lt;/div&gt;
       &lt;div class="card-content"&gt;
-        &lt;p class="text-muted-foreground" style="font-size: var(--font-body-small)"&gt;Two-factor authentication, session management, and login history.&lt;/p&gt;
+        &lt;p class="text-muted" style="font-size: var(--font-body-small)"&gt;Two-factor authentication, session management, and login history.&lt;/p&gt;
       &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
@@ -413,7 +413,7 @@
         &lt;p class="card-description"&gt;Choose what you want to be notified about.&lt;/p&gt;
       &lt;/div&gt;
       &lt;div class="card-content"&gt;
-        &lt;p class="text-muted-foreground" style="font-size: var(--font-body-small)"&gt;Email notifications, push alerts, and digest preferences.&lt;/p&gt;
+        &lt;p class="text-muted" style="font-size: var(--font-body-small)"&gt;Email notifications, push alerts, and digest preferences.&lt;/p&gt;
       &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;

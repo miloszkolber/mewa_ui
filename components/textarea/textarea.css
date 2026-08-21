@@ -4,26 +4,26 @@
   .textarea {
     width: 100%;
     min-height: var(--size-12);
-    border: var(--border-width-01) solid var(--input);
+    border: var(--border-width-01) solid var(--border-secondary);
 
     background: var(--background);
     padding: var(--space-02) var(--space-03);
     font-size: var(--font-body-small);
     font-family: var(--font-sans);
-    color: var(--foreground);
+    color: var(--text-primary);
     outline: none;
 
     resize: vertical;
     field-sizing: content;
 
     &:focus {
-      border-color: var(--ring);
+      border-color: var(--border-ring);
       box-shadow:
         0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--ring);
+        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
 
-    &::placeholder { color: var(--muted-foreground); }
+    &::placeholder { color: var(--text-muted); }
 
     &:disabled {
       opacity: var(--opacity-05);
@@ -32,13 +32,13 @@
     }
 
     &:is([aria-invalid="true"], :user-invalid) {
-      border-color: var(--destructive);
+      border-color: var(--text-negative);
 
       &:focus {
-        border-color: var(--destructive);
+        border-color: var(--text-negative);
         box-shadow:
           0 0 0 var(--focus-ring-width) var(--background),
-          0 0 0 var(--focus-ring-outer-width) var(--destructive);
+          0 0 0 var(--focus-ring-outer-width) var(--text-negative);
       }
     }
   }

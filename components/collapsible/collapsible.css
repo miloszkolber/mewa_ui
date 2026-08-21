@@ -1,6 +1,6 @@
 @layer components {
   .collapsible {
-    border: var(--border-width-01) solid var(--border);
+    border: var(--border-width-01) solid var(--border-primary);
 
     overflow: hidden;
 
@@ -30,18 +30,18 @@
     font-size: var(--font-body-small);
     font-weight: var(--font-weight-strong);
     cursor: pointer;
-    color: var(--foreground);
+    color: var(--text-primary);
     list-style: none;
 
     &:hover {
-      background-color: var(--accent);
+      background-color: var(--surface-secondary);
     }
 
     &:focus-visible {
       outline: none;
       box-shadow:
         0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--ring);
+        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
 
     &::-webkit-details-marker {
@@ -52,7 +52,7 @@
   .collapsible-chevron {
     width: var(--size-04);
     height: var(--size-04);
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     transition: transform var(--duration-base) ease;
     flex-shrink: 0;
 
@@ -64,7 +64,7 @@
   .collapsible-content {
     padding: 0 var(--space-04) var(--space-03);
     font-size: var(--font-body-small);
-    color: var(--muted-foreground);
+    color: var(--text-muted);
     line-height: var(--font-height);
   }
 }

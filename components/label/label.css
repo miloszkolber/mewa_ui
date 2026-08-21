@@ -6,7 +6,7 @@
     font-weight: var(--font-weight-strong);
     font-family: var(--font-sans);
     line-height: var(--font-height-none);
-    color: var(--foreground);
+    color: var(--text-primary);
     display: block;
     margin-bottom: var(--space-02);
     cursor: default;
@@ -27,7 +27,7 @@
   .label-hint {
     font-weight: var(--font-weight);
     font-size: var(--font-body-small);
-    color: var(--muted-foreground);
+    color: var(--text-muted);
   }
 
   /* -- Accessibility ---------------------------------------- */

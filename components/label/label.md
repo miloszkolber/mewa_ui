@@ -24,7 +24,7 @@
 ### With required indicator
 ```html
 <label class="label" for="name">
-  Name <span aria-hidden="true" class="text-destructive">*</span>
+  Name <span aria-hidden="true" class="text-negative">*</span>
 </label>
 <input class="input" id="name" type="text" required>
 ```

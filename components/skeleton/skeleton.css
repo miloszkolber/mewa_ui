@@ -1,6 +1,6 @@
 @layer components {
   .skeleton {
-    background-color: var(--accent);
+    background-color: var(--surface-secondary);
 
     animation: skeleton-pulse var(--duration-pulse) ease-in-out infinite;
   }

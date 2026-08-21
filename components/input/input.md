@@ -38,7 +38,7 @@ Also covers `<textarea>` with auto-grow via `field-sizing: content`.
 ### Required
 ```html
 <label class="label" for="name">
-  Name <span aria-hidden="true" class="text-destructive">*</span>
+  Name <span aria-hidden="true" class="text-negative">*</span>
 </label>
 <input class="input" type="text" id="name" required placeholder="Jane Doe">
 ```
@@ -53,7 +53,7 @@ Also covers `<textarea>` with auto-grow via `field-sizing: content`.
 ### With icon
 ```html
 <div style="position:relative;">
-  <i data-lucide="search" style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--muted-foreground);width:1rem;height:1rem;"></i>
+  <i data-lucide="search" style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--text-muted);width:1rem;height:1rem;"></i>
   <input class="input" type="search" placeholder="Search..." style="padding-left:2.25rem;">
 </div>
 ```
@@ -105,11 +105,11 @@ Also covers `<textarea>` with auto-grow via `field-sizing: content`.
 
 | State | How to apply | Visual |
 |-------|-------------|--------|
-| Default | — | Border `--input` |
-| Focus | Native `:focus` | Ring `--ring` with glow |
+| Default | — | Border `--border-secondary` |
+| Focus | Native `:focus` | Ring `--border-ring` with glow |
 | Disabled | `disabled` attribute | 50% opacity |
 | Readonly | `readonly` attribute | Muted background, 70% opacity, no focus ring change |
-| Invalid | `aria-invalid="true"` | Border `--destructive`, red ring on focus |
+| Invalid | `aria-invalid="true"` | Border `--text-negative`, red ring on focus |
 | Required | `required` attribute | Works with native validation |
 
 ---

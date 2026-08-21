@@ -5,7 +5,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-02);
-    border: var(--border-width-01) solid var(--input);
+    border: var(--border-width-01) solid var(--border-secondary);
 
     background: var(--background);
     padding: var(--space-01) var(--space-03) var(--space-01) var(--space-01);
@@ -16,7 +16,7 @@
       appearance: none;
       width: var(--size-07);
       height: var(--size-07);
-      border: var(--border-width-01) solid var(--border);
+      border: var(--border-width-01) solid var(--border-primary);
 
       cursor: pointer;
       padding: 0;
@@ -36,7 +36,7 @@
     & .color-picker-value {
       font-size: var(--font-body-small);
       font-family: var(--font-mono);
-      color: var(--muted-foreground);
+      color: var(--text-muted);
     }
   }
 }

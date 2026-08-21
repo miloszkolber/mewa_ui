@@ -87,12 +87,12 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
         <h1>Slider</h1>
-        <p class="text-muted-foreground leading-relaxed mb-6">
+        <p class="text-muted leading-relaxed mb-6">
           An input for selecting a value from a range. Built on native <code>&lt;input type="range"&gt;</code> with custom track and thumb styling, filled track indicator, and full keyboard support.
         </p>
       </div>
         <p class="text-sm font-medium mb-2 mt-6">Default</p>
-        <p class="text-xs text-muted-foreground mb-3">Range slider with default value.</p>
+        <p class="text-xs text-muted mb-3">Range slider with default value.</p>
         <div class="preview">
           <div style="width: 100%; max-width: 20rem">
             <input class="slider" type="range" min="0" max="100" value="50">
@@ -124,12 +124,12 @@
 
         <!-- With value display -->
         <p class="text-sm font-medium mb-2 mt-8">With value display</p>
-        <p class="text-xs text-muted-foreground mb-3">Shows current value using a native <code>&lt;output&gt;</code> element.</p>
+        <p class="text-xs text-muted mb-3">Shows current value using a native <code>&lt;output&gt;</code> element.</p>
         <div class="preview">
           <div style="width: 100%; max-width: 20rem">
             <div style="display: flex; justify-content: space-between; align-items: center; gap: var(--space-04)">
               <label class="label" for="d-temp" style="margin: 0">Temperature</label>
-              <output id="d-temp-output" class="text-muted-foreground" for="d-temp" style="font-size: var(--font-body-small); font-family: var(--font-mono)" >0.5</output>
+              <output id="d-temp-output" class="text-muted" for="d-temp" style="font-size: var(--font-body-small); font-family: var(--font-mono)" >0.5</output>
             </div>
             <input class="slider" type="range" id="d-temp" min="0" max="1" step="0.1" value="0.5" oninput="document.getElementById('d-temp-output').value = this.value">
           </div>
@@ -141,7 +141,7 @@
           </button>
           <pre><code class="language-markup">&lt;div style="display: flex; justify-content: space-between; align-items: center; gap: var(--space-04)"&gt;
   &lt;label class="label" for="temp" style="margin: 0"&gt;Temperature&lt;/label&gt;
-  &lt;output id="temp-output" class="text-muted-foreground" style="font-size: var(--font-body-small); font-family: var(--font-mono)" for="temp"&gt;0.5&lt;/output&gt;
+  &lt;output id="temp-output" class="text-muted" style="font-size: var(--font-body-small); font-family: var(--font-mono)" for="temp"&gt;0.5&lt;/output&gt;
 &lt;/div&gt;
 &lt;input class="slider" type="range" id="temp" min="0" max="1" step="0.1" value="0.5"
   oninput="document.getElementById('temp-output').value = this.value"&gt;</code></pre>
@@ -149,12 +149,12 @@
 
         <!-- With steps -->
         <p class="text-sm font-medium mb-2 mt-8">With steps</p>
-        <p class="text-xs text-muted-foreground mb-3">Slider with discrete step increments.</p>
+        <p class="text-xs text-muted mb-3">Slider with discrete step increments.</p>
         <div class="preview">
           <div style="width: 100%; max-width: 20rem">
             <div style="display: flex; justify-content: space-between; align-items: center; gap: var(--space-04)">
               <label class="label" for="d-step" style="margin: 0">Step: 25</label>
-              <output id="d-step-output" class="text-muted-foreground" for="d-step" style="font-size: var(--font-body-small); font-family: var(--font-mono)" >50</output>
+              <output id="d-step-output" class="text-muted" for="d-step" style="font-size: var(--font-body-small); font-family: var(--font-mono)" >50</output>
             </div>
             <input class="slider" type="range" id="d-step" min="0" max="100" step="25" value="50" oninput="document.getElementById('d-step-output').value = this.value">
           </div>
@@ -169,7 +169,7 @@
 
         <!-- Vertical -->
         <p class="text-sm font-medium mb-2 mt-8">Vertical</p>
-        <p class="text-xs text-muted-foreground mb-3">Vertical orientation using <code>data-orientation="vertical"</code>.</p>
+        <p class="text-xs text-muted mb-3">Vertical orientation using <code>data-orientation="vertical"</code>.</p>
         <div class="preview" style="min-height: 14rem">
           <input class="slider" type="range" data-orientation="vertical" min="0" max="100" value="60">
         </div>
@@ -183,7 +183,7 @@
 
         <!-- Disabled -->
         <p class="text-sm font-medium mb-2 mt-8">Disabled</p>
-        <p class="text-xs text-muted-foreground mb-3">Slider in disabled state.</p>
+        <p class="text-xs text-muted mb-3">Slider in disabled state.</p>
         <div class="preview">
           <div style="width: 100%; max-width: 20rem">
             <input class="slider" type="range" min="0" max="100" value="30" disabled>

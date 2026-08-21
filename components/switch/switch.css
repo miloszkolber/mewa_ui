@@ -6,7 +6,7 @@
     width: 2.25rem;
     height: var(--size-05);
     border-radius: var(--radius-full);
-    background: var(--input);
+    background: var(--border-secondary);
     cursor: pointer;
     position: relative;
     flex-shrink: 0;
@@ -27,7 +27,7 @@
     }
 
     &:checked {
-      background: var(--primary);
+      background: var(--surface-inverted);
 
       &::after {
         transform: translateX(var(--size-04));
@@ -38,7 +38,7 @@
       outline: none;
       box-shadow:
         0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--ring);
+        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
     }
 
     &:disabled {
@@ -47,10 +47,10 @@
     }
 
     &[aria-invalid="true"] {
-      background: var(--destructive);
+      background: var(--surface-negative);
 
       &:checked {
-        background: var(--destructive);
+        background: var(--surface-negative);
       }
     }
   }
@@ -85,7 +85,7 @@
 
     & > .switch-description {
       font-size: var(--font-body-small);
-      color: var(--muted-foreground);
+      color: var(--text-muted);
       line-height: var(--font-height);
     }
   }
