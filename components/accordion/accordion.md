@@ -14,9 +14,8 @@ is required. For multi-open, pure HTML with no JS works.
 ## Native Web APIs
 - [`<details>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details) — native disclosure widget with built-in open/close state
 - [`<summary>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/summary) — clickable heading that toggles the parent `<details>`
-- [`::details-content`](https://developer.mozilla.org/en-US/docs/Web/CSS/::details-content) — pseudo-element for styling and animating the collapsible content
+- [`::details-content`](https://developer.mozilla.org/en-US/docs/Web/CSS/::details-content) — pseudo-element for styling collapsible content
 - [`toggle` event](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDetailsElement/toggle_event) — fires when the `open` state changes
-- [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) — defines entry animation starting values for open transition
 
 ---
 
@@ -62,7 +61,7 @@ is required. For multi-open, pure HTML with no JS works.
       </svg>
     </summary>
     <div class="accordion-content">
-      <p>Yes. The chevron rotates and content can use CSS transitions.</p>
+      <p>Not currently. State changes are immediate and do not use CSS transitions.</p>
     </div>
   </details>
 </div>
@@ -150,7 +149,7 @@ These are all browser-native — no JS needed.
 - For single-open behavior, the `toggle` event on `<details>` fires after the state changes
 - The `open` attribute is the source of truth for whether an item is expanded
 - Avoid nesting accordions — use a flat list with clear headings instead
-- The chevron rotation relies on `details[open] >` selector — this is pure CSS
-- Content height animation uses `::details-content` pseudo-element with `block-size` transition and `@starting-style` for the enter animation — fully CSS-only, no JS measurement needed
+- The chevron state relies on the `details[open] >` selector — this is pure CSS
+- Disclosure state changes are immediate for now, with no CSS animation or transition
 - Set `data-type="single"` for accordion behavior (only one open); omit for disclosure list (any number open)
 - Set `data-collapsible` alongside `data-type="single"` to allow all items to be closed

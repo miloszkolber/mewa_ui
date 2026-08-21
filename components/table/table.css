@@ -24,50 +24,36 @@
 
   .table-head {
     padding: var(--space-03) var(--space-04);
+    font-family: var(--font-mono);
+    font-size: var(--font-body-xsmall);
     font-weight: var(--font-weight-strong);
     color: var(--text-muted);
-    background-color: var(--surface-secondary);
+    text-transform: uppercase;
     white-space: nowrap;
-    border-bottom: var(--border-width-01) solid var(--border-primary);
-
-    &:first-child {
-
-    }
-
-    &:last-child {
-
-    }
-  }
-
-  .table-row {
-    border-bottom: var(--border-width-01) solid var(--border-primary);
-    &:last-child {
-      border-bottom: none;
-    }
-
-    tbody &:hover {
-      background-color: var(--surface-secondary);
-    }
   }
 
   .table-cell {
     padding: var(--space-03) var(--space-04);
     vertical-align: middle;
     color: var(--text-primary);
+
+    &:has(.avatar) {
+      & > div:has(.avatar) {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-02);
+        vertical-align: middle;
+      }
+
+      & .avatar {
+        vertical-align: middle;
+      }
+    }
   }
 
   tfoot .table-row {
     background-color: var(--surface-secondary);
-    border-top: var(--border-width-01) solid var(--border-primary);
     font-weight: var(--font-weight-strong);
-  }
-
-  tfoot .table-cell:first-child {
-
-  }
-
-  tfoot .table-cell:last-child {
-
   }
 
   /* -- Container query: compact table in narrow containers -- */

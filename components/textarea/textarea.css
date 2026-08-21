@@ -18,9 +18,8 @@
 
     &:focus {
       border-color: var(--border-ring);
-      box-shadow:
-        0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: var(--border-width-01);
     }
 
     &::placeholder { color: var(--text-muted); }
@@ -36,20 +35,12 @@
 
       &:focus {
         border-color: var(--text-negative);
-        box-shadow:
-          0 0 0 var(--focus-ring-width) var(--background),
-          0 0 0 var(--focus-ring-outer-width) var(--text-negative);
+        outline-color: var(--text-negative);
       }
     }
   }
 
   /* -- Accessibility ---------------------------------------- */
-  @media (prefers-reduced-motion: reduce) {
-    .textarea {
-      transition: none;
-    }
-  }
-
   @media (prefers-contrast: more) {
     .textarea {
       border-width: var(--border-width-02);

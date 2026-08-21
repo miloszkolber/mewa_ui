@@ -6,6 +6,7 @@ function init() {
     const trigger = wrapper.querySelector('.combobox-trigger');
     const valueEl = wrapper.querySelector('.combobox-value');
     const popover = wrapper.querySelector('.combobox-content');
+    const search = wrapper.querySelector('.combobox-search');
     const searchInput = wrapper.querySelector('.combobox-search-input');
     const listbox = wrapper.querySelector('[role="listbox"]');
     const empty = wrapper.querySelector('.combobox-empty');
@@ -19,16 +20,21 @@ function init() {
     popover.style.positionAnchor = anchorId;
 
     const getVisibleItems = () => allItems.filter((item) => !item.hidden && item.getAttribute('aria-disabled') !== 'true');
+    const setExpanded = (expanded) => {
+      const value = String(expanded);
+      trigger.setAttribute('aria-expanded', value);
+      searchInput.setAttribute('aria-expanded', value);
+    };
     const open = () => {
       popover.showPopover();
-      trigger.setAttribute('aria-expanded', 'true');
+      setExpanded(true);
       searchInput.value = '';
       filter('');
       searchInput.focus();
     };
     const close = () => {
       popover.hidePopover();
-      trigger.setAttribute('aria-expanded', 'false');
+      setExpanded(false);
       searchInput.setAttribute('aria-activedescendant', '');
       clearHighlight();
       trigger.focus();
@@ -64,6 +70,7 @@ function init() {
     };
     trigger.addEventListener('click', () => { if (isOpen()) { close(); } else { open(); } });
     searchInput.addEventListener('input', () => { filter(searchInput.value); doHighlight(0); });
+    if (search) search.addEventListener('click', () => { searchInput.focus(); });
     searchInput.addEventListener('keydown', (e) => {
       const items = getVisibleItems();
       switch (e.key) {
@@ -78,10 +85,16 @@ function init() {
     });
     listbox.addEventListener('click', (e) => { const item = e.target.closest('[role="option"]'); if (item && !item.hidden && item.getAttribute('aria-disabled') !== 'true') selectItem(item); });
     listbox.addEventListener('mousemove', (e) => { const item = e.target.closest('[role="option"]'); if (item && !item.hidden) { const items = getVisibleItems(); doHighlight(items.indexOf(item)); } });
-    popover.addEventListener('toggle', (e) => { if (e.newState === 'closed') { trigger.setAttribute('aria-expanded', 'false'); clearHighlight(); } });
+    popover.addEventListener('toggle', (e) => {
+      const expanded = e.newState === 'open';
+      setExpanded(expanded);
+      if (!expanded) {
+        searchInput.setAttribute('aria-activedescendant', '');
+        clearHighlight();
+      }
+    });
   });
 }
 
 init();
 new MutationObserver(init).observe(document, { childList: true, subtree: true });
-

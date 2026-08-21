@@ -40,6 +40,12 @@
 
 ---
 
+## Sizes
+
+`data-size="sm"`, the default, and `data-size="lg"` all use the shared `2.5rem` control height. The size values adjust padding and type scale without changing the control rhythm.
+
+---
+
 ## Accessibility
 
 - Native `<select>` provides full keyboard navigation (arrow keys, type-ahead).

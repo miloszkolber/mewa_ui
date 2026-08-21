@@ -72,6 +72,11 @@
   function initPageContent() {
     // Syntax highlighting handled by shiki-highlight.js module
 
+    // Keep horizontally scrollable code blocks keyboard reachable.
+    document.querySelectorAll('pre:not([tabindex])').forEach(function (pre) {
+      pre.setAttribute('tabindex', '0');
+    });
+
     // Copy buttons
     document.querySelectorAll('.copy-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -119,7 +124,7 @@
       var target = document.getElementById(id);
       if (target) {
         e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        target.scrollIntoView({ behavior: 'auto', block: 'start' });
         history.replaceState(null, '', '#' + id);
       }
     });

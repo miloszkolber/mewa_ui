@@ -3,42 +3,42 @@
 @layer components {
   .switch {
     appearance: none;
-    width: 2.25rem;
-    height: var(--size-05);
-    border-radius: var(--radius-full);
-    background: var(--border-secondary);
+    width: 2.75rem;
+    height: var(--size-06);
+    border: var(--border-width-02) solid var(--border-secondary);
+    border-radius: 0;
+    background: var(--surface-secondary);
     cursor: pointer;
     position: relative;
     flex-shrink: 0;
-    border: none;
     outline: none;
 
     &::after {
       content: '';
       position: absolute;
-      top: 2px;
-      left: 2px;
-      width: calc(var(--size-05) - var(--size-01));
-      height: calc(var(--size-05) - var(--size-01));
-      border-radius: 50%;
+      top: 50%;
+      left: var(--border-width-02);
+      width: var(--size-05);
+      height: var(--size-05);
+      border: var(--border-width-01) solid var(--border-secondary);
       background: var(--background);
-      transition: transform var(--duration-fast);
+      transform: translateY(-50%);
 
     }
 
     &:checked {
       background: var(--surface-inverted);
+      border-color: var(--surface-inverted);
 
       &::after {
-        transform: translateX(var(--size-04));
+        transform: translateX(var(--size-05)) translateY(-50%);
+        border-color: var(--surface-inverted);
       }
     }
 
     &:focus-visible {
-      outline: none;
-      box-shadow:
-        0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: var(--border-width-01);
     }
 
     &:disabled {
@@ -46,11 +46,13 @@
       cursor: not-allowed;
     }
 
-    &[aria-invalid="true"] {
+    &:is([aria-invalid="true"], :user-invalid) {
       background: var(--surface-negative);
+      border-color: var(--text-negative);
 
       &:checked {
         background: var(--surface-negative);
+        border-color: var(--text-negative);
       }
     }
   }
@@ -97,13 +99,6 @@
   }
 
   /* -- Accessibility ---------------------------------------- */
-  @media (prefers-reduced-motion: reduce) {
-    .switch,
-    .switch::after {
-      transition: none;
-    }
-  }
-
   @media (forced-colors: active) {
     .switch {
       background: ButtonFace;
@@ -111,7 +106,7 @@
 
       &::after {
         background: ButtonText;
-        box-shadow: none;
+        border-color: ButtonText;
       }
 
       &:checked {
@@ -120,6 +115,7 @@
 
         &::after {
           background: HighlightText;
+          border-color: HighlightText;
         }
       }
 
@@ -128,6 +124,7 @@
 
         &::after {
           background: GrayText;
+          border-color: GrayText;
         }
       }
     }

@@ -29,7 +29,7 @@
     width: 1.75rem;
     height: 1.75rem;
     padding: 0;
-    border: var(--border-width-01) solid var(--border-primary);
+    border: var(--border-width-01) solid transparent;
 
     background-color: transparent;
     color: var(--text-primary);
@@ -39,10 +39,8 @@
     }
 
     &:focus-visible {
-      outline: none;
-      box-shadow:
-        0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: var(--border-width-01);
     }
 
     & svg {
@@ -90,10 +88,8 @@
       }
 
       &:focus-visible {
-        outline: none;
-        box-shadow:
-          0 0 0 var(--focus-ring-width) var(--background),
-          0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+        outline: var(--focus-ring-width) solid var(--border-ring);
+        outline-offset: var(--border-width-01);
       }
     }
 
@@ -113,7 +109,6 @@
 
     &[data-outside] button {
       color: var(--text-muted);
-      opacity: var(--opacity-05);
     }
 
     &[data-disabled] button {

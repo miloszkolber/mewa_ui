@@ -32,6 +32,7 @@ function init() {
 document.querySelectorAll('dialog.command:not([data-init])').forEach((dialog) => {
     dialog.dataset.init = '';
     const input = dialog.querySelector('.command-input');
+    const inputWrapper = dialog.querySelector('.command-input-wrapper');
     const list = dialog.querySelector('.command-list');
     const empty = dialog.querySelector('.command-empty');
     if (!input || !list) return;
@@ -55,6 +56,7 @@ document.querySelectorAll('dialog.command:not([data-init])').forEach((dialog) =>
     };
 
     input.addEventListener('input', () => { filter(input.value); });
+    if (inputWrapper) inputWrapper.addEventListener('click', () => { input.focus(); });
 
     input.addEventListener('keydown', (e) => {
       const visible = getVisibleItems(list);

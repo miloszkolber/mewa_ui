@@ -12,7 +12,7 @@
 - [`:checked`](https://developer.mozilla.org/en-US/docs/Web/CSS/:checked) — matches selected radio state
 - [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus ring
 - [`:has()`](https://developer.mozilla.org/en-US/docs/Web/CSS/:has) — parent-state styling (card highlight when radio is checked)
-- [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — suppress transitions for motion-sensitive users
+- [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — increase control contrast when requested
 - [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — Windows High Contrast Mode support
 
 ---

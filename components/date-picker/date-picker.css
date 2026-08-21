@@ -2,14 +2,13 @@
 
 @layer components {
   .date-input {
-    position: relative;
     height: var(--size-08);
     width: 100%;
     border: var(--border-width-01) solid var(--border-secondary);
 
     background: var(--background);
     padding: 0 var(--space-03);
-    padding-inline-end: var(--space-08);
+    padding-inline-end: var(--space-03);
     font-size: var(--font-body-small);
     font-family: var(--font-sans);
     color: var(--text-primary);
@@ -19,9 +18,8 @@
 
     &:focus {
       border-color: var(--border-ring);
-      box-shadow:
-        0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: var(--border-width-01);
     }
 
     &:disabled {
@@ -29,21 +27,27 @@
       cursor: not-allowed;
     }
 
-    /* -- Calendar indicator: full-height hit area at the end ---- */
+    &:is([aria-invalid="true"], :user-invalid) {
+      border-color: var(--text-negative);
+
+      &:focus {
+        border-color: var(--text-negative);
+        outline-color: var(--text-negative);
+      }
+    }
+
+    /* -- Calendar indicator ------------------------------------ */
     &::-webkit-calendar-picker-indicator {
-      position: absolute;
-      inset-inline-end: 0;
-      top: 0;
-      bottom: 0;
-      width: var(--space-08);
-      height: auto;
+      width: var(--size-04);
+      height: var(--size-04);
+      margin-inline-end: var(--space-02);
       cursor: pointer;
-      opacity: var(--opacity-06);
-      &:hover { opacity: 1; }
+      opacity: var(--opacity-10);
     }
 
     /* -- Date text: explicit colors, no browser default blue ---- */
     &::-webkit-datetime-edit {
+      padding: 0;
       color: var(--text-primary);
     }
 

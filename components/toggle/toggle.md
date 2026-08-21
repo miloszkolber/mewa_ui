@@ -12,8 +12,6 @@ buttons (bold, italic, underline) or feature toggles.
 ## Native Web APIs
 - [`<button>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) — native clickable element with built-in keyboard handling
 - [`aria-pressed`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-pressed) — communicates toggle on/off state to assistive technology
-- [`color-mix()`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix) — derived hover color for pressed state
-- [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — suppresses color/background transitions
 - [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — adds visible borders in high-contrast mode
 - [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — maps pressed state to system Highlight in Windows High Contrast Mode
 
@@ -58,8 +56,8 @@ buttons (bold, italic, underline) or feature toggles.
 
 | `data-size`  | Height    | Padding        | Min-width   |
 |-------------|-----------|----------------|-------------|
-| `sm`        | `2rem`    | `0 0.375rem`   | `2rem`      |
-| *(default)* | `2.25rem` | `0 0.5rem`     | `2.25rem`   |
+| `sm`        | `2.5rem`  | `0 0.5rem`     | `2.5rem`    |
+| *(default)* | `2.5rem`  | `0 0.5rem`     | `2.5rem`    |
 | `lg`        | `2.5rem`  | `0 0.625rem`   | `2.5rem`    |
 
 ```html
@@ -85,4 +83,5 @@ buttons (bold, italic, underline) or feature toggles.
 - The toggle is just a button with `aria-pressed` — no custom elements needed.
 - Icon-only toggles must have `aria-label` for screen readers.
 - For toggle groups (e.g., text alignment), wrap in a container with `role="group"` and `aria-label`.
+- Pressed toggles keep their selected surface when hovered.
 - The pressed state uses `--surface-secondary` / `--text-primary` to match the system’s semantic token conventions.

@@ -26,15 +26,19 @@
   <table class="calendar-grid" role="grid">
     <thead>
       <tr>
-        <th class="calendar-day-label" abbr="Sunday" scope="col">Su</th>
-        <th class="calendar-day-label" abbr="Monday" scope="col">Mo</th>
+        <th class="calendar-day-label" abbr="Sunday" scope="col">Sun</th>
+        <th class="calendar-day-label" abbr="Monday" scope="col">Mon</th>
         <!-- ... -->
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td class="calendar-day" data-outside="">29</td>
-        <td class="calendar-day">1</td>
+        <td class="calendar-day" data-outside role="gridcell" aria-selected="false">
+          <button type="button" tabindex="-1" data-date="2026-03-29" data-outside="prev">29</button>
+        </td>
+        <td class="calendar-day" role="gridcell" aria-selected="false">
+          <button type="button" tabindex="0" data-date="2026-04-01">1</button>
+        </td>
         <!-- ... -->
       </tr>
     </tbody>
@@ -55,6 +59,7 @@
 ## Accessibility
 
 - Month heading uses `aria-live="polite"` for navigation announcements
-- Day cells are focusable buttons within the grid
+- Day cells contain focusable buttons with an accessible date label
+- A roving `tabindex` keeps one day button in the tab order at a time
 - Arrow keys navigate the grid, Enter/Space selects a day
 - Previous/next navigation buttons have `aria-label`

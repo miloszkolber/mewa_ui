@@ -99,14 +99,6 @@
      --focus-ring-outer-width: var(--border-width-03);
     /* radius */
      --radius-full: 9999px;
-    /* duration */
-     --duration-instant: 100ms;
-     --duration-fast: 150ms;
-     --duration-base: 200ms;
-     --duration-slow: 300ms;
-     --duration-spin: 1s;
-     --duration-progress: 1.5s;
-     --duration-pulse: 2s;
     /* opacity */
      --opacity-00: 0;
      --opacity-01: 0.1;
@@ -161,7 +153,6 @@
     /* other */
       --blur-01: 0.25rem;
       --blur-02: 0.5rem;
-      --duration-reduced: 0.01ms;
  }
 
 /* Foundation defaults stay in the base layer so component layers can override them. */
@@ -248,10 +239,8 @@
   }
 
   :focus-visible {
-    outline: none;
-    box-shadow:
-      0 0 0 var(--focus-ring-width) var(--background),
-      0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+    outline: var(--focus-ring-width) solid var(--border-ring);
+    outline-offset: var(--border-width-01);
   }
 
   [hidden] {
@@ -259,19 +248,12 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      scroll-behavior: auto !important;
-      transition-duration: var(--duration-reduced) !important;
-      animation-duration: var(--duration-reduced) !important;
-      animation-iteration-count: 1 !important;
-    }
+    * { scroll-behavior: auto !important; }
   }
 
   @media (forced-colors: active) {
     :focus-visible {
-      outline-color: Highlight;
+      outline-color: Highlight !important;
     }
   }
 }

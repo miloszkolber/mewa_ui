@@ -29,10 +29,8 @@
     &:active { cursor: grabbing; }
 
     &:focus-visible {
-      outline: none;
-      box-shadow:
-        0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: var(--border-width-01);
     }
 
     &[data-active] {
@@ -93,10 +91,6 @@
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .sortable-item { transition: none; }
   }
 
   @media (prefers-contrast: more) {

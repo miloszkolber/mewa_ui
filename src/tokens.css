@@ -2,7 +2,7 @@
 :root {
   color-scheme: light;
   /* Page and container surfaces */
-  --background: var(--color-white);
+  --background: var(--color-neutral-50);
   --background-glass: color-mix(in oklch, var(--color-white) 85%, transparent);
   --surface-primary: var(--color-white);
   --surface-primary-glass: color-mix(in oklch, var(--color-white) 85%, transparent);
@@ -12,7 +12,7 @@
   --surface-negative: var(--color-red-600);
   --surface-caution: var(--color-amber-500);
   --surface-overlay: oklch(0 0 0 / 0.45);
-  --surface-inverted: var(--color-neutral-900);
+  --surface-inverted: var(--color-neutral-950);
   /* Text roles */
   --text-primary: var(--color-neutral-950);
   --text-secondary: var(--color-neutral-700);
@@ -49,13 +49,13 @@
   --surface-negative: var(--color-red-400);
   --surface-caution: var(--color-amber-400);
   --surface-overlay: oklch(0 0 0 / 0.45);
-  --surface-inverted: var(--color-neutral-100);
+  --surface-inverted: var(--color-neutral-50);
   /* Text roles */
   --text-primary: var(--color-neutral-50);
   --text-secondary: var(--color-neutral-300);
   --text-muted: var(--color-neutral-400);
   --text-disabled: var(--color-neutral-500);
-  --text-inverted: var(--color-neutral-900);
+  --text-inverted: var(--color-neutral-950);
   --text-positive: var(--color-green-300);
   --text-negative: var(--color-red-300);
   --text-caution: var(--color-amber-300);

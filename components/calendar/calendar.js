@@ -1,69 +1,138 @@
 // -- Calendar -------------------------------------------------
 
+const weekdayFormatter = new Intl.DateTimeFormat(undefined, { weekday: 'short' });
+const longWeekdayFormatter = new Intl.DateTimeFormat(undefined, { weekday: 'long' });
+const monthFormatter = new Intl.DateTimeFormat(undefined, { month: 'long' });
+const dateFormatter = new Intl.DateTimeFormat(undefined, { dateStyle: 'long' });
+
 const DAYS = Array.from({ length: 7 }, (_, i) =>
-  new Intl.DateTimeFormat(undefined, { weekday: 'short' }).format(new Date(2024, 0, i))
+  weekdayFormatter.format(new Date(2024, 0, i))
 );
-const MONTHS = Array.from({ length: 12 }, (_, i) =>
-  new Intl.DateTimeFormat(undefined, { month: 'long' }).format(new Date(2024, i, 1))
+const LONG_DAYS = Array.from({ length: 7 }, (_, i) =>
+  longWeekdayFormatter.format(new Date(2024, 0, i))
 );
 
 const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
 
-const firstDayOfMonth = (year, month) => new Date(year, month, 1).getDay();
-
-const isToday = (year, month, day) => {
+const isToday = (date) => {
   const now = new Date();
-  return now.getFullYear() === year && now.getMonth() === month && now.getDate() === day;
+  return now.getFullYear() === date.getFullYear()
+    && now.getMonth() === date.getMonth()
+    && now.getDate() === date.getDate();
+};
+
+const dateKey = (date) => [
+  date.getFullYear(),
+  String(date.getMonth() + 1).padStart(2, '0'),
+  String(date.getDate()).padStart(2, '0')
+].join('-');
+
+const dateFromKey = (value) => {
+  const [year, month, day] = value.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
+
+const moveMonth = (state, offset) => {
+  const next = new Date(state.year, state.month + offset, 1);
+  state.year = next.getFullYear();
+  state.month = next.getMonth();
+};
+
+const setTabStop = (calendar, activeButton) => {
+  calendar.querySelectorAll('.calendar-day button').forEach((button) => {
+    button.tabIndex = button === activeButton ? 0 : -1;
+  });
+};
+
+const focusDate = (calendar, value) => {
+  const button = Array.from(calendar.querySelectorAll('.calendar-day button'))
+    .find((candidate) => candidate.dataset.date === value);
+  if (!button) return;
+  setTabStop(calendar, button);
+  button.focus();
 };
 
 const renderCalendar = (el, year, month, selectedDay) => {
-  const total = daysInMonth(year, month);
-  const startDay = firstDayOfMonth(year, month);
-  const prevTotal = daysInMonth(year, month - 1);
-
   const heading = el.querySelector('.calendar-heading');
-  if (heading) heading.textContent = `${MONTHS[month]} ${year}`;
-
   const grid = el.querySelector('.calendar-grid');
   if (!grid) return;
 
-  let html = '<thead><tr>';
-  for (let d = 0; d < 7; d++) {
-    html += `<th class="calendar-day-label" scope="col">${DAYS[d]}</th>`;
+  const headingText = `${monthFormatter.format(new Date(year, month, 1))} ${year}`;
+  if (heading) {
+    heading.textContent = headingText;
+    heading.setAttribute('aria-live', 'polite');
   }
-  html += '</tr></thead><tbody>';
 
-  let dayNum = 1;
-  let nextDayNum = 1;
+  grid.setAttribute('role', 'grid');
+  grid.setAttribute('aria-label', headingText);
+
+  const thead = document.createElement('thead');
+  const headerRow = document.createElement('tr');
+  headerRow.setAttribute('role', 'row');
+  DAYS.forEach((day, index) => {
+    const label = document.createElement('th');
+    label.className = 'calendar-day-label';
+    label.setAttribute('role', 'columnheader');
+    label.scope = 'col';
+    label.abbr = LONG_DAYS[index];
+    label.textContent = day;
+    headerRow.append(label);
+  });
+  thead.append(headerRow);
+
+  const tbody = document.createElement('tbody');
+  const total = daysInMonth(year, month);
+  const startDay = new Date(year, month, 1).getDay();
   const rows = Math.ceil((startDay + total) / 7);
+  let hasTabStop = false;
 
-  for (let r = 0; r < rows; r++) {
-    html += '<tr>';
-    for (let c = 0; c < 7; c++) {
-      const cellIndex = r * 7 + c;
-      if (cellIndex < startDay) {
-        const prevDay = prevTotal - startDay + cellIndex + 1;
-        html += `<td class="calendar-day" data-outside><button tabindex="-1" data-day="${prevDay}" data-outside="prev">${prevDay}</button></td>`;
-      } else if (dayNum > total) {
-        html += `<td class="calendar-day" data-outside><button tabindex="-1" data-day="${nextDayNum}" data-outside="next">${nextDayNum}</button></td>`;
-        nextDayNum++;
+  for (let row = 0; row < rows; row++) {
+    const tableRow = document.createElement('tr');
+    tableRow.setAttribute('role', 'row');
+    for (let column = 0; column < 7; column++) {
+      const cellIndex = row * 7 + column;
+      const date = new Date(year, month, cellIndex - startDay + 1);
+      const outside = date.getMonth() !== month;
+      const selected = !outside && date.getDate() === selectedDay;
+      const cell = document.createElement('td');
+      const button = document.createElement('button');
+
+      cell.className = 'calendar-day';
+      cell.setAttribute('role', 'gridcell');
+      cell.setAttribute('aria-selected', String(selected));
+      button.type = 'button';
+      button.dataset.day = String(date.getDate());
+      button.dataset.date = dateKey(date);
+      button.setAttribute('aria-label', dateFormatter.format(date));
+      button.textContent = String(date.getDate());
+
+      if (outside) {
+        const direction = date < new Date(year, month, 1) ? 'prev' : 'next';
+        cell.dataset.outside = '';
+        button.dataset.outside = direction;
+        button.tabIndex = -1;
       } else {
-        let cls = 'calendar-day';
-        let attrs = '';
-        if (isToday(year, month, dayNum)) attrs += ' data-today';
-        if (dayNum === selectedDay) attrs += ' data-selected';
-        html += `<td class="${cls}"${attrs}><button data-day="${dayNum}">${dayNum}</button></td>`;
-        dayNum++;
+        button.tabIndex = selected || (!hasTabStop && selectedDay === null) ? 0 : -1;
+        hasTabStop ||= button.tabIndex === 0;
+
+        if (isToday(date)) {
+          cell.dataset.today = '';
+          cell.setAttribute('aria-current', 'date');
+        }
+        if (selected) cell.dataset.selected = '';
       }
+
+      cell.append(button);
+      tableRow.append(cell);
     }
-    html += '</tr>';
+    tbody.append(tableRow);
   }
-  html += '</tbody>';
-  grid.innerHTML = html;
+
+  grid.replaceChildren(thead, tbody);
 };
 
 function init() {
-document.querySelectorAll('.calendar:not([data-init])').forEach((cal) => {
+  document.querySelectorAll('.calendar:not([data-init])').forEach((cal) => {
     cal.dataset.init = '';
     const now = new Date();
     const state = {
@@ -74,76 +143,68 @@ document.querySelectorAll('.calendar:not([data-init])').forEach((cal) => {
 
     renderCalendar(cal, state.year, state.month, state.selected);
 
-    cal.addEventListener('click', (e) => {
-      const nav = e.target.closest('.calendar-nav');
+    cal.addEventListener('click', (event) => {
+      const nav = event.target.closest('.calendar-nav');
       if (nav) {
         const action = nav.dataset.action;
-        if (action === 'prev-month') {
-          state.month--;
-          if (state.month < 0) { state.month = 11; state.year--; }
+        if (action === 'prev-month') moveMonth(state, -1);
+        if (action === 'next-month') moveMonth(state, 1);
+        if (action === 'prev-month' || action === 'next-month') {
           state.selected = null;
-        } else if (action === 'next-month') {
-          state.month++;
-          if (state.month > 11) { state.month = 0; state.year++; }
-          state.selected = null;
+          renderCalendar(cal, state.year, state.month, state.selected);
         }
-        renderCalendar(cal, state.year, state.month, state.selected);
         return;
       }
 
-      const dayBtn = e.target.closest('.calendar-day button');
-      if (dayBtn && !dayBtn.closest('[data-disabled]')) {
-        const day = parseInt(dayBtn.dataset.day, 10);
-        const outside = dayBtn.dataset.outside;
-        if (outside === 'prev') {
-          state.month--;
-          if (state.month < 0) { state.month = 11; state.year--; }
-          state.selected = day;
-        } else if (outside === 'next') {
-          state.month++;
-          if (state.month > 11) { state.month = 0; state.year++; }
-          state.selected = day;
-        } else {
-          state.selected = day;
-        }
-        renderCalendar(cal, state.year, state.month, state.selected);
+      const dayButton = event.target.closest('.calendar-day button');
+      if (!dayButton || dayButton.disabled || dayButton.closest('[data-disabled]')) return;
 
-        cal.dispatchEvent(new CustomEvent('calendar:select', {
-          detail: { date: new Date(state.year, state.month, state.selected) },
-          bubbles: true
-        }));
-      }
+      const selectedDate = dateFromKey(dayButton.dataset.date);
+      state.year = selectedDate.getFullYear();
+      state.month = selectedDate.getMonth();
+      state.selected = selectedDate.getDate();
+      renderCalendar(cal, state.year, state.month, state.selected);
+      focusDate(cal, dateKey(selectedDate));
+
+      cal.dispatchEvent(new CustomEvent('calendar:select', {
+        detail: { date: selectedDate },
+        bubbles: true
+      }));
     });
 
-    cal.addEventListener('keydown', (e) => {
-      const dayBtn = e.target.closest('.calendar-day button');
-      if (!dayBtn) return;
+    cal.addEventListener('keydown', (event) => {
+      const dayButton = event.target.closest('.calendar-day button');
+      if (!dayButton) return;
 
-      const allBtns = Array.from(cal.querySelectorAll('.calendar-day button'));
-      const idx = allBtns.indexOf(dayBtn);
+      const allButtons = Array.from(cal.querySelectorAll('.calendar-day button'));
+      const index = allButtons.indexOf(dayButton);
       let next = null;
 
-      switch (e.key) {
+      switch (event.key) {
         case 'ArrowRight':
-          e.preventDefault();
-          next = allBtns[idx + 1];
+          event.preventDefault();
+          next = allButtons[index + 1];
           break;
         case 'ArrowLeft':
-          e.preventDefault();
-          next = allBtns[idx - 1];
+          event.preventDefault();
+          next = allButtons[index - 1];
           break;
         case 'ArrowDown':
-          e.preventDefault();
-          next = allBtns[idx + 7];
+          event.preventDefault();
+          next = allButtons[index + 7];
           break;
         case 'ArrowUp':
-          e.preventDefault();
-          next = allBtns[idx - 7];
+          event.preventDefault();
+          next = allButtons[index - 7];
           break;
       }
-      if (next) next.focus();
+
+      if (next) {
+        setTabStop(cal, next);
+        next.focus();
+      }
     });
-});
+  });
 }
 
 init();

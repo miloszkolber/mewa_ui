@@ -9,11 +9,9 @@
     cursor: pointer; outline: none;
     gap: var(--space-01);
     &:hover { background-color: var(--surface-secondary); }
-    &:focus-visible {
-      outline: none;
-      box-shadow:
-        0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+     &:focus-visible {
+       outline: var(--focus-ring-width) solid var(--border-ring);
+       outline-offset: var(--border-width-01);
     }
     & svg { width: var(--size-04); height: var(--size-04); flex-shrink: 0; }
 
@@ -28,12 +26,6 @@
     display: inline-flex; align-items: center; justify-content: center;
     width: 2.25rem; height: 2.25rem; color: var(--text-muted);
     & span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
-  }
-
-  /* -- Accessibility ------------------------------------------ */
-
-  @media (prefers-reduced-motion: reduce) {
-    .pagination-link, .pagination-prev, .pagination-next { transition: none; }
   }
 
   @media (prefers-contrast: more) {

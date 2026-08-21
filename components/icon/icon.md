@@ -9,7 +9,6 @@
 - [`<svg>`](https://developer.mozilla.org/en-US/docs/Web/SVG/Element/svg) — inline scalable vector graphics (inlined from the local file)
 - [`aria-hidden`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-hidden) — hides decorative icons from screen readers
 - [`currentColor`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#currentcolor_keyword) — icons inherit stroke color from the parent's `color` property
-- [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — suppresses icon animations (e.g., spinning loaders) when user prefers reduced motion
 - [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — maps icon color to system `CanvasText` in Windows High Contrast Mode
 - [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — increases stroke width when user requests more contrast
 
@@ -47,7 +46,6 @@ Copy the file contents where the icon is used. Attributes on the `<i>` (`data-si
 |-----------|--------|-------------|
 | `data-lucide` | any icon name | Icon to render (required) |
 | `data-size` | `md`, `lg`, `xl` | Controls icon dimensions |
-| `data-animate` | `spin` | Applies continuous rotation animation |
 
 ---
 
@@ -165,5 +163,5 @@ Icons inherit `currentColor` for stroke. Change color with inline styles or toke
 - Use `stroke-width` attribute to adjust line thickness (default: `2`)
 - Prefer visually-hidden text (`.sr-only`) over `aria-label` for accessible standalone icons — `aria-label` may not be translated by browser translation tools
 - `pointer-events: none` is set in CSS — icons don't capture clicks, so the parent element handles interaction
-- Animations (e.g., `data-animate="spin"` on a loader icon) are suppressed when the user has `prefers-reduced-motion` enabled
+- Loading icons are static for now. Add your own animation only when the product explicitly requires it.
 - `prefers-contrast: more` increases stroke width to 2.5 for better visibility

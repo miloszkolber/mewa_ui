@@ -12,7 +12,6 @@ Also covers `<textarea>` with auto-grow via `field-sizing: content`.
 - [`field-sizing: content`](https://developer.mozilla.org/en-US/docs/Web/CSS/field-sizing) — auto-growing textarea without JavaScript
 - [`:user-invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid) — native validation styling after user interaction
 - [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus ring styling
-- [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — suppresses focus/hover transitions
 - [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — thicker borders for high-contrast preference
 - [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — Windows High Contrast Mode with system colors
 
@@ -96,7 +95,7 @@ Also covers `<textarea>` with auto-grow via `field-sizing: content`.
 
 | `data-size` | Height    | Padding       | Font size    |
 |-------------|-----------|---------------|--------------|
-| `sm`        | `2rem`    | `0 0.625rem`  | `0.75rem`    |
+| `sm`        | `2.5rem`  | `0 0.75rem`   | `0.75rem`    |
 | *(default)* | `2.5rem`  | `0 0.75rem`   | `0.875rem`   |
 
 ---
@@ -106,10 +105,10 @@ Also covers `<textarea>` with auto-grow via `field-sizing: content`.
 | State | How to apply | Visual |
 |-------|-------------|--------|
 | Default | — | Border `--border-secondary` |
-| Focus | Native `:focus` | Ring `--border-ring` with glow |
+| Focus | Native `:focus` | Crisp `--border-ring` outline |
 | Disabled | `disabled` attribute | 50% opacity |
 | Readonly | `readonly` attribute | Muted background, 70% opacity, no focus ring change |
-| Invalid | `aria-invalid="true"` | Border `--text-negative`, red ring on focus |
+| Invalid | `aria-invalid="true"` | Border `--text-negative`, red outline on focus |
 | Required | `required` attribute | Works with native validation |
 
 ---

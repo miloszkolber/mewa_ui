@@ -8,7 +8,6 @@
 
 - [`<ol>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ol) — ordered list providing sequential numbering semantics
 - [`aria-current="step"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current) — identifies the current step for screen readers
-- [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — suppresses transitions for users who prefer reduced motion
 - [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — thickens indicator borders and connector lines
 - [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — maps indicator and connector to system colors
 
@@ -180,4 +179,3 @@ This component is CSS-only and does not manage keyboard interaction by default. 
 - For vertical orientation, add `data-orientation="vertical"` to the `.steps` container.
 - For error steps, add `aria-invalid="true"` to the `<li>` alongside `data-status="error"`.
 - No JavaScript required — this is a CSS-only component. Step state is set via `data-status` attributes.
-

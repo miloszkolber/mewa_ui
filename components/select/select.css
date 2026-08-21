@@ -22,9 +22,8 @@
 
     &:focus {
       border-color: var(--border-ring);
-      box-shadow:
-        0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: var(--border-width-01);
     }
 
     &:disabled {
@@ -37,14 +36,12 @@
 
       &:focus {
         border-color: var(--text-negative);
-        box-shadow:
-          0 0 0 var(--focus-ring-width) var(--background),
-          0 0 0 var(--focus-ring-outer-width) var(--text-negative);
+        outline-color: var(--text-negative);
       }
     }
 
     /* -- Sizes ----------------------------------------------- */
-    &[data-size="sm"] { height: var(--size-07);    padding-left: var(--space-03); font-size: var(--font-body-small); }
-    &[data-size="lg"] { height: 2.75rem; padding-left: var(--space-04);     font-size: var(--font-body); }
+    &[data-size="sm"] { height: var(--size-08); padding-left: var(--space-03); font-size: var(--font-body-small); }
+    &[data-size="lg"] { height: var(--size-08); padding-left: var(--space-04); font-size: var(--font-body); }
   }
 }

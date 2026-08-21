@@ -15,7 +15,6 @@ Requires minimal JavaScript — only for trigger wiring and backdrop-click-to-cl
 - [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) — native modal element with built-in focus trap and Escape-to-close
 - [`HTMLDialogElement.showModal()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) — opens dialog as modal in the top layer with backdrop
 - [`::backdrop`](https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop) — pseudo-element for the overlay behind the modal
-- [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) — defines entry animation starting values
 
 ---
 
@@ -94,6 +93,6 @@ Requires minimal JavaScript — only for trigger wiring and backdrop-click-to-cl
 
 ## Notes
 
-- Animation uses CSS-only enter via `@starting-style` and exit via `transition` + `allow-discrete`.
+- Dialog state changes are immediate for now, with no CSS transition.
 - The selector is `dialog.dialog` (element + class) to avoid styling native `<dialog>` elements used elsewhere.
 - For forms inside dialogs, use the `dialog-body` wrapper for the form content.

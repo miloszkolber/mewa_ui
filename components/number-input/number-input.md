@@ -14,14 +14,18 @@
 
 ```html
 <label class="label" for="quantity">Quantity</label>
-<input class="input" type="number" id="quantity" min="0" max="100" step="1" value="1">
+<div class="number-input">
+  <button type="button" data-action="decrement" aria-label="Decrease quantity">−</button>
+  <input type="number" id="quantity" min="0" max="100" step="1" value="1">
+  <button type="button" data-action="increment" aria-label="Increase quantity">+</button>
+</div>
 ```
 
 ---
 
 ## Notes
 
-- Reuses the `.input` class for consistent styling.
+- Places the native number input on the left and stacked step buttons on the right.
 - Native spinner buttons are hidden with `::-webkit-inner-spin-button`.
 - Use `min`, `max`, and `step` for range constraints.
 - Keyboard: arrow keys increment/decrement by step value.

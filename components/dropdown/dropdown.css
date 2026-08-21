@@ -2,13 +2,12 @@
 
 @layer components {
   .dropdown-content {
-    background-color: var(--surface-primary-glass);
+     background-color: var(--surface-primary);
     color: var(--text-primary);
     border: var(--border-width-01) solid var(--border-primary);
 
     padding: var(--space-01);
     min-width: var(--size-15);
-    box-shadow: 0 0 0 1px var(--border-primary);
 
     /* -- Anchor positioning ------------------------------------ */
     position: fixed;
@@ -19,22 +18,6 @@
     margin-top: var(--space-01);
     position-try-fallbacks: flip-block;
 
-    /* -- Animation --------------------------------------------- */
-    opacity: 0;
-    transform: scale(0.96) translateY(calc(-1 * var(--size-01)));
-    transition: transform var(--duration-fast) ease;
-
-    &:popover-open {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-    }
-  }
-
-  @starting-style {
-    .dropdown-content:popover-open {
-      opacity: 0;
-      transform: scale(0.96) translateY(calc(-1 * var(--size-01)));
-    }
   }
 
   .dropdown-item {
@@ -124,17 +107,6 @@
     font-size: var(--font-body-xsmall);
     color: var(--text-muted);
     letter-spacing: 0.05em;
-  }
-
-  /* -- Accessibility ------------------------------------------ */
-
-  @media (prefers-reduced-motion: reduce) {
-    .dropdown-content {
-      transition: none;
-    }
-    .dropdown-item {
-      transition: none;
-    }
   }
 
   @media (forced-colors: active) {

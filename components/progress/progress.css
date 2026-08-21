@@ -19,7 +19,6 @@
   .progress::-webkit-progress-value {
     background-color: var(--surface-inverted);
     border-radius: var(--radius-full);
-    transition: width var(--duration-slow) ease;
   }
 
   .progress::-moz-progress-bar {
@@ -27,27 +26,4 @@
     border-radius: var(--radius-full);
   }
 
-  .progress:indeterminate {
-    background: linear-gradient(
-      90deg,
-      var(--surface-secondary) 0%,
-      var(--surface-inverted) 50%,
-      var(--surface-secondary) 100%
-    );
-    background-size: 200% 100%;
-    animation: progress-indeterminate var(--duration-progress) linear infinite;
-  }
-
-  .progress:indeterminate::-webkit-progress-bar {
-    background-color: transparent;
-  }
-
-  .progress:indeterminate::-moz-progress-bar {
-    background-color: transparent;
-  }
-
-  @keyframes progress-indeterminate {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-  }
 }

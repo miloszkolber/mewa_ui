@@ -13,7 +13,6 @@
 - [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#loading) — native lazy loading
 - [`object-fit`](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit) — how image fills its container
 - [`aspect-ratio`](https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio) — intrinsic aspect ratio control
-- [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) — entry animation for lightbox
 
 ## Structure
 

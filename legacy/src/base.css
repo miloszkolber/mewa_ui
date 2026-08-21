@@ -297,9 +297,6 @@ svg:has(> use) {
     *::before,
     *::after {
         scroll-behavior: auto !important;
-        transition-duration: var(--ui-duration-reduced) !important;
-        animation-duration: var(--ui-duration-reduced) !important;
-        animation-iteration-count: 1 !important;
     }
 }
 

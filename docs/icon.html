@@ -48,7 +48,6 @@
   <link rel="stylesheet" href="../components/select/select.css">
   <link rel="stylesheet" href="../components/number-input/number-input.css">
   <link rel="stylesheet" href="../components/file-input/file-input.css">
-  <link rel="stylesheet" href="../components/color-picker/color-picker.css">
   <link rel="stylesheet" href="../components/date-picker/date-picker.css">
   <link rel="stylesheet" href="../components/form/form.css">
   <link rel="stylesheet" href="../components/avatar/avatar.css">
@@ -66,7 +65,6 @@
   <link rel="stylesheet" href="../components/alert-dialog/alert-dialog.css">
   <link rel="stylesheet" href="../components/popover/popover.css">
   <link rel="stylesheet" href="../components/tooltip/tooltip.css">
-  <link rel="stylesheet" href="../components/context-menu/context-menu.css">
   <link rel="stylesheet" href="../components/command/command.css">
   <link rel="stylesheet" href="../components/breadcrumb/breadcrumb.css">
   <link rel="stylesheet" href="../components/pagination/pagination.css">
@@ -250,13 +248,13 @@
 &lt;i data-lucide="triangle-alert" aria-label="Warning" role="img"&gt;&lt;/i&gt;</code></pre>
           </div>
 
-        <!-- -- Example: Animated ---------------------------------- -->
-          <p class="text-sm font-medium mb-2 mt-6">Animated (spinner)</p>
-          <p class="text-xs text-muted mb-3">Add <code>data-animate=&quot;spin&quot;</code> for loading indicators. Animation is suppressed when the user has <code>prefers-reduced-motion</code> enabled.</p>
+        <!-- -- Example: Loading status ---------------------------- -->
+          <p class="text-sm font-medium mb-2 mt-6">Loading status</p>
+          <p class="text-xs text-muted mb-3">Use a static loader icon for loading indicators while animations are paused.</p>
           <div class="preview" style="gap: var(--space-07); align-items: center">
-            <i data-lucide="loader-circle" data-size="md" data-animate="spin"></i>
+            <i data-lucide="loader-circle" data-size="md"></i>
             <button class="btn" data-variant="outline" disabled>
-              <i data-lucide="loader-circle" data-animate="spin"></i>
+              <i data-lucide="loader-circle"></i>
               Loading…
             </button>
           </div>
@@ -265,10 +263,10 @@
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
               Copy
             </button>
-            <pre><code class="language-markup">&lt;i data-lucide="loader-circle" data-size="md" data-animate="spin"&gt;&lt;/i&gt;
+            <pre><code class="language-markup">&lt;i data-lucide="loader-circle" data-size="md"&gt;&lt;/i&gt;
 
 &lt;button class="btn" data-variant="outline" disabled&gt;
-  &lt;i data-lucide="loader-circle" data-animate="spin"&gt;&lt;/i&gt;
+  &lt;i data-lucide="loader-circle"&gt;&lt;/i&gt;
   Loading…
 &lt;/button&gt;</code></pre>
           </div>
@@ -313,7 +311,6 @@
   <script type="module" src="../components/toggle-group/toggle-group.js"></script>
   <script type="module" src="../components/toolbar/toolbar.js"></script>
   <script type="module" src="../components/number-input/number-input.js"></script>
-  <script type="module" src="../components/color-picker/color-picker.js"></script>
   <script type="module" src="../components/avatar/avatar.js"></script>
   <script type="module" src="../components/image/image.js"></script>
   <script type="module" src="../components/tree-view/tree-view.js"></script>
@@ -321,7 +318,6 @@
   <script type="module" src="../components/alert-dialog/alert-dialog.js"></script>
     <script type="module" src="../components/popover/popover.js"></script>
   <script type="module" src="../components/tooltip/tooltip.js"></script>
-  <script type="module" src="../components/context-menu/context-menu.js"></script>
   <script type="module" src="../components/command/command.js"></script>
   <script type="module" src="../components/navigation-menu/navigation-menu.js"></script>
   <script type="module" src="../components/sidebar/sidebar.js"></script>

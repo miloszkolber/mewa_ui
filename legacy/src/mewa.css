@@ -29,7 +29,7 @@ svg { display: inline-block; vertical-align: middle; }
 .ui-button-group > * { border-radius: 0; }
 .ui-button-group > * + * { margin-inline-start: calc(var(--ui-border-width) * -1); }
 .ui-button-group [aria-pressed="true"], [data-ui-component="toggle"] [data-ui-part="trigger"][aria-pressed="true"] { position: relative; z-index: 1; border-color: var(--ui-focus); background: var(--ui-surface-active); color: var(--ui-foreground); }
-.is-busy::before { inline-size: 0.75rem; block-size: 0.75rem; border: var(--ui-border-width) solid currentColor; border-inline-end-color: transparent; border-radius: 999px; content: ""; animation: ui-spin var(--ui-spinner-duration) linear infinite; }
+.is-busy::before { inline-size: 0.75rem; block-size: 0.75rem; border: var(--ui-border-width) solid currentColor; border-inline-end-color: transparent; border-radius: 999px; content: ""; }
 .ui-card, .ui-panel, .ui-attachment, .ui-item, .ui-empty, .ui-skeleton-card { border: var(--ui-border-width) solid var(--ui-border); background: var(--ui-surface); color: var(--ui-foreground); }
 .ui-panel { padding: 1rem; }
 .ui-card { overflow: hidden; }
@@ -104,7 +104,7 @@ svg { display: inline-block; vertical-align: middle; }
 .ui-radio-control::after { inline-size: 0.5rem; block-size: 0.5rem; background: var(--ui-foreground); content: ""; opacity: 0; }
 .ui-radio:checked + .ui-radio-control::after { opacity: 1; }
 .ui-switch-control { inline-size: 2.25rem; block-size: 1.25rem; }
-.ui-switch-control::after { inline-size: 0.75rem; block-size: 0.75rem; background: var(--ui-foreground); content: ""; transform: translateX(-0.5rem); transition: transform var(--ui-transition-duration) var(--ui-ease-standard); }
+.ui-switch-control::after { inline-size: 0.75rem; block-size: 0.75rem; background: var(--ui-foreground); content: ""; transform: translateX(-0.5rem); }
 .ui-switch:checked + .ui-switch-control { border-color: var(--ui-foreground); background: var(--ui-surface-active); }
 .ui-switch:checked + .ui-switch-control::after { background: var(--ui-foreground); transform: translateX(0.5rem); }
 .ui-checkbox:focus-visible + .ui-checkbox-control, .ui-radio:focus-visible + .ui-radio-control, .ui-switch:focus-visible + .ui-switch-control { outline: var(--ui-focus-ring-width) solid var(--ui-focus); outline-offset: var(--ui-focus-ring-width); }
@@ -205,7 +205,6 @@ meter.ui-progress::-moz-meter-bar { background: currentColor; }
 .ui-slider-value { color: var(--ui-muted-foreground); font-variant-numeric: tabular-nums; }
 .ui-spinner-status { display: inline-flex; align-items: center; gap: 0.5rem; }
 .ui-spinner { inline-size: var(--ui-icon-size-medium); block-size: var(--ui-icon-size-medium); }
-.ui-spin { animation: ui-spin var(--ui-spinner-duration) linear infinite; }
 [data-ui-component="slider"] { display: grid; inline-size: min(100%, 32rem); gap: 1rem; margin-inline: auto; }
 .ui-slider { inline-size: 100%; block-size: var(--ui-control-height-sm); margin: 0; background: transparent; accent-color: var(--ui-focus); appearance: none; }
 .ui-slider::-webkit-slider-runnable-track { block-size: 0.25rem; border: var(--ui-border-width) solid var(--ui-border-strong); background: var(--ui-surface-hover); }
@@ -264,7 +263,7 @@ dialog.ui-dialog:not([open]), dialog[data-ui-dialog]:not([open]), dialog[data-ui
 [data-ui-calendar] button:disabled { color: var(--ui-disabled-foreground); }
 [data-ui-carousel] { overflow: hidden; }
 [data-ui-carousel] [data-ui-part="viewport"] { overflow: hidden; border: var(--ui-border-width) solid var(--ui-border); }
-[data-ui-carousel-track] { display: flex; transition: transform var(--ui-transition-duration) var(--ui-ease-standard); }
+[data-ui-carousel-track] { display: flex; }
 [data-ui-carousel-slide] { display: grid; flex: 0 0 100%; min-block-size: 12rem; align-content: center; gap: 0.5rem; padding: 1rem; background: var(--ui-surface-hover); }
 [data-ui-resizable] { display: grid; inline-size: min(100%, 44rem); min-inline-size: 0; margin-inline: auto; gap: 0.75rem; }
 [data-ui-resizable] > [data-ui-part="header"] { display: grid; gap: 0.25rem; }
@@ -303,11 +302,6 @@ dialog.ui-dialog:not([open]), dialog[data-ui-dialog]:not([open]), dialog[data-ui
 .ui-shell { min-block-size: 100svh; background: var(--ui-background); }
 .ui-frame { inline-size: min(96rem, calc(100% - 2.5rem)); min-block-size: 100svh; margin-inline: auto; border-inline: var(--ui-border-dashed); background: var(--ui-background); }
 .ui-shell-main { min-inline-size: 0; }
-@keyframes ui-spin { to { transform: rotate(1turn); } }
-@media (prefers-reduced-motion: reduce) {
-.ui-spin { animation: none; }
-.ui-switch-control::after, [data-ui-carousel-track] { transition: none; }
-}
 @media (forced-colors: active) {
 .ui-checkbox, .ui-radio, .ui-switch { position: static; inline-size: auto; block-size: auto; margin: 0; opacity: 1; }
 .ui-checkbox-control, .ui-radio-control, .ui-switch-control { display: none; }
@@ -599,32 +593,6 @@ dialog.ui-dialog:not([open]), dialog[data-ui-dialog]:not([open]), dialog[data-ui
     inherits: false;
     initial-value: 0px;
 }
-@keyframes ui-scroll-fade-y {
-    0% { --ui-scroll-fade-top: 0px; --ui-scroll-fade-bottom: var(--ui-scroll-fade-size); }
-    1%, 99% { --ui-scroll-fade-top: var(--ui-scroll-fade-size); --ui-scroll-fade-bottom: var(--ui-scroll-fade-size); }
-    100% { --ui-scroll-fade-top: var(--ui-scroll-fade-size); --ui-scroll-fade-bottom: 0px; }
-}
-@keyframes ui-scroll-fade-top {
-    from { --ui-scroll-fade-top: 0px; }
-    to { --ui-scroll-fade-top: var(--ui-scroll-fade-size); }
-}
-@keyframes ui-scroll-fade-bottom {
-    from { --ui-scroll-fade-bottom: var(--ui-scroll-fade-size); }
-    to { --ui-scroll-fade-bottom: 0px; }
-}
-@keyframes ui-scroll-fade-x {
-    0% { --ui-scroll-fade-start: 0px; --ui-scroll-fade-end: var(--ui-scroll-fade-size); }
-    1%, 99% { --ui-scroll-fade-start: var(--ui-scroll-fade-size); --ui-scroll-fade-end: var(--ui-scroll-fade-size); }
-    100% { --ui-scroll-fade-start: var(--ui-scroll-fade-size); --ui-scroll-fade-end: 0px; }
-}
-@keyframes ui-scroll-fade-start {
-    from { --ui-scroll-fade-start: 0px; }
-    to { --ui-scroll-fade-start: var(--ui-scroll-fade-size); }
-}
-@keyframes ui-scroll-fade-end {
-    from { --ui-scroll-fade-end: var(--ui-scroll-fade-size); }
-    to { --ui-scroll-fade-end: 0px; }
-}
 .ui-scroll-fade,
 .ui-scroll-fade-y {
     --ui-scroll-fade-size: 2rem;
@@ -642,25 +610,11 @@ dialog.ui-dialog:not([open]), dialog[data-ui-dialog]:not([open]), dialog[data-ui
 .ui-scroll-fade-bottom { --ui-scroll-fade-top: 0px; }
 .ui-scroll-fade-start { --ui-scroll-fade-end: 0px; }
 .ui-scroll-fade-end { --ui-scroll-fade-start: 0px; }
-.ui-scroll-fade-none { mask-image: none; animation: none; }
+.ui-scroll-fade-none { mask-image: none; }
 .ui-scroll-fade-track { display: flex; inline-size: 0; min-inline-size: 100%; max-inline-size: 100%; overflow-x: auto; border: var(--ui-border-width) solid var(--ui-border); }
 .ui-scroll-fade-track > span { min-inline-size: 12rem; padding: 0.75rem; border-inline-end: var(--ui-border-width) solid var(--ui-border); white-space: nowrap; }
-@supports (animation-timeline: scroll()) {
-    .ui-scroll-fade,
-    .ui-scroll-fade-y { animation: ui-scroll-fade-y linear both; animation-timeline: scroll(self y); }
-    .ui-scroll-fade-y.ui-scroll-fade-top { animation-name: ui-scroll-fade-top; }
-    .ui-scroll-fade-y.ui-scroll-fade-bottom { animation-name: ui-scroll-fade-bottom; }
-    .ui-scroll-fade-x { animation: ui-scroll-fade-x linear both; animation-timeline: scroll(self x); }
-    .ui-scroll-fade-x.ui-scroll-fade-start { animation-name: ui-scroll-fade-start; }
-    .ui-scroll-fade-x.ui-scroll-fade-end { animation-name: ui-scroll-fade-end; }
-    .ui-scroll-fade-none { animation: none; }
-}
 
 /* Text shimmer utility adapted from the shadcn utility contract. */
-@keyframes ui-shimmer {
-    from { background-position-x: 100%; }
-    to { background-position-x: 0%; }
-}
 .ui-shimmer {
     --ui-shimmer-angle: 110deg;
     --ui-shimmer-duration: 2s;
@@ -672,15 +626,9 @@ dialog.ui-dialog:not([open]), dialog[data-ui-dialog]:not([open]), dialog[data-ui
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: var(--ui-shimmer-text-fill);
-    animation: ui-shimmer var(--ui-shimmer-duration) linear infinite;
 }
-.ui-shimmer-once { animation-iteration-count: 1; }
-.ui-shimmer-reverse { animation-direction: reverse; }
-.ui-shimmer-none { animation: none; -webkit-text-fill-color: currentColor; }
+.ui-shimmer-none { -webkit-text-fill-color: currentColor; }
 .ui-shimmer-examples { display: grid; gap: 1rem; padding: 1rem; border: var(--ui-border-dashed); }
-@media (prefers-reduced-motion: reduce) {
-    .ui-shimmer { animation: none; -webkit-text-fill-color: currentColor; }
-}
 
 /* Application shells. Every layout shares the same frame, header, intro, and rail geometry. */
 .ui-shell-workspace { display: grid; min-inline-size: 0; min-block-size: 100svh; grid-template-rows: 4rem minmax(0, 1fr); }

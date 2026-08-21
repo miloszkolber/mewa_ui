@@ -9,7 +9,6 @@
 - [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) — native modal with focus trap and Escape-to-close
 - [`showModal()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) — opens as modal with backdrop
 - [`::backdrop`](https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop) — native backdrop pseudo-element
-- [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) — entry animation starting values
 
 ## Structure
 

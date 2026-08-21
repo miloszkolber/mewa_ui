@@ -4,21 +4,6 @@
 
     overflow: hidden;
 
-    & ::details-content {
-      block-size: 0;
-      overflow-y: clip;
-      transition: block-size var(--duration-base) ease, content-visibility var(--duration-base) allow-discrete;
-    }
-
-    &[open] ::details-content {
-      block-size: auto;
-    }
-  }
-
-  @starting-style {
-    .collapsible[open] ::details-content {
-      block-size: 0;
-    }
   }
 
   .collapsible-trigger {
@@ -38,10 +23,8 @@
     }
 
     &:focus-visible {
-      outline: none;
-      box-shadow:
-        0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: var(--border-width-01);
     }
 
     &::-webkit-details-marker {
@@ -53,7 +36,6 @@
     width: var(--size-04);
     height: var(--size-04);
     color: var(--text-muted);
-    transition: transform var(--duration-base) ease;
     flex-shrink: 0;
 
     details[open] > summary > & {

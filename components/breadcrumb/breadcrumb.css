@@ -10,10 +10,8 @@
      outline: none;
     &:hover { color: var(--text-primary); }
      &:focus-visible {
-       outline: none;
-       box-shadow:
-         0 0 0 var(--focus-ring-width) var(--background),
-         0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+       outline: var(--focus-ring-width) solid var(--border-ring);
+       outline-offset: var(--border-width-01);
      }
   }
   .breadcrumb-separator {
@@ -32,7 +30,6 @@
   /* -- Accessibility ------------------------------------------ */
 
   @media (prefers-reduced-motion: reduce) {
-    .breadcrumb-link { transition: none; }
   }
 
   @media (prefers-contrast: more) {

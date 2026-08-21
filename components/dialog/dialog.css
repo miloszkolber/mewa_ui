@@ -2,7 +2,7 @@
 
 @layer components {
   dialog.dialog {
-    border: none;
+    border: var(--border-width-01) solid var(--border-primary);
 
     background-color: var(--surface-primary-glass);
     color: var(--text-primary);
@@ -13,16 +13,6 @@
     max-width: 28rem;
     width: calc(100vw - var(--size-07));
     max-height: calc(100vh - var(--size-07));
-    box-shadow: 0 0 0 1px var(--border-primary);
-    opacity: 0;
-    transform: translateY(calc(-1 * var(--size-02))) scale(0.98);
-    transition: transform var(--duration-base) ease;
-
-    &[open] {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
     /* -- Sizes ------------------------------------------------ */
     &[data-size="sm"]   { max-width: 24rem; }
     &[data-size="lg"]   { max-width: 32rem; }
@@ -38,18 +28,6 @@
     &[open]::backdrop {
       background: var(--surface-overlay);
       backdrop-filter: blur(var(--blur-01));
-    }
-  }
-
-  @starting-style {
-    dialog.dialog[open] {
-      opacity: 0;
-      transform: translateY(calc(-1 * var(--size-02))) scale(0.98);
-    }
-
-    dialog.dialog[open]::backdrop {
-      background: oklch(0 0 0 / 0);
-      backdrop-filter: blur(0px);
     }
   }
 

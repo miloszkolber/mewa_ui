@@ -633,7 +633,6 @@ textarea:focus-visible,
     border-right-color: transparent;
     border-radius: var(--ui-radius-full);
     content: "";
-    animation: ui-spin 0.8s linear infinite;
 }
 
 .ui-icon-button {
@@ -820,7 +819,6 @@ textarea:focus-visible,
 
 .ui-status-icon-loading {
     display: block;
-    animation: ui-spin 0.9s linear infinite;
 }
 
 .ui-status-indicator > .ui-status-icon:only-child {
@@ -1367,21 +1365,5 @@ video.lightbox-media {
 
     .ui-dialog-actions {
         flex-direction: column-reverse;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        scroll-behavior: auto !important;
-        transition-duration: var(--ui-reduced-motion-duration) !important;
-        animation-duration: var(--ui-reduced-motion-duration) !important;
-    }
-}
-
-@keyframes ui-spin {
-    to {
-        transform: rotate(360deg);
     }
 }

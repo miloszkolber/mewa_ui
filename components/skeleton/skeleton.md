@@ -2,11 +2,10 @@
 
 ## Native basis
 
-CSS `@keyframes` pulse animation on placeholder `<div>` elements. No JavaScript required.
+Static placeholder `<div>` elements. No JavaScript or animation is used.
 
 ## Native Web APIs
 
-- [`@keyframes`](https://developer.mozilla.org/en-US/docs/Web/CSS/@keyframes) — CSS pulse animation for shimmer effect
 
 ## Structure
 

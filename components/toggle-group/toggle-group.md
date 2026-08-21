@@ -10,8 +10,6 @@
 - [`aria-pressed`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-pressed) — toggle pressed state on each button
 - [`aria-label`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-label) — accessible name for the group
 - [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus rings
-- [`color-mix()`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix) — derived hover states from token colors
-- [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — suppresses transitions for motion-sensitive users
 - [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — Windows High Contrast Mode support
 
 ---
@@ -95,8 +93,8 @@ Inherits variants from `.toggle`:
 
 | `data-size` (on group) | Height | Icon size |
 |------------------------|--------|-----------|
-| `sm`                   | 2rem   | 0.875rem  |
-| *(default)*            | 2.25rem| 1rem      |
+| `sm`                   | 2.5rem | 0.875rem  |
+| *(default)*            | 2.5rem | 1rem       |
 | `lg`                   | 2.5rem | 1.125rem  |
 
 ---

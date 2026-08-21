@@ -9,7 +9,6 @@
 - [`<button>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) — native clickable element with built-in keyboard and form support
 - [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus ring, avoids showing focus on mouse clicks
 - [`commandfor` / `command`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#command) — declarative button→dialog/popover triggers without JS click handlers
-- [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — suppresses hover/focus transitions
 - [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — adds visible borders to all variants in high-contrast mode
 - [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — maps button border/text to system colors in Windows High Contrast Mode
 
@@ -56,8 +55,8 @@
 | `data-size` | Height    | Padding       | Font size    |
 |-------------|-----------|---------------|--------------|
 | `sm`        | `2rem`    | `0 0.75rem`   | `var(--font-body-small)` |
-| *(default)* | `2.25rem` | `0 1rem`      | `0.875rem`   |
-| `icon`      | `2.25rem` | `0` (square)  | —            |
+| *(default)* | `2.5rem`  | `0 1rem`      | `0.875rem`   |
+| `icon`      | `2.5rem`  | `0` (square)  | —            |
 | `icon-sm`   | `2rem`    | `0` (square)  | —            |
 
 ---

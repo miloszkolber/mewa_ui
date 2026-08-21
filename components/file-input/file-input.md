@@ -33,5 +33,5 @@
 ## Notes
 
 - Reuses the `.input` styling pattern for consistency.
-- The `::file-selector-button` is styled as a muted button with hover effect.
+- The `::file-selector-button` is the only button-like surface. The selected filename remains plain muted text.
 - The existing `.input[type="file"]` already covers this — the file-input component provides a standalone class.

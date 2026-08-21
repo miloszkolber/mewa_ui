@@ -21,12 +21,12 @@
   }
 
   .combobox-value[data-placeholder] {
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
 
   .combobox-chevron {
     flex-shrink: 0;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     opacity: var(--opacity-05);
   }
 
@@ -35,7 +35,7 @@
     inset: auto;
     margin: 0;
     padding: 0;
-    background-color: var(--surface-primary-glass);
+    background-color: var(--surface-primary);
     color: var(--text-primary);
     border: var(--border-width-01) solid var(--border-primary);
 
@@ -48,23 +48,6 @@
     width: anchor-size(width);
     margin-top: var(--space-01);
     position-try-fallbacks: flip-block;
-
-    /* -- Animation --------------------------------------------- */
-    opacity: 0;
-    transform: scale(0.96) translateY(calc(-1 * var(--size-01)));
-    transition: transform var(--duration-fast) ease;
-
-    &:popover-open {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-    }
-  }
-
-  @starting-style {
-    .combobox-content:popover-open {
-      opacity: 0;
-      transform: scale(0.96) translateY(calc(-1 * var(--size-01)));
-    }
   }
 
   .combobox-search {
@@ -73,11 +56,22 @@
     gap: var(--space-02);
     padding: var(--space-02) var(--space-03);
     border-bottom: var(--border-width-01) solid var(--border-primary);
+    cursor: text;
+
+    &:focus-within {
+      background-color: var(--surface-secondary);
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: calc(-1 * var(--focus-ring-width));
+    }
+
+    &:focus-within .combobox-search-icon {
+      color: var(--text-primary);
+    }
   }
 
   .combobox-search-icon {
     flex-shrink: 0;
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
 
   .combobox-search-input {
@@ -89,7 +83,7 @@
     color: var(--text-primary);
     outline: none;
 
-    &::placeholder { color: var(--text-muted); }
+    &::placeholder { color: var(--text-secondary); }
   }
 
   .combobox-listbox {
@@ -133,7 +127,7 @@
     padding: var(--space-06) var(--space-02);
     text-align: center;
     font-size: var(--font-body-small);
-    color: var(--text-muted);
+     color: var(--text-secondary);
   }
 
   .combobox-group-label {
@@ -147,17 +141,6 @@
     height: 1px;
     background: var(--border-primary);
     margin: var(--space-01) -0.25rem;
-  }
-
-  /* -- Accessibility ------------------------------------------ */
-
-  @media (prefers-reduced-motion: reduce) {
-    .combobox-content {
-      transition: none;
-    }
-    .combobox-item {
-      transition: none;
-    }
   }
 
   @media (forced-colors: active) {

@@ -18,11 +18,11 @@
     cursor: pointer;
     outline: none;
     flex-shrink: 0;
-    height: 2.25rem;
+    height: var(--size-08);
     padding: 0 var(--space-02);
-    min-width: 2.25rem;
+    min-width: var(--size-08);
 
-    &:hover {
+    &:not([aria-pressed="true"]):hover {
       background-color: var(--surface-secondary);
       color: var(--text-muted);
     }
@@ -30,17 +30,11 @@
     &[aria-pressed="true"] {
       background-color: var(--surface-secondary);
       color: var(--text-primary);
-
-      &:hover {
-        background-color: color-mix(in oklch, var(--surface-secondary) 85%, var(--text-primary));
-      }
     }
 
     &:focus-visible {
-      outline: none;
-      box-shadow:
-        0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: var(--border-width-01);
     }
 
     &:disabled {
@@ -61,7 +55,7 @@
       background: transparent;
 
 
-      &:hover {
+      &:not([aria-pressed="true"]):hover {
         background-color: var(--surface-secondary);
         color: var(--text-primary);
       }
@@ -69,20 +63,12 @@
       &[aria-pressed="true"] {
         background-color: var(--surface-secondary);
         color: var(--text-primary);
-
-        &:hover {
-          background-color: color-mix(in oklch, var(--surface-secondary) 85%, var(--text-primary));
-        }
       }
     }
 
     /* -- Sizes ----------------------------------------------- */
-    &[data-size="sm"]  { height: var(--size-07);  padding: 0 var(--space-02); min-width: var(--size-07); }
+    &[data-size="sm"]  { height: var(--size-08); padding: 0 var(--space-02); min-width: var(--size-08); }
     &[data-size="lg"]  { height: var(--size-08); padding: 0 var(--space-03); min-width: var(--size-08); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .toggle { transition: none; }
   }
 
   @media (prefers-contrast: more) {

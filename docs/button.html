@@ -48,7 +48,6 @@
   <link rel="stylesheet" href="../components/select/select.css">
   <link rel="stylesheet" href="../components/number-input/number-input.css">
   <link rel="stylesheet" href="../components/file-input/file-input.css">
-  <link rel="stylesheet" href="../components/color-picker/color-picker.css">
   <link rel="stylesheet" href="../components/date-picker/date-picker.css">
   <link rel="stylesheet" href="../components/form/form.css">
   <link rel="stylesheet" href="../components/avatar/avatar.css">
@@ -66,7 +65,6 @@
   <link rel="stylesheet" href="../components/alert-dialog/alert-dialog.css">
   <link rel="stylesheet" href="../components/popover/popover.css">
   <link rel="stylesheet" href="../components/tooltip/tooltip.css">
-  <link rel="stylesheet" href="../components/context-menu/context-menu.css">
   <link rel="stylesheet" href="../components/command/command.css">
   <link rel="stylesheet" href="../components/breadcrumb/breadcrumb.css">
   <link rel="stylesheet" href="../components/pagination/pagination.css">
@@ -199,10 +197,10 @@
 
         <!-- Loading -->
         <p class="text-sm font-medium mb-2 mt-8">Loading</p>
-        <p class="text-xs text-muted mb-3">Disabled button with a spinning icon to indicate pending action.</p>
+        <p class="text-xs text-muted mb-3">Disabled button with a static status icon to indicate a pending action.</p>
         <div class="preview">
           <button class="btn" data-variant="default" disabled>
-            <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+            <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
             Loading...
           </button>
         </div>
@@ -213,7 +211,6 @@
           </button>
           <pre><code class="language-markup">&lt;button class="btn" data-variant="default" disabled&gt;
   &lt;svg aria-hidden="true" width="15" height="15"
-       style="animation: spin 1s linear infinite"
        viewBox="0 0 24 24" fill="none" stroke="currentColor"
        stroke-width="2"&gt;
     &lt;path d="M21 12a9 9 0 1 1-6.219-8.56"/&gt;
@@ -276,7 +273,6 @@
   <script type="module" src="../components/toggle-group/toggle-group.js"></script>
   <script type="module" src="../components/toolbar/toolbar.js"></script>
   <script type="module" src="../components/number-input/number-input.js"></script>
-  <script type="module" src="../components/color-picker/color-picker.js"></script>
   <script type="module" src="../components/avatar/avatar.js"></script>
   <script type="module" src="../components/image/image.js"></script>
   <script type="module" src="../components/tree-view/tree-view.js"></script>
@@ -284,7 +280,6 @@
   <script type="module" src="../components/alert-dialog/alert-dialog.js"></script>
     <script type="module" src="../components/popover/popover.js"></script>
   <script type="module" src="../components/tooltip/tooltip.js"></script>
-  <script type="module" src="../components/context-menu/context-menu.js"></script>
   <script type="module" src="../components/command/command.js"></script>
   <script type="module" src="../components/navigation-menu/navigation-menu.js"></script>
   <script type="module" src="../components/sidebar/sidebar.js"></script>

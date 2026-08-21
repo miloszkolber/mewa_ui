@@ -8,6 +8,7 @@ if (!toastContainer) {
   toastContainer = document.createElement('div');
   toastContainer.id = 'toast-container';
   toastContainer.className = 'toast-container';
+  toastContainer.setAttribute('role', 'region');
   toastContainer.setAttribute('aria-label', 'Notifications');
   toastContainer.setAttribute('data-position', 'bottom-right');
   document.body.appendChild(toastContainer);
@@ -15,10 +16,9 @@ if (!toastContainer) {
 
 const toastDismiss = (el, callback) => {
   if (!el || !el.parentNode) return;
-  el.animate(
-    [{ opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(0.5rem)' }],
-    { duration: 200, easing: 'ease', fill: 'forwards' }
-  ).finished.then(() => { try { el.hidePopover(); } catch(e) {} el.remove(); if (callback) callback(); });
+  try { el.hidePopover(); } catch (e) { /* already closed */ }
+  el.remove();
+  if (callback) callback();
 };
 
 const toastCreate = (options) => {

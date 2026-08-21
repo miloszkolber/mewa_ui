@@ -2,14 +2,13 @@
 
 ## Native basis
 
-`<details>` element providing native expand/collapse behavior with animated transitions.
+`<details>` element providing native expand/collapse behavior with immediate state changes.
 
 ## Native Web APIs
 
 - [`<details>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details) — native disclosure widget
 - [`<summary>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/summary) — visible heading/trigger
-- [`::details-content`](https://developer.mozilla.org/en-US/docs/Web/CSS/::details-content) — pseudo-element for content animation
-- [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) — entry animation starting values
+- [`::details-content`](https://developer.mozilla.org/en-US/docs/Web/CSS/::details-content) — pseudo-element for styling collapsible content
 
 ## Structure
 

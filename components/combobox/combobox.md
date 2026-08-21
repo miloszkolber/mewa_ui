@@ -15,7 +15,6 @@ the search input when the popover opens.
 ## Native Web APIs
 - [Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API) — top-layer rendering and light-dismiss for the dropdown list
 - [CSS Anchor Positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning) — positions the popover relative to the trigger without JS
-- [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) — entry animation starting values for popover appearance
 - [`overscroll-behavior`](https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior) — prevents scroll chaining from the listbox to the page
 - [WAI-ARIA Combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) — keyboard navigation and screen reader contract
 
@@ -25,12 +24,14 @@ the search input when the popover opens.
 
 ```html
 <div class="combobox" style="width:14rem;">
-  <label class="label" id="framework-label">Framework</label>
+  <span class="label">Framework</span>
   <button class="btn combobox-trigger" data-variant="outline"
-          aria-haspopup="listbox"
-          aria-expanded="false"
-          aria-labelledby="framework-label"
-          aria-controls="framework-popover">
+          id="framework-trigger"
+           aria-haspopup="listbox"
+           aria-expanded="false"
+           aria-controls="framework-popover"
+           aria-label="Framework"
+          >
     <span class="combobox-value" data-placeholder="Select framework...">Select framework...</span>
     <svg class="combobox-chevron" aria-hidden="true" width="16" height="16"
          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -47,7 +48,7 @@ the search input when the popover opens.
              type="text"
              role="combobox"
              autocomplete="off"
-             aria-expanded="true"
+              aria-expanded="false"
              aria-controls="framework-listbox"
              aria-activedescendant=""
              aria-autocomplete="list"
@@ -145,11 +146,10 @@ the search input when the popover opens.
 - Use `aria-activedescendant` to communicate the highlighted item to screen readers
 - The `popover` attribute enables top-layer rendering and light-dismiss
 - CSS anchor positioning (`position-anchor`, `anchor()`, `position-try-fallbacks: flip-block`) places the popover below the trigger; no JS positioning needed
-- The popover animates in via `@starting-style` + `transition-behavior: allow-discrete`
+- The popover opens and closes immediately through the native Popover API
 - The check icon for selected items uses a CSS `::before` pseudo-element
 - Filter matching is case-insensitive and supports substring matching
 - The empty state element is shown when no items match the filter query
 - Group labels and separators auto-hide when their group has no visible items
 - `overscroll-behavior: contain` prevents scroll chaining from the listbox
-- `prefers-reduced-motion: reduce` disables all transitions
 - `forced-colors: active` supports Windows High Contrast Mode

@@ -77,10 +77,8 @@
     }
 
     &:has(.radio:focus-visible) {
-      outline: none;
-      box-shadow:
-        0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: var(--border-width-01);
     }
 
     &:has(.radio:disabled) {
@@ -135,10 +133,8 @@
     }
 
     &:focus-visible {
-      outline: none;
-      box-shadow:
-        0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: var(--border-width-01);
     }
 
     &:disabled {
@@ -148,7 +144,7 @@
       & + label { opacity: var(--opacity-05); cursor: not-allowed; }
     }
 
-    &[aria-invalid="true"] {
+    &:is([aria-invalid="true"], :user-invalid) {
       border-color: var(--text-negative);
 
       &:checked {
@@ -168,10 +164,13 @@
   }
 
   /* -- Accessibility ------------------------------------------ */
-  @media (prefers-reduced-motion: reduce) {
-    .radio,
-    .radio-card {
-      transition: none;
+  @media (prefers-contrast: more) {
+    .radio {
+      border-width: var(--border-width-02);
+    }
+
+    .radio:disabled {
+      opacity: var(--opacity-07);
     }
   }
 

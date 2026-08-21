@@ -13,8 +13,6 @@
 - [`::-moz-range-track`](https://developer.mozilla.org/en-US/docs/Web/CSS/::-moz-range-track) — custom track styling (Firefox)
 - [`::-moz-range-progress`](https://developer.mozilla.org/en-US/docs/Web/CSS/::-moz-range-progress) — filled portion of track (Firefox)
 - [`<output>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/output) — displays computed/live result value
-- [`color-mix()`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix) — hover state color derivation
-- [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — suppresses animations for motion-sensitive users
 - [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — Windows High Contrast Mode support
 - [WAI-ARIA Slider pattern](https://www.w3.org/WAI/ARIA/apg/patterns/slider/) — canonical keyboard and ARIA reference
 
@@ -101,6 +99,7 @@ All keyboard interaction is provided natively by `<input type="range">`.
 ## Notes
 
 - **Filled track**: Firefox uses `::-moz-range-progress` natively. WebKit/Blink requires a `linear-gradient` on the track with a `--slider-value` custom property set by JS.
+- The square thumb is centered on the track and has no hover halo.
 - **JS initialization**: `slider.js` sets `--slider-value` on each `.slider` element and updates it on `input` events. This powers the filled track gradient in WebKit.
 - **Vertical**: Uses `writing-mode: vertical-lr; direction: rtl` to render vertically across all browsers. Add `data-orientation="vertical"` to activate.
 - **Value display**: Use `<output for="slider-id">` to show the current value. Wire the update in your own script or inline `oninput`.

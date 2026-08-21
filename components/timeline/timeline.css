@@ -34,7 +34,7 @@
   .timeline-dot {
     width: 0.625rem;
     height: 0.625rem;
-    border-radius: var(--radius-full);
+    border-radius: 0;
     background-color: var(--border-primary);
     flex-shrink: 0;
     margin-top: var(--space-02);

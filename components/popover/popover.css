@@ -3,52 +3,38 @@
     position: fixed;
     inset: auto;
     margin: 0;
-    border: var(--border-width-01) solid var(--border-primary);
+    border: var(--border-width-01) solid var(--border-secondary);
 
-    background-color: var(--surface-primary-glass);
+    background-color: var(--surface-primary);
     color: var(--text-primary);
     padding: var(--space-04);
 
     width: 20rem;
-    opacity: 0;
-    translate: 0 calc(-1 * var(--size-01));
-    transition: translate var(--duration-fast) ease;
 
     /* -- Default: bottom center -- */
     position-area: bottom;
     margin-top: var(--space-01);
     position-try-fallbacks: flip-block;
 
-    &:popover-open {
-      opacity: 1;
-      translate: 0 0;
-    }
-
     /* ----- Side variants ----- */
     &[data-side="top"] {
       position-area: top;
       margin-top: 0;
       margin-bottom: var(--space-01);
-      translate: 0 var(--size-01);
-      &:popover-open { translate: 0 0; }
     }
 
     &[data-side="left"] {
       position-area: left;
       margin-top: 0;
       margin-right: var(--space-01);
-      translate: var(--size-01) 0;
       position-try-fallbacks: flip-inline;
-      &:popover-open { translate: 0 0; }
     }
 
     &[data-side="right"] {
       position-area: right;
       margin-top: 0;
       margin-left: var(--space-01);
-      translate: calc(-1 * var(--size-01)) 0;
       position-try-fallbacks: flip-inline;
-      &:popover-open { translate: 0 0; }
     }
 
     /* ----- Align variants (combined with side) ----- */
@@ -67,21 +53,9 @@
     }
   }
 
-  @starting-style {
-    .popover:popover-open { opacity: 0; translate: 0 calc(-1 * var(--size-01)); }
-    .popover[data-side="top"]:popover-open { opacity: 0; translate: 0 var(--size-01); }
-    .popover[data-side="left"]:popover-open { opacity: 0; translate: var(--size-01) 0; }
-    .popover[data-side="right"]:popover-open { opacity: 0; translate: calc(-1 * var(--size-01)) 0; }
-  }
-
   .popover-header { margin-bottom: var(--space-03); }
   .popover-title { margin: 0; font-size: var(--font-body-small); font-weight: var(--font-weight-strong); color: var(--text-primary); }
   .popover-description { margin: var(--space-01) 0 0; font-size: var(--font-body-small); color: var(--text-muted); }
   .popover-content { font-size: var(--font-body-small); }
 
-  @media (prefers-reduced-motion: reduce) {
-    .popover {
-      transition: none;
-    }
-  }
 }

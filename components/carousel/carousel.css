@@ -7,11 +7,9 @@
     & .carousel-viewport {
       display: flex;
       overflow-x: auto;
-      scroll-snap-type: x mandatory;
       gap: var(--space-04);
       overscroll-behavior-x: contain;
       scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
 
       &::-webkit-scrollbar { display: none; }
     }
@@ -19,8 +17,6 @@
     /* ── Slide ─────────────────────────────────── */
     & .carousel-slide {
       flex: 0 0 100%;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
       min-width: 0;
     }
 
@@ -36,7 +32,7 @@
       width: var(--size-07);
       height: var(--size-07);
       border: var(--border-width-01) solid var(--border-primary);
-      border-radius: var(--radius-full);
+       border-radius: 0;
       background-color: var(--background);
       color: var(--text-primary);
       cursor: pointer;
@@ -46,10 +42,8 @@
 
       &:hover { background-color: var(--surface-secondary); }
       &:focus-visible {
-        outline: none;
-        box-shadow:
-          0 0 0 var(--focus-ring-width) var(--background),
-          0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+        outline: var(--focus-ring-width) solid var(--border-ring);
+        outline-offset: var(--border-width-01);
       }
       &:disabled { opacity: var(--opacity-05); cursor: not-allowed; pointer-events: none; }
       & svg { width: var(--size-04); height: var(--size-04); }
@@ -69,12 +63,11 @@
     & .carousel-dot {
       width: var(--size-02);
       height: var(--size-02);
-      border-radius: var(--radius-full);
+       border-radius: 0;
       border: none;
       padding: 0;
       cursor: pointer;
       background-color: var(--border-primary);
-      transition: scale var(--duration-fast) ease;
 
       &[aria-current="true"] {
         background-color: var(--text-primary);
@@ -86,10 +79,8 @@
       }
 
       &:focus-visible {
-        outline: none;
-        box-shadow:
-          0 0 0 var(--focus-ring-width) var(--background),
-          0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+        outline: var(--focus-ring-width) solid var(--border-ring);
+        outline-offset: var(--border-width-01);
       }
     }
 
@@ -107,7 +98,6 @@
         flex-direction: column;
         overflow-x: hidden;
         overflow-y: auto;
-        scroll-snap-type: y mandatory;
         overscroll-behavior-x: unset;
         overscroll-behavior-y: contain;
       }
@@ -124,14 +114,6 @@
 
       & .carousel-dots { flex-direction: column; }
     }
-  }
-
-  /* ── Accessibility ─────────────────────────── */
-  @media (prefers-reduced-motion: reduce) {
-    .carousel .carousel-viewport { scroll-behavior: auto; }
-    .carousel .carousel-prev,
-    .carousel .carousel-next { transition: none; }
-    .carousel .carousel-dot { transition: none; }
   }
 
   @media (prefers-contrast: more) {

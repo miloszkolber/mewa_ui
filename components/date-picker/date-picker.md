@@ -34,8 +34,8 @@
 
 ## Notes
 
-- Reuses the `.input` class — the native date picker provides the calendar UI.
+- Uses the `.date-input` class — the native date picker provides the calendar UI.
 - No custom calendar implementation needed — the browser handles it.
 - The calendar popup is rendered by the OS/browser and cannot be styled.
-- The calendar indicator icon is styled via the `::-webkit-calendar-picker-indicator` pseudo-element.
+- The calendar indicator keeps the native picker hit area while using the same compact icon scale as other controls.
 - For a fully custom date picker, a custom calendar component would be needed.

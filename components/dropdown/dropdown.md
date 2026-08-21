@@ -10,9 +10,7 @@ Requires JavaScript for keyboard navigation and ARIA management.
 ## Native Web APIs
 - [Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API) — top-layer rendering and light-dismiss (click outside to close)
 - [CSS Anchor Positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning) — positions dropdown relative to trigger without JavaScript
-- [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) — entry animation for popover
 - [WAI-ARIA Menu pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/) — keyboard navigation and role contract for menu items
-- [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — suppresses open/close animation
 - [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — maps border and highlight to system colors
 
 ---
@@ -78,33 +76,6 @@ Requires JavaScript for keyboard navigation and ARIA management.
 | `aria-label`               | menu container   | Description of menu purpose   |
 | `tabindex="-1"`            | each menuitem    | Items not in tab order — use arrow keys |
 | `data-highlighted`         | focused item     | Set by JS for styling          |
-
----
-
-## Animations
-
-```css
-@layer components {
-  .dropdown-content {
-    opacity: 0;
-    transform: scale(0.96) translateY(-0.25rem);
-    transition: opacity 150ms ease, transform 150ms ease,
-                display 150ms allow-discrete;
-
-    &:popover-open {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-    }
-  }
-
-  @starting-style {
-    .dropdown-content:popover-open {
-      opacity: 0;
-      transform: scale(0.96) translateY(-0.25rem);
-    }
-  }
-}
-```
 
 ---
 

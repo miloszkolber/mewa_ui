@@ -16,23 +16,6 @@
     &[data-size="lg"] { width: var(--size-06); height: var(--size-06); }
     &[data-size="xl"] { width: var(--size-07); height: var(--size-07); }
 
-    /* -- Spin animation ------------------------------------- */
-    &[data-animate="spin"] {
-      animation: icon-spin var(--duration-spin) linear infinite;
-    }
-  }
-
-  @keyframes icon-spin {
-    to { transform: rotate(360deg); }
-  }
-
-  /* ---- Accessibility ---------------------------------------- */
-
-  @media (prefers-reduced-motion: reduce) {
-    [data-lucide] {
-      animation: none !important;
-      transition: none !important;
-    }
   }
 
   @media (prefers-contrast: more) {

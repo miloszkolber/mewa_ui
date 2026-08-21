@@ -19,6 +19,7 @@ region announcements. Follows `role="status"` with `aria-live="polite"`.
 <!-- Toast container — place once in the page -->
 <div id="toast-container"
      class="toast-container"
+     role="region"
      aria-label="Notifications"
      data-position="bottom-right">
 </div>

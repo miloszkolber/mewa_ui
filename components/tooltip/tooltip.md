@@ -10,8 +10,6 @@ Popover API (`popover="hint"`) for hover/focus hint popups with CSS anchor posit
 - [CSS Anchor Positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning) — tether tooltip to trigger element
 - [`position-area`](https://developer.mozilla.org/en-US/docs/Web/CSS/position-area) — declarative anchor-relative placement on a 3×3 grid
 - [`position-try-fallbacks`](https://developer.mozilla.org/en-US/docs/Web/CSS/position-try-fallbacks) — automatic collision avoidance (flip-block, flip-inline)
-- [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) — entry animation starting values
-- [`transition-behavior: allow-discrete`](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-behavior) — animate `display: none` transitions
 
 ## Structure
 

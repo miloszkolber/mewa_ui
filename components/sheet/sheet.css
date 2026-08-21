@@ -4,18 +4,12 @@
   /* -- Base -------------------------------------------------- */
   dialog.sheet {
     border: none;
-    border-radius: var(--border-radius);
     background-color: var(--background);
     color: var(--text-primary);
     padding: 0;
     margin: 0;
     max-width: none;
     max-height: none;
-    opacity: 0;
-    transition: transform var(--duration-slow) ease;
-
-    &[open] { opacity: 1; }
-
     /* -- Side: right (default) --------------------------------- */
     &, &[data-side="right"] {
       position: fixed;
@@ -90,34 +84,6 @@
     &[open]::backdrop {
       background: var(--surface-overlay);
       backdrop-filter: blur(var(--blur-01));
-    }
-  }
-
-  @starting-style {
-    dialog.sheet[open],
-    dialog.sheet[data-side="right"][open] {
-      opacity: 0;
-      transform: translateX(100%);
-    }
-
-    dialog.sheet[data-side="left"][open] {
-      opacity: 0;
-      transform: translateX(-100%);
-    }
-
-    dialog.sheet[data-side="top"][open] {
-      opacity: 0;
-      transform: translateY(-100%);
-    }
-
-    dialog.sheet[data-side="bottom"][open] {
-      opacity: 0;
-      transform: translateY(100%);
-    }
-
-    dialog.sheet[open]::backdrop {
-      background: oklch(0 0 0 / 0);
-      backdrop-filter: blur(0px);
     }
   }
 

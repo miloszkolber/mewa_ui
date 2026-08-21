@@ -11,8 +11,6 @@
 - [CSS Anchor Positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning) — positions popover relative to trigger via `position-area`
 - [`position-area`](https://developer.mozilla.org/en-US/docs/Web/CSS/position-area) — grid-based anchor positioning for side/align placement
 - [`position-try-fallbacks`](https://developer.mozilla.org/en-US/docs/Web/CSS/position-try-fallbacks) — automatic flip when popover overflows viewport
-- [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) — entry animation starting values
-- [`transition-behavior: allow-discrete`](https://developer.mozilla.org/en-US/docs/Web/CSS/transition-behavior) — enables transitions on `display` property
 
 ## Structure
 

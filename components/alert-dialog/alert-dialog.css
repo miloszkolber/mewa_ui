@@ -1,6 +1,6 @@
 @layer components {
   dialog.alert-dialog {
-    border: none;
+    border: var(--border-width-01) solid var(--border-secondary);
 
     background: var(--background);
     color: var(--text-primary);
@@ -12,38 +12,10 @@
     position: fixed;
     inset: 0;
 
-    opacity: 0;
-    transform: translateY(calc(-1 * var(--size-02))) scale(0.98);
-    transition: transform var(--duration-base) ease;
-
-    &[open] {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
     &::backdrop {
-      background: oklch(0 0 0 / 0);
-      backdrop-filter: blur(0px);
-    }
-
-    &[open]::backdrop {
       background: var(--surface-overlay);
       backdrop-filter: blur(var(--blur-01));
-    }
-
-    &::backdrop {
       pointer-events: auto;
-    }
-  }
-
-  @starting-style {
-    dialog.alert-dialog[open] {
-      opacity: 0;
-      transform: translateY(calc(-1 * var(--size-02))) scale(0.98);
-    }
-    dialog.alert-dialog[open]::backdrop {
-      background: oklch(0 0 0 / 0);
-      backdrop-filter: blur(0px);
     }
   }
 

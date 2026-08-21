@@ -83,21 +83,7 @@
     }
 
     &::backdrop {
-      background: oklch(0 0 0 / 0);
-    }
-
-    &[open]::backdrop {
-      background: var(--surface-overlay);
-    }
-  }
-
-  @starting-style {
-    dialog.image-lightbox[open] {
-      opacity: 0;
-    }
-
-    dialog.image-lightbox[open]::backdrop {
-      background: oklch(0 0 0 / 0);
+      background: color-mix(in oklch, var(--surface-overlay), var(--color-black) 70%);
     }
   }
 
@@ -114,7 +100,6 @@
       max-height: 85vh;
       object-fit: contain;
 
-      transition: transform var(--duration-base) ease;
       user-select: none;
       -webkit-user-drag: none;
     }
@@ -137,18 +122,16 @@
     height: 2.25rem;
     border: none;
 
-    background: var(--surface-overlay);
-    color: var(--text-primary);
+     background: var(--color-black);
+     color: var(--color-white);
     cursor: pointer;
     &:hover {
-      background: color-mix(in oklch, var(--surface-overlay), var(--color-black) 25%);
+       background: color-mix(in oklch, var(--color-black) 80%, var(--color-white));
     }
 
-    &:focus-visible {
-      outline: none;
-      box-shadow:
-        0 0 0 var(--focus-ring-width) var(--background),
-        0 0 0 var(--focus-ring-outer-width) var(--border-ring);
+      &:focus-visible {
+       outline: var(--focus-ring-width) solid var(--border-ring);
+       outline-offset: var(--border-width-01);
     }
 
     & > svg {
@@ -157,11 +140,4 @@
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    dialog.image-lightbox,
-    dialog.image-lightbox::backdrop,
-    .image-lightbox-content > img {
-      transition: none;
-    }
-  }
 }

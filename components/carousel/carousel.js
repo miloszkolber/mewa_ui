@@ -15,8 +15,6 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
   const isVertical = carousel.dataset.orientation === 'vertical';
   const isLoop = carousel.hasAttribute('data-loop');
   const autoplayDelay = carousel.dataset.autoplay ? parseInt(carousel.dataset.autoplay, 10) : 0;
-  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const behavior = reducedMotion ? 'auto' : 'smooth';
 
   let currentIndex = 0;
   let autoplayTimer = null;
@@ -48,9 +46,9 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
 
     const slide = allSlides[target];
     if (isVertical) {
-      viewport.scrollTo({ top: slide.offsetTop - viewport.offsetTop, behavior });
+       viewport.scrollTo({ top: slide.offsetTop - viewport.offsetTop, behavior: 'auto' });
     } else {
-      viewport.scrollTo({ left: slide.offsetLeft - viewport.offsetLeft, behavior });
+       viewport.scrollTo({ left: slide.offsetLeft - viewport.offsetLeft, behavior: 'auto' });
     }
   };
 

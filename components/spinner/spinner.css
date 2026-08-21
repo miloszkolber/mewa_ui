@@ -2,7 +2,6 @@
   .spinner {
     width: var(--size-04);
     height: var(--size-04);
-    animation: spinner-rotate var(--duration-spin) linear infinite;
     color: var(--text-muted);
     flex-shrink: 0;
 
@@ -22,7 +21,4 @@
     }
   }
 
-  @keyframes spinner-rotate {
-    to { transform: rotate(360deg); }
-  }
 }

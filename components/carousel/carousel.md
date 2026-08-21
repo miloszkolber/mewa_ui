@@ -12,7 +12,6 @@ CSS `scroll-snap` on an overflow container, with `IntersectionObserver` for acti
 - [`overscroll-behavior`](https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior) — prevents scroll chaining to parent
 - [`IntersectionObserver`](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) — tracks which slide is currently visible without scroll listeners
 - [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus rings on buttons and dots
-- [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — suppresses smooth scroll and transitions
 - [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — increases border widths for high-contrast mode
 - [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — Windows High Contrast Mode support
 - [WAI-ARIA Carousel pattern](https://www.w3.org/WAI/ARIA/apg/patterns/carousel/) — `role="region"`, `aria-roledescription="carousel"`, slide groups
@@ -148,6 +147,6 @@ Set `flex-basis` on `.carousel-slide` to control per-slide width:
 - **Gap / spacing** — controlled by the `gap` property on `.carousel-viewport` (default `1rem`).
 - **Dot auto-generation** — if `.carousel-dots` is present but empty, dots are auto-created by JS from the slide count.
 - **Autoplay pauses** — on `mouseenter` and `focusin`, restarts on `mouseleave` and `focusout` (per WAI-ARIA APG).
-- **Reduced motion** — `prefers-reduced-motion: reduce` removes smooth scrolling and all transitions.
+- **Immediate state changes** — carousel controls update without smooth scrolling or transitions.
 - **Scroll containment** — `overscroll-behavior: contain` prevents parent page scrolling when at carousel edges.
 - **Buttons disabled at edges** — in non-loop mode, prev is disabled at first slide, next at last slide.

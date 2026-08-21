@@ -12,7 +12,6 @@ HTML Drag and Drop API + keyboard reordering for accessible drag-and-drop lists.
 - [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) — `sortable-change` event dispatched on reorder
 - [`aria-live`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-live) — live region announces position changes to screen readers
 - [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus ring on items
-- [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — suppresses transitions
 - [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — Windows High Contrast Mode support
 - [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — enhanced contrast support
 
@@ -117,7 +116,7 @@ Dispatched via `CustomEvent` after every reorder (drag-drop or keyboard).
 - `user-select: none` prevents text selection during drag.
 - `cursor: grab` / `cursor: grabbing` provides visual feedback.
 - Drop position is calculated from pointer midpoint — items drop before or after the target.
-- `prefers-reduced-motion: reduce` suppresses transitions.
+- Items update immediately without transitions.
 - `forced-colors: active` maps to system colors for High Contrast Mode.
 - Disabled items (`aria-disabled="true"`) are skipped by keyboard navigation and cannot be dragged.
 - The `sortable-change` event bubbles so ancestors can listen for reorder events.

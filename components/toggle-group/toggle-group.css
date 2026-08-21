@@ -11,7 +11,7 @@
       border: var(--border-width-01) solid var(--border-secondary);
       background: transparent;
 
-      &:hover {
+      &:not([aria-pressed="true"]):hover {
         background-color: var(--surface-secondary);
         color: var(--text-primary);
       }
@@ -33,9 +33,9 @@
 
     /* -- Sizes: propagate to child toggles ---------------------- */
     &[data-size="sm"] > .toggle {
-      height: var(--size-07);
+      height: var(--size-08);
       padding: 0 var(--space-02);
-      min-width: var(--size-07);
+      min-width: var(--size-08);
 
       & svg { width: 0.875rem; height: 0.875rem; }
     }
@@ -70,12 +70,6 @@
   }
 
   /* -- Accessibility -------------------------------------------- */
-  @media (prefers-reduced-motion: reduce) {
-    .toggle-group .toggle {
-      transition: none;
-    }
-  }
-
   @media (forced-colors: active) {
     .toggle-group > .toggle {
       border-color: ButtonBorder;
