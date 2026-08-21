@@ -138,3 +138,4 @@ The nav stays flat in both widths. In collapsed mode, link and control labels re
 - **Responsive resize**: If an open mobile dialog crosses into the desktop breakpoint, the module closes it and restores focus to its trigger.
 - **Sidebar tokens**: Use the shared `--surface-*`, `--text-*`, and `--border-*` roles.
 - **Self-contained**: The sidebar needs no other component CSS for its core layout. Optional tooltips can label collapsed links when a consuming application provides them.
+- **Shell**: Wrap the rail and workspace in `.sidebar-layout`; use `.app-sidebar` for the sticky rail and keep the footer collapse control reachable in both expanded and collapsed states.

@@ -393,4 +393,37 @@
     }
   }
 
+  /* Keep the primary navigation available when JavaScript is disabled. */
+  @media (scripting: none) and (max-width: 767px) {
+    .sidebar-layout {
+      display: block;
+    }
+
+    .app-sidebar {
+      display: flex;
+      position: static;
+      width: 100%;
+      height: auto;
+      min-height: 0;
+      overflow: visible;
+    }
+
+    .app-sidebar::after {
+      display: none;
+    }
+
+    .sidebar-content {
+      overflow: visible;
+    }
+
+    .sidebar-footer,
+    [data-sidebar-mobile] {
+      display: none;
+    }
+
+    .sidebar-mobile {
+      display: none !important;
+    }
+  }
+
 }

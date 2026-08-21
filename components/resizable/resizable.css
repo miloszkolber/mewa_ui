@@ -1,0 +1,210 @@
+/* -- Resizable component ----------------------------------------- */
+
+@layer components {
+  .resizable {
+    display: grid;
+    gap: var(--space-03);
+    inline-size: 100%;
+    min-inline-size: 0;
+  }
+
+  .resizable-group {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    min-block-size: 12rem;
+    min-inline-size: 0;
+    overflow: hidden;
+    border: var(--border-width-01) solid var(--border-primary);
+    background: var(--surface-primary);
+
+    &[data-orientation="horizontal"] {
+      flex-direction: column;
+    }
+  }
+
+  .resizable[data-orientation="horizontal"] .resizable-group {
+    flex-direction: column;
+  }
+
+  .resizable-panel {
+    min-block-size: 0;
+    min-inline-size: 0;
+    overflow: auto;
+    padding: var(--space-04);
+    background: var(--surface-primary);
+    color: var(--text-primary);
+
+    &:first-child {
+      flex: 0 1 35%;
+    }
+
+    &:last-child {
+      flex: 1 1 auto;
+    }
+  }
+
+  .resizable-handle {
+    position: relative;
+    flex: 0 0 var(--size-06);
+    inline-size: var(--size-06);
+    min-block-size: var(--size-06);
+    align-self: stretch;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: linear-gradient(
+      to right,
+      transparent calc(50% - (var(--border-width-01) / 2)),
+      var(--border-primary) calc(50% - (var(--border-width-01) / 2)),
+      var(--border-primary) calc(50% + (var(--border-width-01) / 2)),
+      transparent calc(50% + (var(--border-width-01) / 2))
+    );
+    color: var(--text-muted);
+    cursor: col-resize;
+    touch-action: none;
+    user-select: none;
+
+    &::after {
+      position: absolute;
+      inset-block-start: 50%;
+      inset-inline-start: 50%;
+      inline-size: var(--size-01);
+      block-size: var(--size-08);
+      border-inline: var(--border-width-01) solid currentColor;
+      content: "";
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+    }
+
+    &:hover,
+    &:focus-visible,
+    &[data-resizing] {
+      background: linear-gradient(
+        to right,
+        transparent calc(50% - (var(--border-width-02) / 2)),
+        var(--border-ring) calc(50% - (var(--border-width-02) / 2)),
+        var(--border-ring) calc(50% + (var(--border-width-02) / 2)),
+        transparent calc(50% + (var(--border-width-02) / 2))
+      );
+      color: var(--text-primary);
+    }
+
+    &:focus-visible {
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: var(--border-width-01);
+    }
+
+    &:disabled,
+    &[aria-disabled="true"] {
+      cursor: not-allowed;
+      opacity: var(--opacity-05);
+    }
+  }
+
+  .resizable-group[data-orientation="horizontal"] .resizable-handle,
+  .resizable[data-orientation="horizontal"] .resizable-handle {
+    flex-basis: var(--size-06);
+    inline-size: auto;
+    min-inline-size: var(--size-06);
+    block-size: var(--size-06);
+    min-block-size: var(--size-06);
+    background: linear-gradient(
+      to bottom,
+      transparent calc(50% - (var(--border-width-01) / 2)),
+      var(--border-primary) calc(50% - (var(--border-width-01) / 2)),
+      var(--border-primary) calc(50% + (var(--border-width-01) / 2)),
+      transparent calc(50% + (var(--border-width-01) / 2))
+    );
+    cursor: row-resize;
+
+    &::after {
+      inline-size: var(--size-08);
+      block-size: var(--size-01);
+      border-inline: 0;
+      border-block: var(--border-width-01) solid currentColor;
+    }
+
+    &:hover,
+    &:focus-visible,
+    &[data-resizing] {
+      background: linear-gradient(
+        to bottom,
+        transparent calc(50% - (var(--border-width-02) / 2)),
+        var(--border-ring) calc(50% - (var(--border-width-02) / 2)),
+        var(--border-ring) calc(50% + (var(--border-width-02) / 2)),
+        transparent calc(50% + (var(--border-width-02) / 2))
+      );
+    }
+  }
+
+  .resizable-output {
+    display: block;
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: var(--font-body-xsmall);
+  }
+
+  @media (prefers-contrast: more) {
+    .resizable-group {
+      border-width: var(--border-width-02);
+    }
+
+    .resizable-handle {
+      flex-basis: calc(var(--size-06) + var(--size-01));
+      border-inline: var(--border-width-01) solid var(--border-primary);
+
+      &::after {
+        border-width: var(--border-width-02);
+      }
+    }
+
+    .resizable-group[data-orientation="horizontal"] .resizable-handle,
+    .resizable[data-orientation="horizontal"] .resizable-handle {
+      flex-basis: calc(var(--size-06) + var(--size-01));
+      border-inline: 0;
+      border-block: var(--border-width-01) solid var(--border-primary);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .resizable-group {
+      border-color: ButtonBorder;
+      background: Canvas;
+    }
+
+    .resizable-panel {
+      background: Canvas;
+      color: CanvasText;
+    }
+
+    .resizable-handle {
+      background: ButtonFace;
+      border-inline: var(--border-width-01) solid ButtonBorder;
+      color: ButtonText;
+
+      &:hover,
+      &:focus-visible,
+      &[data-resizing] {
+        background: Highlight;
+        border-color: Highlight;
+        color: HighlightText;
+      }
+
+      &:focus-visible {
+        outline-color: Highlight;
+      }
+    }
+
+    .resizable-group[data-orientation="horizontal"] .resizable-handle,
+    .resizable[data-orientation="horizontal"] .resizable-handle {
+      border-inline: 0;
+      border-block: var(--border-width-01) solid ButtonBorder;
+    }
+
+    .resizable-output {
+      color: CanvasText;
+    }
+  }
+}

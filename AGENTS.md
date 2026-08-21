@@ -9,7 +9,7 @@ New work must use the current source tree:
 - `src/base.css` owns static foundations, font faces, palette primitives, typography, geometry, and browser defaults.
 - `src/tokens.css` owns light and dark semantic color roles.
 - `src/icons/` owns the local Lucide SVG files.
-- `components/` owns the 54 current component folders. Each has a skill (`{name}.md`) and stylesheet (`{name}.css`), with `{name}.js` only when the documented behavior needs a module.
+- `components/` owns the 61 current component folders. Each has a skill (`{name}.md`) and stylesheet (`{name}.css`), with `{name}.js` only when the documented behavior needs a module.
 - `docs/` owns the static reference site, one HTML page per current component.
 - `layouts/` is the only canonical home for reusable application shells. The current two templates are `layouts/vertical-navbar.html` for a left collapsible rail and `layouts/horizontal-navbar.html` for top navigation. `layouts/layouts.css` owns template-only rules and `layouts/layouts.js` provides local icon inlining and the optional theme toggle. Do not use a legacy layout as a substitute.
 
@@ -24,7 +24,7 @@ ui_library/
 ├── src/geist.woff2                ← Geist variable font, 400–550
 ├── src/geistmono.woff2            ← Geist Mono variable font, 400–550
 ├── src/icons/                     ← standalone local Lucide SVG files
-├── components/                    ← 54 self-contained component folders
+├── components/                    ← 61 self-contained component folders
 │   └── {name}/
 │       ├── {name}.md              ← native basis, structure, variants, ARIA, and notes
 │       ├── {name}.css             ← component stylesheet
@@ -129,7 +129,7 @@ Current docs contain copyable HTML examples. They do not use generated CSS or Ja
 4. Create `docs/{name}.html` from a current component page. Keep examples sentence case, accessible, motionless, and limited to implemented variants and states.
 5. Add the page to `docs/js/layout.js` in the purpose group that matches the inventory. Update both `NAV` and `BUILT`.
 6. Add the component stylesheet and, when applicable, module imports to every doc page following the existing doc-site convention. Check relative paths from `docs/`.
-7. Update the 54-row README inventory with the exact native basis, JS requirement, skill path, and doc path. Verify the row against the actual directory and files.
+7. Update the 61-row README inventory with the exact native basis, JS requirement, skill path, and doc path. Verify the row against the actual directory and files.
 8. Check all changed JavaScript with Node syntax checking, serve the doc site over HTTP, and exercise keyboard, focus, narrow-width, forced-colors, and no-JavaScript paths that apply. Do not use the removed legacy catalog or its test contract as validation.
 
 Do not silently add a new component family, layout template, token namespace, dependency, or compatibility alias. Raise an ambiguity before choosing a product or architecture boundary that is not supported by the current source.
@@ -150,7 +150,7 @@ Use the first two as a feature checklist and the remaining references for the na
 ## Common pitfalls
 
 - **Legacy drift:** A legacy path in a runtime import, example, test, demo, or layout is a defect. Port the behavior into the current source tree instead.
-- **Inventory drift:** The README table must match the 54 actual component folders, 54 skill files, 54 stylesheets, optional module files, and 54 doc pages.
+- **Inventory drift:** The README table must match the 61 actual component folders, 61 skill files, 61 stylesheets, optional module files, and 61 doc pages.
 - **CSS drift:** Keep the skill's variants and states aligned with the stylesheet. The stylesheet is the source of truth for rendered behavior.
 - **Import drift:** Every doc page follows the same current foundation and component import convention. Missing imports break cross-page demos silently.
 - **Motion drift:** No animation or transition belongs in canonical source. Do not reintroduce reduced-motion fallbacks for motion that should not exist.

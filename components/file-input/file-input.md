@@ -32,6 +32,6 @@
 
 ## Notes
 
-- Reuses the `.input` styling pattern for consistency.
+- Uses the same border and focus treatment as text fields for consistency.
 - The `::file-selector-button` is the only button-like surface. The selected filename remains plain muted text.
-- The existing `.input[type="file"]` already covers this — the file-input component provides a standalone class.
+- Use `.file-input` as the standalone class for file controls.

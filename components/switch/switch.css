@@ -17,7 +17,7 @@
       content: '';
       position: absolute;
       top: 50%;
-      left: var(--border-width-02);
+      inset-inline-start: var(--border-width-02);
       width: var(--size-05);
       height: var(--size-05);
       border: var(--border-width-01) solid var(--border-secondary);
@@ -31,7 +31,8 @@
       border-color: var(--surface-inverted);
 
       &::after {
-        transform: translateX(var(--size-05)) translateY(-50%);
+        inset-inline-start: calc(100% - var(--size-05) - var(--border-width-02));
+        transform: translateY(-50%);
         border-color: var(--surface-inverted);
       }
     }

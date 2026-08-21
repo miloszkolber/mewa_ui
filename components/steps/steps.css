@@ -12,7 +12,7 @@
     border: var(--border-width-02) solid var(--border-primary); color: var(--text-muted); background-color: var(--background); position: relative; z-index: var(--z-raised);
     .step[data-status='current'] & { border-color: var(--surface-inverted); color: var(--text-primary); }
     .step[data-status='complete'] & { border-color: var(--surface-inverted); background-color: var(--surface-inverted); color: var(--text-inverted); }
-    .step[data-status='error'] & { border-color: var(--text-negative); background-color: var(--surface-negative); color: var(--text-inverted); }
+    .step[data-status='error'] & { border-color: var(--text-negative); background-color: var(--surface-negative); color: var(--text-negative); }
 
     & svg { width: 0.875rem; height: 0.875rem; pointer-events: none; }
   }

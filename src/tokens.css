@@ -3,14 +3,14 @@
   color-scheme: light;
   /* Page and container surfaces */
   --background: var(--color-neutral-50);
-  --background-glass: color-mix(in oklch, var(--color-white) 85%, transparent);
-  --surface-primary: var(--color-white);
-  --surface-primary-glass: color-mix(in oklch, var(--color-white) 85%, transparent);
+  --background-glass: color-mix(in oklch, var(--color-neutral-50) 85%, transparent);
+  --surface-primary: var(--color-neutral-50);
+  --surface-primary-glass: color-mix(in oklch, var(--color-neutral-50) 85%, transparent);
   --surface-secondary: var(--color-neutral-100);
   --surface-secondary-glass: color-mix(in oklch, var(--color-neutral-100) 85%, transparent);
-  --surface-positive: var(--color-green-600);
-  --surface-negative: var(--color-red-600);
-  --surface-caution: var(--color-amber-500);
+  --surface-positive: var(--color-green-50);
+  --surface-negative: var(--color-red-50);
+  --surface-caution: var(--color-amber-50);
   --surface-overlay: oklch(0 0 0 / 0.45);
   --surface-inverted: var(--color-neutral-950);
   /* Text roles */
@@ -19,9 +19,9 @@
   --text-muted: var(--color-neutral-500);
   --text-disabled: var(--color-neutral-400);
   --text-inverted: var(--color-neutral-50);
-  --text-positive: var(--color-green-700);
-  --text-negative: var(--color-red-700);
-  --text-caution: var(--color-amber-800);
+  --text-positive: var(--color-green-950);
+  --text-negative: var(--color-red-950);
+  --text-caution: var(--color-amber-950);
   /* Border roles */
   --border-primary: var(--color-neutral-200);
   --border-secondary: var(--color-neutral-300);
@@ -41,13 +41,13 @@
   /* Page and container surfaces */
   --background: var(--color-neutral-950);
   --background-glass: color-mix(in oklch, var(--color-neutral-950) 85%, transparent);
-  --surface-primary: var(--color-neutral-900);
-  --surface-primary-glass: color-mix(in oklch, var(--color-neutral-900) 85%, transparent);
-  --surface-secondary: var(--color-neutral-800);
-  --surface-secondary-glass: color-mix(in oklch, var(--color-neutral-800) 85%, transparent);
-  --surface-positive: var(--color-green-400);
-  --surface-negative: var(--color-red-400);
-  --surface-caution: var(--color-amber-400);
+  --surface-primary: var(--color-neutral-950);
+  --surface-primary-glass: color-mix(in oklch, var(--color-neutral-950) 85%, transparent);
+  --surface-secondary: var(--color-neutral-900);
+  --surface-secondary-glass: color-mix(in oklch, var(--color-neutral-900) 85%, transparent);
+  --surface-positive: var(--color-green-950);
+  --surface-negative: var(--color-red-950);
+  --surface-caution: var(--color-amber-950);
   --surface-overlay: oklch(0 0 0 / 0.45);
   --surface-inverted: var(--color-neutral-50);
   /* Text roles */
@@ -56,9 +56,9 @@
   --text-muted: var(--color-neutral-400);
   --text-disabled: var(--color-neutral-500);
   --text-inverted: var(--color-neutral-950);
-  --text-positive: var(--color-green-300);
-  --text-negative: var(--color-red-300);
-  --text-caution: var(--color-amber-300);
+  --text-positive: var(--color-green-50);
+  --text-negative: var(--color-red-50);
+  --text-caution: var(--color-amber-50);
   /* Border roles */
   --border-primary: var(--color-neutral-700);
   --border-secondary: var(--color-neutral-600);

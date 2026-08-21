@@ -1,0 +1,70 @@
+/* -- Date Field component --------------------------------------- */
+
+@layer components {
+  .date-input {
+    position: relative;
+    height: var(--size-08);
+    width: 100%;
+    border: var(--border-width-01) solid var(--border-secondary);
+
+    background: var(--background);
+    padding: 0 var(--space-03);
+    padding-inline-end: var(--space-08);
+    font-size: var(--font-body-small);
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+    outline: none;
+
+    cursor: pointer;
+
+    &:focus {
+      border-color: var(--border-ring);
+      outline: var(--focus-ring-outer-width) solid var(--border-ring);
+      outline-offset: var(--focus-ring-width);
+    }
+
+    &:disabled {
+      opacity: var(--opacity-05);
+      cursor: not-allowed;
+    }
+
+    &:is([aria-invalid="true"], :user-invalid) {
+      border-color: var(--text-negative);
+
+      &:focus {
+        border-color: var(--text-negative);
+        outline: var(--focus-ring-outer-width) solid var(--text-negative);
+        outline-offset: var(--focus-ring-width);
+      }
+    }
+
+    /* -- Calendar indicator: full-height hit area at the end ---- */
+    &::-webkit-calendar-picker-indicator {
+      position: absolute;
+      inset-block: 0;
+      inset-inline-end: 0;
+      width: var(--space-08);
+      height: auto;
+      margin: 0;
+      cursor: pointer;
+      opacity: var(--opacity-06);
+
+      &:hover { opacity: var(--opacity-10); }
+    }
+
+    /* -- Date text: explicit colors, no browser default blue ---- */
+    &::-webkit-datetime-edit {
+      padding: 0;
+      color: var(--text-primary);
+    }
+
+    &::-webkit-datetime-edit-fields-wrapper,
+    &::-webkit-datetime-edit-text,
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-month-field,
+    &::-webkit-datetime-edit-year-field {
+      color: var(--text-primary);
+    }
+  }
+
+}

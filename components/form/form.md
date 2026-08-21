@@ -23,12 +23,12 @@
 <form class="form">
   <div class="form-field">
     <label class="label" for="f-name">Name</label>
-    <input class="input" type="text" id="f-name" required>
+    <input class="text-field-input" type="text" id="f-name" required>
     <p class="field-description">Your full name.</p>
   </div>
   <div class="form-field">
     <label class="label" for="f-email">Email</label>
-    <input class="input" type="email" id="f-email" required>
+    <input class="text-field-input" type="email" id="f-email" required>
   </div>
   <div class="form-actions">
     <button class="btn" type="submit" data-variant="default">Submit</button>
@@ -50,7 +50,7 @@
 <div class="form-field" data-orientation="horizontal">
   <label class="label" for="f-user">Username</label>
   <div>
-    <input class="input" type="text" id="f-user">
+    <input class="text-field-input" type="text" id="f-user">
     <p class="field-description">Your public display name.</p>
   </div>
 </div>
@@ -89,7 +89,7 @@
 ```html
 <div class="form-field" data-invalid>
   <label class="label" for="f-email">Email</label>
-  <input class="input" type="email" id="f-email" aria-invalid="true" aria-describedby="f-email-err">
+  <input class="text-field-input" type="email" id="f-email" aria-invalid="true" aria-describedby="f-email-err">
   <p class="field-error" id="f-email-err" role="alert">Please enter a valid email address.</p>
 </div>
 ```
@@ -128,7 +128,7 @@
 - `.form-fieldset` styles native `<fieldset>` with legend and description.
 - `.form-group` is a vertical stack for grouping multiple inline fields.
 - No JavaScript needed for basic forms — use native Constraint Validation.
-- Prefer `:user-valid` / `:user-invalid` for post-interaction validation styling (defined in input.css).
+- Prefer `:user-valid` / `:user-invalid` for post-interaction validation styling (defined in text-field.css).
 - Compose with Label, Input, Textarea, Select, Checkbox, Radio Group, Switch, Slider, etc.
 - `data-invalid` on `.form-field` turns the description text to destructive color; use alongside `aria-invalid="true"` on the control.
 - For custom JS validation, set `data-invalid` on the field wrapper and `aria-invalid="true"` on the input programmatically.

@@ -18,7 +18,7 @@
 ### Basic
 ```html
 <label class="label" for="email">Email</label>
-<input class="input" id="email" type="email">
+<input class="text-field-input" id="email" type="email">
 ```
 
 ### With required indicator
@@ -26,7 +26,7 @@
 <label class="label" for="name">
   Name <span aria-hidden="true" class="text-negative">*</span>
 </label>
-<input class="input" id="name" type="text" required>
+<input class="text-field-input" id="name" type="text" required>
 ```
 
 ### With optional indicator
@@ -34,20 +34,20 @@
 <label class="label" for="bio">
   Bio <span class="label-hint">(optional)</span>
 </label>
-<textarea class="input" id="bio"></textarea>
+<textarea class="text-field-input" id="bio"></textarea>
 ```
 
 ### Disabled (explicit)
 ```html
 <label class="label" data-disabled for="disabled-field">Disabled field</label>
-<input class="input" id="disabled-field" disabled>
+<input class="text-field-input" id="disabled-field" disabled>
 ```
 
 ### Disabled (auto-detected)
 The label auto-dims when the adjacent control is disabled — no `data-disabled` needed:
 ```html
 <label class="label" for="auto-disabled">Auto-disabled</label>
-<input class="input" id="auto-disabled" disabled>
+<input class="text-field-input" id="auto-disabled" disabled>
 ```
 
 ### With checkbox (inline)
@@ -70,7 +70,7 @@ The label auto-dims when the adjacent control is disabled — no `data-disabled`
 ```html
 <div>
   <label class="label" for="username">Username</label>
-  <input class="input" id="username" type="text" placeholder="mewa">
+  <input class="text-field-input" id="username" type="text" placeholder="mewa">
   <p class="field-description">This is your public display name.</p>
 </div>
 ```

@@ -5,7 +5,9 @@
     margin: 0;
     border: var(--border-width-01) solid var(--border-secondary);
 
-    background-color: var(--surface-primary);
+    /* Keep the top-layer panel legible while softly separating it from the page. */
+    background-color: var(--surface-primary-glass);
+    backdrop-filter: blur(var(--blur-01));
     color: var(--text-primary);
     padding: var(--space-04);
 

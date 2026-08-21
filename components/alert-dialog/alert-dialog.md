@@ -6,15 +6,15 @@
 
 ## Native Web APIs
 
-- [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) — native modal with focus trap and Escape-to-close
+- [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) — native modal with focus management and a backdrop
 - [`showModal()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) — opens as modal with backdrop
 - [`::backdrop`](https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop) — native backdrop pseudo-element
 
 ## Structure
 
 ```html
-<button class="btn" data-variant="outline" data-alert-dialog-trigger="my-alert-dialog">
-  Delete Account
+<button class="btn" type="button" data-variant="outline" data-alert-dialog-trigger="my-alert-dialog">
+  Delete account
 </button>
 
 <dialog id="my-alert-dialog" class="alert-dialog" role="alertdialog" aria-modal="true"
@@ -27,8 +27,8 @@
       </p>
     </div>
     <div class="alert-dialog-footer">
-      <button class="btn" data-variant="outline" data-alert-dialog-close>Cancel</button>
-      <button class="btn" data-variant="destructive" data-alert-dialog-close>Delete</button>
+       <button class="btn" type="button" data-variant="outline" data-alert-dialog-close>Cancel</button>
+       <button class="btn" type="button" data-variant="destructive" data-alert-dialog-close>Delete</button>
     </div>
   </div>
 </dialog>
@@ -41,3 +41,8 @@
 - No backdrop click dismiss — user must make an explicit choice
 - Escape key is disabled — user must use the action buttons
 - Focus is trapped inside the dialog via native `showModal()`
+
+## Visual notes
+
+- The alert dialog has a one-pixel semantic border so its edge remains visible against both themes.
+- Its native backdrop uses the shared overlay role with a stronger layered scrim and blur. The component has no shadow or motion.

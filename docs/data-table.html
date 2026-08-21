@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Data Table component — native table composition with optional filtering, sorting, result status, and pagination.">
+  <meta property="og:title" content="Data Table — mewa_ui">
+  <meta property="og:description" content="Data Table component — native table composition with optional filtering, sorting, result status, and pagination.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mewa.local/data-table.html">
+  <meta property="og:site_name" content="mewa_ui">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Data Table — mewa_ui">
+  <meta name="twitter:description" content="Data Table component — native table composition with optional filtering, sorting, result status, and pagination.">
+  <title>Data Table — mewa_ui</title>
+  <script src="js/layout.js"></script>
+  <link rel="stylesheet" href="../src/base.css">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="css/docs-theme.css">
+  <link rel="stylesheet" href="css/docs-utilities.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="../components/accordion/accordion.css">
+  <link rel="stylesheet" href="../components/alert-dialog/alert-dialog.css">
+  <link rel="stylesheet" href="../components/avatar/avatar.css">
+  <link rel="stylesheet" href="../components/badge/badge.css">
+  <link rel="stylesheet" href="../components/breadcrumbs/breadcrumbs.css">
+  <link rel="stylesheet" href="../components/button-group/button-group.css">
+  <link rel="stylesheet" href="../components/button/button.css">
+  <link rel="stylesheet" href="../components/callout/callout.css">
+  <link rel="stylesheet" href="../components/card/card.css">
+  <link rel="stylesheet" href="../components/carousel/carousel.css">
+  <link rel="stylesheet" href="../components/checkbox/checkbox.css">
+  <link rel="stylesheet" href="../components/collapsible/collapsible.css">
+  <link rel="stylesheet" href="../components/combobox/combobox.css">
+  <link rel="stylesheet" href="../components/command-palette/command-palette.css">
+  <link rel="stylesheet" href="../components/date-field/date-field.css">
+  <link rel="stylesheet" href="../components/date-picker/date-picker.css">
+  <link rel="stylesheet" href="../components/date-range-picker/date-range-picker.css">
+  <link rel="stylesheet" href="../components/dialog/dialog.css">
+  <link rel="stylesheet" href="../components/dropdown-menu/dropdown-menu.css">
+  <link rel="stylesheet" href="../components/field/field.css">
+  <link rel="stylesheet" href="../components/file-input/file-input.css">
+  <link rel="stylesheet" href="../components/form/form.css">
+  <link rel="stylesheet" href="../components/icon/icon.css">
+  <link rel="stylesheet" href="../components/image/image.css">
+  <link rel="stylesheet" href="../components/label/label.css">
+  <link rel="stylesheet" href="../components/layout/layout.css">
+  <link rel="stylesheet" href="../components/message-scroller/message-scroller.css">
+  <link rel="stylesheet" href="../components/navigation-menu/navigation-menu.css">
+  <link rel="stylesheet" href="../components/number-field/number-field.css">
+  <link rel="stylesheet" href="../components/pagination/pagination.css">
+  <link rel="stylesheet" href="../components/popover/popover.css">
+  <link rel="stylesheet" href="../components/progress/progress.css">
+  <link rel="stylesheet" href="../components/questionnaire/questionnaire.css">
+  <link rel="stylesheet" href="../components/radio-group/radio-group.css">
+  <link rel="stylesheet" href="../components/resizable/resizable.css">
+  <link rel="stylesheet" href="../components/scroll-area/scroll-area.css">
+  <link rel="stylesheet" href="../components/select/select.css">
+  <link rel="stylesheet" href="../components/separator/separator.css">
+  <link rel="stylesheet" href="../components/sheet/sheet.css">
+  <link rel="stylesheet" href="../components/sidebar/sidebar.css">
+  <link rel="stylesheet" href="../components/skeleton/skeleton.css">
+  <link rel="stylesheet" href="../components/slider/slider.css">
+  <link rel="stylesheet" href="../components/sortable/sortable.css">
+  <link rel="stylesheet" href="../components/spinner/spinner.css">
+  <link rel="stylesheet" href="../components/statistic/statistic.css">
+  <link rel="stylesheet" href="../components/steps/steps.css">
+  <link rel="stylesheet" href="../components/switch/switch.css">
+  <link rel="stylesheet" href="../components/table/table.css">
+  <link rel="stylesheet" href="../components/tabs/tabs.css">
+  <link rel="stylesheet" href="../components/text-field/text-field.css">
+  <link rel="stylesheet" href="../components/textarea/textarea.css">
+  <link rel="stylesheet" href="../components/time-field/time-field.css">
+  <link rel="stylesheet" href="../components/timeline/timeline.css">
+  <link rel="stylesheet" href="../components/toast/toast.css">
+  <link rel="stylesheet" href="../components/toggle-group/toggle-group.css">
+  <link rel="stylesheet" href="../components/toggle/toggle.css">
+  <link rel="stylesheet" href="../components/toolbar/toolbar.css">
+  <link rel="stylesheet" href="../components/tooltip/tooltip.css">
+  <link rel="stylesheet" href="../components/tree-view/tree-view.css">
+  <link rel="stylesheet" href="../components/typography/typography.css">
+  <link rel="stylesheet" href="../components/data-table/data-table.css">
+</head>
+<body>
+  <site-header></site-header>
+
+  <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
+    <site-nav></site-nav>
+
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
+      <div class="page-header">
+        <h1>Data Table</h1>
+        <p class="text-muted leading-relaxed mb-6">
+          A progressively enhanced data table composed from Table, Text Field, and Pagination. Native table markup remains useful without JavaScript.
+        </p>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-6">Default</p>
+      <p class="text-xs text-muted mb-3">Filtering, sortable headers, result announcements, and client-side pagination are optional enhancements to the native composition.</p>
+      <div class="preview">
+        <section class="data-table" data-page-size="3" aria-labelledby="projects-title">
+          <h2 id="projects-title" class="text-base font-medium">Projects</h2>
+          <div class="data-table-toolbar">
+            <div class="data-table-filter-group" role="search" aria-label="Filter projects">
+              <div class="text-field data-table-filter-field">
+                <label class="text-field-label" for="projects-filter">Filter projects</label>
+                <input class="text-field-input data-table-filter" data-table-filter id="projects-filter" name="q" type="search" placeholder="Search project names" aria-controls="projects-table" aria-describedby="projects-status">
+              </div>
+              <button class="btn" data-variant="outline" data-table-clear type="button">Clear</button>
+            </div>
+            <p class="data-table-summary" data-table-status data-singular="project" data-plural="projects" id="projects-status" role="status" aria-live="polite">5 projects</p>
+          </div>
+          <div class="table-container">
+            <table class="table" id="projects-table">
+              <caption class="table-caption">Projects and their current owners.</caption>
+              <thead>
+                <tr class="table-row">
+                  <th class="table-head" scope="col" aria-sort="ascending">
+                    <button class="data-table-sort" data-table-sort type="button" aria-label="Sort by project">Project</button>
+                  </th>
+                  <th class="table-head" scope="col" aria-sort="none" data-sort-type="text">
+                    <button class="data-table-sort" data-table-sort type="button" aria-label="Sort by owner">Owner</button>
+                  </th>
+                  <th class="table-head" scope="col" aria-sort="none" data-sort-type="number" style="text-align: right">
+                    <button class="data-table-sort" data-table-sort type="button" aria-label="Sort by seats">Seats</button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="table-row">
+                  <th class="table-cell" scope="row">Atlas</th>
+                  <td class="table-cell">Ada Lovelace</td>
+                  <td class="table-cell" data-sort-value="42" style="text-align: right">42</td>
+                </tr>
+                <tr class="table-row">
+                  <th class="table-cell" scope="row">Beacon</th>
+                  <td class="table-cell">Grace Hopper</td>
+                  <td class="table-cell" data-sort-value="18" style="text-align: right">18</td>
+                </tr>
+                <tr class="table-row">
+                  <th class="table-cell" scope="row">Cinder</th>
+                  <td class="table-cell">Katherine Johnson</td>
+                  <td class="table-cell" data-sort-value="31" style="text-align: right">31</td>
+                </tr>
+                <tr class="table-row">
+                  <th class="table-cell" scope="row">Delta</th>
+                  <td class="table-cell">Alan Turing</td>
+                  <td class="table-cell" data-sort-value="12" style="text-align: right">12</td>
+                </tr>
+                <tr class="table-row">
+                  <th class="table-cell" scope="row">Ember</th>
+                  <td class="table-cell">Evelyn Boyd Granville</td>
+                  <td class="table-cell" data-sort-value="27" style="text-align: right">27</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="data-table-empty" data-table-empty hidden>No projects match this filter.</p>
+          <p class="data-table-range" data-table-range data-range-label="projects">Showing 1–3 of 5 projects</p>
+          <nav class="pagination data-table-pagination" data-table-pagination aria-label="Projects pages">
+            <ul class="pagination-list data-table-pagination-list">
+              <li><a class="pagination-prev data-table-pagination-link" data-table-page="previous" href="?page=1#projects-table" aria-label="Previous page" aria-disabled="true" tabindex="-1">Previous</a></li>
+              <li><a class="pagination-link data-table-pagination-link" data-table-page="1" href="?page=1#projects-table" aria-current="page">1</a></li>
+              <li><a class="pagination-link data-table-pagination-link" data-table-page="2" href="?page=2#projects-table">2</a></li>
+              <li><a class="pagination-next data-table-pagination-link" data-table-page="next" href="?page=2#projects-table" aria-label="Next page">Next</a></li>
+            </ul>
+          </nav>
+        </section>
+      </div>
+      <div style="position: relative; margin-top: var(--space-02)">
+        <button class="copy-btn" type="button">Copy</button>
+        <pre><code class="language-markup">&lt;section class="data-table" data-page-size="3"&gt;
+  &lt;div class="data-table-toolbar"&gt;
+    &lt;div class="text-field data-table-filter-field"&gt;
+      &lt;label class="text-field-label" for="projects-filter"&gt;Filter projects&lt;/label&gt;
+      &lt;input class="text-field-input data-table-filter" data-table-filter id="projects-filter" type="search"&gt;
+    &lt;/div&gt;
+    &lt;p class="data-table-summary" data-table-status role="status"&gt;5 projects&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="table-container"&gt;
+    &lt;table class="table"&gt;
+      &lt;caption class="table-caption"&gt;Projects and their current owners.&lt;/caption&gt;
+      &lt;thead&gt;...&lt;/thead&gt;
+      &lt;tbody&gt;...&lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/div&gt;
+  &lt;nav class="pagination data-table-pagination" data-table-pagination&gt;...&lt;/nav&gt;
+&lt;/section&gt;</code></pre>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-8">Composition</p>
+      <p class="text-xs text-muted mb-3">Table owns the caption, scopes, rows, and cells. Text Field owns the labelled search input. Pagination owns native page links. The Data Table module coordinates these pieces without replacing their native behavior.</p>
+    </main>
+  </div>
+
+  <script src="js/site.js" defer></script>
+  <script type="module" src="js/shiki-highlight.js"></script>
+  <script type="module" src="../components/data-table/data-table.js"></script>
+  <script type="module" src="../components/time-field/time-field.js"></script>
+  <script type="module" src="../components/questionnaire/questionnaire.js"></script>
+  <script type="module" src="../components/message-scroller/message-scroller.js"></script>
+  <script type="module" src="../components/checkbox/checkbox.js"></script>
+</body>
+</html>

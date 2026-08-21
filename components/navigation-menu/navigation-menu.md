@@ -11,7 +11,7 @@
 - [`popovertarget`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#popovertarget) — declarative button→popover trigger
 - [CSS Anchor Positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning) — positions dropdown relative to trigger
 - [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus ring
-- [`:has()`](https://developer.mozilla.org/en-US/docs/Web/CSS/:has) — rotates chevron when dropdown is open
+- [`:has()`](https://developer.mozilla.org/en-US/docs/Web/CSS/:has) — updates the chevron direction when dropdown is open
 - [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — maps dropdown border to system color
 
 ---
@@ -23,7 +23,7 @@
   <ul class="nav-menu-list">
     <li class="nav-menu-item"><a class="nav-menu-link" href="#">Home</a></li>
     <li class="nav-menu-item">
-      <button class="nav-menu-trigger" popovertarget="nav-dd">
+      <button class="nav-menu-trigger" type="button" popovertarget="nav-dd">
         Products
         <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
@@ -69,6 +69,7 @@
 - The `popover` API handles open/close — no JS click handlers needed.
 - `popovertarget` on the button declaratively toggles the popover. No `togglePopover()` calls.
 - CSS anchor positioning aligns the dropdown to its trigger. The JS only sets unique `anchor-name` / `position-anchor` pairs.
-- The chevron rotates via `:has(+ .nav-menu-content:popover-open)` — no JS class toggling.
+- The dropdown uses compact one- and two-token padding so grouped routes stay dense without shrinking focus targets.
+- The chevron direction updates via `:has(+ .nav-menu-content:popover-open)` — no JS class toggling.
 - Icon-only triggers must have `aria-label`.
 - Dropdown content typically contains `nav-menu-content-link` items with a title and optional description.

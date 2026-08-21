@@ -16,8 +16,8 @@
     cursor: pointer;
     &:focus {
       border-color: var(--border-ring);
-      outline: var(--focus-ring-width) solid var(--border-ring);
-      outline-offset: var(--border-width-01);
+      outline: var(--focus-ring-outer-width) solid var(--border-ring);
+      outline-offset: var(--focus-ring-width);
     }
 
     &:disabled {
@@ -30,7 +30,8 @@
 
       &:focus {
         border-color: var(--text-negative);
-        outline-color: var(--text-negative);
+        outline: var(--focus-ring-outer-width) solid var(--text-negative);
+        outline-offset: var(--focus-ring-width);
       }
     }
 

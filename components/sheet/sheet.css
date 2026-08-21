@@ -82,8 +82,10 @@
     }
 
     &[open]::backdrop {
-      background: var(--surface-overlay);
-      backdrop-filter: blur(var(--blur-01));
+      background:
+        linear-gradient(var(--surface-overlay), var(--surface-overlay)),
+        var(--surface-overlay);
+      backdrop-filter: blur(var(--blur-02));
     }
   }
 

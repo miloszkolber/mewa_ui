@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Field component — native labels, descriptions, errors, and grouped controls.">
+  <meta property="og:title" content="Field — mewa_ui">
+  <meta property="og:description" content="Field component — native labels, descriptions, errors, and grouped controls.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mewa.local/field.html">
+  <meta property="og:site_name" content="mewa_ui">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Field — mewa_ui">
+  <meta name="twitter:description" content="Field component — native labels, descriptions, errors, and grouped controls.">
+  <title>Field — mewa_ui</title>
+  <script src="js/layout.js"></script>
+  <link rel="stylesheet" href="../src/base.css">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="css/docs-theme.css">
+  <link rel="stylesheet" href="css/docs-utilities.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="../components/accordion/accordion.css">
+  <link rel="stylesheet" href="../components/alert-dialog/alert-dialog.css">
+  <link rel="stylesheet" href="../components/avatar/avatar.css">
+  <link rel="stylesheet" href="../components/badge/badge.css">
+  <link rel="stylesheet" href="../components/breadcrumbs/breadcrumbs.css">
+  <link rel="stylesheet" href="../components/button-group/button-group.css">
+  <link rel="stylesheet" href="../components/button/button.css">
+  <link rel="stylesheet" href="../components/callout/callout.css">
+  <link rel="stylesheet" href="../components/card/card.css">
+  <link rel="stylesheet" href="../components/carousel/carousel.css">
+  <link rel="stylesheet" href="../components/checkbox/checkbox.css">
+  <link rel="stylesheet" href="../components/collapsible/collapsible.css">
+  <link rel="stylesheet" href="../components/combobox/combobox.css">
+  <link rel="stylesheet" href="../components/command-palette/command-palette.css">
+  <link rel="stylesheet" href="../components/date-field/date-field.css">
+  <link rel="stylesheet" href="../components/date-picker/date-picker.css">
+  <link rel="stylesheet" href="../components/date-range-picker/date-range-picker.css">
+  <link rel="stylesheet" href="../components/data-table/data-table.css">
+  <link rel="stylesheet" href="../components/dialog/dialog.css">
+  <link rel="stylesheet" href="../components/dropdown-menu/dropdown-menu.css">
+  <link rel="stylesheet" href="../components/field/field.css">
+  <link rel="stylesheet" href="../components/file-input/file-input.css">
+  <link rel="stylesheet" href="../components/form/form.css">
+  <link rel="stylesheet" href="../components/icon/icon.css">
+  <link rel="stylesheet" href="../components/image/image.css">
+  <link rel="stylesheet" href="../components/label/label.css">
+  <link rel="stylesheet" href="../components/layout/layout.css">
+  <link rel="stylesheet" href="../components/message-scroller/message-scroller.css">
+  <link rel="stylesheet" href="../components/navigation-menu/navigation-menu.css">
+  <link rel="stylesheet" href="../components/number-field/number-field.css">
+  <link rel="stylesheet" href="../components/pagination/pagination.css">
+  <link rel="stylesheet" href="../components/popover/popover.css">
+  <link rel="stylesheet" href="../components/progress/progress.css">
+  <link rel="stylesheet" href="../components/questionnaire/questionnaire.css">
+  <link rel="stylesheet" href="../components/radio-group/radio-group.css">
+  <link rel="stylesheet" href="../components/resizable/resizable.css">
+  <link rel="stylesheet" href="../components/scroll-area/scroll-area.css">
+  <link rel="stylesheet" href="../components/select/select.css">
+  <link rel="stylesheet" href="../components/separator/separator.css">
+  <link rel="stylesheet" href="../components/sheet/sheet.css">
+  <link rel="stylesheet" href="../components/sidebar/sidebar.css">
+  <link rel="stylesheet" href="../components/skeleton/skeleton.css">
+  <link rel="stylesheet" href="../components/slider/slider.css">
+  <link rel="stylesheet" href="../components/sortable/sortable.css">
+  <link rel="stylesheet" href="../components/spinner/spinner.css">
+  <link rel="stylesheet" href="../components/statistic/statistic.css">
+  <link rel="stylesheet" href="../components/steps/steps.css">
+  <link rel="stylesheet" href="../components/switch/switch.css">
+  <link rel="stylesheet" href="../components/table/table.css">
+  <link rel="stylesheet" href="../components/tabs/tabs.css">
+  <link rel="stylesheet" href="../components/text-field/text-field.css">
+  <link rel="stylesheet" href="../components/textarea/textarea.css">
+  <link rel="stylesheet" href="../components/time-field/time-field.css">
+  <link rel="stylesheet" href="../components/timeline/timeline.css">
+  <link rel="stylesheet" href="../components/toast/toast.css">
+  <link rel="stylesheet" href="../components/toggle-group/toggle-group.css">
+  <link rel="stylesheet" href="../components/toggle/toggle.css">
+  <link rel="stylesheet" href="../components/toolbar/toolbar.css">
+  <link rel="stylesheet" href="../components/tooltip/tooltip.css">
+  <link rel="stylesheet" href="../components/tree-view/tree-view.css">
+  <link rel="stylesheet" href="../components/typography/typography.css">
+</head>
+<body>
+  <site-header></site-header>
+  <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
+    <site-nav></site-nav>
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
+      <div class="page-header">
+        <h1>Field</h1>
+        <p class="text-muted leading-relaxed mb-6">A native-first scaffold for labels, descriptions, errors, required states, and disabled controls. Field adds no JavaScript.</p>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-6">Default field</p>
+      <p class="text-xs text-muted mb-3">Use a labelled group and connect supporting text with <code>aria-describedby</code>.</p>
+      <div class="preview">
+        <div class="field" role="group" style="width: 100%; max-width: 24rem">
+          <label for="field-email">Email</label>
+          <input class="text-field-input" id="field-email" name="email" type="email" placeholder="you@example.com" aria-describedby="field-email-help">
+          <p class="field-description" id="field-email-help">We will use this address for account notices.</p>
+        </div>
+      </div>
+      <div style="position: relative; margin-top: var(--space-02)">
+        <button class="copy-btn" type="button">Copy</button>
+        <pre><code class="language-markup">&lt;div class="field" role="group"&gt;
+  &lt;label for="email"&gt;Email&lt;/label&gt;
+  &lt;input class="text-field-input" id="email" name="email" type="email"
+         aria-describedby="email-help"&gt;
+  &lt;p class="field-description" id="email-help"&gt;
+    We will use this address for account notices.
+  &lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-8">Required and invalid</p>
+      <p class="text-xs text-muted mb-3">Keep the native constraint and ARIA state on the input, with an explicit error association.</p>
+      <div class="preview">
+        <div class="field" role="group" data-invalid style="width: 100%; max-width: 24rem">
+          <label for="field-username">Username <span class="field-required" aria-hidden="true">*</span></label>
+          <input class="text-field-input" id="field-username" name="username" type="text" required aria-invalid="true" aria-describedby="field-username-error" aria-errormessage="field-username-error" value="taken-name">
+          <p class="field-error" id="field-username-error" role="alert">This username is already in use.</p>
+        </div>
+      </div>
+      <div style="position: relative; margin-top: var(--space-02)">
+        <button class="copy-btn" type="button">Copy</button>
+        <pre><code class="language-markup">&lt;div class="field" role="group" data-invalid&gt;
+  &lt;label for="username"&gt;
+    Username &lt;span class="field-required" aria-hidden="true"&gt;*&lt;/span&gt;
+  &lt;/label&gt;
+  &lt;input class="text-field-input" id="username" type="text" required
+         aria-invalid="true" aria-describedby="username-error"
+         aria-errormessage="username-error"&gt;
+  &lt;p class="field-error" id="username-error" role="alert"&gt;
+    This username is already in use.
+  &lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-8">Disabled</p>
+      <p class="text-xs text-muted mb-3">A native disabled control is detected by the wrapper styling.</p>
+      <div class="preview">
+        <div class="field" role="group" style="width: 100%; max-width: 24rem">
+          <label for="field-disabled">Plan</label>
+          <select class="select" id="field-disabled" disabled>
+            <option>Free</option>
+          </select>
+          <p class="field-description">Your administrator controls this setting.</p>
+        </div>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-8">Related controls</p>
+      <p class="text-xs text-muted mb-3">Use a native fieldset and legend for a shared group name.</p>
+      <div class="preview">
+        <fieldset class="fieldset" style="width: 100%; max-width: 24rem">
+          <legend>Notification preferences</legend>
+          <p class="field-description">Choose how we contact you.</p>
+          <div role="group" aria-label="Notification preferences">
+            <div class="field" data-orientation="horizontal">
+              <input id="field-email-updates" type="checkbox" name="email-updates">
+              <label for="field-email-updates">Email updates</label>
+            </div>
+            <div class="field" data-orientation="horizontal">
+              <input id="field-sms-updates" type="checkbox" name="sms-updates">
+              <label for="field-sms-updates">Text-message updates</label>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-8">Keyboard, events, and limitations</p>
+      <p class="text-xs text-muted mb-3">Field keeps native label focus, control-specific keyboard behavior, validation, and <code>input</code>, <code>change</code>, <code>invalid</code>, <code>submit</code>, and <code>reset</code> events. It emits no custom events and does not auto-generate IDs or ARIA links.</p>
+    </main>
+  </div>
+  <script src="js/site.js" defer></script>
+  <script type="module" src="js/shiki-highlight.js"></script>
+  <script type="module" src="../components/time-field/time-field.js"></script>
+  <script type="module" src="../components/questionnaire/questionnaire.js"></script>
+  <script type="module" src="../components/message-scroller/message-scroller.js"></script>
+  <script type="module" src="../components/checkbox/checkbox.js"></script>
+</body>
+</html>

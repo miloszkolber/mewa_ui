@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <meta name="description" content="Checkbox component — native checkboxes with custom styling and indeterminate state.">
+  <meta name="description" content="Checkbox component — native checkboxes with custom styling, indeterminate state, and optional select-all groups.">
   <meta property="og:title" content="Checkbox — mewa_ui">
-  <meta property="og:description" content="Checkbox component — native checkboxes with custom styling and indeterminate state.">
+  <meta property="og:description" content="Checkbox component — native checkboxes with custom styling, indeterminate state, and optional select-all groups.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mewa.local/checkbox.html">
   <meta property="og:site_name" content="mewa_ui">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Checkbox — mewa_ui">
-  <meta name="twitter:description" content="Checkbox component — native checkboxes with custom styling and indeterminate state.">
+  <meta name="twitter:description" content="Checkbox component — native checkboxes with custom styling, indeterminate state, and optional select-all groups.">
   <title>Checkbox — mewa_ui</title>
       <script src="js/layout.js"></script>
   <link rel="stylesheet" href="../src/base.css">
@@ -21,60 +21,67 @@
   <link rel="stylesheet" href="css/docs-theme.css">
   <link rel="stylesheet" href="css/docs-utilities.css">
   <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="../components/button/button.css">
-  <link rel="stylesheet" href="../components/card/card.css">
-  <link rel="stylesheet" href="../components/dialog/dialog.css">
-  <link rel="stylesheet" href="../components/badge/badge.css">
-  <link rel="stylesheet" href="../components/input/input.css">
   <link rel="stylesheet" href="../components/accordion/accordion.css">
-  <link rel="stylesheet" href="../components/tabs/tabs.css">
-  <link rel="stylesheet" href="../components/dropdown/dropdown.css">
-  <link rel="stylesheet" href="../components/toast/toast.css">
-  <link rel="stylesheet" href="../components/combobox/combobox.css">
-  <link rel="stylesheet" href="../components/sheet/sheet.css">
-  <link rel="stylesheet" href="../components/toggle/toggle.css">
-  <link rel="stylesheet" href="../components/icon/icon.css">
-  <link rel="stylesheet" href="../components/typography/typography.css">
-  <link rel="stylesheet" href="../components/separator/separator.css">
-  <link rel="stylesheet" href="../components/label/label.css">
-  <link rel="stylesheet" href="../components/toggle-group/toggle-group.css">
-  <link rel="stylesheet" href="../components/button-group/button-group.css">
-  <link rel="stylesheet" href="../components/toolbar/toolbar.css">
-  <link rel="stylesheet" href="../components/textarea/textarea.css">
-  <link rel="stylesheet" href="../components/checkbox/checkbox.css">
-  <link rel="stylesheet" href="../components/radio/radio.css">
-  <link rel="stylesheet" href="../components/switch/switch.css">
-  <link rel="stylesheet" href="../components/slider/slider.css">
-  <link rel="stylesheet" href="../components/select/select.css">
-  <link rel="stylesheet" href="../components/number-input/number-input.css">
-  <link rel="stylesheet" href="../components/file-input/file-input.css">
-  <link rel="stylesheet" href="../components/date-picker/date-picker.css">
-  <link rel="stylesheet" href="../components/form/form.css">
-  <link rel="stylesheet" href="../components/avatar/avatar.css">
-  <link rel="stylesheet" href="../components/image/image.css">
-  <link rel="stylesheet" href="../components/statistic/statistic.css">
-  <link rel="stylesheet" href="../components/table/table.css">
-  <link rel="stylesheet" href="../components/collapsible/collapsible.css">
-  <link rel="stylesheet" href="../components/timeline/timeline.css">
-  <link rel="stylesheet" href="../components/tree-view/tree-view.css">
-  <link rel="stylesheet" href="../components/calendar/calendar.css">
-  <link rel="stylesheet" href="../components/spinner/spinner.css">
-  <link rel="stylesheet" href="../components/skeleton/skeleton.css">
-  <link rel="stylesheet" href="../components/progress/progress.css">
-  <link rel="stylesheet" href="../components/alert/alert.css">
   <link rel="stylesheet" href="../components/alert-dialog/alert-dialog.css">
-  <link rel="stylesheet" href="../components/popover/popover.css">
-  <link rel="stylesheet" href="../components/tooltip/tooltip.css">
-  <link rel="stylesheet" href="../components/command/command.css">
-  <link rel="stylesheet" href="../components/breadcrumb/breadcrumb.css">
-  <link rel="stylesheet" href="../components/pagination/pagination.css">
-  <link rel="stylesheet" href="../components/steps/steps.css">
-  <link rel="stylesheet" href="../components/navigation-menu/navigation-menu.css">
-  <link rel="stylesheet" href="../components/scroll-area/scroll-area.css">
+  <link rel="stylesheet" href="../components/avatar/avatar.css">
+  <link rel="stylesheet" href="../components/badge/badge.css">
+  <link rel="stylesheet" href="../components/breadcrumbs/breadcrumbs.css">
+  <link rel="stylesheet" href="../components/button-group/button-group.css">
+  <link rel="stylesheet" href="../components/button/button.css">
+  <link rel="stylesheet" href="../components/callout/callout.css">
+  <link rel="stylesheet" href="../components/card/card.css">
   <link rel="stylesheet" href="../components/carousel/carousel.css">
-  <link rel="stylesheet" href="../components/sidebar/sidebar.css">
-  <link rel="stylesheet" href="../components/sortable/sortable.css">
+  <link rel="stylesheet" href="../components/checkbox/checkbox.css">
+  <link rel="stylesheet" href="../components/collapsible/collapsible.css">
+  <link rel="stylesheet" href="../components/combobox/combobox.css">
+  <link rel="stylesheet" href="../components/command-palette/command-palette.css">
+  <link rel="stylesheet" href="../components/date-field/date-field.css">
+  <link rel="stylesheet" href="../components/date-picker/date-picker.css">
+  <link rel="stylesheet" href="../components/date-range-picker/date-range-picker.css">
+  <link rel="stylesheet" href="../components/data-table/data-table.css">
+  <link rel="stylesheet" href="../components/dialog/dialog.css">
+  <link rel="stylesheet" href="../components/dropdown-menu/dropdown-menu.css">
+  <link rel="stylesheet" href="../components/field/field.css">
+  <link rel="stylesheet" href="../components/file-input/file-input.css">
+  <link rel="stylesheet" href="../components/form/form.css">
+  <link rel="stylesheet" href="../components/icon/icon.css">
+  <link rel="stylesheet" href="../components/image/image.css">
+  <link rel="stylesheet" href="../components/label/label.css">
   <link rel="stylesheet" href="../components/layout/layout.css">
+  <link rel="stylesheet" href="../components/message-scroller/message-scroller.css">
+  <link rel="stylesheet" href="../components/navigation-menu/navigation-menu.css">
+  <link rel="stylesheet" href="../components/number-field/number-field.css">
+  <link rel="stylesheet" href="../components/pagination/pagination.css">
+  <link rel="stylesheet" href="../components/popover/popover.css">
+  <link rel="stylesheet" href="../components/progress/progress.css">
+  <link rel="stylesheet" href="../components/questionnaire/questionnaire.css">
+  <link rel="stylesheet" href="../components/radio-group/radio-group.css">
+  <link rel="stylesheet" href="../components/resizable/resizable.css">
+  <link rel="stylesheet" href="../components/scroll-area/scroll-area.css">
+  <link rel="stylesheet" href="../components/select/select.css">
+  <link rel="stylesheet" href="../components/separator/separator.css">
+  <link rel="stylesheet" href="../components/sheet/sheet.css">
+  <link rel="stylesheet" href="../components/sidebar/sidebar.css">
+  <link rel="stylesheet" href="../components/skeleton/skeleton.css">
+  <link rel="stylesheet" href="../components/slider/slider.css">
+  <link rel="stylesheet" href="../components/sortable/sortable.css">
+  <link rel="stylesheet" href="../components/spinner/spinner.css">
+  <link rel="stylesheet" href="../components/statistic/statistic.css">
+  <link rel="stylesheet" href="../components/steps/steps.css">
+  <link rel="stylesheet" href="../components/switch/switch.css">
+  <link rel="stylesheet" href="../components/table/table.css">
+  <link rel="stylesheet" href="../components/tabs/tabs.css">
+  <link rel="stylesheet" href="../components/text-field/text-field.css">
+  <link rel="stylesheet" href="../components/textarea/textarea.css">
+  <link rel="stylesheet" href="../components/time-field/time-field.css">
+  <link rel="stylesheet" href="../components/timeline/timeline.css">
+  <link rel="stylesheet" href="../components/toast/toast.css">
+  <link rel="stylesheet" href="../components/toggle-group/toggle-group.css">
+  <link rel="stylesheet" href="../components/toggle/toggle.css">
+  <link rel="stylesheet" href="../components/toolbar/toolbar.css">
+  <link rel="stylesheet" href="../components/tooltip/tooltip.css">
+  <link rel="stylesheet" href="../components/tree-view/tree-view.css">
+  <link rel="stylesheet" href="../components/typography/typography.css">
 </head>
 <body>
   <site-header></site-header>
@@ -208,30 +215,35 @@
 &lt;label for="terms"&gt;Accept terms and conditions&lt;/label&gt;</code></pre>
         </div>
 
-        <p class="text-sm font-medium mb-2 mt-8">Group</p>
-        <p class="text-xs text-muted mb-3">Multiple checkboxes in a group using <code>&lt;fieldset&gt;</code> and <code>&lt;legend&gt;</code>.</p>
+        <p class="text-sm font-medium mb-2 mt-8">Select-all group</p>
+        <p class="text-xs text-muted mb-3">Optional coordination keeps a native select-all checkbox in sync with its items.</p>
         <div class="preview">
-          <fieldset style="border: none; padding: 0; margin: 0">
-            <legend style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong); margin-bottom: var(--space-01)">Select items to display on the desktop:</legend>
-            <p class="field-description" style="margin-bottom: var(--space-03)">Choose which items are visible.</p>
-            <div style="display: flex; flex-direction: column; gap: var(--space-02)">
+          <fieldset class="checkbox-group" data-checkbox-group aria-describedby="d-group-help d-group-status" style="border: none; padding: 0; margin: 0">
+            <legend style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong); margin-bottom: var(--space-01)">Select items to display on the desktop</legend>
+            <p class="checkbox-description" id="d-group-help">Choose which items are visible.</p>
+            <label class="checkbox-item checkbox-group-select-all" for="d-group-all">
+              <input class="checkbox" data-checkbox-all id="d-group-all" type="checkbox" aria-controls="d-group-items">
+              <span>Select all</span>
+            </label>
+            <div class="checkbox-group-items" data-checkbox-items id="d-group-items">
               <div class="checkbox-item">
-                <input class="checkbox" type="checkbox" id="d-grp-1" checked>
-                <label for="d-grp-1" style="font-size: var(--font-body-small)">Hard disks</label>
+                <input class="checkbox" data-checkbox-item type="checkbox" id="d-grp-1" name="desktop-items" value="hard-disks" checked>
+                <label for="d-grp-1">Hard disks</label>
               </div>
               <div class="checkbox-item">
-                <input class="checkbox" type="checkbox" id="d-grp-2" checked>
-                <label for="d-grp-2" style="font-size: var(--font-body-small)">External disks</label>
+                <input class="checkbox" data-checkbox-item type="checkbox" id="d-grp-2" name="desktop-items" value="external-disks" checked>
+                <label for="d-grp-2">External disks</label>
               </div>
               <div class="checkbox-item">
-                <input class="checkbox" type="checkbox" id="d-grp-3">
-                <label for="d-grp-3" style="font-size: var(--font-body-small)">CDs, DVDs, and iPods</label>
+                <input class="checkbox" data-checkbox-item type="checkbox" id="d-grp-3" name="desktop-items" value="optical-media">
+                <label for="d-grp-3">CDs, DVDs, and iPods</label>
               </div>
               <div class="checkbox-item">
-                <input class="checkbox" type="checkbox" id="d-grp-4">
-                <label for="d-grp-4" style="font-size: var(--font-body-small)">Connected servers</label>
+                <input class="checkbox" data-checkbox-item type="checkbox" id="d-grp-4" name="desktop-items" value="connected-servers">
+                <label for="d-grp-4">Connected servers</label>
               </div>
             </div>
+            <output class="checkbox-group-status" data-checkbox-status id="d-group-status" role="status" aria-live="polite"></output>
           </fieldset>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
@@ -239,18 +251,24 @@
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
-          <pre><code class="language-markup">&lt;fieldset&gt;
-  &lt;legend&gt;Select items to display on the desktop:&lt;/legend&gt;
-  &lt;p class="field-description"&gt;Choose which items are visible.&lt;/p&gt;
-  &lt;div class="checkbox-item"&gt;
-    &lt;input class="checkbox" type="checkbox" id="item-1" checked&gt;
-    &lt;label for="item-1"&gt;Hard disks&lt;/label&gt;
+          <pre><code class="language-markup">&lt;fieldset class="checkbox-group" data-checkbox-group aria-describedby="group-help group-status"&gt;
+  &lt;legend&gt;Select items to display&lt;/legend&gt;
+  &lt;p class="checkbox-description" id="group-help"&gt;Choose which items are visible.&lt;/p&gt;
+  &lt;label class="checkbox-item checkbox-group-select-all" for="group-all"&gt;
+    &lt;input class="checkbox" data-checkbox-all id="group-all" type="checkbox" aria-controls="group-items"&gt;
+    &lt;span&gt;Select all&lt;/span&gt;
+  &lt;/label&gt;
+  &lt;div class="checkbox-group-items" data-checkbox-items id="group-items"&gt;
+    &lt;div class="checkbox-item"&gt;
+      &lt;input class="checkbox" data-checkbox-item id="item-1" name="items" type="checkbox" value="one" checked&gt;
+      &lt;label for="item-1"&gt;Hard disks&lt;/label&gt;
+    &lt;/div&gt;
+    &lt;div class="checkbox-item"&gt;
+      &lt;input class="checkbox" data-checkbox-item id="item-2" name="items" type="checkbox" value="two"&gt;
+      &lt;label for="item-2"&gt;External disks&lt;/label&gt;
+    &lt;/div&gt;
   &lt;/div&gt;
-  &lt;div class="checkbox-item"&gt;
-    &lt;input class="checkbox" type="checkbox" id="item-2" checked&gt;
-    &lt;label for="item-2"&gt;External disks&lt;/label&gt;
-  &lt;/div&gt;
-  &lt;!-- ... more items --&gt;
+  &lt;output class="checkbox-group-status" data-checkbox-status id="group-status" role="status" aria-live="polite"&gt;&lt;/output&gt;
 &lt;/fieldset&gt;</code></pre>
         </div>
 
@@ -264,26 +282,30 @@
   <script type="module" src="../components/accordion/accordion.js"></script>
   <script type="module" src="../components/combobox/combobox.js"></script>
   <script type="module" src="../components/dialog/dialog.js"></script>
-  <script type="module" src="../components/dropdown/dropdown.js"></script>
+  <script type="module" src="../components/dropdown-menu/dropdown-menu.js"></script>
   <script type="module" src="../components/sheet/sheet.js"></script>
   <script type="module" src="../components/tabs/tabs.js"></script>
   <script type="module" src="../components/toast/toast.js"></script>
   <script type="module" src="../components/toggle/toggle.js"></script>
   <script type="module" src="../components/toggle-group/toggle-group.js"></script>
   <script type="module" src="../components/toolbar/toolbar.js"></script>
-  <script type="module" src="../components/number-input/number-input.js"></script>
+  <script type="module" src="../components/number-field/number-field.js"></script>
   <script type="module" src="../components/avatar/avatar.js"></script>
   <script type="module" src="../components/image/image.js"></script>
   <script type="module" src="../components/tree-view/tree-view.js"></script>
-  <script type="module" src="../components/calendar/calendar.js"></script>
+  <script type="module" src="../components/date-picker/date-picker.js"></script>
   <script type="module" src="../components/alert-dialog/alert-dialog.js"></script>
     <script type="module" src="../components/popover/popover.js"></script>
   <script type="module" src="../components/tooltip/tooltip.js"></script>
-  <script type="module" src="../components/command/command.js"></script>
+  <script type="module" src="../components/command-palette/command-palette.js"></script>
   <script type="module" src="../components/navigation-menu/navigation-menu.js"></script>
   <script type="module" src="../components/sidebar/sidebar.js"></script>
   <script type="module" src="../components/carousel/carousel.js"></script>
   <script type="module" src="../components/slider/slider.js"></script>
   <script type="module" src="../components/sortable/sortable.js"></script>
+  <script type="module" src="../components/time-field/time-field.js"></script>
+  <script type="module" src="../components/questionnaire/questionnaire.js"></script>
+  <script type="module" src="../components/message-scroller/message-scroller.js"></script>
+  <script type="module" src="../components/checkbox/checkbox.js"></script>
 </body>
 </html>

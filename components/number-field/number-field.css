@@ -1,0 +1,103 @@
+/* -- Number Field component ------------------------------------- */
+
+@layer components {
+  .number-input {
+    display: inline-grid;
+    grid-template-columns: minmax(0, var(--size-11)) var(--size-07);
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    height: var(--size-08);
+    border: var(--border-width-01) solid var(--border-secondary);
+
+    background: var(--background);
+
+    overflow: visible;
+
+    &:has(input:is([aria-invalid="true"], :user-invalid)) {
+      border-color: var(--text-negative);
+    }
+
+    & input {
+      grid-column: 1;
+      grid-row: 1 / -1;
+      border: none;
+      outline: none;
+      background: transparent;
+      height: 100%;
+      width: 100%;
+      min-width: 0;
+      padding: 0 var(--space-03);
+      text-align: start;
+      font-size: var(--font-body-small);
+      font-family: var(--font-sans);
+      color: var(--text-primary);
+      -moz-appearance: textfield;
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      &:focus {
+        outline: var(--focus-ring-outer-width) solid var(--border-ring);
+        outline-offset: var(--focus-ring-width);
+      }
+
+      &:focus-visible {
+        outline: var(--focus-ring-outer-width) solid var(--border-ring);
+        outline-offset: var(--focus-ring-width);
+      }
+
+      &:is([aria-invalid="true"], :user-invalid) {
+        outline-color: var(--text-negative);
+      }
+    }
+
+    & button {
+      grid-column: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--size-07);
+      min-height: 0;
+      height: auto;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: var(--font-body-small);
+      font-family: var(--font-sans);
+      line-height: var(--font-height-none);
+      flex-shrink: 0;
+      padding: 0;
+      outline: none;
+
+      &:focus,
+      &:focus-visible {
+        outline: none;
+      }
+
+      &:hover {
+        background: var(--surface-secondary);
+        color: var(--text-primary);
+      }
+
+      &:first-of-type:not([data-action]),
+      &[data-action="decrement"] {
+        grid-row: 2;
+        border-block-start: var(--border-width-01) solid var(--border-secondary);
+      }
+
+      &:last-of-type:not([data-action]),
+      &[data-action="increment"] {
+        grid-row: 1;
+      }
+
+      &:is(:first-of-type, :last-of-type),
+      &[data-action="decrement"],
+      &[data-action="increment"] {
+        border-inline-start: var(--border-width-01) solid var(--border-secondary);
+      }
+    }
+  }
+}

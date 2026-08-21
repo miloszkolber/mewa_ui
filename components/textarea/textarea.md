@@ -36,5 +36,5 @@
 ## Notes
 
 - Uses `field-sizing: content` for auto-growing — no JavaScript needed.
-- Shares the same border, focus, disabled, and invalid styles as `.input`.
+- Shares the same border, focus, disabled, and invalid styles as `.text-field-input`.
 - The textarea has a minimum height of 5rem (about 4 lines).

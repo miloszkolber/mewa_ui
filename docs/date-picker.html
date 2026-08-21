@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <meta name="description" content="Date Picker component — native date inputs with calendar popover.">
+  <meta name="description" content="Date picker component — month-view calendar grid built with native HTML table.">
   <meta property="og:title" content="Date picker — mewa_ui">
-  <meta property="og:description" content="Date Picker component — native date inputs with calendar popover.">
+  <meta property="og:description" content="Date picker component — month-view calendar grid built with native HTML table.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mewa.local/date-picker.html">
   <meta property="og:site_name" content="mewa_ui">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Date picker — mewa_ui">
-  <meta name="twitter:description" content="Date Picker component — native date inputs with calendar popover.">
+  <meta name="twitter:description" content="Date picker component — month-view calendar grid built with native HTML table.">
   <title>Date picker — mewa_ui</title>
       <script src="js/layout.js"></script>
   <link rel="stylesheet" href="../src/base.css">
@@ -21,80 +21,94 @@
   <link rel="stylesheet" href="css/docs-theme.css">
   <link rel="stylesheet" href="css/docs-utilities.css">
   <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="../components/button/button.css">
-  <link rel="stylesheet" href="../components/card/card.css">
-  <link rel="stylesheet" href="../components/dialog/dialog.css">
-  <link rel="stylesheet" href="../components/badge/badge.css">
-  <link rel="stylesheet" href="../components/input/input.css">
   <link rel="stylesheet" href="../components/accordion/accordion.css">
-  <link rel="stylesheet" href="../components/tabs/tabs.css">
-  <link rel="stylesheet" href="../components/dropdown/dropdown.css">
-  <link rel="stylesheet" href="../components/toast/toast.css">
-  <link rel="stylesheet" href="../components/combobox/combobox.css">
-  <link rel="stylesheet" href="../components/sheet/sheet.css">
-  <link rel="stylesheet" href="../components/toggle/toggle.css">
-  <link rel="stylesheet" href="../components/icon/icon.css">
-  <link rel="stylesheet" href="../components/typography/typography.css">
-  <link rel="stylesheet" href="../components/separator/separator.css">
-  <link rel="stylesheet" href="../components/label/label.css">
-  <link rel="stylesheet" href="../components/toggle-group/toggle-group.css">
-  <link rel="stylesheet" href="../components/button-group/button-group.css">
-  <link rel="stylesheet" href="../components/toolbar/toolbar.css">
-  <link rel="stylesheet" href="../components/textarea/textarea.css">
-  <link rel="stylesheet" href="../components/checkbox/checkbox.css">
-  <link rel="stylesheet" href="../components/radio/radio.css">
-  <link rel="stylesheet" href="../components/switch/switch.css">
-  <link rel="stylesheet" href="../components/slider/slider.css">
-  <link rel="stylesheet" href="../components/select/select.css">
-  <link rel="stylesheet" href="../components/number-input/number-input.css">
-  <link rel="stylesheet" href="../components/file-input/file-input.css">
-  <link rel="stylesheet" href="../components/date-picker/date-picker.css">
-  <link rel="stylesheet" href="../components/form/form.css">
-  <link rel="stylesheet" href="../components/avatar/avatar.css">
-  <link rel="stylesheet" href="../components/image/image.css">
-  <link rel="stylesheet" href="../components/statistic/statistic.css">
-  <link rel="stylesheet" href="../components/table/table.css">
-  <link rel="stylesheet" href="../components/collapsible/collapsible.css">
-  <link rel="stylesheet" href="../components/timeline/timeline.css">
-  <link rel="stylesheet" href="../components/tree-view/tree-view.css">
-  <link rel="stylesheet" href="../components/calendar/calendar.css">
-  <link rel="stylesheet" href="../components/spinner/spinner.css">
-  <link rel="stylesheet" href="../components/skeleton/skeleton.css">
-  <link rel="stylesheet" href="../components/progress/progress.css">
-  <link rel="stylesheet" href="../components/alert/alert.css">
   <link rel="stylesheet" href="../components/alert-dialog/alert-dialog.css">
-  <link rel="stylesheet" href="../components/popover/popover.css">
-  <link rel="stylesheet" href="../components/tooltip/tooltip.css">
-  <link rel="stylesheet" href="../components/command/command.css">
-  <link rel="stylesheet" href="../components/breadcrumb/breadcrumb.css">
-  <link rel="stylesheet" href="../components/pagination/pagination.css">
-  <link rel="stylesheet" href="../components/steps/steps.css">
-  <link rel="stylesheet" href="../components/navigation-menu/navigation-menu.css">
-  <link rel="stylesheet" href="../components/scroll-area/scroll-area.css">
+  <link rel="stylesheet" href="../components/avatar/avatar.css">
+  <link rel="stylesheet" href="../components/badge/badge.css">
+  <link rel="stylesheet" href="../components/breadcrumbs/breadcrumbs.css">
+  <link rel="stylesheet" href="../components/button-group/button-group.css">
+  <link rel="stylesheet" href="../components/button/button.css">
+  <link rel="stylesheet" href="../components/callout/callout.css">
+  <link rel="stylesheet" href="../components/card/card.css">
   <link rel="stylesheet" href="../components/carousel/carousel.css">
-  <link rel="stylesheet" href="../components/sidebar/sidebar.css">
-  <link rel="stylesheet" href="../components/sortable/sortable.css">
+  <link rel="stylesheet" href="../components/checkbox/checkbox.css">
+  <link rel="stylesheet" href="../components/collapsible/collapsible.css">
+  <link rel="stylesheet" href="../components/combobox/combobox.css">
+  <link rel="stylesheet" href="../components/command-palette/command-palette.css">
+  <link rel="stylesheet" href="../components/date-field/date-field.css">
+  <link rel="stylesheet" href="../components/date-picker/date-picker.css">
+  <link rel="stylesheet" href="../components/date-range-picker/date-range-picker.css">
+  <link rel="stylesheet" href="../components/data-table/data-table.css">
+  <link rel="stylesheet" href="../components/dialog/dialog.css">
+  <link rel="stylesheet" href="../components/dropdown-menu/dropdown-menu.css">
+  <link rel="stylesheet" href="../components/field/field.css">
+  <link rel="stylesheet" href="../components/file-input/file-input.css">
+  <link rel="stylesheet" href="../components/form/form.css">
+  <link rel="stylesheet" href="../components/icon/icon.css">
+  <link rel="stylesheet" href="../components/image/image.css">
+  <link rel="stylesheet" href="../components/label/label.css">
   <link rel="stylesheet" href="../components/layout/layout.css">
+  <link rel="stylesheet" href="../components/message-scroller/message-scroller.css">
+  <link rel="stylesheet" href="../components/navigation-menu/navigation-menu.css">
+  <link rel="stylesheet" href="../components/number-field/number-field.css">
+  <link rel="stylesheet" href="../components/pagination/pagination.css">
+  <link rel="stylesheet" href="../components/popover/popover.css">
+  <link rel="stylesheet" href="../components/progress/progress.css">
+  <link rel="stylesheet" href="../components/questionnaire/questionnaire.css">
+  <link rel="stylesheet" href="../components/radio-group/radio-group.css">
+  <link rel="stylesheet" href="../components/resizable/resizable.css">
+  <link rel="stylesheet" href="../components/scroll-area/scroll-area.css">
+  <link rel="stylesheet" href="../components/select/select.css">
+  <link rel="stylesheet" href="../components/separator/separator.css">
+  <link rel="stylesheet" href="../components/sheet/sheet.css">
+  <link rel="stylesheet" href="../components/sidebar/sidebar.css">
+  <link rel="stylesheet" href="../components/skeleton/skeleton.css">
+  <link rel="stylesheet" href="../components/slider/slider.css">
+  <link rel="stylesheet" href="../components/sortable/sortable.css">
+  <link rel="stylesheet" href="../components/spinner/spinner.css">
+  <link rel="stylesheet" href="../components/statistic/statistic.css">
+  <link rel="stylesheet" href="../components/steps/steps.css">
+  <link rel="stylesheet" href="../components/switch/switch.css">
+  <link rel="stylesheet" href="../components/table/table.css">
+  <link rel="stylesheet" href="../components/tabs/tabs.css">
+  <link rel="stylesheet" href="../components/text-field/text-field.css">
+  <link rel="stylesheet" href="../components/textarea/textarea.css">
+  <link rel="stylesheet" href="../components/time-field/time-field.css">
+  <link rel="stylesheet" href="../components/timeline/timeline.css">
+  <link rel="stylesheet" href="../components/toast/toast.css">
+  <link rel="stylesheet" href="../components/toggle-group/toggle-group.css">
+  <link rel="stylesheet" href="../components/toggle/toggle.css">
+  <link rel="stylesheet" href="../components/toolbar/toolbar.css">
+  <link rel="stylesheet" href="../components/tooltip/tooltip.css">
+  <link rel="stylesheet" href="../components/tree-view/tree-view.css">
+  <link rel="stylesheet" href="../components/typography/typography.css">
 </head>
 <body>
   <site-header></site-header>
-
   <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
-
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
       <div class="page-header">
         <h1>Date picker</h1>
         <p class="text-muted leading-relaxed mb-6">
-          A date selection input. Built on native <code>&lt;input type="date"&gt;</code> and <code>&lt;input type="datetime-local"&gt;</code> — the browser provides the calendar UI.
+          A custom month-view date picker for date selection. Features navigation, today highlighting, roving focus, and day selection. Built with vanilla JS rendering into a <code>&lt;table&gt;</code> grid. Use <a href="date-field.html">Date field</a> when the browser's native picker is preferred.
         </p>
       </div>
-        <p class="text-sm font-medium mb-2 mt-6">Date</p>
-        <p class="text-xs text-muted mb-3">Native date picker.</p>
+        <!-- Basic -->
+        <p class="text-sm font-medium mb-2 mt-6">Basic calendar</p>
+         <p class="text-xs text-muted mb-3">Interactive calendar with month navigation and date selection. Arrow keys move focus through the grid, and native button activation selects a day.</p>
         <div class="preview">
-          <div style="width: 100%; max-width: 16rem">
-            <label class="label" for="d-bday">Birthday</label>
-            <input class="date-input" type="date" id="d-bday">
+          <div class="calendar">
+            <div class="calendar-header">
+               <button class="btn calendar-nav" data-variant="ghost" type="button" data-action="prev-month" aria-label="Previous month">
+                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <span class="calendar-heading" aria-live="polite"></span>
+               <button class="btn calendar-nav" data-variant="ghost" type="button" data-action="next-month" aria-label="Next month">
+                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+            </div>
+            <table class="calendar-grid" role="grid"></table>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
@@ -102,69 +116,88 @@
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
-          <pre><code class="language-markup">&lt;input class="date-input" type="date" id="birthday"&gt;</code></pre>
+          <pre><code class="language-markup">&lt;div class="calendar"&gt;
+  &lt;div class="calendar-header"&gt;
+    &lt;button class="calendar-nav" type="button" data-action="prev-month"
+            aria-label="Previous month"&gt;
+      &lt;svg aria-hidden="true"&gt;...chevron left...&lt;/svg&gt;
+    &lt;/button&gt;
+    &lt;span class="calendar-heading" aria-live="polite"&gt;&lt;/span&gt;
+    &lt;button class="calendar-nav" type="button" data-action="next-month"
+            aria-label="Next month"&gt;
+      &lt;svg aria-hidden="true"&gt;...chevron right...&lt;/svg&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;table class="calendar-grid" role="grid"&gt;&lt;/table&gt;
+&lt;/div&gt;</code></pre>
         </div>
 
-        <p class="text-sm font-medium mb-2 mt-8">Date and time</p>
+         <!-- Multiple -->
+        <p class="text-sm font-medium mb-2 mt-8">Side by side</p>
+         <p class="text-xs text-muted mb-3">Place multiple calendars side-by-side for range selection patterns. Month changes and selection updates are immediate with no animation or transition.</p>
         <div class="preview">
-          <div style="width: 100%; max-width: 16rem">
-            <label class="label" for="d-meet">Meeting</label>
-            <input class="date-input" type="datetime-local" id="d-meet">
+          <div style="display: flex; gap: var(--space-04); flex-wrap: wrap">
+            <div class="calendar">
+              <div class="calendar-header">
+                 <button class="btn calendar-nav" data-variant="ghost" type="button" data-action="prev-month" aria-label="Previous month">
+                   <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <span class="calendar-heading" aria-live="polite"></span>
+                 <button class="btn calendar-nav" data-variant="ghost" type="button" data-action="next-month" aria-label="Next month">
+                   <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+              </div>
+              <table class="calendar-grid" role="grid"></table>
+            </div>
+            <div class="calendar">
+              <div class="calendar-header">
+                 <button class="btn calendar-nav" data-variant="ghost" type="button" data-action="prev-month" aria-label="Previous month">
+                   <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <span class="calendar-heading" aria-live="polite"></span>
+                 <button class="btn calendar-nav" data-variant="ghost" type="button" data-action="next-month" aria-label="Next month">
+                   <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+              </div>
+              <table class="calendar-grid" role="grid"></table>
+            </div>
           </div>
-        </div>
-        <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-            Copy
-          </button>
-          <pre><code class="language-markup">&lt;input class="date-input" type="datetime-local" id="meeting"&gt;</code></pre>
-        </div>
-
-        <p class="text-sm font-medium mb-2 mt-8">With constraints</p>
-        <div class="preview">
-          <div style="width: 100%; max-width: 16rem">
-            <label class="label" for="d-start">Start date</label>
-            <input class="date-input" type="date" id="d-start" min="2024-01-01" max="2026-12-31">
-          </div>
-        </div>
-        <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-            Copy
-          </button>
-          <pre><code class="language-markup">&lt;input class="date-input" type="date" min="2024-01-01" max="2026-12-31"&gt;</code></pre>
         </div>
 
         <!-- -- CSS --------------------------------------- -->
 
+        <!-- -- JavaScript -------------------------------- -->
     </main>
   </div>
-
   <script src="js/site.js" defer></script>
   <script type="module" src="js/shiki-highlight.js"></script>
   <script type="module" src="../components/accordion/accordion.js"></script>
   <script type="module" src="../components/combobox/combobox.js"></script>
   <script type="module" src="../components/dialog/dialog.js"></script>
-  <script type="module" src="../components/dropdown/dropdown.js"></script>
+  <script type="module" src="../components/dropdown-menu/dropdown-menu.js"></script>
   <script type="module" src="../components/sheet/sheet.js"></script>
   <script type="module" src="../components/tabs/tabs.js"></script>
   <script type="module" src="../components/toast/toast.js"></script>
   <script type="module" src="../components/toggle/toggle.js"></script>
   <script type="module" src="../components/toggle-group/toggle-group.js"></script>
   <script type="module" src="../components/toolbar/toolbar.js"></script>
-  <script type="module" src="../components/number-input/number-input.js"></script>
+  <script type="module" src="../components/number-field/number-field.js"></script>
   <script type="module" src="../components/avatar/avatar.js"></script>
   <script type="module" src="../components/image/image.js"></script>
   <script type="module" src="../components/tree-view/tree-view.js"></script>
-  <script type="module" src="../components/calendar/calendar.js"></script>
+  <script type="module" src="../components/date-picker/date-picker.js"></script>
   <script type="module" src="../components/alert-dialog/alert-dialog.js"></script>
     <script type="module" src="../components/popover/popover.js"></script>
   <script type="module" src="../components/tooltip/tooltip.js"></script>
-  <script type="module" src="../components/command/command.js"></script>
+  <script type="module" src="../components/command-palette/command-palette.js"></script>
   <script type="module" src="../components/navigation-menu/navigation-menu.js"></script>
   <script type="module" src="../components/sidebar/sidebar.js"></script>
   <script type="module" src="../components/carousel/carousel.js"></script>
   <script type="module" src="../components/slider/slider.js"></script>
   <script type="module" src="../components/sortable/sortable.js"></script>
+  <script type="module" src="../components/time-field/time-field.js"></script>
+  <script type="module" src="../components/questionnaire/questionnaire.js"></script>
+  <script type="module" src="../components/message-scroller/message-scroller.js"></script>
+  <script type="module" src="../components/checkbox/checkbox.js"></script>
 </body>
 </html>

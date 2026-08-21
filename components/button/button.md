@@ -17,12 +17,12 @@
 ## Structure
 
 ```html
-<button class="btn" data-variant="default">Click me</button>
+<button class="btn" type="button" data-variant="default">Click me</button>
 ```
 
 ### With icon
 ```html
-<button class="btn" data-variant="default">
+<button class="btn" type="button" data-variant="default">
   <svg aria-hidden="true" width="16" height="16" ...>...</svg>
   Save
 </button>
@@ -30,7 +30,7 @@
 
 ### Icon-only
 ```html
-<button class="btn" data-variant="outline" data-size="icon" aria-label="Settings">
+<button class="btn" type="button" data-variant="outline" data-size="icon" aria-label="Settings">
   <svg aria-hidden="true" width="16" height="16" ...>...</svg>
 </button>
 ```
@@ -45,19 +45,19 @@
 | `secondary`     | `--surface-secondary`| `--text-primary`        | `opacity: 0.8`                |
 | `outline`       | `--background` + border | `--text-primary`     | `--surface-secondary` bg       |
 | `ghost`         | transparent          | `--text-primary`         | `--surface-secondary` bg       |
-| `destructive`   | `--surface-negative` | `--text-inverted`        | `opacity: 0.88`                |
+| `destructive`   | `--surface-negative` | `--text-negative`        | `opacity: 0.88`                |
 | `link`          | transparent          | `--text-primary`         | underline                      |
 
 ---
 
 ## Sizes
 
-| `data-size` | Height    | Padding       | Font size    |
-|-------------|-----------|---------------|--------------|
-| `sm`        | `2rem`    | `0 0.75rem`   | `var(--font-body-small)` |
-| *(default)* | `2.5rem`  | `0 1rem`      | `0.875rem`   |
-| `icon`      | `2.5rem`  | `0` (square)  | —            |
-| `icon-sm`   | `2rem`    | `0` (square)  | —            |
+| `data-size` | Height          | Padding              | Font size                 |
+|-------------|-----------------|----------------------|---------------------------|
+| `sm`        | `var(--size-07)` | `0 var(--space-03)` | `var(--font-body-small)` |
+| *(default)* | `var(--size-08)` | `0 var(--space-04)` | `var(--font-body-small)` |
+| `icon`      | `var(--size-08)` | `0` (square)         | —                         |
+| `icon-sm`   | `var(--size-08)` | `0` (square)         | —                         |
 
 ---
 

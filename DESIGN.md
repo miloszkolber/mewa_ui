@@ -4,73 +4,56 @@ This contract applies only to this standalone repository. The portfolio and serv
 
 ## Foundations
 
-- `src/base.css` owns the six OKLCH palettes, generalized semantic roles, typography, geometry, focus, reset, and browser primitives.
-- `src/mewa.css` owns production component layout, spacing, structure, variants, utilities, and responsive rules.
-- `src/demo.css` owns only catalog and snippet presentation.
-- Interface text uses `geist, sans-serif` through `--ui-font`. Technical output, code, and keyboard notation use local Geist Mono through `--ui-font-mono`.
-- Body sizes are 12, 14, and 16 px. Heading sizes are 16, 24, and 32 px. Line heights are 1.25 and 1.61. Weights are 400 and 550. Tracking is zero.
-- Every palette value is expressed in OKLCH and uses the theme-specific `050`, `100` … `900`, `950` role scale. Components address semantic roles, never raw red, amber, green, or gray steps. The scale is not intended to generate a light theme when reversed.
-- The roles are fixed: `050`–`100` surfaces; `200`–`300` hover, active, and interactive backgrounds; `400` subtle borders; `500`–`700` borders and decoration; `800`–`950` muted through primary text.
-- Opaque scales increase monotonically and remain in sRGB. Corresponding steps share the exact gray-defined OKLCH lightness curve from `L 17.7` to `L 91.9351`. Gray steps `500`–`950` target `Lc 15`, `30`, `45`, `60`, `75`, and `90` against gray `050`.
-- Red, amber, and green hold fixed hues of `17`, `75`, and `145`. The families target one shared chroma envelope that increases toward the useful middle of the scale and tapers near the dark and light endpoints; hue-specific caps are allowed only to remain inside sRGB. Rendered APCA values may differ by family because hue and chroma affect sRGB luminance. Light-on-dark values have negative APCA polarity.
-- APCA 0.0.98G-4g is used as perceptual design guidance, not as a standards-compliance claim. The catalog exposes absolute OKLCH lightness and each opaque scale's signed Lc against its own step `050`. Alpha scales expose absolute lightness and opacity because composite contrast is backdrop-dependent.
-- Dark-surface hover and active states map directly to steps `200` and `300`. Relative OKLCH modifiers remain for light controls, pressed primary actions, and status actions where a dedicated palette step is not appropriate.
-- Geometry is square. Shadows are forbidden. Circular geometry is limited to objects whose meaning depends on it, such as radios, avatars, and status dots.
-- Backdrop blur belongs only to overlapping surfaces such as dialogs, sheets, drawers, menus, popovers, tooltips, toasts, mobile navigation panels, and sticky glass headers.
-- Component-local dimensions and spacing are explicit. Do not recreate a semantic spacing-token taxonomy.
-- Dashed structural divisions use `--ui-border-dashed`.
+- Load `src/base.css` first. It owns the Geist faces, static palette primitives, typography, geometry, spacing, border widths, reset, and browser defaults.
+- Load `src/tokens.css` second. It owns the light and dark semantic roles for backgrounds, surfaces, text, borders, and charts.
+- Interface text uses Geist through the foundation font tokens. Technical output, code, and keyboard notation use Geist Mono.
+- Palette primitives remain in OKLCH. Components consume semantic roles from `src/tokens.css`, never raw red, amber, green, or gray steps. Red, amber, and green communicate status.
+- Geometry is square by default. `--border-radius` is zero. Use `--radius-full` or an explicit 50% circle only when the object's meaning requires it, such as avatars, radios, progress, or skeleton avatars.
+- Elevation is expressed with semantic borders, not shadows. Do not add `box-shadow`, `text-shadow`, shadow tokens, or visual focus halos.
+- The canonical source is motionless. Do not add animation, transition, smooth scrolling, View Transitions, scroll-driven effects, Web Animations, shimmer, or spinning loaders. State changes are immediate.
+- Keep `:focus-visible`, `:checked`, `:disabled`, `:required`, `:valid`, `:invalid`, `:open`, `:has()`, `prefers-contrast: more`, and `forced-colors: active` behavior usable where applicable. Do not communicate state with color alone.
+- Component-local dimensions and spacing are explicit. Do not recreate a semantic spacing-token taxonomy. Dashed structural divisions use `--ui-border-dashed`.
 
-## Markup and behavior
+## Native-first markup and behavior
 
-Start with semantic HTML and native controls. A component remains understandable without JavaScript wherever the platform provides a native path. `data-ui-*` attributes are stable behavior hooks; classes are styling hooks. `data-state` is reserved for meaningful status.
+Start with semantic HTML and native controls. Progressive enhancement means the documented markup remains understandable and useful without JavaScript wherever the platform provides a path. Use `<dialog>` and `showModal()` for modal surfaces, the Popover API for popovers and tooltips, `<details>/<summary>` for disclosures, `<progress>` for completion, `<meter>` for bounded measurements, `<output>` for computed status, and native form controls wherever the component skill specifies them.
 
-`src/components.js` exposes `MewaUI.enhance(root)` and `MewaUI.destroy(root)`. Enhancement is idempotent, cleans up listeners, and preserves native submission and navigation. Custom events use the `mewa-ui:*` prefix.
+Use links for navigation and buttons for actions. Preserve native submission, navigation, validation, disclosure, date controls, and dialog or popover semantics. JavaScript modules under `components/{name}/` add only behavior that HTML and CSS cannot express, such as keyboard coordination, filtering, custom calendar navigation, focus restoration, positioning hooks, drag coordination, or live status updates. Modules are modern ES modules, safe to load more than once, and initialize markup inserted after navigation.
 
-Interactive patterns follow their platform and ARIA keyboard models:
+Classes are styling hooks. `data-*` attributes are not a general API or compatibility convention: use only attributes documented by the matching `components/{name}/{name}.md` skill and implementation. `data-state` is reserved for meaningful component status. Do not invent undocumented classes, attributes, token names, variants, or events.
 
-- Disclosures synchronize `aria-expanded`, `aria-controls`, and `hidden`.
-- Tabs, menus, listboxes, and grouped choices expose the expected arrow, Home, End, Escape, and activation behavior.
-- Modal surfaces use native `<dialog>` where available, label their purpose, enter the modal top layer, trap focus, inert background content, close with Escape, and restore focus. The runtime retains a generic-container fallback for existing markup during migration.
-- Forms keep explicit labels, descriptions, native validation, and live status announcements.
-- Tables retain captions, scopes, and sorting state when their narrow-screen presentation changes.
-- Drag interactions provide a keyboard path and a live announcement.
-- Reduced-motion and forced-colors modes remain usable.
+Interactive patterns follow their native or documented ARIA keyboard models:
 
-## Components and catalog
+- Disclosures synchronize native `open` or documented `aria-expanded`, `aria-controls`, and `hidden` state.
+- Tabs, menus, listboxes, toolbars, trees, and grouped choices implement their documented arrow, Home, End, Escape, and activation behavior.
+- Native modal surfaces provide the top layer, focus handling, Escape behavior, backdrop, inert background, and focus restoration. JavaScript supplies only documented trigger or coordination behavior.
+- Forms keep explicit labels, descriptions, stable IDs, native constraints, error references, and live status announcements.
+- Tables retain captions, scoped headers, and sorting state when their presentation changes.
+- Every pointer or drag interaction has a keyboard path and a visible or announced result.
 
-Every entry in `catalog/components.json` has exactly one complete document in `snippets/`. The reusable fragment is delimited by `<!-- mewa-ui-snippet:start -->` and `<!-- mewa-ui-snippet:end -->`. A component is complete only when markup, styling, behavior, focus, narrow-screen treatment, local icons, and contract coverage agree.
+## Components, documentation, and inventory
 
-Snippets load `base.css`, `mewa.css`, `demo.css`, then `components.js`. Application layouts load only the production pair and runtime. The catalog renders the marked fragment as a preview plus its name and description; source-code controls do not belong in the catalog UI. Its `#colors` view documents palette roles, raw OKLCH tokens, absolute lightness or opacity, and APCA Lc without turning palette steps into component-level APIs.
+Each current component lives in `components/{name}/` with `{name}.md` as its markup and accessibility contract, `{name}.css` as its stylesheet, and `{name}.js` only when the documented behavior needs a module. `docs/` contains one static reference page per current component. The page demonstrates the current implementation but is not a second source of truth.
 
-Alert owns inline and blocking-dialog variants. Progress owns both task progress and bounded meter measurements. Description List owns compact key/value metadata, Item owns non-interactive operational status rows with independent trailing actions, and Scroll Area owns bounded diagnostic output. Search, filter, and action clusters remain compositions of existing controls. Ghost buttons are the default low-emphasis action inside calendars, date pickers, and compound controls. The vertical navbar subsumes the former sidebar component.
+`registry.json` is the machine-readable inventory. Match entries by `slug` and use `requiresJs`, `enhancementJs`, `files`, `docs`, and `nativeBasis` when selecting assets. `README.md` contains the complete 61-row human-readable inventory. `llms.txt` is the concise guide for machine consumption. Copy only documented markup, preserve accessible names and ARIA relationships, and load only the assets required by the registry entry.
 
-## LLM consumption
+`Table` is the structural semantic `<table>` component and remains ordinary HTML without JavaScript. `Data Table` is an optional progressive enhancement around Table, adding documented filtering, sorting, status, and pagination while keeping the table and native links usable without its module.
 
-`llms.txt` is the concise entry point. `catalog/components.json` is the canonical inventory and its `requiresJs` boolean is the source of truth for runtime loading. An LLM should copy only marked snippet fragments, preserve their accessible names and ARIA relationships, load canonical assets in order, and avoid inventing undocumented `ui-*` classes or `data-ui-*` hooks.
-
-Descriptions explain purpose rather than demo content. Examples use realistic variations without product-specific wrappers. Stable file names, marker comments, and hook schemas are covered by contract tests.
+`Date Field` is a labelled native date or datetime input that delegates calendar editing to the browser. `Date Picker` is the custom accessible month-grid calendar with documented keyboard navigation and date selection. Do not substitute one for the other or infer APIs from their names.
 
 ## Icons
 
-Lucide is the primary icon source. Symbols live in `src/lucide.svg`, inherit `currentColor`, and use the shared stroke treatment. Decorative icons use `aria-hidden="true"`; icon-only controls have an `aria-label` or equivalent accessible name.
+Lucide is the primary icon source. Standalone SVG files live in `src/icons/` and inherit `currentColor` with the shared stroke treatment. Use the documented local loader or inline the matching SVG directly. Never use a remote icon CDN. Decorative icons use `aria-hidden="true"`; icon-only controls have a visible or programmatic accessible name.
 
 ## Layouts
 
-- `.ui-shell.ui-shell--vertical` uses a 15rem navigation column and `.ui-shell-workspace`; the navigation can collapse to a 4rem icon rail. At narrow widths it becomes a compact header with a blurred overlapping panel.
-- `.ui-shell.ui-shell--horizontal` places identity, scrollable routes, and actions in the shared 4rem header geometry.
-- `.ui-shell-layout` owns the content region. `--utility-start` and `--utility-end` add a 22.5rem controls rail without changing page-header or intro spacing; the rail stacks after content when space becomes constrained.
+`layouts/vertical-navbar.html` is the canonical left collapsible navigation shell. It uses the current Sidebar component with `.sidebar-layout`, an `<aside class="app-sidebar">`, one labelled flat `<nav>` of native links, a footer collapse button, `aria-current="page"`, and an optional mobile `<dialog>`. `components/sidebar/sidebar.js` owns collapse state, `aria-expanded`, the `Cmd+B`/`Ctrl+B` shortcut, and mobile dialog wiring.
 
-Six complete layout documents cover expanded vertical, left-utility, right-utility, collapsed vertical, horizontal navigation, and an operations workspace composition. All use the same dashed frame, header, breadcrumb, intro, action, and responsive behavior.
+`layouts/horizontal-navbar.html` is the canonical top-navigation shell. It uses a semantic `<header>`, a labelled `<nav>` of native route links, and an action cluster. Route navigation is not a tablist. `layouts/layouts.css` owns template-only rules, and `layouts/layouts.js` provides local icon inlining and the optional theme toggle. Both shells use current components and tokens, remain responsive, and are immediate and motionless.
 
-The visual references in [`core/docker/meili_ui`](https://github.com/miloszkolber/core/tree/master/docker/meili_ui), [`core/docker/hf_ui`](https://github.com/miloszkolber/core/tree/master/docker/hf_ui), and [`core/docker/moonlight_ui`](https://github.com/miloszkolber/core/tree/master/docker/moonlight_ui) remain separate applications. Their compact tool clusters, framed workspaces, stable form alignment, operational rows, and early single-column breakpoints inform balance without being copied into this repository.
+## Validation
 
-Their observed legacy class families and asset-serving boundaries are recorded in `MIGRATION.md`. New canonical work does not add aliases for those classes; each service migrates its markup, routing, local CSS, and runtime usage as one reviewable change.
-
-## Contribution checklist
-
-1. Update the manifest and matching marked snippet together.
-2. Reuse semantic roles; add a foundation token only when unrelated components share the need.
-3. Add required Lucide symbols locally.
-4. Cover runtime behavior and repository contracts.
-5. Inspect desktop, 200% zoom, keyboard-only use, and 320–390 px widths in a real browser.
-6. Run both Node contract suites before handoff.
+- Verify referenced assets and documentation paths against the repository tree before handoff.
+- Run `npm test` for the catalog and runtime contract suites.
+- Run `npm run test:browser` for the browser smoke checks when Chromium is available.
+- Inspect changed markup in a real browser at desktop width, 200% zoom, keyboard-only use, and 320–390 px widths. Check visible focus, native fallback behavior, forced colors, high contrast, and the browser console.

@@ -14,19 +14,19 @@
 ```html
 <ol class="timeline">
   <li class="timeline-item">
-    <div class="timeline-dot"></div>
+    <div class="timeline-dot" aria-hidden="true"></div>
     <div class="timeline-content">
       <p class="timeline-title">Event title</p>
       <p class="timeline-description">Event description text.</p>
-      <time class="timeline-time">January 2024</time>
+      <time class="timeline-time" datetime="2024-01">January 2024</time>
     </div>
   </li>
   <li class="timeline-item">
-    <div class="timeline-dot" data-variant="active"></div>
+    <div class="timeline-dot" data-variant="active" aria-hidden="true"></div>
     <div class="timeline-content">
       <p class="timeline-title">Current event</p>
       <p class="timeline-description">This is the current step.</p>
-      <time class="timeline-time">March 2024</time>
+      <time class="timeline-time" datetime="2024-03">March 2024</time>
     </div>
   </li>
 </ol>
@@ -43,3 +43,7 @@
 
 - `<ol>` provides sequential ordering for screen readers
 - `<time>` element used for machine-readable dates
+
+## Visual notes
+
+- Timeline dots are square markers. Use `data-variant="active"` for the current event without changing the connector geometry.

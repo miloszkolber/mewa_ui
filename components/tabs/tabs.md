@@ -127,6 +127,12 @@ No additional CSS is needed beyond what's in the main CSS block above.
 The JavaScript already handles vertical orientation — arrow keys switch to
 Up/Down based on `aria-orientation`.
 
+## Visual variants
+
+- The default tab list is a compact segmented group. Its selected trigger uses the page background and a semantic border, while inactive triggers remain transparent until hovered.
+- `data-variant="line"` switches to the documented underline treatment.
+- Both treatments remain square and motionless so the tab group follows the shared geometry contract.
+
 ---
 
 ## Notes

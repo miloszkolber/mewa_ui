@@ -22,7 +22,9 @@
 
   /* -- Toast ---------------------------------------------------- */
   .toast {
-    background-color: var(--surface-primary);
+    /* The glass role is intentionally mostly opaque so live announcements remain readable. */
+    background-color: var(--surface-primary-glass);
+    backdrop-filter: blur(var(--blur-01));
     color: var(--text-primary);
     border: var(--border-width-01) solid var(--border-secondary);
 
@@ -34,11 +36,11 @@
     /* -- Variants ------------------------------------------------- */
     &[data-variant="destructive"] {
       background-color: var(--surface-negative);
-      color: var(--text-inverted);
+      color: var(--text-negative);
       border-color: var(--text-negative);
 
       & .toast-description {
-        color: var(--text-inverted);
+        color: var(--text-negative);
         opacity: var(--opacity-09);
       }
     }

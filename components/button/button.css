@@ -79,7 +79,7 @@
 
     &[data-variant="destructive"] {
       background-color: var(--surface-negative);
-      color: var(--text-inverted);
+      color: var(--text-negative);
 
       &:hover { opacity: var(--opacity-09); }
     }
@@ -97,7 +97,7 @@
     /* -- Sizes ----------------------------------------------- */
     &[data-size="sm"]      { height: var(--size-07);    padding: 0 var(--space-03); font-size: var(--font-body-small); }
     &[data-size="icon"]    { height: var(--size-08); width: var(--size-08); padding: 0; }
-    &[data-size="icon-sm"] { height: var(--size-07);    width: var(--size-07);     padding: 0; }
+    &[data-size="icon-sm"] { height: var(--size-08);    width: var(--size-08);     padding: 0; }
   }
 
   /* -- Accessibility ------------------------------------------ */

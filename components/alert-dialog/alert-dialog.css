@@ -13,8 +13,11 @@
     inset: 0;
 
     &::backdrop {
-      background: var(--surface-overlay);
-      backdrop-filter: blur(var(--blur-01));
+      /* Layer the semantic scrim to keep modal content distinct in both themes. */
+      background:
+        linear-gradient(var(--surface-overlay), var(--surface-overlay)),
+        var(--surface-overlay);
+      backdrop-filter: blur(var(--blur-02));
       pointer-events: auto;
     }
   }

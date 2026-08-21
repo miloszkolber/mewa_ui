@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Command palette component — searchable commands with keyboard navigation.">
+  <meta property="og:title" content="Command palette — mewa_ui">
+  <meta property="og:description" content="Command palette component — searchable commands with keyboard navigation.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mewa.local/command-palette.html">
+  <meta property="og:site_name" content="mewa_ui">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Command palette — mewa_ui">
+  <meta name="twitter:description" content="Command palette component — searchable commands with keyboard navigation.">
+  <title>Command palette — mewa_ui</title>
+      <script src="js/layout.js"></script>
+  <link rel="stylesheet" href="../src/base.css">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="css/docs-theme.css">
+  <link rel="stylesheet" href="css/docs-utilities.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="../components/accordion/accordion.css">
+  <link rel="stylesheet" href="../components/alert-dialog/alert-dialog.css">
+  <link rel="stylesheet" href="../components/avatar/avatar.css">
+  <link rel="stylesheet" href="../components/badge/badge.css">
+  <link rel="stylesheet" href="../components/breadcrumbs/breadcrumbs.css">
+  <link rel="stylesheet" href="../components/button-group/button-group.css">
+  <link rel="stylesheet" href="../components/button/button.css">
+  <link rel="stylesheet" href="../components/callout/callout.css">
+  <link rel="stylesheet" href="../components/card/card.css">
+  <link rel="stylesheet" href="../components/carousel/carousel.css">
+  <link rel="stylesheet" href="../components/checkbox/checkbox.css">
+  <link rel="stylesheet" href="../components/collapsible/collapsible.css">
+  <link rel="stylesheet" href="../components/combobox/combobox.css">
+  <link rel="stylesheet" href="../components/command-palette/command-palette.css">
+  <link rel="stylesheet" href="../components/date-field/date-field.css">
+  <link rel="stylesheet" href="../components/date-picker/date-picker.css">
+  <link rel="stylesheet" href="../components/date-range-picker/date-range-picker.css">
+  <link rel="stylesheet" href="../components/data-table/data-table.css">
+  <link rel="stylesheet" href="../components/dialog/dialog.css">
+  <link rel="stylesheet" href="../components/dropdown-menu/dropdown-menu.css">
+  <link rel="stylesheet" href="../components/field/field.css">
+  <link rel="stylesheet" href="../components/file-input/file-input.css">
+  <link rel="stylesheet" href="../components/form/form.css">
+  <link rel="stylesheet" href="../components/icon/icon.css">
+  <link rel="stylesheet" href="../components/image/image.css">
+  <link rel="stylesheet" href="../components/label/label.css">
+  <link rel="stylesheet" href="../components/layout/layout.css">
+  <link rel="stylesheet" href="../components/message-scroller/message-scroller.css">
+  <link rel="stylesheet" href="../components/navigation-menu/navigation-menu.css">
+  <link rel="stylesheet" href="../components/number-field/number-field.css">
+  <link rel="stylesheet" href="../components/pagination/pagination.css">
+  <link rel="stylesheet" href="../components/popover/popover.css">
+  <link rel="stylesheet" href="../components/progress/progress.css">
+  <link rel="stylesheet" href="../components/questionnaire/questionnaire.css">
+  <link rel="stylesheet" href="../components/radio-group/radio-group.css">
+  <link rel="stylesheet" href="../components/resizable/resizable.css">
+  <link rel="stylesheet" href="../components/scroll-area/scroll-area.css">
+  <link rel="stylesheet" href="../components/select/select.css">
+  <link rel="stylesheet" href="../components/separator/separator.css">
+  <link rel="stylesheet" href="../components/sheet/sheet.css">
+  <link rel="stylesheet" href="../components/sidebar/sidebar.css">
+  <link rel="stylesheet" href="../components/skeleton/skeleton.css">
+  <link rel="stylesheet" href="../components/slider/slider.css">
+  <link rel="stylesheet" href="../components/sortable/sortable.css">
+  <link rel="stylesheet" href="../components/spinner/spinner.css">
+  <link rel="stylesheet" href="../components/statistic/statistic.css">
+  <link rel="stylesheet" href="../components/steps/steps.css">
+  <link rel="stylesheet" href="../components/switch/switch.css">
+  <link rel="stylesheet" href="../components/table/table.css">
+  <link rel="stylesheet" href="../components/tabs/tabs.css">
+  <link rel="stylesheet" href="../components/text-field/text-field.css">
+  <link rel="stylesheet" href="../components/textarea/textarea.css">
+  <link rel="stylesheet" href="../components/time-field/time-field.css">
+  <link rel="stylesheet" href="../components/timeline/timeline.css">
+  <link rel="stylesheet" href="../components/toast/toast.css">
+  <link rel="stylesheet" href="../components/toggle-group/toggle-group.css">
+  <link rel="stylesheet" href="../components/toggle/toggle.css">
+  <link rel="stylesheet" href="../components/toolbar/toolbar.css">
+  <link rel="stylesheet" href="../components/tooltip/tooltip.css">
+  <link rel="stylesheet" href="../components/tree-view/tree-view.css">
+  <link rel="stylesheet" href="../components/typography/typography.css">
+</head>
+<body>
+  <site-header></site-header>
+  <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
+    <site-nav></site-nav>
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
+      <div class="page-header">
+        <h1>Command palette</h1>
+        <p class="text-muted leading-relaxed mb-6">
+           A searchable command palette for quick actions. Built on native <code>&lt;dialog&gt;</code> with search filtering. Open with <kbd class="kbd">Cmd+K</kbd>. Focus moves to the search input and returns to the trigger on close. State changes are immediate with no animation.
+        </p>
+      </div>
+        <p class="text-sm font-medium mb-2 mt-6">Default</p>
+        <p class="text-xs text-muted mb-3">Click the button or press <kbd class="kbd">⌘K</kbd> to open. Use Arrow keys to navigate, Enter to select, Escape to close.</p>
+        <div class="preview">
+          <button class="btn" type="button" data-variant="outline" data-command-trigger="demo-cmd">Open Command Menu</button>
+          <dialog id="demo-cmd" class="command" role="dialog" aria-modal="true" aria-label="Command menu">
+            <div class="command-content">
+              <div class="command-input-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input class="command-input" type="text" aria-label="Command search" placeholder="Type a command or search..." autocomplete="off" autocorrect="off" spellcheck="false">
+              </div>
+              <div class="command-list">
+                <div class="command-group">
+                  <p class="command-group-heading">Suggestions</p>
+                  <button class="command-item" type="button">Calendar</button>
+                  <button class="command-item" type="button">Search Emoji</button>
+                  <button class="command-item" type="button">Calculator</button>
+                </div>
+                <div class="command-separator"></div>
+                <div class="command-group">
+                  <p class="command-group-heading">Settings</p>
+                  <button class="command-item" type="button">Profile <span class="command-shortcut">⌘P</span></button>
+                  <button class="command-item" type="button">Billing <span class="command-shortcut">⌘B</span></button>
+                  <button class="command-item" type="button">Settings <span class="command-shortcut">⌘S</span></button>
+                </div>
+              </div>
+              <div class="command-empty" hidden>No results found.</div>
+            </div>
+          </dialog>
+        </div>
+        <div style="position: relative; margin-top: var(--space-02)">
+          <button class="copy-btn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            Copy
+          </button>
+           <pre><code class="language-markup">&lt;button class="btn" type="button" data-command-trigger="cmd"&gt;Open&lt;/button&gt;
+&lt;dialog id="cmd" class="command" role="dialog" aria-modal="true"&gt;
+  &lt;div class="command-content"&gt;
+    &lt;div class="command-input-wrapper"&gt;
+      &lt;svg&gt;...search...&lt;/svg&gt;
+      &lt;input class="command-input" type="text" aria-label="Command search" placeholder="Type a command..."&gt;
+    &lt;/div&gt;
+    &lt;div class="command-list"&gt;
+      &lt;div class="command-group"&gt;
+        &lt;p class="command-group-heading"&gt;Suggestions&lt;/p&gt;
+       &lt;button class="command-item" type="button"&gt;Calendar&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+        </div>
+
+        <!-- -- CSS --------------------------------------- -->
+
+        <!-- -- JavaScript -------------------------------- -->
+    </main>
+  </div>
+  <script src="js/site.js" defer></script>
+  <script type="module" src="js/shiki-highlight.js"></script>
+  <script type="module" src="../components/accordion/accordion.js"></script>
+  <script type="module" src="../components/combobox/combobox.js"></script>
+  <script type="module" src="../components/dialog/dialog.js"></script>
+  <script type="module" src="../components/dropdown-menu/dropdown-menu.js"></script>
+  <script type="module" src="../components/sheet/sheet.js"></script>
+  <script type="module" src="../components/tabs/tabs.js"></script>
+  <script type="module" src="../components/toast/toast.js"></script>
+  <script type="module" src="../components/toggle/toggle.js"></script>
+  <script type="module" src="../components/toggle-group/toggle-group.js"></script>
+  <script type="module" src="../components/toolbar/toolbar.js"></script>
+  <script type="module" src="../components/number-field/number-field.js"></script>
+  <script type="module" src="../components/avatar/avatar.js"></script>
+  <script type="module" src="../components/image/image.js"></script>
+  <script type="module" src="../components/tree-view/tree-view.js"></script>
+  <script type="module" src="../components/date-picker/date-picker.js"></script>
+  <script type="module" src="../components/alert-dialog/alert-dialog.js"></script>
+    <script type="module" src="../components/popover/popover.js"></script>
+  <script type="module" src="../components/tooltip/tooltip.js"></script>
+  <script type="module" src="../components/command-palette/command-palette.js"></script>
+  <script type="module" src="../components/navigation-menu/navigation-menu.js"></script>
+  <script type="module" src="../components/sidebar/sidebar.js"></script>
+  <script type="module" src="../components/carousel/carousel.js"></script>
+  <script type="module" src="../components/slider/slider.js"></script>
+  <script type="module" src="../components/sortable/sortable.js"></script>
+  <script type="module" src="../components/time-field/time-field.js"></script>
+  <script type="module" src="../components/questionnaire/questionnaire.js"></script>
+  <script type="module" src="../components/message-scroller/message-scroller.js"></script>
+  <script type="module" src="../components/checkbox/checkbox.js"></script>
+</body>
+</html>

@@ -247,10 +247,6 @@
     display: none !important;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    * { scroll-behavior: auto !important; }
-  }
-
   @media (forced-colors: active) {
     :focus-visible {
       outline-color: Highlight !important;

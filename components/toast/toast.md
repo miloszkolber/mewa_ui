@@ -32,7 +32,7 @@ region announcements. Follows `role="status"` with `aria-live="polite"`.
       <p class="toast-title">Event created</p>
       <p class="toast-description">Monday, January 3rd at 6:00pm</p>
     </div>
-    <button class="toast-close" aria-label="Dismiss" data-toast-close>
+    <button class="toast-close" type="button" aria-label="Dismiss" data-toast-close>
       <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"
            fill="none" stroke="currentColor" stroke-width="2">
         <path d="M18 6 6 18M6 6l12 12"/>
@@ -40,7 +40,7 @@ region announcements. Follows `role="status"` with `aria-live="polite"`.
     </button>
   </div>
   <div class="toast-actions">
-    <button class="btn" data-variant="outline" data-size="sm"
+    <button class="btn" type="button" data-variant="outline" data-size="sm"
             data-toast-action>Undo</button>
   </div>
 </div>
@@ -58,7 +58,7 @@ region announcements. Follows `role="status"` with `aria-live="polite"`.
     <div class="toast-text">
       <p class="toast-title">Saved successfully</p>
     </div>
-    <button class="toast-close" aria-label="Dismiss" data-toast-close>
+    <button class="toast-close" type="button" aria-label="Dismiss" data-toast-close>
       <svg aria-hidden="true" width="14" height="14">...</svg>
     </button>
   </div>
@@ -71,8 +71,9 @@ region announcements. Follows `role="status"` with `aria-live="polite"`.
 
 | Attribute           | Where            | Value                       |
 |---------------------|------------------|-----------------------------|
-| `role="status"`     | each toast       | Implicit live region        |
-| `aria-live="polite"`| each toast       | Screen reader announces it  |
+| `role="status"`     | non-destructive toast | Polite live region        |
+| `role="alert"`      | destructive toast    | Assertive live region     |
+| `aria-live`          | each toast           | `polite`, or `assertive` for destructive content |
 | `aria-atomic="true"`| each toast       | Announce entire toast, not just changes |
 | `aria-label`        | toast container  | e.g. "Notifications"       |
 
@@ -103,6 +104,7 @@ Set `data-position` on the `.toast-container`:
 ## Notes
 
 - The toast container should be a direct child of `<body>`
+- Toast surfaces use the mostly opaque semantic glass role with a small backdrop blur so stacked notifications stay readable without a shadow.
 - `window.toast` exposes `show`, `success`, `warning`, `info`, `error`, and `dismiss`
 - Toast markup is built via DOM APIs, never `innerHTML`, so user content stays safe
 - Toasts use `popover="manual"` so they don't auto-dismiss on outside click

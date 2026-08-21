@@ -148,6 +148,7 @@ the search input when the popover opens.
 - CSS anchor positioning (`position-anchor`, `anchor()`, `position-try-fallbacks: flip-block`) places the popover below the trigger; no JS positioning needed
 - The popover opens and closes immediately through the native Popover API
 - The check icon for selected items uses a CSS `::before` pseudo-element
+- The search row owns the full-width focus highlight, including its icon and padded click area
 - Filter matching is case-insensitive and supports substring matching
 - The empty state element is shown when no items match the filter query
 - Group labels and separators auto-hide when their group has no visible items

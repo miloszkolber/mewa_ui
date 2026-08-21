@@ -14,6 +14,7 @@
 
     padding: 0;
     cursor: default;
+    pointer-events: none;
 
     &::file-selector-button {
       height: 100%;
@@ -27,13 +28,14 @@
       padding: 0 var(--space-03);
       margin-inline-end: var(--space-03);
       cursor: pointer;
+      pointer-events: auto;
       &:hover { background: color-mix(in oklch, var(--surface-secondary) 80%, var(--text-primary)); }
     }
 
     &:focus {
       border-color: var(--border-ring);
-      outline: var(--focus-ring-width) solid var(--border-ring);
-      outline-offset: var(--border-width-01);
+      outline: var(--focus-ring-outer-width) solid var(--border-ring);
+      outline-offset: var(--focus-ring-width);
     }
 
     &:is([aria-invalid="true"], :user-invalid) {
@@ -41,7 +43,8 @@
 
       &:focus {
         border-color: var(--text-negative);
-        outline-color: var(--text-negative);
+        outline: var(--focus-ring-outer-width) solid var(--text-negative);
+        outline-offset: var(--focus-ring-width);
       }
     }
 

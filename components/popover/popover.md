@@ -70,6 +70,7 @@ No additional ARIA attributes are needed. The native `popover` attribute and `po
 ## Notes
 
 - The popover renders in the **top layer**, so it appears above all other content regardless of `z-index`.
+- The panel uses the mostly opaque semantic glass role and a small backdrop blur. Keep the border visible instead of adding a shadow.
 - CSS anchor positioning (`position-area`) handles placement — the JS only assigns unique anchor names per trigger–popover pair.
 - `position-try-fallbacks: flip-block` (or `flip-inline` for left/right sides) automatically repositions when the popover would overflow the viewport.
 - The `popover` attribute defaults to `"auto"` which provides light-dismiss behavior. Use `popover="manual"` if you need the popover to stay open until explicitly closed.

@@ -28,20 +28,28 @@
     font-size: var(--font-body-xsmall);
     font-weight: var(--font-weight-strong);
     color: var(--text-muted);
+    background-color: transparent;
     text-transform: uppercase;
     white-space: nowrap;
+    border-block: 0;
   }
 
   .table-cell {
     padding: var(--space-03) var(--space-04);
     vertical-align: middle;
     color: var(--text-primary);
+    border-block: 0;
 
     &:has(.avatar) {
-      & > div:has(.avatar) {
+      & > :where(div, span):has(.avatar) {
         display: inline-flex;
         align-items: center;
         gap: var(--space-02);
+        vertical-align: middle;
+      }
+
+      & > .avatar {
+        display: inline-flex;
         vertical-align: middle;
       }
 
@@ -60,5 +68,13 @@
   @container (max-width: 480px){
     .table-head,
     .table-cell { padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); }
+  }
+
+  @media (prefers-contrast: more) {
+    .table-container { border-width: var(--border-width-02); }
+  }
+
+  @media (forced-colors: active) {
+    .table-container { border-color: ButtonText; }
   }
 }

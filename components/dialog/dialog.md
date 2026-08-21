@@ -96,3 +96,4 @@ Requires minimal JavaScript — only for trigger wiring and backdrop-click-to-cl
 - Dialog state changes are immediate for now, with no CSS transition.
 - The selector is `dialog.dialog` (element + class) to avoid styling native `<dialog>` elements used elsewhere.
 - For forms inside dialogs, use the `dialog-body` wrapper for the form content.
+- The modal surface uses the mostly opaque semantic glass role with a small backdrop blur. The native backdrop uses the stronger layered scrim.

@@ -1,62 +1,122 @@
-/* -- Date Picker component -------------------------------------- */
+/* -- Date Picker component --------------------------------------- */
 
 @layer components {
-  .date-input {
-    height: var(--size-08);
-    width: 100%;
-    border: var(--border-width-01) solid var(--border-secondary);
+  .calendar {
+    display: inline-flex;
+    flex-direction: column;
+    padding: var(--space-03);
+    border: var(--border-width-01) solid var(--border-primary);
 
-    background: var(--background);
-    padding: 0 var(--space-03);
-    padding-inline-end: var(--space-03);
+    background-color: var(--surface-primary);
+    user-select: none;
+  }
+
+  .calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-01) var(--space-02);
+  }
+
+  .calendar-heading {
     font-size: var(--font-body-small);
-    font-family: var(--font-sans);
+    font-weight: var(--font-weight-strong);
     color: var(--text-primary);
-    outline: none;
+  }
 
+  .calendar-nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--size-08);
+    height: var(--size-08);
+    padding: 0;
+    border: var(--border-width-01) solid transparent;
+
+    background-color: transparent;
+    color: var(--text-primary);
     cursor: pointer;
+    &:hover {
+      background-color: var(--surface-secondary);
+    }
 
-    &:focus {
-      border-color: var(--border-ring);
+    &:focus-visible {
       outline: var(--focus-ring-width) solid var(--border-ring);
       outline-offset: var(--border-width-01);
     }
 
-    &:disabled {
-      opacity: var(--opacity-05);
-      cursor: not-allowed;
+    & svg {
+      width: var(--size-04);
+      height: var(--size-04);
     }
+  }
 
-    &:is([aria-invalid="true"], :user-invalid) {
-      border-color: var(--text-negative);
+  .calendar-grid {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
 
-      &:focus {
-        border-color: var(--text-negative);
-        outline-color: var(--text-negative);
+  .calendar-day-label {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: var(--font-body-xsmall);
+    font-weight: var(--font-weight);
+    color: var(--text-muted);
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .calendar-day {
+    width: 2.25rem;
+    height: 2.25rem;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0;
+
+    & button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--size-07);
+      height: var(--size-07);
+      font-size: var(--font-body-small);
+      border: none;
+
+      background-color: transparent;
+      color: var(--text-primary);
+      cursor: pointer;
+      &:hover {
+        background-color: var(--surface-secondary);
+      }
+
+      &:focus-visible {
+        outline: var(--focus-ring-width) solid var(--border-ring);
+        outline-offset: var(--border-width-01);
       }
     }
 
-    /* -- Calendar indicator ------------------------------------ */
-    &::-webkit-calendar-picker-indicator {
-      width: var(--size-04);
-      height: var(--size-04);
-      margin-inline-end: var(--space-02);
-      cursor: pointer;
-      opacity: var(--opacity-10);
+    &[data-today] button {
+      background-color: var(--surface-secondary);
+      font-weight: var(--font-weight-strong);
     }
 
-    /* -- Date text: explicit colors, no browser default blue ---- */
-    &::-webkit-datetime-edit {
-      padding: 0;
-      color: var(--text-primary);
+    &[data-selected] button {
+      background-color: var(--surface-inverted);
+      color: var(--text-inverted);
+
+      &:hover {
+        opacity: var(--opacity-09);
+      }
     }
 
-    &::-webkit-datetime-edit-fields-wrapper,
-    &::-webkit-datetime-edit-text,
-    &::-webkit-datetime-edit-day-field,
-    &::-webkit-datetime-edit-month-field,
-    &::-webkit-datetime-edit-year-field {
-      color: var(--text-primary);
+    &[data-outside] button {
+      color: var(--text-muted);
+    }
+
+    &[data-disabled] button {
+      color: var(--text-muted);
+      opacity: var(--opacity-04);
+      cursor: not-allowed;
     }
   }
 }

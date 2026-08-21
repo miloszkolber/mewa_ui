@@ -77,16 +77,33 @@
       pre.setAttribute('tabindex', '0');
     });
 
-    // Copy buttons
-    document.querySelectorAll('.copy-btn').forEach(function (btn) {
+    // Copy buttons. The guard keeps repeated page-ready calls idempotent and
+    // preserves focus while the fixed, trusted status label changes.
+    document.querySelectorAll('.copy-btn:not([data-copy-init])').forEach(function (btn) {
+      btn.dataset.copyInit = '';
+      var originalMarkup = btn.innerHTML;
+      var resetTimer = null;
+      var reset = function () {
+        btn.innerHTML = originalMarkup;
+        resetTimer = null;
+      };
+      var showStatus = function (markup) {
+        if (resetTimer) clearTimeout(resetTimer);
+        btn.innerHTML = markup;
+        resetTimer = setTimeout(reset, 2000);
+      };
+
       btn.addEventListener('click', function () {
         var pre = btn.nextElementSibling;
         if (!pre) return;
+        if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') {
+          showStatus('Copy unavailable');
+          return;
+        }
         navigator.clipboard.writeText(pre.innerText).then(function () {
-          btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Copied';
-          setTimeout(function () {
-            btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg> Copy';
-          }, 2000);
+          showStatus('<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Copied');
+        }).catch(function () {
+          showStatus('Copy failed');
         });
       });
     });
