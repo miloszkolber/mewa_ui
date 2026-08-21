@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <meta name="description" content="Sidebar component — collapsible side navigation panel.">
+  <meta name="description" content="Sidebar component — flat side navigation with a footer collapse control.">
   <meta property="og:title" content="Sidebar — mewa_ui">
-  <meta property="og:description" content="Sidebar component — collapsible side navigation panel.">
+  <meta property="og:description" content="Sidebar component — flat side navigation with a footer collapse control.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mewa.local/sidebar.html">
   <meta property="og:site_name" content="mewa_ui">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Sidebar — mewa_ui">
-  <meta name="twitter:description" content="Sidebar component — collapsible side navigation panel.">
+  <meta name="twitter:description" content="Sidebar component — flat side navigation with a footer collapse control.">
   <title>Sidebar — mewa_ui</title>
       <script src="js/layout.js"></script>
   <link rel="stylesheet" href="../src/base.css">
@@ -25,10 +25,10 @@
   <link rel="stylesheet" href="../components/card/card.css">
   <link rel="stylesheet" href="../components/dialog/dialog.css">
   <link rel="stylesheet" href="../components/badge/badge.css">
-  <link rel="stylesheet" href="../components/input/input.css">
+  <link rel="stylesheet" href="../components/text-field/text-field.css">
   <link rel="stylesheet" href="../components/accordion/accordion.css">
   <link rel="stylesheet" href="../components/tabs/tabs.css">
-  <link rel="stylesheet" href="../components/dropdown/dropdown.css">
+  <link rel="stylesheet" href="../components/dropdown-menu/dropdown-menu.css">
   <link rel="stylesheet" href="../components/toast/toast.css">
   <link rel="stylesheet" href="../components/combobox/combobox.css">
   <link rel="stylesheet" href="../components/sheet/sheet.css">
@@ -42,13 +42,13 @@
   <link rel="stylesheet" href="../components/toolbar/toolbar.css">
   <link rel="stylesheet" href="../components/textarea/textarea.css">
   <link rel="stylesheet" href="../components/checkbox/checkbox.css">
-  <link rel="stylesheet" href="../components/radio/radio.css">
+  <link rel="stylesheet" href="../components/radio-group/radio-group.css">
   <link rel="stylesheet" href="../components/switch/switch.css">
   <link rel="stylesheet" href="../components/slider/slider.css">
   <link rel="stylesheet" href="../components/select/select.css">
-  <link rel="stylesheet" href="../components/number-input/number-input.css">
+  <link rel="stylesheet" href="../components/number-field/number-field.css">
   <link rel="stylesheet" href="../components/file-input/file-input.css">
-  <link rel="stylesheet" href="../components/date-picker/date-picker.css">
+  <link rel="stylesheet" href="../components/date-field/date-field.css">
   <link rel="stylesheet" href="../components/form/form.css">
   <link rel="stylesheet" href="../components/avatar/avatar.css">
   <link rel="stylesheet" href="../components/image/image.css">
@@ -57,16 +57,16 @@
   <link rel="stylesheet" href="../components/collapsible/collapsible.css">
   <link rel="stylesheet" href="../components/timeline/timeline.css">
   <link rel="stylesheet" href="../components/tree-view/tree-view.css">
-  <link rel="stylesheet" href="../components/calendar/calendar.css">
+  <link rel="stylesheet" href="../components/date-picker/date-picker.css">
   <link rel="stylesheet" href="../components/spinner/spinner.css">
   <link rel="stylesheet" href="../components/skeleton/skeleton.css">
   <link rel="stylesheet" href="../components/progress/progress.css">
-  <link rel="stylesheet" href="../components/alert/alert.css">
+  <link rel="stylesheet" href="../components/callout/callout.css">
   <link rel="stylesheet" href="../components/alert-dialog/alert-dialog.css">
   <link rel="stylesheet" href="../components/popover/popover.css">
   <link rel="stylesheet" href="../components/tooltip/tooltip.css">
-  <link rel="stylesheet" href="../components/command/command.css">
-  <link rel="stylesheet" href="../components/breadcrumb/breadcrumb.css">
+  <link rel="stylesheet" href="../components/command-palette/command-palette.css">
+  <link rel="stylesheet" href="../components/breadcrumbs/breadcrumbs.css">
   <link rel="stylesheet" href="../components/pagination/pagination.css">
   <link rel="stylesheet" href="../components/steps/steps.css">
   <link rel="stylesheet" href="../components/navigation-menu/navigation-menu.css">
@@ -84,84 +84,56 @@
       <div class="page-header">
         <h1>Sidebar</h1>
         <p class="text-muted leading-relaxed mb-6">
-          A composable, themeable application sidebar with collapsible state, mobile sheet overlay, collapsible groups, submenus, badges, and keyboard shortcut (Cmd+B).
+          A composable, themeable application sidebar with flat navigation, collapsible desktop width, a mobile dialog overlay, and a footer collapse control.
         </p>
       </div>
-        <p class="text-sm font-medium mb-2 mt-6">Default</p>
-        <p class="text-xs text-muted mb-4">Full sidebar with collapsible groups, submenus, badges, and toggle button. Press <kbd class="kbd">⌘B</kbd> to toggle.</p>
+      <p class="text-sm font-medium mb-2 mt-6">Default</p>
+      <p class="text-xs text-muted mb-4">Flat icon-and-label links with a footer collapse button. Press <kbd class="kbd">⌘B</kbd> or <kbd class="kbd">Ctrl+B</kbd> to toggle the desktop width.</p>
         <div class="preview" style="padding: 0; overflow: hidden; height: 24rem">
           <div style="display: flex; height: 100%; overflow: hidden">
-            <aside class="app-sidebar" id="demo-sidebar" data-state="expanded" style="position: relative; height: 100%">
+            <aside class="app-sidebar" id="demo-sidebar" data-state="expanded" aria-label="Primary navigation" style="position: relative; height: 100%">
               <div class="sidebar-header">
-                <a class="sidebar-logo" href="#">
-                  <i data-lucide="command" style="width: var(--size-04); height: var(--size-04)"></i>
+                <a class="sidebar-logo" href="#" aria-label="MyApp home">
+                  <i data-lucide="command" aria-hidden="true" style="width: var(--size-04); height: var(--size-04)"></i>
                   <span class="sidebar-logo-text">MyApp</span>
                 </a>
               </div>
               <div class="sidebar-content">
-                <details class="sidebar-group" open>
-                  <summary>
-                    <span>Platform</span>
-                    <i data-lucide="chevron-right" style="width: 0.875rem; height: 0.875rem"></i>
-                  </summary>
-                  <nav class="sidebar-nav">
-                    <a class="sidebar-link" href="#" aria-current="page" data-tooltip-trigger="side-tip-dashboard">
-                      <i data-lucide="house"></i> <span>Dashboard</span>
-                    </a>
-                    <div class="tooltip" id="side-tip-dashboard" popover="hint" role="tooltip">Dashboard</div>
-                    <a class="sidebar-link" href="#" data-tooltip-trigger="side-tip-inbox">
-                      <i data-lucide="inbox"></i> <span>Inbox</span>
-                      <span class="sidebar-badge">12</span>
-                    </a>
-                    <div class="tooltip" id="side-tip-inbox" popover="hint" role="tooltip">Inbox</div>
-                    <details class="sidebar-submenu">
-                      <summary>
-                        <i data-lucide="settings"></i> <span>Settings</span>
-                        <i data-lucide="chevron-right" style="width: 0.875rem; height: 0.875rem"></i>
-                      </summary>
-                      <nav class="sidebar-nav">
-                        <a class="sidebar-link" href="#" data-tooltip-trigger="side-tip-general">
-                          <i data-lucide="user"></i> <span>General</span>
-                        </a>
-                        <div class="tooltip" id="side-tip-general" popover="hint" role="tooltip">General</div>
-                        <a class="sidebar-link" href="#" data-tooltip-trigger="side-tip-team">
-                          <i data-lucide="users"></i> <span>Team</span>
-                        </a>
-                        <div class="tooltip" id="side-tip-team" popover="hint" role="tooltip">Team</div>
-                        <a class="sidebar-link" href="#" data-tooltip-trigger="side-tip-billing">
-                          <i data-lucide="credit-card"></i> <span>Billing</span>
-                        </a>
-                        <div class="tooltip" id="side-tip-billing" popover="hint" role="tooltip">Billing</div>
-                      </nav>
-                    </details>
-                  </nav>
-                </details>
-                <details class="sidebar-group" open>
-                  <summary>
+                <nav class="sidebar-nav" aria-label="Primary">
+                  <a class="sidebar-link" href="#" aria-current="page">
+                    <i data-lucide="house" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                  </a>
+                  <a class="sidebar-link" href="#inbox">
+                    <i data-lucide="inbox" aria-hidden="true"></i>
+                    <span>Inbox</span>
+                  </a>
+                  <a class="sidebar-link" href="#settings">
+                    <i data-lucide="settings" aria-hidden="true"></i>
+                    <span>Settings</span>
+                  </a>
+                  <a class="sidebar-link" href="#team">
+                    <i data-lucide="users" aria-hidden="true"></i>
+                    <span>Team</span>
+                  </a>
+                  <a class="sidebar-link" href="#billing">
+                    <i data-lucide="credit-card" aria-hidden="true"></i>
+                    <span>Billing</span>
+                  </a>
+                  <a class="sidebar-link" href="#projects">
+                    <i data-lucide="folder" aria-hidden="true"></i>
                     <span>Projects</span>
-                    <i data-lucide="chevron-right" style="width: 0.875rem; height: 0.875rem"></i>
-                  </summary>
-                  <nav class="sidebar-nav">
-                    <a class="sidebar-link" href="#" data-tooltip-trigger="side-tip-design">
-                      <i data-lucide="folder"></i> <span>Design System</span>
-                    </a>
-                    <div class="tooltip" id="side-tip-design" popover="hint" role="tooltip">Design System</div>
-                    <a class="sidebar-link" href="#" data-tooltip-trigger="side-tip-marketing">
-                      <i data-lucide="folder"></i> <span>Marketing</span>
-                    </a>
-                    <div class="tooltip" id="side-tip-marketing" popover="hint" role="tooltip">Marketing</div>
-                  </nav>
-                </details>
+                  </a>
+                </nav>
               </div>
               <div class="sidebar-footer">
-                <span>user@example.com</span>
+                <button class="sidebar-trigger" type="button" data-sidebar-trigger="demo-sidebar" aria-controls="demo-sidebar" aria-label="Hide menu" aria-expanded="true">
+                  <i data-lucide="panel-left" aria-hidden="true"></i>
+                  <span class="sidebar-trigger-label">Hide menu</span>
+                </button>
               </div>
-              <button class="sidebar-rail" type="button" data-sidebar-trigger="demo-sidebar" aria-controls="demo-sidebar" aria-label="Collapse sidebar" aria-expanded="true"></button>
             </aside>
             <div style="flex: 1; padding: var(--space-04); display: flex; align-items: flex-start; gap: var(--space-02); background: var(--background)">
-              <button class="sidebar-trigger" data-sidebar-trigger="demo-sidebar" aria-controls="demo-sidebar" aria-label="Collapse sidebar" aria-expanded="true">
-                <i data-lucide="panel-left"></i>
-              </button>
               <span class="text-muted" style="font-size: var(--font-body-small); padding-top: var(--space-02)" >Main content area</span>
             </div>
           </div>
@@ -172,32 +144,63 @@
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="sidebar-layout"&gt;
-  &lt;aside class="app-sidebar" id="my-sidebar" data-state="expanded"&gt;
+  &lt;aside class="app-sidebar" id="my-sidebar" data-state="expanded" aria-label="Primary navigation"&gt;
     &lt;div class="sidebar-header"&gt;
-      &lt;a class="sidebar-logo" href="/"&gt;MyApp&lt;/a&gt;
+      &lt;a class="sidebar-logo" href="/" aria-label="MyApp home"&gt;
+        &lt;i data-lucide="command" aria-hidden="true"&gt;&lt;/i&gt;
+        &lt;span class="sidebar-logo-text"&gt;MyApp&lt;/span&gt;
+      &lt;/a&gt;
     &lt;/div&gt;
     &lt;div class="sidebar-content"&gt;
-      &lt;details class="sidebar-group" open&gt;
-        &lt;summary&gt;&lt;span&gt;Platform&lt;/span&gt; &lt;i data-lucide="chevron-right"&gt;&lt;/i&gt;&lt;/summary&gt;
-        &lt;nav class="sidebar-nav"&gt;
-          &lt;a class="sidebar-link" href="#" aria-current="page"&gt;
-            &lt;i data-lucide="house"&gt;&lt;/i&gt; &lt;span&gt;Dashboard&lt;/span&gt;
-          &lt;/a&gt;
-          &lt;a class="sidebar-link" href="#"&gt;
-            &lt;i data-lucide="inbox"&gt;&lt;/i&gt; &lt;span&gt;Inbox&lt;/span&gt;
-            &lt;span class="sidebar-badge"&gt;12&lt;/span&gt;
-          &lt;/a&gt;
-        &lt;/nav&gt;
-      &lt;/details&gt;
+      &lt;nav class="sidebar-nav" aria-label="Primary"&gt;
+        &lt;a class="sidebar-link" href="#" aria-current="page"&gt;
+          &lt;i data-lucide="house" aria-hidden="true"&gt;&lt;/i&gt;
+          &lt;span&gt;Dashboard&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a class="sidebar-link" href="#inbox"&gt;
+          &lt;i data-lucide="inbox" aria-hidden="true"&gt;&lt;/i&gt;
+          &lt;span&gt;Inbox&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a class="sidebar-link" href="#settings"&gt;
+          &lt;i data-lucide="settings" aria-hidden="true"&gt;&lt;/i&gt;
+          &lt;span&gt;Settings&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a class="sidebar-link" href="#team"&gt;
+          &lt;i data-lucide="users" aria-hidden="true"&gt;&lt;/i&gt;
+          &lt;span&gt;Team&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a class="sidebar-link" href="#billing"&gt;
+          &lt;i data-lucide="credit-card" aria-hidden="true"&gt;&lt;/i&gt;
+          &lt;span&gt;Billing&lt;/span&gt;
+        &lt;/a&gt;
+        &lt;a class="sidebar-link" href="#projects"&gt;
+          &lt;i data-lucide="folder" aria-hidden="true"&gt;&lt;/i&gt;
+          &lt;span&gt;Projects&lt;/span&gt;
+        &lt;/a&gt;
+      &lt;/nav&gt;
     &lt;/div&gt;
-    &lt;div class="sidebar-footer"&gt;user@example.com&lt;/div&gt;
-    &lt;button class="sidebar-rail" type="button" data-sidebar-trigger="my-sidebar" aria-controls="my-sidebar" aria-label="Collapse sidebar" aria-expanded="true"&gt;&lt;/button&gt;
+    &lt;div class="sidebar-footer"&gt;
+      &lt;button class="sidebar-trigger" type="button" data-sidebar-trigger="my-sidebar" aria-controls="my-sidebar" aria-label="Hide menu" aria-expanded="true"&gt;
+        &lt;i data-lucide="panel-left" aria-hidden="true"&gt;&lt;/i&gt;
+        &lt;span class="sidebar-trigger-label"&gt;Hide menu&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
   &lt;/aside&gt;
-  &lt;main style="flex: 1"&gt;
-    &lt;button class="sidebar-trigger" data-sidebar-trigger="my-sidebar" aria-controls="my-sidebar" aria-label="Collapse sidebar" aria-expanded="true"&gt;
-      &lt;i data-lucide="panel-left"&gt;&lt;/i&gt;
-    &lt;/button&gt;
+  &lt;main&gt;
+    &lt;button class="btn" type="button" data-sidebar-mobile="mobile-sidebar"
+            aria-haspopup="dialog"&gt;Open navigation&lt;/button&gt;
+    Main content
   &lt;/main&gt;
+  &lt;dialog class="sidebar-mobile" id="mobile-sidebar" aria-label="Primary navigation"&gt;
+    &lt;button class="sidebar-mobile-close" type="button" aria-label="Close navigation"&gt;
+      &lt;i data-lucide="x" aria-hidden="true"&gt;&lt;/i&gt;
+    &lt;/button&gt;
+    &lt;nav class="sidebar-nav" aria-label="Mobile primary"&gt;
+      &lt;a class="sidebar-link" href="#" aria-current="page"&gt;Dashboard&lt;/a&gt;
+      &lt;a class="sidebar-link" href="#inbox"&gt;Inbox&lt;/a&gt;
+      &lt;a class="sidebar-link" href="#settings"&gt;Settings&lt;/a&gt;
+    &lt;/nav&gt;
+  &lt;/dialog&gt;
 &lt;/div&gt;</code></pre>
         </div>
 
@@ -211,7 +214,7 @@
   <script type="module" src="../components/accordion/accordion.js"></script>
   <script type="module" src="../components/combobox/combobox.js"></script>
   <script type="module" src="../components/dialog/dialog.js"></script>
-  <script type="module" src="../components/dropdown/dropdown.js"></script>
+  <script type="module" src="../components/dropdown-menu/dropdown-menu.js"></script>
   <script type="module" src="../components/sheet/sheet.js"></script>
   <script type="module" src="../components/tabs/tabs.js"></script>
   <script type="module" src="../components/toast/toast.js"></script>
@@ -222,11 +225,11 @@
   <script type="module" src="../components/avatar/avatar.js"></script>
   <script type="module" src="../components/image/image.js"></script>
   <script type="module" src="../components/tree-view/tree-view.js"></script>
-  <script type="module" src="../components/calendar/calendar.js"></script>
+  <script type="module" src="../components/date-picker/date-picker.js"></script>
   <script type="module" src="../components/alert-dialog/alert-dialog.js"></script>
     <script type="module" src="../components/popover/popover.js"></script>
   <script type="module" src="../components/tooltip/tooltip.js"></script>
-  <script type="module" src="../components/command/command.js"></script>
+  <script type="module" src="../components/command-palette/command-palette.js"></script>
   <script type="module" src="../components/navigation-menu/navigation-menu.js"></script>
   <script type="module" src="../components/sidebar/sidebar.js"></script>
   <script type="module" src="../components/carousel/carousel.js"></script>

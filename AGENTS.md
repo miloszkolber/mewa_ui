@@ -53,7 +53,7 @@ Start every component from a native element or browser API. If the platform prov
 
 - Use `<dialog>` and `showModal()` for modal surfaces. Use `::backdrop` for the modal scrim.
 - Use the Popover API and CSS anchor positioning for popovers, tooltips, dropdown panels, and non-modal top-layer content. Use `popover="hint"` for tooltips.
-- Use `<details>/<summary>` for disclosures, accordion items, sidebar groups, and submenus. Use the module only for a documented single-open or coordination behavior.
+- Use `<details>/<summary>` for disclosures and accordion items. Use the module only for a documented single-open or coordination behavior.
 - Use `commandfor`/`command` or `popovertarget` for declarative trigger wiring when the component skill specifies it. Do not add imperative click handlers for behavior the markup already provides.
 - Use `<progress>` for completion and `<meter>` for a scalar measurement in a bounded range.
 - Use `<output>` for computed values and status values that belong to a control.
@@ -103,9 +103,9 @@ Do not use literal palette colors or recreate a spacing-token taxonomy inside a 
 
 ## Canonical shells
 
-### Left collapsible rail
+### Left collapsible sidebar
 
-The left-rail template at `layouts/vertical-navbar.html` uses `components/sidebar/`. Its semantic shell is `.sidebar-layout` with an `<aside class="app-sidebar">` and a `<main>`. The sidebar skill defines the `<nav>`, `<details>/<summary>` groups, nested submenus, `aria-current="page"`, collapsed `data-state`, and optional mobile `<dialog>`. The template adds a breadcrumb header, workspace content, and optional utility rail around the sidebar. `sidebar.js` synchronizes `aria-expanded`, toggles expanded/collapsed state, supports `Cmd+B`/`Ctrl+B`, and wires the mobile dialog. The rail remains keyboard reachable in both states. Use Tooltip for optional labels on icon-only collapsed links. Do not re-create a second sidebar implementation in `layouts/` and do not copy a legacy vertical navbar.
+The left-sidebar template at `layouts/vertical-navbar.html` uses `components/sidebar/`. Its semantic shell is `.sidebar-layout` with an `<aside class="app-sidebar">` and a `<main>`. The sidebar skill defines one flat labelled `<nav>`, a footer collapse button, `aria-current="page"`, collapsed `data-state`, and an optional mobile `<dialog>`. The template adds a breadcrumb header, workspace content, and optional utility rail around the sidebar. `sidebar.js` synchronizes `aria-expanded`, toggles expanded/collapsed state, supports `Cmd+B`/`Ctrl+B`, and wires the mobile dialog. The footer control remains keyboard reachable in both states. Use Tooltip for optional labels on icon-only collapsed links. Do not re-create a second sidebar implementation in `layouts/` and do not copy a legacy vertical navbar.
 
 ### Top navigation
 

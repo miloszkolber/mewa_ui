@@ -39,7 +39,6 @@
       </div>
 
       <div class="sidebar-content">
-        <p class="sidebar-section-title">Workspace</p>
         <nav class="sidebar-nav" aria-label="Workspace">
           <a class="sidebar-link" href="#main-content" aria-current="page" title="Overview">
             <i data-lucide="layout-dashboard" aria-hidden="true"></i>
@@ -52,52 +51,38 @@
           <a class="sidebar-link" href="#files" title="Files">
             <i data-lucide="folder" aria-hidden="true"></i>
             <span>Files</span>
-            <span class="sidebar-badge">12</span>
+          </a>
+          <a class="sidebar-link" id="team" href="#team" title="Team">
+            <i data-lucide="user-round" aria-hidden="true"></i>
+            <span>Team</span>
+          </a>
+          <a class="sidebar-link" id="settings" href="#settings" title="Settings">
+            <i data-lucide="settings" aria-hidden="true"></i>
+            <span>Settings</span>
+          </a>
+          <a class="sidebar-link" id="preferences" href="#preferences" title="Preferences">
+            <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
+            <span>Preferences</span>
+          </a>
+          <a class="sidebar-link" id="access" href="#access" title="Access">
+            <i data-lucide="lock-keyhole" aria-hidden="true"></i>
+            <span>Access</span>
           </a>
         </nav>
-
-        <details class="sidebar-group" open>
-          <summary>
-            <span>Manage</span>
-            <i data-lucide="chevron-right" aria-hidden="true"></i>
-          </summary>
-          <nav class="sidebar-nav" aria-label="Manage">
-              <a class="sidebar-link" id="team" href="#team" title="Team">
-              <i data-lucide="user-round" aria-hidden="true"></i>
-              <span>Team</span>
-            </a>
-            <details class="sidebar-submenu" open>
-              <summary>
-                <i data-lucide="settings" aria-hidden="true"></i>
-                <span>Settings</span>
-                <i data-lucide="chevron-right" aria-hidden="true"></i>
-              </summary>
-              <nav class="sidebar-nav" aria-label="Settings">
-                 <a class="sidebar-link" id="preferences" href="#preferences" title="Preferences"><span>Preferences</span></a>
-                 <a class="sidebar-link" id="access" href="#access" title="Access"><span>Access</span></a>
-              </nav>
-            </details>
-          </nav>
-        </details>
       </div>
 
       <div class="sidebar-footer">
-        <p>Your workspace</p>
-        <span class="layout-description">Production</span>
+        <button class="sidebar-trigger" type="button" data-sidebar-trigger="workspace-sidebar" aria-controls="workspace-sidebar" aria-expanded="true" aria-label="Hide menu">
+          <i data-lucide="panel-left" aria-hidden="true"></i>
+          <span class="sidebar-trigger-label">Hide menu</span>
+        </button>
       </div>
-
-      <button class="sidebar-rail" type="button" data-sidebar-trigger="workspace-sidebar" aria-controls="workspace-sidebar" aria-expanded="true" aria-label="Collapse sidebar">
-        <span class="layout-visually-hidden">Toggle sidebar width</span>
-      </button>
     </aside>
 
     <div class="layout-main-shell">
       <header class="layout-app-header">
         <div class="layout-header-start">
-          <button class="btn layout-header-menu layout-header-desktop-trigger sidebar-trigger" data-variant="ghost" data-size="icon-sm" type="button" data-sidebar-trigger="workspace-sidebar" aria-controls="workspace-sidebar" aria-expanded="true" aria-label="Collapse sidebar">
-            <i data-lucide="panel-left" aria-hidden="true"></i>
-          </button>
-          <button class="btn layout-header-menu layout-header-mobile-trigger" data-variant="ghost" data-size="icon-sm" type="button" data-sidebar-mobile="workspace-mobile-sidebar" aria-haspopup="dialog" aria-label="Open workspace navigation">
+          <button class="btn layout-header-menu layout-header-mobile-trigger" data-variant="ghost" data-size="icon-sm" type="button" data-sidebar-mobile="workspace-mobile-sidebar" aria-haspopup="dialog" aria-expanded="false" aria-label="Open workspace navigation">
             <i data-lucide="menu" aria-hidden="true"></i>
           </button>
 
@@ -338,19 +323,16 @@
       </a>
     </div>
     <div class="sidebar-content">
-      <p class="sidebar-section-title">Workspace</p>
       <nav class="sidebar-nav" aria-label="Mobile workspace">
         <a class="sidebar-link" href="#main-content" aria-current="page"><i data-lucide="layout-dashboard" aria-hidden="true"></i><span>Overview</span></a>
         <a class="sidebar-link" href="#operations"><i data-lucide="activity" aria-hidden="true"></i><span>Operations</span></a>
-        <a class="sidebar-link" href="#files"><i data-lucide="folder" aria-hidden="true"></i><span>Files</span><span class="sidebar-badge">12</span></a>
-      </nav>
-      <p class="sidebar-section-title">Manage</p>
-      <nav class="sidebar-nav" aria-label="Mobile management">
+        <a class="sidebar-link" href="#files"><i data-lucide="folder" aria-hidden="true"></i><span>Files</span></a>
         <a class="sidebar-link" href="#team"><i data-lucide="user-round" aria-hidden="true"></i><span>Team</span></a>
-        <a class="sidebar-link" href="#preferences"><i data-lucide="settings" aria-hidden="true"></i><span>Settings</span></a>
+        <a class="sidebar-link" href="#settings"><i data-lucide="settings" aria-hidden="true"></i><span>Settings</span></a>
+        <a class="sidebar-link" href="#preferences"><i data-lucide="sliders-horizontal" aria-hidden="true"></i><span>Preferences</span></a>
+        <a class="sidebar-link" href="#access"><i data-lucide="lock-keyhole" aria-hidden="true"></i><span>Access</span></a>
       </nav>
     </div>
-    <div class="sidebar-footer"><p>Your workspace</p><span class="layout-description">Production</span></div>
   </dialog>
 </body>
 </html>

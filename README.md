@@ -74,11 +74,11 @@ Use `<dialog>` for modal surfaces, the Popover API for popovers and tooltips, `<
 
 ## Canonical application shells
 
-`layouts/` is the only canonical home for reusable application-shell templates. The current two templates are `layouts/vertical-navbar.html` for a left collapsible rail and `layouts/horizontal-navbar.html` for top navigation. Keep both serveable from the repository root, and compose them from current `src/`, `components/`, and layout-local files. `layouts/layouts.css` owns template-only layout rules, while `layouts/layouts.js` provides local icon inlining and the optional theme toggle. Never substitute a file from `legacy/layouts/`.
+`layouts/` is the only canonical home for reusable application-shell templates. The current two templates are `layouts/vertical-navbar.html` for a left collapsible sidebar and `layouts/horizontal-navbar.html` for top navigation. Keep both serveable from the repository root, and compose them from current `src/`, `components/`, and layout-local files. `layouts/layouts.css` owns template-only layout rules, while `layouts/layouts.js` provides local icon inlining and the optional theme toggle. Never substitute a file from `legacy/layouts/`.
 
-### Left collapsible rail
+### Left collapsible sidebar
 
-Use the `Sidebar` component for this shell. Start with `.sidebar-layout`, an `<aside class="app-sidebar">`, and a `<main>`. Put routes in a labelled `<nav>`, use `<details>/<summary>` for groups and submenus, and use `data-state="expanded"` or `data-state="collapsed"` for the two rail widths. The `vertical-navbar.html` template adds the breadcrumb header, workspace content, and optional utility rail around that shell. The `sidebar.js` module owns the rail buttons, `aria-expanded` synchronization, the `Cmd+B`/`Ctrl+B` shortcut, and the mobile `<dialog>` trigger. Keep the link's `aria-current="page"`. Tooltips on icon-only collapsed links are optional and come from the Tooltip component. Do not copy vertical navbar classes, shell markup, or runtime code from `legacy/`.
+Use the `Sidebar` component for this shell. Start with `.sidebar-layout`, an `<aside class="app-sidebar">`, and a `<main>`. Put every route in one flat, labelled `<nav>` of native links and use `data-state="expanded"` or `data-state="collapsed"` for the two widths. Keep the collapse control in `.sidebar-footer` as a full-width labelled button in the expanded state and an icon-only named button in the collapsed state. The `vertical-navbar.html` template adds the breadcrumb header, workspace content, and optional utility rail around that shell. The `sidebar.js` module owns the footer control, `aria-expanded` synchronization, the `Cmd+B`/`Ctrl+B` shortcut, and the mobile `<dialog>` trigger. Keep the link's `aria-current="page"`. Tooltips on icon-only collapsed links are optional and come from the Tooltip component. Do not copy vertical navbar classes, shell markup, or runtime code from `legacy/`.
 
 ### Top navigation
 
@@ -182,7 +182,7 @@ This is the complete current inventory, grouped by the same purpose groups used 
 
 | Component | Native basis | JS | Skill and doc |
 |---|---|---|---|
-| Sidebar | `<aside>` and `<nav>` with `<dialog>` mobile overlay, `<details>` groups, and a button rail | Yes | [`components/sidebar/sidebar.md`](components/sidebar/sidebar.md) · [`docs/sidebar.html`](docs/sidebar.html) |
+| Sidebar | `<aside>` and `<nav>` with a `<dialog>` mobile overlay, a flat link list, and a footer collapse button | Yes | [`components/sidebar/sidebar.md`](components/sidebar/sidebar.md) · [`docs/sidebar.html`](docs/sidebar.html) |
 
 ## Migration candidates and coverage gaps
 
