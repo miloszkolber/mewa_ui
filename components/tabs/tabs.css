@@ -58,7 +58,6 @@
     background: transparent;
     color: var(--muted-foreground);
     cursor: pointer;
-    transition: all var(--duration-fast) ease;
     white-space: nowrap;
     outline: none;
 

@@ -158,9 +158,10 @@
               <div class="sidebar-footer">
                 <span>user@example.com</span>
               </div>
+              <button class="sidebar-rail" type="button" data-sidebar-trigger="demo-sidebar" aria-controls="demo-sidebar" aria-label="Collapse sidebar" aria-expanded="true"></button>
             </aside>
             <div style="flex: 1; padding: var(--space-04); display: flex; align-items: flex-start; gap: var(--space-02); background: var(--background)">
-              <button class="sidebar-trigger" data-sidebar-trigger="demo-sidebar" aria-label="Toggle sidebar">
+              <button class="sidebar-trigger" data-sidebar-trigger="demo-sidebar" aria-controls="demo-sidebar" aria-label="Collapse sidebar" aria-expanded="true">
                 <i data-lucide="panel-left"></i>
               </button>
               <span class="text-muted-foreground" style="font-size: var(--font-body-small); padding-top: var(--space-02)" >Main content area</span>
@@ -192,9 +193,10 @@
       &lt;/details&gt;
     &lt;/div&gt;
     &lt;div class="sidebar-footer"&gt;user@example.com&lt;/div&gt;
+    &lt;button class="sidebar-rail" type="button" data-sidebar-trigger="my-sidebar" aria-controls="my-sidebar" aria-label="Collapse sidebar" aria-expanded="true"&gt;&lt;/button&gt;
   &lt;/aside&gt;
   &lt;main style="flex: 1"&gt;
-    &lt;button class="sidebar-trigger" data-sidebar-trigger="my-sidebar"&gt;
+    &lt;button class="sidebar-trigger" data-sidebar-trigger="my-sidebar" aria-controls="my-sidebar" aria-label="Collapse sidebar" aria-expanded="true"&gt;
       &lt;i data-lucide="panel-left"&gt;&lt;/i&gt;
     &lt;/button&gt;
   &lt;/main&gt;

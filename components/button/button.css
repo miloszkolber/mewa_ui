@@ -15,7 +15,6 @@
     border: var(--border-width-01) solid transparent;
     cursor: pointer;
     text-decoration: none;
-    transition: all var(--duration-fast) ease;
     outline: none;
     flex-shrink: 0;
     height: 2.25rem;

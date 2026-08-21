@@ -16,7 +16,7 @@
     max-width: 16rem;
     width: max-content;
     opacity: 0;
-    transition: opacity var(--duration-fast) ease, translate var(--duration-fast) ease, display var(--duration-fast) allow-discrete;
+    transition: translate var(--duration-fast) ease;
 
     /* -- Default: top center -- */
     position-area: top;

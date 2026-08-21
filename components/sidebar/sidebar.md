@@ -12,6 +12,7 @@
 - [`<details>/<summary>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details) — collapsible groups and submenus without JS toggle logic
 - [`::backdrop`](https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop) — dialog overlay styling
 - [`@starting-style`](https://developer.mozilla.org/en-US/docs/Web/CSS/@starting-style) — slide-in animation for mobile dialog
+- [`<button>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) — keyboard-accessible vertical rail toggle
 - [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus ring on nav links
 - [`overscroll-behavior`](https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior) — prevents scroll chaining in nav area
 - [`prefers-reduced-motion`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) — suppresses all transitions
@@ -57,6 +58,7 @@
       </details>
     </div>
     <div class="sidebar-footer">user@example.com</div>
+    <button class="sidebar-rail" type="button" data-sidebar-trigger="main-sidebar" aria-controls="main-sidebar" aria-label="Collapse sidebar" aria-expanded="true"></button>
   </aside>
 
   <dialog class="sidebar-mobile" id="mobile-sidebar">
@@ -67,7 +69,7 @@
   </dialog>
 
   <main style="flex:1;min-width:0;">
-    <button class="sidebar-trigger" data-sidebar-trigger="main-sidebar" aria-label="Toggle sidebar">
+    <button class="sidebar-trigger" data-sidebar-trigger="main-sidebar" aria-controls="main-sidebar" aria-label="Collapse sidebar" aria-expanded="true">
       <i data-lucide="panel-left"></i>
     </button>
   </main>
@@ -77,11 +79,12 @@
 ### Collapsed
 ```html
 <aside class="app-sidebar" id="main-sidebar" data-state="collapsed">
-  <!-- rail: 3.5rem wide, icons centered, labels hidden -->
+  <!-- rail: a full-height edge control toggles the icon rail -->
+  <button class="sidebar-rail" type="button" data-sidebar-trigger="main-sidebar" aria-controls="main-sidebar" aria-label="Expand sidebar" aria-expanded="false"></button>
 </aside>
 ```
 
-The collapse toggle is a `button.sidebar-trigger` with `data-sidebar-trigger="<sidebar-id>"` placed next to the sidebar (or anywhere in the layout) — it stays reachable in both states. `sidebar.js` toggles `data-state` on the `<aside>`; the CSS does the rest.
+The collapse toggle can be a `button.sidebar-trigger` placed next to the sidebar or a full-height `button.sidebar-rail` inside it. Both use `data-sidebar-trigger="<sidebar-id>"`; `sidebar.js` toggles `data-state` on the `<aside>` and keeps `aria-expanded` synchronized.
 
 ## Variants
 
@@ -95,7 +98,7 @@ The collapse toggle is a `button.sidebar-trigger` with `data-sidebar-trigger="<s
 | *(none)*       | Left (default)                        |
 | `right`        | Right side, border on left            |
 
-In collapsed mode nested submenu nav flattens (no indent, no border) so every icon sits centered on the rail. Pair collapsed links with tooltips — the sidebar demo does this with the Tooltip component so the icon rail stays discoverable.
+In collapsed mode nested submenu nav flattens (no indent, no border) so every icon sits centered on the rail. The full-height `.sidebar-rail` remains keyboard accessible in both states and toggles the sidebar from its edge. Pair collapsed links with tooltips — the sidebar demo does this with the Tooltip component so the icon rail stays discoverable.
 
 ## ARIA
 
@@ -122,5 +125,6 @@ In collapsed mode nested submenu nav flattens (no indent, no border) so every ic
 - **Badges**: `<span class="sidebar-badge">` for notification counts (hidden when collapsed).
 - **Collapsed state**: Icons remain and stay centered; labels, titles, badges, footer, and logo text are hidden.
 - **Toggle**: `sidebar.js` flips `data-state` on click and on `Cmd+B`/`Ctrl+B`. The toggle button lives outside the sidebar so it is always reachable.
+- **Rail**: Add `.sidebar-rail` inside the sidebar for a full-height edge toggle. Set `data-sidebar-trigger` to the sidebar ID and keep `aria-expanded` on the button.
 - **Sidebar tokens**: Uses `--sidebar-*` token group.
 - **Self-contained**: The sidebar needs no other component CSS for its core layout. Tooltips on collapsed icons are an optional enhancement that requires the Tooltip component.

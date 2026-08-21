@@ -24,7 +24,6 @@
     font-size: var(--font-body-small);
     color: var(--foreground);
     cursor: grab;
-    transition: opacity var(--duration-fast) ease, border-color var(--duration-fast) ease;
     user-select: none;
 
     &:active { cursor: grabbing; }

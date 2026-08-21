@@ -13,7 +13,6 @@
     color: var(--foreground);
     outline: none;
 
-    transition: border-color var(--duration-fast);
     resize: vertical;
     field-sizing: content;
 

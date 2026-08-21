@@ -16,7 +16,6 @@
     background: transparent;
     color: var(--muted-foreground);
     cursor: pointer;
-    transition: color var(--duration-fast) ease, background-color var(--duration-fast) ease;
     outline: none;
     flex-shrink: 0;
     height: 2.25rem;

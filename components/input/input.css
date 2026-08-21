@@ -13,8 +13,6 @@
     color: var(--foreground);
     outline: none;
 
-    transition: border-color var(--duration-fast);
-
     &:focus {
       border-color: var(--ring);
       box-shadow:
@@ -70,8 +68,6 @@
         padding: 0 var(--space-03);
         margin-right: var(--space-03);
         cursor: pointer;
-        transition: background var(--duration-fast);
-
         &:hover { background: var(--accent); }
       }
     }

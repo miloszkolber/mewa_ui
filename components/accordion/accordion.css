@@ -41,8 +41,6 @@
     cursor: pointer;
     list-style: none;
     color: var(--foreground);
-    transition: color var(--duration-fast);
-
     &::-webkit-details-marker { display: none; }
     &::marker { content: ''; }
     &:hover { text-decoration: underline; }

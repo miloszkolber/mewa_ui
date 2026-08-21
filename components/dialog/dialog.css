@@ -16,7 +16,7 @@
     box-shadow: 0 0 0 1px var(--border);
     opacity: 0;
     transform: translateY(calc(-1 * var(--size-02))) scale(0.98);
-    transition: opacity var(--duration-base) ease, transform var(--duration-base) ease, display var(--duration-base) allow-discrete;
+    transition: transform var(--duration-base) ease;
 
     &[open] {
       opacity: 1;
@@ -33,7 +33,6 @@
     &::backdrop {
       background: oklch(0 0 0 / 0);
       backdrop-filter: blur(0px);
-      transition: all var(--duration-base) ease, display var(--duration-base) allow-discrete;
     }
 
     &[open]::backdrop {

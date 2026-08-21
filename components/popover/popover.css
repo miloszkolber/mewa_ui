@@ -12,7 +12,7 @@
     width: 20rem;
     opacity: 0;
     translate: 0 calc(-1 * var(--size-01));
-    transition: opacity var(--duration-fast) ease, translate var(--duration-fast) ease, display var(--duration-fast) allow-discrete;
+    transition: translate var(--duration-fast) ease;
 
     /* -- Default: bottom center -- */
     position-area: bottom;

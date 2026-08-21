@@ -78,15 +78,12 @@
     height: 100vh;
     overflow: hidden;
     opacity: 0;
-    transition: opacity var(--duration-base) ease, display var(--duration-base) allow-discrete;
-
     &[open] {
       opacity: 1;
     }
 
     &::backdrop {
       background: oklch(0 0 0 / 0);
-      transition: all var(--duration-base) ease, display var(--duration-base) allow-discrete;
     }
 
     &[open]::backdrop {
@@ -143,8 +140,6 @@
     background: var(--overlay);
     color: var(--foreground);
     cursor: pointer;
-    transition: background var(--duration-fast) ease;
-
     &:hover {
       background: color-mix(in oklch, var(--overlay), var(--color-black) 25%);
     }

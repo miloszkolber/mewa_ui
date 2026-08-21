@@ -21,7 +21,6 @@
     background-color: var(--sidebar);
     border-right: var(--border-width-01) solid var(--sidebar-border);
     flex-shrink: 0;
-    transition: width var(--duration-base) ease;
     overflow-x: clip;   /* clip without clipping focus rings or creating a scroller */
     overflow-y: hidden;
     z-index: var(--z-sidebar);
@@ -35,12 +34,27 @@
     &[data-state="collapsed"] {
       width: var(--sidebar-width-collapsed, var(--size-10));
 
-      & .sidebar-link span,
       & .sidebar-section-title,
       & .sidebar-group-action,
       & .sidebar-badge,
-      & .sidebar-footer,
-      & .sidebar-logo-text { display: none; }
+      & .sidebar-footer { display: none; }
+
+      /* Keep labels in the accessibility tree while removing them from the rail. */
+      & .sidebar-link span:not(.sidebar-badge),
+      & .sidebar-group > summary span,
+      & .sidebar-submenu > summary span,
+      & .sidebar-logo-text {
+        position: absolute;
+        inline-size: var(--border-width-01);
+        block-size: var(--border-width-01);
+        padding: 0;
+        margin: calc(-1 * var(--border-width-01));
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        border: 0;
+        white-space: nowrap;
+      }
 
       & .sidebar-nav { padding: 0; }
       & .sidebar-link { justify-content: center; padding: var(--space-02); }
@@ -48,13 +62,11 @@
 
       /* Group summary: compact row, label and chevron hidden */
       & .sidebar-group > summary { justify-content: center; padding: var(--space-02); }
-      & .sidebar-group > summary span { display: none; }
-      & .sidebar-group > summary svg:last-child { display: none; }
+       & .sidebar-group > summary svg:last-child { display: none; }
 
       /* Submenu: center icon, hide label and chevron, flatten nested nav */
       & .sidebar-submenu > summary { justify-content: center; padding: var(--space-02); }
-      & .sidebar-submenu > summary span { display: none; }
-      & .sidebar-submenu > summary svg:last-child { display: none; }
+       & .sidebar-submenu > summary svg:last-child { display: none; }
       & .sidebar-submenu > .sidebar-nav { padding: 0; border-left: none; margin-left: 0; }
     }
 
@@ -113,7 +125,6 @@
     font-size: var(--font-body-small);
     color: var(--sidebar-foreground);
     text-decoration: none;
-    transition: background-color var(--duration-fast) ease;
     position: relative;
 
     &:hover {
@@ -179,8 +190,6 @@
       cursor: pointer;
       list-style: none;
 
-      transition: background-color var(--duration-fast) ease;
-
       &:hover { background-color: var(--sidebar-accent); }
       &::-webkit-details-marker { display: none; }
 
@@ -208,7 +217,6 @@
       color: var(--sidebar-foreground);
       cursor: pointer;
       list-style: none;
-      transition: background-color var(--duration-fast) ease;
 
       &:hover {
         background-color: var(--sidebar-accent);
@@ -245,6 +253,50 @@
 
     &:hover { color: var(--sidebar-foreground); background-color: var(--sidebar-accent); }
     & svg { width: 0.875rem; height: 0.875rem; }
+  }
+
+  /* ── Vertical rail toggle ──────────────────────────────────── */
+  .sidebar-rail {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    z-index: var(--z-raised);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--size-03);
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: transparent;
+    cursor: ew-resize;
+
+    &::after {
+      content: "";
+      display: block;
+      inline-size: var(--border-width-01);
+      block-size: 100%;
+      background: var(--sidebar-border);
+      opacity: var(--opacity-00);
+    }
+
+    &:hover::after,
+    &:focus-visible::after {
+      opacity: var(--opacity-10);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow:
+        inset 0 0 0 var(--focus-ring-width) var(--sidebar),
+        inset 0 0 0 var(--focus-ring-outer-width) var(--sidebar-ring);
+    }
+  }
+
+  .app-sidebar[data-side="right"] .sidebar-rail {
+    inset-inline-end: auto;
+    inset-inline-start: 0;
+    cursor: ew-resize;
   }
 
   /* ── Sidebar footer ───────────────────────────────────────── */
@@ -297,13 +349,10 @@
     display: flex;
     flex-direction: column;
 
-    opacity: 0;
     translate: -100% 0;
-    transition: opacity var(--duration-base) ease, translate var(--duration-base) ease,
-                display var(--duration-base) allow-discrete;
+    transition: translate var(--duration-base) ease;
 
     &[open] {
-      opacity: 1;
       translate: 0 0;
     }
 
@@ -316,11 +365,7 @@
 
     &::backdrop {
       background: var(--overlay);
-      opacity: 0;
-      transition: opacity var(--duration-base) ease, display var(--duration-base) allow-discrete;
     }
-
-    &[open]::backdrop { opacity: 1; }
 
     & .sidebar-mobile-close {
       position: absolute;
@@ -347,18 +392,14 @@
   }
 
   @starting-style {
-    .sidebar-mobile[open] { opacity: 0; translate: -100% 0; }
-    .sidebar-mobile[open]::backdrop { opacity: 0; }
-    .sidebar-mobile[data-side="right"][open] { opacity: 0; translate: 100% 0; }
+    .sidebar-mobile[open] { translate: -100% 0; }
+    .sidebar-mobile[data-side="right"][open] { translate: 100% 0; }
   }
 
   /* ── Reduced motion ───────────────────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
-    .app-sidebar { transition: none; }
-    .sidebar-link { transition: none; }
     .sidebar-group > summary svg:last-child { transition: none; }
     .sidebar-submenu > summary svg:last-child { transition: none; }
     .sidebar-mobile { transition: none; }
-    .sidebar-mobile::backdrop { transition: none; }
   }
 }

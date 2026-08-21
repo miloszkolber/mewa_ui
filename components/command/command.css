@@ -6,10 +6,10 @@
      margin: auto; position: fixed; inset: 0;
     top: 15%; bottom: auto; overflow: hidden;
     opacity: 0; transform: scale(0.98);
-    transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease, display var(--duration-fast) allow-discrete;
+    transition: transform var(--duration-fast) ease;
 
     &[open] { opacity: 1; transform: scale(1); }
-    &::backdrop { background: oklch(0 0 0 / 0); transition: all var(--duration-fast) ease, display var(--duration-fast) allow-discrete; }
+    &::backdrop { background: oklch(0 0 0 / 0); }
     &[open]::backdrop { background: var(--overlay); }
   }
 

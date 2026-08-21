@@ -34,8 +34,6 @@
     background-color: transparent;
     color: var(--foreground);
     cursor: pointer;
-    transition: background-color var(--duration-fast) ease;
-
     &:hover {
       background-color: var(--accent);
     }
@@ -87,8 +85,6 @@
       background-color: transparent;
       color: var(--foreground);
       cursor: pointer;
-      transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease;
-
       &:hover {
         background-color: var(--accent);
       }

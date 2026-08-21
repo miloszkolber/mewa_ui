@@ -10,7 +10,7 @@
     background-color: var(--popover); color: var(--popover-foreground);
     padding: var(--space-01);  min-width: 10rem;
     opacity: 0; transform: scale(0.95);
-    transition: opacity var(--duration-instant) ease, transform var(--duration-instant) ease, display var(--duration-instant) allow-discrete;
+    transition: transform var(--duration-instant) ease;
 
     &:popover-open { opacity: 1; transform: scale(1); }
   }
@@ -24,8 +24,6 @@
     padding: var(--space-02) var(--space-02); border: none;
     background: transparent; color: var(--popover-foreground);
     font-size: var(--font-body-small); font-family: inherit; text-align: left; cursor: pointer;
-    transition: background-color var(--duration-instant) ease;
-
     &:hover, &[data-highlighted] { background-color: var(--accent); color: var(--accent-foreground); }
     &:focus-visible {
       outline: none;

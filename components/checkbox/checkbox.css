@@ -11,8 +11,6 @@
     cursor: pointer;
     flex-shrink: 0;
     position: relative;
-    transition: background-color var(--duration-fast), border-color var(--duration-fast);
-
     &:checked {
       background-color: var(--primary);
       border-color: var(--primary);

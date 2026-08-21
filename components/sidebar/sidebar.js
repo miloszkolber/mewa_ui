@@ -1,33 +1,52 @@
 // -- Sidebar --------------------------------------------------
 
-function init() {
-document.querySelectorAll('.app-sidebar:not([data-init])').forEach((sidebar) => {
-  sidebar.dataset.init = '';
+function triggerMatchesSidebar(trigger, sidebar) {
+  const targetId = trigger.dataset.sidebarTrigger;
+  return targetId ? targetId === sidebar.id : !sidebar.id;
+}
 
-  // -- Toggle button → collapse/expand -----------------------
-  const triggerId = sidebar.id ? `[data-sidebar-trigger="${sidebar.id}"]` : '.sidebar-trigger';
-  document.querySelectorAll(triggerId).forEach((trigger) => {
+function syncTriggers(sidebar) {
+  const collapsed = sidebar.dataset.state === 'collapsed';
+  document.querySelectorAll('.sidebar-trigger, .sidebar-rail').forEach((trigger) => {
+    if (!triggerMatchesSidebar(trigger, sidebar)) return;
+    trigger.setAttribute('aria-expanded', String(!collapsed));
+    trigger.setAttribute('aria-label', collapsed ? 'Expand sidebar' : 'Collapse sidebar');
+  });
+}
+
+function toggleSidebar(sidebar) {
+  sidebar.dataset.state = sidebar.dataset.state === 'collapsed' ? 'expanded' : 'collapsed';
+  syncTriggers(sidebar);
+}
+
+function init() {
+  document.querySelectorAll('.app-sidebar:not([data-init])').forEach((sidebar) => {
+    sidebar.dataset.init = '';
+
+    document.querySelectorAll('.sidebar-trigger:not([data-init]), .sidebar-rail:not([data-init])').forEach((trigger) => {
+      if (!triggerMatchesSidebar(trigger, sidebar)) return;
+      trigger.dataset.init = '';
+      trigger.addEventListener('click', () => toggleSidebar(sidebar));
+    });
+
+    syncTriggers(sidebar);
+  });
+
+  // -- Mobile dialog triggers --------------------------------
+  document.querySelectorAll('[data-sidebar-mobile]:not([data-init])').forEach((trigger) => {
+    trigger.dataset.init = '';
+    const dialog = document.getElementById(trigger.dataset.sidebarMobile);
+    if (!dialog) return;
+
     trigger.addEventListener('click', () => {
-      const state = sidebar.dataset.state === 'collapsed' ? 'expanded' : 'collapsed';
-      sidebar.dataset.state = state;
+      dialog.showModal();
+    });
+
+    dialog.querySelectorAll('.sidebar-mobile-close:not([data-init])').forEach((button) => {
+      button.dataset.init = '';
+      button.addEventListener('click', () => dialog.close());
     });
   });
-});
-
-// -- Mobile dialog triggers ----------------------------------
-document.querySelectorAll('[data-sidebar-mobile]:not([data-init])').forEach((trigger) => {
-  trigger.dataset.init = '';
-  const dialog = document.getElementById(trigger.dataset.sidebarMobile);
-  if (!dialog) return;
-
-  trigger.addEventListener('click', () => {
-    dialog.showModal();
-  });
-
-  dialog.querySelectorAll('.sidebar-mobile-close').forEach((btn) => {
-    btn.addEventListener('click', () => { dialog.close(); });
-  });
-});
 }
 
 init();
@@ -36,13 +55,11 @@ new MutationObserver(init).observe(document, { childList: true, subtree: true })
 // -- Keyboard shortcut: Cmd+B / Ctrl+B ----------------------
 if (!document.__sidebarKbInit) {
   document.__sidebarKbInit = true;
-  document.addEventListener('keydown', (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'b') {
-      e.preventDefault();
+  document.addEventListener('keydown', (event) => {
+    if ((event.metaKey || event.ctrlKey) && event.key === 'b') {
+      event.preventDefault();
       const sidebar = document.querySelector('.app-sidebar');
-      if (sidebar) {
-        sidebar.dataset.state = sidebar.dataset.state === 'collapsed' ? 'expanded' : 'collapsed';
-      }
+      if (sidebar) toggleSidebar(sidebar);
     }
   });
 }

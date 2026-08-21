@@ -8,7 +8,6 @@
   .breadcrumb-link {
     color: var(--muted-foreground); text-decoration: none;
      outline: none;
-    transition: color var(--duration-fast) ease;
     &:hover { color: var(--foreground); }
      &:focus-visible {
        outline: none;

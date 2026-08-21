@@ -10,7 +10,6 @@
     cursor: pointer;
     position: relative;
     flex-shrink: 0;
-    transition: background-color var(--duration-fast);
     border: none;
     outline: none;
 

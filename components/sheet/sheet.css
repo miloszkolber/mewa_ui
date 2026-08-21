@@ -12,7 +12,7 @@
     max-width: none;
     max-height: none;
     opacity: 0;
-    transition: opacity var(--duration-slow) ease, transform var(--duration-slow) ease, display var(--duration-slow) allow-discrete;
+    transition: transform var(--duration-slow) ease;
 
     &[open] { opacity: 1; }
 
@@ -85,7 +85,6 @@
     &::backdrop {
       background: oklch(0 0 0 / 0);
       backdrop-filter: blur(0px);
-      transition: all var(--duration-slow) ease, display var(--duration-slow) allow-discrete;
     }
 
     &[open]::backdrop {
@@ -143,8 +142,6 @@
     color: var(--muted-foreground);
 
     cursor: pointer;
-    transition: color var(--duration-fast), background-color var(--duration-fast);
-
     &:hover {
       color: var(--foreground);
       background-color: var(--accent);

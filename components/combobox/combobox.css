@@ -52,8 +52,7 @@
     /* -- Animation --------------------------------------------- */
     opacity: 0;
     transform: scale(0.96) translateY(calc(-1 * var(--size-01)));
-    transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease,
-                display var(--duration-fast) allow-discrete;
+    transition: transform var(--duration-fast) ease;
 
     &:popover-open {
       opacity: 1;
@@ -109,8 +108,6 @@
     font-size: var(--font-body-small);
     cursor: pointer;
     outline: none;
-    transition: background var(--duration-instant);
-
     &:hover, &[data-highlighted] {
       background-color: var(--accent);
       color: var(--accent-foreground);

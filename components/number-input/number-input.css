@@ -41,7 +41,6 @@
       cursor: pointer;
       font-size: var(--font-body);
       font-family: var(--font-sans);
-      transition: background var(--duration-fast), color var(--duration-fast);
       flex-shrink: 0;
 
       &:hover {

@@ -5,7 +5,6 @@
     padding: var(--space-02) var(--space-03); border: none;
     background: transparent; color: var(--foreground); font-size: var(--font-body-small); font-weight: var(--font-weight-strong);
     font-family: inherit; text-decoration: none; cursor: pointer;
-    transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease;
     outline: none;
     &:hover { background-color: var(--accent); color: var(--accent-foreground); }
     &:focus-visible {
@@ -27,7 +26,7 @@
     background-color: var(--popover); color: var(--popover-foreground);
     padding: var(--space-04);  min-width: 14rem;
     opacity: 0; transform: translateY(calc(-1 * var(--size-01)));
-    transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease, display var(--duration-fast) allow-discrete;
+    transition: transform var(--duration-fast) ease;
 
     /* -- Anchor positioning -- */
     top: anchor(bottom); left: anchor(left); margin-top: var(--space-01);
@@ -39,7 +38,6 @@
   .nav-menu-content-link {
     display: block; padding: var(--space-02) var(--space-03);
     text-decoration: none; color: var(--foreground); font-size: var(--font-body-small);
-    transition: background-color var(--duration-fast) ease;
     &:hover { background-color: var(--accent); }
     &:focus-visible {
       outline: none;

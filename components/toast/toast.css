@@ -33,7 +33,7 @@
     pointer-events: auto;
     opacity: 0;
     transform: translateY(var(--size-02));
-    transition: opacity var(--duration-base) ease, transform var(--duration-base) ease;
+    transition: transform var(--duration-base) ease;
 
     &:popover-open {
       opacity: 1;
@@ -122,8 +122,6 @@
     color: var(--muted-foreground);
     cursor: pointer;
     flex-shrink: 0;
-
-    transition: color var(--duration-fast), background var(--duration-fast);
 
     &:hover {
       color: var(--foreground);

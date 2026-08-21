@@ -41,7 +41,6 @@
       color: var(--foreground);
       cursor: pointer;
 
-      transition: background-color var(--duration-fast) ease, opacity var(--duration-fast) ease;
       font-size: var(--font-body-small);
       z-index: var(--z-raised);
 
@@ -75,7 +74,7 @@
       padding: 0;
       cursor: pointer;
       background-color: var(--border);
-      transition: background-color var(--duration-fast) ease, scale var(--duration-fast) ease;
+      transition: scale var(--duration-fast) ease;
 
       &[aria-current="true"] {
         background-color: var(--foreground);
