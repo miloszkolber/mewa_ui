@@ -56,6 +56,6 @@
 
 ## Notes
 
-- Uses `appearance: none` with a custom chevron via `background-image` SVG.
+- Keeps the browser-native arrow so keyboard, high-contrast, and forced-colors modes retain their platform affordance.
 - The dropdown list is rendered by the browser — it cannot be styled.
 - For a fully custom dropdown, use the Combobox component instead.

@@ -318,6 +318,7 @@
 
   /* ── Mobile sidebar (<dialog> sheet overlay) ──────────────── */
   .sidebar-mobile {
+    display: none;
     border: none;
     padding: 0;
     margin: 0;
@@ -330,12 +331,12 @@
     color: var(--text-primary);
     z-index: var(--z-sidebar-mobile);
     overflow: hidden;
-    display: flex;
     flex-direction: column;
 
     translate: -100% 0;
 
     &[open] {
+      display: flex;
       translate: 0 0;
     }
 

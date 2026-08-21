@@ -1,174 +1,76 @@
-# mewa_ui — Maintainer Instructions
+# mewa_ui — Maintainer instructions
 
-You are working on the **mewa_ui** design system, a fork of
-[shadcn-html](https://github.com/codylindley/shadcn-html) at upstream commit
-`0964e09e` (v0.7.13-alpha), MIT. The consumer-facing system lives at the
-repository root: `components/`, `src/base.css`, `src/tokens.css`, and the `docs/` site.
+You are working on **mewa_ui**, a fork of [shadcn-html](https://github.com/codylindley/shadcn-html) at upstream commit `0964e09e` (v0.7.13-alpha), MIT. The current consumer-facing system is the repository root: `src/`, `components/`, `docs/`, and the canonical application-shell location `layouts/`.
 
-Radii, shadows, and serif fonts are deliberately removed. Geometry is square;
-circular geometry exists only where meaning requires it (avatars, radios,
-switches, progress). Elevation is expressed with `--border-primary`, never shadows.
+## Source-of-truth boundaries
 
----
+New work must use the current source tree:
+
+- `src/base.css` owns static foundations, font faces, palette primitives, typography, geometry, and browser defaults.
+- `src/tokens.css` owns light and dark semantic color roles.
+- `src/icons/` owns the local Lucide SVG files.
+- `components/` owns the 54 current component folders. Each has a skill (`{name}.md`) and stylesheet (`{name}.css`), with `{name}.js` only when the documented behavior needs a module.
+- `docs/` owns the static reference site, one HTML page per current component.
+- `layouts/` is the only canonical home for reusable application shells. The current two templates are `layouts/vertical-navbar.html` for a left collapsible rail and `layouts/horizontal-navbar.html` for top navigation. `layouts/layouts.css` owns template-only rules and `layouts/layouts.js` provides local icon inlining and the optional theme toggle. Do not use a legacy layout as a substitute.
+
+`legacy/` is read-only historical reference and migration input. It is never a runtime resource, import, example, test fixture, demo, layout, compatibility dependency, or implementation source. Do not load, link, serve, copy, or edit anything under `legacy/` for current work. Do not reuse its classes, `data-ui-*` hooks, tokens, markup, scripts, fonts, icons, snippets, or layout documents as current APIs. Read it only to understand history or to identify migration input, then reimplement the needed behavior under `src/`, `components/`, `docs/`, or `layouts/` using this contract. The root `core-ui.css` is also a read-only migration artifact, not a stylesheet for consumers.
 
 ## Project structure
 
 ```
 ui_library/
-├── src/base.css                   ← static foundation (palette, fonts, typography, geometry)
+├── src/base.css                   ← static foundation
 ├── src/tokens.css                 ← theme-dependent semantic color tokens
-├── src/geist.woff2, geistmono.woff2 ← the only fonts (Geist variable, 400–550)
-├── src/icons/                         ← the full Lucide icon set (standalone SVGs, no CDN)
-├── components/                      ← self-contained component folders
+├── src/geist.woff2                ← Geist variable font, 400–550
+├── src/geistmono.woff2            ← Geist Mono variable font, 400–550
+├── src/icons/                     ← standalone local Lucide SVG files
+├── components/                    ← 54 self-contained component folders
 │   └── {name}/
-│       ├── {name}.md                ← component skill (HTML structure & ARIA reference)
-│       ├── {name}.css               ← component stylesheet (edit directly)
-│       └── {name}.js                ← interaction JS (only for interactive components)
-├── docs/                            ← doc site (one page per component, no overview page)
-│   ├── *.html                       ← component pages (no index.html)
-│   ├── css/docs-utilities.css       ← hand-written utility classes for doc pages
-│   ├── css/docs-theme.css           ← doc-site font overrides (Geist from src/, not part of the system)
-│   ├── css/layout.css               ← doc-site layout (not part of the system)
-│   ├── js/layout.js                 ← SPA router, <site-header>/<site-nav> web components
-│   ├── js/site.js                   ← doc-site-only JS (copy buttons, TOC links)
-│   ├── js/shiki-highlight.js        ← Shiki-based syntax highlighting (ES module, CDN)
-│   └── js/sync-css-snippets.js, sync-js-snippets.js ← snippet sync scripts (node, no deps)
-├── legacy/                          ← previous hand-rolled mewa_ui (porting source only)
-└── AGENTS.md                        ← this file (maintainer instructions)
+│       ├── {name}.md              ← native basis, structure, variants, ARIA, and notes
+│       ├── {name}.css             ← component stylesheet
+│       └── {name}.js              ← module only when required or explicitly optional
+├── docs/                          ← one static page per component plus doc-site scripts
+├── layouts/                       ← canonical left-rail and top-navigation templates
+├── legacy/                        ← read-only historical and migration material
+├── core-ui.css                    ← read-only migration artifact
+└── README.md                     ← consumer guide and complete component inventory
 ```
 
----
+The complete component inventory is maintained in `README.md`. It is grouped as Primitives, Actions, Forms and inputs, Data display, Feedback and status, Overlays, Navigation, and Application, matching the purpose groups in `docs/js/layout.js`. It records each component's native basis, JS requirement, skill path, and doc path. Treat that table as the human-readable manifest. Verify it against the actual component directories and docs pages whenever a component changes.
 
-## Critical rules
+## Visual and motion contract
 
-### Native web platform first
+- The system is monochrome at rest. Red, amber, and green communicate status. Consume semantic roles from `src/tokens.css`, not raw palette values.
+- Geometry is square by default. `--border-radius` is zero. The sole full-circle token, `--radius-full`, and explicit 50% circles are reserved for meaningful circular objects such as avatars, radios, progress, and skeleton avatars. Do not add a radius scale or rounded containers.
+- Shadows are forbidden in the canonical source. Use `--border-primary` and the other border roles to express separation and elevation. Do not add `box-shadow`, `text-shadow`, shadow tokens, or visual elevation halos.
+- The canonical source is motionless. Do not add `animation`, `transition`, smooth scrolling, View Transitions, scroll-driven animation, Web Animations, `@starting-style`, `transition-behavior`, shimmer, or spinning loaders. State changes, disclosure, popovers, dialogs, sheets, tabs, drag updates, and SPA navigation are immediate. If an embedding application adds motion outside this repository, it owns `prefers-reduced-motion` handling.
+- Keep `:focus-visible`, `prefers-contrast: more`, `forced-colors: active`, and `prefers-color-scheme` behavior usable. Do not rely on motion, color alone, or a pointer-only affordance to communicate state.
+- The only shipped fonts are Geist and Geist Mono from `src/`. Do not introduce serif or remote font dependencies.
 
-Every component starts from a native HTML element or browser API. If the browser
-can do it, we don't write JavaScript for it.
+## Native web platform first
 
-**HTML elements & attributes**
+Start every component from a native element or browser API. If the platform provides the behavior, keep it native and do not write a replacement runtime.
 
-- Use `<dialog>` for modals — not divs with JS show/hide
-- Use `popover` API for dropdowns, tooltips, toasts — not JS positioning
-- Use `popover="hint"` for tooltips — not `popover="auto"` (hints don't
-  close other popovers)
-- Use `<details>/<summary>` for accordions — not JS toggle logic
-- Use `<details name="group">` for exclusive (single-open) accordions — not
-  JS that closes siblings
-- Use `commandfor` / `command` attributes for declarative button→dialog/popover
-  triggers — not JS click handlers that call `showModal()` or `togglePopover()`
-- Use `<progress>` for completion indicators — not div-based progress bars
-- Use `<meter>` for scalar values in a range — not custom gauge components
-- Use `<output>` for computed/live results — not manual `aria-live` regions
-- Use `inert` attribute to disable interaction on background content — not
-  JS focus traps or `aria-hidden` toggling
-- Use `loading="lazy"` for images/iframes — not JS lazy load libraries
-- Use `autofocus` in dialogs/popovers — not JS `.focus()` calls
-- Use `inputmode` for mobile keyboard hints — not separate input types
-- Use `enterkeyhint` for mobile Enter key labels (`search`, `send`, `go`)
-- Use `autocomplete` with proper field names — not custom autofill
-- Use `<datalist>` for native type-ahead suggestions — not custom dropdowns
-- Use `fetchpriority` for resource priority hints (`high`/`low`)
-- Use `disabled` / `readonly` for native form states — not JS class toggling
+- Use `<dialog>` and `showModal()` for modal surfaces. Use `::backdrop` for the modal scrim.
+- Use the Popover API and CSS anchor positioning for popovers, tooltips, dropdown panels, and non-modal top-layer content. Use `popover="hint"` for tooltips.
+- Use `<details>/<summary>` for disclosures, accordion items, sidebar groups, and submenus. Use the module only for a documented single-open or coordination behavior.
+- Use `commandfor`/`command` or `popovertarget` for declarative trigger wiring when the component skill specifies it. Do not add imperative click handlers for behavior the markup already provides.
+- Use `<progress>` for completion and `<meter>` for a scalar measurement in a bounded range.
+- Use `<output>` for computed values and status values that belong to a control.
+- Use `inert` for non-interactive background content when a native modal does not already provide it.
+- Use `loading="lazy"` for non-critical images and iframes, `autofocus` where a dialog or popover needs an initial focus target, `inputmode` and `enterkeyhint` for mobile input hints, and `autocomplete` with the correct field name. Use JavaScript focus only for documented restoration or keyboard coordination.
+- Use `<datalist>` for native suggestions where it meets the requirement. Use `disabled` and `readonly` for native form states, not class toggles.
+- Use logical properties, CSS Grid, Flexbox, intrinsic sizing, container queries, CSS math, `:has()`, `:is()`, and `:where()` where the implementation needs them. Keep the browser behavior understandable without a framework.
 
-**CSS**
+## Accessibility requirements
 
-- Use `@starting-style` + `transition-behavior: allow-discrete` for
-  enter/exit animations on `display: none` elements — not JS class toggling
-- Use CSS anchor positioning for popover placement — not Floating UI / Popper
-- Use `::backdrop` + `backdrop-filter` for dialog/sheet overlays — not
-  JS-managed overlay divs or canvas blur
-- Use `:has()` for parent-state reactions — not JS class propagation
-- Use `:focus-visible` for keyboard-only focus rings — not JS focus detection
-- Use `:user-valid` / `:user-invalid` for post-interaction validation
-  styling — not JS blur listeners with class toggling
-- Use `field-sizing: content` for auto-growing textareas — not JS resize
-- Use `oklch()` and relative color syntax for wide-gamut, derived colors — not
-  hardcoded hex/hsl palettes
-- Use `color-mix(in oklch, ...)` for hover/disabled color derivation — not
-  Sass `darken()`/`lighten()` or hardcoded variants
-- Use `light-dark()` for inline dark mode values — not media queries or
-  class toggles when `color-scheme` is already set
-- Use `color-scheme` property for dark mode browser defaults — not all-manual
-  dark overrides on every native element
-- Use `accent-color` for theming native form controls — not custom replacements
-- Use `text-wrap: balance` for headings and labels — not JS text-balancing
-- Use `text-wrap: pretty` for body text orphan prevention — not manual `&nbsp;`
-- Use `overscroll-behavior: contain` on scroll containers inside overlays — not
-  JS scroll-lock libraries
-- Use `scroll-snap` for carousel/slider snap points — not JS snap calculations
-- Use `scrollbar-gutter: stable` to prevent layout shift from scrollbars — not
-  padding hacks
-- Use individual transform properties (`rotate`, `scale`, `translate`) — not
-  compound `transform` strings
-- Use CSS nesting, `@layer`, container queries — not preprocessors
-- Use `aspect-ratio` for intrinsic ratios — not padding-bottom hacks
-- Use `content-visibility` for expand/collapse transitions — not JS lazy rendering
-- Use `interpolate-size: allow-keywords` for animating to `auto` height — not
-  JS measurement or `max-height` hacks
-- Use `@property` for typed, animatable custom properties — not JS animation
-  of CSS values
-- Use scroll-driven animations (`animation-timeline: scroll()` / `view()`) for
-  scroll-linked effects — not scroll listeners or IntersectionObserver
-- Use View Transitions API for smooth DOM state changes — not JS crossfades
-- Use `@supports` for CSS feature detection — not Modernizr or JS detection
-- Use logical properties (`margin-inline`, `padding-block`) for RTL support — not
-  separate LTR/RTL stylesheets
-- Use subgrid for aligned child layouts — not manually synchronized columns
-- Use dynamic viewport units (`dvh`, `svh`, `lvh`) — not JS `innerHeight` hacks
-- Use CSS math functions (`clamp()`, `min()`, `max()`) for responsive sizing — not
-  JS resize calculations
-- Use `:is()` / `:where()` for selector grouping — not repeated selectors
-- Use `hanging-punctuation` for optical quote alignment — not negative text-indent
-- Use `@layer` + descriptive prefixed class names (`card-header`, `slider-track`) for
-  style scoping — not `@scope` (generic class names lose context for AI generation)
-  or Shadow DOM
-- Use `@media (scripting)` for no-JS progressive enhancement — not `<noscript>` alone
+Keep semantic elements, accessible names, labels, descriptions, IDs, and `aria-*` relationships from the skill examples. Use native keyboard behavior first. Follow the relevant WAI-ARIA pattern only when no native element provides the interaction. Every pointer or drag interaction needs a keyboard path and an announcement or visible status when its result is not otherwise clear. Test focus visibility, keyboard order, 200% zoom, narrow widths, `prefers-contrast: more`, forced colors, and the no-JavaScript fallback where the skill documents one.
 
-**Accessibility (REQUIRED)**
+## JavaScript contract
 
-- Use `prefers-reduced-motion: reduce` to suppress/simplify all animations — not
-  ignoring motion preferences (this is an accessibility requirement, not optional)
-- Use `prefers-contrast: more` to increase contrast when requested
-- Use `forced-colors: active` to support Windows High Contrast Mode with system colors
-- Use `prefers-color-scheme` for automatic dark mode defaults
+JavaScript is only for behavior that HTML and CSS cannot express: keyboard navigation patterns, focus management, state coordination, filtering, positioning hooks, and drag or pointer coordination. Use modern ES modules with no framework and no runtime dependency.
 
-**JavaScript (only when HTML/CSS cannot express it)**
-
-- Use Web Animations API (`el.animate()`) for imperative animations — not CSS
-  class toggling when JS needs to coordinate timing
-- Use `Intl` APIs (`DateTimeFormat`, `NumberFormat`, `RelativeTimeFormat`,
-  `ListFormat`) for locale-aware formatting — not moment.js or date-fns
-- Use native Drag and Drop API for reordering — not SortableJS or drag libraries
-- Use `CustomEvent` for component-to-component communication — not framework
-  event systems
-- Use `element.checkVisibility()` for visibility detection — not manual
-  offset calculations
-- Use `IntersectionObserver` for viewport-entry detection — not scroll listeners
-  with `getBoundingClientRect()`
-- Use `ResizeObserver` for element size changes — not window resize listeners
-- Use `MutationObserver` for DOM change reactions — not polling loops
-- Use `navigator.clipboard` for clipboard access — not `document.execCommand('copy')`
-- Use `CloseWatcher` for platform close signals in custom UI — not manual
-  Escape key listeners
-- Use `AbortController` for canceling fetches/listeners — not boolean flags
-- Use `FormData` for form serialization — not manual value collection loops
-- Use `structuredClone()` for deep cloning — not `JSON.parse(JSON.stringify())`
-- Use `ElementInternals` for custom form elements — not hidden input proxies
-- Use Navigation API for SPA routing — not History API hacks
-
-JavaScript is only for behavior that HTML and CSS cannot express: keyboard
-navigation patterns, focus management, and state coordination between elements.
-Use modern ECMAScript (ES modules, arrow functions, `const`/`let`, etc.) —
-no libraries, no frameworks.
-
-All `querySelectorAll` loops that add event listeners **must** guard against
-double-initialization using `:not([data-init])` in the selector and setting
-`element.dataset.init = ''` as the first line inside the loop.
-
-Component JS files wrap initialization in an `init()` function, call it once,
-then use a `MutationObserver` to auto-initialize new elements after SPA
-navigation or dynamic DOM changes:
+Every component module must be safe to load more than once and must initialize markup added after SPA navigation. A per-element listener loop must use `:not([data-init])` and set `element.dataset.init = ''` as its first operation. Wrap initialization in `init()`, call it once, then observe the document with a `MutationObserver`:
 
 ```js
 function init() {
@@ -182,215 +84,77 @@ init();
 new MutationObserver(init).observe(document, { childList: true, subtree: true });
 ```
 
-For document-level event delegation (no per-element loop), use a global flag:
+Document-level delegation must use a global guard:
+
 ```js
 if (!document.__myComponentInit) {
   document.__myComponentInit = true;
-  document.addEventListener('click', (e) => { /* … */ });
+  document.addEventListener('click', (event) => { /* … */ });
 }
 ```
 
-### Each component is a self-contained folder
+Use `Intl` for locale-aware formatting, `CustomEvent` for component communication, `IntersectionObserver` for viewport entry, `ResizeObserver` for size changes, `MutationObserver` for DOM changes, `navigator.clipboard` for clipboard access, `AbortController` for cancellation, `FormData` for form serialization, and `structuredClone()` for deep copies. Do not use animation APIs, focus-trap libraries, positioning libraries, polling loops, manual `innerHeight` calculations, or ad hoc History API routing in component modules. The doc-site-only router is an explicit exception and keeps its existing `pushState`/`popstate` implementation.
 
-Each component at `components/{name}/` contains:
-- `{name}.md` — component skill: HTML structure, attributes, ARIA, and usage notes
-- `{name}.css` — the component stylesheet (edit directly)
-- `{name}.js` — interaction JS (only for interactive components, edit directly)
+## Tokens and CSS architecture
 
-The component skill `{name}.md` file documents **how to build the HTML**. The `.css` and `.js` files
-are the actual implementation — edit them directly, no build step needed.
+Load `src/base.css` before `src/tokens.css`. The base file contains static primitives such as the Geist faces, color primitives, typography, border widths, spacing, and the zero default radius. The token file contains `:root` light roles and `.dark` dark roles for `--background*`, `--surface-*`, `--text-*`, `--border-*`, and `--chart-*` values. Component stylesheets belong in `@layer components`; typography may also use `@layer base`; token declarations stay outside component layers. Consumer overrides loaded after both foundation files win without editing source tokens.
 
-### Tokens are the source of truth for design values
+Do not use literal palette colors or recreate a spacing-token taxonomy inside a component. Use existing semantic roles and the current static dimensions. Keep the square, border-led contract. `--radius-full` is the only shared circular radius token and is not a general component radius API.
 
-`src/base.css` defines static CSS custom properties and font faces. `src/tokens.css`
-defines theme-dependent semantic color tokens. Load `base.css` first and
-`tokens.css` second so the semantic tokens can reference the static primitives.
+## Canonical shells
 
-The base file provides:
-- Primitive color tokens (Tailwind v4 palette: red, amber, green, neutral, black, white)
-- Font faces, font stacks, typography sizes, line heights, weights, and tracking
-- Border-width tokens
+### Left collapsible rail
 
-The token file provides:
-- Semantic color roles (`--surface-*`, `--text-*`, and `--border-*`) for light and dark modes
-- Sidebar and chart roles for light and dark modes
+The left-rail template at `layouts/vertical-navbar.html` uses `components/sidebar/`. Its semantic shell is `.sidebar-layout` with an `<aside class="app-sidebar">` and a `<main>`. The sidebar skill defines the `<nav>`, `<details>/<summary>` groups, nested submenus, `aria-current="page"`, collapsed `data-state`, and optional mobile `<dialog>`. The template adds a breadcrumb header, workspace content, and optional utility rail around the sidebar. `sidebar.js` synchronizes `aria-expanded`, toggles expanded/collapsed state, supports `Cmd+B`/`Ctrl+B`, and wires the mobile dialog. The rail remains keyboard reachable in both states. Use Tooltip for optional labels on icon-only collapsed links. Do not re-create a second sidebar implementation in `layouts/` and do not copy a legacy vertical navbar.
 
-Radii, shadows, and serif fonts were deliberately removed in this fork. Never
-reintroduce `--radius-*`, `--shadow-*`, or serif font tokens; components must
-stay square and border-led.
+### Top navigation
 
-### Documentation site architecture
+The top-navigation template at `layouts/horizontal-navbar.html` uses `components/layout/` primitives, a semantic `<header>`, and a labelled `<nav>` of native `<a>` routes with an action cluster. Keep route navigation as links, hide decorative icons from assistive technology, and keep layout-only behavior in `layouts/layouts.js`. Use `components/navigation-menu/` only when a layout needs its documented Popover API route group and anchor pairing. Route navigation is not a tablist. Do not revive legacy horizontal-navbar classes or assets.
 
-The doc site is fully static. Serve `docs/` with any static
-server (e.g. `python3 -m http.server` or `bunx serve`) and open a page.
+Both shells must be responsive without adding motion. Keep the keyboard path and visible focus at every width. Layout-local CSS and JavaScript belong under `layouts/`, use current components and tokens, and must be documented without links to `legacy/`.
 
-The doc site is a **SPA-style multi-page app** with no landing/overview page. `layout.js` loads synchronously in
-`<head>` and provides:
+## Documentation site architecture
 
-- `<site-header>` — renders the fixed header (brand, dark mode toggle)
-- `<site-nav>` — renders the sidebar from a centralized `NAV` array, auto-detecting the active page
-- **SPA router** — intercepts nav clicks, fetches HTML, swaps `<main>` content
-  without full-page reloads (uses View Transitions API for smooth crossfade)
+The doc site is static and has one HTML page per current component. There is no landing page or `docs/index.html`; serve `docs/` over HTTP and start at `typography.html`. `docs/js/layout.js` loads synchronously, defines `<site-header>` and `<site-nav>`, centralizes `NAV` and `BUILT`, and runs an SPA-style main-content swap. The swap is explicitly instant and has no View Transition or other animation. `docs/js/site.js` owns doc-site-only icon loading, copy buttons, table-of-contents links, and page-ready hooks.
 
-**Sidebar nav is centralized in `layout.js`.** To add or reorder nav links, edit
-the `NAV` array and the `BUILT` set in that one file — individual HTML pages
-do not contain nav markup.
+Every doc page currently loads the foundation styles and the complete current component CSS list, then the current component modules needed by the doc demos. This is a documentation-site convenience, not the consumer include pattern. When adding a component, add its CSS link and module script to every existing HTML page where the doc-site convention requires them, add the page to `NAV` and `BUILT`, and verify that all referenced files exist. Consumers should load only the assets for the components they use.
 
-Each HTML page loads `src/base.css` followed by `src/tokens.css`, then duplicates
-the full list of component CSS `<link>` tags in `<head>` and component JS
-`<script>` tags at end of `<body>`. When adding a new component, these imports
-must be added to **every** HTML file.
+Current docs contain copyable HTML examples. They do not use generated CSS or JavaScript source snippets. The `docs/js/sync-css-snippets.js` and `docs/js/sync-js-snippets.js` files are retained but are not a required current workflow. Do not add a new source-of-truth mechanism that diverges from `components/{name}/{name}.css` or `{name}.js`.
 
----
+## Adding or changing a component
 
-## Using the system
+1. Inspect the current source, the matching README inventory row, and the relevant native element or API before editing.
+2. For a new component, create `components/{name}/` with `{name}.md` and `{name}.css`. Add `{name}.js` only when the native basis cannot provide the documented interaction. Keep the skill focused on markup, attributes, ARIA, keyboard behavior, and notes. The CSS and JS files are the implementation source of truth.
+3. Before writing a new skill or doc page, review the matching shadcn/ui and Basecoat UI pages for a feature checklist. Review the WAI-ARIA APG, MDN, Open UI, and Base UI references for the native implementation. Prefer the native platform even when a reference site uses a framework.
+4. Create `docs/{name}.html` from a current component page. Keep examples sentence case, accessible, motionless, and limited to implemented variants and states.
+5. Add the page to `docs/js/layout.js` in the purpose group that matches the inventory. Update both `NAV` and `BUILT`.
+6. Add the component stylesheet and, when applicable, module imports to every doc page following the existing doc-site convention. Check relative paths from `docs/`.
+7. Update the 54-row README inventory with the exact native basis, JS requirement, skill path, and doc path. Verify the row against the actual directory and files.
+8. Check all changed JavaScript with Node syntax checking, serve the doc site over HTTP, and exercise keyboard, focus, narrow-width, forced-colors, and no-JavaScript paths that apply. Do not use the removed legacy catalog or its test contract as validation.
 
-### Include pattern
+Do not silently add a new component family, layout template, token namespace, dependency, or compatibility alias. Raise an ambiguity before choosing a product or architecture boundary that is not supported by the current source.
 
-Link `src/base.css` first, `src/tokens.css` second, then the stylesheets of only
-the components you use:
+## Reference sites for new components
 
-```html
-<link rel="stylesheet" href="src/base.css">
-<link rel="stylesheet" href="src/tokens.css">
-<link rel="stylesheet" href="components/button/button.css">
-<link rel="stylesheet" href="components/dialog/dialog.css">
-<!-- JS — only when the component needs it -->
-<script type="module" src="components/dialog/dialog.js"></script>
-```
+Before writing a component skill or documentation page, fetch and review the matching pages on these sites when an applicable page exists. Component names and URL slugs differ between projects. Use the site's component search when the obvious `{name}` URL is not valid, and record an unavailable reference as an evidence gap rather than copying a different pattern. MDN and the WAI-ARIA APG remain the fallback authority for native behavior and keyboard requirements.
 
-Read the component skill, copy the HTML pattern, fill in your content. Serve over
-HTTP — ES modules do not run from `file://`.
+1. **shadcn/ui** — `https://ui.shadcn.com/docs/components/{name}`
+2. **Basecoat UI** — `https://basecoatui.com/components/{name}/`
+3. **WAI-ARIA APG** — `https://www.w3.org/WAI/ARIA/apg/patterns/{name}/`
+4. **MDN Web Docs** — `https://developer.mozilla.org/`
+5. **Open UI** — `https://open-ui.org`
+6. **Base UI** — `https://base-ui.com/react/components/{name}`
 
-### Icons
-
-All icons ship locally as standalone SVGs in `src/icons/`. Write
-`<i data-lucide="name">` and let the doc site's loader in `docs/js/site.js`
-fetch `src/icons/{name}.svg` and inline it at page load — no CDN. Consumers
-must never load the Lucide CDN; copy the loader or inline the SVG directly.
-
-### Theming
-
-Static design values live in `src/base.css`. Theme-dependent semantic values live
-in `src/tokens.css` as `:root` (light) and `.dark` (dark) custom properties.
-Swap the token blocks with an exported theme and every component updates
-instantly. To override individual tokens, add a stylesheet *after* the tokens link.
-
-### Dark mode
-
-Add or remove `class="dark"` on the `<html>` element. Every token switches
-automatically via `color-scheme` and the `.dark` block. The doc site header
-toggle shows the pattern: a `prefers-color-scheme` media query for the default,
-`localStorage` for the user's manual choice, and a button that flips the class.
-
-### Data attribute API
-
-Components are configured with `data-*` attributes instead of props:
-`data-variant`, `data-size`, `data-state`, and component-specific ones like
-`data-ratio`. The CSS and JS react to these attributes directly, so markup is
-the only API. Each component skill documents its attributes.
-
-### CSS architecture
-
-Component stylesheets live in `@layer components` (typography additionally uses
-`@layer base`); tokens are plain custom properties outside any layer. Author
-overrides outside the layers always win.
-
-### Visual contract
-
-- Semantic color roles from `src/tokens.css`; red, amber,
-  and green communicate status.
-- Focus rings via `--ring` with `:focus-visible`. All animation respects
-  `prefers-reduced-motion`, `prefers-contrast: more`, and `forced-colors: active`.
-- Keep native form submission and fallback behavior. Do not remove labels,
-  `aria-*` relationships, live regions, or keyboard instructions. Provide a
-  keyboard path for drag or pointer interactions.
-- Keep the square, border-led contract: no radii, no shadows, circular geometry
-  only where meaning requires it.
-
----
-
-## Adding a new component
-
-### Reference sites (REQUIRED)
-
-Before writing any component skill or documentation page, **fetch and review** the component on these sites:
-
-#### Feature checklist (what to build)
-1. **shadcn/ui** → `https://ui.shadcn.com/docs/components/{name}`
-2. **Basecoat UI** → `https://basecoatui.com/components/{name}/`
-
-These define the completeness bar. Every variant, size, state, and composition pattern
-shown on those pages must be accounted for in the component skill and doc page — adapted
-to our semantic HTML / CSS custom property / vanilla JS model. Do not copy their markup;
-use them as a feature checklist.
-
-#### Native implementation (how to build it)
-3. **WAI-ARIA APG** → `https://www.w3.org/WAI/ARIA/apg/patterns/{name}/` — canonical keyboard navigation and ARIA patterns
-4. **MDN Web Docs** → `https://developer.mozilla.org/` — authoritative reference for HTML elements, CSS properties, and JS APIs
-5. **Open UI** → `https://open-ui.org` — W3C community group defining native component standards
-6. **Base UI** → `https://base-ui.com/react/components/{name}` — headless component architecture (closest to our approach in spirit)
-
-Always prefer native browser APIs over JS workarounds. Check MDN for the latest
-support status of newer APIs (`popover`, anchor positioning, `@starting-style`, etc.).
-
-### Steps
-
-1. **Create the component folder** → `components/{name}/`
-
-2. **Write the component skill** → `components/{name}/{name}.md`
-   - Follow the template: Native basis → Native Web APIs → Structure → Variants → Sizes → ARIA → Notes
-   - Documents the HTML pattern, not CSS/JS (those are the actual files)
-   - Cross-check variants, sizes, and states against the reference sites above
-
-3. **Write the CSS** → `components/{name}/{name}.css`
-   - Edit directly — no build step
-
-4. **Write the JS** (if interactive) → `components/{name}/{name}.js`
-   - Plain ES module — wrap initialization in an `init()` function
-   - Call `init()` immediately, then add `new MutationObserver(init).observe(document, { childList: true, subtree: true });`
-   - This auto-initializes new elements after SPA navigation or dynamic DOM changes
-   - No `export`, no `window.onPageReady` — just the init function + MutationObserver
-
-5. **Create the doc page** → `docs/{name}.html`
-   - Copy an existing component page as template (e.g., badge.html)
-   - Add `<link rel="stylesheet" href="../components/{name}/{name}.css">` to the head
-   - Add `<script type="module" src="../components/{name}/{name}.js"></script>` if interactive
-   - Replace demo content with working examples
-
-6. **Update layout.js** → add the component to the `NAV` array and `BUILT` set
-   in `docs/js/layout.js` (this is the single source of truth for sidebar nav)
-
-7. **Add CSS/JS imports to all HTML pages** → add the new component's `<link>` and
-   `<script>` tags to every HTML file in `docs/`
-
-8. **Sync inline source snippets** → run `node docs/js/sync-css-snippets.js` and
-    `node docs/js/sync-js-snippets.js` to replace the inline `<pre><code>` blocks in
-    every doc page with the actual contents of each component's `.css` and `.js` files.
-    This must be done after any change to a component's CSS or JS — not just for new components.
-
----
+Use the first two as a feature checklist and the remaining references for the native and accessibility implementation. Do not copy framework markup. Do not document a feature merely because a reference site has it; confirm that the current mewa_ui source supports it.
 
 ## Common pitfalls
 
-- **Dialog/Sheet centering**: Always set `margin: auto; position: fixed; inset: 0;`
-  explicitly for centered dialogs.
-- **CSS drift**: If the component skill's variant/size tables don't match the `.css` file,
-  update the component skill to stay in sync — the `.css` file is the source of truth for styles.
-- **CSS/JS import drift**: When adding a component, you must add its `<link>` and
-  `<script>` tags to ALL HTML pages. Missing imports cause components in cross-page
-  demos to break silently.
-- **SPA re-initialization**: Component JS modules use `MutationObserver` to
-  auto-initialize new elements when the DOM changes — no manual re-import needed.
-  Doc-site-only scripts (site.js) use `window.onPageReady(fn)` for their own re-init.
-- **Font stacks**: Static font faces and stacks live in `src/base.css`. The doc
-  site may override their family variables in `css/docs-theme.css`.
-- **Icons**: All icons ship locally in `src/icons/` — never load the Lucide CDN.
-  The doc site inlines `src/icons/{name}.svg` for `<i data-lucide="name">` via `js/site.js`.
-- **Sentence case**: Use sentence case for every heading and label in docs, skills,
-  and demo content (first word capitalized, rest lowercase; acronyms like HTML, CSS,
-  API, ARIA stay uppercase).
-- **Inline source snippet drift**: Doc pages show the component's CSS and JS in
-  `<pre><code>` blocks. These must always match the actual files. After editing any
-  component `.css` or `.js`, run `node docs/js/sync-css-snippets.js` and
-  `node docs/js/sync-js-snippets.js` to update all doc pages automatically.
+- **Legacy drift:** A legacy path in a runtime import, example, test, demo, or layout is a defect. Port the behavior into the current source tree instead.
+- **Inventory drift:** The README table must match the 54 actual component folders, 54 skill files, 54 stylesheets, optional module files, and 54 doc pages.
+- **CSS drift:** Keep the skill's variants and states aligned with the stylesheet. The stylesheet is the source of truth for rendered behavior.
+- **Import drift:** Every doc page follows the same current foundation and component import convention. Missing imports break cross-page demos silently.
+- **Motion drift:** No animation or transition belongs in canonical source. Do not reintroduce reduced-motion fallbacks for motion that should not exist.
+- **Dialog centering:** Centered dialogs explicitly need `margin: auto; position: fixed; inset: 0;` in the component stylesheet.
+- **Accessibility drift:** Do not remove labels, `aria-*` relationships, native fallback content, keyboard instructions, or visible focus styles.
+- **Icon drift:** Icons come from `src/icons/` or inline SVG. Never use the Lucide CDN and never use a legacy sprite.
+- **Sentence case:** Use sentence case for headings, labels, skills, doc examples, and inventory descriptions. Keep acronyms such as HTML, CSS, API, and ARIA uppercase.

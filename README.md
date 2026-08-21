@@ -1,8 +1,19 @@
 # mewa_ui
 
-The UI library: a fork of [shadcn-html](https://github.com/codylindley/shadcn-html), stripped to a square, border-led, shadow-free design system built with vanilla HTML, CSS, and JavaScript only — no framework, no build step.
+mewa_ui is a fork of [shadcn-html](https://github.com/codylindley/shadcn-html) that provides square, border-led, shadow-free interface components with vanilla HTML, CSS, and JavaScript. It has no framework and no production build step.
 
-The visual contract is monochrome, square, border-led, and shadow-free, with Geist typography. Red, amber, and green communicate state. Circular geometry exists only where meaning requires it (avatars, radios, switches, progress).
+The canonical consumer surface is the repository root: `src/` for foundations and icons, `components/` for component implementations, `docs/` for the static reference site, and `layouts/` for the two application-shell templates when they are present. New work must use those canonical directories. `legacy/` and the root `core-ui.css` are not runtime resources.
+
+## Contract at a glance
+
+- Start with semantic HTML and native controls. Use JavaScript only for behavior that HTML and CSS cannot express.
+- Load `src/base.css` before `src/tokens.css`. Add only the component stylesheets the consuming page uses.
+- Load a component module only when the inventory says `Yes` or `Optional` and the markup uses the behavior it provides. A native fallback must remain usable where the component skill documents one.
+- Use semantic roles from `src/tokens.css`. Red, amber, and green communicate status. Do not hardcode a palette into a component.
+- Geometry is square by default. `--border-radius` is zero, and `--radius-full` or a 50% circle is reserved for objects whose meaning requires circular geometry, such as avatars, radios, progress, or skeleton avatars. Do not add a general radius scale.
+- Elevation is expressed with borders, especially `--border-primary`. Do not add visual shadows, shadow tokens, or focus halos that look like elevation.
+- The canonical source is motionless. Do not add CSS animations, CSS transitions, smooth scrolling, View Transitions, scroll-driven effects, Web Animations, shimmer, or spinner motion. State changes, disclosure, overlay, navigation, and drag updates are immediate. If a consuming product adds motion outside mewa_ui, it must provide its own `prefers-reduced-motion` behavior.
+- Use `:focus-visible`, `prefers-contrast: more`, and `forced-colors: active` states. Keep labels, native validation, names, IDs, and ARIA relationships intact.
 
 ## Provenance
 
@@ -10,113 +21,217 @@ The visual contract is monochrome, square, border-led, and shadow-free, with Gei
 - Upstream commit: `0964e09e16034e39a244589d457a866171991f1d` (2026-04-19, v0.7.13-alpha)
 - License: MIT (see `LICENSE`; the upstream notice is retained alongside the fork's)
 
-## What was stripped
-
-- **Radii** — every `--radius-*` token and every `border-radius` declaration that used it, including `calc()` variants and logical-property corner radii. Geometry is square. Circular geometry remains only where meaning requires it: avatars, radios, switches, sliders, progress, badges, timeline, steps, skeleton, carousel (`9999px` / `50%`).
-- **Shadows** — the `--shadow-*` token scale and every elevation `box-shadow`. Elevated surfaces (dialog, dropdown, tabs) keep a `0 0 0 1px var(--border-primary)` ring. `box-shadow: none` and focus halos built on `var(--border-ring)` are kept.
-- **Serif fonts** — `--font-serif` and the `--font-display` serif stack. The only fonts are `src/geist.woff2` and `src/geistmono.woff2` (Geist variable, 400–550).
-
-What is kept, unchanged from upstream: component markup/APIs and the five-layer skill structure. Static primitives live in `src/base.css`; theme-dependent semantic color roles live in `src/tokens.css`. The Lucide CDN is retired — the full icon set ships locally in `src/icons/`.
-
-## Structure
+## Repository map
 
 ```
 ui_library/
-├── src/base.css                   ← static foundation (palette, fonts, typography, geometry)
-├── src/tokens.css                 ← theme-dependent semantic color tokens
-├── src/geist.woff2, geistmono.woff2 ← the only fonts
-├── src/icons/                        ← the full Lucide icon set (standalone SVGs, no CDN)
-├── components/                      ← 55 self-contained component folders
+├── src/base.css                   ← static palette, fonts, typography, geometry, and browser primitives
+├── src/tokens.css                 ← light and dark semantic color roles
+├── src/geist.woff2                ← Geist variable font, 400–550
+├── src/geistmono.woff2            ← Geist Mono variable font, 400–550
+├── src/icons/                     ← local Lucide SVG files, one file per icon
+├── components/                    ← 54 self-contained component folders
 │   └── {name}/
-│       ├── {name}.md                ← skill: markup, variants, ARIA, wiring
-│       ├── {name}.css               ← component stylesheet
-│       └── {name}.js                ← interaction JS (only when needed)
-├── docs/                            ← doc site (one page per component, no overview)
-│   └── js/                          ← layout, site JS, and snippet sync scripts (node, no deps)
-├── legacy/                          ← previous mewa_ui (porting source only)
-└── AGENTS.md                        ← maintainer instructions
+│       ├── {name}.md              ← skill: native basis, structure, attributes, and ARIA
+│       ├── {name}.css             ← component stylesheet
+│       └── {name}.js              ← interaction module when the component needs one
+├── docs/                          ← 54 static component pages and doc-site scripts
+├── layouts/                       ← canonical application-shell templates
+├── legacy/                        ← read-only historical reference and migration input, never runtime
+├── core-ui.css                    ← read-only migration artifact, never runtime
+└── AGENTS.md                     ← maintainer instructions
 ```
 
-## Use
+The number in this map is the current source count: every `components/{name}/` directory has a matching skill and stylesheet, and every component has a matching `docs/{name}.html` page. The inventory below is the maintained human-readable index.
+
+## Consume the canonical system
+
+### Include foundations and components
+
+Load the foundations in order, then the stylesheets for the components used by the page:
 
 ```html
 <link rel="stylesheet" href="/ui/src/base.css">
 <link rel="stylesheet" href="/ui/src/tokens.css">
 <link rel="stylesheet" href="/ui/components/button/button.css">
-<!-- Icons: fetch src/icons/{name}.svg and inline it for <i data-lucide="name"> -->
+<link rel="stylesheet" href="/ui/components/dialog/dialog.css">
+<script type="module" src="/ui/components/dialog/dialog.js"></script>
 ```
 
-Components are configured with `data-*` attributes (`data-variant`, `data-size`, `data-state`, ...) — markup is the only API. Read the component's `{name}.md` skill for the HTML pattern, attributes, and ARIA requirements. Load a component's `<script type="module" src=".../{name}.js">` only when the component folder contains one; interaction alone does not imply a runtime dependency because native controls stay native.
+The `components/{name}/{name}.md` skill is the markup contract. The `.css` and `.js` files are the implementation source of truth. Use the documented classes and `data-*` attributes exactly. Do not invent a class or attribute because it resembles an API from another UI library.
 
-Icons: write `<i data-lucide="name">` and inline the matching SVG from `src/icons/` (the doc site's `js/site.js` shows a fetch-and-inline loader). Never load the Lucide CDN.
+### Use local icons
 
-Dark mode: add or remove `class="dark"` on `<html>`. The semantic values in
-`src/tokens.css` switch automatically.
+Icons live in `src/icons/` as standalone SVG files. Use `<i data-lucide="name">` with a local fetch-and-inline loader, or inline the matching SVG directly. The doc site's loader is in `docs/js/site.js`. Decorative icons need `aria-hidden="true"`; icon-only controls need an accessible name. Never load the Lucide CDN or any other external icon set.
 
-Semantic color roles are separated by purpose: `--background*` for page backdrops, `--surface-*` for containers and state fills, `--text-*` for content, `--border-*` for outlines and focus rings, and `--chart-1` through `--chart-5` for data visualization. The canonical roles include primary, secondary, muted, disabled, inverted, positive, negative, and caution variants without foreground-style aliases.
+### Theme with tokens
 
-## Documentation
+`src/base.css` owns static primitives such as the Geist font faces, neutral and status palettes, typography, spacing, border widths, and the limited full-circle token. `src/tokens.css` owns semantic roles for light and dark themes: `--background*`, `--surface-*`, `--text-*`, `--border-*`, and `--chart-1` through `--chart-5`. Add or remove `class="dark"` on `<html>` to select the dark block. Put consumer overrides in a stylesheet loaded after both foundation files.
 
-The doc site is static: serve `docs/` with any static server (e.g. `python3 -m http.server` or `bunx serve`) and open a page (there is no `index.html`; start at `typography.html`). It is a SPA-style multi-page app — one page per component, no overview page. Doc pages embed component CSS/JS in copyable snippets; after editing a component, re-run `node docs/js/sync-css-snippets.js` and `node docs/js/sync-js-snippets.js` from the repository root.
+### Preserve native behavior
 
-## Roadmap
+Use `<dialog>` for modal surfaces, the Popover API for popovers and tooltips, `<details>/<summary>` for disclosures, `<progress>` for completion, `<meter>` for bounded scalar measurements, `<output>` for computed values, and native form controls wherever the skill calls for them. Use links for navigation and buttons for actions. Keep a keyboard path for pointer or drag interactions. Do not replace native behavior with a framework, a focus-trap library, a positioning library, or a custom form submission path.
 
-1. Port adapted mewa_ui components into `components/` where they do not duplicate the base (source lives in `legacy/`).
-2. Adapt tokens (fonts, spacing, palette) to the mewa_ui contract.
-3. ~~Replace the Lucide CDN with a downloaded local sprite~~ — done: the full set ships in `src/icons/`.
-4. Retire `legacy/` once the ports are complete.
+## Canonical application shells
 
----
+`layouts/` is the only canonical home for reusable application-shell templates. The current two templates are `layouts/vertical-navbar.html` for a left collapsible rail and `layouts/horizontal-navbar.html` for top navigation. Keep both serveable from the repository root, and compose them from current `src/`, `components/`, and layout-local files. `layouts/layouts.css` owns template-only layout rules, while `layouts/layouts.js` provides local icon inlining and the optional theme toggle. Never substitute a file from `legacy/layouts/`.
 
-# Legacy reference (mewa_ui)
+### Left collapsible rail
 
-`mewa_ui` was a standalone component library for personal services: semantic HTML, vanilla CSS, optional JavaScript, and a local Lucide SVG sprite. It remains in `legacy/` untouched as the porting source. The repository has a dev-only package contract for repeatable browser testing.
+Use the `Sidebar` component for this shell. Start with `.sidebar-layout`, an `<aside class="app-sidebar">`, and a `<main>`. Put routes in a labelled `<nav>`, use `<details>/<summary>` for groups and submenus, and use `data-state="expanded"` or `data-state="collapsed"` for the two rail widths. The `vertical-navbar.html` template adds the breadcrumb header, workspace content, and optional utility rail around that shell. The `sidebar.js` module owns the rail buttons, `aria-expanded` synchronization, the `Cmd+B`/`Ctrl+B` shortcut, and the mobile `<dialog>` trigger. Keep the link's `aria-current="page"`. Tooltips on icon-only collapsed links are optional and come from the Tooltip component. Do not copy vertical navbar classes, shell markup, or runtime code from `legacy/`.
 
-## Canonical assets (legacy paths)
+### Top navigation
 
-- `legacy/src/base.css` — six OKLCH palettes, semantic color roles, typography, geometry, focus, reset, and browser primitives.
-- `legacy/src/mewa.css` — production component structures, variants, states, utilities, and responsive behavior.
-- `legacy/src/components.js` — progressive enhancement with `enhance()` and `destroy()` lifecycle methods.
-- `legacy/src/lucide.svg` — same-origin Lucide symbols.
-- `legacy/src/demo.css` — catalog and standalone snippet presentation only; consuming applications do not load it.
-- `legacy/catalog/` — searchable, preview-only component reference (superseded by `docs/`).
-- `legacy/snippets/` — complete documents with reusable fragments marked by stable comments.
-- `legacy/layouts/` — complete application compositions built from one vertical/horizontal shell contract.
+The `layouts/horizontal-navbar.html` template uses a semantic `<header>` with a labelled `<nav>` of native `<a>` routes and an action cluster. Keep route navigation as links, use buttons for actions, and keep decorative icons hidden from assistive technology. Use `components/layout/` primitives and `layouts/layouts.css` for the surrounding content. Use `components/navigation-menu/` only when the layout needs a documented Popover API route group. Do not use tab roles for route navigation and do not revive the legacy horizontal navbar.
 
-The root `core-ui.css` remains only as a legacy migration reference. New work uses `src/base.css`, `src/tokens.css`, and `components/`.
+Both shells are immediate and motionless. Use `--border-primary` and semantic surfaces for separation, not shadows or animation. Keep the shell usable at narrow widths, with a visible keyboard path to every control.
 
-## Use (legacy)
+## Component inventory
 
-```html
-<link rel="stylesheet" href="/ui/legacy/src/base.css">
-<link rel="stylesheet" href="/ui/legacy/src/mewa.css">
-<script src="/ui/legacy/src/components.js" defer></script>
-```
+This is the complete current inventory, grouped by the same purpose groups used by `docs/js/layout.js`. `Yes` means the component's module is required for its documented behavior. `Optional` means the native markup works without the module, while the module enables a documented enhanced mode. `No` means the component has no component module. Icon loading is optional when using the doc-site loader, but inline SVG use needs no JavaScript.
 
-For dynamically inserted markup call `MewaUI.enhance(container)`; before permanently removing an enhanced subtree call `MewaUI.destroy(container)`. Custom events use the `mewa-ui:*` namespace. Lucide icons reference the local sprite; decorative icons stay hidden from assistive technology and icon-only controls need an accessible name.
+### Primitives
 
-## Foundation (legacy)
+| Component | Native basis | JS | Skill and doc |
+|---|---|---|---|
+| Typography | Native HTML text elements: headings, paragraphs, quotes, code, keyboard notation, and lists | No | [`components/typography/typography.md`](components/typography/typography.md) · [`docs/typography.html`](docs/typography.html) |
+| Layout | CSS Grid and Flexbox primitives for containers, stacks, grids, sidebar splits, centering, and opposite-end groups | No | [`components/layout/layout.md`](components/layout/layout.md) · [`docs/layout.html`](docs/layout.html) |
+| Separator | `<hr>` for horizontal rules and `<div role="separator">` for a vertical separator | No | [`components/separator/separator.md`](components/separator/separator.md) · [`docs/separator.html`](docs/separator.html) |
+| Icon | Local standalone SVGs represented by `<i data-lucide="name">` or inline SVG | No, optional local loader | [`components/icon/icon.md`](components/icon/icon.md) · [`docs/icon.html`](docs/icon.html) |
 
-Body scale is 12, 14, and 16 px; headings 16, 24, and 32 px. Line heights are 1.25 and 1.61, weights 400 and 550, tracking zero. All six palettes share the same theme-specific 11-step `050`–`950` role map: gray, alpha white, alpha black, red, amber, and green. Steps `050`–`100` are surfaces, `200`–`300` are hover and active backgrounds, `400` is the subtle-border step, and `500`–`950` form an APCA contrast ladder. Components consume generalized semantic roles rather than palette steps.
+### Actions
 
-## Catalog and layouts (legacy)
+| Component | Native basis | JS | Skill and doc |
+|---|---|---|---|
+| Button | `<button>`, with the same styling available on navigation `<a>` elements | No | [`components/button/button.md`](components/button/button.md) · [`docs/button.html`](docs/button.html) |
+| Toggle | `<button aria-pressed>` with a two-state pressed value | Yes | [`components/toggle/toggle.md`](components/toggle/toggle.md) · [`docs/toggle.html`](docs/toggle.html) |
+| Toggle group | `role="group"` containing buttons with `aria-pressed` and roving focus | Yes | [`components/toggle-group/toggle-group.md`](components/toggle-group/toggle-group.md) · [`docs/toggle-group.html`](docs/toggle-group.html) |
+| Button group | A `<div>` grouping connected `.btn` buttons with an accessible group name | No | [`components/button-group/button-group.md`](components/button-group/button-group.md) · [`docs/button-group.html`](docs/button-group.html) |
+| Toolbar | `role="toolbar"` containing related controls | Yes | [`components/toolbar/toolbar.md`](components/toolbar/toolbar.md) · [`docs/toolbar.html`](docs/toolbar.html) |
 
-Mount the repository at `/ui` and open `/ui/legacy/catalog/` for previews. The documentation for the current system lives in `docs/`.
+### Forms and inputs
 
-- [Vertical navigation](legacy/layouts/vertical-navbar.html)
-- [Vertical navigation with right utility rail](legacy/layouts/vertical-navbar-utility-end.html)
-- [Vertical navigation with left utility rail](legacy/layouts/vertical-navbar-utility-start.html)
-- [Collapsed vertical navigation](legacy/layouts/vertical-navbar-collapsed.html)
-- [Horizontal navigation](legacy/layouts/horizontal-navbar.html)
-- [Operations workspace](legacy/layouts/operations-workspace.html)
+| Component | Native basis | JS | Skill and doc |
+|---|---|---|---|
+| Label | `<label>` associated with a control by `for` and `id` | No | [`components/label/label.md`](components/label/label.md) · [`docs/label.html`](docs/label.html) |
+| Input | `<input>` with native validation, autofill, and form integration | No | [`components/input/input.md`](components/input/input.md) · [`docs/input.html`](docs/input.html) |
+| Textarea | `<textarea>` with native validation and `field-sizing: content` | No | [`components/textarea/textarea.md`](components/textarea/textarea.md) · [`docs/textarea.html`](docs/textarea.html) |
+| Checkbox | `<input type="checkbox">` with native checked and indeterminate states | No | [`components/checkbox/checkbox.md`](components/checkbox/checkbox.md) · [`docs/checkbox.html`](docs/checkbox.html) |
+| Radio group | `<input type="radio">` elements sharing a `name` inside `<fieldset>/<legend>` | No | [`components/radio/radio.md`](components/radio/radio.md) · [`docs/radio.html`](docs/radio.html) |
+| Switch | `<input type="checkbox" role="switch">` | No | [`components/switch/switch.md`](components/switch/switch.md) · [`docs/switch.html`](docs/switch.html) |
+| Slider | `<input type="range">` with native keyboard and touch support | Yes | [`components/slider/slider.md`](components/slider/slider.md) · [`docs/slider.html`](docs/slider.html) |
+| Select | `<select>` with native options and optional `<optgroup>` labels | No | [`components/select/select.md`](components/select/select.md) · [`docs/select.html`](docs/select.html) |
+| Number input | `<input type="number">` with increment and decrement buttons | Yes | [`components/number-input/number-input.md`](components/number-input/number-input.md) · [`docs/number-input.html`](docs/number-input.html) |
+| File input | `<input type="file">` with native picker and file-selector styling | No | [`components/file-input/file-input.md`](components/file-input/file-input.md) · [`docs/file-input.html`](docs/file-input.html) |
+| Date picker | `<input type="date">` or `<input type="datetime-local">` with the browser picker | No | [`components/date-picker/date-picker.md`](components/date-picker/date-picker.md) · [`docs/date-picker.html`](docs/date-picker.html) |
+| Combobox | Button trigger and Popover API popup containing a search input and `role="listbox"` | Yes | [`components/combobox/combobox.md`](components/combobox/combobox.md) · [`docs/combobox.html`](docs/combobox.html) |
+| Form | `<form>` with native submission and constraint validation, composed with labelled fields | No | [`components/form/form.md`](components/form/form.md) · [`docs/form.html`](docs/form.html) |
 
-## Validate (legacy)
+### Data display
 
-Install the locked dev-only browser driver, then run from the repository root:
+| Component | Native basis | JS | Skill and doc |
+|---|---|---|---|
+| Badge | `<span>` for a non-interactive visual indicator | No | [`components/badge/badge.md`](components/badge/badge.md) · [`docs/badge.html`](docs/badge.html) |
+| Avatar | `<img>` inside a `<span>` with text fallback content | Yes | [`components/avatar/avatar.md`](components/avatar/avatar.md) · [`docs/avatar.html`](docs/avatar.html) |
+| Card | `<div>` for grouping or `<article>` for standalone content | No | [`components/card/card.md`](components/card/card.md) · [`docs/card.html`](docs/card.html) |
+| Image | `<figure>` with `<img>`, optional `<figcaption>`, and a native `<dialog>` preview | Yes | [`components/image/image.md`](components/image/image.md) · [`docs/image.html`](docs/image.html) |
+| Statistic | `<div>` containers for a value, label, and optional trend | No | [`components/statistic/statistic.md`](components/statistic/statistic.md) · [`docs/statistic.html`](docs/statistic.html) |
+| Table | `<table>` with semantic caption, header, body, and footer groups | No | [`components/table/table.md`](components/table/table.md) · [`docs/table.html`](docs/table.html) |
+| Collapsible | `<details>` with a visible `<summary>` trigger | No | [`components/collapsible/collapsible.md`](components/collapsible/collapsible.md) · [`docs/collapsible.html`](docs/collapsible.html) |
+| Timeline | Ordered `<ol>` with items connected by a visual line | No | [`components/timeline/timeline.md`](components/timeline/timeline.md) · [`docs/timeline.html`](docs/timeline.html) |
+| Tree view | Nested `<ul>` elements with tree and treeitem roles and native disclosure branches | Yes | [`components/tree-view/tree-view.md`](components/tree-view/tree-view.md) · [`docs/tree-view.html`](docs/tree-view.html) |
+| Calendar | `<table>` month grid with `role="grid"` and button day cells | Yes | [`components/calendar/calendar.md`](components/calendar/calendar.md) · [`docs/calendar.html`](docs/calendar.html) |
+| Carousel | Overflow container with CSS `scroll-snap`, native buttons, and `IntersectionObserver` | Yes | [`components/carousel/carousel.md`](components/carousel/carousel.md) · [`docs/carousel.html`](docs/carousel.html) |
+| Scroll area | CSS overflow with standard and WebKit scrollbar styling | No | [`components/scroll-area/scroll-area.md`](components/scroll-area/scroll-area.md) · [`docs/scroll-area.html`](docs/scroll-area.html) |
+| Sortable | Native HTML Drag and Drop API plus keyboard reordering | Yes | [`components/sortable/sortable.md`](components/sortable/sortable.md) · [`docs/sortable.html`](docs/sortable.html) |
 
-```sh
-pnpm install --ignore-scripts
-pnpm test
-```
+### Feedback and status
 
-`pnpm test:browser` adds catalog, six-layout, and component desktop/mobile geometry, focus, interaction, and visual-state checks when the documented local server and Chromium debugging endpoints are available. Static checks do not replace keyboard, zoom, reduced-motion, forced-colors, or screen-reader review. See [DESIGN.md](DESIGN.md) for the legacy contribution contract.
+| Component | Native basis | JS | Skill and doc |
+|---|---|---|---|
+| Spinner | Static SVG loading indicator with `role="status"` | No | [`components/spinner/spinner.md`](components/spinner/spinner.md) · [`docs/spinner.html`](docs/spinner.html) |
+| Skeleton | Static placeholder `<div>` elements | No | [`components/skeleton/skeleton.md`](components/skeleton/skeleton.md) · [`docs/skeleton.html`](docs/skeleton.html) |
+| Progress | Native `<progress>` element | No | [`components/progress/progress.md`](components/progress/progress.md) · [`docs/progress.html`](docs/progress.html) |
+| Alert | `<div role="alert">` for important callout content | No | [`components/alert/alert.md`](components/alert/alert.md) · [`docs/alert.html`](docs/alert.html) |
+| Alert dialog | Native `<dialog>` with `role="alertdialog"` for an explicit response | Yes | [`components/alert-dialog/alert-dialog.md`](components/alert-dialog/alert-dialog.md) · [`docs/alert-dialog.html`](docs/alert-dialog.html) |
+| Toast | `popover="manual"` surface with `role="status"` and a polite live region | Yes | [`components/toast/toast.md`](components/toast/toast.md) · [`docs/toast.html`](docs/toast.html) |
+
+### Overlays
+
+| Component | Native basis | JS | Skill and doc |
+|---|---|---|---|
+| Popover | Popover API with `popover` and `popovertarget`, positioned with CSS anchors | Yes | [`components/popover/popover.md`](components/popover/popover.md) · [`docs/popover.html`](docs/popover.html) |
+| Tooltip | `popover="hint"` with CSS anchor positioning for hover and focus hints | Yes | [`components/tooltip/tooltip.md`](components/tooltip/tooltip.md) · [`docs/tooltip.html`](docs/tooltip.html) |
+| Dialog | Native `<dialog>` opened with `showModal()` | Yes | [`components/dialog/dialog.md`](components/dialog/dialog.md) · [`docs/dialog.html`](docs/dialog.html) |
+| Sheet | Native `<dialog>` opened with `showModal()` and a `data-side` edge | Yes | [`components/sheet/sheet.md`](components/sheet/sheet.md) · [`docs/sheet.html`](docs/sheet.html) |
+| Accordion | `<details>/<summary>` disclosures; single-open mode is enhanced, multi-open mode is native | Optional | [`components/accordion/accordion.md`](components/accordion/accordion.md) · [`docs/accordion.html`](docs/accordion.html) |
+| Command | Native `<dialog>` containing a search input and command list | Yes | [`components/command/command.md`](components/command/command.md) · [`docs/command.html`](docs/command.html) |
+
+### Navigation
+
+| Component | Native basis | JS | Skill and doc |
+|---|---|---|---|
+| Breadcrumb | `<nav>` containing an ordered `<ol>` path | No | [`components/breadcrumb/breadcrumb.md`](components/breadcrumb/breadcrumb.md) · [`docs/breadcrumb.html`](docs/breadcrumb.html) |
+| Pagination | `<nav>` containing a list of native `<a>` page links | No | [`components/pagination/pagination.md`](components/pagination/pagination.md) · [`docs/pagination.html`](docs/pagination.html) |
+| Steps | Ordered `<ol>` with `aria-current="step"` for the current step | No | [`components/steps/steps.md`](components/steps/steps.md) · [`docs/steps.html`](docs/steps.html) |
+| Tabs | WAI-ARIA `tablist`, `tab`, and `tabpanel` roles | Yes | [`components/tabs/tabs.md`](components/tabs/tabs.md) · [`docs/tabs.html`](docs/tabs.html) |
+| Dropdown menu | Popover API with a button trigger and WAI-ARIA menu items | Yes | [`components/dropdown/dropdown.md`](components/dropdown/dropdown.md) · [`docs/dropdown.html`](docs/dropdown.html) |
+| Navigation menu | `<nav>` and `<ul>` with Popover API dropdown panels | Yes | [`components/navigation-menu/navigation-menu.md`](components/navigation-menu/navigation-menu.md) · [`docs/navigation-menu.html`](docs/navigation-menu.html) |
+
+### Application
+
+| Component | Native basis | JS | Skill and doc |
+|---|---|---|---|
+| Sidebar | `<aside>` and `<nav>` with `<dialog>` mobile overlay, `<details>` groups, and a button rail | Yes | [`components/sidebar/sidebar.md`](components/sidebar/sidebar.md) · [`docs/sidebar.html`](docs/sidebar.html) |
+
+## Migration candidates and coverage gaps
+
+The historical implementation is useful for identifying product patterns, not for copying code. These candidates are worth rebuilding against the current native, square, motionless contract. They are intentionally listed separately from the shipped inventory so consumers do not mistake a proposal for a supported API.
+
+### Recreate first
+
+- **Data table** — a semantic `<table>` with `<caption>`, scoped headers, sortable header buttons, filtering, pagination, row selection, an empty result state, and a `role="status"` result summary. The current `Table` component provides structure only.
+- **Resizable split panes** — two panels with a keyboard-operable `role="separator"`, `aria-valuemin`, `aria-valuemax`, `aria-valuenow`, and a visible size announcement. Use pointer and keyboard paths without a positioning dependency.
+- **Questionnaire or wizard** — a native `<form>` composed of `<fieldset>`, `<legend>`, radio controls, validation, `Steps`, and an `<output>` or `role="status"` progress message. Keep every step usable without JavaScript where possible.
+- **Message list and scroller** — an ordered `<ol>` of semantic `<article>` messages with `<time>`, `role="log"`, a jump-to-latest control, and a composer. Keep streamed content readable when automatic scrolling is unavailable.
+- **Time field** — a grouped hour, minute, and period control using `<fieldset>`, `inputmode="numeric"`, native `<select>`, a submitted value, and `<output>` feedback.
+
+### Recreate as compositions or focused primitives
+
+- **Attachment row** — compose `File input`, `Badge`, `Progress`, and `Alert` into a removable `<article>` with filename, size, state, and an accessible remove button.
+- **Empty state** — compose `Card`, `Image`, `Typography`, and `Button` around a short explanation and one recovery action.
+- **Description list** — add a small `<dl>` pattern for metadata-heavy pages before creating a broad “metadata” component.
+- **Diff and chart** — use `<figure>`, `<figcaption>`, native `range`/`output`, SVG or canvas with a textual table fallback, and explicit summaries before introducing a visualization runtime.
+- **Freeform autocomplete** — extend the documented `Combobox` pattern only if a text-entry mode is needed. Do not create a second listbox implementation.
+- **Header, footer, callout, tag input, OTP input, date-range picker, hover card, and context menu** — compare demand and native API support before adding them. `Header` and `Footer` are already layout primitives, while `Context menu` should remain a Popover-based composition unless a real keyboard menu requirement appears.
+
+The Kernel UI catalog is a useful parity checklist, not a requirement to add every named component. Its most relevant gaps for this library are data-table behavior, resizable panes, richer form composition, and message/AI work surfaces. Karl Koch's semantic-HTML-first principles reinforce the existing contract: start with native elements, let pseudo-classes and browser validation express state, use `data-*` only for state the platform cannot represent, and keep the HTML useful without a framework runtime. Review [Karl Koch's semantic-HTML-first article](https://karlkoch.me/writing/why-i-built-a-semantic-html-first-library/) and the [Kernel UI component catalog](https://www.kernelui.com/components/) before promoting a candidate into the supported inventory.
+
+## Documentation site
+
+The current documentation site is static and has one page per component. There is no `docs/index.html`; serve `docs/` over HTTP and start at `typography.html`. The site navigation and router are centralized in `docs/js/layout.js`. Navigation swaps `<main>` content immediately and deliberately has no View Transition or other animation. `docs/js/site.js` owns doc-site-only behavior such as local icon inlining, copy buttons, and page-ready hooks.
+
+Doc pages load the current component styles and modules so every cross-page example works. Consumers should load only the assets listed by the component inventory. The pages show copyable HTML examples, not generated CSS or JavaScript source. The old CSS/JS snippet synchronizers in `docs/js/` are not part of the current documentation workflow and must not be treated as a required post-edit step.
+
+## Maintain the system
+
+- Keep each component self-contained in `components/{name}/`. Its skill documents the HTML pattern, attributes, native basis, keyboard model, and ARIA. Edit the stylesheet and module directly. Do not create a framework wrapper or a second source tree.
+- When adding a component, add its skill, stylesheet, optional module, and `docs/{name}.html`. Add the page to `NAV` and `BUILT` in `docs/js/layout.js`, and add its stylesheet and module imports to every existing doc page as appropriate.
+- Update the 54-row inventory in this file whenever a component is added, removed, renamed, or changes its JS requirement. Verify the row against the actual `components/{name}/` directory, the skill's Native basis section, and the matching doc page.
+- Keep component docs, markup examples, CSS, and JS aligned. Do not document a variant, state, API, or layout that the current source does not implement.
+- Preserve the no-animation contract, square geometry, semantic token usage, native fallback behavior, keyboard path, contrast modes, and forced-colors support in every change.
+- Keep `docs/` imports and `docs/js/layout.js` synchronized. A missing import can make a cross-page demo fail silently.
+
+Before changing a component skill or doc page, review the current component implementation and the relevant native references. The skill file is the markup reference; the stylesheet and module are the executable contract.
+
+## Legacy boundary
+
+`legacy/` is read-only historical reference and migration input. It is not a runtime package, compatibility layer, example catalog, layout library, or implementation dependency. Never:
+
+- load or serve a stylesheet, script, font, SVG, snippet, layout, or page from `legacy/`;
+- import or link a `legacy/` file from `src/`, `components/`, `docs/`, `layouts/`, or a consuming application;
+- copy legacy markup, classes, `data-ui-*` hooks, tokens, or runtime behavior into a new component or example without rewriting it against the current contract;
+- use `legacy/` paths in documentation examples, tests, demos, or canonical layouts; or
+- edit `legacy/` to make current work pass.
+
+Read a legacy file only to understand historical behavior or migration input. Port the result into `src/`, `components/`, `docs/`, or `layouts/`, using the current native basis, tokens, accessibility contract, and motionless visual rules. The root `core-ui.css` follows the same read-only migration rule and is never a canonical stylesheet.
