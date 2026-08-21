@@ -5,10 +5,52 @@ const DEFAULT_MAX = 100;
 const DEFAULT_VALUE = 35;
 const DEFAULT_STEP = 1;
 const DEFAULT_PAGE_STEP = 10;
+const ENHANCED_ATTRIBUTES = [
+  'tabindex',
+  'aria-label',
+  'aria-controls',
+  'aria-orientation',
+  'aria-valuemin',
+  'aria-valuemax',
+  'aria-valuenow',
+  'aria-valuetext'
+];
+const instances = new WeakMap();
 
 function readNumber(element, attribute, fallback) {
+  if (!element) return fallback;
   const value = Number.parseFloat(element.getAttribute(attribute) || '');
   return Number.isFinite(value) ? value : fallback;
+}
+
+function readConfiguredNumber(handle, root, dataAttribute, ariaAttribute, fallback) {
+  for (const element of [handle, root]) {
+    const dataValue = readNumber(element, dataAttribute, NaN);
+    if (Number.isFinite(dataValue)) return dataValue;
+  }
+  for (const element of [handle, root]) {
+    const ariaValue = readNumber(element, ariaAttribute, NaN);
+    if (Number.isFinite(ariaValue)) return ariaValue;
+  }
+  return fallback;
+}
+
+function readConfiguredString(handle, root, attribute) {
+  return handle.getAttribute(attribute) || root.getAttribute(attribute) || '';
+}
+
+function snapshotAttributes(element, attributes) {
+  return new Map(attributes.map((attribute) => [attribute, element.getAttribute(attribute)]));
+}
+
+function restoreAttributes(element, snapshot) {
+  snapshot.forEach((value, attribute) => {
+    if (value === null) {
+      element.removeAttribute(attribute);
+    } else {
+      element.setAttribute(attribute, value);
+    }
+  });
 }
 
 function clamp(value, minimum, maximum) {
@@ -49,7 +91,18 @@ function init() {
     const group = root.querySelector('.resizable-group');
     const handle = group?.querySelector('.resizable-handle');
     const panels = group ? getPanels(group) : [];
-    if (!group || !handle || panels.length < 2) return;
+    if (!group || !handle || panels.length < 2) {
+      root.removeAttribute('data-init');
+      return;
+    }
+
+    const handleAttributes = snapshotAttributes(handle, ENHANCED_ATTRIBUTES);
+    const groupOrientation = group.getAttribute('data-orientation');
+    const panelStyles = {
+      flexBasis: panels[0].style.flexBasis,
+      flexGrow: panels[0].style.flexGrow,
+      flexShrink: panels[0].style.flexShrink
+    };
 
     const requestedOrientation = handle.getAttribute('aria-orientation')
       || group.dataset.orientation
@@ -68,8 +121,16 @@ function init() {
       handle.setAttribute('tabindex', '0');
     }
 
-    let minimum = clamp(readNumber(handle, 'aria-valuemin', DEFAULT_MIN), 0, 100);
-    let maximum = clamp(readNumber(handle, 'aria-valuemax', DEFAULT_MAX), 0, 100);
+    let minimum = clamp(
+      readConfiguredNumber(handle, root, 'data-value-min', 'aria-valuemin', DEFAULT_MIN),
+      0,
+      100
+    );
+    let maximum = clamp(
+      readConfiguredNumber(handle, root, 'data-value-max', 'aria-valuemax', DEFAULT_MAX),
+      0,
+      100
+    );
     if (maximum < minimum) [minimum, maximum] = [maximum, minimum];
     handle.setAttribute('aria-valuemin', formatValue(minimum));
     handle.setAttribute('aria-valuemax', formatValue(maximum));
@@ -89,15 +150,35 @@ function init() {
 
     const containerSize = () => group.getBoundingClientRect()[dimension] || 0;
     const panelSize = () => panels[0].getBoundingClientRect()[dimension] || 0;
-    const initialValue = readNumber(handle, 'aria-valuenow', NaN);
+    const initialValue = readConfiguredNumber(handle, root, 'data-value-now', 'aria-valuenow', NaN);
     const measuredValue = containerSize() > 0
       ? (panelSize() / containerSize()) * 100
       : DEFAULT_VALUE;
     let value = Number.isFinite(initialValue) ? initialValue : measuredValue;
+    const initialLabel = handle.getAttribute('aria-label') || '';
     const valueLabel = handle.dataset.valueLabel
       || root.dataset.valueLabel
-      || handle.getAttribute('aria-label')?.replace(/^resize\s+/i, '').trim()
+      || initialLabel.replace(/^resize\s+/i, '').trim()
       || (isHorizontal ? 'Panel height' : 'Panel width');
+    const accessibleLabel = readConfiguredString(handle, root, 'data-label')
+      || initialLabel
+      || `Resize ${valueLabel}`;
+    const controls = readConfiguredString(handle, root, 'data-controls')
+      || handle.getAttribute('aria-controls')
+      || panels.map((panel) => panel.id).filter(Boolean).join(' ');
+    handle.setAttribute('aria-label', accessibleLabel);
+    if (controls) {
+      handle.setAttribute('aria-controls', controls);
+    } else {
+      handle.removeAttribute('aria-controls');
+    }
+
+    const existingOutput = getOutput(root);
+    const outputAttributes = existingOutput
+      ? snapshotAttributes(existingOutput, ['class', 'aria-live', 'aria-atomic'])
+      : null;
+    const outputText = existingOutput?.textContent || '';
+    const outputValue = existingOutput?.value || '';
     let output = getOutput(root);
     if (!output) output = createOutput(root);
     output.classList.add('resizable-output');
@@ -156,7 +237,7 @@ function init() {
 
     setValue(value, 'initial', false);
 
-    handle.addEventListener('keydown', (event) => {
+    function onKeydown(event) {
       if (handle.disabled || handle.getAttribute('aria-disabled') === 'true') return;
 
       let next;
@@ -170,18 +251,25 @@ function init() {
 
       event.preventDefault();
       setValue(next, 'keyboard');
-    });
+    }
+
+    handle.addEventListener('keydown', onKeydown);
 
     let drag = null;
 
     function finishPointer() {
-      if (!drag) return;
-      const pointerId = drag.pointerId;
-      handle.removeEventListener('pointermove', movePointer);
-      handle.removeEventListener('pointerup', finishPointer);
-      handle.removeEventListener('pointercancel', finishPointer);
-      if (handle.hasPointerCapture?.(pointerId)) {
-        handle.releasePointerCapture(pointerId);
+      if (drag) {
+        const pointerId = drag.pointerId;
+        handle.removeEventListener('pointermove', movePointer);
+        handle.removeEventListener('pointerup', finishPointer);
+        handle.removeEventListener('pointercancel', finishPointer);
+        if (handle.hasPointerCapture?.(pointerId)) {
+          try {
+            handle.releasePointerCapture(pointerId);
+          } catch {
+            // Pointer capture can disappear before cleanup runs.
+          }
+        }
       }
       handle.removeAttribute('data-resizing');
       root.removeAttribute('data-resizing');
@@ -222,15 +310,65 @@ function init() {
 
     handle.addEventListener('pointerdown', startPointer);
 
-    const updateLayout = () => setPanelBasis(value);
+    let active = true;
+    const updateLayout = () => {
+      if (active) setPanelBasis(value);
+    };
+    let resizeObserver = null;
     if (typeof ResizeObserver === 'function') {
-      const observer = new ResizeObserver(updateLayout);
-      observer.observe(group);
+      resizeObserver = new ResizeObserver(updateLayout);
+      resizeObserver.observe(group);
     } else {
       window.addEventListener('resize', updateLayout);
     }
+
+    function cleanup() {
+      active = false;
+      finishPointer();
+      handle.removeEventListener('keydown', onKeydown);
+      handle.removeEventListener('pointerdown', startPointer);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      } else {
+        window.removeEventListener('resize', updateLayout);
+      }
+      restoreAttributes(handle, handleAttributes);
+      if (groupOrientation === null) {
+        group.removeAttribute('data-orientation');
+      } else {
+        group.setAttribute('data-orientation', groupOrientation);
+      }
+      panels[0].style.flexBasis = panelStyles.flexBasis;
+      panels[0].style.flexGrow = panelStyles.flexGrow;
+      panels[0].style.flexShrink = panelStyles.flexShrink;
+      if (existingOutput) {
+        restoreAttributes(existingOutput, outputAttributes);
+        existingOutput.value = outputValue;
+        existingOutput.textContent = outputText;
+      } else {
+        output.remove();
+      }
+      root.removeAttribute('data-resizing');
+      root.removeAttribute('data-init');
+      instances.delete(root);
+    }
+
+    instances.set(root, cleanup);
+  });
+}
+
+function cleanupRemovedNode(node) {
+  if (node.nodeType !== Node.ELEMENT_NODE) return;
+  const roots = node.matches('.resizable')
+    ? [node, ...node.querySelectorAll('.resizable')]
+    : [...node.querySelectorAll('.resizable')];
+  roots.forEach((root) => {
+    if (!root.isConnected) instances.get(root)?.();
   });
 }
 
 init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+new MutationObserver((records) => {
+  records.forEach((record) => record.removedNodes.forEach(cleanupRemovedNode));
+  init();
+}).observe(document, { childList: true, subtree: true });

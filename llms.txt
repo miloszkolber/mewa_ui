@@ -36,7 +36,7 @@ Do not infer an API from a similarly named library. If a class, attribute, varia
   <script type="module" src="/ui/components/{slug}/{slug}.js"></script>
   ```
 
-- Icons are local files under `src/icons/`. Use the documented local loader or inline the matching SVG. Never use a remote icon CDN.
+- Icons are local files under `src/icons/`. Inline the matching SVG for the no-JavaScript path. A local loader may optionally expand the documented `data-lucide` hook, but it is a documentation or embedding concern, not a required component module. Never use a remote icon CDN.
 - Decorative icons need `aria-hidden="true"`. Icon-only controls need a visible or programmatic accessible name.
 - There is no framework, package runtime, generated snippet catalog, or production build step to add.
 
@@ -49,7 +49,7 @@ Every item links to its current documentation page and the machine-readable regi
 - **Typography** (`typography`) — [docs](docs/typography.html) · [registry](registry.json) — Native headings, prose, quotes, code, keyboard notation, and lists.
 - **Layout** (`layout`) — [docs](docs/layout.html) · [registry](registry.json) — Intrinsic Grid and Flexbox containers, stacks, grids, splits, and centering.
 - **Separator** (`separator`) — [docs](docs/separator.html) · [registry](registry.json) — Horizontal rules and vertical visual divisions.
-- **Icon** (`icon`) — [docs](docs/icon.html) · [registry](registry.json) — Local Lucide SVG loading and inline icon presentation.
+- **Icon** (`icon`) — [docs](docs/icon.html) · [registry](registry.json) — Inline local Lucide SVG presentation with an optional loader hook and no required component JavaScript.
 
 ### Actions
 

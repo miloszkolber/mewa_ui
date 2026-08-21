@@ -94,9 +94,9 @@
       </div>
 
       <p class="text-sm font-medium mb-2 mt-6">Default field</p>
-      <p class="text-xs text-muted mb-3">Use a labelled group and connect supporting text with <code>aria-describedby</code>.</p>
+      <p class="text-xs text-muted mb-3">Use a labelled field and connect supporting text with <code>aria-describedby</code>.</p>
       <div class="preview">
-        <div class="field" role="group" style="width: 100%; max-width: 24rem">
+        <div class="field" style="width: 100%; max-width: 24rem">
           <label for="field-email">Email</label>
           <input class="text-field-input" id="field-email" name="email" type="email" placeholder="you@example.com" aria-describedby="field-email-help">
           <p class="field-description" id="field-email-help">We will use this address for account notices.</p>
@@ -104,7 +104,7 @@
       </div>
       <div style="position: relative; margin-top: var(--space-02)">
         <button class="copy-btn" type="button">Copy</button>
-        <pre><code class="language-markup">&lt;div class="field" role="group"&gt;
+        <pre><code class="language-markup">&lt;div class="field"&gt;
   &lt;label for="email"&gt;Email&lt;/label&gt;
   &lt;input class="text-field-input" id="email" name="email" type="email"
          aria-describedby="email-help"&gt;
@@ -117,7 +117,7 @@
       <p class="text-sm font-medium mb-2 mt-8">Required and invalid</p>
       <p class="text-xs text-muted mb-3">Keep the native constraint and ARIA state on the input, with an explicit error association.</p>
       <div class="preview">
-        <div class="field" role="group" data-invalid style="width: 100%; max-width: 24rem">
+        <div class="field" data-invalid style="width: 100%; max-width: 24rem">
           <label for="field-username">Username <span class="field-required" aria-hidden="true">*</span></label>
           <input class="text-field-input" id="field-username" name="username" type="text" required aria-invalid="true" aria-describedby="field-username-error" aria-errormessage="field-username-error" value="taken-name">
           <p class="field-error" id="field-username-error" role="alert">This username is already in use.</p>
@@ -125,7 +125,7 @@
       </div>
       <div style="position: relative; margin-top: var(--space-02)">
         <button class="copy-btn" type="button">Copy</button>
-        <pre><code class="language-markup">&lt;div class="field" role="group" data-invalid&gt;
+        <pre><code class="language-markup">&lt;div class="field" data-invalid&gt;
   &lt;label for="username"&gt;
     Username &lt;span class="field-required" aria-hidden="true"&gt;*&lt;/span&gt;
   &lt;/label&gt;
@@ -141,7 +141,7 @@
       <p class="text-sm font-medium mb-2 mt-8">Disabled</p>
       <p class="text-xs text-muted mb-3">A native disabled control is detected by the wrapper styling.</p>
       <div class="preview">
-        <div class="field" role="group" style="width: 100%; max-width: 24rem">
+        <div class="field" style="width: 100%; max-width: 24rem">
           <label for="field-disabled">Plan</label>
           <select class="select" id="field-disabled" disabled>
             <option>Free</option>
@@ -156,7 +156,7 @@
         <fieldset class="fieldset" style="width: 100%; max-width: 24rem">
           <legend>Notification preferences</legend>
           <p class="field-description">Choose how we contact you.</p>
-          <div role="group" aria-label="Notification preferences">
+          <div>
             <div class="field" data-orientation="horizontal">
               <input id="field-email-updates" type="checkbox" name="email-updates">
               <label for="field-email-updates">Email updates</label>

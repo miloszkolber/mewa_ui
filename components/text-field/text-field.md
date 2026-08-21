@@ -61,7 +61,13 @@ Use `required` for native required validation and `aria-invalid="true"` for an e
 </div>
 ```
 
-`data-size` accepts `sm`, `md` (the default), and `lg`. It changes the native input's geometry and type scale without changing keyboard behavior.
+`data-size` accepts `sm`, `md` (the default), and `lg`. Each variant keeps the shared 2.5rem single-line control geometry and changes only the input type scale. Textareas keep their own content-sized geometry. None of the variants changes keyboard behavior.
+
+| Value | Single-line control height | Input type scale |
+| --- | --- | --- |
+| `sm` | 2.5rem | `--font-body-xsmall` |
+| `md` | 2.5rem | `--font-body-small` |
+| `lg` | 2.5rem | `--font-body` |
 
 ### Disabled and readonly
 
@@ -199,4 +205,4 @@ Use `.text-field-input` for standalone native inputs and textareas. Use `.text-f
 <textarea class="text-field-input" id="message" placeholder="Your message..."></textarea>
 ```
 
-The `.text-field-input` API accepts `data-size="sm"` and native `disabled`, `readonly`, `required`, `aria-invalid`, and `type` attributes. `textarea.text-field-input` uses `field-sizing: content` for auto-growing text without JavaScript.
+The `.text-field` composition accepts `data-size="sm|md|lg"`; standalone `.text-field-input` controls use the shared default type scale and geometry. Native `disabled`, `readonly`, `required`, `aria-invalid`, and `type` attributes remain on the control. `textarea.text-field-input` uses `field-sizing: content` for auto-growing text without JavaScript.

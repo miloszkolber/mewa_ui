@@ -2,7 +2,7 @@
 
 ## Native basis
 
-`<table>` element rendered as a month grid with navigation controls. Uses `role="grid"` for accessible day cell navigation. The `.calendar` markup API remains unchanged while this component is named Date Picker.
+`<table>` element rendered as a month grid with navigation controls. Uses `role="grid"` for accessible day cell navigation. The `.date-picker` markup API follows the Date Picker component name.
 
 ## Native Web APIs
 
@@ -13,30 +13,30 @@
 ## Structure
 
 ```html
-<div class="calendar">
-  <div class="calendar-header">
-    <button class="btn calendar-nav" type="button" data-variant="ghost" data-action="prev-month" aria-label="Previous month">
+<div class="date-picker">
+  <div class="date-picker-header">
+    <button class="btn date-picker-nav" type="button" data-variant="ghost" data-action="prev-month" aria-label="Previous month">
       <svg aria-hidden="true"><!-- chevron left --></svg>
     </button>
-    <span class="calendar-heading" aria-live="polite">April 2026</span>
-    <button class="btn calendar-nav" type="button" data-variant="ghost" data-action="next-month" aria-label="Next month">
+    <span class="date-picker-heading" aria-live="polite">April 2026</span>
+    <button class="btn date-picker-nav" type="button" data-variant="ghost" data-action="next-month" aria-label="Next month">
       <svg aria-hidden="true"><!-- chevron right --></svg>
     </button>
   </div>
-  <table class="calendar-grid" role="grid">
+  <table class="date-picker-grid" role="grid">
     <thead>
       <tr>
-        <th class="calendar-day-label" abbr="Sunday" scope="col">Sun</th>
-        <th class="calendar-day-label" abbr="Monday" scope="col">Mon</th>
+        <th class="date-picker-day-label" abbr="Sunday" scope="col">Sun</th>
+        <th class="date-picker-day-label" abbr="Monday" scope="col">Mon</th>
         <!-- ... -->
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td class="calendar-day" data-outside role="gridcell" aria-selected="false">
+        <td class="date-picker-day" data-outside role="gridcell" aria-selected="false">
           <button type="button" tabindex="-1" data-date="2026-03-29" data-outside="prev">29</button>
         </td>
-        <td class="calendar-day" role="gridcell" aria-selected="false">
+        <td class="date-picker-day" role="gridcell" aria-selected="false">
           <button type="button" tabindex="0" data-date="2026-04-01">1</button>
         </td>
         <!-- ... -->
@@ -50,7 +50,7 @@
 
 | Attribute or class | Element | Description |
 |---|---|---|
-| `calendar-day` | `<td>` | Base day cell |
+| `date-picker-day` | `<td>` | Base day cell |
 | `data-today` | `<td>` | Today's date |
 | `data-selected` | `<td>` | Selected date |
 | `data-outside` | `<td>` | Day from an adjacent month |
@@ -68,7 +68,7 @@
 
 ## Notes
 
-- The module renders the existing `.calendar` markup and initializes each calendar once. It emits a bubbling `calendar:select` event with the selected `Date`.
+- The module renders `.date-picker` markup and initializes each picker once. It emits a bubbling `date-picker:select` event with the selected `Date`.
 - Month changes and selection updates are immediate. The component adds no animation, transition, smooth scrolling, or custom focus trap.
 - This is a custom month grid, not the browser popup used by [Date Field](../date-field/date-field.md). Use Date Field when native date input behavior is the requirement.
 

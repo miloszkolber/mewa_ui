@@ -1,4 +1,4 @@
-// -- Calendar -------------------------------------------------
+// -- Date Picker ------------------------------------------------
 
 const weekdayFormatter = new Intl.DateTimeFormat(undefined, { weekday: 'short' });
 const longWeekdayFormatter = new Intl.DateTimeFormat(undefined, { weekday: 'long' });
@@ -38,23 +38,23 @@ const moveMonth = (state, offset) => {
   state.month = next.getMonth();
 };
 
-const setTabStop = (calendar, activeButton) => {
-  calendar.querySelectorAll('.calendar-day button').forEach((button) => {
+const setTabStop = (datePicker, activeButton) => {
+  datePicker.querySelectorAll('.date-picker-day button').forEach((button) => {
     button.tabIndex = button === activeButton ? 0 : -1;
   });
 };
 
-const focusDate = (calendar, value) => {
-  const button = Array.from(calendar.querySelectorAll('.calendar-day button'))
+const focusDate = (datePicker, value) => {
+  const button = Array.from(datePicker.querySelectorAll('.date-picker-day button'))
     .find((candidate) => candidate.dataset.date === value);
   if (!button) return;
-  setTabStop(calendar, button);
+  setTabStop(datePicker, button);
   button.focus();
 };
 
-const renderCalendar = (el, year, month, selectedDay) => {
-  const heading = el.querySelector('.calendar-heading');
-  const grid = el.querySelector('.calendar-grid');
+const renderDatePicker = (el, year, month, selectedDay) => {
+  const heading = el.querySelector('.date-picker-heading');
+  const grid = el.querySelector('.date-picker-grid');
   if (!grid) return;
 
   const headingText = `${monthFormatter.format(new Date(year, month, 1))} ${year}`;
@@ -71,7 +71,7 @@ const renderCalendar = (el, year, month, selectedDay) => {
   headerRow.setAttribute('role', 'row');
   DAYS.forEach((day, index) => {
     const label = document.createElement('th');
-    label.className = 'calendar-day-label';
+    label.className = 'date-picker-day-label';
     label.setAttribute('role', 'columnheader');
     label.scope = 'col';
     label.abbr = LONG_DAYS[index];
@@ -97,7 +97,7 @@ const renderCalendar = (el, year, month, selectedDay) => {
       const cell = document.createElement('td');
       const button = document.createElement('button');
 
-      cell.className = 'calendar-day';
+      cell.className = 'date-picker-day';
       cell.setAttribute('role', 'gridcell');
       cell.setAttribute('aria-selected', String(selected));
       button.type = 'button';
@@ -132,8 +132,8 @@ const renderCalendar = (el, year, month, selectedDay) => {
 };
 
 function init() {
-  document.querySelectorAll('.calendar:not([data-init])').forEach((cal) => {
-    cal.dataset.init = '';
+  document.querySelectorAll('.date-picker:not([data-init])').forEach((datePicker) => {
+    datePicker.dataset.init = '';
     const now = new Date();
     const state = {
       year: now.getFullYear(),
@@ -141,42 +141,42 @@ function init() {
       selected: null
     };
 
-    renderCalendar(cal, state.year, state.month, state.selected);
+    renderDatePicker(datePicker, state.year, state.month, state.selected);
 
-    cal.addEventListener('click', (event) => {
-      const nav = event.target.closest('.calendar-nav');
+    datePicker.addEventListener('click', (event) => {
+      const nav = event.target.closest('.date-picker-nav');
       if (nav) {
         const action = nav.dataset.action;
         if (action === 'prev-month') moveMonth(state, -1);
         if (action === 'next-month') moveMonth(state, 1);
         if (action === 'prev-month' || action === 'next-month') {
           state.selected = null;
-          renderCalendar(cal, state.year, state.month, state.selected);
+          renderDatePicker(datePicker, state.year, state.month, state.selected);
         }
         return;
       }
 
-      const dayButton = event.target.closest('.calendar-day button');
+      const dayButton = event.target.closest('.date-picker-day button');
       if (!dayButton || dayButton.disabled || dayButton.closest('[data-disabled]')) return;
 
       const selectedDate = dateFromKey(dayButton.dataset.date);
       state.year = selectedDate.getFullYear();
       state.month = selectedDate.getMonth();
       state.selected = selectedDate.getDate();
-      renderCalendar(cal, state.year, state.month, state.selected);
-      focusDate(cal, dateKey(selectedDate));
+      renderDatePicker(datePicker, state.year, state.month, state.selected);
+      focusDate(datePicker, dateKey(selectedDate));
 
-      cal.dispatchEvent(new CustomEvent('calendar:select', {
+      datePicker.dispatchEvent(new CustomEvent('date-picker:select', {
         detail: { date: selectedDate },
         bubbles: true
       }));
     });
 
-    cal.addEventListener('keydown', (event) => {
-      const dayButton = event.target.closest('.calendar-day button');
+    datePicker.addEventListener('keydown', (event) => {
+      const dayButton = event.target.closest('.date-picker-day button');
       if (!dayButton) return;
 
-      const allButtons = Array.from(cal.querySelectorAll('.calendar-day button'));
+      const allButtons = Array.from(datePicker.querySelectorAll('.date-picker-day button'));
       const index = allButtons.indexOf(dayButton);
       let next = null;
 
@@ -200,7 +200,7 @@ function init() {
       }
 
       if (next) {
-        setTabStop(cal, next);
+        setTabStop(datePicker, next);
         next.focus();
       }
     });

@@ -93,12 +93,12 @@
       <div class="page-header">
         <h1>Resizable</h1>
         <p class="text-muted leading-relaxed mb-6">
-          A two-panel split with a focusable separator. Drag the divider with a pointer or focus it and use Arrow, Home, End, and Page keys. Without JavaScript, both panels remain available in a 35/65 split.
+          A two-panel split with a separator that becomes focusable when JavaScript loads. Drag the divider with a pointer or focus it and use Arrow, Home, End, and Page keys. Without JavaScript, both panels remain available in a 35/65 split.
         </p>
       </div>
 
       <p class="text-sm font-medium mb-2 mt-6">Project workspace</p>
-      <p class="text-xs text-muted mb-3">The separator reports the first panel's percentage through ARIA and the output status.</p>
+      <p class="text-xs text-muted mb-3">When JavaScript initializes, the separator reports the first panel's percentage through ARIA and the output status.</p>
       <div class="preview">
         <section class="resizable" aria-labelledby="workspace-title">
           <h2 id="workspace-title" class="text-sm" style="margin: 0">Launch brief</h2>
@@ -113,7 +113,7 @@
                 </ul>
               </nav>
             </aside>
-            <div class="resizable-handle" role="separator" aria-orientation="vertical" aria-label="Resize file list" aria-controls="workspace-files workspace-document" aria-valuemin="20" aria-valuemax="80" aria-valuenow="35" aria-valuetext="File list width: 35 percent" data-value-label="File list width"></div>
+            <div class="resizable-handle" role="separator" aria-orientation="vertical" data-label="Resize file list" data-value-min="20" data-value-max="80" data-value-now="35" data-value-label="File list width"></div>
             <article class="resizable-panel" id="workspace-document" aria-label="Document preview">
               <p class="text-muted" style="font-family: var(--font-mono); font-size: var(--font-body-xsmall); margin: 0 0 var(--space-02)">brief.md</p>
               <h3 class="text-sm" style="margin: 0 0 var(--space-03)">Launch brief</h3>
@@ -138,10 +138,8 @@
   &lt;div class="resizable-group" data-orientation="vertical"&gt;
     &lt;aside class="resizable-panel" id="files"&gt;Files&lt;/aside&gt;
     &lt;div class="resizable-handle" role="separator"
-      aria-orientation="vertical" aria-label="Resize file list"
-      aria-controls="files document" aria-valuemin="20" aria-valuemax="80"
-      aria-valuenow="35" aria-valuetext="File list width: 35 percent"
-      data-value-label="File list width"&gt;&lt;/div&gt;
+      aria-orientation="vertical" data-label="Resize file list" data-value-min="20" data-value-max="80"
+      data-value-now="35" data-value-label="File list width"&gt;&lt;/div&gt;
     &lt;article class="resizable-panel" id="document"&gt;Document&lt;/article&gt;
   &lt;/div&gt;
   &lt;output class="resizable-output" aria-live="polite"&gt;File list width: 35 percent&lt;/output&gt;
@@ -153,12 +151,12 @@
       <div class="preview">
         <section class="resizable" data-orientation="horizontal" aria-label="Inspector and preview">
           <div class="resizable-group" data-orientation="horizontal" style="min-block-size: 20rem">
-            <section class="resizable-panel" style="background: var(--surface-secondary)">
+            <section class="resizable-panel" id="workspace-inspector" style="background: var(--surface-secondary)">
               <p style="font-weight: var(--font-weight-strong); margin: 0 0 var(--space-02)">Inspector</p>
               <p class="text-muted" style="margin: 0">Properties and metadata for the selected file.</p>
             </section>
-            <div class="resizable-handle" role="separator" aria-orientation="horizontal" aria-label="Resize inspector" aria-valuemin="25" aria-valuemax="75" aria-valuenow="45" aria-valuetext="Inspector height: 45 percent" data-value-label="Inspector height"></div>
-            <section class="resizable-panel">
+            <div class="resizable-handle" role="separator" aria-orientation="horizontal" data-label="Resize inspector" data-value-min="25" data-value-max="75" data-value-now="45" data-value-label="Inspector height"></div>
+            <section class="resizable-panel" id="workspace-preview">
               <p style="font-weight: var(--font-weight-strong); margin: 0 0 var(--space-02)">Preview</p>
               <p class="text-muted" style="margin: 0">Rendered content remains in the second panel.</p>
             </section>

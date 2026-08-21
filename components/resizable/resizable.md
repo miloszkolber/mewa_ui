@@ -6,7 +6,7 @@ Two semantic panels in a flex container, separated by a static `<div role="separ
 
 ## Native Web APIs
 
-- [`role="separator"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/separator_role) — identifies a focusable, movable divider and exposes its value
+- [`role="separator"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/separator_role) — identifies the static divider and, after enhancement, exposes its movable value
 - [`tabindex`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) — added by the module so the separator is focusable only when resizing behavior is available
 - [Pointer Events](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events) — one pointer model for mouse, pen, and touch dragging
 - [`setPointerCapture()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/setPointerCapture) — keeps a drag active when the pointer leaves the handle
@@ -35,12 +35,10 @@ The matching shadcn/ui reference describes a panel-group, panel, and handle comp
       class="resizable-handle"
       role="separator"
       aria-orientation="vertical"
-      aria-label="Resize file list"
-      aria-controls="file-panel document-panel"
-      aria-valuemin="20"
-      aria-valuemax="80"
-      aria-valuenow="35"
-      aria-valuetext="File list width: 35 percent"
+      data-label="Resize file list"
+      data-value-min="20"
+      data-value-max="80"
+      data-value-now="35"
       data-value-label="File list width"
     ></div>
     <article class="resizable-panel" id="document-panel">
@@ -60,18 +58,18 @@ The group must contain exactly two `.resizable-panel` elements and one `.resizab
 ```html
 <div class="resizable" data-orientation="horizontal">
   <div class="resizable-group" data-orientation="horizontal">
-    <section class="resizable-panel">Inspector</section>
+    <section class="resizable-panel" id="inspector-panel">Inspector</section>
     <div
       class="resizable-handle"
       role="separator"
       aria-orientation="horizontal"
-      aria-label="Resize inspector"
-      aria-valuemin="25"
-      aria-valuemax="75"
-      aria-valuenow="50"
-      aria-valuetext="Inspector height: 50 percent"
+      data-label="Resize inspector"
+      data-value-min="25"
+      data-value-max="75"
+      data-value-now="50"
+      data-value-label="Inspector height"
     ></div>
-    <section class="resizable-panel">Preview</section>
+    <section class="resizable-panel" id="preview-panel">Preview</section>
   </div>
 </div>
 ```
@@ -88,10 +86,15 @@ The group must contain exactly two `.resizable-panel` elements and one `.resizab
 | `data-step` | root or handle | positive number | Arrow-key percentage increment. Defaults to `1`. |
 | `data-page-step` | root or handle | positive number | Page-key percentage increment. Defaults to `10`. |
 | `data-value-label` | root or handle | text | Prefix for `aria-valuetext` and the output announcement. |
+| `data-label` | root or handle | text | Accessible name added to the enhanced separator. Defaults to `Resize ` followed by `data-value-label`. |
+| `data-controls` | root or handle | space-separated IDs | Panel IDs added to `aria-controls`. When omitted, the module derives IDs from the two panels. |
+| `data-value-min` | root or handle | number from `0` to `100` | Initial lower percentage boundary. Added as `aria-valuemin` during enhancement. Defaults to `0`. |
+| `data-value-max` | root or handle | number from `0` to `100` | Initial upper percentage boundary. Added as `aria-valuemax` during enhancement. Defaults to `100`. |
+| `data-value-now` | root or handle | number | Initial first-panel percentage. Added as `aria-valuenow` during enhancement. Defaults to the measured split or `35`. |
 | `data-init` | root | empty | Set by the module after initialization. Do not set manually. |
 | `data-resizing` | root and handle | empty | Present only during a pointer drag. |
 
-The separator's `aria-valuemin`, `aria-valuemax`, and `aria-valuenow` values are percentages from `0` to `100`. Defaults are `0`, `100`, and `35` when the corresponding attributes are omitted. Values are clamped to the declared range.
+After enhancement, the separator's `aria-valuemin`, `aria-valuemax`, and `aria-valuenow` values are percentages from `0` to `100`. Defaults are `0`, `100`, and `35` when the corresponding data attributes are omitted. Values are clamped to the declared range.
 
 ---
 
@@ -109,7 +112,7 @@ The separator's `aria-valuemin`, `aria-valuemax`, and `aria-valuenow` values are
 
 ## Keyboard
 
-When the module is loaded, it adds `tabindex="0"` so the separator can receive focus with `Tab`. Every handled key prevents the browser's default page action. Without JavaScript the divider remains static and is not a dead interactive control.
+When the module is loaded, it adds `tabindex="0"` and the separator's value and adjustment ARIA so the divider can receive focus with `Tab`. Every handled key prevents the browser's default page action. Without JavaScript the divider remains static and is not a dead interactive control.
 
 | Key | Vertical divider | Horizontal divider |
 |-----|------------------|--------------------|
@@ -141,7 +144,7 @@ Arrow keys use `data-step` (one percentage point by default). Values stop at `ar
 | `aria-live="polite"` | `.resizable-output` | Announces the latest value without moving focus. |
 | `aria-atomic="true"` | `.resizable-output` | Announces the complete value sentence. |
 
-The module supplies the focus target when resizing behavior is available. The explicit separator role is the semantic role exposed to assistive technology, and the handle's descendants are decorative only.
+The fallback markup supplies only the static separator role and orientation. The module adds the focus target, accessible name, controlled-panel relationship, and value properties when resizing behavior is available. The handle's descendants are decorative only.
 
 ---
 
@@ -160,5 +163,6 @@ The module supplies the focus target when resizing behavior is available. The ex
 - Include `resizable.css` with the foundation files. Load `resizable.js` only when pointer and keyboard resizing is needed.
 - The first panel receives a pixel flex basis during enhancement so `aria-valuenow` tracks the rendered group dimension. A `ResizeObserver` reapplies the same percentage when the group changes size.
 - Pointer dragging uses `touch-action: none`, pointer capture, and `pointercancel` cleanup. The module never starts a polling loop or animation.
+- When an SPA removes an initialized root, the module disconnects its `ResizeObserver` (or removes the window resize listener), removes interaction listeners, and restores the static fallback attributes and panel styles before allowing reinitialization.
 - Keep the output in the component when a visible value helps all users. If it is omitted, the module adds a tokenized output status after the group.
 - The CSS contains no transitions, animations, shadows, or rounded containers. Forced colors use system color keywords and keyboard focus uses `:focus-visible`.

@@ -125,7 +125,7 @@
       </div>
 
       <p class="text-sm font-medium mb-2 mt-8">Sizes</p>
-      <p class="text-xs text-muted mb-3">Choose <code>sm</code>, the default <code>md</code>, or <code>lg</code>.</p>
+      <p class="text-xs text-muted mb-3">Choose <code>sm</code>, the default <code>md</code>, or <code>lg</code> for type scale. All single-line variants keep the shared 2.5rem control height.</p>
       <div class="preview" style="display: grid; gap: var(--space-03)">
         <div class="text-field" data-size="sm" style="width: 100%; max-width: 24rem">
           <label class="text-field-label" for="text-field-small">Small</label>
@@ -162,42 +162,42 @@
       <p class="text-sm font-medium mb-2 mt-8">Keyboard, events, and limitations</p>
       <p class="text-xs text-muted mb-3">Tab and input-type-specific editing remain native. The input emits native <code>focus</code>, <code>blur</code>, <code>input</code>, <code>change</code>, and <code>invalid</code> events. Text Field emits no custom events and does not auto-generate IDs, wire descriptions, implement masks, or provide floating labels.</p>
 
-      <p class="text-sm font-medium mb-2 mt-8">Existing input markup API</p>
+      <p class="text-sm font-medium mb-2 mt-8">Standalone controls</p>
       <p class="text-xs text-muted mb-3">Use <code>.text-field-input</code> for standalone controls, or wrap the control with <code>.text-field</code> when it has a label, description, or error message.</p>
       <div class="preview">
         <div style="width: 100%; max-width: 24rem">
-          <label class="label" for="text-field-legacy-email">Email</label>
-          <input class="text-field-input" type="email" id="text-field-legacy-email" placeholder="you@example.com" aria-describedby="text-field-legacy-email-help">
-          <p class="field-description" id="text-field-legacy-email-help">Use the existing input class with native validation.</p>
+          <label class="label" for="text-field-standalone-email">Email</label>
+          <input class="text-field-input" type="email" id="text-field-standalone-email" placeholder="you@example.com" aria-describedby="text-field-standalone-email-help">
+          <p class="field-description" id="text-field-standalone-email-help">Use the standalone input class with native validation.</p>
         </div>
       </div>
       <div style="position: relative; margin-top: var(--space-02)">
         <button class="copy-btn" type="button">Copy</button>
         <pre><code class="language-markup">&lt;label class="label" for="email"&gt;Email&lt;/label&gt;
 &lt;input class="text-field-input" type="email" id="email" placeholder="you@example.com" aria-describedby="email-help"&gt;
-&lt;p class="field-description" id="email-help"&gt;Use the existing input class with native validation.&lt;/p&gt;</code></pre>
+&lt;p class="field-description" id="email-help"&gt;Use the standalone input class with native validation.&lt;/p&gt;</code></pre>
       </div>
       <div class="preview" style="display: grid; gap: var(--space-03)">
         <div style="width: 100%; max-width: 24rem">
-          <label class="label" for="text-field-legacy-file">Picture</label>
-          <input class="text-field-input" type="file" id="text-field-legacy-file" name="picture">
+          <label class="label" for="text-field-standalone-file">Picture</label>
+          <input class="text-field-input" type="file" id="text-field-standalone-file" name="picture">
         </div>
         <div style="width: 100%; max-width: 24rem">
-          <label class="label" for="text-field-legacy-message">Message</label>
-          <textarea class="text-field-input" id="text-field-legacy-message" placeholder="Your message..."></textarea>
+          <label class="label" for="text-field-standalone-message">Message</label>
+          <textarea class="text-field-input" id="text-field-standalone-message" placeholder="Your message..."></textarea>
         </div>
       </div>
-      <p class="text-xs text-muted mb-3 mt-3">The existing API also supports <code>data-size="sm"</code>, native <code>disabled</code>, <code>readonly</code>, <code>required</code>, <code>aria-invalid</code>, file inputs, passwords, search fields, and inline buttons.</p>
+      <p class="text-xs text-muted mb-3 mt-3">Standalone controls support native <code>disabled</code>, <code>readonly</code>, <code>required</code>, <code>aria-invalid</code>, file inputs, passwords, search fields, and inline buttons. Apply <code>data-size</code> to the <code>.text-field</code> composition when a type-scale variant is needed.</p>
 
-      <p class="text-sm font-medium mb-2 mt-8">Existing input variants</p>
+      <p class="text-sm font-medium mb-2 mt-8">Standalone input variants</p>
       <div class="preview" style="display: grid; gap: var(--space-03)">
         <div style="position: relative; width: 100%; max-width: 24rem">
           <i data-lucide="search" aria-hidden="true" class="text-muted" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); width: var(--size-04); height: var(--size-04)"></i>
           <input class="text-field-input" style="padding-left: 2.25rem" type="search" aria-label="Search" placeholder="Search...">
         </div>
         <div style="width: 100%; max-width: 24rem">
-          <label class="label" for="text-field-legacy-password">Password</label>
-          <input class="text-field-input" type="password" id="text-field-legacy-password" placeholder="Enter your password">
+          <label class="label" for="text-field-standalone-password">Password</label>
+          <input class="text-field-input" type="password" id="text-field-standalone-password" placeholder="Enter your password">
         </div>
         <div style="display: flex; gap: var(--space-02); width: 100%; max-width: 24rem">
           <input class="text-field-input" type="search" aria-label="Search" placeholder="Search...">

@@ -62,7 +62,7 @@ The `components/{name}/{name}.md` skill is the markup contract. The `.css` and `
 
 ### Use local icons
 
-Icons live in `src/icons/` as standalone SVG files. Use `<i data-lucide="name">` with a local fetch-and-inline loader, or inline the matching SVG directly. The doc site's loader is in `docs/js/site.js`. Decorative icons need `aria-hidden="true"`; icon-only controls need an accessible name. Never load the Lucide CDN or any other external icon set.
+Icons live in `src/icons/` as standalone SVG files. Inline the matching SVG for the no-JavaScript path. When a local loader is available, `<i data-lucide="name">` is an optional convenience hook; the doc site's loader is in `docs/js/site.js`. Decorative icons need `aria-hidden="true"`; icon-only controls need an accessible name. Never load the Lucide CDN or any other external icon set.
 
 ### Theme with tokens
 
@@ -97,7 +97,7 @@ This is the complete current inventory, grouped by the same purpose groups used 
 | Typography | Native HTML text elements: headings, paragraphs, quotes, code, keyboard notation, and lists | No | [`components/typography/typography.md`](components/typography/typography.md) · [`docs/typography.html`](docs/typography.html) |
 | Layout | CSS Grid and Flexbox primitives for containers, stacks, grids, sidebar splits, centering, and opposite-end groups | No | [`components/layout/layout.md`](components/layout/layout.md) · [`docs/layout.html`](docs/layout.html) |
 | Separator | `<hr>` for horizontal rules and `<div role="separator">` for a vertical separator | No | [`components/separator/separator.md`](components/separator/separator.md) · [`docs/separator.html`](docs/separator.html) |
-| Icon | `<i>` elements with local standalone SVG files or inline SVG | No | [`components/icon/icon.md`](components/icon/icon.md) · [`docs/icon.html`](docs/icon.html) |
+| Icon | Inline `<svg>` copied from a local standalone SVG file, with an optional loader hook | No | [`components/icon/icon.md`](components/icon/icon.md) · [`docs/icon.html`](docs/icon.html) |
 
 ### Actions
 

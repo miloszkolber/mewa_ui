@@ -278,6 +278,8 @@ test("component folders, docs pages, and README inventory have exact parity", ()
     assert(names.filter((name) => name.endsWith(".js")).every((name) => name === `${component.slug}.js`), `${component.slug}: enhancement modules must be named after their component`);
     const skill = read(path.join(directory, `${component.slug}.md`));
     assert.match(skill, /^## Native basis\s/m, `${component.slug}: skill must document its native basis`);
+    const apiSection = skill.match(/^## Native Web APIs\s*\n([\s\S]*?)(?=^## |$)/im);
+    assert(apiSection && apiSection[1].trim(), `${component.slug}: skill must document native APIs or explicitly state none`);
   }
 });
 
@@ -425,9 +427,24 @@ test("native fallback and SPA enhancement contracts stay explicit", () => {
   ].forEach((pattern) => assert.match(textField, pattern, `text-field skill is missing ${pattern}`));
   const textFieldDoc = read(path.join(docsDir, "text-field.html"));
   [
-    /id="text-field-legacy-email-help"/, /aria-describedby="text-field-legacy-email-help"/,
+    /id="text-field-standalone-email-help"/, /aria-describedby="text-field-standalone-email-help"/,
     /id="password"/, /for="password"/, /id="text-field-form-email-help"/, /aria-describedby="text-field-form-email-help"/
   ].forEach((pattern) => assert.match(textFieldDoc, pattern, `text-field docs are missing ${pattern}`));
+  const fieldDoc = read(path.join(docsDir, "field.html"));
+  assert(!/<div[^>]+class=["']field["'][^>]+role=["']group["']/i.test(fieldDoc), "single fields must not expose unnamed group roles");
+  assert(!/<fieldset[\s\S]*role=["']group["']/i.test(fieldDoc), "fieldset examples must not add a redundant nested group");
+  const skeleton = read(path.join(componentsDir, "skeleton", "skeleton.md"));
+  assert.match(skeleton, /^## Native Web APIs\s+[\s\S]*?<div>/m, "skeleton must document its static native basis");
+  assert.match(skeleton, /aria-hidden="true"/i, "skeleton examples must keep decorative placeholders hidden");
+  const iconEntry = components.find((component) => component.slug === "icon");
+  assert(iconEntry && !iconEntry.requiresJs && !iconEntry.enhancementJs && iconEntry.nativeBasis.includes("Inline `<svg>`"), "icon registry metadata must describe the inline SVG no-JavaScript basis");
+  const readme = read(path.join(root, "README.md"));
+  assert.match(readme, /Inline the matching SVG for the no-JavaScript path/i, "README must lead with the inline SVG icon path");
+  const iconDoc = read(path.join(docsDir, "icon.html"));
+  assert.match(iconDoc, /<svg[^>]+aria-hidden="true"/, "Icon docs must provide an inline SVG copy example");
+  assert(!/legacy|existing input/i.test(textFieldDoc), "Text Field docs must not retain migration-era terminology");
+  const datePicker = read(path.join(componentsDir, "date-picker", "date-picker.md"));
+  assert(!/\.calendar|calendar:select/i.test(datePicker), "Date Picker docs must use the Kernel-aligned component naming");
 
   const dataTable = read(path.join(docsDir, "data-table.html"));
   assert.match(dataTable, /<form class="data-table-filter-group"/);

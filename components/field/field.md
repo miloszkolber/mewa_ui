@@ -2,7 +2,7 @@
 
 ## Native basis
 
-`Field` is a semantic composition around a native form control. Use a `<div role="group" class="field">` for one labelled control and a native `<fieldset class="fieldset">` with a `<legend>` for related controls. The browser remains responsible for focus, validation, submission, and reset.
+`Field` is a semantic composition around a native form control. Use a plain `<div class="field">` for one labelled control and a native `<fieldset class="fieldset">` with a `<legend>` for related controls. Reserve a labelled `role="group"` for a structural group that cannot use a fieldset. The browser remains responsible for focus, validation, submission, and reset.
 
 ## Native web APIs
 
@@ -17,7 +17,7 @@
 ### One field
 
 ```html
-<div class="field" role="group">
+<div class="field">
   <label for="account-email">
     Email <span class="field-required" aria-hidden="true">*</span>
   </label>
@@ -35,7 +35,7 @@ The `for` and `id` pair is the label association. `required` is the source of tr
 ### Invalid field
 
 ```html
-<div class="field" role="group" data-invalid>
+<div class="field" data-invalid>
   <label for="account-handle">Username</label>
   <input class="text-field-input" id="account-handle" name="username" type="text"
          aria-invalid="true"
@@ -55,7 +55,7 @@ Put `aria-invalid="true"` on the control, not only on the wrapper. Use `data-inv
 ### Disabled field
 
 ```html
-<div class="field" role="group" data-disabled>
+<div class="field" data-disabled>
   <label for="account-plan">Plan</label>
   <select class="select" id="account-plan" name="plan" disabled>
     <option>Free</option>
@@ -76,7 +76,7 @@ Prefer the native `disabled` attribute. `data-disabled` is only a styling hook f
   <p class="field-description" id="notifications-description">
     Choose how we contact you.
   </p>
-  <div role="group" aria-label="Notification preferences">
+  <div>
     <div class="field" data-orientation="horizontal">
       <input id="notify-email" type="checkbox" name="email-updates">
       <label for="notify-email">Email updates</label>
@@ -89,7 +89,7 @@ Prefer the native `disabled` attribute. `data-disabled` is only a styling hook f
 </fieldset>
 ```
 
-Use `<fieldset>` and `<legend>` when the group has a shared name. A labelled `role="group"` is suitable for a structural group that cannot use a fieldset.
+Use `<fieldset>` and `<legend>` when the group has a shared name. A labelled `role="group"` is suitable only for a structural group that cannot use a fieldset.
 
 ## Data attributes
 
@@ -107,6 +107,7 @@ These attributes do not replace `required`, `disabled`, or `aria-invalid` on the
 - Join description and error IDs in `aria-describedby`. Keep `aria-errormessage` on a control only when `aria-invalid="true"` is present.
 - Use `role="alert"` for an error that is inserted after validation. Do not use a role to replace the native label.
 - Use a native `<fieldset>` and `<legend>` for related controls. Do not add a fieldset role to a single text input.
+- Do not add an unnamed `role="group"` around a single labelled control. Reserve `role="group"` for a genuinely grouped composition and give it an accessible name.
 - The stylesheet preserves `:focus-visible`, `prefers-contrast: more`, and forced-colors focus and disabled states.
 
 ## Keyboard and events

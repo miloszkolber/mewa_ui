@@ -128,15 +128,15 @@
     opacity: var(--opacity-07);
   }
 
+  /* Size variants intentionally change type scale only. Single-line controls
+     keep the shared 2.5rem geometry, while textareas keep their own sizing. */
   .text-field[data-size="sm"] > :where(input, textarea, select),
   .text-field[data-size="sm"] > .text-field-input {
-    min-block-size: var(--size-08);
     font-size: var(--font-body-xsmall);
   }
 
   .text-field[data-size="lg"] > :where(input, textarea, select),
   .text-field[data-size="lg"] > .text-field-input {
-    min-block-size: var(--size-08);
     font-size: var(--font-body);
   }
 

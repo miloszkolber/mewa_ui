@@ -138,6 +138,6 @@ Enhanced data tables dispatch bubbling `CustomEvent`s on the `.data-table` root:
 
 - The module uses delegated events, so rows and controls added after initialization continue to work.
 - Sorting is locale-aware and stable. Numeric and date columns can provide `data-sort-type` and cells can provide `data-sort-value`.
-- Filtering matches row text case-insensitively. The result summary counts all matching rows, while the optional range reports the current page.
+- Filtering matches row text case-insensitively. The result summary counts all matching rows, while the optional range reports the current page against the filtered total.
 - Client-side pagination is enabled only when `data-page-size` is a positive integer. Without it, Pagination links retain native navigation behavior.
 - State changes are immediate. The component does not add transitions, animations, or shadows.

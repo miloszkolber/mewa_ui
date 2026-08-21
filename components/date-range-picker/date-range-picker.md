@@ -10,6 +10,7 @@ Date Range Picker is a native-first pair of `<input type="date">` controls. A `<
 - [`<fieldset>` and `<legend>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset) — accessible group naming
 - [`min` and `max`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date#min) — native date bounds
 - [`setCustomValidity()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/setCustomValidity) — optional cross-field validation added by the module
+- [`aria-errormessage`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-errormessage) — associates an active error with a control only while it is invalid
 - [`<output>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/output) — optional range status
 
 ## Structure
@@ -27,14 +28,14 @@ Date Range Picker is a native-first pair of `<input type="date">` controls. A `<
       <label for="trip-start">Start date</label>
       <input class="date-range-input" data-range-start id="trip-start"
              name="start" type="date"
-             aria-describedby="trip-dates-description trip-dates-error">
+             aria-describedby="trip-dates-description">
     </div>
     <span class="date-range-separator" aria-hidden="true">to</span>
     <div class="date-range-field">
       <label for="trip-end">End date</label>
       <input class="date-range-input" data-range-end id="trip-end"
              name="end" type="date"
-             aria-describedby="trip-dates-description trip-dates-error">
+             aria-describedby="trip-dates-description">
     </div>
   </div>
   <p class="date-range-error" data-range-error id="trip-dates-error" role="alert" hidden>
@@ -78,15 +79,14 @@ The two controls are independently focusable and submit `start=YYYY-MM-DD` and `
     <div class="date-range-field">
       <label for="report-start">Start date</label>
       <input class="date-range-input" data-range-start id="report-start"
-             type="date" value="2026-08-21" aria-invalid="true"
-             aria-describedby="report-error">
+             type="date" value="2026-08-21">
     </div>
     <span class="date-range-separator" aria-hidden="true">to</span>
     <div class="date-range-field">
       <label for="report-end">End date</label>
       <input class="date-range-input" data-range-end id="report-end"
              type="date" value="2026-08-10" aria-invalid="true"
-             aria-describedby="report-error">
+             aria-errormessage="report-error">
     </div>
   </div>
   <p class="date-range-error" id="report-error" role="alert">
@@ -106,6 +106,8 @@ Load `date-range-picker.js` after the markup when the application wants cross-fi
 3. Updates a `[data-range-status]` `<output>` and a `[data-range-error]` message when those elements are present.
 4. Dispatches `date-range:change` after a native `change` event and `date-range:invalid` when the chronological validity changes.
 
+Values that arrive reversed from a server remain dormant until an input or change interaction makes the chronological error actionable. This keeps a hidden live-region error from announcing on page load. A server-rendered invalid state (`data-invalid`, `aria-invalid="true"`, `data-range-order-invalid`, or a visible range error) is preserved and remains active. A form reset restores the initial values and the module's invalidity baseline so later chronological transitions still emit the expected event.
+
 ## Data attributes
 
 | Attribute | Element | Purpose |
@@ -114,6 +116,7 @@ Load `date-range-picker.js` after the markup when the application wants cross-fi
 | `data-range-end` | end `<input>` | Identifies the second native date control |
 | `data-range-status` | `<output>` | Receives the optional selected-range summary |
 | `data-range-error` | error text | Receives the optional cross-field error |
+| `data-range-order-invalid` | `.date-range-picker` | Module state hook for an active chronological error |
 | `data-invalid` | `.date-range-picker` | Marks a known invalid range |
 | `data-disabled` | `.date-range-picker` | Styling hook when a wrapper needs a disabled presentation |
 
@@ -122,8 +125,9 @@ The start and end markers are the only required component hooks. `data-invalid` 
 ## Accessibility
 
 - Use a native `<fieldset>` and `<legend>` so the group has a name before any script runs.
-- Give each date control its own visible label and stable `id`. Use `aria-describedby` for shared help and error text.
+- Give each date control its own visible label and stable `id`. Use `aria-describedby` for shared help and associate the managed chronological error with the end control through `aria-errormessage` only while `aria-invalid="true"`.
 - Keep errors in an element with `role="alert"` when they are inserted after interaction. The module sets `aria-invalid` on the end input only for its managed chronological error.
+- The module removes only the `aria-invalid`, `aria-errormessage`, `data-invalid`, custom validity, and error state that it added. Existing server or application validity remains in place when the range becomes chronologically valid.
 - The status uses `<output aria-live="polite">` and is informational. It is not a replacement for the labels or validation message.
 - `required`, `disabled`, `min`, and `max` remain native HTML attributes and work without the module.
 

@@ -1,7 +1,7 @@
 /* -- Date Picker component --------------------------------------- */
 
 @layer components {
-  .calendar {
+  .date-picker {
     display: inline-flex;
     flex-direction: column;
     padding: var(--space-03);
@@ -11,20 +11,20 @@
     user-select: none;
   }
 
-  .calendar-header {
+  .date-picker-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 var(--space-01) var(--space-02);
   }
 
-  .calendar-heading {
+  .date-picker-heading {
     font-size: var(--font-body-small);
     font-weight: var(--font-weight-strong);
     color: var(--text-primary);
   }
 
-  .calendar-nav {
+  .date-picker-nav {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -51,12 +51,12 @@
     }
   }
 
-  .calendar-grid {
+  .date-picker-grid {
     border-collapse: collapse;
     border-spacing: 0;
   }
 
-  .calendar-day-label {
+  .date-picker-day-label {
     width: 2.25rem;
     height: 2.25rem;
     font-size: var(--font-body-xsmall);
@@ -66,7 +66,7 @@
     vertical-align: middle;
   }
 
-  .calendar-day {
+  .date-picker-day {
     width: 2.25rem;
     height: 2.25rem;
     text-align: center;

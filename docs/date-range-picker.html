@@ -96,23 +96,26 @@
       <p class="text-sm font-medium mb-2 mt-6">Default range</p>
       <p class="text-xs text-muted mb-3">Tab between the independently labelled inputs. The browser owns each date picker and its date-segment keys.</p>
       <div class="preview">
-        <fieldset class="date-range-picker" style="width: 100%; max-width: 34rem">
+        <form id="demo-range-form" style="display: grid; gap: var(--space-03); width: 100%; max-width: 34rem">
+          <fieldset class="date-range-picker">
           <legend>Trip dates</legend>
           <p class="date-range-description" id="demo-range-help">Choose a start and end date.</p>
           <div class="date-range-controls">
             <div class="date-range-field">
               <label for="demo-range-start">Start date</label>
-              <input class="date-range-input" data-range-start id="demo-range-start" name="start" type="date" aria-describedby="demo-range-help demo-range-error">
+              <input class="date-range-input" data-range-start id="demo-range-start" name="start" type="date" aria-describedby="demo-range-help">
             </div>
             <span class="date-range-separator" aria-hidden="true">to</span>
             <div class="date-range-field">
               <label for="demo-range-end">End date</label>
-              <input class="date-range-input" data-range-end id="demo-range-end" name="end" type="date" aria-describedby="demo-range-help demo-range-error">
+              <input class="date-range-input" data-range-end id="demo-range-end" name="end" type="date" aria-describedby="demo-range-help">
             </div>
           </div>
           <p class="date-range-error" data-range-error id="demo-range-error" role="alert" hidden>End date must be on or after the start date.</p>
           <output class="date-range-status" data-range-status aria-live="polite"></output>
-        </fieldset>
+          </fieldset>
+          <button class="btn" type="reset" style="justify-self: start">Reset dates</button>
+        </form>
       </div>
       <div style="position: relative; margin-top: var(--space-02)">
         <button class="copy-btn" type="button">Copy</button>
@@ -124,14 +127,14 @@
   &lt;div class="date-range-controls"&gt;
     &lt;div class="date-range-field"&gt;
       &lt;label for="range-start"&gt;Start date&lt;/label&gt;
-      &lt;input class="date-range-input" data-range-start id="range-start"
-             name="start" type="date" aria-describedby="range-help range-error"&gt;
+       &lt;input class="date-range-input" data-range-start id="range-start"
+              name="start" type="date" aria-describedby="range-help"&gt;
     &lt;/div&gt;
     &lt;span class="date-range-separator" aria-hidden="true"&gt;to&lt;/span&gt;
     &lt;div class="date-range-field"&gt;
       &lt;label for="range-end"&gt;End date&lt;/label&gt;
-      &lt;input class="date-range-input" data-range-end id="range-end"
-             name="end" type="date" aria-describedby="range-help range-error"&gt;
+       &lt;input class="date-range-input" data-range-end id="range-end"
+              name="end" type="date" aria-describedby="range-help"&gt;
     &lt;/div&gt;
   &lt;/div&gt;
   &lt;p class="date-range-error" data-range-error id="range-error"
@@ -166,12 +169,12 @@
           <div class="date-range-controls">
             <div class="date-range-field">
               <label for="demo-invalid-start">Start date</label>
-              <input class="date-range-input" data-range-start id="demo-invalid-start" type="date" value="2026-08-21" aria-invalid="true" aria-describedby="demo-invalid-error">
+              <input class="date-range-input" data-range-start id="demo-invalid-start" type="date" value="2026-08-21">
             </div>
             <span class="date-range-separator" aria-hidden="true">to</span>
             <div class="date-range-field">
               <label for="demo-invalid-end">End date</label>
-              <input class="date-range-input" data-range-end id="demo-invalid-end" type="date" value="2026-08-10" aria-invalid="true" aria-describedby="demo-invalid-error">
+              <input class="date-range-input" data-range-end id="demo-invalid-end" type="date" value="2026-08-10" aria-invalid="true" aria-errormessage="demo-invalid-error">
             </div>
           </div>
           <p class="date-range-error" id="demo-invalid-error" role="alert">End date must be on or after the start date.</p>
@@ -179,7 +182,7 @@
       </div>
 
       <p class="text-sm font-medium mb-2 mt-8">Keyboard, events, and limitations</p>
-      <p class="text-xs text-muted mb-3">The native controls provide Tab order and browser-specific date segment editing. With the module loaded, <code>date-range:change</code> bubbles after a native change and <code>date-range:invalid</code> bubbles when chronological validity changes. The browser calendar popup cannot be styled consistently, and this component does not add presets, a custom month grid, timezone handling, or animation.</p>
+      <p class="text-xs text-muted mb-3">The native controls provide Tab order and browser-specific date segment editing. With the module loaded, <code>date-range:change</code> bubbles after a native change and <code>date-range:invalid</code> bubbles when chronological validity changes. Reversed values supplied by a server stay dormant until interaction, while the known invalid example preserves its server-rendered state. Native form reset restores the initial range and the module's event baseline. The browser calendar popup cannot be styled consistently, and this component does not add presets, a custom month grid, timezone handling, or animation.</p>
     </main>
   </div>
   <script src="js/site.js" defer></script>

@@ -204,8 +204,8 @@ function init() {
         const first = matchingRows.length ? firstIndex + 1 : 0;
         const last = matchingRows.length ? firstIndex + pageRows.length : 0;
         rangeOutput.textContent = matchingRows.length
-          ? `Showing ${first}\u2013${last} of ${allRows.length} ${labels.rangeLabel}`
-          : `Showing 0 of ${allRows.length} ${labels.rangeLabel}`;
+          ? `Showing ${first}\u2013${last} of ${matchingRows.length} ${labels.rangeLabel}`
+          : `Showing 0 of ${matchingRows.length} ${labels.rangeLabel}`;
       }
 
       updatePagination(pageCount);

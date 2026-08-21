@@ -27,15 +27,20 @@ const setConstraint = (input, name, value) => {
   input[name] = value || '';
 };
 
-const rangeDetail = (start, end, orderInvalid) => ({
-  start: start.value || null,
-  end: end.value || null,
-  complete: Boolean(start.value && end.value),
+const rangeDetail = (start, end, startValue, endValue, orderInvalid) => ({
+  start: startValue || null,
+  end: endValue || null,
+  complete: Boolean(startValue && endValue),
   valid: !orderInvalid && start.validity.valid && end.validity.valid
 });
 
-const updateStatus = (status, startValue, endValue, orderInvalid) => {
+const updateStatus = (status, startValue, endValue, orderInvalid, announceOrder) => {
   if (!status) return;
+
+  // Values that were present before enhancement are allowed to remain dormant.
+  // Do not put the chronological error into a live region until an interaction
+  // has made that error actionable.
+  if (orderInvalid && !announceOrder) return;
 
   if (!startValue && !endValue) {
     status.textContent = 'No dates selected';
@@ -57,6 +62,18 @@ const updateStatus = (status, startValue, endValue, orderInvalid) => {
     : `End date ${formatDate(endValue)} selected. Choose a start date.`;
 };
 
+const attributeState = (element, name) => ({
+  present: element.hasAttribute(name),
+  value: element.getAttribute(name)
+});
+
+const restoreAttribute = (element, name, state) => {
+  if (state.present) element.setAttribute(name, state.value ?? '');
+  else element.removeAttribute(name);
+};
+
+const hasCustomError = (input) => Boolean(input.validity && input.validity.customError);
+
 function init() {
   document.querySelectorAll('.date-range-picker:not([data-init])').forEach((picker) => {
     picker.dataset.init = '';
@@ -74,52 +91,159 @@ function init() {
       endMax: end.max
     };
     const initial = {
-      pickerInvalid: picker.hasAttribute('data-invalid'),
-      endInvalid: end.getAttribute('aria-invalid') === 'true',
-      errorHidden: error ? error.hidden : true
+      pickerInvalid: attributeState(picker, 'data-invalid'),
+      orderInvalid: attributeState(picker, 'data-range-order-invalid'),
+      startAriaInvalid: attributeState(start, 'aria-invalid'),
+      endAriaInvalid: attributeState(end, 'aria-invalid'),
+      endErrorMessage: attributeState(end, 'aria-errormessage'),
+      errorHidden: error ? error.hidden : true,
+      errorText: error ? error.textContent : '',
+      statusText: status ? status.textContent : ''
     };
+    let interactionStarted = false;
     let managedEndInvalid = false;
-    let managedOrderInvalid = picker.hasAttribute('data-range-order-invalid');
+    let managedEndErrorMessage = false;
+    let managedPickerInvalid = false;
+    let managedOrderAttribute = false;
+    let managedErrorVisibility = false;
+    let managedErrorText = false;
+    let managedStatus = false;
+    let managedCustomValidity = false;
+    let managedOrderInvalid = false;
 
-    const sync = () => {
+    const initialStartValue = isDateValue(start.value) ? start.value : '';
+    const initialEndValue = isDateValue(end.value) ? end.value : '';
+    const initialOrderInvalid = Boolean(
+      initialStartValue
+      && initialEndValue
+      && initialStartValue > initialEndValue
+    );
+    const initialServerOrderInvalid = initialOrderInvalid && (
+      initial.pickerInvalid.present
+      || initial.orderInvalid.present
+      || initial.startAriaInvalid.value === 'true'
+      || initial.endAriaInvalid.value === 'true'
+      || (error && !initial.errorHidden)
+    );
+
+    const clearManagedCustomValidity = () => {
+      if (!managedCustomValidity) return;
+      if (end.validationMessage === ORDER_MESSAGE) end.setCustomValidity('');
+      managedCustomValidity = false;
+    };
+
+    const applyOrderValidity = () => {
+      // A server or application script may already own custom validity. Keep it
+      // intact and let the visible range error communicate this second issue.
+      if (managedCustomValidity && end.validationMessage !== ORDER_MESSAGE) {
+        managedCustomValidity = false;
+      }
+      if (!managedCustomValidity && !hasCustomError(end)) {
+        end.setCustomValidity(ORDER_MESSAGE);
+        managedCustomValidity = true;
+      }
+    };
+
+    const showManagedInvalidState = () => {
+      applyOrderValidity();
+
+      if (error?.id) {
+        if (!end.hasAttribute('aria-errormessage')) {
+          end.setAttribute('aria-errormessage', error.id);
+          managedEndErrorMessage = true;
+        }
+      }
+
+      if (!end.hasAttribute('aria-invalid') || end.getAttribute('aria-invalid') !== 'true') {
+        end.setAttribute('aria-invalid', 'true');
+        managedEndInvalid = true;
+      }
+      if (!picker.hasAttribute('data-invalid')) {
+        picker.dataset.invalid = '';
+        managedPickerInvalid = true;
+      }
+      if (!picker.hasAttribute('data-range-order-invalid')) {
+        picker.dataset.rangeOrderInvalid = '';
+        managedOrderAttribute = true;
+      }
+      if (error) {
+        if (error.hidden) {
+          error.hidden = false;
+          managedErrorVisibility = true;
+        }
+        if (!error.textContent.trim()) {
+          error.textContent = ORDER_MESSAGE;
+          managedErrorText = true;
+        }
+      }
+    };
+
+    const restoreManagedInvalidState = () => {
+      clearManagedCustomValidity();
+
+      if (managedEndInvalid && end.getAttribute('aria-invalid') === 'true') {
+        restoreAttribute(end, 'aria-invalid', initial.endAriaInvalid);
+      }
+      managedEndInvalid = false;
+
+      if (managedEndErrorMessage && end.getAttribute('aria-errormessage') === error?.id) {
+        restoreAttribute(end, 'aria-errormessage', initial.endErrorMessage);
+      }
+      managedEndErrorMessage = false;
+
+      if (managedPickerInvalid && picker.getAttribute('data-invalid') === '') {
+        restoreAttribute(picker, 'data-invalid', initial.pickerInvalid);
+      }
+      managedPickerInvalid = false;
+
+      if (managedOrderAttribute && picker.getAttribute('data-range-order-invalid') === '') {
+        restoreAttribute(picker, 'data-range-order-invalid', initial.orderInvalid);
+      }
+      managedOrderAttribute = false;
+
+      if (error && managedErrorVisibility && !error.hidden) {
+        error.hidden = initial.errorHidden;
+      }
+      managedErrorVisibility = false;
+
+      if (error && managedErrorText && error.textContent === ORDER_MESSAGE) {
+        error.textContent = initial.errorText;
+      }
+      managedErrorText = false;
+    };
+
+    const sync = ({ announceOrder = interactionStarted } = {}) => {
       const startValue = isDateValue(start.value) ? start.value : '';
       const endValue = isDateValue(end.value) ? end.value : '';
       const orderInvalid = Boolean(startValue && endValue && startValue > endValue);
+      const applyOrderConstraints = !initialOrderInvalid || interactionStarted || initialServerOrderInvalid;
 
       setConstraint(start, 'min', base.startMin);
-      setConstraint(start, 'max', minDateValue(base.startMax, endValue));
-      setConstraint(end, 'min', maxDateValue(base.endMin, startValue));
+      setConstraint(start, 'max', applyOrderConstraints
+        ? minDateValue(base.startMax, endValue)
+        : base.startMax);
+      setConstraint(end, 'min', applyOrderConstraints
+        ? maxDateValue(base.endMin, startValue)
+        : base.endMin);
       setConstraint(end, 'max', base.endMax);
 
       if (orderInvalid) {
-        end.setCustomValidity(ORDER_MESSAGE);
-      } else if (end.validationMessage === ORDER_MESSAGE) {
-        end.setCustomValidity('');
-      }
-
-      if (orderInvalid) {
-        end.setAttribute('aria-invalid', 'true');
-        managedEndInvalid = !initial.endInvalid;
-        picker.dataset.invalid = '';
-        picker.dataset.rangeOrderInvalid = '';
-        if (error) {
-          error.hidden = false;
-          if (!error.textContent.trim()) {
-            error.textContent = ORDER_MESSAGE;
-          }
-        }
+        if (announceOrder || initialServerOrderInvalid) showManagedInvalidState();
       } else {
-        if (managedEndInvalid) {
-          end.removeAttribute('aria-invalid');
-          managedEndInvalid = false;
-        }
-        if (!initial.pickerInvalid) picker.removeAttribute('data-invalid');
-        picker.removeAttribute('data-range-order-invalid');
-        if (error && initial.errorHidden) error.hidden = true;
+        restoreManagedInvalidState();
       }
 
-      updateStatus(status, startValue, endValue, orderInvalid);
-      return { orderInvalid, detail: rangeDetail(start, end, orderInvalid) };
+      if (orderInvalid && !announceOrder && !initialServerOrderInvalid) {
+        if (managedStatus && status) status.textContent = initial.statusText;
+        managedStatus = false;
+      } else if (status) {
+        updateStatus(status, startValue, endValue, orderInvalid, announceOrder || initialServerOrderInvalid);
+        managedStatus = true;
+      }
+      return {
+        orderInvalid,
+        detail: rangeDetail(start, end, startValue, endValue, orderInvalid)
+      };
     };
 
     const emitInvalid = (result) => {
@@ -132,7 +256,8 @@ function init() {
     };
 
     const emitChange = () => {
-      const result = sync();
+      interactionStarted = true;
+      const result = sync({ announceOrder: true });
       emitInvalid(result);
       picker.dispatchEvent(new CustomEvent('date-range:change', {
         bubbles: true,
@@ -140,17 +265,34 @@ function init() {
       }));
     };
 
-    const handleInput = () => emitInvalid(sync());
+    const handleInput = () => {
+      interactionStarted = true;
+      emitInvalid(sync({ announceOrder: true }));
+    };
     start.addEventListener('input', handleInput);
     end.addEventListener('input', handleInput);
     start.addEventListener('change', emitChange);
     end.addEventListener('change', emitChange);
 
     const form = picker.closest('form');
-    if (form) form.addEventListener('reset', () => queueMicrotask(sync));
+    if (form) {
+      form.addEventListener('reset', (event) => {
+        queueMicrotask(() => {
+          if (event.defaultPrevented) return;
+          interactionStarted = false;
+          const result = sync({ announceOrder: initialServerOrderInvalid });
+          managedOrderInvalid = initialServerOrderInvalid && result.orderInvalid;
+          if (result.orderInvalid && !initialServerOrderInvalid) {
+            restoreManagedInvalidState();
+            if (status && managedStatus) status.textContent = initial.statusText;
+            managedStatus = false;
+          }
+        });
+      });
+    }
 
-    const initialState = sync();
-    managedOrderInvalid = initialState.orderInvalid;
+    const initialState = sync({ announceOrder: initialServerOrderInvalid });
+    managedOrderInvalid = initialServerOrderInvalid && initialState.orderInvalid;
   });
 }
 

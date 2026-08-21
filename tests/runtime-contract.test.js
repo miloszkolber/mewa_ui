@@ -191,6 +191,7 @@ class WindowLike {
 class Element {
   constructor(tag = "div", attributes = {}) {
     this.tagName = tag.toUpperCase();
+    this.nodeType = tag === "#document" ? 9 : 1;
     this.attributes = new Map();
     this.children = [];
     this.parentElement = null;
@@ -325,6 +326,7 @@ class Element {
     const parent = this.parentElement;
     parent.children.splice(parent.children.indexOf(this), 1);
     this.parentElement = null;
+    notifyMutation(parent, [], [this]);
   }
 
   setOwnerDocument(document) {
@@ -450,7 +452,11 @@ class Element {
   }
 
   get validity() {
-    return { valid: this.checkValidity() };
+    return {
+      valid: this.checkValidity(),
+      customError: Boolean(this.validationMessage),
+      valueMissing: this.required && !String(this.value || "").trim()
+    };
   }
 
   get willValidate() {
@@ -482,10 +488,10 @@ class Document extends Element {
   }
 }
 
-function notifyMutation(target, addedNodes) {
+function notifyMutation(target, addedNodes = [], removedNodes = []) {
   const document = target.ownerDocument;
   if (!document?._mutationObservers) return;
-  const record = { type: "childList", target, addedNodes };
+  const record = { type: "childList", target, addedNodes, removedNodes };
   document._mutationObservers.forEach((observer) => {
     const observesTarget = observer.target === target;
     const observesSubtree = observer.options.subtree && observer.target.contains(target);
@@ -531,6 +537,7 @@ function createRuntime() {
     window,
     Event: EventLike,
     CustomEvent: EventLike,
+    Node: { ELEMENT_NODE: 1 },
     MutationObserver: MutationObserverLike,
     ResizeObserver: ResizeObserverLike,
     queueMicrotask: (callback) => callback(),
@@ -779,10 +786,11 @@ test("data tables filter, sort, announce counts, and clear through native contro
   assert.equal(bravo.hidden, false);
   assert.equal(empty.hidden, true);
   assert.equal(status.textContent, "1 project");
+  assert.equal(range.textContent, "Showing 1–1 of 1 projects");
   filter.value = "missing";
   fire(filter, "input");
   assert.equal(empty.hidden, false);
-  assert.equal(range.textContent, "Showing 0 of 2 projects");
+  assert.equal(range.textContent, "Showing 0 of 0 projects");
   fire(clear, "click");
   assert.equal(filter.value, "");
   assert.equal(alpha.hidden, false);
@@ -790,30 +798,147 @@ test("data tables filter, sort, announce counts, and clear through native contro
   assert.equal(runtime.document.activeElement, filter);
 });
 
+test("date range pickers keep chronological validation dormant until interaction and recover after reset", () => {
+  const form = node("form");
+  const picker = node("fieldset", { class: "date-range-picker" });
+  const start = node("input", { type: "date", "data-range-start": "", value: "2026-06-01" });
+  const end = node("input", { type: "date", "data-range-end": "", value: "2026-06-10" });
+  const error = node("p", { "data-range-error": "", id: "range-error" });
+  error.hidden = true;
+  const status = node("output", { "data-range-status": "" });
+  picker.append(start, end, error, status);
+  form.append(picker);
+
+  const runtime = loadModule("date-range-picker", form);
+  const invalidEvents = [];
+  const changeEvents = [];
+  picker.addEventListener("date-range:invalid", (event) => invalidEvents.push(event.detail));
+  picker.addEventListener("date-range:change", (event) => changeEvents.push(event.detail));
+
+  end.value = "2026-05-01";
+  fire(end, "input");
+  assert.equal(invalidEvents.length, 1);
+  assert.equal(invalidEvents[0].valid, false);
+  assert.equal(end.getAttribute("aria-invalid"), "true");
+  assert.equal(start.getAttribute("aria-errormessage"), null);
+  assert.equal(end.getAttribute("aria-errormessage"), "range-error");
+  assert.equal(error.hidden, false);
+  assert.equal(status.textContent, "End date must be on or after the start date.");
+
+  end.value = "2026-06-10";
+  fire(end, "input");
+  assert.equal(invalidEvents.length, 2);
+  assert.equal(invalidEvents[1].valid, true);
+  assert.equal(end.getAttribute("aria-invalid"), null);
+  assert.equal(end.getAttribute("aria-errormessage"), null);
+  assert.equal(error.hidden, true);
+
+  end.value = "2026-05-01";
+  fire(end, "change");
+  assert.equal(changeEvents.length, 1);
+  assert.equal(changeEvents[0].start, "2026-06-01");
+  assert.equal(changeEvents[0].end, "2026-05-01");
+  assert.equal(changeEvents[0].complete, true);
+  assert.equal(changeEvents[0].valid, false);
+
+  end.value = "2026-06-10";
+  fire(form, "reset");
+  assert.equal(end.getAttribute("aria-invalid"), null);
+  assert.equal(error.hidden, true);
+
+  end.value = "2026-05-01";
+  fire(end, "input");
+  assert.equal(invalidEvents.length, 4, "invalid transitions continue after form reset");
+  assert.equal(runtime.document.activeElement, runtime.document.body);
+});
+
+test("date range pickers keep reversed server values dormant until interaction", () => {
+  const picker = node("fieldset", { class: "date-range-picker" });
+  const start = node("input", { type: "date", "data-range-start": "", value: "2026-06-10" });
+  const end = node("input", { type: "date", "data-range-end": "", value: "2026-06-01" });
+  const error = node("p", { "data-range-error": "", id: "dormant-error" });
+  error.hidden = true;
+  const status = node("output", { "data-range-status": "" }, "Initial status");
+  picker.append(start, end, error, status);
+
+  loadModule("date-range-picker", picker);
+
+  assert.equal(start.getAttribute("aria-invalid"), null);
+  assert.equal(end.getAttribute("aria-invalid"), null);
+  assert.equal(start.getAttribute("aria-errormessage"), null);
+  assert.equal(end.getAttribute("aria-errormessage"), null);
+  assert.equal(end.validationMessage, "");
+  assert.equal(error.hidden, true);
+  assert.equal(status.textContent, "Initial status");
+});
+
+test("date range pickers preserve server-owned invalid state", () => {
+  const picker = node("fieldset", {
+    class: "date-range-picker",
+    "data-invalid": "",
+    "data-range-order-invalid": ""
+  });
+  const start = node("input", {
+    type: "date",
+    "data-range-start": "",
+    value: "2026-06-10"
+  });
+  const end = node("input", {
+    type: "date",
+    "data-range-end": "",
+    value: "2026-06-01",
+    "aria-invalid": "true"
+  });
+  const error = node("p", { "data-range-error": "" }, "Choose an end date after the start date.");
+  const status = node("output", { "data-range-status": "" });
+  picker.append(start, end, error, status);
+  end.setCustomValidity("Server validation failed.");
+
+  loadModule("date-range-picker", picker);
+  end.value = "2026-06-12";
+  fire(end, "input");
+
+  assert.equal(picker.hasAttribute("data-invalid"), true);
+  assert.equal(picker.hasAttribute("data-range-order-invalid"), true);
+  assert.equal(start.getAttribute("aria-invalid"), null);
+  assert.equal(end.getAttribute("aria-invalid"), "true");
+  assert.equal(error.hidden, false);
+  assert.equal(error.textContent, "Choose an end date after the start date.");
+  assert.equal(end.validationMessage, "Server validation failed.");
+});
+
 test("resizable panels respond to keyboard and pointer separator changes", () => {
   const resizable = node("section", { class: "resizable" });
   const group = node("div", { class: "resizable-group", "data-orientation": "vertical" });
-  const first = node("aside", { class: "resizable-panel" });
-  const handle = node("button", {
+  const first = node("aside", { class: "resizable-panel", id: "files-panel" });
+  const handle = node("div", {
     class: "resizable-handle",
-    type: "button",
     role: "separator",
-    "aria-orientation": "vertical",
-    "aria-valuemin": "20",
-    "aria-valuemax": "80",
-    "aria-valuenow": "50",
+    "data-value-min": "20",
+    "data-value-max": "80",
+    "data-value-now": "50",
     "data-value-label": "Files"
   });
-  const second = node("article", { class: "resizable-panel" });
+  const second = node("article", { class: "resizable-panel", id: "preview-panel" });
   const output = node("output", {});
   group.rect.width = 200;
   first.rect.width = 100;
-  group.append(first, handle, second);
+  group.append(first);
   resizable.append(group, output);
+  assert.equal(handle.getAttribute("aria-valuenow"), null, "static separators do not expose an unavailable value");
   const runtime = loadModule("resizable", resizable);
+  group.append(handle, second);
   const changes = [];
   resizable.addEventListener("resizable-change", (event) => changes.push(event.detail));
 
+  assert.equal(handle.tagName, "DIV");
+  assert.equal(handle.getAttribute("tabindex"), "0");
+  assert.equal(handle.getAttribute("aria-orientation"), "vertical");
+  assert.equal(handle.getAttribute("aria-valuemin"), "20");
+  assert.equal(handle.getAttribute("aria-valuemax"), "80");
+  assert.equal(handle.getAttribute("aria-valuenow"), "50");
+  assert.equal(handle.getAttribute("aria-label"), "Resize Files");
+  assert.equal(handle.getAttribute("aria-controls"), "files-panel preview-panel");
   assert.equal(first.style.flexBasis, "100px");
   assert.equal(output.textContent, "Files: 50 percent");
   key(handle, "ArrowRight");
@@ -833,6 +958,16 @@ test("resizable panels respond to keyboard and pointer separator changes", () =>
   assert.equal(listeners(handle, "pointermove"), 0);
   assert.equal(listeners(handle, "pointerup"), 0);
   assert.equal(listeners(handle, "pointercancel"), 0);
+
+  resizable.remove();
+  assert.equal(handle.getAttribute("tabindex"), null, "removal cleanup restores static separator semantics");
+  assert.equal(handle.getAttribute("aria-valuenow"), null);
+  assert.equal(listeners(handle, "keydown"), 0);
+  assert.equal(output.getAttribute("class"), null);
+
+  runtime.document.body.append(resizable);
+  assert.equal(handle.getAttribute("tabindex"), "0", "reinserted split panes initialize again");
+  assert.equal(listeners(handle, "keydown"), 1);
   assert.equal(runtime.document.activeElement, runtime.document.body);
 });
 

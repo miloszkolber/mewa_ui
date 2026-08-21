@@ -454,16 +454,24 @@ async function runTargetedInteractions(base) {
       await page.type("#projects-filter", "Atlas");
       await page.waitForFunction(() => document.querySelector("[data-table-status]")?.textContent.includes("1 project"), { timeout: 5000 });
       assert.equal(await page.$$eval("#projects-table tbody tr", (rows) => rows.filter((row) => !row.hidden).length), 1);
+      assert.equal(await page.$eval("[data-table-range]", (node) => node.textContent), "Showing 1–1 of 1 projects");
     } else if (destination === "date-range-picker.html") {
-      await page.$eval("[data-range-start]", (input) => {
+      await page.$eval("#demo-range-start", (input) => {
         input.value = "2026-08-21";
         input.dispatchEvent(new Event("input", { bubbles: true }));
       });
-      await page.$eval("[data-range-end]", (input) => {
+      await page.$eval("#demo-range-end", (input) => {
         input.value = "2026-08-10";
         input.dispatchEvent(new Event("input", { bubbles: true }));
       });
-      await page.waitForFunction(() => document.querySelector(".date-range-picker[data-range-order-invalid]"), { timeout: 5000 });
+      await page.waitForFunction(() => document.querySelector("#demo-range-start")?.closest(".date-range-picker")?.matches("[data-range-order-invalid]"), { timeout: 5000 });
+      await page.$eval("#demo-range-end", (input) => {
+        input.value = "2026-08-22";
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+      await page.waitForFunction(() => !document.querySelector("#demo-range-start")?.closest(".date-range-picker")?.matches("[data-range-order-invalid]"), { timeout: 5000 });
+      assert.equal(await page.$eval("#demo-range-error", (node) => node.hidden), true, "corrected date ranges hide their error");
+      assert.equal(await page.$eval("#demo-range-end", (input) => input.getAttribute("aria-errormessage")), null, "inactive date errors are not announced");
     } else {
       await page.focus(".resizable-handle");
       const before = await page.$eval(".resizable-handle", (handle) => handle.getAttribute("aria-valuenow"));
@@ -501,16 +509,41 @@ async function runTargetedInteractions(base) {
 
   await loadPage(base, "/docs/date-range-picker.html", desktop, "interaction-date-range");
   if (await hasSelector("[data-range-start]") && await hasSelector("[data-range-end]") && await hasSelector("[data-range-error]")) {
-    await page.$eval("[data-range-start]", (input) => {
+    await page.$eval("#demo-range-form .date-range-picker", (picker) => {
+      window.__demoRangeInvalidEvents = 0;
+      picker.addEventListener("date-range:invalid", () => { window.__demoRangeInvalidEvents += 1; });
+    });
+    await page.$eval("#demo-range-start", (input) => {
       input.value = "2026-08-21";
       input.dispatchEvent(new Event("input", { bubbles: true }));
     });
-    await page.$eval("[data-range-end]", (input) => {
+    await page.$eval("#demo-range-end", (input) => {
       input.value = "2026-08-10";
       input.dispatchEvent(new Event("input", { bubbles: true }));
     });
-    await page.waitForFunction(() => document.querySelector(".date-range-picker[data-range-order-invalid]"), { timeout: 5000 });
-    assert.equal(await page.$eval("[data-range-error]", (node) => node.hidden), false, "invalid date ranges announce their error");
+    await page.waitForFunction(() => document.querySelector("#demo-range-start")?.closest(".date-range-picker")?.matches("[data-range-order-invalid]"), { timeout: 5000 });
+    assert.equal(await page.$eval("#demo-range-error", (node) => node.hidden), false, "invalid date ranges announce their error");
+    assert.equal(await page.evaluate(() => window.__demoRangeInvalidEvents), 1);
+
+    await page.click("#demo-range-form button[type=reset]");
+    await page.waitForFunction(() => {
+      const start = document.querySelector("#demo-range-start");
+      const end = document.querySelector("#demo-range-end");
+      return start?.value === "" && end?.value === "" && !document.querySelector("#demo-range-start")?.closest(".date-range-picker")?.matches("[data-range-order-invalid]");
+    }, { timeout: 5000 });
+    assert.equal(await page.$eval("#demo-range-error", (node) => node.hidden), true, "native reset restores the dormant range state");
+    assert.equal(await page.$eval("#demo-range-end", (input) => input.checkValidity()), true, "native reset clears managed custom validity");
+
+    await page.$eval("#demo-range-start", (input) => {
+      input.value = "2026-08-21";
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+    await page.$eval("#demo-range-end", (input) => {
+      input.value = "2026-08-10";
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+    await page.waitForFunction(() => document.querySelector("#demo-range-start")?.closest(".date-range-picker")?.matches("[data-range-order-invalid]"), { timeout: 5000 });
+    assert.equal(await page.evaluate(() => window.__demoRangeInvalidEvents), 2, "invalid transitions continue after native reset");
   }
 
   await loadPage(base, "/docs/data-table.html", desktop, "interaction-data-table");
@@ -518,9 +551,30 @@ async function runTargetedInteractions(base) {
     await page.type("#projects-filter", "Atlas");
     await page.waitForFunction(() => document.querySelector("[data-table-status]")?.textContent.includes("1 project"), { timeout: 5000 });
     assert.equal(await page.$$eval("#projects-table tbody tr", (rows) => rows.filter((row) => !row.hidden).length), 1);
+    assert.equal(await page.$eval("[data-table-range]", (node) => node.textContent), "Showing 1–1 of 1 projects");
     await page.click("[data-table-clear]");
     assert.equal(await page.$eval("#projects-filter", (input) => input.value), "");
+    await page.click("[data-table-page='next']");
+    await page.waitForFunction(() => document.querySelector("[data-table-page='2']")?.getAttribute("aria-current") === "page", { timeout: 5000 });
+    assert.equal(await page.$eval("[data-table-range]", (node) => node.textContent), "Showing 4–5 of 5 projects");
   }
+
+  await loadPage(base, "/docs/text-field.html", desktop, "interaction-text-field");
+  const textFieldSizes = await page.$$eval(".preview .text-field[data-size] .text-field-input", (inputs) => inputs.map((input) => ({
+    height: getComputedStyle(input).height,
+    fontSize: getComputedStyle(input).fontSize
+  })));
+  assert(textFieldSizes.length >= 2, "Text Field size examples must render");
+  assert.equal(new Set(textFieldSizes.map((size) => size.height)).size, 1, "Text Field size variants keep shared single-line geometry");
+  assert(textFieldSizes[0].fontSize !== textFieldSizes[1].fontSize, "Text Field size variants expose distinct type scales");
+
+  await loadPage(base, "/docs/date-picker.html", desktop, "interaction-date-picker");
+  await page.evaluate(() => {
+    window.__datePickerSelections = 0;
+    document.querySelector(".date-picker")?.addEventListener("date-picker:select", () => { window.__datePickerSelections += 1; });
+  });
+  await page.click(".date-picker-day button:not([data-outside])");
+  assert.equal(await page.evaluate(() => window.__datePickerSelections), 1, "Date Picker exposes the Kernel-aligned selection event");
 
   await loadPage(base, "/docs/message-scroller.html", desktop, "interaction-message-scroller");
   if (await hasSelector("#discussion-input") && await hasSelector(".message-scroller-composer button[type=submit]")) {
@@ -593,6 +647,20 @@ async function runNoJavaScriptChecks(base) {
     assert.equal(dataTableFallback.clearType, "reset", "Data Table keeps a native reset action without JavaScript");
     assert.equal(dataTableFallback.sortLinks, true, "Data Table keeps native sort destinations without JavaScript");
     assert(dataTableFallback.paginationLinks > 0, "Data Table keeps native pagination links without JavaScript");
+
+    await loadPage(base, "/docs/date-range-picker.html", viewports[0], "no-js-date-range");
+    const dateRangeFallback = await noJsPage.evaluate(() => ({
+      startDescription: document.querySelector("#demo-range-start")?.getAttribute("aria-describedby"),
+      endDescription: document.querySelector("#demo-range-end")?.getAttribute("aria-describedby"),
+      defaultErrorHidden: document.querySelector("#demo-range-error")?.hidden,
+      serverErrorMessage: document.querySelector("#demo-invalid-end")?.getAttribute("aria-errormessage"),
+      serverInvalid: document.querySelector("#demo-invalid-end")?.getAttribute("aria-invalid")
+    }));
+    assert.equal(dateRangeFallback.startDescription, "demo-range-help", "Date Range keeps shared help as the dormant description");
+    assert.equal(dateRangeFallback.endDescription, "demo-range-help", "Date Range does not announce a hidden error on the fallback path");
+    assert.equal(dateRangeFallback.defaultErrorHidden, true, "Date Range keeps its dormant error hidden without JavaScript");
+    assert.equal(dateRangeFallback.serverErrorMessage, "demo-invalid-error", "Date Range keeps an active server error association");
+    assert.equal(dateRangeFallback.serverInvalid, "true", "Date Range keeps server invalid state without JavaScript");
 
     await loadPage(base, "/docs/resizable.html", viewports[0], "no-js-resizable");
     const resizableFallback = await noJsPage.$eval(".preview .resizable-handle", (handle) => ({

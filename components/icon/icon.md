@@ -1,7 +1,7 @@
 # Pattern: Icon
 
 ## Native basis
-`<i>` element with a `data-lucide` attribute. The full Lucide icon set ships locally in `src/icons/` as standalone SVG files (one per icon). A small loader fetches `src/icons/{name}.svg` and replaces each `<i data-lucide="name">` with an inline SVG — no CDN, no external request.
+Inline `<svg>` elements copied from the standalone files in `src/icons/` are the no-JavaScript basis. The optional `<i data-lucide="name">` hook can be expanded by a local loader, such as the documentation site's loader, but Icon has no required component runtime and never uses a CDN or external icon set.
 
 ---
 
@@ -18,8 +18,19 @@
 
 All icons live in `src/icons/` (e.g. `src/icons/search.svg`). Two ways to use them:
 
-### 1. Loader (recommended for many icons)
-Keep `data-lucide` markup and let a tiny loader inline the SVG. The doc site ships one in `docs/js/site.js` (path relative to the page):
+### 1. Inline SVG (no JavaScript)
+Copy the matching local SVG file where the icon is used. Preserve or add the attributes needed by the surrounding composition:
+
+```html
+<!-- Copy src/icons/search.svg and keep decorative state explicit. -->
+<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m21 21-4.34-4.34"></path>
+  <circle cx="11" cy="11" r="8"></circle>
+</svg>
+```
+
+### 2. Local loader (optional)
+Keep `data-lucide` markup and provide a local loader when many icons should be inlined at runtime. The doc site ships one in `docs/js/site.js` (path relative to the page):
 
 ```html
 <i data-lucide="search"></i>
@@ -35,8 +46,7 @@ document.querySelectorAll('[data-lucide]').forEach(function (el) {
 });
 ```
 
-### 2. Inline the SVG directly (no JavaScript)
-Copy the file contents where the icon is used. Attributes on the `<i>` (`data-size`, `stroke-width`, `fill`, `style`, `aria-*`) move onto the `<svg>`.
+Attributes on the `<i>` (`data-size`, `stroke-width`, `fill`, `style`, `aria-*`) move onto the `<svg>` when a loader replaces the placeholder.
 
 ---
 
@@ -159,7 +169,8 @@ Icons inherit `currentColor` for stroke. Change color with inline styles or toke
 
 - Icons inherit `currentColor` for stroke — they automatically match the parent's text color
 - The full Lucide set is local in `src/icons/`; browse names at [lucide.dev/icons](https://lucide.dev/icons/)
-- The loader fetches `src/icons/{name}.svg` (page-relative path) and inlines it; missing icons leave the placeholder untouched
+- The optional loader fetches `src/icons/{name}.svg` (page-relative path) and inlines it; missing icons leave the placeholder untouched
+- Inline SVG use is the no-JavaScript path; the documentation loader is not a component module
 - Use `stroke-width` attribute to adjust line thickness (default: `2`)
 - Prefer visually-hidden text (`.sr-only`) over `aria-label` for accessible standalone icons — `aria-label` may not be translated by browser translation tools
 - `pointer-events: none` is set in CSS — icons don't capture clicks, so the parent element handles interaction
