@@ -22,7 +22,7 @@
 
   .time-field-controls {
     display: grid;
-    grid-template-columns: minmax(3rem, 0.5fr) max-content minmax(3rem, 0.5fr) minmax(5rem, 7rem);
+    grid-template-columns: minmax(3rem, 4rem) max-content minmax(3rem, 4rem) minmax(5rem, 7rem);
     justify-content: start;
     align-items: end;
     gap: var(--space-03);
