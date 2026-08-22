@@ -1,6 +1,6 @@
 # mewa_ui — Maintainer instructions
 
-You are working on **mewa_ui**, a fork of [shadcn-html](https://github.com/codylindley/shadcn-html) at upstream commit `0964e09e` (v0.7.13-alpha), MIT. The current consumer-facing system is the repository root: `src/`, `components/`, `docs/`, and the canonical application-shell location `layouts/`.
+You are working on **mewa_ui**, a standalone framework-free component library built on semantic HTML principles, MIT. Its foundations were originally derived from [shadcn-html](https://github.com/codylindley/shadcn-html) at upstream commit `0964e09e` (v0.7.13-alpha) and have since diverged onto their own native-first contract. The consumer-facing system is the repository root: `src/`, `components/`, `docs/`, and the canonical application-shell location `layouts/`.
 
 ## Source-of-truth boundaries
 
@@ -124,7 +124,7 @@ Current docs contain copyable HTML examples. They do not use generated CSS or Ja
 3. Before writing a new skill or doc page, review the matching shadcn/ui and Basecoat UI pages for a feature checklist. Review the WAI-ARIA APG, MDN, Open UI, and Base UI references for the native implementation. Prefer the native platform even when a reference site uses a framework.
 4. Create `docs/{name}.html` from a current component page. Keep examples sentence case, accessible, motionless, and limited to implemented variants and states.
 5. Add the page to `docs/js/layout.js` in the purpose group that matches the inventory. Update both `NAV` and `BUILT`.
-6. Add the component stylesheet and, when applicable, module imports to every doc page following the existing doc-site convention. Check relative paths from `docs/`.
+6. Add the component stylesheet link to every doc page per the current convention, and add module scripts only to pages whose demos use them. Check relative paths from `docs/`. The SPA router lazy-imports destination modules, so cross-page demos keep working.
 7. Update the 58-row README inventory with the exact native basis, JS requirement, skill path, and doc path. Verify the row against the actual directory and files.
 8. Check all changed JavaScript with Node syntax checking, serve the doc site over HTTP, and exercise keyboard, focus, narrow-width, forced-colors, and no-JavaScript paths that apply.
 

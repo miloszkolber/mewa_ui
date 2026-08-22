@@ -1,6 +1,6 @@
 # mewa_ui
 
-mewa_ui is a fork of [shadcn-html](https://github.com/codylindley/shadcn-html) that provides square, border-led, shadow-free interface components with vanilla HTML, CSS, and JavaScript. It has no framework and no production build step.
+mewa_ui is a standalone library of square, border-led, shadow-free interface components built on semantic HTML principles, tokenized CSS, local SVG icons, and small native-first ES modules. It has no framework, no package runtime, and no production build step. Its foundations were originally derived from [shadcn-html](https://github.com/codylindley/shadcn-html) and have since diverged onto their own native-first contract.
 
 The canonical consumer surface is the repository root: `src/` for foundations and icons, `components/` for component implementations, `docs/` for the static reference site, and `layouts/` for the two application-shell templates when they are present. New work must use those canonical directories.
 
@@ -19,7 +19,7 @@ The canonical consumer surface is the repository root: `src/` for foundations an
 
 - Upstream: [codylindley/shadcn-html](https://github.com/codylindley/shadcn-html)
 - Upstream commit: `0964e09e16034e39a244589d457a866171991f1d` (2026-04-19, v0.7.13-alpha)
-- License: MIT (see `LICENSE`; the upstream notice is retained alongside the fork's)
+- License: MIT (see `LICENSE`; upstream attribution retained)
 
 ## Repository map
 
@@ -188,7 +188,7 @@ This is the complete current inventory, grouped by the same purpose groups used 
 
 ## Migration candidates and coverage gaps
 
-The historical implementation is useful for identifying product patterns, not for copying code. These candidates are worth rebuilding against the current native, square, motionless contract. They are intentionally listed separately from the shipped inventory so consumers do not mistake a proposal for a supported API. Resizable, Date Range Picker, Questionnaire, and Message Scroller are shipped components and are not migration candidates.
+These candidates are product patterns worth building against the current native, square, motionless contract. They are intentionally listed separately from the shipped inventory so consumers do not mistake a proposal for a supported API. Resizable and Date Range Picker are shipped components and are not migration candidates.
 
 Table remains the structural semantic table component, while Data Table is its optional progressive enhancement. Date Field delegates to the native browser date control, while Date Picker provides the custom accessible month-grid interaction.
 
@@ -201,22 +201,18 @@ Table remains the structural semantic table component, while Data Table is its o
 - **Freeform autocomplete** — extend the documented `Combobox` pattern only if a text-entry mode is needed. Do not create a second listbox implementation.
 - **Header, footer, tag input, OTP input, and hover card** — compare demand and native API support before adding them. Header and footer are already layout primitives.
 
-The Kernel UI catalog is a useful parity checklist, not a requirement to add every named component. Its most relevant remaining gaps for this library are richer form composition beyond Questionnaire and message/AI work surfaces beyond Message Scroller. Karl Koch's semantic-HTML-first principles reinforce the existing contract: start with native elements, let pseudo-classes and browser validation express state, use `data-*` only for state the platform cannot represent, and keep the HTML useful without a framework runtime. Review [Karl Koch's semantic-HTML-first article](https://karlkoch.me/writing/why-i-built-a-semantic-html-first-library/) and the [Kernel UI component catalog](https://www.kernelui.com/components/) before promoting a candidate into the supported inventory.
+The Kernel UI catalog is a useful parity checklist, not a requirement to add every named component. Its most relevant remaining gaps for this library are richer form composition and message or AI work surfaces. Karl Koch's semantic-HTML-first principles reinforce the existing contract: start with native elements, let pseudo-classes and browser validation express state, use `data-*` only for state the platform cannot represent, and keep the HTML useful without a framework runtime. Review [Karl Koch's semantic-HTML-first article](https://karlkoch.me/writing/why-i-built-a-semantic-html-first-library/) and the [Kernel UI component catalog](https://www.kernelui.com/components/) before promoting a candidate into the supported inventory.
 
 ## Documentation site
 
 The current documentation site is static and has one page per component. There is no `docs/index.html`; serve `docs/` over HTTP and start at `typography.html`. The site navigation and router are centralized in `docs/js/layout.js`. Navigation imports destination module scripts before swapping `<main>` immediately and deliberately has no View Transition or other animation. `docs/js/site.js` owns doc-site-only behavior such as local icon inlining, copy buttons, and page-ready hooks.
 
-Doc pages load the current component styles and modules so every cross-page example works. Consumers should load only the assets listed by the component inventory. The pages show copyable HTML examples, not generated CSS or JavaScript source.
-
-### Vendored syntax highlighter
-
-`docs/js/shiki-highlight.js` imports a vendored shiki bundle from `docs/vendor/shiki.bundle.mjs`. The bundle ships with the documentation site, so the doc pages work offline. Re-run `npm run build:vendor` after upgrading `shiki` in `package.json` or after adding new languages or themes to `docs/vendor/shiki-entry.mjs`.
+Doc pages load the foundation styles and the complete component stylesheet list, plus only the modules their demos use; the router imports a destination page's modules before swapping content. Consumers should load only the assets listed by the component inventory. The pages show copyable HTML examples, not generated CSS or JavaScript source.
 
 ## Maintain the system
 
 - Keep each component self-contained in `components/{name}/`. Its skill documents the HTML pattern, attributes, native basis, keyboard model, and ARIA. Edit the stylesheet and module directly. Do not create a framework wrapper or a second source tree.
-- When adding a component, add its skill, stylesheet, optional module, and `docs/{name}.html`. Add the page to `NAV` and `BUILT` in `docs/js/layout.js`, and add its stylesheet and module imports to every existing doc page as appropriate.
+- When adding a component, add its skill, stylesheet, optional module, and `docs/{name}.html`. Add the page to `NAV` and `BUILT` in `docs/js/layout.js`, and add its stylesheet link following the current doc-page convention, and its module script only on pages whose demos use it.
 - Update the 58-row inventory in this file whenever a component is added, removed, renamed, or changes its JS requirement. Verify the row against the actual `components/{name}/` directory, the skill's Native basis section, and the matching doc page.
 - Keep component docs, markup examples, CSS, and JS aligned. Do not document a variant, state, API, or layout that the current source does not implement.
 - Preserve the no-animation contract, square geometry, semantic token usage, native fallback behavior, keyboard path, contrast modes, and forced-colors support in every change.

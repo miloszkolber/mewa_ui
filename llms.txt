@@ -129,7 +129,7 @@ Every item links to its current documentation page and the machine-readable regi
 ## JavaScript and progressive enhancement
 
 - `requiresJs: true` means the documented interaction depends on the module. Load the matching `.js` file after the markup. Required modules include keyboard coordination, filtering, custom calendar navigation, modal trigger wiring, anchored overlays, drag reordering, and live status behavior.
-- `enhancementJs: true` means the native markup is complete without the module. Load the module only for the documented enhancement. The current optional entries are Accordion, Checkbox, Data Table, Date Range Picker, Message Scroller, Questionnaire, Resizable, and Time Field.
+- `enhancementJs: true` means the native markup is complete without the module. Load the module only for the documented enhancement. The current optional entries are Accordion, Checkbox, Data Table, Date Range Picker, Resizable, and Time Field.
 - Entries with `requiresJs: false`, `enhancementJs: false`, and no `files.js` are CSS and native HTML components. Do not add a runtime just to reproduce their behavior.
 - Keep native links, form submission, browser validation, disclosure, date controls, and dialog or popover semantics useful when a module is omitted. Server-rendered validation and navigation remain authoritative.
 - Component modules use modern ES modules and are intended to tolerate repeated loading and markup inserted after navigation. Do not replace them with a framework, polling loop, focus-trap package, or positioning package.

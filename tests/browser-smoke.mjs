@@ -560,13 +560,8 @@ async function runTargetedInteractions(base) {
   }
 
   await loadPage(base, "/docs/text-field.html", desktop, "interaction-text-field");
-  const textFieldSizes = await page.$$eval(".preview .text-field[data-size] .text-field-input", (inputs) => inputs.map((input) => ({
-    height: getComputedStyle(input).height,
-    fontSize: getComputedStyle(input).fontSize
-  })));
-  assert(textFieldSizes.length >= 2, "Text Field size examples must render");
-  assert.equal(new Set(textFieldSizes.map((size) => size.height)).size, 1, "Text Field size variants keep shared single-line geometry");
-  assert(textFieldSizes[0].fontSize !== textFieldSizes[1].fontSize, "Text Field size variants expose distinct type scales");
+  assert.equal(await page.$$eval(".preview .text-field[data-size]", (els) => els.length), 0, "Text Field exposes no size variants");
+  assert((await page.$(".preview .text-field-input")) !== null, "Text Field standalone composition renders");
 
   await loadPage(base, "/docs/date-picker.html", desktop, "interaction-date-picker");
   await page.evaluate(() => {
