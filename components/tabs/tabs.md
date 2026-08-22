@@ -137,6 +137,7 @@ Up/Down based on `aria-orientation`.
 
 ## Notes
 
+- The selected trigger fills its track segment with inverted surface and inverted text; idle triggers stay transparent.
 - Only the active tab is in the tab order (`tabindex="0"`) — inactive tabs use `tabindex="-1"`
 - Arrow keys cycle through tabs (wrap around) — this is the roving tabindex pattern
 - The active panel uses `tabindex="0"` so it can receive focus from the tab trigger

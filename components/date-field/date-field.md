@@ -37,7 +37,7 @@
 - Uses the `.date-input` class — the native date picker provides the calendar UI.
 - No custom calendar implementation needed — the browser handles it.
 - The calendar popup is rendered by the OS/browser and cannot be styled.
-- The calendar indicator keeps a full-height native picker hit area at the end of the field while using the same compact icon scale as other controls.
+- The calendar indicator renders at a compact 1rem icon scale aligned to the end of the field.
 - The input remains the only focusable control. Its native `:focus-visible` indicator and browser date-segment keyboard behavior remain intact.
 - Date values use the native `min`, `max`, `required`, `disabled`, and `readonly` attributes. Keep a real `<label>` associated with each input.
 - Date and time state changes are immediate. This component adds no animation, transition, smooth scrolling, or custom focus management.

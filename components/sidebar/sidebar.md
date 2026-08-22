@@ -132,7 +132,8 @@ The nav stays flat in both widths. In collapsed mode, link and control labels re
 - **Mobile**: Hide the desktop sidebar below 768px and use `<dialog class="sidebar-mobile">` for the mobile navigation dialog. Open it with a separate button using `data-sidebar-mobile="dialog-id"` and `aria-expanded`. Activating a mobile link closes the dialog and preserves native navigation.
 - **Flat navigation**: Put every route in one labelled `<nav class="sidebar-nav">` as a native `<a class="sidebar-link">`.
 - **Collapsed state**: Icons remain centered. Link and footer labels are visually hidden but remain accessible through the link text and the button’s updated `aria-label`.
-- **Footer control**: Keep one `.sidebar-trigger` in `.sidebar-footer`, give it an explicit `type="button"`, `data-sidebar-trigger`, `aria-controls`, `aria-expanded`, and accessible label.
+- **Footer control**: Keep one `.sidebar-trigger` in `.sidebar-footer`, give it an explicit `type="button"`, `data-sidebar-trigger`, `aria-controls`, `aria-expanded`, and accessible label. It shares link geometry — same fixed row height, no border — so the footer reads as part of the nav.
+- **Row parity**: Links use one fixed row height expanded and resolve to square icon tiles collapsed; heights match across states.
 - **Progressive enhancement**: Links remain native navigation when JavaScript is unavailable. Desktop width changes and the mobile dialog trigger are the only scripted behavior.
 - **No JavaScript**: At narrow widths, `@media (scripting: none)` presents the flat desktop nav as a normal block and hides the inert dialog trigger and footer control.
 - **Responsive resize**: If an open mobile dialog crosses into the desktop breakpoint, the module closes it and restores focus to its trigger.

@@ -63,7 +63,7 @@
 ## Notes
 
 - Pure CSS — no JavaScript needed.
-- The square thumb changes position via `:checked` and `translateX()`.
-- Uses `appearance: none` with `::after` for the thumb.
+- The borderless track pairs with a 1rem thumb inset evenly on both sides; `:checked` swaps logical start/end placement.
+- Uses `appearance: none` with an `::after` thumb and no track border, so padding reads even in both states.
 - Wrap in `.switch-item` for automatic disabled label styling via `:has(.switch:disabled)`.
 - `aria-invalid="true"` shows the track in the destructive color.

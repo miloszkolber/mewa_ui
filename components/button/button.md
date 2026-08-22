@@ -72,6 +72,7 @@
 
 ## Notes
 
+- Hover shifts the background only (`color-mix` on the variant surface); text color never changes.
 - The `link` variant resets height and padding — it flows inline.
 - SVGs inside buttons auto-size to 1rem unless they have a `size-*` class.
 - The button works on `<a>` tags for styled navigation links.

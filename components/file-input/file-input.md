@@ -32,6 +32,6 @@
 
 ## Notes
 
-- Uses the same border and focus treatment as text fields for consistency.
+- Keyboard focus highlights only the `::file-selector-button` with an inset ring — the filename area is not interactive, so it stays unhighlighted.
 - The `::file-selector-button` is the only button-like surface. The selected filename remains plain muted text.
 - Use `.file-input` as the standalone class for file controls.

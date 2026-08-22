@@ -56,6 +56,6 @@
 
 ## Notes
 
-- Keeps the browser-native arrow so keyboard, high-contrast, and forced-colors modes retain their platform affordance.
-- The dropdown list is rendered by the browser — it cannot be styled.
+- Uses `appearance: none` with an inline chevron drawn via `background-image`, right-centered with reserved inline padding.
+- The dropdown list itself is rendered by the browser — keyboard, high-contrast, and forced-colors behavior stay native.
 - For a fully custom dropdown, use the Combobox component instead.
