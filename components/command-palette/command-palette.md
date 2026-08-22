@@ -58,7 +58,9 @@
 | `aria-label="Command menu"` | `<dialog>` | Labels the dialog for screen readers |
 | `aria-hidden="true"` | Search icon `<svg>` | Hides decorative icon |
 | `aria-disabled="true"` | Disabled `<button>` | Marks item as disabled |
-| `data-highlighted` | Active `<button>` | JS-managed: visually highlights the keyboard-focused item |
+| `data-highlighted` | Active `<button>` | JS-managed visual highlight for the active command |
+| `aria-selected` | Active `<button>` | Exposes the active command to assistive technology |
+| `aria-activedescendant` | Search input | Identifies the active command while focus remains in the search field |
 
 ---
 
@@ -83,7 +85,7 @@
 - Separators are hidden during filtering to avoid visual orphans.
 - The `data-command-palette-trigger` attribute on any element wires it as a trigger button via JS.
 - `Cmd/Ctrl+K` is registered as a global keyboard shortcut.
-- Items with `aria-disabled="true"` are excluded from keyboard navigation and filtering.
+- Items with `aria-disabled="true"` are excluded from keyboard navigation and activation.
 - The dialog uses `showModal()` — focus is trapped inside and Escape closes it natively.
 - The search row owns the full-width focus highlight, including its icon and padded click area.
 - On close, the search input is cleared and all items are restored.

@@ -64,6 +64,10 @@ function init() {
     }
 
     if (next !== undefined) {
+      // A toggle group is a nested composite inside toolbars. Keep the
+      // handled arrow/Home/End event from reaching the parent toolbar, which
+      // would advance the focus a second time.
+      e.stopPropagation();
       toggles[idx].setAttribute('tabindex', '-1');
       toggles[next].setAttribute('tabindex', '0');
       toggles[next].focus();

@@ -88,7 +88,7 @@
 
 | Attribute      | Effect                                    |
 | -------------- | ----------------------------------------- |
-| `data-preview` | Enables click-to-preview lightbox         |
+| `data-preview` | Enables click- or keyboard-to-preview lightbox |
 | `data-ratio`   | Sets aspect ratio                         |
 | `data-fit`     | Sets object-fit mode                      |
 | `data-radius`  | Sets circular (`full`) variant            |
@@ -109,6 +109,7 @@ The lightbox dialog is created once and shared by all preview-enabled images.
 - `<img>` must have a descriptive `alt` attribute
 - Decorative images should use `alt=""`
 - `<figcaption>` provides visible caption text
+- Preview figures are focusable buttons with an accessible name and respond to Enter or Space
 - Lightbox dialog uses `aria-label="Image preview"`
 - Lightbox controls have `aria-label` attributes
 - Escape key closes lightbox (native `<dialog>` behavior)
@@ -117,7 +118,7 @@ The lightbox dialog is created once and shared by all preview-enabled images.
 
 - Fallback is shown automatically when the image fails to load, using `:has()` to detect error state.
 - Use `loading="lazy"` on images below the fold for performance.
-- Lightbox supports keyboard: Escape closes, Tab navigates controls.
+- Lightbox supports keyboard: Enter or Space opens the preview, Escape closes it, and Tab navigates controls.
 - Multiple images with `data-preview` share a single dialog instance.
 # Image
 

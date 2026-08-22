@@ -30,6 +30,7 @@ function init() {
       setExpanded(true);
       searchInput.value = '';
       filter('');
+      searchInput.focus();
     };
     const close = () => {
       popover.hidePopover();
@@ -87,6 +88,7 @@ function init() {
     popover.addEventListener('toggle', (e) => {
       const expanded = e.newState === 'open';
       setExpanded(expanded);
+      if (expanded) searchInput.focus();
       if (!expanded) {
         searchInput.setAttribute('aria-activedescendant', '');
         clearHighlight();

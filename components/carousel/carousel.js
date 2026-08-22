@@ -123,6 +123,15 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
 
   // ── Keyboard navigation ─────────────────────
   carousel.addEventListener('keydown', (e) => {
+    if (e.defaultPrevented) return;
+    if (e.target !== carousel) {
+      for (let target = e.target; target && target !== carousel; target = target.parentElement) {
+        if (target.matches('button, a[href], input, select, textarea, summary, [contenteditable], [role="button"], [role="link"], [role="textbox"], [role="searchbox"], [role="combobox"], [role="listbox"], [role="slider"], [role="spinbutton"], [role="switch"], [role="checkbox"], [role="radio"], [role="tab"], [role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"], [role="option"], [role="treeitem"]')) {
+          if (!target.hasAttribute('contenteditable') || target.getAttribute('contenteditable') !== 'false') return;
+        }
+        if (target.hasAttribute('tabindex')) return;
+      }
+    }
     const prevKey = isVertical ? 'ArrowUp' : 'ArrowLeft';
     const nextKey = isVertical ? 'ArrowDown' : 'ArrowRight';
     if (e.key === prevKey) { e.preventDefault(); goPrev(); }

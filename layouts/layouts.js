@@ -2,6 +2,7 @@
 
 const ICON_ROOT = new URL('../src/icons/', import.meta.url);
 const THEME_KEY = 'mewa-ui-theme';
+const LEGACY_THEME_KEY = 'mewa-theme';
 
 function loadIcons() {
   document.querySelectorAll('i[data-lucide]:not([data-icon-init])').forEach((placeholder) => {
@@ -34,7 +35,7 @@ function loadIcons() {
 
 function readStoredTheme() {
   try {
-    return localStorage.getItem(THEME_KEY);
+    return localStorage.getItem(THEME_KEY) || localStorage.getItem(LEGACY_THEME_KEY);
   } catch {
     return null;
   }

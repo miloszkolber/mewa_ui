@@ -1,13 +1,28 @@
 // -- Dialog ---------------------------------------------------
 
+function openDialog(dialog, trigger) {
+  if (!dialog || !dialog.isConnected || typeof dialog.showModal !== 'function') return;
+  if (dialog.open) return;
+  dialog._trigger = trigger;
+  try {
+    dialog.showModal();
+  } catch {
+    // A detached or already-open dialog can race SPA updates. Leave it closed
+    // rather than surfacing a native InvalidStateError to the caller.
+  }
+}
+
 function init() {
 document.querySelectorAll('[data-dialog-trigger]:not([data-init])').forEach((trigger) => {
   trigger.dataset.init = '';
-  const dialog = document.getElementById(trigger.dataset.dialogTrigger);
-  if (!dialog) return;
+  const dialogId = trigger.dataset.dialogTrigger;
+  if (!document.getElementById(dialogId)) {
+    // Retry when a SPA inserts the target after the trigger.
+    delete trigger.dataset.init;
+    return;
+  }
   trigger.addEventListener('click', () => {
-    dialog._trigger = trigger;
-    dialog.showModal();
+    openDialog(document.getElementById(dialogId), trigger);
   });
 });
 document.querySelectorAll('dialog:not(.alert-dialog):not(.sheet):not([data-init])').forEach((dialog) => {
@@ -19,7 +34,7 @@ document.querySelectorAll('dialog:not(.alert-dialog):not(.sheet):not([data-init]
     btn.addEventListener('click', () => { dialog.close(); });
   });
   dialog.addEventListener('close', () => {
-    if (dialog._trigger) dialog._trigger.focus();
+    if (dialog._trigger?.isConnected) dialog._trigger.focus();
   });
 });
 }

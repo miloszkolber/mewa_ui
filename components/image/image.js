@@ -4,6 +4,7 @@ function init() {
 /* -- Fallback: mark images that fail to load ----------------- */
 document.querySelectorAll('.image:not([data-init]) > img').forEach((img) => {
   img.closest('.image').dataset.init = '';
+  const figure = img.closest('.image');
 
   if (img.complete && img.naturalWidth === 0) {
     img.dataset.error = '';
@@ -15,6 +16,21 @@ document.querySelectorAll('.image:not([data-init]) > img').forEach((img) => {
 
   img.addEventListener('load', () => {
     delete img.dataset.error;
+  });
+
+  if (!figure.hasAttribute('data-preview')) return;
+
+  figure.setAttribute('tabindex', '0');
+  if (!figure.hasAttribute('role')) figure.setAttribute('role', 'button');
+  if (!figure.hasAttribute('aria-label') && !figure.hasAttribute('aria-labelledby')) {
+    figure.setAttribute('aria-label', img.alt ? `Open image preview: ${img.alt}` : 'Open image preview');
+  }
+
+  figure.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    if (img.dataset.error !== undefined) return;
+    event.preventDefault();
+    openLightbox(img.src, img.alt);
   });
 });
 }
@@ -29,7 +45,12 @@ let zoom = 1;
 let rotation = 0;
 
 function getLightbox() {
-  if (lightbox) return lightbox;
+  if (lightbox && lightbox.isConnected && lightbox.ownerDocument === document) return lightbox;
+
+  // SPA navigation can remove the shared dialog from the document. Do not
+  // retain the detached node or its image reference when recreating it.
+  lightbox = null;
+  lightboxImg = null;
 
   lightbox = document.createElement('dialog');
   lightbox.className = 'image-lightbox';
@@ -98,7 +119,7 @@ function openLightbox(src, alt) {
   lightboxImg.src = src;
   lightboxImg.alt = alt || '';
   lightboxImg.style.transform = '';
-  lb.showModal();
+  if (!lb.open && typeof lb.showModal === 'function') lb.showModal();
 }
 
 /* -- Attach preview click handlers --------------------------- */

@@ -1,13 +1,26 @@
 // -- Sheet ----------------------------------------------------
 
+function openSheet(sheet, trigger) {
+  if (!sheet || !sheet.isConnected || typeof sheet.showModal !== 'function') return;
+  if (sheet.open) return;
+  sheet._trigger = trigger;
+  try {
+    sheet.showModal();
+  } catch {
+    // A target can be replaced between the click and showModal() in an SPA.
+  }
+}
+
 function init() {
 document.querySelectorAll('[data-sheet-trigger]:not([data-init])').forEach((trigger) => {
   trigger.dataset.init = '';
-  const sheet = document.getElementById(trigger.dataset.sheetTrigger);
-  if (!sheet) return;
+  const sheetId = trigger.dataset.sheetTrigger;
+  if (!document.getElementById(sheetId)) {
+    delete trigger.dataset.init;
+    return;
+  }
   trigger.addEventListener('click', () => {
-    sheet._trigger = trigger;
-    sheet.showModal();
+    openSheet(document.getElementById(sheetId), trigger);
   });
 });
 document.querySelectorAll('dialog.sheet:not([data-init])').forEach((sheet) => {
@@ -19,7 +32,7 @@ document.querySelectorAll('dialog.sheet:not([data-init])').forEach((sheet) => {
     btn.addEventListener('click', () => { sheet.close(); });
   });
   sheet.addEventListener('close', () => {
-    if (sheet._trigger) sheet._trigger.focus();
+    if (sheet._trigger?.isConnected) sheet._trigger.focus();
   });
 });
 }

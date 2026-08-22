@@ -448,6 +448,7 @@ async function runTargetedInteractions(base) {
     await page.click(`a.nav-link[href="${destination}"]`);
     const title = destination.replace(/\.html$/, "").replaceAll("-", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
     await page.waitForFunction((expected) => document.querySelector("main h1")?.textContent.trim() === expected, { timeout: 5000 }, title);
+    assert.equal(await page.evaluate(() => document.activeElement?.tagName), "H1", `docs router ${destination}: focus should move to the new page heading`);
     assertCurrentAssets(await snapshotAssets(page), `docs router ${destination}`);
 
     if (destination === "data-table.html") {
@@ -496,6 +497,71 @@ async function runTargetedInteractions(base) {
     await page.waitForFunction(() => document.querySelector("#demo-dialog")?.open === false, { timeout: 5000 });
     assert.equal(await page.$eval('[data-dialog-trigger="demo-dialog"]', (trigger) => document.activeElement === trigger), true, "dialog restores focus to its trigger");
   }
+
+  await loadPage(base, "/docs/image.html", desktop);
+  await page.$eval("figure[data-preview] img", (img) => {
+    img.src = new URL("../src/icons/image.svg", location.href).href;
+    img.removeAttribute("data-error");
+  });
+  await page.click("figure[data-preview]");
+  await page.waitForFunction(() => document.querySelector("dialog.image-lightbox")?.open === true, { timeout: 5000 });
+  await page.keyboard.press("Escape");
+  await page.waitForFunction(() => document.querySelector("dialog.image-lightbox")?.open === false, { timeout: 5000 });
+  await page.click('a.nav-link[href="typography.html"]');
+  await page.waitForFunction(() => document.querySelector("main h1")?.textContent.trim() === "Typography", { timeout: 5000 });
+  await page.click('a.nav-link[href="image.html"]');
+  await page.waitForFunction(() => document.querySelector("main h1")?.textContent.trim() === "Image", { timeout: 5000 });
+  await page.$eval("figure[data-preview] img", (img) => {
+    img.src = new URL("../src/icons/image.svg", location.href).href;
+    img.removeAttribute("data-error");
+  });
+  await page.click("figure[data-preview]");
+  await page.waitForFunction(() => document.querySelector("dialog.image-lightbox")?.open === true, { timeout: 5000 });
+  await page.keyboard.press("Escape");
+
+  await loadPage(base, "/docs/combobox.html", desktop);
+  await page.click(".combobox-trigger:not(:disabled)");
+  await page.waitForFunction(() => document.activeElement === document.querySelector(".combobox-search-input"), { timeout: 5000 });
+  await page.keyboard.press("Escape");
+
+  await loadPage(base, "/docs/dropdown-menu.html", desktop);
+  await page.click('[data-dropdown-menu-trigger="demo-dropdown-checks"]');
+  await page.waitForFunction(() => document.querySelector("#demo-dropdown-checks")?.matches(":popover-open"), { timeout: 5000 });
+  const checkedBefore = await page.$eval("#demo-dropdown-checks [role=menuitemcheckbox]", (item) => item.getAttribute("aria-checked"));
+  await page.click("#demo-dropdown-checks [role=menuitemcheckbox]");
+  assert.notEqual(await page.$eval("#demo-dropdown-checks [role=menuitemcheckbox]", (item) => item.getAttribute("aria-checked")), checkedBefore);
+
+  await loadPage(base, "/docs/toolbar.html", desktop);
+  await page.focus(".toolbar .toggle");
+  await page.keyboard.press("ArrowRight");
+  assert.equal(await page.evaluate(() => document.activeElement === document.querySelectorAll(".toolbar .toggle")[1]), true, "nested toggle groups should move one item per arrow key");
+
+  await loadPage(base, "/docs/command-palette.html", desktop);
+  await page.click('[data-command-palette-trigger="demo-cmd"]');
+  await page.waitForFunction(() => document.activeElement === document.querySelector(".command-palette-input"), { timeout: 5000 });
+  await page.keyboard.press("ArrowDown");
+  assert(await page.$eval(".command-palette-input", (input) => Boolean(input.getAttribute("aria-activedescendant"))));
+  assert.equal(await page.$eval(".command-palette-item[aria-selected=true]", (item) => item.dataset.highlighted === ""), true);
+  await page.keyboard.press("Escape");
+
+  await loadPage(base, "/docs/tree-view.html", desktop);
+  assert.equal(await page.$$eval(".preview .tree [role=treeitem]", (items) => items.every((item) => item.matches("li.tree-item"))), true, "treeitem semantics should live on the tree items");
+  assert.equal(await page.$$eval(".preview .tree [tabindex='0']", (items) => items.length), 1, "tree view should expose one tab stop");
+  await page.focus(".preview .tree-branch-trigger");
+  await page.keyboard.press("ArrowRight");
+  assert.equal(await page.evaluate(() => document.activeElement?.textContent.includes("components")), true, "tree ArrowRight should enter the first child");
+  await page.keyboard.press("ArrowRight");
+  await page.waitForFunction(() => document.activeElement?.closest("details.tree-branch")?.open === true, { timeout: 5000 });
+
+  await loadPage(base, "/docs/toast.html", desktop);
+  await page.evaluate(() => window.toast.show({ title: "Actionable", duration: 100 }));
+  await page.waitForSelector(".toast", { timeout: 5000 });
+  await page.hover(".toast");
+  await wait(180);
+  assert(await page.$(".toast"), "hovered toasts should remain visible");
+  await page.mouse.move(0, 0);
+  await wait(150);
+  assert.equal(await page.$(".toast"), null, "toasts should resume dismissal after hover ends");
 
   await loadPage(base, "/docs/accordion.html", desktop, "interaction-accordion");
   const singleAccordion = ".accordion[data-type=single]";

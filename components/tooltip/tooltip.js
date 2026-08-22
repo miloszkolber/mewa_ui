@@ -113,7 +113,10 @@ if (!document.__tooltipScrollInit) {
   document.__tooltipScrollInit = true;
   document.addEventListener('scroll', () => {
     document.querySelectorAll('.tooltip:popover-open').forEach((tip) => {
-      try { tip.hidePopover(); } catch (e) {}
+      try {
+        tip.hidePopover();
+      } catch (e) {}
     });
+    scheduleGroupReset();
   }, { passive: true, capture: true });
 }

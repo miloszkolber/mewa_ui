@@ -3,6 +3,8 @@
 const DURATION = 4000;
 const MAX_VISIBLE = 3;
 
+const isMounted = (el) => Boolean(el && (el.parentNode || el.parentElement));
+
 let toastContainer = document.getElementById('toast-container');
 if (!toastContainer) {
   toastContainer = document.createElement('div');
@@ -15,7 +17,8 @@ if (!toastContainer) {
 }
 
 const toastDismiss = (el, callback) => {
-  if (!el || !el.parentNode) return;
+  if (!isMounted(el)) return;
+  if (typeof el._toastCancelTimer === 'function') el._toastCancelTimer();
   try { el.hidePopover(); } catch (e) { /* already closed */ }
   el.remove();
   if (callback) callback();
@@ -63,7 +66,58 @@ const toastCreate = (options) => {
   toastContainer.appendChild(el); el.showPopover();
   closeBtn.addEventListener('click', () => { toastDismiss(el, onDismiss); });
   if (action) { el.querySelector('[data-toast-action]').addEventListener('click', () => { if (action.onClick) action.onClick(); toastDismiss(el); }); }
-  if (duration !== Infinity) setTimeout(() => { toastDismiss(el, onDismiss); }, duration);
+
+  if (duration !== Infinity) {
+    let timer = null;
+    let startedAt = 0;
+    const numericDuration = Number(duration);
+    let remaining = Number.isFinite(numericDuration) ? Math.max(0, numericDuration) : 0;
+    let paused = false;
+    let hovered = false;
+    let focused = false;
+
+    const cancelTimer = () => {
+      if (timer !== null) clearTimeout(timer);
+      timer = null;
+    };
+    const schedule = () => {
+      if (paused || timer !== null || !isMounted(el)) return;
+      startedAt = Date.now();
+      timer = setTimeout(() => {
+        timer = null;
+        remaining = 0;
+        toastDismiss(el, onDismiss);
+      }, remaining);
+    };
+    const pause = () => {
+      if (paused) return;
+      paused = true;
+      if (timer !== null) {
+        remaining = Math.max(0, remaining - (Date.now() - startedAt));
+        cancelTimer();
+      }
+    };
+    const resume = () => {
+      if (!paused) return;
+      paused = false;
+      if (remaining <= 0) toastDismiss(el, onDismiss);
+      else schedule();
+    };
+    const syncPause = () => {
+      if (hovered || focused) pause();
+      else resume();
+    };
+
+    el._toastCancelTimer = cancelTimer;
+    el.addEventListener('mouseenter', () => { hovered = true; syncPause(); });
+    el.addEventListener('mouseleave', () => { hovered = false; syncPause(); });
+    el.addEventListener('focusin', () => { focused = true; syncPause(); });
+    el.addEventListener('focusout', (event) => {
+      focused = Boolean(event.relatedTarget && el.contains(event.relatedTarget));
+      syncPause();
+    });
+    schedule();
+  }
   const toasts = toastContainer.querySelectorAll('.toast');
   if (toasts.length > MAX_VISIBLE) toastDismiss(toasts[0]);
   return el;

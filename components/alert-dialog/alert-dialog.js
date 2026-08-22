@@ -1,13 +1,26 @@
 // -- Alert Dialog ----------------------------------------------
 
+function openAlertDialog(dialog, trigger) {
+  if (!dialog || !dialog.isConnected || typeof dialog.showModal !== 'function') return;
+  if (dialog.open) return;
+  dialog._trigger = trigger;
+  try {
+    dialog.showModal();
+  } catch {
+    // Do not surface a native InvalidStateError during SPA replacement.
+  }
+}
+
 function init() {
 document.querySelectorAll('[data-alert-dialog-trigger]:not([data-init])').forEach((trigger) => {
   trigger.dataset.init = '';
-  const dialog = document.getElementById(trigger.dataset.alertDialogTrigger);
-  if (!dialog) return;
+  const dialogId = trigger.dataset.alertDialogTrigger;
+  if (!document.getElementById(dialogId)) {
+    delete trigger.dataset.init;
+    return;
+  }
   trigger.addEventListener('click', () => {
-    dialog._trigger = trigger;
-    dialog.showModal();
+    openAlertDialog(document.getElementById(dialogId), trigger);
   });
 });
 
@@ -24,7 +37,7 @@ document.querySelectorAll('dialog.alert-dialog:not([data-init])').forEach((dialo
   });
 
   dialog.addEventListener('close', () => {
-    if (dialog._trigger) dialog._trigger.focus();
+    if (dialog._trigger?.isConnected) dialog._trigger.focus();
   });
 });
 }

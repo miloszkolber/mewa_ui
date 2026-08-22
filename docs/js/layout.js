@@ -7,8 +7,13 @@
   'use strict';
 
   /* -- Dark mode (must run before first paint) ----------------- */
+  var THEME_KEY = 'mewa-ui-theme';
+  var LEGACY_THEME_KEY = 'mewa-theme';
+
   function storedTheme() {
-    try { return localStorage.getItem('mewa-theme'); }
+    try {
+      return localStorage.getItem(THEME_KEY) || localStorage.getItem(LEGACY_THEME_KEY);
+    }
     catch (e) { return null; } /* storage unavailable (privacy mode) */
   }
 
@@ -371,6 +376,32 @@
 
   var navigating = false;
 
+  function announceNavigation(title) {
+    var status = document.getElementById('spa-route-status');
+    if (!status) {
+      status = document.createElement('p');
+      status.id = 'spa-route-status';
+      status.className = 'sr-only';
+      status.setAttribute('role', 'status');
+      status.setAttribute('aria-live', 'polite');
+      status.setAttribute('aria-atomic', 'true');
+      document.body.appendChild(status);
+    }
+    status.textContent = title;
+  }
+
+  function focusPageStart(main) {
+    var target = main.querySelector('h1') || main;
+    var hadTabIndex = target.hasAttribute('tabindex');
+    if (!hadTabIndex) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+    if (!hadTabIndex) {
+      target.addEventListener('blur', function () {
+        target.removeAttribute('tabindex');
+      }, { once: true });
+    }
+  }
+
   function navigateTo(href, pushState) {
     if (navigating) return;
     if (href === currentPage && pushState !== false) return;
@@ -422,6 +453,12 @@
 
           /* Scroll main to top */
           window.scrollTo(0, 0);
+
+          /* Move focus and announce the new route for keyboard and screen
+             reader users. The temporary tabindex keeps native headings
+             useful without changing the authored page markup. */
+          focusPageStart(oldMain);
+          announceNavigation(doc.title);
 
           /* Re-initialize all page-ready handlers */
           /* (doc tabs, hljs, copy buttons, lucide, etc.) */
@@ -491,19 +528,37 @@
     });
 
     if (headings.length < 2) {
-      tocContent.innerHTML = '';
+      tocContent.replaceChildren();
       tocContent.parentElement.style.display = 'none';
       return;
     }
 
     tocContent.parentElement.style.display = '';
-    var html = '<p class="toc-title">On this page</p>';
+    tocContent.replaceChildren();
+    var title = document.createElement('p');
+    title.className = 'toc-title';
+    title.textContent = 'On this page';
+    tocContent.appendChild(title);
+
+    var usedIds = new Set(Array.from(main.querySelectorAll('[id]'), function (el) { return el.id; }));
     headings.forEach(function (item) {
-      var id = item.el.id || 'toc-' + item.text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-      if (!item.el.id) item.el.id = id;
-      html += '<a class="toc-link" href="#' + id + '">' + item.text + '</a>';
+      var id = item.el.id;
+      if (!id) {
+        var slug = item.text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'heading';
+        var baseId = 'toc-' + slug;
+        id = baseId;
+        var suffix = 2;
+        while (usedIds.has(id)) id = baseId + '-' + suffix++;
+        item.el.id = id;
+      }
+      usedIds.add(id);
+
+      var link = document.createElement('a');
+      link.className = 'toc-link';
+      link.href = '#' + id;
+      link.textContent = item.text;
+      tocContent.appendChild(link);
     });
-    tocContent.innerHTML = html;
 
     /* Active tracking via IntersectionObserver */
     var tocLinks = tocContent.querySelectorAll('.toc-link');

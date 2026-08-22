@@ -3,21 +3,45 @@
 function init() {
   document.querySelectorAll('[data-dropdown-menu-trigger]:not([data-init])').forEach((trigger) => {
     trigger.dataset.init = '';
-    const menu = document.getElementById(trigger.dataset.dropdownMenuTrigger);
-    if (!menu) return;
+    const menuId = trigger.dataset.dropdownMenuTrigger;
+    const menu = document.getElementById(menuId);
+    if (!menu) {
+      // Keep the trigger eligible for a later SPA insertion of its target.
+      delete trigger.dataset.init;
+      return;
+    }
 
     const anchorId = `--dropdown-menu-${menu.id}`;
     trigger.style.anchorName = anchorId;
     menu.style.positionAnchor = anchorId;
 
+    const isDisabled = (item) => item.disabled || item.getAttribute('aria-disabled') === 'true';
     const getItems = () => {
-      return Array.from(menu.querySelectorAll('[role="menuitem"]:not(:disabled), [role="menuitemcheckbox"]:not(:disabled), [role="menuitemradio"]:not(:disabled)'));
+      return Array.from(menu.querySelectorAll('[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]'))
+        .filter((item) => !isDisabled(item));
+    };
+    const activateCheckable = (item) => {
+      if (!item || isDisabled(item)) return;
+      const role = item.getAttribute('role');
+      if (role === 'menuitemcheckbox') {
+        const checked = item.getAttribute('aria-checked') === 'true';
+        item.setAttribute('aria-checked', String(!checked));
+      } else if (role === 'menuitemradio') {
+        const group = item.closest('[role="group"]');
+        const radios = group ? group.querySelectorAll('[role="menuitemradio"]') : menu.querySelectorAll('[role="menuitemradio"]');
+        radios.forEach((radio) => { radio.setAttribute('aria-checked', 'false'); });
+        item.setAttribute('aria-checked', 'true');
+      }
     };
     const highlight = (item) => {
       getItems().forEach((i) => { i.removeAttribute('data-highlighted'); });
       if (item) { item.setAttribute('data-highlighted', ''); item.focus(); }
     };
-    trigger.addEventListener('click', () => { menu.togglePopover(); });
+    trigger.addEventListener('click', () => {
+      const currentMenu = document.getElementById(menuId);
+      if (!currentMenu || !currentMenu.isConnected || typeof currentMenu.togglePopover !== 'function') return;
+      currentMenu.togglePopover();
+    });
     menu.addEventListener('toggle', (e) => {
       const open = e.newState === 'open';
       trigger.setAttribute('aria-expanded', open);
@@ -26,10 +50,14 @@ function init() {
     });
     menu.addEventListener('mousemove', (e) => {
       const item = e.target.closest('[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]');
-      if (item && !item.disabled) highlight(item);
+      if (item && !isDisabled(item)) highlight(item);
     });
     menu.addEventListener('mouseleave', () => {
       getItems().forEach((i) => { i.removeAttribute('data-highlighted'); });
+    });
+    menu.addEventListener('click', (e) => {
+      const item = e.target.closest('[role="menuitemcheckbox"], [role="menuitemradio"]');
+      if (item) activateCheckable(item);
     });
     menu.addEventListener('keydown', (e) => {
       const items = getItems();
@@ -45,12 +73,9 @@ function init() {
           if (document.activeElement) {
             const role = document.activeElement.getAttribute('role');
             if (role === 'menuitemcheckbox') {
-              const checked = document.activeElement.getAttribute('aria-checked') === 'true';
-              document.activeElement.setAttribute('aria-checked', !checked);
+              activateCheckable(document.activeElement);
             } else if (role === 'menuitemradio') {
-              const group = document.activeElement.closest('[role="group"]');
-              if (group) group.querySelectorAll('[role="menuitemradio"]').forEach((r) => { r.setAttribute('aria-checked', 'false'); });
-              document.activeElement.setAttribute('aria-checked', 'true');
+              activateCheckable(document.activeElement);
             } else { document.activeElement.click(); menu.hidePopover(); }
           }
           break;

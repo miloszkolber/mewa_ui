@@ -27,7 +27,7 @@
     document.documentElement.classList.toggle('dark', !isDark);
     document.documentElement.style.colorScheme = isDark ? 'light' : 'dark';
     syncThemeIcons(!isDark);
-    store('mewa-theme', !isDark ? 'dark' : 'light');
+    store('mewa-ui-theme', !isDark ? 'dark' : 'light');
   }
 
   // -- Local icons ------------------------------------------

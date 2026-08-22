@@ -108,6 +108,7 @@ Set `data-position` on the `.toast-container`:
 - `window.toast` exposes `show`, `success`, `warning`, `info`, `error`, and `dismiss`
 - Toast markup is built via DOM APIs, never `innerHTML`, so user content stays safe
 - Toasts use `popover="manual"` so they don't auto-dismiss on outside click
+- Finite-duration toasts pause while hovered or while one of their controls has focus, then resume with the remaining time
 - The stacking order is newest on top (CSS `flex-direction: column-reverse` for bottom positions)
 - Maximum visible toasts defaults to 3 — older toasts are dismissed
 - Swipe-to-dismiss can be added with touch event handling but is not required for MVP

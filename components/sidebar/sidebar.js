@@ -38,6 +38,16 @@ function closeMobileDialog(dialog) {
   focusTarget?.focus({ preventScroll: true });
 }
 
+function openMobileDialog(dialog, trigger) {
+  if (!dialog || !dialog.isConnected || typeof dialog.showModal !== 'function' || dialog.open) return;
+  try {
+    dialog.showModal();
+    trigger.setAttribute('aria-expanded', 'true');
+  } catch {
+    // A detached or already-open dialog can race an SPA update.
+  }
+}
+
 function sidebarForTrigger(trigger) {
   return Array.from(document.querySelectorAll('.app-sidebar')).find((sidebar) => triggerMatchesSidebar(trigger, sidebar));
 }
@@ -70,8 +80,7 @@ function init() {
 
     if (!trigger.hasAttribute('aria-expanded')) trigger.setAttribute('aria-expanded', 'false');
     trigger.addEventListener('click', () => {
-      dialog.showModal();
-      trigger.setAttribute('aria-expanded', 'true');
+      openMobileDialog(document.getElementById(trigger.dataset.sidebarMobile), trigger);
     });
   });
 
