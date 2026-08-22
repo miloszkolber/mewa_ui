@@ -51,17 +51,13 @@ Use `required` for native required validation and `aria-invalid="true"` for an e
 ### Sizes
 
 ```html
-<div class="text-field" data-size="sm">
   <label class="text-field-label" for="small-search">Search</label>
   <input class="text-field-input" id="small-search" type="search" placeholder="Search">
 </div>
-<div class="text-field" data-size="lg">
   <label class="text-field-label" for="large-search">Search</label>
   <input class="text-field-input" id="large-search" type="search" placeholder="Search">
 </div>
 ```
-
-`data-size` accepts `sm`, `md` (the default), and `lg`. Each variant keeps the shared 2.5rem single-line control geometry and changes only the input type scale. Textareas keep their own content-sized geometry. None of the variants changes keyboard behavior.
 
 | Value | Single-line control height | Input type scale |
 | --- | --- | --- |

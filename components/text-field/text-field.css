@@ -130,17 +130,7 @@
 
   /* Size variants intentionally change type scale only. Single-line controls
      keep the shared 2.5rem geometry, while textareas keep their own sizing. */
-  .text-field[data-size="sm"] > :where(input, textarea, select),
-  .text-field[data-size="sm"] > .text-field-input {
-    font-size: var(--font-body-xsmall);
-  }
-
-  .text-field[data-size="lg"] > :where(input, textarea, select),
-  .text-field[data-size="lg"] > .text-field-input {
-    font-size: var(--font-body);
-  }
-
-  .text-field[data-orientation="horizontal"] {
+      .text-field[data-orientation="horizontal"] {
     flex-direction: row;
     align-items: center;
     gap: var(--space-02);
