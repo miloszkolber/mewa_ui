@@ -140,4 +140,25 @@
     }
   }
 
+  /* -- Accessibility ---------------------------------------- */
+  @media (prefers-contrast: more) {
+    .image-lightbox-btn {
+      border: var(--border-width-02) solid currentColor;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .image-fallback {
+      background: Canvas;
+      color: CanvasText;
+    }
+
+    .image-caption { color: CanvasText; }
+
+    .image-lightbox-btn {
+      background: CanvasText;
+      color: Canvas;
+      border: var(--border-width-02) solid CanvasText;
+    }
+  }
 }

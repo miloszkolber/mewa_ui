@@ -83,4 +83,13 @@
       & [data-arrow] { left: calc(-1 * var(--size-01)); top: 50%; margin-top: calc(-1 * var(--space-01)); }
     }
   }
+
+  /* -- Accessibility ---------------------------------------- */
+  @media (forced-colors: active) {
+    .tooltip {
+      background: Canvas;
+      color: CanvasText;
+      border: var(--border-width-01) solid CanvasText;
+    }
+  }
 }

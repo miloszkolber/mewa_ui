@@ -49,4 +49,18 @@
     color: var(--text-muted);
     line-height: var(--font-height);
   }
+
+  /* -- Accessibility ---------------------------------------- */
+  @media (prefers-contrast: more) {
+    .collapsible { border-width: var(--border-width-02); }
+  }
+
+  @media (forced-colors: active) {
+    .collapsible {
+      background: Canvas;
+      color: CanvasText;
+      border-color: CanvasText;
+    }
+    .collapsible-trigger { color: CanvasText; }
+  }
 }

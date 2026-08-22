@@ -74,4 +74,18 @@
     color: var(--text-muted);
     margin-top: var(--space-01);
   }
+
+  @media (prefers-contrast: more) {
+    .timeline-item::before { width: 2px; }
+    .timeline-dot { width: 0.875rem; height: 0.875rem; }
+  }
+
+  @media (forced-colors: active) {
+    .timeline-item::before { background: CanvasText; }
+    .timeline-dot { background: CanvasText; }
+    .timeline-dot[data-variant="active"] { background: Highlight; }
+    .timeline-title { color: CanvasText; }
+    .timeline-description,
+    .timeline-time { color: CanvasText; }
+  }
 }

@@ -24,4 +24,16 @@
       color: var(--text-inverted);
     }
   }
+
+  /* -- Accessibility ---------------------------------------- */
+  @media (prefers-contrast: more) {
+    .badge[data-variant="outline"] { border-width: var(--border-width-02); }
+  }
+
+  @media (forced-colors: active) {
+    .badge { color: CanvasText; }
+    .badge[data-variant="outline"] { border-color: CanvasText; }
+    .badge[data-variant="secondary"] { background: Canvas; color: CanvasText; }
+    .badge[data-variant="default"] { background: Highlight; color: HighlightText; }
+  }
 }

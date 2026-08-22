@@ -75,8 +75,8 @@
 
   .date-range-input:focus-visible {
     border-color: var(--border-ring);
-    outline: var(--focus-ring-outer-width) solid var(--border-ring);
-    outline-offset: var(--focus-ring-width);
+    outline: var(--focus-ring-width) solid var(--border-ring);
+    outline-offset: var(--border-width-01);
   }
 
   .date-range-input:disabled {

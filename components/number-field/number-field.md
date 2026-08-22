@@ -26,7 +26,7 @@
 ## Notes
 
 - Places the native number input on the left and stacked step buttons on the right.
-- The input is the only control with a focus highlight; both step buttons remain keyboard-operable.
+- The input shows the standard focus ring; each step button shows an inset focus ring when keyboard-focused, so Tab order stays visible.
 - Native spinner buttons are hidden with `::-webkit-inner-spin-button`.
 - Use `min`, `max`, and `step` for range constraints.
 - Keyboard: arrow keys increment/decrement the native input by its step value. Tab reaches the input and then each step button in document order.

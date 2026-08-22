@@ -2,7 +2,7 @@
 
 mewa_ui is a fork of [shadcn-html](https://github.com/codylindley/shadcn-html) that provides square, border-led, shadow-free interface components with vanilla HTML, CSS, and JavaScript. It has no framework and no production build step.
 
-The canonical consumer surface is the repository root: `src/` for foundations and icons, `components/` for component implementations, `docs/` for the static reference site, and `layouts/` for the two application-shell templates when they are present. New work must use those canonical directories. `legacy/` and the root `core-ui.css` are not runtime resources.
+The canonical consumer surface is the repository root: `src/` for foundations and icons, `components/` for component implementations, `docs/` for the static reference site, and `layouts/` for the two application-shell templates when they are present. New work must use those canonical directories.
 
 ## Contract at a glance
 
@@ -30,15 +30,13 @@ ui_library/
 ├── src/geist.woff2                ← Geist variable font, 400–550
 ├── src/geistmono.woff2            ← Geist Mono variable font, 400–550
 ├── src/icons/                     ← local Lucide SVG files, one file per icon
-├── components/                    ← 61 self-contained component folders
+├── components/                    ← 58 self-contained component folders
 │   └── {name}/
 │       ├── {name}.md              ← skill: native basis, structure, attributes, and ARIA
 │       ├── {name}.css             ← component stylesheet
 │       └── {name}.js              ← interaction module when the component needs one
-├── docs/                          ← 61 static component pages and doc-site scripts
+├── docs/                          ← 58 static component pages and doc-site scripts
 ├── layouts/                       ← canonical application-shell templates
-├── legacy/                        ← read-only historical reference and migration input, never runtime
-├── core-ui.css                    ← read-only migration artifact, never runtime
 └── AGENTS.md                     ← maintainer instructions
 ```
 
@@ -74,15 +72,15 @@ Use `<dialog>` for modal surfaces, the Popover API for popovers and tooltips, `<
 
 ## Canonical application shells
 
-`layouts/` is the only canonical home for reusable application-shell templates. The current two templates are `layouts/vertical-navbar.html` for a left collapsible sidebar and `layouts/horizontal-navbar.html` for top navigation. Keep both serveable from the repository root, and compose them from current `src/`, `components/`, and layout-local files. `layouts/layouts.css` owns template-only layout rules, while `layouts/layouts.js` provides local icon inlining and the optional theme toggle. Never substitute a file from `legacy/layouts/`.
+`layouts/` is the only canonical home for reusable application-shell templates. The current two templates are `layouts/vertical-navbar.html` for a left collapsible sidebar and `layouts/horizontal-navbar.html` for top navigation. Keep both serveable from the repository root, and compose them from current `src/`, `components/`, and layout-local files. `layouts/layouts.css` owns template-only layout rules, while `layouts/layouts.js` provides local icon inlining and the optional theme toggle.
 
 ### Left collapsible sidebar
 
-Use the `Sidebar` component for this shell. Start with `.sidebar-layout`, an `<aside class="app-sidebar">`, and a `<main>`. Put every route in one flat, labelled `<nav>` of native links and use `data-state="expanded"` or `data-state="collapsed"` for the two widths. Keep the collapse control in `.sidebar-footer` as a full-width labelled button in the expanded state and an icon-only named button in the collapsed state. The `vertical-navbar.html` template adds the breadcrumb header, workspace content, and optional utility rail around that shell. The `sidebar.js` module owns the footer control, `aria-expanded` synchronization, the `Cmd+B`/`Ctrl+B` shortcut, and the mobile `<dialog>` trigger. Keep the link's `aria-current="page"`. Tooltips on icon-only collapsed links are optional and come from the Tooltip component. Do not copy vertical navbar classes, shell markup, or runtime code from `legacy/`.
+Use the `Sidebar` component for this shell. Start with `.sidebar-layout`, an `<aside class="app-sidebar">`, and a `<main>`. Put every route in one flat, labelled `<nav>` of native links and use `data-state="expanded"` or `data-state="collapsed"` for the two widths. Keep the collapse control in `.sidebar-footer` as a full-width labelled button in the expanded state and an icon-only named button in the collapsed state. The `vertical-navbar.html` template adds the breadcrumb header, workspace content, and optional utility rail around that shell. The `sidebar.js` module owns the footer control, `aria-expanded` synchronization, the `Cmd+B`/`Ctrl+B` shortcut, and the mobile `<dialog>` trigger. Keep the link's `aria-current="page"`. Tooltips on icon-only collapsed links are optional and come from the Tooltip component. Do not copy vertical navbar classes, shell markup, or runtime code into a second implementation.
 
 ### Top navigation
 
-The `layouts/horizontal-navbar.html` template uses a semantic `<header>` with a labelled `<nav>` of native `<a>` routes and an action cluster. Keep route navigation as links, use buttons for actions, and keep decorative icons hidden from assistive technology. Use `components/layout/` primitives and `layouts/layouts.css` for the surrounding content. Use `components/navigation-menu/` only when the layout needs a documented Popover API route group. Do not use tab roles for route navigation and do not revive the legacy horizontal navbar.
+The `layouts/horizontal-navbar.html` template uses a semantic `<header>` with a labelled `<nav>` of native `<a>` routes and an action cluster. Keep route navigation as links, use buttons for actions, and keep decorative icons hidden from assistive technology. Use `components/layout/` primitives and `layouts/layouts.css` for the surrounding content. Use `components/navigation-menu/` only when the layout needs a documented Popover API route group. Do not use tab roles for route navigation.
 
 Both shells are immediate and motionless. Use `--border-primary` and semantic surfaces for separation, not shadows or animation. Keep the shell usable at narrow widths, with a visible keyboard path to every control.
 
@@ -130,7 +128,6 @@ This is the complete current inventory, grouped by the same purpose groups used 
 | Combobox | Button trigger and Popover API popup containing a search input and `role="listbox"` | Yes | [`components/combobox/combobox.md`](components/combobox/combobox.md) · [`docs/combobox.html`](docs/combobox.html) |
 | Time Field | `<fieldset>` with labelled hour and minute inputs, an AM/PM `<select>`, and a hidden submitted value | Optional | [`components/time-field/time-field.md`](components/time-field/time-field.md) · [`docs/time-field.html`](docs/time-field.html) |
 | Form | `<form>` with native submission and constraint validation, composed with labelled fields | No | [`components/form/form.md`](components/form/form.md) · [`docs/form.html`](docs/form.html) |
-| Questionnaire | Native `<form>` with ordered `<fieldset>` steps and native validation | Optional | [`components/questionnaire/questionnaire.md`](components/questionnaire/questionnaire.md) · [`docs/questionnaire.html`](docs/questionnaire.html) |
 
 ### Data display
 
@@ -178,7 +175,6 @@ This is the complete current inventory, grouped by the same purpose groups used 
 |---|---|---|---|
 | Breadcrumbs | `<nav>` containing an ordered `<ol>` path | No | [`components/breadcrumbs/breadcrumbs.md`](components/breadcrumbs/breadcrumbs.md) · [`docs/breadcrumbs.html`](docs/breadcrumbs.html) |
 | Pagination | `<nav>` containing a list of native `<a>` page links | No | [`components/pagination/pagination.md`](components/pagination/pagination.md) · [`docs/pagination.html`](docs/pagination.html) |
-| Steps | Ordered `<ol>` with `aria-current="step"` for the current step | No | [`components/steps/steps.md`](components/steps/steps.md) · [`docs/steps.html`](docs/steps.html) |
 | Tabs | WAI-ARIA `tablist`, `tab`, and `tabpanel` roles | Yes | [`components/tabs/tabs.md`](components/tabs/tabs.md) · [`docs/tabs.html`](docs/tabs.html) |
 | Dropdown Menu | Popover API with a button trigger and WAI-ARIA menu items | Yes | [`components/dropdown-menu/dropdown-menu.md`](components/dropdown-menu/dropdown-menu.md) · [`docs/dropdown-menu.html`](docs/dropdown-menu.html) |
 | Navigation Menu | `<nav>` and `<ul>` with Popover API dropdown panels | Yes | [`components/navigation-menu/navigation-menu.md`](components/navigation-menu/navigation-menu.md) · [`docs/navigation-menu.html`](docs/navigation-menu.html) |
@@ -188,7 +184,6 @@ This is the complete current inventory, grouped by the same purpose groups used 
 | Component | Native basis | JS | Skill and doc |
 |---|---|---|---|
 | Sidebar | `<aside>` and `<nav>` with a `<dialog>` mobile overlay, a flat link list, and a footer collapse button | Yes | [`components/sidebar/sidebar.md`](components/sidebar/sidebar.md) · [`docs/sidebar.html`](docs/sidebar.html) |
-| Message Scroller | Focusable `role="log"` containing an ordered message list and a native composer form | Optional | [`components/message-scroller/message-scroller.md`](components/message-scroller/message-scroller.md) · [`docs/message-scroller.html`](docs/message-scroller.html) |
 | Resizable | Two panels separated by a static `role="separator"`; the optional module adds the keyboard and pointer resizing behavior | Optional | [`components/resizable/resizable.md`](components/resizable/resizable.md) · [`docs/resizable.html`](docs/resizable.html) |
 
 ## Migration candidates and coverage gaps
@@ -212,27 +207,19 @@ The Kernel UI catalog is a useful parity checklist, not a requirement to add eve
 
 The current documentation site is static and has one page per component. There is no `docs/index.html`; serve `docs/` over HTTP and start at `typography.html`. The site navigation and router are centralized in `docs/js/layout.js`. Navigation imports destination module scripts before swapping `<main>` immediately and deliberately has no View Transition or other animation. `docs/js/site.js` owns doc-site-only behavior such as local icon inlining, copy buttons, and page-ready hooks.
 
-Doc pages load the current component styles and modules so every cross-page example works. Consumers should load only the assets listed by the component inventory. The pages show copyable HTML examples, not generated CSS or JavaScript source. The old CSS/JS snippet synchronizers in `docs/js/` are not part of the current documentation workflow and must not be treated as a required post-edit step.
+Doc pages load the current component styles and modules so every cross-page example works. Consumers should load only the assets listed by the component inventory. The pages show copyable HTML examples, not generated CSS or JavaScript source.
+
+### Vendored syntax highlighter
+
+`docs/js/shiki-highlight.js` imports a vendored shiki bundle from `docs/vendor/shiki.bundle.mjs`. The bundle ships with the documentation site, so the doc pages work offline. Re-run `npm run build:vendor` after upgrading `shiki` in `package.json` or after adding new languages or themes to `docs/vendor/shiki-entry.mjs`.
 
 ## Maintain the system
 
 - Keep each component self-contained in `components/{name}/`. Its skill documents the HTML pattern, attributes, native basis, keyboard model, and ARIA. Edit the stylesheet and module directly. Do not create a framework wrapper or a second source tree.
 - When adding a component, add its skill, stylesheet, optional module, and `docs/{name}.html`. Add the page to `NAV` and `BUILT` in `docs/js/layout.js`, and add its stylesheet and module imports to every existing doc page as appropriate.
-- Update the 61-row inventory in this file whenever a component is added, removed, renamed, or changes its JS requirement. Verify the row against the actual `components/{name}/` directory, the skill's Native basis section, and the matching doc page.
+- Update the 58-row inventory in this file whenever a component is added, removed, renamed, or changes its JS requirement. Verify the row against the actual `components/{name}/` directory, the skill's Native basis section, and the matching doc page.
 - Keep component docs, markup examples, CSS, and JS aligned. Do not document a variant, state, API, or layout that the current source does not implement.
 - Preserve the no-animation contract, square geometry, semantic token usage, native fallback behavior, keyboard path, contrast modes, and forced-colors support in every change.
 - Keep `docs/` imports and `docs/js/layout.js` synchronized. A missing import can make a cross-page demo fail silently.
 
 Before changing a component skill or doc page, review the current component implementation and the relevant native references. The skill file is the markup reference; the stylesheet and module are the executable contract.
-
-## Legacy boundary
-
-`legacy/` is read-only historical reference and migration input. It is not a runtime package, compatibility layer, example catalog, layout library, or implementation dependency. Never:
-
-- load or serve a stylesheet, script, font, SVG, snippet, layout, or page from `legacy/`;
-- import or link a `legacy/` file from `src/`, `components/`, `docs/`, `layouts/`, or a consuming application;
-- copy legacy markup, classes, `data-ui-*` hooks, tokens, or runtime behavior into a new component or example without rewriting it against the current contract;
-- use `legacy/` paths in documentation examples, tests, demos, or canonical layouts; or
-- edit `legacy/` to make current work pass.
-
-Read a legacy file only to understand historical behavior or migration input. Port the result into `src/`, `components/`, `docs/`, or `layouts/`, using the current native basis, tokens, accessibility contract, and motionless visual rules. The root `core-ui.css` follows the same read-only migration rule and is never a canonical stylesheet.

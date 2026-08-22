@@ -30,7 +30,6 @@ function init() {
       setExpanded(true);
       searchInput.value = '';
       filter('');
-      searchInput.focus();
     };
     const close = () => {
       popover.hidePopover();

@@ -26,4 +26,11 @@
     border-radius: var(--radius-full);
   }
 
+  /* -- Accessibility ---------------------------------------- */
+  @media (forced-colors: active) {
+    .progress { border: var(--border-width-01) solid ButtonText; }
+    .progress::-webkit-progress-bar { background: ButtonFace; }
+    .progress::-webkit-progress-value { background: Highlight; }
+    .progress::-moz-progress-bar { background: Highlight; }
+  }
 }

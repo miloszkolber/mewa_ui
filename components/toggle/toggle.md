@@ -54,14 +54,8 @@ buttons (bold, italic, underline) or feature toggles.
 
 ## Sizes
 
-| `data-size`  | Height    | Padding        | Min-width   |
-|-------------|-----------|----------------|-------------|
-| `sm`        | `2.5rem`  | `0 0.5rem`     | `2.5rem`    |
-| *(default)* | `2.5rem`  | `0 0.5rem`     | `2.5rem`    |
-| `lg`        | `2.5rem`  | `0 0.625rem`   | `2.5rem`    |
-
 ```html
-<button class="toggle" data-size="sm" aria-pressed="false" aria-label="Bold">
+<button class="toggle" aria-pressed="false" aria-label="Bold">
   <svg aria-hidden="true" ...>...</svg>
 </button>
 ```

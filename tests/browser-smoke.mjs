@@ -576,12 +576,6 @@ async function runTargetedInteractions(base) {
   await page.click(".date-picker-day button:not([data-outside])");
   assert.equal(await page.evaluate(() => window.__datePickerSelections), 1, "Date Picker exposes the Kernel-aligned selection event");
 
-  await loadPage(base, "/docs/message-scroller.html", desktop, "interaction-message-scroller");
-  if (await hasSelector("#discussion-input") && await hasSelector(".message-scroller-composer button[type=submit]")) {
-    await page.type("#discussion-input", "Ready for review.");
-    await page.click(".message-scroller-composer button[type=submit]");
-    assert.equal(await page.$eval(".message-scroller-messages li:last-child .message-scroller-message-body", (node) => node.textContent), "Ready for review.");
-  }
 
   await loadPage(base, "/docs/sidebar.html", desktop, "interaction-sidebar");
   const sidebar = ".preview .app-sidebar";
@@ -592,40 +586,6 @@ async function runTargetedInteractions(base) {
   }
 }
 
-async function runQuestionnaireChecks(base) {
-  const questionnaire = components.find((component) => component.slug === "questionnaire");
-  if (!questionnaire) return;
-
-  await loadPage(base, `/${questionnaire.docs}`, viewports[0], "interaction-questionnaire");
-  if (await hasSelector("[data-questionnaire-next]") && await hasSelector('input[name="goal"]')) {
-    await page.click('input[name="goal"]');
-    await page.click("[data-questionnaire-next]");
-    await page.waitForFunction(() => document.querySelectorAll("[data-questionnaire-step]")[1]?.hidden === false, { timeout: 5000 });
-  }
-
-  const source = fs.readFileSync(path.join(root, questionnaire.docs), "utf8");
-  const supportsNoJavaScript = source.includes("data-questionnaire-step") && /type=["']submit["']/.test(source);
-  if (!supportsNoJavaScript) return;
-
-  const javascriptPage = page;
-  const noJsPage = await browser.newPage();
-  page = noJsPage;
-  try {
-    noJsPage.setDefaultNavigationTimeout(30000);
-    await observePage(noJsPage);
-    await noJsPage.setJavaScriptEnabled(false);
-    await loadPage(base, `/${questionnaire.docs}`, viewports[0], "no-js-questionnaire");
-    const fallback = await noJsPage.evaluate(() => ({
-      steps: [...document.querySelectorAll("[data-questionnaire-step]")].every((node) => !node.hidden),
-      submit: Boolean(document.querySelector('button[type="submit"], input[type="submit"]'))
-    }));
-    assert.equal(fallback.steps, true, "questionnaire exposes every field without JavaScript");
-    assert.equal(fallback.submit, true, "questionnaire keeps a native submit path without JavaScript");
-  } finally {
-    await noJsPage.close().catch(() => {});
-    page = javascriptPage;
-  }
-}
 
 async function runNoJavaScriptChecks(base) {
   const javascriptPage = page;
@@ -732,7 +692,7 @@ try {
 
   const base = serverInfo?.baseUrl || baseUrl;
   await runTargetedInteractions(base);
-  await runQuestionnaireChecks(base);
+  
   await runNoJavaScriptChecks(base);
   await runLayoutChecks(base);
 

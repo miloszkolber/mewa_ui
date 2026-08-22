@@ -39,13 +39,13 @@
       }
 
       &:focus {
-        outline: var(--focus-ring-outer-width) solid var(--border-ring);
-        outline-offset: var(--focus-ring-width);
+        outline: var(--focus-ring-width) solid var(--border-ring);
+        outline-offset: var(--border-width-01);
       }
 
       &:focus-visible {
-        outline: var(--focus-ring-outer-width) solid var(--border-ring);
-        outline-offset: var(--focus-ring-width);
+        outline: var(--focus-ring-width) solid var(--border-ring);
+        outline-offset: var(--border-width-01);
       }
 
       &:is([aria-invalid="true"], :user-invalid) {
@@ -58,9 +58,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: var(--size-07);
+      width: 100%;
       min-height: 0;
-      height: auto;
+      height: 100%;
       border: none;
       background: transparent;
       color: var(--text-muted);
@@ -70,11 +70,10 @@
       line-height: var(--font-height-none);
       flex-shrink: 0;
       padding: 0;
-      outline: none;
 
-      &:focus,
       &:focus-visible {
-        outline: none;
+        outline: var(--focus-ring-width) solid var(--border-ring);
+        outline-offset: calc(-1 * var(--focus-ring-width));
       }
 
       &:hover {
@@ -98,6 +97,33 @@
       &[data-action="increment"] {
         border-inline-start: var(--border-width-01) solid var(--border-secondary);
       }
+    }
+  }
+
+  /* -- Accessibility ---------------------------------------- */
+  @media (prefers-contrast: more) {
+    .number-field { border-width: var(--border-width-02); }
+    .number-field button { border-width: var(--border-width-02); }
+  }
+
+  @media (forced-colors: active) {
+    .number-field {
+      background: Field;
+      border-color: ButtonText;
+    }
+
+    .number-field input {
+      color: FieldText;
+    }
+
+    .number-field button {
+      color: ButtonText;
+      border-color: ButtonText;
+    }
+
+    .number-field button:hover {
+      background: Highlight;
+      color: HighlightText;
     }
   }
 }

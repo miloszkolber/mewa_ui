@@ -82,4 +82,11 @@
       color: var(--text-muted);
     }
   }
+
+  @media (forced-colors: active) {
+    .tree-branch-trigger,
+    .tree-leaf { color: CanvasText; }
+    .tree-branch-trigger svg:first-child { color: CanvasText; }
+    .tree-leaf svg { color: CanvasText; }
+  }
 }

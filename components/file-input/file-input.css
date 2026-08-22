@@ -34,8 +34,8 @@
 
     &:focus {
       border-color: var(--border-ring);
-      outline: var(--focus-ring-outer-width) solid var(--border-ring);
-      outline-offset: var(--focus-ring-width);
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: var(--border-width-01);
     }
 
     &:is([aria-invalid="true"], :user-invalid) {
@@ -43,14 +43,50 @@
 
       &:focus {
         border-color: var(--text-negative);
-        outline: var(--focus-ring-outer-width) solid var(--text-negative);
-        outline-offset: var(--focus-ring-width);
+        outline: var(--focus-ring-width) solid var(--text-negative);
+        outline-offset: var(--border-width-01);
       }
     }
 
     &:disabled {
       opacity: var(--opacity-05);
       cursor: not-allowed;
+    }
+
+    &:focus-visible {
+      outline: none;
+
+      &::file-selector-button {
+        outline: var(--focus-ring-width) solid var(--border-ring);
+        outline-offset: calc(-1 * var(--focus-ring-width));
+      }
+    }
+  }
+
+  /* -- Accessibility ---------------------------------------- */
+  @media (prefers-contrast: more) {
+    .file-input { border-width: var(--border-width-02); }
+  }
+
+  @media (forced-colors: active) {
+    .file-input {
+      border-color: ButtonBorder;
+      background: Field;
+      color: FieldText;
+    }
+
+    .file-input::file-selector-button {
+      background: ButtonFace;
+      color: ButtonText;
+      border-color: ButtonText;
+    }
+
+    .file-input:focus-visible {
+      outline: none;
+
+      &::file-selector-button {
+        outline: var(--border-width-02) solid Highlight;
+      }
     }
   }
 }

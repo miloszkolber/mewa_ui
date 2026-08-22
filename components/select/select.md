@@ -42,7 +42,7 @@
 
 ## Sizes
 
-`data-size="sm"`, the default, and `data-size="lg"` all use the shared `2.5rem` control height. The size values adjust padding and type scale without changing the control rhythm.
+`select` uses the shared `2.5rem` control height. Padding and type scale stay fixed so every control in a form shares one rhythm.
 
 ---
 

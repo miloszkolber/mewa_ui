@@ -64,8 +64,8 @@
   .text-field > :where(input, textarea, select):focus-visible,
   .text-field-input:focus-visible {
     border-color: var(--border-ring);
-    outline: var(--focus-ring-outer-width) solid var(--border-ring);
-    outline-offset: var(--focus-ring-width);
+    outline: var(--focus-ring-width) solid var(--border-ring);
+    outline-offset: var(--border-width-01);
   }
 
   .text-field > :where(input, textarea, select)::placeholder,
@@ -79,8 +79,8 @@
     opacity: var(--opacity-05);
   }
 
-  .text-field > :where(input, textarea, select):read-only,
-  .text-field-input:read-only {
+  .text-field > :where(input, textarea, select):read-only:not(:disabled),
+  .text-field-input:read-only:not(:disabled) {
     background: var(--surface-secondary);
     cursor: default;
     opacity: var(--opacity-07);
@@ -193,24 +193,6 @@
     .text-field-input:is([aria-invalid="true"], :user-invalid),
     .text-field-error {
       border-color: LinkText;
-      color: LinkText;
-    }
-  }
-
-  .field-description {
-    font-size: var(--font-body-xsmall);
-    color: var(--text-muted);
-    margin: var(--space-02) 0 0;
-  }
-
-  .field-error {
-    font-size: var(--font-body-xsmall);
-    color: var(--text-negative);
-    margin: var(--space-02) 0 0;
-  }
-
-  @media (forced-colors: active) {
-    .field-error {
       color: LinkText;
     }
   }

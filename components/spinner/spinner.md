@@ -18,14 +18,6 @@ Static SVG loading indicator. No JavaScript or animation is used.
 </svg>
 ```
 
-## Sizes (`data-size`)
-
-| Value     | Dimensions |
-|-----------|------------|
-| `sm`      | 0.875rem   |
-| `default` | 1rem       |
-| `md`      | 1.25rem    |
-| `lg`      | 1.5rem     |
 
 ## Accessibility
 

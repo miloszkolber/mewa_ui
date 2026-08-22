@@ -13,18 +13,18 @@
 
 ```html
 <!-- Avatar with image -->
-<span class="avatar" data-size="default">
+<span class="avatar">
   <img class="avatar-image" src="https://example.com/photo.jpg" alt="@username" />
   <span class="avatar-fallback">CN</span>
 </span>
 
 <!-- Avatar with fallback only -->
-<span class="avatar" data-size="default">
+<span class="avatar">
   <span class="avatar-fallback">CN</span>
 </span>
 
 <!-- Avatar with badge (status indicator) -->
-<span class="avatar" data-size="default">
+<span class="avatar">
   <img class="avatar-image" src="https://example.com/photo.jpg" alt="@username" />
   <span class="avatar-fallback">CN</span>
   <span class="avatar-badge"></span>
@@ -44,13 +44,6 @@
 </div>
 ```
 
-## Sizes (`data-size`)
-
-| Value     | Dimensions |
-|-----------|------------|
-| `sm`      | 2rem       |
-| `default` | 2.5rem     |
-| `lg`      | 3rem       |
 
 ## Accessibility
 

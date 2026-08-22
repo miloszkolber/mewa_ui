@@ -48,13 +48,11 @@
   <link rel="stylesheet" href="../components/image/image.css">
   <link rel="stylesheet" href="../components/label/label.css">
   <link rel="stylesheet" href="../components/layout/layout.css">
-  <link rel="stylesheet" href="../components/message-scroller/message-scroller.css">
   <link rel="stylesheet" href="../components/navigation-menu/navigation-menu.css">
   <link rel="stylesheet" href="../components/number-field/number-field.css">
   <link rel="stylesheet" href="../components/pagination/pagination.css">
   <link rel="stylesheet" href="../components/popover/popover.css">
   <link rel="stylesheet" href="../components/progress/progress.css">
-  <link rel="stylesheet" href="../components/questionnaire/questionnaire.css">
   <link rel="stylesheet" href="../components/radio-group/radio-group.css">
   <link rel="stylesheet" href="../components/resizable/resizable.css">
   <link rel="stylesheet" href="../components/scroll-area/scroll-area.css">
@@ -67,7 +65,6 @@
   <link rel="stylesheet" href="../components/sortable/sortable.css">
   <link rel="stylesheet" href="../components/spinner/spinner.css">
   <link rel="stylesheet" href="../components/statistic/statistic.css">
-  <link rel="stylesheet" href="../components/steps/steps.css">
   <link rel="stylesheet" href="../components/switch/switch.css">
   <link rel="stylesheet" href="../components/table/table.css">
   <link rel="stylesheet" href="../components/tabs/tabs.css">
@@ -100,7 +97,7 @@
         <!-- Default -->
         <p class="text-sm font-medium mb-2 mt-6">Default</p>
         <p class="text-xs text-muted mb-3">Simple form with labeled fields and descriptions.</p>
-        <div class="preview" style="justify-content: start; padding: var(--space-07)">
+        <div class="preview" style="padding: var(--space-07)">
           <form class="form" style="width: 100%; max-width: 24rem" onsubmit="return false;">
             <div class="form-field">
               <label class="label" for="f-name">Username</label>
@@ -154,7 +151,7 @@
         <!-- Inline fields -->
         <p class="text-sm font-medium mb-2 mt-8">Inline fields</p>
         <p class="text-xs text-muted mb-3">Checkbox and switch aligned with labels.</p>
-        <div class="preview" style="justify-content: start; padding: var(--space-07)">
+        <div class="preview" style="padding: var(--space-07)">
           <form class="form" style="width: 100%; max-width: 24rem" onsubmit="return false;">
             <div class="form-field">
               <label class="label" for="f2-user">Username</label>
@@ -191,7 +188,7 @@
         <!-- Notification / switch rows -->
         <p class="text-sm font-medium mb-2 mt-8">Switch rows (notifications)</p>
         <p class="text-xs text-muted mb-3">Notification-style rows with label, description, and switch.</p>
-        <div class="preview" style="justify-content: start; padding: var(--space-07)">
+        <div class="preview" style="padding: var(--space-07)">
           <form class="form" style="width: 100%; max-width: 28rem" onsubmit="return false;">
             <div class="form-field-row">
               <div>
@@ -236,7 +233,7 @@
         <!-- Fieldset grouping -->
         <p class="text-sm font-medium mb-2 mt-8">Fieldset grouping</p>
         <p class="text-xs text-muted mb-3">Group related fields with <code>&lt;fieldset&gt;</code> and <code>&lt;legend&gt;</code>.</p>
-        <div class="preview" style="justify-content: start; padding: var(--space-07)">
+        <div class="preview" style="padding: var(--space-07)">
           <form class="form" style="width: 100%; max-width: 24rem" onsubmit="return false;">
             <div class="form-field">
               <label class="label" for="f4-name">Full name</label>
@@ -291,7 +288,7 @@
         <!-- Horizontal layout -->
         <p class="text-sm font-medium mb-2 mt-8">Horizontal layout</p>
         <p class="text-xs text-muted mb-3">Label placed beside the control with <code>data-orientation="horizontal"</code>.</p>
-        <div class="preview" style="justify-content: start; padding: var(--space-07)">
+        <div class="preview" style="padding: var(--space-07)">
           <form class="form" style="width: 100%; max-width: 32rem" onsubmit="return false;">
             <div class="form-field" data-orientation="horizontal">
               <label class="label" for="f5-name">Name</label>
@@ -329,7 +326,7 @@
         <!-- Validation / error state -->
         <p class="text-sm font-medium mb-2 mt-8">Validation with errors</p>
         <p class="text-xs text-muted mb-3">Fields with <code>data-invalid</code> and <code>aria-invalid</code> for error states.</p>
-        <div class="preview" style="justify-content: start; padding: var(--space-07)">
+        <div class="preview" style="padding: var(--space-07)">
           <form class="form" style="width: 100%; max-width: 24rem" onsubmit="return false;" novalidate>
             <div class="form-field" data-invalid>
               <label class="label" for="f6-user">Username</label>
@@ -369,7 +366,7 @@
         <!-- Full kitchen sink -->
         <p class="text-sm font-medium mb-2 mt-8">Full composition</p>
         <p class="text-xs text-muted mb-3">Comprehensive form composing multiple field types.</p>
-        <div class="preview" style="justify-content: start; padding: var(--space-07)">
+        <div class="preview" style="padding: var(--space-07)">
           <form class="form" style="width: 100%; max-width: 28rem" onsubmit="return false;">
             <div class="form-field">
               <label class="label" for="f7-name">Username</label>
@@ -476,34 +473,5 @@
   </div>
 
   <script src="js/site.js" defer></script>
-  <script type="module" src="js/shiki-highlight.js"></script>
-  <script type="module" src="../components/accordion/accordion.js"></script>
-  <script type="module" src="../components/combobox/combobox.js"></script>
-  <script type="module" src="../components/dialog/dialog.js"></script>
-  <script type="module" src="../components/dropdown-menu/dropdown-menu.js"></script>
-  <script type="module" src="../components/sheet/sheet.js"></script>
-  <script type="module" src="../components/tabs/tabs.js"></script>
-  <script type="module" src="../components/toast/toast.js"></script>
-  <script type="module" src="../components/toggle/toggle.js"></script>
-  <script type="module" src="../components/toggle-group/toggle-group.js"></script>
-  <script type="module" src="../components/toolbar/toolbar.js"></script>
-  <script type="module" src="../components/number-field/number-field.js"></script>
-  <script type="module" src="../components/avatar/avatar.js"></script>
-  <script type="module" src="../components/image/image.js"></script>
-  <script type="module" src="../components/tree-view/tree-view.js"></script>
-  <script type="module" src="../components/date-picker/date-picker.js"></script>
-  <script type="module" src="../components/alert-dialog/alert-dialog.js"></script>
-    <script type="module" src="../components/popover/popover.js"></script>
-  <script type="module" src="../components/tooltip/tooltip.js"></script>
-  <script type="module" src="../components/command-palette/command-palette.js"></script>
-  <script type="module" src="../components/navigation-menu/navigation-menu.js"></script>
-  <script type="module" src="../components/sidebar/sidebar.js"></script>
-  <script type="module" src="../components/carousel/carousel.js"></script>
-  <script type="module" src="../components/slider/slider.js"></script>
-  <script type="module" src="../components/sortable/sortable.js"></script>
-  <script type="module" src="../components/time-field/time-field.js"></script>
-  <script type="module" src="../components/questionnaire/questionnaire.js"></script>
-  <script type="module" src="../components/message-scroller/message-scroller.js"></script>
-  <script type="module" src="../components/checkbox/checkbox.js"></script>
-</body>
+                                                    </body>
 </html>

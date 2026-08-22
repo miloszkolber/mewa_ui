@@ -9,11 +9,9 @@ New work must use the current source tree:
 - `src/base.css` owns static foundations, font faces, palette primitives, typography, geometry, and browser defaults.
 - `src/tokens.css` owns light and dark semantic color roles.
 - `src/icons/` owns the local Lucide SVG files.
-- `components/` owns the 61 current component folders. Each has a skill (`{name}.md`) and stylesheet (`{name}.css`), with `{name}.js` only when the documented behavior needs a module.
+- `components/` owns the 58 current component folders. Each has a skill (`{name}.md`) and stylesheet (`{name}.css`), with `{name}.js` only when the documented behavior needs a module.
 - `docs/` owns the static reference site, one HTML page per current component.
-- `layouts/` is the only canonical home for reusable application shells. The current two templates are `layouts/vertical-navbar.html` for a left collapsible rail and `layouts/horizontal-navbar.html` for top navigation. `layouts/layouts.css` owns template-only rules and `layouts/layouts.js` provides local icon inlining and the optional theme toggle. Do not use a legacy layout as a substitute.
-
-`legacy/` is read-only historical reference and migration input. It is never a runtime resource, import, example, test fixture, demo, layout, compatibility dependency, or implementation source. Do not load, link, serve, copy, or edit anything under `legacy/` for current work. Do not reuse its classes, `data-ui-*` hooks, tokens, markup, scripts, fonts, icons, snippets, or layout documents as current APIs. Read it only to understand history or to identify migration input, then reimplement the needed behavior under `src/`, `components/`, `docs/`, or `layouts/` using this contract. The root `core-ui.css` is also a read-only migration artifact, not a stylesheet for consumers.
+- `layouts/` is the only canonical home for reusable application shells. The current two templates are `layouts/vertical-navbar.html` for a left collapsible rail and `layouts/horizontal-navbar.html` for top navigation. `layouts/layouts.css` owns template-only rules and `layouts/layouts.js` provides local icon inlining and the optional theme toggle.
 
 ## Project structure
 
@@ -24,15 +22,13 @@ ui_library/
 ├── src/geist.woff2                ← Geist variable font, 400–550
 ├── src/geistmono.woff2            ← Geist Mono variable font, 400–550
 ├── src/icons/                     ← standalone local Lucide SVG files
-├── components/                    ← 61 self-contained component folders
+├── components/                    ← 58 self-contained component folders
 │   └── {name}/
 │       ├── {name}.md              ← native basis, structure, variants, ARIA, and notes
 │       ├── {name}.css             ← component stylesheet
 │       └── {name}.js              ← module only when required or explicitly optional
 ├── docs/                          ← one static page per component plus doc-site scripts
 ├── layouts/                       ← canonical left-rail and top-navigation templates
-├── legacy/                        ← read-only historical and migration material
-├── core-ui.css                    ← read-only migration artifact
 └── README.md                     ← consumer guide and complete component inventory
 ```
 
@@ -105,13 +101,13 @@ Do not use literal palette colors or recreate a spacing-token taxonomy inside a 
 
 ### Left collapsible sidebar
 
-The left-sidebar template at `layouts/vertical-navbar.html` uses `components/sidebar/`. Its semantic shell is `.sidebar-layout` with an `<aside class="app-sidebar">` and a `<main>`. The sidebar skill defines one flat labelled `<nav>`, a footer collapse button, `aria-current="page"`, collapsed `data-state`, and an optional mobile `<dialog>`. The template adds a breadcrumb header, workspace content, and optional utility rail around the sidebar. `sidebar.js` synchronizes `aria-expanded`, toggles expanded/collapsed state, supports `Cmd+B`/`Ctrl+B`, and wires the mobile dialog. The footer control remains keyboard reachable in both states. Use Tooltip for optional labels on icon-only collapsed links. Do not re-create a second sidebar implementation in `layouts/` and do not copy a legacy vertical navbar.
+The left-sidebar template at `layouts/vertical-navbar.html` uses `components/sidebar/`. Its semantic shell is `.sidebar-layout` with an `<aside class="app-sidebar">` and a `<main>`. The sidebar skill defines one flat labelled `<nav>`, a footer collapse button, `aria-current="page"`, collapsed `data-state`, and an optional mobile `<dialog>`. The template adds a breadcrumb header, workspace content, and optional utility rail around the sidebar. `sidebar.js` synchronizes `aria-expanded`, toggles expanded/collapsed state, supports `Cmd+B`/`Ctrl+B`, and wires the mobile dialog. The footer control remains keyboard reachable in both states. Use Tooltip for optional labels on icon-only collapsed links. Do not re-create a second sidebar implementation in `layouts/`.
 
 ### Top navigation
 
-The top-navigation template at `layouts/horizontal-navbar.html` uses `components/layout/` primitives, a semantic `<header>`, and a labelled `<nav>` of native `<a>` routes with an action cluster. Keep route navigation as links, hide decorative icons from assistive technology, and keep layout-only behavior in `layouts/layouts.js`. Use `components/navigation-menu/` only when a layout needs its documented Popover API route group and anchor pairing. Route navigation is not a tablist. Do not revive legacy horizontal-navbar classes or assets.
+The top-navigation template at `layouts/horizontal-navbar.html` uses `components/layout/` primitives, a semantic `<header>`, and a labelled `<nav>` of native `<a>` routes with an action cluster. Keep route navigation as links, hide decorative icons from assistive technology, and keep layout-only behavior in `layouts/layouts.js`. Use `components/navigation-menu/` only when a layout needs its documented Popover API route group and anchor pairing. Route navigation is not a tablist.
 
-Both shells must be responsive without adding motion. Keep the keyboard path and visible focus at every width. Layout-local CSS and JavaScript belong under `layouts/`, use current components and tokens, and must be documented without links to `legacy/`.
+Both shells must be responsive without adding motion. Keep the keyboard path and visible focus at every width. Layout-local CSS and JavaScript belong under `layouts/`, and use current components and tokens.
 
 ## Documentation site architecture
 
@@ -119,7 +115,7 @@ The doc site is static and has one HTML page per current component. There is no 
 
 Every doc page currently loads the foundation styles and the complete current component CSS list, then the current component modules needed by the doc demos. This is a documentation-site convenience, not the consumer include pattern. When adding a component, add its CSS link and module script to every existing HTML page where the doc-site convention requires them, add the page to `NAV` and `BUILT`, and verify that all referenced files exist. Consumers should load only the assets for the components they use.
 
-Current docs contain copyable HTML examples. They do not use generated CSS or JavaScript source snippets. The `docs/js/sync-css-snippets.js` and `docs/js/sync-js-snippets.js` files are retained but are not a required current workflow. Do not add a new source-of-truth mechanism that diverges from `components/{name}/{name}.css` or `{name}.js`.
+Current docs contain copyable HTML examples. They do not use generated CSS or JavaScript source snippets. Do not add a new source-of-truth mechanism that diverges from `components/{name}/{name}.css` or `{name}.js`.
 
 ## Adding or changing a component
 
@@ -129,8 +125,8 @@ Current docs contain copyable HTML examples. They do not use generated CSS or Ja
 4. Create `docs/{name}.html` from a current component page. Keep examples sentence case, accessible, motionless, and limited to implemented variants and states.
 5. Add the page to `docs/js/layout.js` in the purpose group that matches the inventory. Update both `NAV` and `BUILT`.
 6. Add the component stylesheet and, when applicable, module imports to every doc page following the existing doc-site convention. Check relative paths from `docs/`.
-7. Update the 61-row README inventory with the exact native basis, JS requirement, skill path, and doc path. Verify the row against the actual directory and files.
-8. Check all changed JavaScript with Node syntax checking, serve the doc site over HTTP, and exercise keyboard, focus, narrow-width, forced-colors, and no-JavaScript paths that apply. Do not use the removed legacy catalog or its test contract as validation.
+7. Update the 58-row README inventory with the exact native basis, JS requirement, skill path, and doc path. Verify the row against the actual directory and files.
+8. Check all changed JavaScript with Node syntax checking, serve the doc site over HTTP, and exercise keyboard, focus, narrow-width, forced-colors, and no-JavaScript paths that apply.
 
 Do not silently add a new component family, layout template, token namespace, dependency, or compatibility alias. Raise an ambiguity before choosing a product or architecture boundary that is not supported by the current source.
 
@@ -149,12 +145,11 @@ Use the first two as a feature checklist and the remaining references for the na
 
 ## Common pitfalls
 
-- **Legacy drift:** A legacy path in a runtime import, example, test, demo, or layout is a defect. Port the behavior into the current source tree instead.
-- **Inventory drift:** The README table must match the 61 actual component folders, 61 skill files, 61 stylesheets, optional module files, and 61 doc pages.
+- **Inventory drift:** The README table must match the 58 actual component folders, 58 skill files, 58 stylesheets, optional module files, and 58 doc pages.
 - **CSS drift:** Keep the skill's variants and states aligned with the stylesheet. The stylesheet is the source of truth for rendered behavior.
 - **Import drift:** Every doc page follows the same current foundation and component import convention. Missing imports break cross-page demos silently.
 - **Motion drift:** No animation or transition belongs in canonical source. Do not reintroduce reduced-motion fallbacks for motion that should not exist.
 - **Dialog centering:** Centered dialogs explicitly need `margin: auto; position: fixed; inset: 0;` in the component stylesheet.
 - **Accessibility drift:** Do not remove labels, `aria-*` relationships, native fallback content, keyboard instructions, or visible focus styles.
-- **Icon drift:** Icons come from `src/icons/` or inline SVG. Never use the Lucide CDN and never use a legacy sprite.
+- **Icon drift:** Icons come from `src/icons/` or inline SVG. Never use the Lucide CDN or a remote sprite.
 - **Sentence case:** Use sentence case for headings, labels, skills, doc examples, and inventory descriptions. Keep acronyms such as HTML, CSS, API, and ARIA uppercase.

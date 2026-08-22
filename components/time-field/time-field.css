@@ -22,7 +22,8 @@
 
   .time-field-controls {
     display: grid;
-    grid-template-columns: minmax(3rem, 4rem) auto minmax(3rem, 4rem) minmax(5rem, 7rem);
+    grid-template-columns: minmax(3rem, 0.5fr) max-content minmax(3rem, 0.5fr) minmax(5rem, 7rem);
+    justify-content: start;
     align-items: end;
     gap: var(--space-03);
     min-inline-size: 0;
@@ -68,8 +69,8 @@
   .time-field-input:focus-visible,
   .time-field-select:focus-visible {
     border-color: var(--border-ring);
-    outline: var(--focus-ring-outer-width) solid var(--border-ring);
-    outline-offset: var(--focus-ring-width);
+    outline: var(--focus-ring-width) solid var(--border-ring);
+    outline-offset: var(--border-width-01);
   }
 
   .time-field-input:disabled,
@@ -78,7 +79,7 @@
     opacity: var(--opacity-05);
   }
 
-  .time-field-input:read-only {
+  .time-field-input:read-only:not(:disabled) {
     background: var(--surface-secondary);
     cursor: default;
     opacity: var(--opacity-07);

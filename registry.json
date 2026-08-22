@@ -2,68 +2,922 @@
   "schemaVersion": 1,
   "name": "mewa_ui",
   "library": "mewa_ui",
-  "canonicalAssets": {"foundations":["src/base.css","src/tokens.css"],"fonts":["src/geist.woff2","src/geistmono.woff2"],"icons":"src/icons/","components":"components/","documentation":"docs/","layouts":["layouts/layouts.css","layouts/layouts.js"]},
+  "canonicalAssets": {
+    "foundations": [
+      "src/base.css",
+      "src/tokens.css"
+    ],
+    "fonts": [
+      "src/geist.woff2",
+      "src/geistmono.woff2"
+    ],
+    "icons": "src/icons/",
+    "components": "components/",
+    "documentation": "docs/",
+    "layouts": [
+      "layouts/layouts.css",
+      "layouts/layouts.js"
+    ]
+  },
   "components": [
-    {"name":"Typography","slug":"typography","category":"Primitives","nativeBasis":"Native HTML text elements: `<h1>`–`<h4>`, `<p>`, `<blockquote>`, `<code>`, `<small>`, `<kbd>`, `<ul>`/`<ol>`. Pure CSS — no JavaScript or ARIA required.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/typography/typography.md","css":"components/typography/typography.css"},"docs":"docs/typography.html","description":"Typography primitives for headings, prose, quotes, code, keyboard notation, and lists."},
-    {"name":"Layout","slug":"layout","category":"Primitives","nativeBasis":"Intrinsic layout primitives built on CSS Grid and Flexbox: `.layout-container`, `.layout-stack`, `.layout-grid`, `.layout-sidebar`, `.layout-center`, `.layout-split`. Pure CSS — no JavaScript or ARIA required.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/layout/layout.md","css":"components/layout/layout.css"},"docs":"docs/layout.html","description":"Intrinsic CSS Grid and Flexbox primitives for containers, stacks, grids, splits, and centering."},
-    {"name":"Separator","slug":"separator","category":"Primitives","nativeBasis":"`<hr>` element (horizontal rule) and `<div role=\"separator\">` for vertical orientation.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/separator/separator.md","css":"components/separator/separator.css"},"docs":"docs/separator.html","description":"Horizontal rules and vertical separators that communicate a visual division."},
-    {"name":"Icon","slug":"icon","category":"Primitives","nativeBasis":"Inline `<svg>` elements copied from the standalone files in `src/icons/` are the no-JavaScript basis. The optional `<i data-lucide=\"name\">` hook can be expanded by a local loader, such as the documentation site's loader, but Icon has no required component runtime and never uses a CDN or external icon set.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/icon/icon.md","css":"components/icon/icon.css"},"docs":"docs/icon.html","description":"Local Lucide SVG files with an optional loader hook and accessible decorative-icon guidance."},
-    {"name":"Button","slug":"button","category":"Actions","nativeBasis":"`<button>` element. Also works on `<a>` for link-style buttons.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/button/button.md","css":"components/button/button.css"},"docs":"docs/button.html","description":"Action and link-style button treatments built on semantic native controls."},
-    {"name":"Toggle","slug":"toggle","category":"Actions","nativeBasis":"`<button>` element with `aria-pressed`. The browser provides click and keyboard (Enter/Space) handling automatically. No extra JavaScript needed for basic usage. A two-state button that can be either on or off. Common for toolbar formatting buttons (bold, italic, underline) or feature toggles.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/toggle/toggle.md","css":"components/toggle/toggle.css","js":"components/toggle/toggle.js"},"docs":"docs/toggle.html","description":"Two-state pressed buttons with native keyboard activation and managed aria-pressed state."},
-    {"name":"Toggle Group","slug":"toggle-group","category":"Actions","nativeBasis":"`role=\"group\"` container with `<button class=\"toggle\">` items using `aria-pressed` for state. Supports single (radio-like) and multiple (checkbox-like) selection modes with roving tabindex keyboard navigation.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/toggle-group/toggle-group.md","css":"components/toggle-group/toggle-group.css","js":"components/toggle-group/toggle-group.js"},"docs":"docs/toggle-group.html","description":"Grouped toggle buttons supporting single or multiple selection and roving focus."},
-    {"name":"Button Group","slug":"button-group","category":"Actions","nativeBasis":"`<div>` container with `.btn` buttons. Visually merges adjacent buttons with connected borders.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/button-group/button-group.md","css":"components/button-group/button-group.css"},"docs":"docs/button-group.html","description":"Connected button clusters that group related actions under one visual boundary."},
-    {"name":"Toolbar","slug":"toolbar","category":"Actions","nativeBasis":"`role=\"toolbar\"` container. Groups related controls (buttons, toggles, separators) into a single keyboard-navigable bar.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/toolbar/toolbar.md","css":"components/toolbar/toolbar.css","js":"components/toolbar/toolbar.js"},"docs":"docs/toolbar.html","description":"Keyboard-navigable toolbar grouping related controls, toggles, and separators."},
-    {"name":"Label","slug":"label","category":"Forms and inputs","nativeBasis":"`<label>` element. Browser provides built-in click-to-focus association with form controls.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/label/label.md","css":"components/label/label.css"},"docs":"docs/label.html","description":"Native labels that explicitly associate visible text with form controls."},
-    {"name":"Field","slug":"field","category":"Forms and inputs","nativeBasis":"`Field` is a semantic composition around a native form control. Use a plain `<div class=\"field\">` for one labelled control and a native `<fieldset class=\"fieldset\">` with a `<legend>` for related controls. Reserve a labelled `role=\"group\"` for structural groups that cannot use a fieldset. The browser remains responsible for focus, validation, submission, and reset.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/field/field.md","css":"components/field/field.css"},"docs":"docs/field.html","description":"Semantic labelled-control and fieldset compositions with explicit descriptions and errors."},
-    {"name":"Text Field","slug":"text-field","category":"Forms and inputs","nativeBasis":"`Text Field` is an explicit composition of one real `<label>`, one real `<input>`, and optional description and error text. It follows the Kernel naming model while keeping the HTML visible and useful without a runtime component. Use the semantic `type` that matches the value, such as `email`, `password`, `search`, `tel`, or `url`.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/text-field/text-field.md","css":"components/text-field/text-field.css"},"docs":"docs/text-field.html","description":"Explicit labelled native input composition with descriptions, errors, autofill, and validation."},
-    {"name":"Textarea","slug":"textarea","category":"Forms and inputs","nativeBasis":"`<textarea>` element with `field-sizing: content` for auto-growing.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/textarea/textarea.md","css":"components/textarea/textarea.css"},"docs":"docs/textarea.html","description":"Native multi-line text controls with content-sized growth and form validation."},
-    {"name":"Checkbox","slug":"checkbox","category":"Forms and inputs","nativeBasis":"`<input type=\"checkbox\">` element styled with CSS `appearance: none`.","requiresJs":false,"enhancementJs":true,"jsMode":"optional","files":{"skill":"components/checkbox/checkbox.md","css":"components/checkbox/checkbox.css","js":"components/checkbox/checkbox.js"},"docs":"docs/checkbox.html","description":"Native checkbox controls with labels, descriptions, validation, indeterminate state, and an optional select-all group enhancement."},
-    {"name":"Radio Group","slug":"radio-group","category":"Forms and inputs","nativeBasis":"`<input type=\"radio\">` elements with shared `name` attribute for mutual exclusivity, grouped by `<fieldset>` + `<legend>`.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/radio-group/radio-group.md","css":"components/radio-group/radio-group.css"},"docs":"docs/radio-group.html","description":"Mutually exclusive native radio inputs grouped by fieldset and legend."},
-    {"name":"Switch","slug":"switch","category":"Forms and inputs","nativeBasis":"`<input type=\"checkbox\" role=\"switch\">` element styled as a toggle switch.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/switch/switch.md","css":"components/switch/switch.css"},"docs":"docs/switch.html","description":"Native checkbox controls with switch semantics for binary settings."},
-    {"name":"Slider","slug":"slider","category":"Forms and inputs","nativeBasis":"`<input type=\"range\">` — native range input with built-in keyboard, touch, and assistive technology support.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/slider/slider.md","css":"components/slider/slider.css","js":"components/slider/slider.js"},"docs":"docs/slider.html","description":"Native range inputs styled for horizontal or vertical values with an enhanced filled track."},
-    {"name":"Select","slug":"select","category":"Forms and inputs","nativeBasis":"`<select>` element with custom styling via `appearance: none`.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/select/select.md","css":"components/select/select.css"},"docs":"docs/select.html","description":"Native select controls with labelled options and optional optgroup sections."},
-    {"name":"Number Field","slug":"number-field","category":"Forms and inputs","nativeBasis":"`<input type=\"number\">` with custom increment/decrement buttons.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/number-field/number-field.md","css":"components/number-field/number-field.css","js":"components/number-field/number-field.js"},"docs":"docs/number-field.html","description":"Native number inputs with keyboard-friendly increment and decrement buttons."},
-    {"name":"File Input","slug":"file-input","category":"Forms and inputs","nativeBasis":"`<input type=\"file\">` element with custom `::file-selector-button` styling.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/file-input/file-input.md","css":"components/file-input/file-input.css"},"docs":"docs/file-input.html","description":"Native file picker inputs with styled file-selector controls and form semantics."},
-    {"name":"Date Field","slug":"date-field","category":"Forms and inputs","nativeBasis":"`<input type=\"date\">` element with native browser date picker.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/date-field/date-field.md","css":"components/date-field/date-field.css"},"docs":"docs/date-field.html","description":"Native date or datetime inputs that delegate calendar editing to browser controls."},
-    {"name":"Date Picker","slug":"date-picker","category":"Forms and inputs","nativeBasis":"`<table>` element rendered as a month grid with navigation controls. Uses `role=\"grid\"` for accessible day cell navigation. The `.date-picker` markup API follows the Date Picker component name.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/date-picker/date-picker.md","css":"components/date-picker/date-picker.css","js":"components/date-picker/date-picker.js"},"docs":"docs/date-picker.html","description":"Accessible month-grid date pickers with keyboard day navigation and date selection."},
-    {"name":"Date Range Picker","slug":"date-range-picker","category":"Forms and inputs","nativeBasis":"Date Range Picker is a native-first pair of `<input type=\"date\">` controls. A `<fieldset>` and `<legend>` name the group, while separate labels keep the start and end controls independently addressable. The optional module progressively adds cross-field constraints and a range status. Without JavaScript, both date inputs still open the browser or operating-system date picker and submit ordinary form values.","requiresJs":false,"enhancementJs":true,"jsMode":"optional","files":{"skill":"components/date-range-picker/date-range-picker.md","css":"components/date-range-picker/date-range-picker.css","js":"components/date-range-picker/date-range-picker.js"},"docs":"docs/date-range-picker.html","description":"Paired native date inputs for a labelled start/end range with optional cross-field validation."},
-    {"name":"Combobox","slug":"combobox","category":"Forms and inputs","nativeBasis":"Button trigger + `popover` popup containing a search input and `role=\"listbox\"`. The `popover` API provides top-layer rendering and light-dismiss. Requires JavaScript for filtering, keyboard navigation, selection, and ARIA management. Follows the WAI-ARIA Combobox design pattern. The trigger is an outline button. Clicking it opens a popover with a search input at the top and a scrollable list of options below. DOM focus moves to the search input when the popover opens.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/combobox/combobox.md","css":"components/combobox/combobox.css","js":"components/combobox/combobox.js"},"docs":"docs/combobox.html","description":"Searchable listbox popovers combining a trigger, text input, filtering, and selection."},
-    {"name":"Time Field","slug":"time-field","category":"Forms and inputs","nativeBasis":"`Time Field` is a labelled `<fieldset>` containing native hour and minute text inputs, a native period `<select>`, and one hidden input for the submitted 24-hour value. The browser owns editing, focus, form submission, and constraint validation. The optional module only keeps the visible segments and the hidden value in sync and adds bounded stepping.","requiresJs":false,"enhancementJs":true,"jsMode":"optional","files":{"skill":"components/time-field/time-field.md","css":"components/time-field/time-field.css","js":"components/time-field/time-field.js"},"docs":"docs/time-field.html","description":"Grouped native time segments with optional synchronized 24-hour submission and stepping."},
-    {"name":"Form","slug":"form","category":"Forms and inputs","nativeBasis":"`<form>` element with consistent field layout using Label, Text Field, and description/error helpers. Composes with all form control components (Text Field, Textarea, Select, Checkbox, Radio Group, Switch, Slider, etc.).","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/form/form.md","css":"components/form/form.css"},"docs":"docs/form.html","description":"Native form layout that composes labelled controls, descriptions, errors, and validation."},
-    {"name":"Questionnaire","slug":"questionnaire","category":"Forms and inputs","nativeBasis":"`<form>` containing a sequence of native `<fieldset>` and `<legend>` question steps. Each step keeps ordinary form controls, labels, names, required constraints, and native submission semantics. The optional module only coordinates which fieldset is visible and leaves the final form submission to the browser.","requiresJs":false,"enhancementJs":true,"jsMode":"optional","files":{"skill":"components/questionnaire/questionnaire.md","css":"components/questionnaire/questionnaire.css","js":"components/questionnaire/questionnaire.js"},"docs":"docs/questionnaire.html","description":"Multi-step native forms composed of fieldsets, with optional step visibility and progress coordination."},
-    {"name":"Badge","slug":"badge","category":"Data display","nativeBasis":"`<span>` element. No interactivity required — pure visual indicator.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/badge/badge.md","css":"components/badge/badge.css"},"docs":"docs/badge.html","description":"Compact non-interactive labels for status, category, or metadata."},
-    {"name":"Avatar","slug":"avatar","category":"Data display","nativeBasis":"`<img>` element wrapped in a container `<span>` with a text fallback for when the image fails to load.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/avatar/avatar.md","css":"components/avatar/avatar.css","js":"components/avatar/avatar.js"},"docs":"docs/avatar.html","description":"Image avatars with initials fallback, circular sizing, optional status badges, and groups."},
-    {"name":"Card","slug":"card","category":"Data display","nativeBasis":"`<div>` for layout grouping. `<article>` for standalone self-contained content. No JavaScript required.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/card/card.md","css":"components/card/card.css"},"docs":"docs/card.html","description":"Border-led containers for grouping related content or standalone article sections."},
-    {"name":"Image","slug":"image","category":"Data display","nativeBasis":"`<figure>` element wrapping an `<img>` with optional `<figcaption>`. Uses `<dialog>` for fullscreen preview/lightbox.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/image/image.md","css":"components/image/image.css","js":"components/image/image.js"},"docs":"docs/image.html","description":"Figure and image presentation with captions, sizing, error fallback, and optional lightbox preview."},
-    {"name":"Statistic","slug":"statistic","category":"Data display","nativeBasis":"`<div>` containers displaying a numeric value with a label and optional trend indicator.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/statistic/statistic.md","css":"components/statistic/statistic.css"},"docs":"docs/statistic.html","description":"Compact value, label, and optional trend compositions for metric summaries."},
-    {"name":"Table","slug":"table","category":"Data display","nativeBasis":"`<table>` with semantic `<caption>`, `<thead>`, `<tbody>`, `<tfoot>`, scoped headers, and native table cells. Table is the structural component. It has no required JavaScript and remains a normal HTML table in every rendering environment.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/table/table.md","css":"components/table/table.css"},"docs":"docs/table.html","description":"Structural semantic tables with captions, scoped headers, row groups, and responsive overflow."},
-    {"name":"Data Table","slug":"data-table","category":"Data display","nativeBasis":"Data Table is a progressive enhancement around the structural [Table](../table/table.md) component. It composes a semantic `<table>` with a labelled [Text Field](../text-field/text-field.md) filter and native [Pagination](../pagination/pagination.md) links. The table and links remain usable HTML when the optional module is not loaded.","requiresJs":false,"enhancementJs":true,"jsMode":"optional","files":{"skill":"components/data-table/data-table.md","css":"components/data-table/data-table.css","js":"components/data-table/data-table.js"},"docs":"docs/data-table.html","description":"Progressively enhanced semantic tables with filtering, sorting, result status, and pagination."},
-    {"name":"Collapsible","slug":"collapsible","category":"Data display","nativeBasis":"`<details>` element providing native expand/collapse behavior with immediate state changes.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/collapsible/collapsible.md","css":"components/collapsible/collapsible.css"},"docs":"docs/collapsible.html","description":"Native details disclosures for immediate expand and collapse of content."},
-    {"name":"Timeline","slug":"timeline","category":"Data display","nativeBasis":"`<ol>` element with timeline items connected by a vertical line.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/timeline/timeline.md","css":"components/timeline/timeline.css"},"docs":"docs/timeline.html","description":"Ordered event lists with connected visual markers for chronological content."},
-    {"name":"Tree View","slug":"tree-view","category":"Data display","nativeBasis":"Nested `<ul>` elements with `role=\"tree\"` / `role=\"treeitem\"` ARIA pattern for hierarchical data.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/tree-view/tree-view.md","css":"components/tree-view/tree-view.css","js":"components/tree-view/tree-view.js"},"docs":"docs/tree-view.html","description":"Hierarchical trees with native disclosure branches, treeitem roles, and arrow-key navigation."},
-    {"name":"Carousel","slug":"carousel","category":"Data display","nativeBasis":"CSS `scroll-snap` on an overflow container, with `IntersectionObserver` for active-slide tracking and native `<button>` elements for navigation.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/carousel/carousel.md","css":"components/carousel/carousel.css","js":"components/carousel/carousel.js"},"docs":"docs/carousel.html","description":"Scroll-snap carousels with accessible slide controls, active indicators, and optional looping."},
-    {"name":"Scroll Area","slug":"scroll-area","category":"Data display","nativeBasis":"CSS overflow with custom-styled scrollbars using both standard and Webkit scrollbar properties.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/scroll-area/scroll-area.md","css":"components/scroll-area/scroll-area.css"},"docs":"docs/scroll-area.html","description":"Bounded overflow regions with tokenized native scrollbar styling."},
-    {"name":"Sortable","slug":"sortable","category":"Data display","nativeBasis":"HTML Drag and Drop API + keyboard reordering for accessible drag-and-drop lists. Uses native `draggable`, `DataTransfer`, and DOM manipulation — no SortableJS or drag libraries.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/sortable/sortable.md","css":"components/sortable/sortable.css","js":"components/sortable/sortable.js"},"docs":"docs/sortable.html","description":"Reorderable lists using native drag-and-drop plus keyboard movement and status announcements."},
-    {"name":"Spinner","slug":"spinner","category":"Feedback and status","nativeBasis":"Static SVG loading indicator. No JavaScript or animation is used.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/spinner/spinner.md","css":"components/spinner/spinner.css"},"docs":"docs/spinner.html","description":"Static SVG status indicators for loading states without animation."},
-    {"name":"Skeleton","slug":"skeleton","category":"Feedback and status","nativeBasis":"Static placeholder `<div>` elements. No JavaScript or animation is used.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/skeleton/skeleton.md","css":"components/skeleton/skeleton.css"},"docs":"docs/skeleton.html","description":"Static loading placeholder blocks with accessible structure and no runtime or motion."},
-    {"name":"Progress","slug":"progress","category":"Feedback and status","nativeBasis":"`<progress>` element with CSS styling for the track and indicator bar.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/progress/progress.md","css":"components/progress/progress.css"},"docs":"docs/progress.html","description":"Native progress indicators for bounded completion values with semantic value support."},
-    {"name":"Callout","slug":"callout","category":"Feedback and status","nativeBasis":"`<div>` with `role=\"alert\"` for important callout messages.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/callout/callout.md","css":"components/callout/callout.css"},"docs":"docs/callout.html","description":"Inline alert regions for important supporting, warning, or status content."},
-    {"name":"Alert Dialog","slug":"alert-dialog","category":"Feedback and status","nativeBasis":"`<dialog>` element used as a modal that requires user response. Unlike a standard dialog, it has no backdrop-close and no close button — the user must choose an action.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/alert-dialog/alert-dialog.md","css":"components/alert-dialog/alert-dialog.css","js":"components/alert-dialog/alert-dialog.js"},"docs":"docs/alert-dialog.html","description":"Modal confirmation surfaces built on dialog that require an explicit user response."},
-    {"name":"Toast","slug":"toast","category":"Feedback and status","nativeBasis":"`popover` API for top-layer rendering and non-modal behavior. Requires JavaScript for triggering, auto-dismiss, stacking, and ARIA live region announcements. Follows `role=\"status\"` with `aria-live=\"polite\"`.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/toast/toast.md","css":"components/toast/toast.css","js":"components/toast/toast.js"},"docs":"docs/toast.html","description":"Top-layer status surfaces with live announcements, stacking, and dismissal behavior."},
-    {"name":"Popover","slug":"popover","category":"Overlays","nativeBasis":"`popover` attribute — native Popover API with CSS anchor positioning for placement.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/popover/popover.md","css":"components/popover/popover.css","js":"components/popover/popover.js"},"docs":"docs/popover.html","description":"Native Popover API surfaces with declarative triggers and CSS anchor placement."},
-    {"name":"Tooltip","slug":"tooltip","category":"Overlays","nativeBasis":"Popover API (`popover=\"hint\"`) for hover/focus hint popups with CSS anchor positioning for placement.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/tooltip/tooltip.md","css":"components/tooltip/tooltip.css","js":"components/tooltip/tooltip.js"},"docs":"docs/tooltip.html","description":"Hover and focus hint popups using popover hint semantics, delay, and collision-aware placement."},
-    {"name":"Dialog","slug":"dialog","category":"Overlays","nativeBasis":"`<dialog>` element + `showModal()`. The browser provides: - Focus trap (automatically) - Escape key to close (automatically) - `::backdrop` for overlay - `aria-modal` behavior when opened with `showModal()` Requires minimal JavaScript — only for trigger wiring and backdrop-click-to-close.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/dialog/dialog.md","css":"components/dialog/dialog.css","js":"components/dialog/dialog.js"},"docs":"docs/dialog.html","description":"Modal dialog surfaces using native showModal, close controls, and focus restoration."},
-    {"name":"Sheet","slug":"sheet","category":"Overlays","nativeBasis":"`<dialog>` element + `showModal()`. Same native benefits as Dialog: - Focus trap (automatically) - Escape key to close (automatically) - `::backdrop` for overlay - `aria-modal` behavior when opened with `showModal()` A sheet is a dialog variant that slides in from an edge of the screen. Uses `data-side` attribute to control which edge: `top`, `right`, `bottom`, `left`.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/sheet/sheet.md","css":"components/sheet/sheet.css","js":"components/sheet/sheet.js"},"docs":"docs/sheet.html","description":"Edge-aligned modal dialog variants using a side attribute and native modal behavior."},
-    {"name":"Accordion","slug":"accordion","category":"Overlays","nativeBasis":"`<details>` / `<summary>` elements. The browser provides: - Click to toggle (automatically) - Enter/Space to toggle when focused (automatically) - `open` attribute for state (automatically) For single-open behavior (closing others when one opens), minimal JavaScript is required. For multi-open, pure HTML with no JS works.","requiresJs":false,"enhancementJs":true,"jsMode":"optional","files":{"skill":"components/accordion/accordion.md","css":"components/accordion/accordion.css","js":"components/accordion/accordion.js"},"docs":"docs/accordion.html","description":"Native details and summary disclosures with optional single-open coordination."},
-    {"name":"Command Palette","slug":"command-palette","category":"Overlays","nativeBasis":"`<dialog>` + search input for a command palette. Uses `showModal()` for focus trap and Escape-to-close.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/command-palette/command-palette.md","css":"components/command-palette/command-palette.css","js":"components/command-palette/command-palette.js"},"docs":"docs/command-palette.html","description":"Modal command search surfaces with keyboard filtering, highlighting, and activation."},
-    {"name":"Breadcrumbs","slug":"breadcrumbs","category":"Navigation","nativeBasis":"`<nav>` + `<ol>` for hierarchical path display. Pure CSS — no JavaScript required.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/breadcrumbs/breadcrumbs.md","css":"components/breadcrumbs/breadcrumbs.css"},"docs":"docs/breadcrumbs.html","description":"Hierarchical navigation trails using a labelled nav and ordered list."},
-    {"name":"Pagination","slug":"pagination","category":"Navigation","nativeBasis":"`<nav>` + `<ul>` + `<a>` links for page navigation. Pure CSS — no JavaScript required.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/pagination/pagination.md","css":"components/pagination/pagination.css"},"docs":"docs/pagination.html","description":"Navigation landmarks containing native links for paging through a collection."},
-    {"name":"Steps","slug":"steps","category":"Navigation","nativeBasis":"`<ol>` with step indicators for multi-step processes.","requiresJs":false,"enhancementJs":false,"jsMode":"none","files":{"skill":"components/steps/steps.md","css":"components/steps/steps.css"},"docs":"docs/steps.html","description":"Ordered process indicators with current, complete, and upcoming step states."},
-    {"name":"Tabs","slug":"tabs","category":"Navigation","nativeBasis":"`role=\"tablist\"` + `role=\"tab\"` + `role=\"tabpanel\"`. No native HTML element provides this pattern. Requires JavaScript for keyboard navigation and panel switching. Follows the WAI-ARIA Tabs design pattern.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/tabs/tabs.md","css":"components/tabs/tabs.css","js":"components/tabs/tabs.js"},"docs":"docs/tabs.html","description":"WAI-ARIA tablists with keyboard navigation and coordinated tab panels."},
-    {"name":"Dropdown Menu","slug":"dropdown-menu","category":"Navigation","nativeBasis":"`popover` API + `<button>` trigger. The browser provides light-dismiss (click outside to close) and top-layer rendering. Requires JavaScript for keyboard navigation and ARIA management.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/dropdown-menu/dropdown-menu.md","css":"components/dropdown-menu/dropdown-menu.css","js":"components/dropdown-menu/dropdown-menu.js"},"docs":"docs/dropdown-menu.html","description":"Popover menus with keyboard navigation, highlighted items, and checkbox or radio states."},
-    {"name":"Navigation Menu","slug":"navigation-menu","category":"Navigation","nativeBasis":"`<nav>` + `<ul>` for site-level navigation with dropdown panels.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/navigation-menu/navigation-menu.md","css":"components/navigation-menu/navigation-menu.css","js":"components/navigation-menu/navigation-menu.js"},"docs":"docs/navigation-menu.html","description":"Site navigation lists with native popover dropdown panels and anchored route groups."},
-    {"name":"Sidebar","slug":"sidebar","category":"Application","nativeBasis":"`<aside>` + `<nav>` + `<dialog>` + `<button>` for a full application sidebar with a flat link list, a collapsible desktop width, a mobile navigation dialog, and a keyboard shortcut.","requiresJs":true,"enhancementJs":false,"jsMode":"required","files":{"skill":"components/sidebar/sidebar.md","css":"components/sidebar/sidebar.css","js":"components/sidebar/sidebar.js"},"docs":"docs/sidebar.html","description":"Application sidebars with flat navigation, collapsible desktop rails, mobile dialogs, and shortcuts."},
-    {"name":"Message Scroller","slug":"message-scroller","category":"Application","nativeBasis":"`Message Scroller` is a semantic ordered message list inside a focusable scroll container with `role=\"log\"`, plus a native form composer. The browser owns scrolling, focus, text editing, and form validation. The optional module keeps the viewport at the latest message when the reader is already at the end, provides a jump-to-latest button when they are reading older content, and appends submitted messages with DOM methods.","requiresJs":false,"enhancementJs":true,"jsMode":"optional","files":{"skill":"components/message-scroller/message-scroller.md","css":"components/message-scroller/message-scroller.css","js":"components/message-scroller/message-scroller.js"},"docs":"docs/message-scroller.html","description":"Focusable message logs with native composers and optional follow-latest, jump, and local append behavior."},
-    {"name":"Resizable","slug":"resizable","category":"Application","nativeBasis":"Two semantic panels in a flex container, separated by a static `<div role=\"separator\">`. When the module loads it upgrades the divider with a keyboard focus target, ARIA separator value properties, native Pointer Events, and a native `<output>` live region. CSS keeps both panels usable when JavaScript is unavailable.","requiresJs":false,"enhancementJs":true,"jsMode":"optional","files":{"skill":"components/resizable/resizable.md","css":"components/resizable/resizable.css","js":"components/resizable/resizable.js"},"docs":"docs/resizable.html","description":"Two-panel layouts with semantic separators, keyboard or pointer resizing, and live size output."}
+    {
+      "name": "Typography",
+      "slug": "typography",
+      "category": "Primitives",
+      "nativeBasis": "Native HTML text elements: `<h1>`–`<h4>`, `<p>`, `<blockquote>`, `<code>`, `<small>`, `<kbd>`, `<ul>`/`<ol>`. Pure CSS — no JavaScript or ARIA required.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/typography/typography.md",
+        "css": "components/typography/typography.css"
+      },
+      "docs": "docs/typography.html",
+      "description": "Typography primitives for headings, prose, quotes, code, keyboard notation, and lists."
+    },
+    {
+      "name": "Layout",
+      "slug": "layout",
+      "category": "Primitives",
+      "nativeBasis": "Intrinsic layout primitives built on CSS Grid and Flexbox: `.layout-container`, `.layout-stack`, `.layout-grid`, `.layout-sidebar`, `.layout-center`, `.layout-split`. Pure CSS — no JavaScript or ARIA required.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/layout/layout.md",
+        "css": "components/layout/layout.css"
+      },
+      "docs": "docs/layout.html",
+      "description": "Intrinsic CSS Grid and Flexbox primitives for containers, stacks, grids, splits, and centering."
+    },
+    {
+      "name": "Separator",
+      "slug": "separator",
+      "category": "Primitives",
+      "nativeBasis": "`<hr>` element (horizontal rule) and `<div role=\"separator\">` for vertical orientation.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/separator/separator.md",
+        "css": "components/separator/separator.css"
+      },
+      "docs": "docs/separator.html",
+      "description": "Horizontal rules and vertical separators that communicate a visual division."
+    },
+    {
+      "name": "Icon",
+      "slug": "icon",
+      "category": "Primitives",
+      "nativeBasis": "Inline `<svg>` elements copied from the standalone files in `src/icons/` are the no-JavaScript basis. The optional `<i data-lucide=\"name\">` hook can be expanded by a local loader, such as the documentation site's loader, but Icon has no required component runtime and never uses a CDN or external icon set.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/icon/icon.md",
+        "css": "components/icon/icon.css"
+      },
+      "docs": "docs/icon.html",
+      "description": "Local Lucide SVG files with an optional loader hook and accessible decorative-icon guidance."
+    },
+    {
+      "name": "Button",
+      "slug": "button",
+      "category": "Actions",
+      "nativeBasis": "`<button>` element. Also works on `<a>` for link-style buttons.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/button/button.md",
+        "css": "components/button/button.css"
+      },
+      "docs": "docs/button.html",
+      "description": "Action and link-style button treatments built on semantic native controls."
+    },
+    {
+      "name": "Toggle",
+      "slug": "toggle",
+      "category": "Actions",
+      "nativeBasis": "`<button>` element with `aria-pressed`. The browser provides click and keyboard (Enter/Space) handling automatically. No extra JavaScript needed for basic usage. A two-state button that can be either on or off. Common for toolbar formatting buttons (bold, italic, underline) or feature toggles.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/toggle/toggle.md",
+        "css": "components/toggle/toggle.css",
+        "js": "components/toggle/toggle.js"
+      },
+      "docs": "docs/toggle.html",
+      "description": "Two-state pressed buttons with native keyboard activation and managed aria-pressed state."
+    },
+    {
+      "name": "Toggle Group",
+      "slug": "toggle-group",
+      "category": "Actions",
+      "nativeBasis": "`role=\"group\"` container with `<button class=\"toggle\">` items using `aria-pressed` for state. Supports single (radio-like) and multiple (checkbox-like) selection modes with roving tabindex keyboard navigation.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/toggle-group/toggle-group.md",
+        "css": "components/toggle-group/toggle-group.css",
+        "js": "components/toggle-group/toggle-group.js"
+      },
+      "docs": "docs/toggle-group.html",
+      "description": "Grouped toggle buttons supporting single or multiple selection and roving focus."
+    },
+    {
+      "name": "Button Group",
+      "slug": "button-group",
+      "category": "Actions",
+      "nativeBasis": "`<div>` container with `.btn` buttons. Visually merges adjacent buttons with connected borders.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/button-group/button-group.md",
+        "css": "components/button-group/button-group.css"
+      },
+      "docs": "docs/button-group.html",
+      "description": "Connected button clusters that group related actions under one visual boundary."
+    },
+    {
+      "name": "Toolbar",
+      "slug": "toolbar",
+      "category": "Actions",
+      "nativeBasis": "`role=\"toolbar\"` container. Groups related controls (buttons, toggles, separators) into a single keyboard-navigable bar.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/toolbar/toolbar.md",
+        "css": "components/toolbar/toolbar.css",
+        "js": "components/toolbar/toolbar.js"
+      },
+      "docs": "docs/toolbar.html",
+      "description": "Keyboard-navigable toolbar grouping related controls, toggles, and separators."
+    },
+    {
+      "name": "Label",
+      "slug": "label",
+      "category": "Forms and inputs",
+      "nativeBasis": "`<label>` element. Browser provides built-in click-to-focus association with form controls.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/label/label.md",
+        "css": "components/label/label.css"
+      },
+      "docs": "docs/label.html",
+      "description": "Native labels that explicitly associate visible text with form controls."
+    },
+    {
+      "name": "Field",
+      "slug": "field",
+      "category": "Forms and inputs",
+      "nativeBasis": "`Field` is a semantic composition around a native form control. Use a plain `<div class=\"field\">` for one labelled control and a native `<fieldset class=\"fieldset\">` with a `<legend>` for related controls. Reserve a labelled `role=\"group\"` for structural groups that cannot use a fieldset. The browser remains responsible for focus, validation, submission, and reset.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/field/field.md",
+        "css": "components/field/field.css"
+      },
+      "docs": "docs/field.html",
+      "description": "Semantic labelled-control and fieldset compositions with explicit descriptions and errors."
+    },
+    {
+      "name": "Text Field",
+      "slug": "text-field",
+      "category": "Forms and inputs",
+      "nativeBasis": "`Text Field` is an explicit composition of one real `<label>`, one real `<input>`, and optional description and error text. It follows the Kernel naming model while keeping the HTML visible and useful without a runtime component. Use the semantic `type` that matches the value, such as `email`, `password`, `search`, `tel`, or `url`.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/text-field/text-field.md",
+        "css": "components/text-field/text-field.css"
+      },
+      "docs": "docs/text-field.html",
+      "description": "Explicit labelled native input composition with descriptions, errors, autofill, and validation."
+    },
+    {
+      "name": "Textarea",
+      "slug": "textarea",
+      "category": "Forms and inputs",
+      "nativeBasis": "`<textarea>` element with `field-sizing: content` for auto-growing.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/textarea/textarea.md",
+        "css": "components/textarea/textarea.css"
+      },
+      "docs": "docs/textarea.html",
+      "description": "Native multi-line text controls with content-sized growth and form validation."
+    },
+    {
+      "name": "Checkbox",
+      "slug": "checkbox",
+      "category": "Forms and inputs",
+      "nativeBasis": "`<input type=\"checkbox\">` element styled with CSS `appearance: none`.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "components/checkbox/checkbox.md",
+        "css": "components/checkbox/checkbox.css",
+        "js": "components/checkbox/checkbox.js"
+      },
+      "docs": "docs/checkbox.html",
+      "description": "Native checkbox controls with labels, descriptions, validation, indeterminate state, and an optional select-all group enhancement."
+    },
+    {
+      "name": "Radio Group",
+      "slug": "radio-group",
+      "category": "Forms and inputs",
+      "nativeBasis": "`<input type=\"radio\">` elements with shared `name` attribute for mutual exclusivity, grouped by `<fieldset>` + `<legend>`.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/radio-group/radio-group.md",
+        "css": "components/radio-group/radio-group.css"
+      },
+      "docs": "docs/radio-group.html",
+      "description": "Mutually exclusive native radio inputs grouped by fieldset and legend."
+    },
+    {
+      "name": "Switch",
+      "slug": "switch",
+      "category": "Forms and inputs",
+      "nativeBasis": "`<input type=\"checkbox\" role=\"switch\">` element styled as a toggle switch.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/switch/switch.md",
+        "css": "components/switch/switch.css"
+      },
+      "docs": "docs/switch.html",
+      "description": "Native checkbox controls with switch semantics for binary settings."
+    },
+    {
+      "name": "Slider",
+      "slug": "slider",
+      "category": "Forms and inputs",
+      "nativeBasis": "`<input type=\"range\">` — native range input with built-in keyboard, touch, and assistive technology support.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/slider/slider.md",
+        "css": "components/slider/slider.css",
+        "js": "components/slider/slider.js"
+      },
+      "docs": "docs/slider.html",
+      "description": "Native range inputs styled for horizontal or vertical values with an enhanced filled track."
+    },
+    {
+      "name": "Select",
+      "slug": "select",
+      "category": "Forms and inputs",
+      "nativeBasis": "`<select>` element with custom styling via `appearance: none`.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/select/select.md",
+        "css": "components/select/select.css"
+      },
+      "docs": "docs/select.html",
+      "description": "Native select controls with labelled options and optional optgroup sections."
+    },
+    {
+      "name": "Number Field",
+      "slug": "number-field",
+      "category": "Forms and inputs",
+      "nativeBasis": "`<input type=\"number\">` with custom increment/decrement buttons.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/number-field/number-field.md",
+        "css": "components/number-field/number-field.css",
+        "js": "components/number-field/number-field.js"
+      },
+      "docs": "docs/number-field.html",
+      "description": "Native number inputs with keyboard-friendly increment and decrement buttons."
+    },
+    {
+      "name": "File Input",
+      "slug": "file-input",
+      "category": "Forms and inputs",
+      "nativeBasis": "`<input type=\"file\">` element with custom `::file-selector-button` styling.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/file-input/file-input.md",
+        "css": "components/file-input/file-input.css"
+      },
+      "docs": "docs/file-input.html",
+      "description": "Native file picker inputs with styled file-selector controls and form semantics."
+    },
+    {
+      "name": "Date Field",
+      "slug": "date-field",
+      "category": "Forms and inputs",
+      "nativeBasis": "`<input type=\"date\">` element with native browser date picker.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/date-field/date-field.md",
+        "css": "components/date-field/date-field.css"
+      },
+      "docs": "docs/date-field.html",
+      "description": "Native date or datetime inputs that delegate calendar editing to browser controls."
+    },
+    {
+      "name": "Date Picker",
+      "slug": "date-picker",
+      "category": "Forms and inputs",
+      "nativeBasis": "`<table>` element rendered as a month grid with navigation controls. Uses `role=\"grid\"` for accessible day cell navigation. The `.date-picker` markup API follows the Date Picker component name.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/date-picker/date-picker.md",
+        "css": "components/date-picker/date-picker.css",
+        "js": "components/date-picker/date-picker.js"
+      },
+      "docs": "docs/date-picker.html",
+      "description": "Accessible month-grid date pickers with keyboard day navigation and date selection."
+    },
+    {
+      "name": "Date Range Picker",
+      "slug": "date-range-picker",
+      "category": "Forms and inputs",
+      "nativeBasis": "Date Range Picker is a native-first pair of `<input type=\"date\">` controls. A `<fieldset>` and `<legend>` name the group, while separate labels keep the start and end controls independently addressable. The optional module progressively adds cross-field constraints and a range status. Without JavaScript, both date inputs still open the browser or operating-system date picker and submit ordinary form values.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "components/date-range-picker/date-range-picker.md",
+        "css": "components/date-range-picker/date-range-picker.css",
+        "js": "components/date-range-picker/date-range-picker.js"
+      },
+      "docs": "docs/date-range-picker.html",
+      "description": "Paired native date inputs for a labelled start/end range with optional cross-field validation."
+    },
+    {
+      "name": "Combobox",
+      "slug": "combobox",
+      "category": "Forms and inputs",
+      "nativeBasis": "Button trigger + `popover` popup containing a search input and `role=\"listbox\"`. The `popover` API provides top-layer rendering and light-dismiss. Requires JavaScript for filtering, keyboard navigation, selection, and ARIA management. Follows the WAI-ARIA Combobox design pattern. The trigger is an outline button. Clicking it opens a popover with a search input at the top and a scrollable list of options below. DOM focus moves to the search input when the popover opens.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/combobox/combobox.md",
+        "css": "components/combobox/combobox.css",
+        "js": "components/combobox/combobox.js"
+      },
+      "docs": "docs/combobox.html",
+      "description": "Searchable listbox popovers combining a trigger, text input, filtering, and selection."
+    },
+    {
+      "name": "Time Field",
+      "slug": "time-field",
+      "category": "Forms and inputs",
+      "nativeBasis": "`Time Field` is a labelled `<fieldset>` containing native hour and minute text inputs, a native period `<select>`, and one hidden input for the submitted 24-hour value. The browser owns editing, focus, form submission, and constraint validation. The optional module only keeps the visible segments and the hidden value in sync and adds bounded stepping.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "components/time-field/time-field.md",
+        "css": "components/time-field/time-field.css",
+        "js": "components/time-field/time-field.js"
+      },
+      "docs": "docs/time-field.html",
+      "description": "Grouped native time segments with optional synchronized 24-hour submission and stepping."
+    },
+    {
+      "name": "Form",
+      "slug": "form",
+      "category": "Forms and inputs",
+      "nativeBasis": "`<form>` element with consistent field layout using Label, Text Field, and description/error helpers. Composes with all form control components (Text Field, Textarea, Select, Checkbox, Radio Group, Switch, Slider, etc.).",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/form/form.md",
+        "css": "components/form/form.css"
+      },
+      "docs": "docs/form.html",
+      "description": "Native form layout that composes labelled controls, descriptions, errors, and validation."
+    },
+    {
+      "name": "Badge",
+      "slug": "badge",
+      "category": "Data display",
+      "nativeBasis": "`<span>` element. No interactivity required — pure visual indicator.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/badge/badge.md",
+        "css": "components/badge/badge.css"
+      },
+      "docs": "docs/badge.html",
+      "description": "Compact non-interactive labels for status, category, or metadata."
+    },
+    {
+      "name": "Avatar",
+      "slug": "avatar",
+      "category": "Data display",
+      "nativeBasis": "`<img>` element wrapped in a container `<span>` with a text fallback for when the image fails to load.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/avatar/avatar.md",
+        "css": "components/avatar/avatar.css",
+        "js": "components/avatar/avatar.js"
+      },
+      "docs": "docs/avatar.html",
+      "description": "Image avatars with initials fallback, circular sizing, optional status badges, and groups."
+    },
+    {
+      "name": "Card",
+      "slug": "card",
+      "category": "Data display",
+      "nativeBasis": "`<div>` for layout grouping. `<article>` for standalone self-contained content. No JavaScript required.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/card/card.md",
+        "css": "components/card/card.css"
+      },
+      "docs": "docs/card.html",
+      "description": "Border-led containers for grouping related content or standalone article sections."
+    },
+    {
+      "name": "Image",
+      "slug": "image",
+      "category": "Data display",
+      "nativeBasis": "`<figure>` element wrapping an `<img>` with optional `<figcaption>`. Uses `<dialog>` for fullscreen preview/lightbox.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/image/image.md",
+        "css": "components/image/image.css",
+        "js": "components/image/image.js"
+      },
+      "docs": "docs/image.html",
+      "description": "Figure and image presentation with captions, sizing, error fallback, and optional lightbox preview."
+    },
+    {
+      "name": "Statistic",
+      "slug": "statistic",
+      "category": "Data display",
+      "nativeBasis": "`<div>` containers displaying a numeric value with a label and optional trend indicator.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/statistic/statistic.md",
+        "css": "components/statistic/statistic.css"
+      },
+      "docs": "docs/statistic.html",
+      "description": "Compact value, label, and optional trend compositions for metric summaries."
+    },
+    {
+      "name": "Table",
+      "slug": "table",
+      "category": "Data display",
+      "nativeBasis": "`<table>` with semantic `<caption>`, `<thead>`, `<tbody>`, `<tfoot>`, scoped headers, and native table cells. Table is the structural component. It has no required JavaScript and remains a normal HTML table in every rendering environment.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/table/table.md",
+        "css": "components/table/table.css"
+      },
+      "docs": "docs/table.html",
+      "description": "Structural semantic tables with captions, scoped headers, row groups, and responsive overflow."
+    },
+    {
+      "name": "Data Table",
+      "slug": "data-table",
+      "category": "Data display",
+      "nativeBasis": "Data Table is a progressive enhancement around the structural [Table](../table/table.md) component. It composes a semantic `<table>` with a labelled [Text Field](../text-field/text-field.md) filter and native [Pagination](../pagination/pagination.md) links. The table and links remain usable HTML when the optional module is not loaded.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "components/data-table/data-table.md",
+        "css": "components/data-table/data-table.css",
+        "js": "components/data-table/data-table.js"
+      },
+      "docs": "docs/data-table.html",
+      "description": "Progressively enhanced semantic tables with filtering, sorting, result status, and pagination."
+    },
+    {
+      "name": "Collapsible",
+      "slug": "collapsible",
+      "category": "Data display",
+      "nativeBasis": "`<details>` element providing native expand/collapse behavior with immediate state changes.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/collapsible/collapsible.md",
+        "css": "components/collapsible/collapsible.css"
+      },
+      "docs": "docs/collapsible.html",
+      "description": "Native details disclosures for immediate expand and collapse of content."
+    },
+    {
+      "name": "Timeline",
+      "slug": "timeline",
+      "category": "Data display",
+      "nativeBasis": "`<ol>` element with timeline items connected by a vertical line.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/timeline/timeline.md",
+        "css": "components/timeline/timeline.css"
+      },
+      "docs": "docs/timeline.html",
+      "description": "Ordered event lists with connected visual markers for chronological content."
+    },
+    {
+      "name": "Tree View",
+      "slug": "tree-view",
+      "category": "Data display",
+      "nativeBasis": "Nested `<ul>` elements with `role=\"tree\"` / `role=\"treeitem\"` ARIA pattern for hierarchical data.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/tree-view/tree-view.md",
+        "css": "components/tree-view/tree-view.css",
+        "js": "components/tree-view/tree-view.js"
+      },
+      "docs": "docs/tree-view.html",
+      "description": "Hierarchical trees with native disclosure branches, treeitem roles, and arrow-key navigation."
+    },
+    {
+      "name": "Carousel",
+      "slug": "carousel",
+      "category": "Data display",
+      "nativeBasis": "CSS `scroll-snap` on an overflow container, with `IntersectionObserver` for active-slide tracking and native `<button>` elements for navigation.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/carousel/carousel.md",
+        "css": "components/carousel/carousel.css",
+        "js": "components/carousel/carousel.js"
+      },
+      "docs": "docs/carousel.html",
+      "description": "Scroll-snap carousels with accessible slide controls, active indicators, and optional looping."
+    },
+    {
+      "name": "Scroll Area",
+      "slug": "scroll-area",
+      "category": "Data display",
+      "nativeBasis": "CSS overflow with custom-styled scrollbars using both standard and Webkit scrollbar properties.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/scroll-area/scroll-area.md",
+        "css": "components/scroll-area/scroll-area.css"
+      },
+      "docs": "docs/scroll-area.html",
+      "description": "Bounded overflow regions with tokenized native scrollbar styling."
+    },
+    {
+      "name": "Sortable",
+      "slug": "sortable",
+      "category": "Data display",
+      "nativeBasis": "HTML Drag and Drop API + keyboard reordering for accessible drag-and-drop lists. Uses native `draggable`, `DataTransfer`, and DOM manipulation — no SortableJS or drag libraries.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/sortable/sortable.md",
+        "css": "components/sortable/sortable.css",
+        "js": "components/sortable/sortable.js"
+      },
+      "docs": "docs/sortable.html",
+      "description": "Reorderable lists using native drag-and-drop plus keyboard movement and status announcements."
+    },
+    {
+      "name": "Spinner",
+      "slug": "spinner",
+      "category": "Feedback and status",
+      "nativeBasis": "Static SVG loading indicator. No JavaScript or animation is used.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/spinner/spinner.md",
+        "css": "components/spinner/spinner.css"
+      },
+      "docs": "docs/spinner.html",
+      "description": "Static SVG status indicators for loading states without animation."
+    },
+    {
+      "name": "Skeleton",
+      "slug": "skeleton",
+      "category": "Feedback and status",
+      "nativeBasis": "Static placeholder `<div>` elements. No JavaScript or animation is used.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/skeleton/skeleton.md",
+        "css": "components/skeleton/skeleton.css"
+      },
+      "docs": "docs/skeleton.html",
+      "description": "Static loading placeholder blocks with accessible structure and no runtime or motion."
+    },
+    {
+      "name": "Progress",
+      "slug": "progress",
+      "category": "Feedback and status",
+      "nativeBasis": "`<progress>` element with CSS styling for the track and indicator bar.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/progress/progress.md",
+        "css": "components/progress/progress.css"
+      },
+      "docs": "docs/progress.html",
+      "description": "Native progress indicators for bounded completion values with semantic value support."
+    },
+    {
+      "name": "Callout",
+      "slug": "callout",
+      "category": "Feedback and status",
+      "nativeBasis": "`<div>` with `role=\"alert\"` for important callout messages.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/callout/callout.md",
+        "css": "components/callout/callout.css"
+      },
+      "docs": "docs/callout.html",
+      "description": "Inline alert regions for important supporting, warning, or status content."
+    },
+    {
+      "name": "Alert Dialog",
+      "slug": "alert-dialog",
+      "category": "Feedback and status",
+      "nativeBasis": "`<dialog>` element used as a modal that requires user response. Unlike a standard dialog, it has no backdrop-close and no close button — the user must choose an action.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/alert-dialog/alert-dialog.md",
+        "css": "components/alert-dialog/alert-dialog.css",
+        "js": "components/alert-dialog/alert-dialog.js"
+      },
+      "docs": "docs/alert-dialog.html",
+      "description": "Modal confirmation surfaces built on dialog that require an explicit user response."
+    },
+    {
+      "name": "Toast",
+      "slug": "toast",
+      "category": "Feedback and status",
+      "nativeBasis": "`popover` API for top-layer rendering and non-modal behavior. Requires JavaScript for triggering, auto-dismiss, stacking, and ARIA live region announcements. Follows `role=\"status\"` with `aria-live=\"polite\"`.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/toast/toast.md",
+        "css": "components/toast/toast.css",
+        "js": "components/toast/toast.js"
+      },
+      "docs": "docs/toast.html",
+      "description": "Top-layer status surfaces with live announcements, stacking, and dismissal behavior."
+    },
+    {
+      "name": "Popover",
+      "slug": "popover",
+      "category": "Overlays",
+      "nativeBasis": "`popover` attribute — native Popover API with CSS anchor positioning for placement.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/popover/popover.md",
+        "css": "components/popover/popover.css",
+        "js": "components/popover/popover.js"
+      },
+      "docs": "docs/popover.html",
+      "description": "Native Popover API surfaces with declarative triggers and CSS anchor placement."
+    },
+    {
+      "name": "Tooltip",
+      "slug": "tooltip",
+      "category": "Overlays",
+      "nativeBasis": "Popover API (`popover=\"hint\"`) for hover/focus hint popups with CSS anchor positioning for placement.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/tooltip/tooltip.md",
+        "css": "components/tooltip/tooltip.css",
+        "js": "components/tooltip/tooltip.js"
+      },
+      "docs": "docs/tooltip.html",
+      "description": "Hover and focus hint popups using popover hint semantics, delay, and collision-aware placement."
+    },
+    {
+      "name": "Dialog",
+      "slug": "dialog",
+      "category": "Overlays",
+      "nativeBasis": "`<dialog>` element + `showModal()`. The browser provides: - Focus trap (automatically) - Escape key to close (automatically) - `::backdrop` for overlay - `aria-modal` behavior when opened with `showModal()` Requires minimal JavaScript — only for trigger wiring and backdrop-click-to-close.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/dialog/dialog.md",
+        "css": "components/dialog/dialog.css",
+        "js": "components/dialog/dialog.js"
+      },
+      "docs": "docs/dialog.html",
+      "description": "Modal dialog surfaces using native showModal, close controls, and focus restoration."
+    },
+    {
+      "name": "Sheet",
+      "slug": "sheet",
+      "category": "Overlays",
+      "nativeBasis": "`<dialog>` element + `showModal()`. Same native benefits as Dialog: - Focus trap (automatically) - Escape key to close (automatically) - `::backdrop` for overlay - `aria-modal` behavior when opened with `showModal()` A sheet is a dialog variant that slides in from an edge of the screen. Uses `data-side` attribute to control which edge: `top`, `right`, `bottom`, `left`.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/sheet/sheet.md",
+        "css": "components/sheet/sheet.css",
+        "js": "components/sheet/sheet.js"
+      },
+      "docs": "docs/sheet.html",
+      "description": "Edge-aligned modal dialog variants using a side attribute and native modal behavior."
+    },
+    {
+      "name": "Accordion",
+      "slug": "accordion",
+      "category": "Overlays",
+      "nativeBasis": "`<details>` / `<summary>` elements. The browser provides: - Click to toggle (automatically) - Enter/Space to toggle when focused (automatically) - `open` attribute for state (automatically) For single-open behavior (closing others when one opens), minimal JavaScript is required. For multi-open, pure HTML with no JS works.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "components/accordion/accordion.md",
+        "css": "components/accordion/accordion.css",
+        "js": "components/accordion/accordion.js"
+      },
+      "docs": "docs/accordion.html",
+      "description": "Native details and summary disclosures with optional single-open coordination."
+    },
+    {
+      "name": "Command Palette",
+      "slug": "command-palette",
+      "category": "Overlays",
+      "nativeBasis": "`<dialog>` + search input for a command palette. Uses `showModal()` for focus trap and Escape-to-close.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/command-palette/command-palette.md",
+        "css": "components/command-palette/command-palette.css",
+        "js": "components/command-palette/command-palette.js"
+      },
+      "docs": "docs/command-palette.html",
+      "description": "Modal command search surfaces with keyboard filtering, highlighting, and activation."
+    },
+    {
+      "name": "Breadcrumbs",
+      "slug": "breadcrumbs",
+      "category": "Navigation",
+      "nativeBasis": "`<nav>` + `<ol>` for hierarchical path display. Pure CSS — no JavaScript required.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/breadcrumbs/breadcrumbs.md",
+        "css": "components/breadcrumbs/breadcrumbs.css"
+      },
+      "docs": "docs/breadcrumbs.html",
+      "description": "Hierarchical navigation trails using a labelled nav and ordered list."
+    },
+    {
+      "name": "Pagination",
+      "slug": "pagination",
+      "category": "Navigation",
+      "nativeBasis": "`<nav>` + `<ul>` + `<a>` links for page navigation. Pure CSS — no JavaScript required.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "components/pagination/pagination.md",
+        "css": "components/pagination/pagination.css"
+      },
+      "docs": "docs/pagination.html",
+      "description": "Navigation landmarks containing native links for paging through a collection."
+    },
+    {
+      "name": "Tabs",
+      "slug": "tabs",
+      "category": "Navigation",
+      "nativeBasis": "`role=\"tablist\"` + `role=\"tab\"` + `role=\"tabpanel\"`. No native HTML element provides this pattern. Requires JavaScript for keyboard navigation and panel switching. Follows the WAI-ARIA Tabs design pattern.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/tabs/tabs.md",
+        "css": "components/tabs/tabs.css",
+        "js": "components/tabs/tabs.js"
+      },
+      "docs": "docs/tabs.html",
+      "description": "WAI-ARIA tablists with keyboard navigation and coordinated tab panels."
+    },
+    {
+      "name": "Dropdown Menu",
+      "slug": "dropdown-menu",
+      "category": "Navigation",
+      "nativeBasis": "`popover` API + `<button>` trigger. The browser provides light-dismiss (click outside to close) and top-layer rendering. Requires JavaScript for keyboard navigation and ARIA management.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/dropdown-menu/dropdown-menu.md",
+        "css": "components/dropdown-menu/dropdown-menu.css",
+        "js": "components/dropdown-menu/dropdown-menu.js"
+      },
+      "docs": "docs/dropdown-menu.html",
+      "description": "Popover menus with keyboard navigation, highlighted items, and checkbox or radio states."
+    },
+    {
+      "name": "Navigation Menu",
+      "slug": "navigation-menu",
+      "category": "Navigation",
+      "nativeBasis": "`<nav>` + `<ul>` for site-level navigation with dropdown panels.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/navigation-menu/navigation-menu.md",
+        "css": "components/navigation-menu/navigation-menu.css",
+        "js": "components/navigation-menu/navigation-menu.js"
+      },
+      "docs": "docs/navigation-menu.html",
+      "description": "Site navigation lists with native popover dropdown panels and anchored route groups."
+    },
+    {
+      "name": "Sidebar",
+      "slug": "sidebar",
+      "category": "Application",
+      "nativeBasis": "`<aside>` + `<nav>` + `<dialog>` + `<button>` for a full application sidebar with a flat link list, a collapsible desktop width, a mobile navigation dialog, and a keyboard shortcut.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "components/sidebar/sidebar.md",
+        "css": "components/sidebar/sidebar.css",
+        "js": "components/sidebar/sidebar.js"
+      },
+      "docs": "docs/sidebar.html",
+      "description": "Application sidebars with flat navigation, collapsible desktop rails, mobile dialogs, and shortcuts."
+    },
+    {
+      "name": "Resizable",
+      "slug": "resizable",
+      "category": "Application",
+      "nativeBasis": "Two semantic panels in a flex container, separated by a static `<div role=\"separator\">`. When the module loads it upgrades the divider with a keyboard focus target, ARIA separator value properties, native Pointer Events, and a native `<output>` live region. CSS keeps both panels usable when JavaScript is unavailable.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "components/resizable/resizable.md",
+        "css": "components/resizable/resizable.css",
+        "js": "components/resizable/resizable.js"
+      },
+      "docs": "docs/resizable.html",
+      "description": "Two-panel layouts with semantic separators, keyboard or pointer resizing, and live size output."
+    }
   ]
 }

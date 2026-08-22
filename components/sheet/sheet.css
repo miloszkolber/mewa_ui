@@ -116,4 +116,23 @@
       background-color: var(--surface-secondary);
     }
   }
+
+  /* -- Accessibility ---------------------------------------- */
+  @media (prefers-contrast: more) {
+    dialog.sheet {
+      border-width: var(--border-width-02);
+    }
+  }
+
+  @media (forced-colors: active) {
+    dialog.sheet {
+      background: Canvas;
+      color: CanvasText;
+      border: var(--border-width-02) solid CanvasText;
+    }
+
+    &[open]::backdrop {
+      backdrop-filter: none;
+    }
+  }
 }

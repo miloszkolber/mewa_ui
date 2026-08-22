@@ -63,7 +63,7 @@
 
     &:focus-within {
       background-color: var(--surface-secondary);
-      outline: var(--focus-ring-outer-width) solid var(--border-ring);
+      outline: var(--focus-ring-width) solid var(--border-ring);
       outline-offset: calc(-1 * var(--border-width-01));
     }
 

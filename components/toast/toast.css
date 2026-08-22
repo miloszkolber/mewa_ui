@@ -125,4 +125,24 @@
     gap: var(--space-02);
     margin-top: var(--space-03);
   }
+
+  /* -- Accessibility ---------------------------------------- */
+  @media (prefers-contrast: more) {
+    .toast { border-width: var(--border-width-02); }
+  }
+
+  @media (forced-colors: active) {
+    .toast {
+      background: Canvas;
+      color: CanvasText;
+      border: var(--border-width-02) solid CanvasText;
+      backdrop-filter: none;
+    }
+
+    .toast[data-variant="destructive"] {
+      background: Canvas;
+      color: CanvasText;
+      border-color: Mark;
+    }
+  }
 }

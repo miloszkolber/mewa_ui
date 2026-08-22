@@ -56,8 +56,8 @@
   --text-muted: var(--color-neutral-400);
   --text-disabled: var(--color-neutral-500);
   --text-inverted: var(--color-neutral-950);
-  --text-positive: var(--color-green-50);
-  --text-negative: var(--color-red-50);
+  --text-positive: var(--color-green-500);
+  --text-negative: var(--color-red-500);
   --text-caution: var(--color-amber-50);
   /* Border roles */
   --border-primary: var(--color-neutral-700);

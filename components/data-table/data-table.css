@@ -50,8 +50,8 @@
 
     &:focus-visible {
       border-color: var(--border-ring);
-      outline: var(--focus-ring-outer-width) solid var(--border-ring);
-      outline-offset: var(--focus-ring-width);
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: var(--border-width-01);
     }
 
     &::placeholder { color: var(--text-muted); }
@@ -109,10 +109,13 @@
     }
   }
 
-  .table-head[aria-sort="ascending"] .data-table-sort::after,
-  .table-head[aria-sort="descending"] .data-table-sort::after,
-  .table-head[aria-sort="none"] .data-table-sort::after {
+  /* Fixed-width slot keeps column geometry identical in every sort state. */
+  .data-table-sort::after {
+    content: "↕";
     flex: 0 0 auto;
+    inline-size: var(--size-04);
+    display: inline-flex;
+    justify-content: center;
     color: var(--text-muted);
     font-family: var(--font-sans);
     font-size: var(--font-body);
@@ -121,7 +124,6 @@
 
   .table-head[aria-sort="ascending"] .data-table-sort::after { content: "↑"; color: var(--text-primary); }
   .table-head[aria-sort="descending"] .data-table-sort::after { content: "↓"; color: var(--text-primary); }
-  .table-head[aria-sort="none"] .data-table-sort::after { content: "↕"; }
 
   .data-table-empty {
     margin: 0;

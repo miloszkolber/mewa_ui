@@ -7,13 +7,27 @@
 (function () {
   'use strict';
 
+  function store(key, value) {
+    try {
+      if (value === undefined) return localStorage.getItem(key);
+      localStorage.setItem(key, value);
+    } catch (e) { /* storage unavailable (privacy mode) — theme still toggles */ }
+    return null;
+  }
+
+  function syncThemeIcons(isDark) {
+    var sun = document.getElementById('icon-sun');
+    var moon = document.getElementById('icon-moon');
+    if (sun) sun.style.display  = isDark ? 'none'  : 'block';
+    if (moon) moon.style.display = isDark ? 'block' : 'none';
+  }
+
   function toggleDark() {
     var isDark = document.documentElement.classList.contains('dark');
     document.documentElement.classList.toggle('dark', !isDark);
     document.documentElement.style.colorScheme = isDark ? 'light' : 'dark';
-    document.getElementById('icon-sun').style.display  = isDark ? 'block' : 'none';
-    document.getElementById('icon-moon').style.display = isDark ? 'none'  : 'block';
-    localStorage.setItem('mewa-theme', isDark ? 'light' : 'dark');
+    syncThemeIcons(!isDark);
+    store('mewa-theme', !isDark ? 'dark' : 'light');
   }
 
   // -- Local icons ------------------------------------------
@@ -54,23 +68,9 @@
     });
   }
 
-  // -- Move the component-skill <details> out of the sticky
-  // page header so the header stays compact and the details
-  // scrolls with the page content.
-  function moveSpecDetails() {
-    var main = document.querySelector('main');
-    if (!main) return;
-    var pageHeader = main.querySelector('.page-header');
-    var details = pageHeader ? pageHeader.querySelector('details') : main.querySelector('details');
-    if (details && pageHeader && pageHeader.contains(details)) {
-      pageHeader.insertAdjacentElement('afterend', details);
-    }
-  }
-
   // -- Reusable page content initializer -------------------
   // Called on initial load AND after each SPA navigation.
   function initPageContent() {
-    // Syntax highlighting handled by shiki-highlight.js module
 
     // Keep horizontally scrollable code blocks keyboard reachable.
     document.querySelectorAll('pre:not([tabindex])').forEach(function (pre) {
@@ -110,23 +110,16 @@
 
     // Local icons (<i data-lucide="name"> → inline SVG from src/icons)
     initLocalIcons();
-
-    // Component skill details out of the sticky page header
-    moveSpecDetails();
   }
 
   // Register content initializer with SPA router
   // (runs on initial load AND after each SPA navigation)
-  window.onPageReady(initPageContent);
+  (window.onPageReady || function (fn) { document.addEventListener('DOMContentLoaded', fn); })(initPageContent);
 
   // -- On DOM ready (one-time setup + initial content init) -
   document.addEventListener('DOMContentLoaded', function () {
     // Sync dark mode icon state
-    var isDark = document.documentElement.classList.contains('dark');
-    var sun = document.getElementById('icon-sun');
-    var moon = document.getElementById('icon-moon');
-    if (sun) sun.style.display = isDark ? 'none' : 'block';
-    if (moon) moon.style.display = isDark ? 'block' : 'none';
+    syncThemeIcons(document.documentElement.classList.contains('dark'));
 
     // Bind theme toggle (once — header persists across SPA navs)
     var themeBtn = document.getElementById('theme-toggle');

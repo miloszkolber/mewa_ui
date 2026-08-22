@@ -7,7 +7,12 @@
   'use strict';
 
   /* -- Dark mode (must run before first paint) ----------------- */
-  var saved = localStorage.getItem('mewa-theme');
+  function storedTheme() {
+    try { return localStorage.getItem('mewa-theme'); }
+    catch (e) { return null; } /* storage unavailable (privacy mode) */
+  }
+
+  var saved = storedTheme();
   var darkMQ = window.matchMedia('(prefers-color-scheme: dark)');
   var prefersDark = darkMQ.matches;
   if (saved === 'dark' || (!saved && prefersDark)) {
@@ -17,7 +22,7 @@
 
   /* React to OS theme changes in real time (only if user hasn't set a manual preference) */
   darkMQ.addEventListener('change', function (e) {
-    if (localStorage.getItem('mewa-theme')) return;   // user chose manually — respect it
+    if (storedTheme()) return;   // user chose manually — respect it
     document.documentElement.classList.toggle('dark', e.matches);
     document.documentElement.style.colorScheme = e.matches ? 'dark' : 'light';
     var sun = document.getElementById('icon-sun');
@@ -76,7 +81,6 @@
       { label: 'Combobox', href: 'combobox.html' },
       { label: 'Time field', href: 'time-field.html' },
       { label: 'Form', href: 'form.html' },
-      { label: 'Questionnaire', href: 'questionnaire.html' },
     ]},
     { heading: 'Data display', items: [
       { label: 'Badge', href: 'badge.html' },
@@ -112,14 +116,12 @@
     { heading: 'Navigation', items: [
       { label: 'Breadcrumbs', href: 'breadcrumbs.html' },
       { label: 'Pagination', href: 'pagination.html' },
-      { label: 'Steps', href: 'steps.html' },
       { label: 'Tabs', href: 'tabs.html' },
       { label: 'Dropdown menu', href: 'dropdown-menu.html' },
       { label: 'Navigation menu', href: 'navigation-menu.html' },
     ]},
     { heading: 'Application', items: [
       { label: 'Sidebar', href: 'sidebar.html' },
-      { label: 'Message scroller', href: 'message-scroller.html' },
       { label: 'Resizable', href: 'resizable.html' },
     ]},
   ];
@@ -131,7 +133,7 @@
     'field.html', 'text-field.html', 'textarea.html', 'checkbox.html', 'radio-group.html', 'switch.html',
     'slider.html', 'select.html', 'number-field.html', 'file-input.html',
     'date-field.html', 'date-picker.html', 'date-range-picker.html', 'combobox.html',
-    'time-field.html', 'form.html', 'questionnaire.html',
+    'time-field.html', 'form.html',
     'badge.html', 'avatar.html', 'card.html', 'image.html',
     'statistic.html', 'table.html', 'data-table.html',
     'collapsible.html', 'timeline.html', 'tree-view.html',
@@ -139,10 +141,10 @@
     'toast.html',
     'popover.html', 'tooltip.html',
     'dialog.html', 'sheet.html', 'accordion.html', 'command-palette.html',
-    'breadcrumbs.html', 'pagination.html', 'steps.html',
+    'breadcrumbs.html', 'pagination.html',
     'tabs.html', 'dropdown-menu.html', 'navigation-menu.html',
     'scroll-area.html',
-    'carousel.html', 'sidebar.html', 'message-scroller.html', 'resizable.html', 'sortable.html',
+    'carousel.html', 'sidebar.html', 'resizable.html', 'sortable.html',
   ]);
 
   /* Detect current filename */
@@ -313,21 +315,34 @@
   /* cases: first load, hard refresh, external navigation.)     */
   var SCROLL_KEY = 'mewa-nav-scroll';
 
+  function readScroll() {
+    try { return sessionStorage.getItem(SCROLL_KEY); }
+    catch (e) { return null; }
+  }
+
+  function writeScroll(value) {
+    try { sessionStorage.setItem(SCROLL_KEY, value); } catch (e) { /* ignore */ }
+  }
+
+  function dropScroll() {
+    try { sessionStorage.removeItem(SCROLL_KEY); } catch (e) { /* ignore */ }
+  }
+
   document.addEventListener('click', function (e) {
     var link = e.target.closest('a.nav-link, .site-header a[href="typography.html"]');
     if (!link) return;
     var sidebar = document.querySelector('.sidebar-scroll');
-    if (sidebar) sessionStorage.setItem(SCROLL_KEY, sidebar.scrollTop);
+    if (sidebar) writeScroll(sidebar.scrollTop);
   });
 
   /* Restore sidebar scroll & scroll active link into view */
   document.addEventListener('DOMContentLoaded', function () {
     var sidebar = document.querySelector('.sidebar-scroll');
     if (!sidebar) return;
-    var saved = sessionStorage.getItem(SCROLL_KEY);
+    var saved = readScroll();
     if (saved) {
       sidebar.scrollTop = parseInt(saved, 10);
-      sessionStorage.removeItem(SCROLL_KEY);
+      dropScroll();
     } else {
       /* First visit — scroll active link into view */
       var active = sidebar.querySelector('.nav-link.active');

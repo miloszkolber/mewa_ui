@@ -2,10 +2,18 @@
 /* Nav, sidebar, preview box, code blocks, swatches, etc.    */
 
 /* Prevent horizontal overflow on mobile */
-html { overflow-x: clip; }
+html {
+  overflow-x: clip;
+  /* Scroll offset for fixed header */
+  scroll-padding-top: 4rem;
+}
 
-/* -- Scroll offset for fixed header ------------------------ */
-html { scroll-padding-top: 4rem; }
+/* -- Reading column ---------------------------------------- */
+/* Center <main> between sidebar and TOC so leftover viewport
+   width splits evenly instead of piling up past the TOC. */
+main {
+  margin-inline: auto;
+}
 
 /* -- Site header ------------------------------------------- */
 .site-header {
@@ -168,72 +176,7 @@ pre:focus-visible {
   outline-offset: var(--border-width-01);
 }
 
-/* -- Shiki dual-theme: light default, dark via html.dark --- */
-pre.shiki {
-  background: var(--surface-secondary);
-  border: 1px solid var(--border-primary);
-
-  padding: var(--space-05) var(--space-06);
-  overflow: hidden;
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: var(--font-body-xsmall);
-  line-height: var(--font-height);
-}
-/* Nested pre inside a card/container — remove its own border/radius/bg */
-pre.shiki[style*="border-radius:0"],
-div[style*="overflow:hidden"] > pre.shiki,
-div[style*="overflow:hidden"] > div > pre.shiki {
-  border: none !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-}
-pre.shiki code {
-  white-space: pre-wrap;
-  word-break: break-all;
-}
-pre.shiki,
-pre.shiki span {
-  color: var(--text-primary) !important;
-  background-color: transparent !important;
-}
-html.dark pre.shiki,
-html.dark pre.shiki span {
-  color: var(--text-primary) !important;
-  background-color: transparent !important;
-}
-.dim { color: var(--text-muted); }
-
-/* -- Doc tabs (preview/pattern/html switcher) -------------- */
-.tab-list {
-  display: inline-flex;
-  background: var(--surface-secondary);
-
-  padding: 0.2rem;
-  gap: 0.125rem;
-  margin-bottom: 1rem;
-}
-.tab-btn {
-  padding: 0.3rem 0.875rem;
-
-  font-size: var(--font-body-xsmall);
-  font-weight: var(--font-weight-strong);
-  font-family: var(--font-sans);
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  line-height: var(--font-height);
-}
-.tab-btn[aria-selected="true"] {
-  background: var(--background);
-  color: var(--text-primary);
-  border-color: var(--border-primary);
-}
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
-
-/* -- Copy button ------------------------------------------- */
+/* -- Copy button -------------------------------------------- */
 .copy-btn {
   position: absolute;
   top: 0.625rem;
@@ -253,7 +196,6 @@ html.dark pre.shiki span {
 }
 .copy-btn:hover { color: var(--text-primary); }
 
-/* -- API pill links (Web Platform APIs in spec details) ---- */
 /* -- Sticky page header ------------------------------------ */
 .page-header {
   position: sticky;
@@ -272,20 +214,8 @@ html.dark pre.shiki span {
   line-height: var(--font-height-tight);
   margin: 0 0 var(--space-03);
 }
-.page-header > details {
-  margin-bottom: 0 !important;
-}
 .page-header > :last-child {
   margin-bottom: 0 !important;
-}
-
-/* -- Source sections (CSS / JS) ---------------------------- */
-
-/* -- Separator --------------------------------------------- */
-.sep {
-  height: 1px;
-  background: var(--border-primary);
-  margin: 2rem 0;
 }
 
 /* -- Table of contents (right sidebar) --------------------- */
@@ -416,11 +346,4 @@ html.dark pre.shiki span {
     padding: 1.5rem 1rem;
     gap: 0.625rem;
   }
-
-  /* Code blocks: reduce padding, smaller font */
-  pre, pre.shiki {
-    padding: var(--space-03) var(--space-04);
-    font-size: var(--font-body-xsmall);
-  }
-
-  /* Tables: scroll if needed */
+}

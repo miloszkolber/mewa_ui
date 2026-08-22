@@ -19,8 +19,8 @@
 
     &:focus {
       border-color: var(--border-ring);
-      outline: var(--focus-ring-outer-width) solid var(--border-ring);
-      outline-offset: var(--focus-ring-width);
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: var(--border-width-01);
     }
 
     &:disabled {
@@ -33,21 +33,18 @@
 
       &:focus {
         border-color: var(--text-negative);
-        outline: var(--focus-ring-outer-width) solid var(--text-negative);
-        outline-offset: var(--focus-ring-width);
+        outline: var(--focus-ring-width) solid var(--text-negative);
+        outline-offset: var(--border-width-01);
       }
     }
 
     /* -- Calendar indicator: full-height hit area at the end ---- */
     &::-webkit-calendar-picker-indicator {
-      position: absolute;
-      inset-block: 0;
-      inset-inline-end: 0;
-      width: var(--space-08);
-      height: auto;
-      margin: 0;
+      inline-size: 1rem;
+      block-size: 1rem;
+      margin-inline-end: var(--space-02);
       cursor: pointer;
-      opacity: var(--opacity-06);
+      opacity: var(--opacity-07);
 
       &:hover { opacity: var(--opacity-10); }
     }

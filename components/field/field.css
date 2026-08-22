@@ -61,8 +61,8 @@
     textarea
   ):focus-visible {
     border-color: var(--border-ring);
-    outline: var(--focus-ring-outer-width) solid var(--border-ring);
-    outline-offset: var(--focus-ring-width);
+    outline: var(--focus-ring-width) solid var(--border-ring);
+    outline-offset: var(--border-width-01);
   }
 
   .field > :where(
@@ -86,7 +86,7 @@
     input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
     select,
     textarea
-  ):read-only {
+  ):read-only:not(:disabled) {
     background: var(--surface-secondary);
     cursor: default;
     opacity: var(--opacity-07);
@@ -171,7 +171,7 @@
   }
 
   .fieldset > :is(.field-description, .field-error) {
-    margin-block-start: calc(var(--space-02) * -1);
+    margin-block-start: 0;
   }
 
   .field-separator {

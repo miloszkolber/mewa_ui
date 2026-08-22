@@ -50,4 +50,12 @@
       color: var(--text-negative);
     }
   }
+
+  @media (forced-colors: active) {
+    .statistic-title,
+    .statistic-description { color: CanvasText; }
+    .statistic-value { color: CanvasText; }
+    .statistic-trend[data-trend="up"] { color: Highlight; }
+    .statistic-trend[data-trend="down"] { color: Mark; }
+  }
 }

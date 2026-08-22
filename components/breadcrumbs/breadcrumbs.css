@@ -29,9 +29,6 @@
 
   /* -- Accessibility ------------------------------------------ */
 
-  @media (prefers-reduced-motion: reduce) {
-  }
-
   @media (prefers-contrast: more) {
     .breadcrumb-link { text-decoration: underline; }
     .breadcrumb-page { font-weight: var(--font-weight-strong); }

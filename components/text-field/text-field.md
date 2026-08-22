@@ -104,7 +104,6 @@ Use the native `readonly` or `disabled` attribute. `data-disabled` is an optiona
 
 | Attribute | Element | Values | Purpose |
 | --- | --- | --- | --- |
-| `data-size` | `.text-field` | `sm`, `md`, `lg` | Selects the control size |
 | `data-invalid` | `.text-field` | presence | Marks a known application or server error |
 | `data-disabled` | `.text-field` | presence | Styles a wrapper when a native disabled state is also applied |
 | `data-hidden` | `.text-field-label` | presence | Visually hides, but does not remove, the label |
@@ -205,4 +204,4 @@ Use `.text-field-input` for standalone native inputs and textareas. Use `.text-f
 <textarea class="text-field-input" id="message" placeholder="Your message..."></textarea>
 ```
 
-The `.text-field` composition accepts `data-size="sm|md|lg"`; standalone `.text-field-input` controls use the shared default type scale and geometry. Native `disabled`, `readonly`, `required`, `aria-invalid`, and `type` attributes remain on the control. `textarea.text-field-input` uses `field-sizing: content` for auto-growing text without JavaScript.
+Standalone `.text-field-input` controls use the shared default type scale and geometry. Native `disabled`, `readonly`, `required`, `aria-invalid`, and `type` attributes remain on the control. `textarea.text-field-input` uses `field-sizing: content` for auto-growing text without JavaScript.

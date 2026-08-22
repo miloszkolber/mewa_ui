@@ -1,11 +1,17 @@
 @layer components {
   .skeleton {
     background-color: var(--surface-secondary);
-
   }
 
   .skeleton-round {
     border-radius: var(--radius-full);
   }
 
+  @media (forced-colors: active) {
+    .skeleton {
+      background: Canvas;
+      outline: var(--border-width-01) solid CanvasText;
+      outline-offset: calc(-1 * var(--border-width-01));
+    }
+  }
 }

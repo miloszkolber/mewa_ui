@@ -119,4 +119,27 @@
       cursor: not-allowed;
     }
   }
+
+  /* -- Accessibility ---------------------------------------- */
+  @media (prefers-contrast: more) {
+    .date-picker { border-width: var(--border-width-02); }
+  }
+
+  @media (forced-colors: active) {
+    .date-picker {
+      background: Canvas;
+      color: CanvasText;
+      border-color: CanvasText;
+    }
+
+    .date-picker-day[data-selected] button {
+      background: Highlight;
+      color: HighlightText;
+    }
+
+    .date-picker-day button:focus-visible {
+      outline: var(--border-width-02) solid Highlight;
+      outline-offset: var(--border-width-01);
+    }
+  }
 }

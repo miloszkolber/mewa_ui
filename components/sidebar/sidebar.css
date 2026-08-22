@@ -93,7 +93,8 @@
 
       & .sidebar-link {
         justify-content: center;
-        padding: var(--space-02);
+        inline-size: var(--size-07);
+        padding: 0;
       }
 
       & .sidebar-header {
@@ -107,7 +108,8 @@
 
       & .sidebar-trigger {
         justify-content: center;
-        padding-inline: var(--space-02);
+        inline-size: var(--size-07);
+        padding-inline: 0;
       }
     }
 
@@ -166,7 +168,8 @@
     display: flex;
     align-items: center;
     gap: var(--space-02);
-    padding: var(--space-02) var(--space-03);
+    block-size: var(--size-07);
+    padding-inline: var(--space-03);
 
     font-size: var(--font-body-small);
     color: var(--text-primary);
@@ -220,9 +223,9 @@
     justify-content: flex-start;
     gap: var(--space-02);
     width: 100%;
-    min-height: var(--size-07);
-    padding: var(--space-02) var(--space-03);
-    border: var(--border-width-01) solid var(--border-muted);
+    block-size: var(--size-07);
+    padding-inline: var(--space-03);
+    border: none;
     background-color: transparent;
     color: var(--text-primary);
     font: inherit;
@@ -322,13 +325,15 @@
     }
   }
 
-  /* Keep the primary links available when JavaScript is disabled. */
+  /* Keep the primary navigation available when JavaScript is disabled. */
   @media (scripting: none) and (max-width: 767px) {
     .sidebar-layout {
+      display: flex;
       flex-direction: column;
     }
 
     .app-sidebar {
+      display: flex;
       position: static;
       width: 100%;
       height: auto;
@@ -390,39 +395,6 @@
       forced-color-adjust: none;
       background: Highlight;
       color: HighlightText;
-    }
-  }
-
-  /* Keep the primary navigation available when JavaScript is disabled. */
-  @media (scripting: none) and (max-width: 767px) {
-    .sidebar-layout {
-      display: block;
-    }
-
-    .app-sidebar {
-      display: flex;
-      position: static;
-      width: 100%;
-      height: auto;
-      min-height: 0;
-      overflow: visible;
-    }
-
-    .app-sidebar::after {
-      display: none;
-    }
-
-    .sidebar-content {
-      overflow: visible;
-    }
-
-    .sidebar-footer,
-    [data-sidebar-mobile] {
-      display: none;
-    }
-
-    .sidebar-mobile {
-      display: none !important;
     }
   }
 

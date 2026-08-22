@@ -11,17 +11,6 @@
     flex-shrink: 0;
     background-color: var(--surface-secondary);
 
-    &[data-size="sm"] {
-      width: var(--size-07);
-      height: var(--size-07);
-      font-size: var(--font-body-xsmall);
-    }
-
-    &[data-size="lg"] {
-      width: var(--size-09);
-      height: var(--size-09);
-      font-size: var(--font-body-small);
-    }
   }
 
   .avatar-image {
@@ -90,5 +79,24 @@
     font-weight: var(--font-weight-strong);
     border: var(--border-width-02) solid var(--background);
     margin-left: calc(-1 * var(--space-02));
+  }
+
+  /* -- Accessibility ---------------------------------------- */
+  @media (forced-colors: active) {
+    .avatar {
+      background: Canvas;
+      color: CanvasText;
+    }
+
+    .avatar-badge {
+      background: Highlight;
+      border-color: Canvas;
+    }
+
+    .avatar-group-count {
+      background: Canvas;
+      color: CanvasText;
+      border-color: Canvas;
+    }
   }
 }

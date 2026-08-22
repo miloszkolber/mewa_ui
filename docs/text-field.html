@@ -48,13 +48,11 @@
   <link rel="stylesheet" href="../components/image/image.css">
   <link rel="stylesheet" href="../components/label/label.css">
   <link rel="stylesheet" href="../components/layout/layout.css">
-  <link rel="stylesheet" href="../components/message-scroller/message-scroller.css">
   <link rel="stylesheet" href="../components/navigation-menu/navigation-menu.css">
   <link rel="stylesheet" href="../components/number-field/number-field.css">
   <link rel="stylesheet" href="../components/pagination/pagination.css">
   <link rel="stylesheet" href="../components/popover/popover.css">
   <link rel="stylesheet" href="../components/progress/progress.css">
-  <link rel="stylesheet" href="../components/questionnaire/questionnaire.css">
   <link rel="stylesheet" href="../components/radio-group/radio-group.css">
   <link rel="stylesheet" href="../components/resizable/resizable.css">
   <link rel="stylesheet" href="../components/scroll-area/scroll-area.css">
@@ -67,7 +65,6 @@
   <link rel="stylesheet" href="../components/sortable/sortable.css">
   <link rel="stylesheet" href="../components/spinner/spinner.css">
   <link rel="stylesheet" href="../components/statistic/statistic.css">
-  <link rel="stylesheet" href="../components/steps/steps.css">
   <link rel="stylesheet" href="../components/switch/switch.css">
   <link rel="stylesheet" href="../components/table/table.css">
   <link rel="stylesheet" href="../components/tabs/tabs.css">
@@ -168,26 +165,26 @@
         <div style="width: 100%; max-width: 24rem">
           <label class="label" for="text-field-standalone-email">Email</label>
           <input class="text-field-input" type="email" id="text-field-standalone-email" placeholder="you@example.com" aria-describedby="text-field-standalone-email-help">
-          <p class="field-description" id="text-field-standalone-email-help">Use the standalone input class with native validation.</p>
+          <p class="text-field-description" id="text-field-standalone-email-help">Use the standalone input class with native validation.</p>
         </div>
       </div>
       <div style="position: relative; margin-top: var(--space-02)">
         <button class="copy-btn" type="button">Copy</button>
         <pre><code class="language-markup">&lt;label class="label" for="email"&gt;Email&lt;/label&gt;
 &lt;input class="text-field-input" type="email" id="email" placeholder="you@example.com" aria-describedby="email-help"&gt;
-&lt;p class="field-description" id="email-help"&gt;Use the standalone input class with native validation.&lt;/p&gt;</code></pre>
+&lt;p class="text-field-description" id="email-help"&gt;Use the standalone input class with native validation.&lt;/p&gt;</code></pre>
       </div>
       <div class="preview" style="display: grid; gap: var(--space-03)">
         <div style="width: 100%; max-width: 24rem">
           <label class="label" for="text-field-standalone-file">Picture</label>
-          <input class="text-field-input" type="file" id="text-field-standalone-file" name="picture">
+          <input class="file-input" type="file" id="text-field-standalone-file" name="picture">
         </div>
         <div style="width: 100%; max-width: 24rem">
           <label class="label" for="text-field-standalone-message">Message</label>
           <textarea class="text-field-input" id="text-field-standalone-message" placeholder="Your message..."></textarea>
         </div>
       </div>
-      <p class="text-xs text-muted mb-3 mt-3">Standalone controls support native <code>disabled</code>, <code>readonly</code>, <code>required</code>, <code>aria-invalid</code>, file inputs, passwords, search fields, and inline buttons. Apply <code>data-size</code> to the <code>.text-field</code> composition when a type-scale variant is needed.</p>
+      <p class="text-xs text-muted mb-3 mt-3">Standalone controls support native <code>disabled</code>, <code>readonly</code>, <code>required</code>, <code>aria-invalid</code>, file inputs, passwords, search fields, and inline buttons.</p>
 
       <p class="text-sm font-medium mb-2 mt-8">Standalone input variants</p>
       <div class="preview" style="display: grid; gap: var(--space-03)">
@@ -233,7 +230,7 @@
           <div>
             <label class="label" for="text-field-form-email">Email <span class="text-negative" aria-hidden="true">*</span></label>
             <input class="text-field-input" type="email" id="text-field-form-email" required placeholder="jane@example.com" aria-describedby="text-field-form-email-help">
-            <p class="field-description" id="text-field-form-email-help">We will never share your email with anyone.</p>
+            <p class="text-field-description" id="text-field-form-email-help">We will never share your email with anyone.</p>
           </div>
           <div>
             <label class="label" for="text-field-form-bio">Bio</label>
@@ -248,10 +245,5 @@
     </main>
   </div>
   <script src="js/site.js" defer></script>
-  <script type="module" src="js/shiki-highlight.js"></script>
-  <script type="module" src="../components/time-field/time-field.js"></script>
-  <script type="module" src="../components/questionnaire/questionnaire.js"></script>
-  <script type="module" src="../components/message-scroller/message-scroller.js"></script>
-  <script type="module" src="../components/checkbox/checkbox.js"></script>
-</body>
+    </body>
 </html>

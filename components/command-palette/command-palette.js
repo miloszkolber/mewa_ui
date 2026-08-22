@@ -1,4 +1,4 @@
-// -- Command --------------------------------------------------
+// -- Command Palette -----------------------------------------
 
 if (!document.__commandPaletteKeydownInit) {
   document.__commandPaletteKeydownInit = true;
@@ -8,7 +8,7 @@ if (!document.__commandPaletteKeydownInit) {
       if (!dialog) return;
       e.preventDefault();
       if (dialog.open) { dialog.close(); }
-      else { dialog.showModal(); const input = dialog.querySelector('.command-palette-input'); if (input) input.focus(); }
+      else { dialog.showModal(); }
     }
   });
 }

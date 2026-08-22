@@ -91,12 +91,6 @@ Inherits variants from `.toggle`:
 
 ## Sizes
 
-| `data-size` (on group) | Height | Icon size |
-|------------------------|--------|-----------|
-| `sm`                   | 2.5rem | 0.875rem  |
-| *(default)*            | 2.5rem | 1rem       |
-| `lg`                   | 2.5rem | 1.125rem  |
-
 ---
 
 ## Data attributes
@@ -105,7 +99,6 @@ Inherits variants from `.toggle`:
 |-----------|---------|--------|---------|
 | `data-type` | Group | `single` (default), `multiple` | Selection mode |
 | `data-variant` | Group | `outline` | Visual variant, propagated to children |
-| `data-size` | Group | `sm`, `lg` | Size, propagated to children |
 | `data-orientation` | Group | `vertical` | Layout direction (default: horizontal) |
 | `data-spacing` | Group | (boolean) | Adds gap between items, restores individual radii |
 | `data-disabled` | Group | (boolean) | Disables all items in the group |
@@ -142,7 +135,7 @@ Arrow direction follows `data-orientation`: horizontal uses Left/Right, vertical
 - Uses **roving tabindex**: only one item has `tabindex="0"` at a time; others have `tabindex="-1"`. Tab enters/exits the group as a single stop.
 - `data-type="single"` enforces one-at-a-time selection (radio-like). Pressing the active item deselects it.
 - `data-type="multiple"` allows any combination of pressed states (checkbox-like).
-- The group propagates `data-variant`, `data-size` to child toggles via CSS selectors.
+- The group propagates `data-variant` to child toggles via CSS selectors.
 - Connected mode (default): outline variant collapses double borders via negative margin.
 - `data-spacing` adds a gap between individual toggles.
 - Disabled items are skipped during keyboard navigation.

@@ -5,7 +5,6 @@
     appearance: none;
     width: 2.75rem;
     height: var(--size-06);
-    border: var(--border-width-02) solid var(--border-secondary);
     border-radius: 0;
     background: var(--surface-secondary);
     cursor: pointer;
@@ -17,23 +16,20 @@
       content: '';
       position: absolute;
       top: 50%;
-      inset-inline-start: var(--border-width-02);
-      width: var(--size-05);
-      height: var(--size-05);
-      border: var(--border-width-01) solid var(--border-secondary);
-      background: var(--background);
+      inset-inline-start: var(--space-01);
+      width: 1rem;
+      height: 1rem;
+      background: var(--surface-inverted);
       transform: translateY(-50%);
-
     }
 
     &:checked {
       background: var(--surface-inverted);
-      border-color: var(--surface-inverted);
 
       &::after {
-        inset-inline-start: calc(100% - var(--size-05) - var(--border-width-02));
+        inset-inline-start: calc(100% - 1rem - var(--space-01));
         transform: translateY(-50%);
-        border-color: var(--surface-inverted);
+        background: var(--background);
       }
     }
 
@@ -49,11 +45,11 @@
 
     &:is([aria-invalid="true"], :user-invalid) {
       background: var(--surface-negative);
-      border-color: var(--text-negative);
+
+      &::after { background: var(--text-negative); }
 
       &:checked {
         background: var(--surface-negative);
-        border-color: var(--text-negative);
       }
     }
   }

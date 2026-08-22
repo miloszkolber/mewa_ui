@@ -32,23 +32,7 @@
     }
 
     /* -- Sizes: propagate to child toggles ---------------------- */
-    &[data-size="sm"] > .toggle {
-      height: var(--size-08);
-      padding: 0 var(--space-02);
-      min-width: var(--size-08);
-
-      & svg { width: 0.875rem; height: 0.875rem; }
-    }
-
-    &[data-size="lg"] > .toggle {
-      height: var(--size-08);
-      padding: 0 var(--space-03);
-      min-width: var(--size-08);
-
-      & svg { width: 1.125rem; height: 1.125rem; }
-    }
-
-    /* -- Vertical orientation ----------------------------------- */
+            /* -- Vertical orientation ----------------------------------- */
     &[data-orientation="vertical"] {
       flex-direction: column;
     }

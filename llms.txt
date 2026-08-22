@@ -78,7 +78,6 @@ Every item links to its current documentation page and the machine-readable regi
 - **Combobox** (`combobox`) — [docs](docs/combobox.html) · [registry](registry.json) — Searchable popover listbox with keyboard selection.
 - **Time Field** (`time-field`) — [docs](docs/time-field.html) · [registry](registry.json) — Native time segments with optional synchronized submission.
 - **Form** (`form`) — [docs](docs/form.html) · [registry](registry.json) — Native form layout, labels, descriptions, errors, and validation.
-- **Questionnaire** (`questionnaire`) — [docs](docs/questionnaire.html) · [registry](registry.json) — Fieldset-based multi-step form with optional step coordination.
 
 ### Data display
 
@@ -118,7 +117,6 @@ Every item links to its current documentation page and the machine-readable regi
 
 - **Breadcrumbs** (`breadcrumbs`) — [docs](docs/breadcrumbs.html) · [registry](registry.json) — Ordered hierarchical route trail.
 - **Pagination** (`pagination`) — [docs](docs/pagination.html) · [registry](registry.json) — Native page links in a navigation landmark.
-- **Steps** (`steps`) — [docs](docs/steps.html) · [registry](registry.json) — Ordered process status indicators.
 - **Tabs** (`tabs`) — [docs](docs/tabs.html) · [registry](registry.json) — ARIA tabs with keyboard panel switching.
 - **Dropdown Menu** (`dropdown-menu`) — [docs](docs/dropdown-menu.html) · [registry](registry.json) — Popover menu with keyboard item management.
 - **Navigation Menu** (`navigation-menu`) — [docs](docs/navigation-menu.html) · [registry](registry.json) — Site routes with popover dropdown groups.
@@ -126,13 +124,12 @@ Every item links to its current documentation page and the machine-readable regi
 ### Application
 
 - **Sidebar** (`sidebar`) — [docs](docs/sidebar.html) · [registry](registry.json) — Collapsible desktop rail and mobile navigation dialog.
-- **Message Scroller** (`message-scroller`) — [docs](docs/message-scroller.html) · [registry](registry.json) — Focusable message log and native composer with optional follow-latest behavior.
 - **Resizable** (`resizable`) — [docs](docs/resizable.html) · [registry](registry.json) — Two-panel split with a static separator and optional pointer and keyboard resizing.
 
 ## JavaScript and progressive enhancement
 
 - `requiresJs: true` means the documented interaction depends on the module. Load the matching `.js` file after the markup. Required modules include keyboard coordination, filtering, custom calendar navigation, modal trigger wiring, anchored overlays, drag reordering, and live status behavior.
-- `enhancementJs: true` means the native markup is complete without the module. Load the module only for the documented enhancement. The current optional entries are Accordion, Data Table, Date Range Picker, Message Scroller, Questionnaire, Resizable, and Time Field.
+- `enhancementJs: true` means the native markup is complete without the module. Load the module only for the documented enhancement. The current optional entries are Accordion, Checkbox, Data Table, Date Range Picker, Message Scroller, Questionnaire, Resizable, and Time Field.
 - Entries with `requiresJs: false`, `enhancementJs: false`, and no `files.js` are CSS and native HTML components. Do not add a runtime just to reproduce their behavior.
 - Keep native links, form submission, browser validation, disclosure, date controls, and dialog or popover semantics useful when a module is omitted. Server-rendered validation and navigation remain authoritative.
 - Component modules use modern ES modules and are intended to tolerate repeated loading and markup inserted after navigation. Do not replace them with a framework, polling loop, focus-trap package, or positioning package.

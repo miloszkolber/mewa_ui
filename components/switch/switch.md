@@ -38,12 +38,6 @@
 
 ---
 
-## Sizes
-
-| `data-size` | Track width | Track height |
-|-------------|-------------|--------------|
-| *(default)* | `2.75rem`   | `1.5rem`     |
-
 ---
 
 ## ARIA

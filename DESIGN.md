@@ -35,7 +35,7 @@ Interactive patterns follow their native or documented ARIA keyboard models:
 
 Each current component lives in `components/{name}/` with `{name}.md` as its markup and accessibility contract, `{name}.css` as its stylesheet, and `{name}.js` only when the documented behavior needs a module. `docs/` contains one static reference page per current component. The page demonstrates the current implementation but is not a second source of truth.
 
-`registry.json` is the machine-readable inventory. Match entries by `slug` and use `requiresJs`, `enhancementJs`, `files`, `docs`, and `nativeBasis` when selecting assets. `README.md` contains the complete 61-row human-readable inventory. `llms.txt` is the concise guide for machine consumption. Copy only documented markup, preserve accessible names and ARIA relationships, and load only the assets required by the registry entry.
+`registry.json` is the machine-readable inventory. Match entries by `slug` and use `requiresJs`, `enhancementJs`, `files`, `docs`, and `nativeBasis` when selecting assets. `README.md` contains the complete 58-row human-readable inventory. `llms.txt` is the concise guide for machine consumption. Copy only documented markup, preserve accessible names and ARIA relationships, and load only the assets required by the registry entry.
 
 `Table` is the structural semantic `<table>` component and remains ordinary HTML without JavaScript. `Data Table` is an optional progressive enhancement around Table, adding documented filtering, sorting, status, and pagination while keeping the table and native links usable without its module.
 

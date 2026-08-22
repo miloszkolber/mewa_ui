@@ -115,10 +115,6 @@ Press <kbd class="kbd">⌘S</kbd> to save
 
 ---
 
-## Notes
-
-- The `body` rule sets the baseline font size; all typography classes are sized relative to it.
-
 ## Accessibility
 
 - Use heading levels in order (`h1` → `h2` → `h3`). Do not skip levels.
@@ -132,6 +128,7 @@ Press <kbd class="kbd">⌘S</kbd> to save
 
 ## Notes
 
+- The `body` rule sets the baseline font size; all typography classes are sized relative to it.
 - These are utility classes for prose content — not a component with variants/sizes.
 - The `.h1`–`.h4` classes allow applying heading styles to non-heading elements when semantic headings aren't appropriate.
 - Typography classes compose freely with other components (Card content, Dialog body, Callout description).

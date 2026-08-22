@@ -5,20 +5,9 @@
     color: var(--text-muted);
     flex-shrink: 0;
 
-    &[data-size="sm"] {
-      width: 0.875rem;
-      height: 0.875rem;
-    }
-
-    &[data-size="md"] {
-      width: var(--size-05);
-      height: var(--size-05);
-    }
-
-    &[data-size="lg"] {
-      width: var(--size-06);
-      height: var(--size-06);
-    }
   }
 
+  @media (forced-colors: active) {
+    .spinner { color: Highlight; }
+  }
 }
