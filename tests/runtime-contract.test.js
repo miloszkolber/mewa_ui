@@ -888,4 +888,72 @@ test("resizable panels respond to keyboard and pointer separator changes", () =>
   assert.equal(runtime.document.activeElement, runtime.document.body);
 });
 
+test("dropdown menus rebind a persistent trigger when its target is replaced", () => {
+  const root = node("section");
+  const trigger = node("button", { "data-dropdown-menu-trigger": "actions", "aria-expanded": "false" });
+  const firstMenu = node("div", { id: "actions", popover: "auto" });
+  const firstItem = node("div", { role: "menuitemcheckbox", "aria-checked": "false" }, "First");
+  firstMenu.append(firstItem);
+  let firstToggles = 0;
+  firstMenu.togglePopover = () => { firstToggles += 1; };
+  root.append(trigger, firstMenu);
+  const runtime = loadModule("dropdown-menu", root);
+
+  assert.equal(trigger.style.anchorName, "--dropdown-menu-actions");
+  assert.equal(firstMenu.style.positionAnchor, "--dropdown-menu-actions");
+  assert.equal(listeners(firstMenu, "keydown"), 1);
+
+  firstMenu.remove();
+  const replacement = node("div", { id: "actions", popover: "auto" });
+  const replacementItem = node("div", { role: "menuitemcheckbox", "aria-checked": "false" }, "Replacement");
+  replacement.append(replacementItem);
+  let replacementToggles = 0;
+  replacement.togglePopover = () => { replacementToggles += 1; };
+  replacement.hidePopover = () => fire(replacement, "toggle", { newState: "closed" });
+  root.append(replacement);
+
+  assert.equal(replacement.style.positionAnchor, "--dropdown-menu-actions");
+  assert.equal(listeners(trigger, "click"), 1, "persistent trigger keeps one listener");
+  assert.equal(listeners(replacement, "toggle"), 1);
+  assert.equal(listeners(replacement, "mousemove"), 1);
+  assert.equal(listeners(replacement, "mouseleave"), 1);
+  assert.equal(listeners(replacement, "click"), 1);
+  assert.equal(listeners(replacement, "keydown"), 1, "replacement receives one keyboard listener");
+  fire(trigger, "click");
+  assert.equal(firstToggles, 0);
+  assert.equal(replacementToggles, 1);
+
+  fire(replacement, "toggle", { newState: "open" });
+  assert.equal(trigger.getAttribute("aria-expanded"), "true");
+  assert.equal(runtime.document.activeElement, replacementItem);
+  fire(firstMenu, "toggle", { newState: "closed" });
+  assert.equal(trigger.getAttribute("aria-expanded"), "true", "superseded target cannot overwrite trigger state");
+  assert.equal(runtime.document.activeElement, replacementItem, "superseded target cannot move focus");
+  fire(replacementItem, "click");
+  assert.equal(replacementItem.getAttribute("aria-checked"), "true");
+  fire(replacement, "mousemove", { clientX: 1, clientY: 1 });
+  assert.equal(replacementItem.hasAttribute("data-highlighted"), true);
+  key(replacementItem, "Escape");
+  assert.equal(trigger.getAttribute("aria-expanded"), "false");
+
+  replacement.remove();
+  const secondMenu = node("div", { id: "actions", popover: "auto" });
+  secondMenu.togglePopover = () => {};
+  root.append(secondMenu);
+  secondMenu.remove();
+  root.append(firstMenu);
+  assert.equal(listeners(firstMenu, "keydown"), 1, "A to B to A rebind stays idempotent");
+  fire(trigger, "click");
+  assert.equal(firstToggles, 1);
+
+  trigger.remove();
+  assert.equal(trigger.hasAttribute("data-init"), false, "disconnected trigger releases its initialization marker");
+  const lateMenu = node("div", { id: "actions", popover: "auto" });
+  root.append(lateMenu);
+  assert.equal(listeners(lateMenu, "keydown"), 0, "disconnected trigger cannot bind a later target");
+  root.append(trigger);
+  assert.equal(listeners(trigger, "click"), 1, "reinserted trigger is initialized exactly once");
+  assert.equal(listeners(firstMenu, "keydown"), 1, "reinserted trigger restores one menu listener set");
+});
+
 if (failures) process.exitCode = 1;

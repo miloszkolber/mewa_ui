@@ -48,23 +48,6 @@ The input is not a proxy or button. It remains the submitted, focusable form con
 
 Use `required` for native required validation and `aria-invalid="true"` for an error already known by the application. `data-invalid` styles the whole composition and is not a replacement for the ARIA state on the input.
 
-### Sizes
-
-```html
-  <label class="text-field-label" for="small-search">Search</label>
-  <input class="text-field-input" id="small-search" type="search" placeholder="Search">
-</div>
-  <label class="text-field-label" for="large-search">Search</label>
-  <input class="text-field-input" id="large-search" type="search" placeholder="Search">
-</div>
-```
-
-| Value | Single-line control height | Input type scale |
-| --- | --- | --- |
-| `sm` | 2.5rem | `--font-body-xsmall` |
-| `md` | 2.5rem | `--font-body-small` |
-| `lg` | 2.5rem | `--font-body` |
-
 ### Disabled and readonly
 
 ```html

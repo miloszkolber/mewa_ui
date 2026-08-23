@@ -1,93 +1,138 @@
 // -- Dropdown Menu --------------------------------------------
 
+const triggerStates = new WeakMap();
+const initializedTriggers = new Set();
+
+function bindMenu(trigger, state, menu) {
+  const anchorId = `--dropdown-menu-${menu.id}`;
+  trigger.style.anchorName = anchorId;
+  menu.style.positionAnchor = anchorId;
+
+  const isDisabled = (item) => item.disabled || item.getAttribute('aria-disabled') === 'true';
+  const getItems = () => Array.from(menu.querySelectorAll('[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]'))
+    .filter((item) => !isDisabled(item));
+  const activateCheckable = (item) => {
+    if (!item || isDisabled(item)) return;
+    const role = item.getAttribute('role');
+    if (role === 'menuitemcheckbox') {
+      const checked = item.getAttribute('aria-checked') === 'true';
+      item.setAttribute('aria-checked', String(!checked));
+    } else if (role === 'menuitemradio') {
+      const group = item.closest('[role="group"]');
+      const radios = group ? group.querySelectorAll('[role="menuitemradio"]') : menu.querySelectorAll('[role="menuitemradio"]');
+      radios.forEach((radio) => { radio.setAttribute('aria-checked', 'false'); });
+      item.setAttribute('aria-checked', 'true');
+    }
+  };
+  const highlight = (item) => {
+    getItems().forEach((i) => { i.removeAttribute('data-highlighted'); });
+    if (item) { item.setAttribute('data-highlighted', ''); item.focus(); }
+  };
+  const onToggle = (e) => {
+    if (state.menu !== menu || !trigger.isConnected) return;
+    const open = e.newState === 'open';
+    trigger.setAttribute('aria-expanded', open);
+    if (open) { const first = getItems()[0]; if (first) highlight(first); }
+    else { getItems().forEach((i) => { i.removeAttribute('data-highlighted'); }); trigger.focus(); }
+  };
+  const onMousemove = (e) => {
+    if (state.menu !== menu || !trigger.isConnected) return;
+    const item = e.target.closest('[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]');
+    if (item && !isDisabled(item)) highlight(item);
+  };
+  const onMouseleave = () => {
+    if (state.menu !== menu || !trigger.isConnected) return;
+    getItems().forEach((i) => { i.removeAttribute('data-highlighted'); });
+  };
+  const onClick = (e) => {
+    if (state.menu !== menu || !trigger.isConnected) return;
+    const item = e.target.closest('[role="menuitemcheckbox"], [role="menuitemradio"]');
+    if (item) activateCheckable(item);
+  };
+  const onKeydown = (e) => {
+    if (state.menu !== menu || !trigger.isConnected) return;
+    const items = getItems();
+    const current = items.indexOf(document.activeElement);
+    switch (e.key) {
+      case 'ArrowDown': e.preventDefault(); highlight(items[(current + 1) % items.length]); break;
+      case 'ArrowUp': e.preventDefault(); highlight(items[(current - 1 + items.length) % items.length]); break;
+      case 'Home': e.preventDefault(); highlight(items[0]); break;
+      case 'End': e.preventDefault(); highlight(items[items.length - 1]); break;
+      case 'Escape': menu.hidePopover(); break;
+      case 'Enter': case ' ':
+        e.preventDefault();
+        if (document.activeElement) {
+          const role = document.activeElement.getAttribute('role');
+          if (role === 'menuitemcheckbox' || role === 'menuitemradio') activateCheckable(document.activeElement);
+          else { document.activeElement.click(); menu.hidePopover(); }
+        }
+        break;
+      default:
+        if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
+          const match = items.find((item) => item.textContent.trim().toLowerCase().startsWith(e.key.toLowerCase()));
+          if (match) highlight(match);
+        }
+    }
+  };
+
+  menu.addEventListener('toggle', onToggle);
+  menu.addEventListener('mousemove', onMousemove);
+  menu.addEventListener('mouseleave', onMouseleave);
+  menu.addEventListener('click', onClick);
+  menu.addEventListener('keydown', onKeydown);
+  state.unbindMenu = () => {
+    menu.removeEventListener('toggle', onToggle);
+    menu.removeEventListener('mousemove', onMousemove);
+    menu.removeEventListener('mouseleave', onMouseleave);
+    menu.removeEventListener('click', onClick);
+    menu.removeEventListener('keydown', onKeydown);
+    if (state.menu === menu) state.menu = null;
+  };
+}
+
+function rebindTargets() {
+  initializedTriggers.forEach((trigger) => {
+    const state = triggerStates.get(trigger);
+    if (!trigger.isConnected) {
+      state.unbindMenu?.();
+      trigger.removeEventListener('click', state.onTriggerClick);
+      delete trigger.dataset.init;
+      triggerStates.delete(trigger);
+      initializedTriggers.delete(trigger);
+      return;
+    }
+    const menu = document.getElementById(trigger.dataset.dropdownMenuTrigger);
+    if (!menu) {
+      state.unbindMenu?.();
+      state.unbindMenu = null;
+      state.menu = null;
+      return;
+    }
+    if (state.menu === menu) return;
+    state.unbindMenu?.();
+    state.menu = menu;
+    bindMenu(trigger, state, menu);
+  });
+}
+
 function init() {
   document.querySelectorAll('[data-dropdown-menu-trigger]:not([data-init])').forEach((trigger) => {
     trigger.dataset.init = '';
-    const menuId = trigger.dataset.dropdownMenuTrigger;
-    const menu = document.getElementById(menuId);
-    if (!menu) {
-      // Keep the trigger eligible for a later SPA insertion of its target.
-      delete trigger.dataset.init;
-      return;
-    }
-
-    const anchorId = `--dropdown-menu-${menu.id}`;
-    trigger.style.anchorName = anchorId;
-    menu.style.positionAnchor = anchorId;
-
-    const isDisabled = (item) => item.disabled || item.getAttribute('aria-disabled') === 'true';
-    const getItems = () => {
-      return Array.from(menu.querySelectorAll('[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]'))
-        .filter((item) => !isDisabled(item));
-    };
-    const activateCheckable = (item) => {
-      if (!item || isDisabled(item)) return;
-      const role = item.getAttribute('role');
-      if (role === 'menuitemcheckbox') {
-        const checked = item.getAttribute('aria-checked') === 'true';
-        item.setAttribute('aria-checked', String(!checked));
-      } else if (role === 'menuitemradio') {
-        const group = item.closest('[role="group"]');
-        const radios = group ? group.querySelectorAll('[role="menuitemradio"]') : menu.querySelectorAll('[role="menuitemradio"]');
-        radios.forEach((radio) => { radio.setAttribute('aria-checked', 'false'); });
-        item.setAttribute('aria-checked', 'true');
-      }
-    };
-    const highlight = (item) => {
-      getItems().forEach((i) => { i.removeAttribute('data-highlighted'); });
-      if (item) { item.setAttribute('data-highlighted', ''); item.focus(); }
-    };
-    trigger.addEventListener('click', () => {
-      const currentMenu = document.getElementById(menuId);
+    const state = { menu: null, unbindMenu: null, onTriggerClick: null };
+    triggerStates.set(trigger, state);
+    initializedTriggers.add(trigger);
+    state.onTriggerClick = () => {
+      const currentMenu = document.getElementById(trigger.dataset.dropdownMenuTrigger);
       if (!currentMenu || !currentMenu.isConnected || typeof currentMenu.togglePopover !== 'function') return;
       currentMenu.togglePopover();
-    });
-    menu.addEventListener('toggle', (e) => {
-      const open = e.newState === 'open';
-      trigger.setAttribute('aria-expanded', open);
-      if (open) { const first = getItems()[0]; if (first) highlight(first); }
-      else { getItems().forEach((i) => { i.removeAttribute('data-highlighted'); }); trigger.focus(); }
-    });
-    menu.addEventListener('mousemove', (e) => {
-      const item = e.target.closest('[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]');
-      if (item && !isDisabled(item)) highlight(item);
-    });
-    menu.addEventListener('mouseleave', () => {
-      getItems().forEach((i) => { i.removeAttribute('data-highlighted'); });
-    });
-    menu.addEventListener('click', (e) => {
-      const item = e.target.closest('[role="menuitemcheckbox"], [role="menuitemradio"]');
-      if (item) activateCheckable(item);
-    });
-    menu.addEventListener('keydown', (e) => {
-      const items = getItems();
-      const current = items.indexOf(document.activeElement);
-      switch (e.key) {
-        case 'ArrowDown': e.preventDefault(); highlight(items[(current + 1) % items.length]); break;
-        case 'ArrowUp': e.preventDefault(); highlight(items[(current - 1 + items.length) % items.length]); break;
-        case 'Home': e.preventDefault(); highlight(items[0]); break;
-        case 'End': e.preventDefault(); highlight(items[items.length - 1]); break;
-        case 'Escape': menu.hidePopover(); break;
-        case 'Enter': case ' ':
-          e.preventDefault();
-          if (document.activeElement) {
-            const role = document.activeElement.getAttribute('role');
-            if (role === 'menuitemcheckbox') {
-              activateCheckable(document.activeElement);
-            } else if (role === 'menuitemradio') {
-              activateCheckable(document.activeElement);
-            } else { document.activeElement.click(); menu.hidePopover(); }
-          }
-          break;
-        default:
-          if (e.key.length === 1 && !e.ctrlKey && !e.metaKey) {
-            const match = items.find((item) => item.textContent.trim().toLowerCase().startsWith(e.key.toLowerCase()));
-            if (match) highlight(match);
-          }
-      }
-    });
-});
+    };
+    trigger.addEventListener('click', state.onTriggerClick);
+  });
 }
 
 init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+rebindTargets();
+new MutationObserver(() => {
+  init();
+  rebindTargets();
+}).observe(document, { childList: true, subtree: true });
