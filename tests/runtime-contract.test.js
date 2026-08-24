@@ -645,6 +645,43 @@ test("checkbox groups coordinate select-all state and disabled items", () => {
   assert.equal(runtime.document.activeElement, runtime.document.body);
 });
 
+test("tabs activate programmatically through the tabs:activate event", () => {
+  const tablist = node("div", { class: "tab-list", role: "tablist", "aria-label": "Demo" });
+  const summary = node("button", { type: "button", class: "tab-trigger", role: "tab", "aria-selected": "true", "aria-controls": "panel-summary", id: "tab-summary" });
+  const detail = node("button", { type: "button", class: "tab-trigger", role: "tab", "aria-selected": "false", "aria-controls": "panel-detail", id: "tab-detail", tabindex: "-1" });
+  const disabled = node("button", { type: "button", class: "tab-trigger", role: "tab", "aria-selected": "false", "aria-controls": "panel-disabled", id: "tab-disabled", tabindex: "-1", disabled: "" });
+  const panelSummary = node("div", { class: "tab-content", role: "tabpanel", id: "panel-summary", "aria-labelledby": "tab-summary", tabindex: "0" });
+  const panelDetail = node("div", { class: "tab-content", role: "tabpanel", id: "panel-detail", "aria-labelledby": "tab-detail", tabindex: "0", hidden: "" });
+  const panelDisabled = node("div", { class: "tab-content", role: "tabpanel", id: "panel-disabled", "aria-labelledby": "tab-disabled", tabindex: "0", hidden: "" });
+  tablist.append(summary, detail, disabled);
+  const root = node("div");
+  root.append(tablist, panelSummary, panelDetail, panelDisabled);
+  loadModule("tabs", root);
+
+  const dispatch = (id) => fire(tablist, "tabs:activate", { detail: { id } });
+
+  dispatch("tab-detail");
+  assert.equal(detail.getAttribute("aria-selected"), "true");
+  assert.equal(detail.hasAttribute("tabindex"), false);
+  assert.equal(summary.getAttribute("aria-selected"), "false");
+  assert.equal(summary.getAttribute("tabindex"), "-1");
+  assert.equal(panelDetail.hidden, false);
+  assert.equal(panelSummary.hidden, true);
+
+  dispatch("panel-summary");
+  assert.equal(summary.getAttribute("aria-selected"), "true");
+  assert.equal(panelSummary.hidden, false);
+  assert.equal(panelDetail.hidden, true);
+
+  dispatch("tab-disabled");
+  assert.equal(summary.getAttribute("aria-selected"), "true");
+  assert.equal(disabled.getAttribute("aria-selected"), "false");
+  assert.equal(panelDisabled.hidden, true);
+
+  dispatch("tab-missing");
+  assert.equal(summary.getAttribute("aria-selected"), "true");
+});
+
 test("app shell theme toggles persist state and initialize inserted controls", () => {
   const toggle = node("button", { type: "button", "data-theme-toggle": "" }, "Theme");
   const runtime = loadModule("app-shell", toggle);

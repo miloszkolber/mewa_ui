@@ -220,6 +220,59 @@
 &lt;/div&gt;</code></pre>
         </div>
 
+        <!-- Programmatic activation -->
+        <p class="text-sm font-medium mb-2 mt-8">Programmatic activation</p>
+        <p class="text-xs text-muted mb-3">Application code can switch tabs by dispatching a <code>tabs:activate</code> CustomEvent on the tablist with the tab or panel id. Disabled tabs and unknown ids are ignored.</p>
+        <div class="preview" style="flex-direction: column; align-items: stretch; padding: var(--space-07) var(--space-08)">
+          <div class="tabs">
+            <div class="tab-list" role="tablist" aria-label="Programmatic activation demo" id="demo-tablist-programmatic">
+              <button class="tab-trigger" type="button" role="tab" aria-selected="true" aria-controls="programmatic-panel-summary" id="programmatic-tab-summary">Summary</button>
+              <button class="tab-trigger" type="button" role="tab" aria-selected="false" aria-controls="programmatic-panel-detail" id="programmatic-tab-detail" tabindex="-1">Detail</button>
+            </div>
+            <div class="tab-content" role="tabpanel" id="programmatic-panel-summary" aria-labelledby="programmatic-tab-summary" tabindex="0">
+              <p class="text-muted" style="font-size: var(--font-body-small); padding: var(--space-04) 0">Summary panel. Use the button to open the detail panel from application code.</p>
+              <button class="btn" type="button" data-variant="outline" id="demo-tab-open-detail">Open detail panel</button>
+            </div>
+            <div class="tab-content" role="tabpanel" id="programmatic-panel-detail" aria-labelledby="programmatic-tab-detail" tabindex="0" hidden>
+              <p class="text-muted" style="font-size: var(--font-body-small); padding: var(--space-04) 0">Detail panel, activated programmatically.</p>
+            </div>
+          </div>
+        </div>
+        <div style="position: relative; margin-top: var(--space-02)">
+          <button type="button" class="copy-btn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            Copy
+          </button>
+          <pre><code class="language-markup">&lt;div class="tabs"&gt;
+  &lt;div class="tab-list" role="tablist" aria-label="Programmatic activation demo"
+       id="demo-tablist-programmatic"&gt;
+    &lt;button class="tab-trigger" type="button" role="tab" aria-selected="true"
+            aria-controls="programmatic-panel-summary"
+            id="programmatic-tab-summary"&gt;Summary&lt;/button&gt;
+    &lt;button class="tab-trigger" type="button" role="tab" aria-selected="false"
+            aria-controls="programmatic-panel-detail"
+            id="programmatic-tab-detail" tabindex="-1"&gt;Detail&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="tab-content" role="tabpanel" id="programmatic-panel-summary"
+       aria-labelledby="programmatic-tab-summary" tabindex="0"&gt;
+    &lt;button class="btn" type="button" data-variant="outline"
+            id="demo-tab-open-detail"&gt;Open detail panel&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="tab-content" role="tabpanel" id="programmatic-panel-detail"
+       aria-labelledby="programmatic-tab-detail" tabindex="0" hidden&gt;
+    &lt;p&gt;Detail panel, activated programmatically.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  document.getElementById('demo-tab-open-detail').addEventListener('click', () =&gt; {
+    document.getElementById('demo-tablist-programmatic').dispatchEvent(
+      new CustomEvent('tabs:activate', { detail: { id: 'programmatic-tab-detail' } }),
+    );
+  });
+&lt;/script&gt;</code></pre>
+        </div>
+
         <!-- Line variant -->
         <p class="text-sm font-medium mb-2 mt-8">Line variant with disabled tab</p>
         <p class="text-xs text-muted mb-3">Add <code>data-variant="line"</code> to the <code>.tab-list</code> for an underline style. Disabled tabs use the native <code>disabled</code> attribute.</p>
@@ -431,5 +484,12 @@
 
   <script src="js/site.js" defer></script>
   <script type="module" src="../components/tabs/tabs.js"></script>
+  <script type="module">
+    document.getElementById('demo-tab-open-detail')?.addEventListener('click', () => {
+      document.getElementById('demo-tablist-programmatic')?.dispatchEvent(
+        new CustomEvent('tabs:activate', { detail: { id: 'programmatic-tab-detail' } }),
+      );
+    });
+  </script>
                                                     </body>
 </html>

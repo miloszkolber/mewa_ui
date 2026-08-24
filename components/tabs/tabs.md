@@ -89,6 +89,21 @@ panel switching. Follows the WAI-ARIA Tabs design pattern.
 
 ---
 
+## Programmatic activation
+
+Application code can switch tabs without a click. The module listens for a
+`tabs:activate` CustomEvent on the tablist; dispatch it with the tab id or the
+controlled panel id:
+
+```js
+tablist.dispatchEvent(new CustomEvent('tabs:activate', {
+  detail: { id: 'tab-password' },
+}));
+```
+
+The id may be a trigger's `id` or the `aria-controls` panel id. Disabled tabs
+and unknown ids are ignored, and activation stays immediate.
+
 ## Vertical layout
 
 For vertical tabs, set `aria-orientation="vertical"` on the tablist. The CSS
