@@ -882,12 +882,14 @@
       margin-inline-end: calc(-1 * var(--space-03));
       padding-block-start: var(--space-02);
       overflow-x: auto;
+      scroll-padding-inline: var(--space-03);
       scrollbar-width: thin;
     }
 
     .layout-top-nav-link {
       min-block-size: var(--size-06);
       padding-inline: var(--space-02);
+      scroll-margin-inline: var(--space-03);
     }
 
     .layout-top-main {

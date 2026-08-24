@@ -20,7 +20,7 @@
 Keep one descriptive caption and explicit header scopes. The same markup works with or without JavaScript.
 
 ```html
-<div class="table-container">
+<div class="table-container" role="region" aria-label="Recent invoices" tabindex="0">
   <table class="table">
     <caption class="table-caption">A list of recent invoices.</caption>
     <thead>
@@ -54,7 +54,7 @@ Keep one descriptive caption and explicit header scopes. The same markup works w
 Use `<tfoot>` for a total or other summary that belongs to the table. Keep the summary label in a row header when it describes the row.
 
 ```html
-<div class="table-container">
+<div class="table-container" role="region" aria-label="Monthly usage" tabindex="0">
   <table class="table">
     <caption class="table-caption">Monthly usage</caption>
     <thead>
@@ -98,6 +98,7 @@ Behavioral filtering, sorting, status, empty results, and pagination belong to [
 - Use `scope="col"` for column headers and `scope="row"` for row headers. Use `headers` and `id` when a complex table needs explicit associations.
 - Keep row headers as `<th scope="row">` rather than turning the table into a collection of generic `<div>` elements.
 - Put wide tables inside `.table-container` so horizontal scrolling does not change the table's semantic structure.
+- When an overflow container has no links, buttons, or other focusable descendants, add `tabindex="0"`, `role="region"`, and an accessible name so keyboard users can scroll it. Do not add a redundant tab stop when the table already contains focusable controls.
 
 ## Notes
 

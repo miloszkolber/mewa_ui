@@ -7,6 +7,11 @@
     container-type: inline-size;
   }
 
+  .table-container:focus-visible {
+    outline: var(--focus-ring-width) solid var(--border-ring);
+    outline-offset: calc(-1 * var(--focus-ring-width));
+  }
+
   .table {
     width: 100%;
     border-collapse: collapse;
