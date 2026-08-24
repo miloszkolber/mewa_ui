@@ -10,7 +10,7 @@ mewa_ui is a framework-free UI library of semantic HTML, tokenized CSS, local SV
 4. `components/{slug}/{slug}.css` is the component stylesheet. `components/{slug}/{slug}.js`, when present, is the component module.
 5. `docs/{slug}.html` is the static reference page for the same component. It is a usage reference, not a second implementation source.
 6. `registry.json` is the machine-readable inventory. Match by `slug`, and use its `requiresJs`, `enhancementJs`, `files`, `docs`, and `nativeBasis` fields.
-7. `layouts/` contains the reusable application shells. `layouts/layouts.css` and `layouts/layouts.js` are layout-local assets.
+7. `components/app-shell/` contains reusable application chrome primitives. `layouts/` contains the two complete reusable shell templates, with `layouts/layouts.css` and `layouts/layouts.js` as layout-local assets.
 
 Do not infer an API from a similarly named library. If a class, attribute, variant, or behavior is not in the matching skill and implementation, do not use it.
 
@@ -123,13 +123,14 @@ Every item links to its current documentation page and the machine-readable regi
 
 ### Application
 
+- **App Shell** (`app-shell`) — [docs](docs/app-shell.html) · [registry](registry.json) — Shared header, toolbar, page-overview, status, empty-state, and optional OS-aware theme primitives.
 - **Sidebar** (`sidebar`) — [docs](docs/sidebar.html) · [registry](registry.json) — Collapsible desktop rail and mobile navigation dialog.
 - **Resizable** (`resizable`) — [docs](docs/resizable.html) · [registry](registry.json) — Two-panel split with a static separator and optional pointer and keyboard resizing.
 
 ## JavaScript and progressive enhancement
 
 - `requiresJs: true` means the documented interaction depends on the module. Load the matching `.js` file after the markup. Required modules include keyboard coordination, filtering, custom calendar navigation, modal trigger wiring, anchored overlays, drag reordering, and live status behavior.
-- `enhancementJs: true` means the native markup is complete without the module. Load the module only for the documented enhancement. The current optional entries are Accordion, Checkbox, Data Table, Date Range Picker, Resizable, and Time Field.
+- `enhancementJs: true` means the native markup is complete without the module. Load the module only for the documented enhancement. The current optional entries are Accordion, App Shell, Checkbox, Data Table, Date Range Picker, Resizable, and Time Field.
 - Entries with `requiresJs: false`, `enhancementJs: false`, and no `files.js` are CSS and native HTML components. Do not add a runtime just to reproduce their behavior.
 - Keep native links, form submission, browser validation, disclosure, date controls, and dialog or popover semantics useful when a module is omitted. Server-rendered validation and navigation remain authoritative.
 - Component modules use modern ES modules and are intended to tolerate repeated loading and markup inserted after navigation. Do not replace them with a framework, polling loop, focus-trap package, or positioning package.

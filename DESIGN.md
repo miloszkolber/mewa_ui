@@ -35,7 +35,7 @@ Interactive patterns follow their native or documented ARIA keyboard models:
 
 Each current component lives in `components/{name}/` with `{name}.md` as its markup and accessibility contract, `{name}.css` as its stylesheet, and `{name}.js` only when the documented behavior needs a module. `docs/` contains one static reference page per current component. The page demonstrates the current implementation but is not a second source of truth.
 
-`registry.json` is the machine-readable inventory. Match entries by `slug` and use `requiresJs`, `enhancementJs`, `files`, `docs`, and `nativeBasis` when selecting assets. `README.md` contains the complete 58-row human-readable inventory. `llms.txt` is the concise guide for machine consumption. Copy only documented markup, preserve accessible names and ARIA relationships, and load only the assets required by the registry entry.
+`registry.json` is the machine-readable inventory. Match entries by `slug` and use `requiresJs`, `enhancementJs`, `files`, `docs`, and `nativeBasis` when selecting assets. `README.md` contains the complete 59-row human-readable inventory. `llms.txt` is the concise guide for machine consumption. Copy only documented markup, preserve accessible names and ARIA relationships, and load only the assets required by the registry entry.
 
 `Table` is the structural semantic `<table>` component and remains ordinary HTML without JavaScript. `Data Table` is an optional progressive enhancement around Table, adding documented filtering, sorting, status, and pagination while keeping the table and native links usable without its module.
 
@@ -46,6 +46,8 @@ Each current component lives in `components/{name}/` with `{name}.md` as its mar
 Lucide is the primary icon source. Standalone SVG files live in `src/icons/` and inherit `currentColor` with the shared stroke treatment. Use the documented local loader or inline the matching SVG directly. Never use a remote icon CDN. Decorative icons use `aria-hidden="true"`; icon-only controls have a visible or programmatic accessible name.
 
 ## Layouts
+
+`components/app-shell/` provides shared application header, toolbar, page-overview, inline-status, empty-state, skip-link, and optional theme primitives. It does not replace a complete shell template or own application route data.
 
 `layouts/vertical-navbar.html` is the canonical left collapsible navigation shell. It uses the current Sidebar component with `.sidebar-layout`, an `<aside class="app-sidebar">`, one labelled flat `<nav>` of native links, a footer collapse button, `aria-current="page"`, and an optional mobile `<dialog>`. `components/sidebar/sidebar.js` owns collapse state, `aria-expanded`, the `Cmd+B`/`Ctrl+B` shortcut, and mobile dialog wiring.
 

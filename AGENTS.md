@@ -1,6 +1,6 @@
 # mewa_ui — Maintainer instructions
 
-You are working on **mewa_ui**, a standalone framework-free component library built on semantic HTML principles, MIT. Its foundations were originally derived from [shadcn-html](https://github.com/codylindley/shadcn-html) at upstream commit `0964e09e` (v0.7.13-alpha) and have since diverged onto their own native-first contract. The consumer-facing system is the repository root: `src/`, `components/`, `docs/`, and the canonical application-shell location `layouts/`.
+You are working on **mewa_ui**, a standalone framework-free component library built on semantic HTML principles, MIT. Its foundations were originally derived from [shadcn-html](https://github.com/codylindley/shadcn-html) at upstream commit `0964e09e` (v0.7.13-alpha) and have since diverged onto their own native-first contract. The consumer-facing system is the repository root: `src/`, `components/`, `docs/`, and the canonical complete application-shell templates in `layouts/`.
 
 ## Source-of-truth boundaries
 
@@ -9,9 +9,9 @@ New work must use the current source tree:
 - `src/base.css` owns static foundations, font faces, palette primitives, typography, geometry, and browser defaults.
 - `src/tokens.css` owns light and dark semantic color roles.
 - `src/icons/` owns the local Lucide SVG files.
-- `components/` owns the 58 current component folders. Each has a skill (`{name}.md`) and stylesheet (`{name}.css`), with `{name}.js` only when the documented behavior needs a module.
+- `components/` owns the 59 current component folders. Each has a skill (`{name}.md`) and stylesheet (`{name}.css`), with `{name}.js` only when the documented behavior needs a module. `components/app-shell/` owns the shared application chrome primitives and optional theme enhancement.
 - `docs/` owns the static reference site, one HTML page per current component.
-- `layouts/` is the only canonical home for reusable application shells. The current two templates are `layouts/vertical-navbar.html` for a left collapsible rail and `layouts/horizontal-navbar.html` for top navigation. `layouts/layouts.css` owns template-only rules and `layouts/layouts.js` provides local icon inlining and the optional theme toggle.
+- `layouts/` is the only canonical home for complete reusable application-shell templates. The current two templates are `layouts/vertical-navbar.html` for a left collapsible rail and `layouts/horizontal-navbar.html` for top navigation. `layouts/layouts.css` owns template-only rules and `layouts/layouts.js` provides local icon inlining and the optional theme toggle.
 
 ## Project structure
 
@@ -22,7 +22,7 @@ ui_library/
 ├── src/geist.woff2                ← Geist variable font, 400–550
 ├── src/geistmono.woff2            ← Geist Mono variable font, 400–550
 ├── src/icons/                     ← standalone local Lucide SVG files
-├── components/                    ← 58 self-contained component folders
+├── components/                    ← 59 self-contained component folders
 │   └── {name}/
 │       ├── {name}.md              ← native basis, structure, variants, ARIA, and notes
 │       ├── {name}.css             ← component stylesheet
@@ -99,6 +99,8 @@ Do not use literal palette colors or recreate a spacing-token taxonomy inside a 
 
 ## Canonical shells
 
+`components/app-shell/` supplies shared header, toolbar, page-overview, inline-status, empty-state, skip-link, and optional OS-aware theme primitives for consumer-owned shells. It does not create a third complete shell template, replace Sidebar, or own application route data. Keep complete reusable left-rail and top-navigation examples under `layouts/`.
+
 ### Left collapsible sidebar
 
 The left-sidebar template at `layouts/vertical-navbar.html` uses `components/sidebar/`. Its semantic shell is `.sidebar-layout` with an `<aside class="app-sidebar">` and a `<main>`. The sidebar skill defines one flat labelled `<nav>`, a footer collapse button, `aria-current="page"`, collapsed `data-state`, and an optional mobile `<dialog>`. The template adds a breadcrumb header, workspace content, and optional utility rail around the sidebar. `sidebar.js` synchronizes `aria-expanded`, toggles expanded/collapsed state, supports `Cmd+B`/`Ctrl+B`, and wires the mobile dialog. The footer control remains keyboard reachable in both states. Use Tooltip for optional labels on icon-only collapsed links. Do not re-create a second sidebar implementation in `layouts/`.
@@ -125,7 +127,7 @@ Current docs contain copyable HTML examples. They do not use generated CSS or Ja
 4. Create `docs/{name}.html` from a current component page. Keep examples sentence case, accessible, motionless, and limited to implemented variants and states.
 5. Add the page to `docs/js/layout.js` in the purpose group that matches the inventory. Update both `NAV` and `BUILT`.
 6. Add the component stylesheet link to every doc page per the current convention, and add module scripts only to pages whose demos use them. Check relative paths from `docs/`. The SPA router lazy-imports destination modules, so cross-page demos keep working.
-7. Update the 58-row README inventory with the exact native basis, JS requirement, skill path, and doc path. Verify the row against the actual directory and files.
+7. Update the 59-row README inventory with the exact native basis, JS requirement, skill path, and doc path. Verify the row against the actual directory and files.
 8. Check all changed JavaScript with Node syntax checking, serve the doc site over HTTP, and exercise keyboard, focus, narrow-width, forced-colors, and no-JavaScript paths that apply.
 
 Do not silently add a new component family, layout template, token namespace, dependency, or compatibility alias. Raise an ambiguity before choosing a product or architecture boundary that is not supported by the current source.
@@ -145,7 +147,7 @@ Use the first two as a feature checklist and the remaining references for the na
 
 ## Common pitfalls
 
-- **Inventory drift:** The README table must match the 58 actual component folders, 58 skill files, 58 stylesheets, optional module files, and 58 doc pages.
+- **Inventory drift:** The README table must match the 59 actual component folders, 59 skill files, 59 stylesheets, optional module files, and 59 doc pages.
 - **CSS drift:** Keep the skill's variants and states aligned with the stylesheet. The stylesheet is the source of truth for rendered behavior.
 - **Import drift:** Every doc page follows the same current foundation and component import convention. Missing imports break cross-page demos silently.
 - **Motion drift:** No animation or transition belongs in canonical source. Do not reintroduce reduced-motion fallbacks for motion that should not exist.

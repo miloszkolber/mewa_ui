@@ -11,13 +11,15 @@
     padding: var(--space-04);
     max-height: 100vh;
     pointer-events: none;
+    bottom: 0;
+    right: 0;
 
-    &[data-position="bottom-right"] { bottom: 0; right: 0; }
-    &[data-position="bottom-left"]  { bottom: 0; left: 0; }
-    &[data-position="top-right"]    { top: 0; right: 0; flex-direction: column; }
-    &[data-position="top-left"]     { top: 0; left: 0; flex-direction: column; }
-    &[data-position="top-center"]   { top: 0; left: 50%; transform: translateX(-50%); flex-direction: column; align-items: center; }
-    &[data-position="bottom-center"]{ bottom: 0; left: 50%; transform: translateX(-50%); align-items: center; }
+    &[data-position="bottom-right"] { top: auto; bottom: 0; left: auto; right: 0; }
+    &[data-position="bottom-left"]  { top: auto; bottom: 0; left: 0; right: auto; }
+    &[data-position="top-right"]    { top: 0; bottom: auto; left: auto; right: 0; flex-direction: column; }
+    &[data-position="top-left"]     { top: 0; bottom: auto; left: 0; right: auto; flex-direction: column; }
+    &[data-position="top-center"]   { top: 0; bottom: auto; left: 50%; right: auto; transform: translateX(-50%); flex-direction: column; align-items: center; }
+    &[data-position="bottom-center"]{ top: auto; bottom: 0; left: 50%; right: auto; transform: translateX(-50%); align-items: center; }
   }
 
   /* -- Toast ---------------------------------------------------- */
@@ -29,8 +31,8 @@
     border: var(--border-width-01) solid var(--border-secondary);
 
     padding: var(--space-04);
-    min-width: 20rem;
-    max-width: 26rem;
+    min-width: min(20rem, calc(100vw - var(--space-08)));
+    max-width: min(26rem, calc(100vw - var(--space-08)));
     pointer-events: auto;
 
     /* -- Variants ------------------------------------------------- */

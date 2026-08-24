@@ -126,6 +126,7 @@
       { label: 'Navigation menu', href: 'navigation-menu.html' },
     ]},
     { heading: 'Application', items: [
+      { label: 'App shell', href: 'app-shell.html' },
       { label: 'Sidebar', href: 'sidebar.html' },
       { label: 'Resizable', href: 'resizable.html' },
     ]},
@@ -149,7 +150,7 @@
     'breadcrumbs.html', 'pagination.html',
     'tabs.html', 'dropdown-menu.html', 'navigation-menu.html',
     'scroll-area.html',
-    'carousel.html', 'sidebar.html', 'resizable.html', 'sortable.html',
+    'carousel.html', 'app-shell.html', 'sidebar.html', 'resizable.html', 'sortable.html',
   ]);
 
   /* Detect current filename */

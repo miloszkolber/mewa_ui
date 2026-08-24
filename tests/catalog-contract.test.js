@@ -200,7 +200,7 @@ test("registry.json is the complete machine-readable catalog", () => {
   assert.equal(registry.schemaVersion, 1);
   assert.equal(registry.name, "mewa_ui");
   assert.equal(registry.library, "mewa_ui");
-  assert.equal(components.length, 58, "registry must contain all 58 components");
+  assert.equal(components.length, 59, "registry must contain all 59 components");
   assert.deepEqual(componentSlugs, componentDirectories, "registry slugs must match component folders exactly");
   assert.deepEqual(registry.canonicalAssets, {
     foundations: ["src/base.css", "src/tokens.css"],
@@ -248,8 +248,8 @@ test("component folders, docs pages, and README inventory have exact parity", ()
   assert.equal(documentationPages.length, componentSlugs.length, "docs must contain exactly one page for each registry slug");
   assert.deepEqual(new Set(documentationPages), new Set(componentSlugs), "docs must contain exactly one page for each registry slug");
   const readme = read(path.join(root, "README.md"));
-  assert.match(readme, /58 self-contained component folders/i);
-  assert.match(readme, /58 static component pages/i);
+  assert.match(readme, /59 self-contained component folders/i);
+  assert.match(readme, /59 static component pages/i);
   assert.match(readme, /## Component inventory/);
 
   const rows = Array.from(readme.matchAll(/^\| ([^|]+) \|.*?\[`components\/([^/]+)\/[^`]+`\]\(components\/\2\/[^)]+\).*?\[`docs\/([^`]+)\.html`\]\(docs\/\3\.html\) \|$/gm), (match) => ({
@@ -257,7 +257,7 @@ test("component folders, docs pages, and README inventory have exact parity", ()
     slug: match[2],
     docs: match[3]
   }));
-  assert.equal(rows.length, 58, "README must contain one inventory row for every component");
+  assert.equal(rows.length, 59, "README must contain one inventory row for every component");
   assert.deepEqual(rows.map((row) => row.slug).sort(), componentSlugs);
   for (const component of components) {
     const row = rows.find((candidate) => candidate.slug === component.slug);
@@ -355,6 +355,7 @@ test("local Lucide SVG files back every rendered icon reference", () => {
 test("rendered HTML preserves accessible names, native controls, and route semantics", () => {
   const expectations = {
     accordion: [/<details\b/i, /<summary\b/i],
+    "app-shell": [/<header\b/i, /<nav\b/i, /data-theme-toggle/i],
     "date-range-picker": [/<fieldset\b/i, /<input\b[^>]*type=["']date["']/i],
     "data-table": [/<table\b/i, /data-table-filter/i, /role=["']status["']/i],
     dialog: [/<dialog\b/i, /showModal\(\)/i],

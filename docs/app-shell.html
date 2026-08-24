@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="description" content="App Shell component — shared application header, page overview, status, empty-state, and theme primitives.">
+  <meta property="og:title" content="App Shell — mewa_ui">
+  <meta property="og:description" content="App Shell component — shared application header, page overview, status, empty-state, and theme primitives.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mewa.local/app-shell.html">
+  <meta property="og:site_name" content="mewa_ui">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="App Shell — mewa_ui">
+  <meta name="twitter:description" content="App Shell component — shared application header, page overview, status, empty-state, and theme primitives.">
+  <title>App Shell — mewa_ui</title>
+  <script src="js/layout.js"></script>
+  <link rel="stylesheet" href="../src/base.css">
+  <link rel="stylesheet" href="../src/tokens.css">
+  <link rel="stylesheet" href="css/docs-theme.css">
+  <link rel="stylesheet" href="css/docs-utilities.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="../components/accordion/accordion.css">
+  <link rel="stylesheet" href="../components/alert-dialog/alert-dialog.css">
+  <link rel="stylesheet" href="../components/app-shell/app-shell.css">
+  <link rel="stylesheet" href="../components/avatar/avatar.css">
+  <link rel="stylesheet" href="../components/badge/badge.css">
+  <link rel="stylesheet" href="../components/breadcrumbs/breadcrumbs.css">
+  <link rel="stylesheet" href="../components/button-group/button-group.css">
+  <link rel="stylesheet" href="../components/button/button.css">
+  <link rel="stylesheet" href="../components/callout/callout.css">
+  <link rel="stylesheet" href="../components/card/card.css">
+  <link rel="stylesheet" href="../components/carousel/carousel.css">
+  <link rel="stylesheet" href="../components/checkbox/checkbox.css">
+  <link rel="stylesheet" href="../components/collapsible/collapsible.css">
+  <link rel="stylesheet" href="../components/combobox/combobox.css">
+  <link rel="stylesheet" href="../components/command-palette/command-palette.css">
+  <link rel="stylesheet" href="../components/date-field/date-field.css">
+  <link rel="stylesheet" href="../components/date-picker/date-picker.css">
+  <link rel="stylesheet" href="../components/date-range-picker/date-range-picker.css">
+  <link rel="stylesheet" href="../components/data-table/data-table.css">
+  <link rel="stylesheet" href="../components/dialog/dialog.css">
+  <link rel="stylesheet" href="../components/dropdown-menu/dropdown-menu.css">
+  <link rel="stylesheet" href="../components/field/field.css">
+  <link rel="stylesheet" href="../components/file-input/file-input.css">
+  <link rel="stylesheet" href="../components/form/form.css">
+  <link rel="stylesheet" href="../components/icon/icon.css">
+  <link rel="stylesheet" href="../components/image/image.css">
+  <link rel="stylesheet" href="../components/label/label.css">
+  <link rel="stylesheet" href="../components/layout/layout.css">
+  <link rel="stylesheet" href="../components/navigation-menu/navigation-menu.css">
+  <link rel="stylesheet" href="../components/number-field/number-field.css">
+  <link rel="stylesheet" href="../components/pagination/pagination.css">
+  <link rel="stylesheet" href="../components/popover/popover.css">
+  <link rel="stylesheet" href="../components/progress/progress.css">
+  <link rel="stylesheet" href="../components/radio-group/radio-group.css">
+  <link rel="stylesheet" href="../components/resizable/resizable.css">
+  <link rel="stylesheet" href="../components/scroll-area/scroll-area.css">
+  <link rel="stylesheet" href="../components/select/select.css">
+  <link rel="stylesheet" href="../components/separator/separator.css">
+  <link rel="stylesheet" href="../components/sheet/sheet.css">
+  <link rel="stylesheet" href="../components/sidebar/sidebar.css">
+  <link rel="stylesheet" href="../components/skeleton/skeleton.css">
+  <link rel="stylesheet" href="../components/slider/slider.css">
+  <link rel="stylesheet" href="../components/sortable/sortable.css">
+  <link rel="stylesheet" href="../components/spinner/spinner.css">
+  <link rel="stylesheet" href="../components/statistic/statistic.css">
+  <link rel="stylesheet" href="../components/switch/switch.css">
+  <link rel="stylesheet" href="../components/table/table.css">
+  <link rel="stylesheet" href="../components/tabs/tabs.css">
+  <link rel="stylesheet" href="../components/text-field/text-field.css">
+  <link rel="stylesheet" href="../components/textarea/textarea.css">
+  <link rel="stylesheet" href="../components/time-field/time-field.css">
+  <link rel="stylesheet" href="../components/timeline/timeline.css">
+  <link rel="stylesheet" href="../components/toast/toast.css">
+  <link rel="stylesheet" href="../components/toggle-group/toggle-group.css">
+  <link rel="stylesheet" href="../components/toggle/toggle.css">
+  <link rel="stylesheet" href="../components/toolbar/toolbar.css">
+  <link rel="stylesheet" href="../components/tooltip/tooltip.css">
+  <link rel="stylesheet" href="../components/tree-view/tree-view.css">
+  <link rel="stylesheet" href="../components/typography/typography.css">
+</head>
+<body>
+  <site-header></site-header>
+
+  <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
+    <site-nav></site-nav>
+
+    <main style="flex: 1; min-width: 0; max-width: 64rem; padding: var(--space-07) var(--space-10) var(--space-15)">
+      <div class="page-header">
+        <h1>App Shell</h1>
+        <p class="text-muted leading-relaxed mb-6">Shared application chrome for header-based services and sidebar workspaces. It provides a page frame, sticky header or toolbar, route navigation, page overview, inline stats, status markers, empty states, and an optional OS-aware theme toggle.</p>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-6">Header and page overview</p>
+      <p class="text-xs text-muted mb-3">Use links for routes, buttons for actions, and one technical eyebrow above the sentence-case page heading.</p>
+      <div class="preview" style="display: block; overflow: hidden; padding: 0; text-align: left; --app-shell-max: 64rem">
+        <header class="app-header" style="position: static">
+          <div class="app-header-inner">
+            <a class="brand" href="#app-shell-preview" aria-label="Worker console preview home">
+              <span class="brand-mark" aria-hidden="true">WC</span>
+              <span>Worker console</span>
+            </a>
+            <nav class="app-nav" aria-label="Preview navigation">
+              <a href="#app-shell-preview" aria-current="page">Jobs</a>
+              <a href="#app-shell-preview-history">History</a>
+            </nav>
+            <div class="app-header-actions">
+              <button class="btn" type="button" data-variant="outline" data-theme-toggle>Theme</button>
+            </div>
+          </div>
+        </header>
+        <section class="page-overview" id="app-shell-preview" aria-labelledby="app-shell-preview-heading">
+          <div>
+            <p class="eyebrow">Worker control</p>
+            <h2 class="page-heading" id="app-shell-preview-heading">Pipeline jobs</h2>
+            <p class="page-description">Inspect current workers and retry failed jobs.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn" type="button" data-variant="outline">Refresh</button>
+          </div>
+        </section>
+      </div>
+      <div style="position: relative; margin-top: var(--space-02)">
+        <button class="copy-btn" type="button">
+          <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          Copy
+        </button>
+        <pre><code class="language-markup">&lt;body class="app-shell"&gt;
+  &lt;a class="skip-link" href="#main-content"&gt;Skip to content&lt;/a&gt;
+  &lt;header class="app-header"&gt;
+    &lt;div class="app-header-inner"&gt;
+      &lt;a class="brand" href="/" aria-label="Worker console home"&gt;
+        &lt;span class="brand-mark" aria-hidden="true"&gt;WC&lt;/span&gt;
+        &lt;span&gt;Worker console&lt;/span&gt;
+      &lt;/a&gt;
+      &lt;nav class="app-nav" aria-label="Primary"&gt;
+        &lt;a href="/jobs" aria-current="page"&gt;Jobs&lt;/a&gt;
+        &lt;a href="/history"&gt;History&lt;/a&gt;
+      &lt;/nav&gt;
+      &lt;div class="app-header-actions"&gt;
+        &lt;button class="btn" type="button" data-variant="outline" data-theme-toggle&gt;Theme&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+  &lt;main id="main-content"&gt;
+    &lt;section class="page-overview" aria-labelledby="jobs-heading"&gt;
+      &lt;div&gt;
+        &lt;p class="eyebrow"&gt;Worker control&lt;/p&gt;
+        &lt;h1 class="page-heading" id="jobs-heading"&gt;Pipeline jobs&lt;/h1&gt;
+        &lt;p class="page-description"&gt;Inspect current workers and retry failed jobs.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+&lt;/body&gt;</code></pre>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-8" id="app-shell-preview-history">Inline status</p>
+      <p class="text-xs text-muted mb-3">Pair every status marker with visible text. Running is an outlined marker so it remains distinct from a neutral idle state without motion.</p>
+      <div class="preview">
+        <div style="display: grid; gap: var(--space-04); text-align: left">
+          <p class="stats">
+            <span><span class="stat-label">Queued:</span> <span class="stat-value">12</span></span>
+            <span class="stat-separator" aria-hidden="true">/</span>
+            <span class="stat-status"><span class="status-dot" data-state="positive" aria-hidden="true"></span> Ready</span>
+          </p>
+          <p class="stats">
+            <span class="stat-status"><span class="status-dot" data-state="running" aria-hidden="true"></span> Running</span>
+            <span class="stat-separator" aria-hidden="true">/</span>
+            <span class="stat-status"><span class="status-dot" data-state="caution" aria-hidden="true"></span> Delayed</span>
+            <span class="stat-separator" aria-hidden="true">/</span>
+            <span class="stat-status"><span class="status-dot" data-state="negative" aria-hidden="true"></span> Failed</span>
+          </p>
+        </div>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-8">Empty state</p>
+      <p class="text-xs text-muted mb-3">Use a concise recovery message. Add live status semantics only when asynchronous content replaces it.</p>
+      <div class="preview">
+        <p class="app-empty" role="status">No jobs match the current filter.</p>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-8">Theme behavior</p>
+      <p class="text-xs text-muted mb-3">The optional module follows the OS color scheme until a manual choice is stored. It hides the toggle when JavaScript is unavailable. Use the pre-paint snippet in the component skill to avoid a theme mismatch during initial rendering.</p>
+    </main>
+  </div>
+
+  <script src="js/site.js" defer></script>
+  <script type="module" src="../components/app-shell/app-shell.js"></script>
+</body>
+</html>

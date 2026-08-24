@@ -13,6 +13,7 @@ const configuredBaseUrl = process.env.MEWA_UI_BASE_URL;
 const defaultBaseUrl = "http://127.0.0.1:8083";
 const configuredPort = Number.parseInt(process.env.MEWA_UI_PORT || "0", 10);
 const screenshotDir = process.env.MEWA_UI_SCREENSHOT_DIR;
+const expectedBrokenImageUrl = "https://invalid-url-that-will-fail.example/photo.jpg";
 const viewports = [
   { name: "desktop", width: 1440, height: 900 },
   { name: "mobile", width: 390, height: 844 }
@@ -269,6 +270,17 @@ function chromiumPath() {
 }
 
 async function openBrowser() {
+  const configuredExecutablePath = process.env.MEWA_UI_CHROMIUM_PATH;
+  if (configuredExecutablePath) {
+    assert(fs.existsSync(configuredExecutablePath), `Configured Chromium is unavailable: ${configuredExecutablePath}`);
+    const browser = await puppeteer.launch({
+      args: ["--disable-dev-shm-usage", "--no-sandbox", "--disable-setuid-sandbox"],
+      executablePath: configuredExecutablePath,
+      headless: true
+    });
+    return { browser, owned: true };
+  }
+
   const browserURL = process.env.MEWA_UI_BROWSER_URL || "http://127.0.0.1:9223";
   try {
     return { browser: await puppeteer.connect({ browserURL }), owned: false };
@@ -364,49 +376,40 @@ function recordFailure(message) {
 }
 
 async function observePage(targetPage) {
-  targetPage.on("request", (request) => {
+  targetPage.on("console", (message) => {
+    if (message.type() !== "error") return;
+    const expectedBrokenImage = activePageName.startsWith("/docs/image.html")
+      && message.location().url === expectedBrokenImageUrl
+      && message.text().startsWith("Failed to load resource:");
+    if (!expectedBrokenImage) recordFailure(`console error: ${message.text()}`);
+  });
+  targetPage.on("pageerror", (error) => recordFailure(`page error: ${error.message}`));
+  targetPage.on("requestfailed", (request) => {
     let requestUrl;
     try {
       requestUrl = new URL(request.url());
     } catch {
-      request.continue().catch(() => {});
-      return;
+      requestUrl = null;
     }
-    if (requestUrl.origin === "https://esm.sh" && requestUrl.pathname === "/shiki@3.0.0") {
-      request.respond({
-        status: 200,
-        contentType: "application/javascript; charset=utf-8",
-        headers: {
-          "access-control-allow-origin": "*",
-          "cache-control": "public, max-age=60"
-        },
-        body: "export async function codeToHtml() { return '<pre><code></code></pre>'; }"
-      }).catch(() => {});
-      return;
-    }
-    if (request.resourceType() === "image" && requestUrl.origin !== new URL(activeBaseUrl).origin) {
-      request.respond({
-        status: 204,
-        headers: { "cache-control": "public, max-age=60" },
-        body: ""
-      }).catch(() => {});
-      return;
-    }
-    request.continue().catch(() => {});
-  });
-  targetPage.on("console", (message) => {
-    if (message.type() === "error") recordFailure(`console error: ${message.text()}`);
-  });
-  targetPage.on("pageerror", (error) => recordFailure(`page error: ${error.message}`));
-  targetPage.on("requestfailed", (request) => {
+    const expectedBrokenImage = activePageName.startsWith("/docs/image.html")
+      && request.resourceType() === "image"
+      && requestUrl?.href === expectedBrokenImageUrl;
+    if (expectedBrokenImage) return;
     if (request.failure()?.errorText !== "net::ERR_ABORTED") {
       recordFailure(`request failed: ${request.url()} ${request.failure()?.errorText || "failed"}`);
     }
   });
   targetPage.on("response", (response) => {
+    const responseUrl = new URL(response.url());
+    if (
+      response.request().resourceType() === "image"
+      && ["http:", "https:"].includes(responseUrl.protocol)
+      && responseUrl.origin !== new URL(activeBaseUrl).origin
+    ) {
+      recordFailure(`remote image loaded: ${response.url()}`);
+    }
     if (response.status() >= 400) recordFailure(`HTTP ${response.status()}: ${response.url()}`);
   });
-  await targetPage.setRequestInterception(true);
 }
 
 async function loadPage(base, route, viewport, screenshotName, options = {}) {
@@ -530,6 +533,22 @@ async function runTargetedInteractions(base) {
   const checkedBefore = await page.$eval("#demo-dropdown-checks [role=menuitemcheckbox]", (item) => item.getAttribute("aria-checked"));
   await page.click("#demo-dropdown-checks [role=menuitemcheckbox]");
   assert.notEqual(await page.$eval("#demo-dropdown-checks [role=menuitemcheckbox]", (item) => item.getAttribute("aria-checked")), checkedBefore);
+  await page.evaluate(() => {
+    const outside = document.createElement("button");
+    outside.id = "dropdown-outside-focus";
+    outside.type = "button";
+    outside.textContent = "Outside focus target";
+    document.querySelector("main")?.append(outside);
+  });
+  const outsideControl = "#dropdown-outside-focus";
+  await page.click(outsideControl);
+  await page.waitForFunction(() => !document.querySelector("#demo-dropdown-checks")?.matches(":popover-open"), { timeout: 5000 });
+  assert.equal(await page.$eval(outsideControl, (control) => document.activeElement === control), true, "dropdown light-dismiss preserves focus on the outside control");
+  await page.click('[data-dropdown-menu-trigger="demo-dropdown-checks"]');
+  await page.waitForFunction(() => document.querySelector("#demo-dropdown-checks")?.matches(":popover-open"), { timeout: 5000 });
+  await page.keyboard.press("Escape");
+  await page.waitForFunction(() => !document.querySelector("#demo-dropdown-checks")?.matches(":popover-open"), { timeout: 5000 });
+  assert.equal(await page.$eval('[data-dropdown-menu-trigger="demo-dropdown-checks"]', (trigger) => document.activeElement === trigger), true, "dropdown Escape restores focus to its trigger");
 
   await loadPage(base, "/docs/toolbar.html", desktop);
   await page.focus(".toolbar .toggle");
@@ -649,16 +668,11 @@ async function runTargetedInteractions(base) {
 
 
 async function runNoJavaScriptChecks(base) {
-  const javascriptPage = page;
-  const noJsPage = await browser.newPage();
-  page = noJsPage;
   try {
-    noJsPage.setDefaultNavigationTimeout(30000);
-    await observePage(noJsPage);
-    await noJsPage.setJavaScriptEnabled(false);
+    await page.setJavaScriptEnabled(false);
 
     await loadPage(base, "/docs/data-table.html", viewports[0], "no-js-data-table");
-    const dataTableFallback = await noJsPage.evaluate(() => ({
+    const dataTableFallback = await page.evaluate(() => ({
       filterForm: document.querySelector(".preview .data-table-filter-group")?.tagName === "FORM",
       clearType: document.querySelector(".preview [data-table-clear]")?.getAttribute("type"),
       sortLinks: [...document.querySelectorAll(".preview .data-table-sort")].every((node) => node.tagName === "A" && node.hasAttribute("href")),
@@ -670,7 +684,7 @@ async function runNoJavaScriptChecks(base) {
     assert(dataTableFallback.paginationLinks > 0, "Data Table keeps native pagination links without JavaScript");
 
     await loadPage(base, "/docs/date-range-picker.html", viewports[0], "no-js-date-range");
-    const dateRangeFallback = await noJsPage.evaluate(() => ({
+    const dateRangeFallback = await page.evaluate(() => ({
       startDescription: document.querySelector("#demo-range-start")?.getAttribute("aria-describedby"),
       endDescription: document.querySelector("#demo-range-end")?.getAttribute("aria-describedby"),
       defaultErrorHidden: document.querySelector("#demo-range-error")?.hidden,
@@ -684,7 +698,7 @@ async function runNoJavaScriptChecks(base) {
     assert.equal(dateRangeFallback.serverInvalid, "true", "Date Range keeps server invalid state without JavaScript");
 
     await loadPage(base, "/docs/resizable.html", viewports[0], "no-js-resizable");
-    const resizableFallback = await noJsPage.$eval(".preview .resizable-handle", (handle) => ({
+    const resizableFallback = await page.$eval(".preview .resizable-handle", (handle) => ({
       tagName: handle.tagName,
       role: handle.getAttribute("role"),
       tabIndex: handle.getAttribute("tabindex"),
@@ -699,8 +713,7 @@ async function runNoJavaScriptChecks(base) {
     assert.equal(resizableFallback.touchAction, "auto", "Resizable keeps native touch behavior without JavaScript");
     assert.equal(resizableFallback.userSelect, "auto", "Resizable keeps native selection behavior without JavaScript");
   } finally {
-    await noJsPage.close().catch(() => {});
-    page = javascriptPage;
+    await page.setJavaScriptEnabled(true);
   }
 }
 

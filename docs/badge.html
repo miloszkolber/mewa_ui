@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="../components/accordion/accordion.css">
   <link rel="stylesheet" href="../components/alert-dialog/alert-dialog.css">
+  <link rel="stylesheet" href="../components/app-shell/app-shell.css">
   <link rel="stylesheet" href="../components/avatar/avatar.css">
   <link rel="stylesheet" href="../components/badge/badge.css">
   <link rel="stylesheet" href="../components/breadcrumbs/breadcrumbs.css">
@@ -167,6 +168,28 @@
           <pre><code class="language-markup">&lt;span class="badge" data-variant="default"&gt;Default&lt;/span&gt;
 &lt;span class="badge" data-variant="secondary"&gt;Secondary&lt;/span&gt;
 &lt;span class="badge" data-variant="outline"&gt;Outline&lt;/span&gt;</code></pre>
+        </div>
+
+        <!-- Status states -->
+        <p class="text-sm font-medium mb-2 mt-8">Status states</p>
+        <p class="text-xs text-muted mb-3">Use <code>data-state</code> for meaningful operational status. The visible label remains authoritative, so state never depends on color alone.</p>
+        <div class="preview">
+          <div style="display: flex; gap: var(--space-03); align-items: center; flex-wrap: wrap">
+            <span class="badge" data-state="positive">Ready</span>
+            <span class="badge" data-state="caution">Delayed</span>
+            <span class="badge" data-state="negative">Failed</span>
+            <span class="badge" data-state="running">Running</span>
+          </div>
+        </div>
+        <div style="position: relative; margin-top: var(--space-02)">
+          <button class="copy-btn" type="button">
+            <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            Copy
+          </button>
+          <pre><code class="language-markup">&lt;span class="badge" data-state="positive"&gt;Ready&lt;/span&gt;
+&lt;span class="badge" data-state="caution"&gt;Delayed&lt;/span&gt;
+&lt;span class="badge" data-state="negative"&gt;Failed&lt;/span&gt;
+&lt;span class="badge" data-state="running"&gt;Running&lt;/span&gt;</code></pre>
         </div>
 
         <!-- Decorative (hidden) -->

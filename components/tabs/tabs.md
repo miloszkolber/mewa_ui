@@ -129,7 +129,7 @@ Up/Down based on `aria-orientation`.
 
 ## Visual variants
 
-- The default tab list is a compact segmented group. Its selected trigger uses the page background and a semantic border, while inactive triggers remain transparent until hovered.
+- The default tab list is a compact segmented group. Its selected trigger uses the inverted surface and text roles, while inactive triggers use secondary text and remain transparent until hovered.
 - `data-variant="line"` switches to the documented underline treatment.
 - Both treatments remain square and motionless so the tab group follows the shared geometry contract.
 
@@ -137,7 +137,7 @@ Up/Down based on `aria-orientation`.
 
 ## Notes
 
-- The selected trigger fills its track segment with inverted surface and inverted text; idle triggers stay transparent.
+- The selected trigger fills its track segment with inverted surface and inverted text. Idle triggers stay transparent and use secondary text for readable contrast.
 - Only the active tab is in the tab order (`tabindex="0"`) — inactive tabs use `tabindex="-1"`
 - Arrow keys cycle through tabs (wrap around) — this is the roving tabindex pattern
 - The active panel uses `tabindex="0"` so it can receive focus from the tab trigger

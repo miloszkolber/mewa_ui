@@ -81,13 +81,15 @@ region announcements. Follows `role="status"` with `aria-live="polite"`.
 
 ## Positions
 
-Set `data-position` on the `.toast-container`:
+Omitting `data-position` places the container at `bottom-right`. Set `data-position` to choose another supported edge or centered position:
 - `bottom-right` (default)
 - `bottom-left`
 - `bottom-center`
 - `top-right`
 - `top-left`
 - `top-center`
+
+Toast width stays within the viewport at narrow sizes. Position names are physical viewport positions and do not change in right-to-left documents.
 
 ---
 

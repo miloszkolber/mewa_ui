@@ -30,12 +30,12 @@ ui_library/
 ├── src/geist.woff2                ← Geist variable font, 400–550
 ├── src/geistmono.woff2            ← Geist Mono variable font, 400–550
 ├── src/icons/                     ← local Lucide SVG files, one file per icon
-├── components/                    ← 58 self-contained component folders
+├── components/                    ← 59 self-contained component folders
 │   └── {name}/
 │       ├── {name}.md              ← skill: native basis, structure, attributes, and ARIA
 │       ├── {name}.css             ← component stylesheet
 │       └── {name}.js              ← interaction module when the component needs one
-├── docs/                          ← 58 static component pages and doc-site scripts
+├── docs/                          ← 59 static component pages and doc-site scripts
 ├── layouts/                       ← canonical application-shell templates
 └── AGENTS.md                     ← maintainer instructions
 ```
@@ -72,7 +72,7 @@ Use `<dialog>` for modal surfaces, the Popover API for popovers and tooltips, `<
 
 ## Canonical application shells
 
-`layouts/` is the only canonical home for reusable application-shell templates. The current two templates are `layouts/vertical-navbar.html` for a left collapsible sidebar and `layouts/horizontal-navbar.html` for top navigation. Keep both serveable from the repository root, and compose them from current `src/`, `components/`, and layout-local files. `layouts/layouts.css` owns template-only layout rules, while `layouts/layouts.js` provides local icon inlining and the optional theme toggle.
+`layouts/` is the only canonical home for complete reusable application-shell templates. The current two templates are `layouts/vertical-navbar.html` for a left collapsible sidebar and `layouts/horizontal-navbar.html` for top navigation. Keep both serveable from the repository root, and compose them from current `src/`, `components/`, and layout-local files. `layouts/layouts.css` owns template-only layout rules, while `layouts/layouts.js` provides local icon inlining and the optional theme toggle. The App Shell component supplies shared header, toolbar, page-overview, status, empty-state, and optional theme primitives for consumer-owned shells without creating a third template.
 
 ### Left collapsible sidebar
 
@@ -183,6 +183,7 @@ This is the complete current inventory, grouped by the same purpose groups used 
 
 | Component | Native basis | JS | Skill and doc |
 |---|---|---|---|
+| App Shell | `<body>`, `<header>`, `<nav>`, and `<main>` page frame with native route links and an optional theme enhancement | Optional | [`components/app-shell/app-shell.md`](components/app-shell/app-shell.md) · [`docs/app-shell.html`](docs/app-shell.html) |
 | Sidebar | `<aside>` and `<nav>` with a `<dialog>` mobile overlay, a flat link list, and a footer collapse button | Yes | [`components/sidebar/sidebar.md`](components/sidebar/sidebar.md) · [`docs/sidebar.html`](docs/sidebar.html) |
 | Resizable | Two panels separated by a static `role="separator"`; the optional module adds the keyboard and pointer resizing behavior | Optional | [`components/resizable/resizable.md`](components/resizable/resizable.md) · [`docs/resizable.html`](docs/resizable.html) |
 
@@ -199,7 +200,7 @@ Table remains the structural semantic table component, while Data Table is its o
 - **Description list** — add a small `<dl>` pattern for metadata-heavy pages before creating a broad “metadata” component.
 - **Diff and chart** — use `<figure>`, `<figcaption>`, native `range`/`output`, SVG or canvas with a textual table fallback, and explicit summaries before introducing a visualization runtime.
 - **Freeform autocomplete** — extend the documented `Combobox` pattern only if a text-entry mode is needed. Do not create a second listbox implementation.
-- **Header, footer, tag input, OTP input, and hover card** — compare demand and native API support before adding them. Header and footer are already layout primitives.
+- **Footer, tag input, OTP input, and hover card** — compare demand and native API support before adding them. Shared application headers are covered by App Shell, while complete template composition remains under `layouts/`.
 
 The Kernel UI catalog is a useful parity checklist, not a requirement to add every named component. Its most relevant remaining gaps for this library are richer form composition and message or AI work surfaces. Karl Koch's semantic-HTML-first principles reinforce the existing contract: start with native elements, let pseudo-classes and browser validation express state, use `data-*` only for state the platform cannot represent, and keep the HTML useful without a framework runtime. Review [Karl Koch's semantic-HTML-first article](https://karlkoch.me/writing/why-i-built-a-semantic-html-first-library/) and the [Kernel UI component catalog](https://www.kernelui.com/components/) before promoting a candidate into the supported inventory.
 
@@ -213,7 +214,7 @@ Doc pages load the foundation styles and the complete component stylesheet list,
 
 - Keep each component self-contained in `components/{name}/`. Its skill documents the HTML pattern, attributes, native basis, keyboard model, and ARIA. Edit the stylesheet and module directly. Do not create a framework wrapper or a second source tree.
 - When adding a component, add its skill, stylesheet, optional module, and `docs/{name}.html`. Add the page to `NAV` and `BUILT` in `docs/js/layout.js`, and add its stylesheet link following the current doc-page convention, and its module script only on pages whose demos use it.
-- Update the 58-row inventory in this file whenever a component is added, removed, renamed, or changes its JS requirement. Verify the row against the actual `components/{name}/` directory, the skill's Native basis section, and the matching doc page.
+- Update the 59-row inventory in this file whenever a component is added, removed, renamed, or changes its JS requirement. Verify the row against the actual `components/{name}/` directory, the skill's Native basis section, and the matching doc page.
 - Keep component docs, markup examples, CSS, and JS aligned. Do not document a variant, state, API, or layout that the current source does not implement.
 - Preserve the no-animation contract, square geometry, semantic token usage, native fallback behavior, keyboard path, contrast modes, and forced-colors support in every change.
 - Keep `docs/` imports and `docs/js/layout.js` synchronized. A missing import can make a cross-page demo fail silently.

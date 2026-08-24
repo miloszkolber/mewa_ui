@@ -32,8 +32,15 @@ function bindMenu(trigger, state, menu) {
     if (state.menu !== menu || !trigger.isConnected) return;
     const open = e.newState === 'open';
     trigger.setAttribute('aria-expanded', open);
-    if (open) { const first = getItems()[0]; if (first) highlight(first); }
-    else { getItems().forEach((i) => { i.removeAttribute('data-highlighted'); }); trigger.focus(); }
+    if (open) {
+      state.restoreFocusOnClose = false;
+      const first = getItems()[0];
+      if (first) highlight(first);
+    } else {
+      getItems().forEach((i) => { i.removeAttribute('data-highlighted'); });
+      if (state.restoreFocusOnClose) trigger.focus();
+      state.restoreFocusOnClose = false;
+    }
   };
   const onMousemove = (e) => {
     if (state.menu !== menu || !trigger.isConnected) return;
@@ -58,13 +65,20 @@ function bindMenu(trigger, state, menu) {
       case 'ArrowUp': e.preventDefault(); highlight(items[(current - 1 + items.length) % items.length]); break;
       case 'Home': e.preventDefault(); highlight(items[0]); break;
       case 'End': e.preventDefault(); highlight(items[items.length - 1]); break;
-      case 'Escape': menu.hidePopover(); break;
+      case 'Escape':
+        state.restoreFocusOnClose = true;
+        menu.hidePopover();
+        break;
       case 'Enter': case ' ':
         e.preventDefault();
         if (document.activeElement) {
           const role = document.activeElement.getAttribute('role');
           if (role === 'menuitemcheckbox' || role === 'menuitemradio') activateCheckable(document.activeElement);
-          else { document.activeElement.click(); menu.hidePopover(); }
+          else {
+            document.activeElement.click();
+            state.restoreFocusOnClose = true;
+            menu.hidePopover();
+          }
         }
         break;
       default:
@@ -118,7 +132,7 @@ function rebindTargets() {
 function init() {
   document.querySelectorAll('[data-dropdown-menu-trigger]:not([data-init])').forEach((trigger) => {
     trigger.dataset.init = '';
-    const state = { menu: null, unbindMenu: null, onTriggerClick: null };
+    const state = { menu: null, unbindMenu: null, onTriggerClick: null, restoreFocusOnClose: false };
     triggerStates.set(trigger, state);
     initializedTriggers.add(trigger);
     state.onTriggerClick = () => {

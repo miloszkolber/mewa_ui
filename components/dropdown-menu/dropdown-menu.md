@@ -117,6 +117,7 @@ For checkbox/radio items in the menu, use `aria-checked`:
 - CSS anchor positioning (`position-anchor`, `anchor()`) handles placement — no JS positioning needed
 - `position-try: flip-block` automatically flips the menu above the trigger if there's no room below
 - The `popover` API handles light-dismiss (click outside) automatically
+- Light-dismiss keeps focus on the newly focused outside control. Escape and keyboard activation that closes the menu return focus to the trigger.
 - For submenus, nest another `[popover]` element triggered by a `menuitem` with `aria-haspopup="menu"`
 - Escape closes the menu and returns focus to the trigger
 - Menu items use `tabindex="-1"` — only arrow keys move focus (roving focus pattern)

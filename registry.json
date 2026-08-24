@@ -888,6 +888,22 @@
       "description": "Site navigation lists with native popover dropdown panels and anchored route groups."
     },
     {
+      "name": "App Shell",
+      "slug": "app-shell",
+      "category": "Application",
+      "nativeBasis": "A semantic page frame composed from `<body>`, `<header>`, `<nav>`, `<main>`, native route links, and native action buttons, with an optional OS-aware persisted theme enhancement.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "components/app-shell/app-shell.md",
+        "css": "components/app-shell/app-shell.css",
+        "js": "components/app-shell/app-shell.js"
+      },
+      "docs": "docs/app-shell.html",
+      "description": "Shared application headers, toolbars, page overviews, inline status, empty states, and optional theme control."
+    },
+    {
       "name": "Sidebar",
       "slug": "sidebar",
       "category": "Application",

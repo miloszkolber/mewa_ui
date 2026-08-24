@@ -171,6 +171,17 @@ class WindowLike {
     this.listeners = {};
     this.innerWidth = 1024;
     this.innerHeight = 768;
+    const storedValues = new Map();
+    this.localStorage = {
+      getItem: (key) => storedValues.has(key) ? storedValues.get(key) : null,
+      setItem: (key, value) => { storedValues.set(String(key), String(value)); },
+      removeItem: (key) => { storedValues.delete(String(key)); }
+    };
+    this.matchMedia = () => ({
+      matches: false,
+      addEventListener() {},
+      removeEventListener() {}
+    });
   }
 
   addEventListener(type, listener) {
@@ -634,6 +645,26 @@ test("checkbox groups coordinate select-all state and disabled items", () => {
   assert.equal(runtime.document.activeElement, runtime.document.body);
 });
 
+test("app shell theme toggles persist state and initialize inserted controls", () => {
+  const toggle = node("button", { type: "button", "data-theme-toggle": "" }, "Theme");
+  const runtime = loadModule("app-shell", toggle);
+
+  assert.equal(toggle.hasAttribute("data-init"), true);
+  assert.equal(toggle.dataset.theme, "light");
+  assert.equal(toggle.getAttribute("aria-label"), "Switch to dark theme");
+  fire(toggle, "click");
+  assert.equal(runtime.document.documentElement.classList.contains("dark"), true);
+  assert.equal(runtime.window.localStorage.getItem("mewa-ui-theme"), "dark");
+  assert.equal(toggle.dataset.theme, "dark");
+  assert.equal(toggle.getAttribute("aria-label"), "Switch to light theme");
+
+  const inserted = node("button", { type: "button", "data-theme-toggle": "" }, "Theme");
+  runtime.document.body.append(inserted);
+  assert.equal(inserted.hasAttribute("data-init"), true);
+  assert.equal(inserted.dataset.theme, "dark");
+  assert.equal(listeners(inserted, "click"), 1);
+});
+
 test("time fields normalize segments, serialize canonical time, and step minutes", () => {
   const field = node("fieldset", { class: "time-field" });
   const hour = node("input", { class: "time-field-input", "data-time-part": "hour" });
@@ -926,6 +957,13 @@ test("dropdown menus rebind a persistent trigger when its target is replaced", (
   fire(replacement, "toggle", { newState: "open" });
   assert.equal(trigger.getAttribute("aria-expanded"), "true");
   assert.equal(runtime.document.activeElement, replacementItem);
+  const outside = node("button", { type: "button" }, "Outside");
+  root.append(outside);
+  outside.focus();
+  fire(replacement, "toggle", { newState: "closed" });
+  assert.equal(runtime.document.activeElement, outside, "light-dismiss must not steal focus from an outside control");
+  fire(replacement, "toggle", { newState: "open" });
+  assert.equal(runtime.document.activeElement, replacementItem);
   fire(firstMenu, "toggle", { newState: "closed" });
   assert.equal(trigger.getAttribute("aria-expanded"), "true", "superseded target cannot overwrite trigger state");
   assert.equal(runtime.document.activeElement, replacementItem, "superseded target cannot move focus");
@@ -935,6 +973,7 @@ test("dropdown menus rebind a persistent trigger when its target is replaced", (
   assert.equal(replacementItem.hasAttribute("data-highlighted"), true);
   key(replacementItem, "Escape");
   assert.equal(trigger.getAttribute("aria-expanded"), "false");
+  assert.equal(runtime.document.activeElement, trigger, "Escape returns focus to the trigger");
 
   replacement.remove();
   const secondMenu = node("div", { id: "actions", popover: "auto" });
