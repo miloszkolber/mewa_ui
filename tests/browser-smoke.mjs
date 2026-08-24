@@ -447,6 +447,59 @@ async function runTargetedInteractions(base) {
   const desktop = viewports[0];
 
   await loadPage(base, "/docs/typography.html", desktop);
+  await page.focus(".docs-skip-link");
+  await page.keyboard.press("Enter");
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "main-content", "docs skip link should focus the stable main target");
+  assert.equal(await page.$eval("#main-content", (main) => main.getClientRects().length > 0), true, "docs skip target should remain visible");
+
+  await loadPage(base, "/docs/typography.html", viewports[1]);
+  const closedMobileNav = await page.$eval("#site-nav-dialog", (dialog) => {
+    const visible = (node) => {
+      const style = getComputedStyle(node);
+      return !node.hidden && style.display !== "none" && style.visibility !== "hidden" && node.getClientRects().length > 0;
+    };
+    return {
+      open: dialog.open,
+      modal: dialog.matches(":modal"),
+      visibleControls: [...dialog.querySelectorAll("a[href], button, input")].filter(visible).length
+    };
+  });
+  assert.equal(closedMobileNav.open, false, "mobile docs navigation starts closed");
+  assert.equal(closedMobileNav.modal, false, "closed mobile docs navigation is not modal");
+  assert.equal(closedMobileNav.visibleControls, 0, "closed mobile navigation controls are not tabbable");
+  assert.deepEqual(await page.$eval("#sidebar-toggle", (toggle) => ({
+    type: toggle.type,
+    controls: toggle.getAttribute("aria-controls"),
+    expanded: toggle.getAttribute("aria-expanded"),
+    popup: toggle.getAttribute("aria-haspopup")
+  })), { type: "button", controls: "site-nav-dialog", expanded: "false", popup: "dialog" });
+
+  await page.click("#sidebar-toggle");
+  await page.waitForFunction(() => document.querySelector("#site-nav-dialog")?.matches(":modal"), { timeout: 5000 });
+  assert.equal(await page.$eval("#sidebar-toggle", (toggle) => toggle.getAttribute("aria-expanded")), "true");
+  assert.equal(await page.$eval("#site-nav-dialog", (dialog) => dialog.contains(document.activeElement)), true, "opening mobile navigation should move focus inside the dialog");
+  await page.keyboard.press("Escape");
+  await page.waitForFunction(() => document.querySelector("#site-nav-dialog")?.open === false, { timeout: 5000 });
+  assert.equal(await page.$eval("#sidebar-toggle", (toggle) => document.activeElement === toggle), true, "mobile navigation Escape restores trigger focus");
+
+  await page.keyboard.down("Control");
+  await page.keyboard.press("k");
+  await page.keyboard.up("Control");
+  await page.waitForFunction(() => document.querySelector("#site-nav-dialog")?.matches(":modal"), { timeout: 5000 });
+  assert.equal(await page.evaluate(() => document.activeElement?.matches("#site-nav-dialog .nav-filter-input")), true, "Cmd/Ctrl+K opens mobile navigation before focusing its filter");
+  const navBounds = await page.$eval("#site-nav-dialog", (dialog) => {
+    const { top, right, bottom } = dialog.getBoundingClientRect();
+    return { top, right, bottom };
+  });
+  assert(navBounds.right < viewports[1].width, "mobile navigation should leave a backdrop target outside the panel");
+  await page.mouse.click(
+    navBounds.right + ((viewports[1].width - navBounds.right) / 2),
+    navBounds.top + ((navBounds.bottom - navBounds.top) / 2)
+  );
+  await page.waitForFunction(() => document.querySelector("#site-nav-dialog")?.open === false, { timeout: 5000 });
+  assert.equal(await page.$eval("#sidebar-toggle", (toggle) => document.activeElement === toggle), true, "mobile navigation backdrop closes and restores trigger focus");
+
+  await loadPage(base, "/docs/typography.html", desktop);
   for (const destination of ["data-table.html", "date-range-picker.html", "resizable.html"]) {
     await page.click(`a.nav-link[href="${destination}"]`);
     const title = destination.replace(/\.html$/, "").replaceAll("-", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
@@ -508,6 +561,7 @@ async function runTargetedInteractions(base) {
   });
   await page.click("figure[data-preview]");
   await page.waitForFunction(() => document.querySelector("dialog.image-lightbox")?.open === true, { timeout: 5000 });
+  assert.equal(await page.$$eval("dialog.image-lightbox button", (buttons) => buttons.every((button) => button.getAttribute("type") === "button")), true, "generated lightbox controls should be explicit non-submit buttons");
   await page.keyboard.press("Escape");
   await page.waitForFunction(() => document.querySelector("dialog.image-lightbox")?.open === false, { timeout: 5000 });
   await page.click('a.nav-link[href="typography.html"]');
@@ -520,6 +574,7 @@ async function runTargetedInteractions(base) {
   });
   await page.click("figure[data-preview]");
   await page.waitForFunction(() => document.querySelector("dialog.image-lightbox")?.open === true, { timeout: 5000 });
+  assert.equal(await page.$$eval("dialog.image-lightbox button", (buttons) => buttons.every((button) => button.getAttribute("type") === "button")), true, "SPA-created lightbox controls should remain explicit non-submit buttons");
   await page.keyboard.press("Escape");
 
   await loadPage(base, "/docs/combobox.html", desktop);
@@ -573,14 +628,31 @@ async function runTargetedInteractions(base) {
   await page.waitForFunction(() => document.activeElement?.closest("details.tree-branch")?.open === true, { timeout: 5000 });
 
   await loadPage(base, "/docs/toast.html", desktop);
-  await page.evaluate(() => window.toast.show({ title: "Actionable", duration: 100 }));
+  await page.evaluate(() => window.toast.show({ title: "Actionable", duration: 100, action: { label: "Undo" } }));
   await page.waitForSelector(".toast", { timeout: 5000 });
+  assert.equal(await page.$$eval(".toast button", (buttons) => buttons.every((button) => button.getAttribute("type") === "button")), true, "generated toast controls should be explicit non-submit buttons");
   await page.hover(".toast");
   await wait(180);
   assert(await page.$(".toast"), "hovered toasts should remain visible");
   await page.mouse.move(0, 0);
   await wait(150);
   assert.equal(await page.$(".toast"), null, "toasts should resume dismissal after hover ends");
+
+  await loadPage(base, "/docs/carousel.html", desktop);
+  const carouselButtonContract = await page.$eval(".carousel:has(.carousel-dot)", (carousel) => {
+    const form = document.createElement("form");
+    let submissions = 0;
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      submissions += 1;
+    });
+    carousel.before(form);
+    form.append(carousel);
+    const dot = carousel.querySelector(".carousel-dot");
+    dot.click();
+    return { attribute: dot.getAttribute("type"), submissions };
+  });
+  assert.deepEqual(carouselButtonContract, { attribute: "button", submissions: 0 }, "generated carousel dots should not submit an enclosing form");
 
   await loadPage(base, "/docs/accordion.html", desktop, "interaction-accordion");
   const singleAccordion = ".accordion[data-type=single]";

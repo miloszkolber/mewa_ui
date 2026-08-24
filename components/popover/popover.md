@@ -15,7 +15,7 @@
 ## Structure
 
 ```html
-<button class="btn" data-variant="outline" popovertarget="my-popover">Open Popover</button>
+<button class="btn" type="button" data-variant="outline" popovertarget="my-popover">Open Popover</button>
 
 <div class="popover" id="my-popover" popover>
   <div class="popover-header">
@@ -31,13 +31,13 @@
 ### With side and alignment
 
 ```html
-<button class="btn" popovertarget="pop-top">Top</button>
+<button class="btn" type="button" popovertarget="pop-top">Top</button>
 <div class="popover" id="pop-top" popover data-side="top">...</div>
 
-<button class="btn" popovertarget="pop-right">Right</button>
+<button class="btn" type="button" popovertarget="pop-right">Right</button>
 <div class="popover" id="pop-right" popover data-side="right">...</div>
 
-<button class="btn" popovertarget="pop-end">End aligned</button>
+<button class="btn" type="button" popovertarget="pop-end">End aligned</button>
 <div class="popover" id="pop-end" popover data-align="end">...</div>
 ```
 
@@ -58,7 +58,7 @@ No additional ARIA attributes are needed. The native `popover` attribute and `po
 |---|---|
 | Toggle open/close | `popovertarget` (declarative, no JS) |
 | Light dismiss | Popover API (click outside or Escape closes) |
-| Focus management | Browser moves focus into popover on open |
+| Focus management | Sequential focus follows the document order. Add `autofocus` to an appropriate initial control only when opening should intentionally place focus there. |
 
 ## Keyboard
 
@@ -70,8 +70,9 @@ No additional ARIA attributes are needed. The native `popover` attribute and `po
 ## Notes
 
 - The popover renders in the **top layer**, so it appears above all other content regardless of `z-index`.
-- The panel uses the mostly opaque semantic glass role and a small backdrop blur. Keep the border visible instead of adding a shadow.
+- The panel uses semantic surfaces. Keep the border visible instead of adding a shadow.
 - CSS anchor positioning (`position-area`) handles placement — the JS only assigns unique anchor names per trigger–popover pair.
 - `position-try-fallbacks: flip-block` (or `flip-inline` for left/right sides) automatically repositions when the popover would overflow the viewport.
 - The `popover` attribute defaults to `"auto"` which provides light-dismiss behavior. Use `popover="manual"` if you need the popover to stay open until explicitly closed.
+- The browser does not promise to move focus into a popover. Keep the sequential focus order useful, and use `autofocus` only for a clearly appropriate initial control.
 - Do not place the `.popover` element inside scroll containers — it renders in the top layer and will not scroll with parent content.

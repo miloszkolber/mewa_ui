@@ -22,7 +22,7 @@ Requires minimal JavaScript for trigger wiring, keyboard focus wrapping, focus r
 
 ```html
 <!-- Trigger -->
-<button class="btn" data-variant="default"
+<button type="button" class="btn" data-variant="default"
         data-dialog-trigger="my-dialog"
         aria-haspopup="dialog">
   Open
@@ -46,10 +46,10 @@ Requires minimal JavaScript for trigger wiring, keyboard focus wrapping, focus r
     </div>
 
     <div class="dialog-footer">
-      <button class="btn" data-variant="outline" data-dialog-close>
+      <button type="button" class="btn" data-variant="outline" data-dialog-close>
         Cancel
       </button>
-      <button class="btn" data-variant="default">
+      <button type="button" class="btn" data-variant="default">
         Confirm
       </button>
     </div>

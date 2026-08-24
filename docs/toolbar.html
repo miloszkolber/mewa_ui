@@ -82,12 +82,13 @@
   <link rel="stylesheet" href="../components/typography/typography.css">
 </head>
 <body>
+  <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
   <site-header></site-header>
 
   <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
 
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Toolbar</h1>
         <p class="text-muted leading-relaxed mb-6">
@@ -102,36 +103,36 @@
         <div class="preview">
           <div class="toolbar" role="toolbar" aria-label="Formatting" aria-orientation="horizontal">
             <div class="toggle-group" role="group" aria-label="Text style" data-type="multiple">
-              <button class="toggle" aria-pressed="false"><i data-lucide="bold"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="italic"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="underline"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="bold"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="italic"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="underline"></i></button>
             </div>
             <div class="separator" data-orientation="vertical" role="separator"></div>
             <div class="toggle-group" role="group" aria-label="Alignment" data-type="single">
-              <button class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
             </div>
             <div class="separator" data-orientation="vertical" role="separator"></div>
-            <button class="btn" data-variant="ghost" data-size="sm">
+            <button type="button" class="btn" data-variant="ghost" data-size="sm">
               <i data-lucide="link-2"></i> Link
             </button>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="toolbar" role="toolbar" aria-label="Formatting"&gt;
   &lt;div class="toggle-group" data-type="multiple" ...&gt;
-    &lt;button class="toggle" aria-pressed="false"&gt;...&lt;/button&gt;
+    &lt;button type="button" class="toggle" aria-pressed="false"&gt;...&lt;/button&gt;
     ...
   &lt;/div&gt;
   &lt;div class="separator" data-orientation="vertical" role="separator"&gt;&lt;/div&gt;
   &lt;div class="toggle-group" data-type="single" ...&gt;...&lt;/div&gt;
   &lt;div class="separator" data-orientation="vertical" role="separator"&gt;&lt;/div&gt;
-  &lt;button class="btn" data-variant="ghost"&gt;Link&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="ghost"&gt;Link&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         </div>
 
@@ -140,30 +141,30 @@
         <p class="text-xs text-muted mb-3">Quick actions with icon buttons.</p>
         <div class="preview">
           <div class="toolbar" role="toolbar" aria-label="Actions" aria-orientation="horizontal">
-            <button class="btn" data-variant="ghost" data-size="icon" aria-label="Undo"><i data-lucide="undo-2"></i></button>
-            <button class="btn" data-variant="ghost" data-size="icon" aria-label="Redo"><i data-lucide="redo-2"></i></button>
+            <button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="Undo"><i data-lucide="undo-2"></i></button>
+            <button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="Redo"><i data-lucide="redo-2"></i></button>
             <div class="separator" data-orientation="vertical" role="separator"></div>
-            <button class="btn" data-variant="ghost" data-size="icon" aria-label="Copy"><i data-lucide="copy"></i></button>
-            <button class="btn" data-variant="ghost" data-size="icon" aria-label="Cut"><i data-lucide="scissors"></i></button>
-            <button class="btn" data-variant="ghost" data-size="icon" aria-label="Paste"><i data-lucide="clipboard-paste"></i></button>
+            <button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="Copy"><i data-lucide="copy"></i></button>
+            <button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="Cut"><i data-lucide="scissors"></i></button>
+            <button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="Paste"><i data-lucide="clipboard-paste"></i></button>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="toolbar" role="toolbar" aria-label="Actions"&gt;
-  &lt;button class="btn" data-variant="ghost" data-size="icon" aria-label="Undo"&gt;
+  &lt;button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="Undo"&gt;
     &lt;i data-lucide="undo-2"&gt;&lt;/i&gt;
   &lt;/button&gt;
-  &lt;button class="btn" data-variant="ghost" data-size="icon" aria-label="Redo"&gt;
+  &lt;button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="Redo"&gt;
     &lt;i data-lucide="redo-2"&gt;&lt;/i&gt;
   &lt;/button&gt;
   &lt;div class="separator" data-orientation="vertical" role="separator"&gt;&lt;/div&gt;
-  &lt;button class="btn" data-variant="ghost" data-size="icon" aria-label="Copy"&gt;...&lt;/button&gt;
-  &lt;button class="btn" data-variant="ghost" data-size="icon" aria-label="Cut"&gt;...&lt;/button&gt;
-  &lt;button class="btn" data-variant="ghost" data-size="icon" aria-label="Paste"&gt;...&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="Copy"&gt;...&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="Cut"&gt;...&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="Paste"&gt;...&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         </div>
 

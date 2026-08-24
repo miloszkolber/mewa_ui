@@ -135,6 +135,7 @@
       if (target) {
         e.preventDefault();
         target.scrollIntoView({ behavior: 'auto', block: 'start' });
+        if (link.matches('.skip-link')) target.focus({ preventScroll: true });
         history.replaceState(null, '', '#' + id);
       }
     });

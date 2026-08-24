@@ -18,19 +18,19 @@
 ```html
 <div class="toolbar" role="toolbar" aria-label="Formatting" aria-orientation="horizontal">
   <div class="toggle-group" role="group" aria-label="Text style" data-type="multiple">
-    <button class="toggle" aria-pressed="false">
+    <button type="button" class="toggle" aria-pressed="false">
       <svg aria-hidden="true" ...><!-- bold --></svg>
     </button>
-    <button class="toggle" aria-pressed="false">
+    <button type="button" class="toggle" aria-pressed="false">
       <svg aria-hidden="true" ...><!-- italic --></svg>
     </button>
   </div>
   <div class="separator" data-orientation="vertical" role="separator"></div>
   <div class="toggle-group" role="group" aria-label="Alignment" data-type="single">
-    <button class="toggle" aria-pressed="true">
+    <button type="button" class="toggle" aria-pressed="true">
       <svg aria-hidden="true" ...><!-- align-left --></svg>
     </button>
-    <button class="toggle" aria-pressed="false">
+    <button type="button" class="toggle" aria-pressed="false">
       <svg aria-hidden="true" ...><!-- align-center --></svg>
     </button>
   </div>

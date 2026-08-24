@@ -105,6 +105,7 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
     if (!dotsContainer.children.length && allSlides.length) {
       allSlides.forEach((_, i) => {
         const dot = document.createElement('button');
+        dot.type = 'button';
         dot.className = 'carousel-dot';
         dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
         dot.setAttribute('aria-current', i === 0 ? 'true' : 'false');

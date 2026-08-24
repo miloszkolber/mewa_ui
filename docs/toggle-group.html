@@ -82,12 +82,13 @@
   <link rel="stylesheet" href="../components/typography/typography.css">
 </head>
 <body>
+  <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
   <site-header></site-header>
 
   <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
 
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Toggle group</h1>
         <p class="text-muted leading-relaxed mb-6">
@@ -102,21 +103,21 @@
         <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-08) 0" >
             <div class="toggle-group" role="group" aria-label="Text alignment" data-type="single">
-              <button class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
             </div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="toggle-group" role="group" aria-label="Alignment" data-type="single"&gt;
-  &lt;button class="toggle" aria-pressed="true"&gt;&lt;i data-lucide="align-start-horizontal"&gt;&lt;/i&gt;&lt;/button&gt;
-  &lt;button class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="align-center-horizontal"&gt;&lt;/i&gt;&lt;/button&gt;
-  &lt;button class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="align-end-horizontal"&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="true"&gt;&lt;i data-lucide="align-start-horizontal"&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="align-center-horizontal"&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="align-end-horizontal"&gt;&lt;/i&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         </div>
 
@@ -126,21 +127,21 @@
         <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-08) 0" >
             <div class="toggle-group" role="group" aria-label="Text formatting" data-type="multiple">
-              <button class="toggle" aria-pressed="true"><i data-lucide="bold"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="italic"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="underline"></i></button>
+              <button type="button" class="toggle" aria-pressed="true"><i data-lucide="bold"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="italic"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="underline"></i></button>
             </div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="toggle-group" role="group" aria-label="Formatting" data-type="multiple"&gt;
-  &lt;button class="toggle" aria-pressed="true"&gt;&lt;i data-lucide="bold"&gt;&lt;/i&gt;&lt;/button&gt;
-  &lt;button class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="italic"&gt;&lt;/i&gt;&lt;/button&gt;
-  &lt;button class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="underline"&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="true"&gt;&lt;i data-lucide="bold"&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="italic"&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="underline"&gt;&lt;/i&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         </div>
 
@@ -150,21 +151,21 @@
         <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-08) 0" >
             <div class="toggle-group" role="group" aria-label="View" data-type="single" data-variant="outline">
-              <button class="toggle" aria-pressed="true"><i data-lucide="list"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="grid-2x2"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="kanban"></i></button>
+              <button type="button" class="toggle" aria-pressed="true"><i data-lucide="list"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="grid-2x2"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="kanban"></i></button>
             </div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="toggle-group" role="group" aria-label="View" data-type="single" data-variant="outline"&gt;
-  &lt;button class="toggle" aria-pressed="true"&gt;&lt;i data-lucide="list"&gt;&lt;/i&gt;&lt;/button&gt;
-  &lt;button class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="grid-2x2"&gt;&lt;/i&gt;&lt;/button&gt;
-  &lt;button class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="kanban"&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="true"&gt;&lt;i data-lucide="list"&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="grid-2x2"&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="kanban"&gt;&lt;/i&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         </div>
 
@@ -172,23 +173,23 @@
         <p class="text-sm font-medium mb-2 mt-8">Sizes</p>
         <div class="preview">
           <div style="display: flex; flex-direction: column; gap: var(--space-04); align-items: center; padding: var(--space-08) 0" >
-              <button class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
             </div>
             <div class="toggle-group" role="group" aria-label="Size default" data-type="single">
-              <button class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
             </div>
-              <button class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
             </div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
@@ -201,21 +202,21 @@
         <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-08) 0" >
             <div class="toggle-group" role="group" aria-label="Spaced" data-type="single" data-variant="outline" data-spacing>
-              <button class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
             </div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="toggle-group" data-variant="outline" data-spacing data-type="single" ...&gt;
-  &lt;button class="toggle" aria-pressed="true"&gt;...&lt;/button&gt;
-  &lt;button class="toggle" aria-pressed="false"&gt;...&lt;/button&gt;
-  &lt;button class="toggle" aria-pressed="false"&gt;...&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="true"&gt;...&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="false"&gt;...&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="false"&gt;...&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         </div>
 
@@ -225,26 +226,26 @@
         <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; gap: var(--space-07); padding: var(--space-08) 0" >
             <div class="toggle-group" role="group" aria-label="Alignment vertical" data-type="single" data-orientation="vertical">
-              <button class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
             </div>
             <div class="toggle-group" role="group" aria-label="Alignment vertical outline" data-type="single" data-variant="outline" data-orientation="vertical">
-              <button class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="true"><i data-lucide="align-start-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-center-horizontal"></i></button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="align-end-horizontal"></i></button>
             </div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="toggle-group" role="group" aria-label="Alignment" data-type="single" data-orientation="vertical"&gt;
-  &lt;button class="toggle" aria-pressed="true"&gt;...&lt;/button&gt;
-  &lt;button class="toggle" aria-pressed="false"&gt;...&lt;/button&gt;
-  &lt;button class="toggle" aria-pressed="false"&gt;...&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="true"&gt;...&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="false"&gt;...&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="false"&gt;...&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         </div>
 
@@ -254,21 +255,21 @@
         <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-08) 0" >
             <div class="toggle-group" role="group" aria-label="View mode" data-type="single" data-variant="outline">
-              <button class="toggle" aria-pressed="true"><i data-lucide="list"></i> List</button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="grid-2x2"></i> Grid</button>
-              <button class="toggle" aria-pressed="false"><i data-lucide="columns-3"></i> Board</button>
+              <button type="button" class="toggle" aria-pressed="true"><i data-lucide="list"></i> List</button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="grid-2x2"></i> Grid</button>
+              <button type="button" class="toggle" aria-pressed="false"><i data-lucide="columns-3"></i> Board</button>
             </div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="toggle-group" role="group" aria-label="View mode" data-type="single" data-variant="outline"&gt;
-  &lt;button class="toggle" aria-pressed="true"&gt;&lt;i data-lucide="list"&gt;&lt;/i&gt; List&lt;/button&gt;
-  &lt;button class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="grid-2x2"&gt;&lt;/i&gt; Grid&lt;/button&gt;
-  &lt;button class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="columns-3"&gt;&lt;/i&gt; Board&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="true"&gt;&lt;i data-lucide="list"&gt;&lt;/i&gt; List&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="grid-2x2"&gt;&lt;/i&gt; Grid&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="false"&gt;&lt;i data-lucide="columns-3"&gt;&lt;/i&gt; Board&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         </div>
 
@@ -278,21 +279,21 @@
         <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-08) 0" >
             <div class="toggle-group" role="group" aria-label="Formatting disabled" data-type="multiple" data-disabled>
-              <button class="toggle" aria-pressed="true" disabled><i data-lucide="bold"></i></button>
-              <button class="toggle" aria-pressed="false" disabled><i data-lucide="italic"></i></button>
-              <button class="toggle" aria-pressed="false" disabled><i data-lucide="underline"></i></button>
+              <button type="button" class="toggle" aria-pressed="true" disabled><i data-lucide="bold"></i></button>
+              <button type="button" class="toggle" aria-pressed="false" disabled><i data-lucide="italic"></i></button>
+              <button type="button" class="toggle" aria-pressed="false" disabled><i data-lucide="underline"></i></button>
             </div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="toggle-group" role="group" aria-label="Formatting" data-type="multiple" data-disabled&gt;
-  &lt;button class="toggle" aria-pressed="true" disabled&gt;...&lt;/button&gt;
-  &lt;button class="toggle" aria-pressed="false" disabled&gt;...&lt;/button&gt;
-  &lt;button class="toggle" aria-pressed="false" disabled&gt;...&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="true" disabled&gt;...&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="false" disabled&gt;...&lt;/button&gt;
+  &lt;button type="button" class="toggle" aria-pressed="false" disabled&gt;...&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         </div>
 

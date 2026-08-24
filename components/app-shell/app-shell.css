@@ -22,7 +22,8 @@
      canvas preset: 64rem for single tools, 90rem for dense data surfaces. */
   .app-header-inner,
   .app-toolbar-inner,
-  .page-overview {
+  .page-overview,
+  .app-content {
     inline-size: min(100% - var(--space-08), var(--app-shell-max, 90rem));
     margin-inline: auto;
   }
@@ -283,6 +284,53 @@
     border: var(--border-width-01) solid var(--border-secondary);
   }
 
+  /* -- Compact status list ------------------------------------------ */
+  /* Rows stay dense and border-separated. Use the existing status marker
+     primitives as the first column rather than nesting rows in cards. */
+  .app-status-list {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .app-status-row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--space-03);
+    padding: var(--space-04);
+    border-block-end: var(--border-width-01) solid var(--border-primary);
+  }
+
+  .app-status-row:last-child {
+    border-block-end: 0;
+  }
+
+  .app-status-copy {
+    min-inline-size: 0;
+  }
+
+  .app-status-title {
+    margin: 0;
+    font-weight: var(--font-weight-strong);
+  }
+
+  .app-status-description {
+    margin: var(--space-01) 0 0;
+    color: var(--text-muted);
+    font-size: var(--font-body-small);
+  }
+
+  .app-status-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-02);
+  }
+
   /* -- Empty state ---------------------------------------------------- */
   .app-empty {
     margin: 0;
@@ -342,6 +390,10 @@
     .status-icon[data-state="running"] {
       border-width: var(--border-width-02);
     }
+
+    .app-status-row {
+      border-width: var(--border-width-02);
+    }
   }
 
   @media (forced-colors: active) {
@@ -367,15 +419,29 @@
     .status-icon {
       border: var(--border-width-01) solid CanvasText;
     }
+
+    .app-status-row {
+      border-color: CanvasText;
+    }
   }
 
   /* -- Narrow viewports -------------------------------------------------- */
   @media (max-width: 37.5rem) {
     .app-header-inner,
     .app-toolbar-inner,
-    .page-overview {
+    .page-overview,
+    .app-content {
       inline-size: 100%;
       padding-inline: var(--space-04);
+    }
+
+    .app-status-row {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .app-status-actions {
+      grid-column: 2;
+      justify-content: flex-start;
     }
   }
 }

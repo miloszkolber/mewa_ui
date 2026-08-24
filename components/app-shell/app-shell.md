@@ -93,6 +93,18 @@ Use one `.page-overview` near the start of `<main>` for route context, a sentenc
 
 Set `--app-shell-max: 64rem` on `.app-shell` for focused single-purpose tools. The default `90rem` canvas suits dense tables and media surfaces.
 
+## Shared content canvas
+
+Use `.app-content` for a content region that should use the same max-width and centered margin math as the header, toolbar, and page overview. It has no card treatment, so consumers can compose their own sections inside it.
+
+```html
+<main id="main-content">
+  <div class="app-content">
+    <!-- Route content uses the shared shell canvas. -->
+  </div>
+</main>
+```
+
 ## Status and empty states
 
 `.status-dot` is a compact status marker. `.status-icon` is a circular status-glyph container. Both accept `data-state="positive"`, `data-state="caution"`, `data-state="negative"`, or `data-state="running"`. Always pair a color marker with visible status text. Use `.app-empty` for a short empty result message and add `role="status"` when asynchronous updates replace its text.
@@ -104,6 +116,23 @@ Set `--app-shell-max: 64rem` on `.app-shell` for focused single-purpose tools. T
 </span>
 
 <p class="app-empty" role="status">No jobs match the current filter.</p>
+```
+
+For a dense collection of independently actionable statuses, use `.app-status-list` and one `.app-status-row` per item. Place the existing `.status-icon` or `.status-dot` first, keep copy in `.app-status-copy`, and put optional controls in `.app-status-actions`. Rows are separated by borders and do not add nested cards.
+
+```html
+<ul class="app-status-list" aria-label="Worker status">
+  <li class="app-status-row">
+    <span class="status-icon" data-state="running" aria-hidden="true">...</span>
+    <div class="app-status-copy">
+      <p class="app-status-title">Resolve model manifest</p>
+      <p class="app-status-description">Checking revisions and compatible quantizations.</p>
+    </div>
+    <div class="app-status-actions">
+      <button class="btn" type="button" data-variant="outline" data-size="sm">View run</button>
+    </div>
+  </li>
+</ul>
 ```
 
 ## Optional theme enhancement

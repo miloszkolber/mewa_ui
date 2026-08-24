@@ -25,7 +25,7 @@ the search input when the popover opens.
 ```html
 <div class="combobox" style="width:14rem;">
   <span class="label">Framework</span>
-  <button class="btn combobox-trigger" data-variant="outline"
+  <button type="button" class="btn combobox-trigger" data-variant="outline"
           id="framework-trigger"
            aria-haspopup="listbox"
            aria-expanded="false"

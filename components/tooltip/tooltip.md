@@ -16,14 +16,14 @@ Popover API (`popover="hint"`) for hover/focus hint popups with CSS anchor posit
 ### Basic
 
 ```html
-<button class="btn" data-tooltip-trigger="my-tip">Hover me</button>
+<button type="button" class="btn" data-tooltip-trigger="my-tip">Hover me</button>
 <div class="tooltip" id="my-tip" popover="hint" role="tooltip">Tooltip text</div>
 ```
 
 ### With arrow
 
 ```html
-<button class="btn" data-tooltip-trigger="my-tip">Hover me</button>
+<button type="button" class="btn" data-tooltip-trigger="my-tip">Hover me</button>
 <div class="tooltip" id="my-tip" popover="hint" role="tooltip">
   Tooltip text
   <div data-arrow></div>
@@ -48,8 +48,8 @@ Popover API (`popover="hint"`) for hover/focus hint popups with CSS anchor posit
 ### Custom delay
 
 ```html
-<button class="btn" data-tooltip-trigger="my-tip" data-delay="300">Fast tooltip</button>
-<button class="btn" data-tooltip-trigger="my-tip2" data-delay="0">Instant tooltip</button>
+<button type="button" class="btn" data-tooltip-trigger="my-tip" data-delay="300">Fast tooltip</button>
+<button type="button" class="btn" data-tooltip-trigger="my-tip2" data-delay="0">Instant tooltip</button>
 ```
 
 ## Variants

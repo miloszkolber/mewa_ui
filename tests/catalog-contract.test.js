@@ -159,6 +159,40 @@ function checkRenderedMarkup(html, filename) {
   }
 }
 
+function checkDocsSkipTarget(html, filename) {
+  assert.match(html, /<body\b[^>]*>\s*<a class="skip-link docs-skip-link" href="#main-content">Skip to content<\/a>\s*<site-header\b/i, `${filename}: skip link must be the first body content`);
+  const mains = tags(stripExamples(html), "main");
+  assert(mains.length > 0, `${filename}: a rendered main is required`);
+  const main = mains.map(attributes).find((candidate) => candidate.id === "main-content");
+  assert(main, `${filename}: rendered main must target the skip link`);
+  assert.equal(main.tabindex, "-1", `${filename}: rendered main must be focusable for skip navigation`);
+}
+
+function checkButtonTypes(html, filename) {
+  for (const tag of tags(stripExamples(html), "button")) {
+    const type = attributes(tag).type;
+    assert(["button", "submit", "reset"].includes(type), `${filename}: every rendered button needs an explicit type`);
+  }
+}
+
+function checkSkillButtonTypes(skill, filename) {
+  for (const block of skill.matchAll(/```(?:html|markup)\s*\n([\s\S]*?)```/gi)) {
+    checkButtonTypes(block[1], `${filename} fenced HTML`);
+  }
+}
+
+function checkCopyableMarkupButtonTypes(html, filename) {
+  for (const block of html.matchAll(/<pre\b[^>]*>\s*<code\b[^>]*>([\s\S]*?)<\/code>\s*<\/pre>/gi)) {
+    const decoded = block[1]
+      .replace(/&lt;/gi, "<")
+      .replace(/&gt;/gi, ">")
+      .replace(/&quot;/gi, '"')
+      .replace(/&#39;/gi, "'")
+      .replace(/&amp;/gi, "&");
+    checkButtonTypes(decoded, `${filename} decoded copyable markup`);
+  }
+}
+
 function checkCssContract(css, filename, { allowRawColors = false } = {}) {
   const source = css.replace(/\/\*[\s\S]*?\*\//g, "");
   assert(!/\b(?:box-shadow|text-shadow)\s*:/i.test(source), `${filename}: visual shadows are forbidden`);
@@ -167,6 +201,8 @@ function checkCssContract(css, filename, { allowRawColors = false } = {}) {
   assert(!/@(?:keyframes|starting-style)|view-transition/i.test(source), `${filename}: generated motion is forbidden`);
   if (!allowRawColors) {
     assert(!/(?:#[0-9a-f]{3,8}\b|\b(?:rgba?|hsla?)\s*\(|(?<![\w-])(?:white|black|red|green|blue|gray|grey)(?![\w-]))/i.test(source), `${filename}: component colors must use semantic tokens`);
+    assert(!/var\(\s*--color-[\w-]+\s*\)/i.test(source), `${filename}: component colors must not consume palette primitives directly`);
+    assert(!/\b(?:rgba?|hsla?|oklch|hsl|rgb|color)\s*\(/i.test(source), `${filename}: raw color functions must use semantic tokens or color-mix()`);
   }
 }
 
@@ -330,7 +366,24 @@ test("docs and layouts resolve current relative assets and foundations", () => {
     stylesheets.forEach((href) => assert(!/^(?:https?:)?\/\//i.test(href), `${relativeFile(file)}: stylesheets must be local`));
     scriptReferences(html).forEach((src) => assert(!/^(?:https?:)?\/\//i.test(src), `${relativeFile(file)}: scripts must be local`));
     checkRenderedMarkup(html, relativeFile(file));
+    if (file.startsWith(docsDir)) checkDocsSkipTarget(html, relativeFile(file));
   }
+});
+
+test("rendered docs, layouts, and skill HTML examples use explicit button types", () => {
+  for (const file of sourceHtmlFiles) checkButtonTypes(read(file), relativeFile(file));
+  for (const file of documentationPages.map((slug) => path.join(docsDir, `${slug}.html`))) {
+    checkCopyableMarkupButtonTypes(read(file), relativeFile(file));
+  }
+  for (const slug of componentDirectories) {
+    const skillFile = path.join(componentsDir, slug, `${slug}.md`);
+    checkSkillButtonTypes(read(skillFile), relativeFile(skillFile));
+  }
+  assert.throws(
+    () => checkCopyableMarkupButtonTypes("<pre><code class=\"language-markup\">&lt;button&gt;Bad&lt;/button&gt;</code></pre>", "fixture"),
+    /explicit type/,
+    "an encoded untyped button must be rejected"
+  );
 });
 
 test("local Lucide SVG files back every rendered icon reference", () => {
@@ -417,6 +470,9 @@ test("native fallback and SPA enhancement contracts stay explicit", () => {
   assert.match(router, /loadPageModules/);
   assert.match(router, /import\(url\)/);
   assert(!/class=['"]input nav-filter-input/.test(router), "the docs filter must use the current Text Field hook");
+  assert.match(router, /id="theme-toggle"[^>]*type="button"/, "generated theme toggle must declare button type");
+  assert.match(router, /class="sidebar-toggle"[^>]*type="button"/, "generated navigation toggle must declare button type");
+  assert(!/docs-skip-link|Skip to content/.test(router), "static pages must own the skip link markup");
 
   const textField = read(path.join(componentsDir, "text-field", "text-field.md"));
   [

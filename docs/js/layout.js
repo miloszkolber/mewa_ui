@@ -185,7 +185,7 @@
       this.style.display = 'contents';
       this.innerHTML =
         '<header class="site-header">' +
-          '<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle navigation menu">' +
+          '<button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-controls="site-nav-dialog" aria-expanded="false" aria-haspopup="dialog" aria-label="Open navigation menu">' +
             '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>' +
           '</button>' +
           '<a href="typography.html" class="header-brand">' +
@@ -193,7 +193,7 @@
           '</a>' +
           '<div style="flex:1;"></div>' +
           '<nav style="display:flex;align-items:center;gap:0.25rem;">' +
-            '<button id="theme-toggle" class="header-action theme-toggle-btn" aria-label="Toggle dark mode">' +
+            '<button id="theme-toggle" class="header-action theme-toggle-btn" type="button" aria-label="Toggle dark mode">' +
               '<svg id="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>' +
               '<svg id="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>' +
             '</button>' +
@@ -206,33 +206,43 @@
   /* -- <site-nav> --------------------------------------------- */
   class SiteNav extends HTMLElement {
     connectedCallback() {
+      if (this.dataset.navInit !== undefined) return;
+      this.dataset.navInit = '';
       this.style.display = 'contents';
-      var html = '<aside class="site-sidebar">';
-      html += '<div class="nav-filter-wrap">' +
-        '<input type="text" class="text-field-input nav-filter-input" data-size="sm" ' +
-          'placeholder="Filter components..." aria-label="Filter components" ' +
-          'autocomplete="off" spellcheck="false">' +
-      '</div>';
-      html += '<div class="sidebar-scroll">';
-      NAV.forEach(function (section, i) {
-        html += '<div class="nav-section" style="margin-bottom:1.25rem;">';
-        html += '<p class="nav-heading">' + section.heading + '</p>';
-        section.items.forEach(function (item) {
-          var cls = 'nav-link';
-          if (item.href === currentPage) cls += ' active';
-          else if (!BUILT.has(item.href)) cls += ' disabled';
-          html += '<a class="' + cls + '" href="' + item.href + '" style="display:flex;align-items:center;gap:0.375rem;">' + item.label + '</a>';
+      function sidebarMarkup(surface) {
+        var html = '<aside class="site-sidebar" data-nav-surface="' + surface + '">';
+        html += '<div class="nav-filter-wrap">' +
+          '<input type="text" class="text-field-input nav-filter-input" data-size="sm" ' +
+            'placeholder="Filter components..." aria-label="Filter components" ' +
+            'autocomplete="off" spellcheck="false">' +
+        '</div>';
+        html += '<div class="sidebar-scroll">';
+        NAV.forEach(function (section) {
+          html += '<div class="nav-section" style="margin-bottom:1.25rem;">';
+          html += '<p class="nav-heading">' + section.heading + '</p>';
+          section.items.forEach(function (item) {
+            var cls = 'nav-link';
+            if (item.href === currentPage) cls += ' active';
+            else if (!BUILT.has(item.href)) cls += ' disabled';
+            html += '<a class="' + cls + '" href="' + item.href + '" style="display:flex;align-items:center;gap:0.375rem;">' + item.label + '</a>';
+          });
+          html += '</div>';
         });
-        html += '</div>';
-      });
-      html += '</div>';
-      html += '</aside>';
+        html += '</div></aside>';
+        return html;
+      }
+
+      var html = sidebarMarkup('desktop');
+      html += '<dialog class="site-nav-dialog" id="site-nav-dialog" aria-label="Component navigation">';
+      html += sidebarMarkup('mobile');
+      html += '</dialog>';
       this.innerHTML = html;
 
       /* -- Filter logic --------------------------------------- */
-      var input = this.querySelector('.nav-filter-input');
-      var sections = this.querySelectorAll('.nav-section');
-      if (input && sections.length) {
+      this.querySelectorAll('[data-nav-surface]').forEach(function (surface) {
+        var input = surface.querySelector('.nav-filter-input');
+        var sections = surface.querySelectorAll('.nav-section');
+        if (!input || !sections.length) return;
         input.addEventListener('input', function () {
           var q = input.value.toLowerCase().trim();
           for (var s = 0; s < sections.length; s++) {
@@ -247,15 +257,7 @@
             sec.style.display = anyVisible ? '' : 'none';
           }
         });
-        /* Focus shortcut: Cmd/Ctrl+K focuses the filter */
-        document.addEventListener('keydown', function (e) {
-          if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-            e.preventDefault();
-            input.focus();
-            input.select();
-          }
-        });
-      }
+      });
     }
   }
 
@@ -265,51 +267,77 @@
   /* -- Mobile sidebar toggle ---------------------------------- */
   function initMobileSidebar() {
     var toggle = document.getElementById('sidebar-toggle');
-    var sidebar = document.querySelector('.site-sidebar');
-    if (!toggle || !sidebar) return;
+    var dialog = document.getElementById('site-nav-dialog');
+    if (!toggle || !dialog) return;
+    var desktopSidebar = document.querySelector('[data-nav-surface="desktop"]');
+    var desktopInput = desktopSidebar && desktopSidebar.querySelector('.nav-filter-input');
+    var mobileInput = dialog.querySelector('.nav-filter-input');
+    var restoreTarget = toggle;
 
-    /* Create backdrop element if not already present */
-    var backdrop = document.querySelector('.sidebar-backdrop');
-    if (!backdrop) {
-      backdrop = document.createElement('div');
-      backdrop.className = 'sidebar-backdrop';
-      sidebar.parentElement.appendChild(backdrop);
+    function isMobile() {
+      return window.matchMedia('(max-width: 48rem)').matches;
     }
 
-    function closeSidebar() {
-      sidebar.classList.remove('open');
-      backdrop.classList.remove('open');
-      toggle.setAttribute('aria-expanded', 'false');
+    function syncTrigger(open) {
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
     }
 
-    function openSidebar() {
-      sidebar.classList.add('open');
-      backdrop.classList.add('open');
-      toggle.setAttribute('aria-expanded', 'true');
+    function closeSidebar(target) {
+      restoreTarget = target || toggle;
+      if (dialog.open) dialog.close();
+      else syncTrigger(false);
+    }
+
+    function openSidebar(focusFilter) {
+      if (!dialog.open) dialog.showModal();
+      syncTrigger(true);
+      var target = focusFilter ? mobileInput : mobileInput || dialog.querySelector('.sidebar-mobile-close');
+      if (target) target.focus();
     }
 
     toggle.addEventListener('click', function () {
-      if (sidebar.classList.contains('open')) {
+      if (dialog.open) {
         closeSidebar();
       } else {
         openSidebar();
       }
     });
 
-    backdrop.addEventListener('click', closeSidebar);
+    dialog.addEventListener('click', function (event) {
+      if (event.target === dialog) closeSidebar();
+    });
 
     /* Close sidebar when a nav link is clicked (mobile) */
-    sidebar.addEventListener('click', function (e) {
-      if (e.target.closest('a.nav-link')) {
+    dialog.addEventListener('click', function (event) {
+      if (event.target.closest('a.nav-link')) {
         closeSidebar();
       }
     });
 
-    /* Close sidebar on Escape key */
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && sidebar.classList.contains('open')) {
-        closeSidebar();
+    dialog.addEventListener('close', function () {
+      syncTrigger(false);
+      var target = restoreTarget;
+      restoreTarget = toggle;
+      if (target && target.getClientRects().length) target.focus();
+    });
+
+    /* Focus shortcut: Cmd/Ctrl+K opens the mobile nav before focusing the filter. */
+    document.addEventListener('keydown', function (event) {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        if (isMobile()) {
+          if (!dialog.open) openSidebar(true);
+          else if (mobileInput) { mobileInput.focus(); mobileInput.select(); }
+        } else if (desktopInput) {
+          desktopInput.focus();
+          desktopInput.select();
+        }
       }
+    });
+
+    window.matchMedia('(max-width: 48rem)').addEventListener('change', function (event) {
+      if (!event.matches && dialog.open) closeSidebar(desktopInput);
     });
   }
 

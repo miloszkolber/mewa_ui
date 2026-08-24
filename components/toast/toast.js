@@ -52,13 +52,14 @@ const toastCreate = (options) => {
   if (description) { const p = document.createElement('p'); p.className = 'toast-description'; p.textContent = description; textDiv.appendChild(p); }
   contentEl.appendChild(textDiv);
   const closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
   closeBtn.className = 'toast-close'; closeBtn.setAttribute('aria-label', 'Dismiss'); closeBtn.dataset.toastClose = '';
   closeBtn.innerHTML = '<svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>';
   contentEl.appendChild(closeBtn);
   el.appendChild(contentEl);
   if (action) {
     const actionsDiv = document.createElement('div'); actionsDiv.className = 'toast-actions';
-    const actionBtn = document.createElement('button'); actionBtn.className = 'btn';
+    const actionBtn = document.createElement('button'); actionBtn.type = 'button'; actionBtn.className = 'btn';
     actionBtn.setAttribute('data-variant', 'outline'); actionBtn.setAttribute('data-size', 'sm'); actionBtn.dataset.toastAction = '';
     actionBtn.textContent = action.label;
     actionsDiv.appendChild(actionBtn); el.appendChild(actionsDiv);

@@ -21,13 +21,13 @@ panel switching. Follows the WAI-ARIA Tabs design pattern.
 <div class="tabs">
   <!-- Tab list -->
   <div class="tab-list" role="tablist" aria-label="Account settings">
-    <button class="tab-trigger" role="tab"
+    <button type="button" class="tab-trigger" role="tab"
             aria-selected="true"
             aria-controls="panel-account"
             id="tab-account">
       Account
     </button>
-    <button class="tab-trigger" role="tab"
+    <button type="button" class="tab-trigger" role="tab"
             aria-selected="false"
             aria-controls="panel-password"
             id="tab-password"
@@ -100,9 +100,9 @@ inline styles needed:
   <div class="tab-list" role="tablist"
        aria-orientation="vertical"
        aria-label="Settings">
-    <button class="tab-trigger" role="tab" aria-selected="true"
+    <button type="button" class="tab-trigger" role="tab" aria-selected="true"
             aria-controls="panel-general" id="tab-general">General</button>
-    <button class="tab-trigger" role="tab" aria-selected="false"
+    <button type="button" class="tab-trigger" role="tab" aria-selected="false"
             aria-controls="panel-security" id="tab-security"
             tabindex="-1">Security</button>
   </div>

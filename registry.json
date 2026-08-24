@@ -670,7 +670,7 @@
       "name": "Callout",
       "slug": "callout",
       "category": "Feedback and status",
-      "nativeBasis": "`<div>` with `role=\"alert\"` for important callout messages.",
+      "nativeBasis": "A semantic `<div class=\"callout\">` with a context-neutral `<p class=\"callout-title\">` and description. Add `role=\"alert\"` only when urgent error content is inserted dynamically.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -679,7 +679,7 @@
         "css": "components/callout/callout.css"
       },
       "docs": "docs/callout.html",
-      "description": "Inline alert regions for important supporting, warning, or status content."
+      "description": "Inline contextual messages with neutral static semantics and an opt-in urgent alert mode."
     },
     {
       "name": "Alert Dialog",
@@ -901,7 +901,7 @@
         "js": "components/app-shell/app-shell.js"
       },
       "docs": "docs/app-shell.html",
-      "description": "Shared application headers, toolbars, page overviews, inline status, empty states, and optional theme control."
+      "description": "Shared application headers, toolbars, content canvas, page overviews, compact status lists, empty states, and optional theme control."
     },
     {
       "name": "Sidebar",

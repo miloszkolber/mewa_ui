@@ -23,7 +23,7 @@ Uses `data-side` attribute to control which edge: `top`, `right`, `bottom`, `lef
 
 ```html
 <!-- Trigger -->
-<button class="btn" data-variant="outline"
+<button type="button" class="btn" data-variant="outline"
         data-sheet-trigger="my-sheet"
         aria-haspopup="dialog">
   Open Sheet
@@ -48,16 +48,16 @@ Uses `data-side` attribute to control which edge: `top`, `right`, `bottom`, `lef
     </div>
 
     <div class="sheet-footer">
-      <button class="btn" data-variant="outline" data-sheet-close>
+      <button type="button" class="btn" data-variant="outline" data-sheet-close>
         Cancel
       </button>
-      <button class="btn" data-variant="default">
+      <button type="button" class="btn" data-variant="default">
         Save changes
       </button>
     </div>
   </div>
 
-  <button class="sheet-close-x" data-sheet-close aria-label="Close">
+  <button type="button" class="sheet-close-x" data-sheet-close aria-label="Close">
     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M18 6 6 18M6 6l12 12"/>

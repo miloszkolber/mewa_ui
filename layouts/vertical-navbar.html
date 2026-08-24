@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="../src/base.css">
   <link rel="stylesheet" href="../src/tokens.css">
   <link rel="stylesheet" href="../components/layout/layout.css">
+  <link rel="stylesheet" href="../components/app-shell/app-shell.css">
   <link rel="stylesheet" href="../components/icon/icon.css">
   <link rel="stylesheet" href="../components/button/button.css">
   <link rel="stylesheet" href="../components/sidebar/sidebar.css">
@@ -40,7 +41,7 @@
 
       <div class="sidebar-content">
         <nav class="sidebar-nav" aria-label="Workspace">
-          <a class="sidebar-link" href="#main-content" aria-current="page" title="Overview">
+          <a class="sidebar-link" href="/" aria-current="page" title="Overview">
             <i data-lucide="layout-dashboard" aria-hidden="true"></i>
             <span>Overview</span>
           </a>
@@ -52,19 +53,19 @@
             <i data-lucide="folder" aria-hidden="true"></i>
             <span>Files</span>
           </a>
-          <a class="sidebar-link" id="team" href="#team" title="Team">
+          <a class="sidebar-link" href="/team" title="Team">
             <i data-lucide="user-round" aria-hidden="true"></i>
             <span>Team</span>
           </a>
-          <a class="sidebar-link" id="settings" href="#settings" title="Settings">
+          <a class="sidebar-link" href="/settings" title="Settings">
             <i data-lucide="settings" aria-hidden="true"></i>
             <span>Settings</span>
           </a>
-          <a class="sidebar-link" id="preferences" href="#preferences" title="Preferences">
+          <a class="sidebar-link" href="/preferences" title="Preferences">
             <i data-lucide="sliders-horizontal" aria-hidden="true"></i>
             <span>Preferences</span>
           </a>
-          <a class="sidebar-link" id="access" href="#access" title="Access">
+          <a class="sidebar-link" href="/access" title="Access">
             <i data-lucide="lock-keyhole" aria-hidden="true"></i>
             <span>Access</span>
           </a>
@@ -109,16 +110,16 @@
               <i class="layout-account-chevron" data-lucide="chevron-right" aria-hidden="true"></i>
             </summary>
             <div class="layout-account-menu">
-              <a href="#profile"><i data-lucide="user-round" aria-hidden="true"></i>Profile</a>
-              <a href="#preferences"><i data-lucide="settings" aria-hidden="true"></i>Preferences</a>
-               <button class="layout-account-action" type="button" data-layout-action="sign-out"><i data-lucide="log-out" aria-hidden="true"></i>Sign out</button>
+              <a href="/profile"><i data-lucide="user-round" aria-hidden="true"></i>Profile</a>
+              <a href="/preferences"><i data-lucide="settings" aria-hidden="true"></i>Preferences</a>
+              <button class="layout-account-action" type="button" data-layout-action="sign-out"><i data-lucide="log-out" aria-hidden="true"></i>Sign out</button>
             </div>
           </details>
         </div>
       </header>
 
       <main class="layout-main" id="main-content" aria-labelledby="page-title">
-        <div class="layout-content">
+        <div class="layout-content app-content">
           <header class="layout-page-intro">
             <div>
               <p class="layout-eyebrow">Workspace overview</p>
@@ -208,34 +209,34 @@
                   </div>
                   <span class="badge" data-variant="secondary">4 active</span>
                 </div>
-                <ul class="layout-operation-list">
-                  <li class="layout-operation-row">
-                    <span class="layout-status-dot" data-state="running" aria-hidden="true"></span>
-                    <div>
-                      <p class="layout-operation-title">Resolve model manifest <span class="badge" data-variant="outline">Running</span></p>
-                      <span class="layout-operation-description">Checking revisions and compatible quantizations.</span>
+                <ul class="app-status-list">
+                  <li class="app-status-row">
+                    <span class="status-dot" data-state="running" aria-hidden="true"></span>
+                    <div class="app-status-copy">
+                      <p class="layout-operation-title app-status-title">Resolve model manifest <span class="badge" data-variant="outline">Running</span></p>
+                      <span class="layout-operation-description app-status-description">Checking revisions and compatible quantizations.</span>
                       <span class="layout-operation-meta"><span>Started 09:34 UTC</span><span>Worker 03</span></span>
                       <span class="layout-operation-progress"><progress class="progress" value="64" max="100" aria-label="Resolve model manifest progress">64%</progress><span>64%</span></span>
                     </div>
-                    <div class="layout-operation-actions"><button class="btn" data-variant="outline" data-size="sm" type="button">View run</button></div>
+                    <div class="layout-operation-actions app-status-actions"><button class="btn" data-variant="outline" data-size="sm" type="button">View run</button></div>
                   </li>
-                  <li class="layout-operation-row">
-                    <span class="layout-status-dot" data-state="complete" aria-hidden="true"></span>
-                    <div>
-                      <p class="layout-operation-title">Verify nightly snapshot <span class="badge" data-variant="secondary">Complete</span></p>
-                      <span class="layout-operation-description">Snapshot verified and retained for the scheduled window.</span>
+                  <li class="app-status-row">
+                    <span class="status-dot" data-state="positive" aria-hidden="true"></span>
+                    <div class="app-status-copy">
+                      <p class="layout-operation-title app-status-title">Verify nightly snapshot <span class="badge" data-variant="secondary">Complete</span></p>
+                      <span class="layout-operation-description app-status-description">Snapshot verified and retained for the scheduled window.</span>
                       <span class="layout-operation-meta"><span>Completed 09:28 UTC</span><span>12.4 GB</span></span>
                     </div>
-                    <div class="layout-operation-actions"><button class="btn" data-variant="ghost" data-size="sm" type="button">Details</button></div>
+                    <div class="layout-operation-actions app-status-actions"><button class="btn" data-variant="ghost" data-size="sm" type="button">Details</button></div>
                   </li>
-                  <li class="layout-operation-row">
-                    <span class="layout-status-dot" data-state="attention" aria-hidden="true"></span>
-                    <div>
-                      <p class="layout-operation-title">Sync repository metadata <span class="badge" data-variant="outline">Needs attention</span></p>
-                      <span class="layout-operation-description">The upstream rate limit is delaying one repository.</span>
+                  <li class="app-status-row">
+                    <span class="status-dot" data-state="caution" aria-hidden="true"></span>
+                    <div class="app-status-copy">
+                      <p class="layout-operation-title app-status-title">Sync repository metadata <span class="badge" data-variant="outline">Needs attention</span></p>
+                      <span class="layout-operation-description app-status-description">The upstream rate limit is delaying one repository.</span>
                       <span class="layout-operation-meta"><span>Waiting 8 min</span><span>Retry at 10:00 UTC</span></span>
                     </div>
-                    <div class="layout-operation-actions"><button class="btn" data-variant="outline" data-size="sm" type="button">Review</button></div>
+                    <div class="layout-operation-actions app-status-actions"><button class="btn" data-variant="outline" data-size="sm" type="button">Review</button></div>
                   </li>
                 </ul>
               </section>
@@ -324,13 +325,13 @@
     </div>
     <div class="sidebar-content">
       <nav class="sidebar-nav" aria-label="Mobile workspace">
-        <a class="sidebar-link" href="#main-content" aria-current="page"><i data-lucide="layout-dashboard" aria-hidden="true"></i><span>Overview</span></a>
+        <a class="sidebar-link" href="/" aria-current="page"><i data-lucide="layout-dashboard" aria-hidden="true"></i><span>Overview</span></a>
         <a class="sidebar-link" href="#operations"><i data-lucide="activity" aria-hidden="true"></i><span>Operations</span></a>
         <a class="sidebar-link" href="#files"><i data-lucide="folder" aria-hidden="true"></i><span>Files</span></a>
-        <a class="sidebar-link" href="#team"><i data-lucide="user-round" aria-hidden="true"></i><span>Team</span></a>
-        <a class="sidebar-link" href="#settings"><i data-lucide="settings" aria-hidden="true"></i><span>Settings</span></a>
-        <a class="sidebar-link" href="#preferences"><i data-lucide="sliders-horizontal" aria-hidden="true"></i><span>Preferences</span></a>
-        <a class="sidebar-link" href="#access"><i data-lucide="lock-keyhole" aria-hidden="true"></i><span>Access</span></a>
+        <a class="sidebar-link" href="/team"><i data-lucide="user-round" aria-hidden="true"></i><span>Team</span></a>
+        <a class="sidebar-link" href="/settings"><i data-lucide="settings" aria-hidden="true"></i><span>Settings</span></a>
+        <a class="sidebar-link" href="/preferences"><i data-lucide="sliders-horizontal" aria-hidden="true"></i><span>Preferences</span></a>
+        <a class="sidebar-link" href="/access"><i data-lucide="lock-keyhole" aria-hidden="true"></i><span>Access</span></a>
       </nav>
     </div>
   </dialog>

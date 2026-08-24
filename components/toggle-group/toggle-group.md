@@ -19,13 +19,13 @@
 ### Single selection
 ```html
 <div class="toggle-group" role="group" aria-label="Text alignment" data-type="single">
-  <button class="toggle" aria-pressed="true" value="left">
+  <button type="button" class="toggle" aria-pressed="true" value="left">
     <svg aria-hidden="true" ...>...</svg>
   </button>
-  <button class="toggle" aria-pressed="false" value="center">
+  <button type="button" class="toggle" aria-pressed="false" value="center">
     <svg aria-hidden="true" ...>...</svg>
   </button>
-  <button class="toggle" aria-pressed="false" value="right">
+  <button type="button" class="toggle" aria-pressed="false" value="right">
     <svg aria-hidden="true" ...>...</svg>
   </button>
 </div>
@@ -34,13 +34,13 @@
 ### Multiple selection
 ```html
 <div class="toggle-group" role="group" aria-label="Text formatting" data-type="multiple">
-  <button class="toggle" aria-pressed="true" value="bold">
+  <button type="button" class="toggle" aria-pressed="true" value="bold">
     <svg aria-hidden="true" ...>...</svg>
   </button>
-  <button class="toggle" aria-pressed="false" value="italic">
+  <button type="button" class="toggle" aria-pressed="false" value="italic">
     <svg aria-hidden="true" ...>...</svg>
   </button>
-  <button class="toggle" aria-pressed="false" value="underline">
+  <button type="button" class="toggle" aria-pressed="false" value="underline">
     <svg aria-hidden="true" ...>...</svg>
   </button>
 </div>
@@ -49,10 +49,10 @@
 ### With text
 ```html
 <div class="toggle-group" role="group" aria-label="View mode" data-type="single" data-variant="outline">
-  <button class="toggle" aria-pressed="true" value="list">
+  <button type="button" class="toggle" aria-pressed="true" value="list">
     <svg aria-hidden="true" ...>...</svg> List
   </button>
-  <button class="toggle" aria-pressed="false" value="grid">
+  <button type="button" class="toggle" aria-pressed="false" value="grid">
     <svg aria-hidden="true" ...>...</svg> Grid
   </button>
 </div>
@@ -61,18 +61,18 @@
 ### Vertical
 ```html
 <div class="toggle-group" role="group" aria-label="Alignment" data-type="single" data-orientation="vertical">
-  <button class="toggle" aria-pressed="true"><svg aria-hidden="true" ...>...</svg></button>
-  <button class="toggle" aria-pressed="false"><svg aria-hidden="true" ...>...</svg></button>
-  <button class="toggle" aria-pressed="false"><svg aria-hidden="true" ...>...</svg></button>
+  <button type="button" class="toggle" aria-pressed="true"><svg aria-hidden="true" ...>...</svg></button>
+  <button type="button" class="toggle" aria-pressed="false"><svg aria-hidden="true" ...>...</svg></button>
+  <button type="button" class="toggle" aria-pressed="false"><svg aria-hidden="true" ...>...</svg></button>
 </div>
 ```
 
 ### Disabled group
 ```html
 <div class="toggle-group" role="group" aria-label="Formatting" data-type="multiple" data-disabled>
-  <button class="toggle" aria-pressed="true" disabled>...</button>
-  <button class="toggle" aria-pressed="false" disabled>...</button>
-  <button class="toggle" aria-pressed="false" disabled>...</button>
+  <button type="button" class="toggle" aria-pressed="true" disabled>...</button>
+  <button type="button" class="toggle" aria-pressed="false" disabled>...</button>
+  <button type="button" class="toggle" aria-pressed="false" disabled>...</button>
 </div>
 ```
 

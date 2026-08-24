@@ -154,7 +154,7 @@ This is the complete current inventory, grouped by the same purpose groups used 
 | Spinner | Static SVG loading indicator with `role="status"` | No | [`components/spinner/spinner.md`](components/spinner/spinner.md) · [`docs/spinner.html`](docs/spinner.html) |
 | Skeleton | Static placeholder `<div>` elements | No | [`components/skeleton/skeleton.md`](components/skeleton/skeleton.md) · [`docs/skeleton.html`](docs/skeleton.html) |
 | Progress | Native `<progress>` element | No | [`components/progress/progress.md`](components/progress/progress.md) · [`docs/progress.html`](docs/progress.html) |
-| Callout | `<div role="alert">` for important callout content | No | [`components/callout/callout.md`](components/callout/callout.md) · [`docs/callout.html`](docs/callout.html) |
+| Callout | Semantic `<div>` with a context-neutral title and description; opt-in `role="alert"` only for urgent dynamic errors | No | [`components/callout/callout.md`](components/callout/callout.md) · [`docs/callout.html`](docs/callout.html) |
 | Alert Dialog | Native `<dialog>` with `role="alertdialog"` for an explicit response | Yes | [`components/alert-dialog/alert-dialog.md`](components/alert-dialog/alert-dialog.md) · [`docs/alert-dialog.html`](docs/alert-dialog.html) |
 | Toast | `popover="manual"` surface with `role="status"` and a polite live region | Yes | [`components/toast/toast.md`](components/toast/toast.md) · [`docs/toast.html`](docs/toast.html) |
 
@@ -196,7 +196,7 @@ Table remains the structural semantic table component, while Data Table is its o
 ### Recreate as compositions or focused primitives
 
 - **Attachment row** — compose `File input`, `Badge`, `Progress`, and `Callout` into a removable `<article>` with filename, size, state, and an accessible remove button.
-- **Empty state** — compose `Card`, `Image`, `Typography`, and `Button` around a short explanation and one recovery action.
+- **Empty state** — `.app-empty` already covers a concise empty result message. A future illustrated empty composition may combine `Card`, `Image`, `Typography`, and `Button` around one recovery action, but remains a separate product pattern.
 - **Description list** — add a small `<dl>` pattern for metadata-heavy pages before creating a broad “metadata” component.
 - **Diff and chart** — use `<figure>`, `<figcaption>`, native `range`/`output`, SVG or canvas with a textual table fallback, and explicit summaries before introducing a visualization runtime.
 - **Freeform autocomplete** — extend the documented `Combobox` pattern only if a text-entry mode is needed. Do not create a second listbox implementation.

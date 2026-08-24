@@ -82,10 +82,11 @@
   <link rel="stylesheet" href="../components/typography/typography.css">
 </head>
 <body>
+  <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
   <site-header></site-header>
   <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Tooltip</h1>
         <p class="text-muted leading-relaxed mb-6">
@@ -99,16 +100,16 @@
       <p class="text-sm font-medium mb-2 mt-6">Default</p>
       <div class="preview">
         <div style="display: flex; align-items: center; justify-content: center; gap: var(--space-04); padding: var(--space-08) 0" >
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-default">Hover me</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-default">Hover me</button>
           <div class="tooltip" id="tip-default" popover="hint" role="tooltip">Add to library</div>
         </div>
       </div>
       <div style="position: relative; margin-top: var(--space-02)">
-        <button class="copy-btn">
+        <button type="button" class="copy-btn">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
           Copy
         </button>
-        <pre><code class="language-markup">&lt;button class="btn" data-variant="outline" data-tooltip-trigger="my-tip"&gt;Hover me&lt;/button&gt;
+        <pre><code class="language-markup">&lt;button type="button" class="btn" data-variant="outline" data-tooltip-trigger="my-tip"&gt;Hover me&lt;/button&gt;
 &lt;div class="tooltip" id="my-tip" popover="hint" role="tooltip"&gt;Add to library&lt;/div&gt;</code></pre>
       </div>
 
@@ -117,38 +118,38 @@
       <p class="text-xs text-muted mb-4">Use <code>data-side</code> on the tooltip to control placement.</p>
       <div class="preview">
         <div style="display: flex; align-items: center; justify-content: center; gap: var(--space-04); flex-wrap: wrap; padding: var(--space-08) 0" >
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-top">Top</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-top">Top</button>
           <div class="tooltip" id="tip-top" popover="hint" role="tooltip">Top tooltip</div>
 
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-bottom">Bottom</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-bottom">Bottom</button>
           <div class="tooltip" id="tip-bottom" popover="hint" role="tooltip" data-side="bottom">Bottom tooltip</div>
 
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-left">Left</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-left">Left</button>
           <div class="tooltip" id="tip-left" popover="hint" role="tooltip" data-side="left">Left tooltip</div>
 
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-right">Right</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-right">Right</button>
           <div class="tooltip" id="tip-right" popover="hint" role="tooltip" data-side="right">Right tooltip</div>
         </div>
       </div>
       <div style="position: relative; margin-top: var(--space-02)">
-        <button class="copy-btn">
+        <button type="button" class="copy-btn">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
           Copy
         </button>
         <pre><code class="language-markup">&lt;!-- Top (default) --&gt;
-&lt;button data-tooltip-trigger="tip-top"&gt;Top&lt;/button&gt;
+&lt;button type="button" data-tooltip-trigger="tip-top"&gt;Top&lt;/button&gt;
 &lt;div class="tooltip" id="tip-top" popover="hint" role="tooltip"&gt;Top tooltip&lt;/div&gt;
 
 &lt;!-- Bottom --&gt;
-&lt;button data-tooltip-trigger="tip-bottom"&gt;Bottom&lt;/button&gt;
+&lt;button type="button" data-tooltip-trigger="tip-bottom"&gt;Bottom&lt;/button&gt;
 &lt;div class="tooltip" id="tip-bottom" popover="hint" role="tooltip" data-side="bottom"&gt;Bottom tooltip&lt;/div&gt;
 
 &lt;!-- Left --&gt;
-&lt;button data-tooltip-trigger="tip-left"&gt;Left&lt;/button&gt;
+&lt;button type="button" data-tooltip-trigger="tip-left"&gt;Left&lt;/button&gt;
 &lt;div class="tooltip" id="tip-left" popover="hint" role="tooltip" data-side="left"&gt;Left tooltip&lt;/div&gt;
 
 &lt;!-- Right --&gt;
-&lt;button data-tooltip-trigger="tip-right"&gt;Right&lt;/button&gt;
+&lt;button type="button" data-tooltip-trigger="tip-right"&gt;Right&lt;/button&gt;
 &lt;div class="tooltip" id="tip-right" popover="hint" role="tooltip" data-side="right"&gt;Right tooltip&lt;/div&gt;</code></pre>
       </div>
 
@@ -157,25 +158,25 @@
       <p class="text-xs text-muted mb-4">Add <code>&lt;div data-arrow&gt;&lt;/div&gt;</code> inside the tooltip for a connecting caret.</p>
       <div class="preview">
         <div style="display: flex; align-items: center; justify-content: center; gap: var(--space-04); flex-wrap: wrap; padding: var(--space-08) 0" >
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-arrow-top">Top</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-arrow-top">Top</button>
           <div class="tooltip" id="tip-arrow-top" popover="hint" role="tooltip">
             Top with arrow
             <div data-arrow></div>
           </div>
 
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-arrow-bottom">Bottom</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-arrow-bottom">Bottom</button>
           <div class="tooltip" id="tip-arrow-bottom" popover="hint" role="tooltip" data-side="bottom">
             Bottom with arrow
             <div data-arrow></div>
           </div>
 
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-arrow-left">Left</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-arrow-left">Left</button>
           <div class="tooltip" id="tip-arrow-left" popover="hint" role="tooltip" data-side="left">
             Left with arrow
             <div data-arrow></div>
           </div>
 
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-arrow-right">Right</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-arrow-right">Right</button>
           <div class="tooltip" id="tip-arrow-right" popover="hint" role="tooltip" data-side="right">
             Right with arrow
             <div data-arrow></div>
@@ -183,11 +184,11 @@
         </div>
       </div>
       <div style="position: relative; margin-top: var(--space-02)">
-        <button class="copy-btn">
+        <button type="button" class="copy-btn">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
           Copy
         </button>
-        <pre><code class="language-markup">&lt;button data-tooltip-trigger="my-tip"&gt;Hover me&lt;/button&gt;
+        <pre><code class="language-markup">&lt;button type="button" data-tooltip-trigger="my-tip"&gt;Hover me&lt;/button&gt;
 &lt;div class="tooltip" id="my-tip" popover="hint" role="tooltip"&gt;
   Tooltip text
   &lt;div data-arrow&gt;&lt;/div&gt;
@@ -198,7 +199,7 @@
       <p class="text-sm font-medium mb-2 mt-8">With keyboard shortcut</p>
       <div class="preview">
         <div style="display: flex; align-items: center; justify-content: center; gap: var(--space-04); padding: var(--space-08) 0" >
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-kbd">
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-kbd">
             <i data-lucide="save" style="width: 16px; height: 16px"></i>
             Save
           </button>
@@ -209,11 +210,11 @@
         </div>
       </div>
       <div style="position: relative; margin-top: var(--space-02)">
-        <button class="copy-btn">
+        <button type="button" class="copy-btn">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
           Copy
         </button>
-        <pre><code class="language-markup">&lt;button class="btn" data-variant="outline" data-tooltip-trigger="tip-kbd"&gt;Save&lt;/button&gt;
+        <pre><code class="language-markup">&lt;button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-kbd"&gt;Save&lt;/button&gt;
 &lt;div class="tooltip" id="tip-kbd" popover="hint" role="tooltip" data-side="bottom"&gt;
   Save document
   &lt;kbd class="kbd" style="background: oklch(from var(--text-inverted) l c h / 0.15); border-color: oklch(from var(--text-inverted) l c h / 0.2); color: var(--text-inverted)"&gt;⌘S&lt;/kbd&gt;
@@ -225,19 +226,19 @@
       <p class="text-xs text-muted mb-4">Use <code>data-align</code> to control tooltip alignment relative to the trigger.</p>
       <div class="preview">
         <div style="display: flex; align-items: center; justify-content: center; gap: var(--space-04); flex-wrap: wrap; padding: var(--space-08) 0" >
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-align-start">Start</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-align-start">Start</button>
           <div class="tooltip" id="tip-align-start" popover="hint" role="tooltip" data-align="start">
             Aligned to start
             <div data-arrow></div>
           </div>
 
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-align-center">Center</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-align-center">Center</button>
           <div class="tooltip" id="tip-align-center" popover="hint" role="tooltip">
             Aligned to center
             <div data-arrow></div>
           </div>
 
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-align-end">End</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-align-end">End</button>
           <div class="tooltip" id="tip-align-end" popover="hint" role="tooltip" data-align="end">
             Aligned to end
             <div data-arrow></div>
@@ -245,7 +246,7 @@
         </div>
       </div>
       <div style="position: relative; margin-top: var(--space-02)">
-        <button class="copy-btn">
+        <button type="button" class="copy-btn">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
           Copy
         </button>
@@ -262,18 +263,18 @@
       <div class="preview">
         <div style="display: flex; align-items: center; justify-content: center; gap: var(--space-04); padding: var(--space-08) 0" >
           <span data-tooltip-trigger="tip-disabled" style="cursor: not-allowed">
-            <button class="btn" data-variant="outline" disabled style="pointer-events: none">Disabled</button>
+            <button type="button" class="btn" data-variant="outline" disabled style="pointer-events: none">Disabled</button>
           </span>
           <div class="tooltip" id="tip-disabled" popover="hint" role="tooltip">This action is unavailable</div>
         </div>
       </div>
       <div style="position: relative; margin-top: var(--space-02)">
-        <button class="copy-btn">
+        <button type="button" class="copy-btn">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
           Copy
         </button>
         <pre><code class="language-markup">&lt;span data-tooltip-trigger="tip-disabled" style="cursor: not-allowed"&gt;
-  &lt;button class="btn" disabled style="pointer-events: none"&gt;Disabled&lt;/button&gt;
+  &lt;button type="button" class="btn" disabled style="pointer-events: none"&gt;Disabled&lt;/button&gt;
 &lt;/span&gt;
 &lt;div class="tooltip" id="tip-disabled" popover="hint" role="tooltip"&gt;
   This action is unavailable
@@ -285,26 +286,26 @@
       <p class="text-xs text-muted mb-4">Use <code>data-delay</code> on the trigger to override the default 700 ms open delay.</p>
       <div class="preview">
         <div style="display: flex; align-items: center; justify-content: center; gap: var(--space-04); flex-wrap: wrap; padding: var(--space-08) 0" >
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-instant" data-delay="0">Instant (0 ms)</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-instant" data-delay="0">Instant (0 ms)</button>
           <div class="tooltip" id="tip-instant" popover="hint" role="tooltip">No delay!</div>
 
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-fast" data-delay="200">Fast (200 ms)</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-fast" data-delay="200">Fast (200 ms)</button>
           <div class="tooltip" id="tip-fast" popover="hint" role="tooltip">Fast tooltip</div>
 
-          <button class="btn" data-variant="outline" data-tooltip-trigger="tip-slow" data-delay="1500">Slow (1500 ms)</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-slow" data-delay="1500">Slow (1500 ms)</button>
           <div class="tooltip" id="tip-slow" popover="hint" role="tooltip">Slow tooltip</div>
         </div>
       </div>
       <div style="position: relative; margin-top: var(--space-02)">
-        <button class="copy-btn">
+        <button type="button" class="copy-btn">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
           Copy
         </button>
         <pre><code class="language-markup">&lt;!-- Instant --&gt;
-&lt;button data-tooltip-trigger="tip" data-delay="0"&gt;Instant&lt;/button&gt;
+&lt;button type="button" data-tooltip-trigger="tip" data-delay="0"&gt;Instant&lt;/button&gt;
 
 &lt;!-- Custom delay --&gt;
-&lt;button data-tooltip-trigger="tip" data-delay="200"&gt;Fast&lt;/button&gt;</code></pre>
+&lt;button type="button" data-tooltip-trigger="tip" data-delay="200"&gt;Fast&lt;/button&gt;</code></pre>
       </div>
 
       <!-- Group behavior -->
@@ -312,37 +313,37 @@
       <p class="text-xs text-muted mb-4">Once any tooltip opens, subsequent tooltips in the page skip the delay and appear instantly. After 400 ms with no tooltip visible, the delay resets. Hover across the buttons below to see the effect.</p>
       <div class="preview">
         <div style="display: flex; align-items: center; justify-content: center; gap: var(--space-02); padding: var(--space-08) 0" >
-          <button class="btn" data-variant="outline" data-size="sm" data-tooltip-trigger="tip-g1">
+          <button type="button" class="btn" data-variant="outline" data-size="sm" data-tooltip-trigger="tip-g1">
             <i data-lucide="bold" style="width: 14px; height: 14px"></i>
           </button>
           <div class="tooltip" id="tip-g1" popover="hint" role="tooltip">Bold</div>
 
-          <button class="btn" data-variant="outline" data-size="sm" data-tooltip-trigger="tip-g2">
+          <button type="button" class="btn" data-variant="outline" data-size="sm" data-tooltip-trigger="tip-g2">
             <i data-lucide="italic" style="width: 14px; height: 14px"></i>
           </button>
           <div class="tooltip" id="tip-g2" popover="hint" role="tooltip">Italic</div>
 
-          <button class="btn" data-variant="outline" data-size="sm" data-tooltip-trigger="tip-g3">
+          <button type="button" class="btn" data-variant="outline" data-size="sm" data-tooltip-trigger="tip-g3">
             <i data-lucide="underline" style="width: 14px; height: 14px"></i>
           </button>
           <div class="tooltip" id="tip-g3" popover="hint" role="tooltip">Underline</div>
 
-          <button class="btn" data-variant="outline" data-size="sm" data-tooltip-trigger="tip-g4">
+          <button type="button" class="btn" data-variant="outline" data-size="sm" data-tooltip-trigger="tip-g4">
             <i data-lucide="strikethrough" style="width: 14px; height: 14px"></i>
           </button>
           <div class="tooltip" id="tip-g4" popover="hint" role="tooltip">Strikethrough</div>
         </div>
       </div>
       <div style="position: relative; margin-top: var(--space-02)">
-        <button class="copy-btn">
+        <button type="button" class="copy-btn">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
           Copy
         </button>
         <pre><code class="language-markup">&lt;!-- Once any tooltip is open, the rest appear instantly --&gt;
-&lt;button data-tooltip-trigger="tip-bold"&gt;B&lt;/button&gt;
+&lt;button type="button" data-tooltip-trigger="tip-bold"&gt;B&lt;/button&gt;
 &lt;div class="tooltip" id="tip-bold" popover="hint" role="tooltip"&gt;Bold&lt;/div&gt;
 
-&lt;button data-tooltip-trigger="tip-italic"&gt;I&lt;/button&gt;
+&lt;button type="button" data-tooltip-trigger="tip-italic"&gt;I&lt;/button&gt;
 &lt;div class="tooltip" id="tip-italic" popover="hint" role="tooltip"&gt;Italic&lt;/div&gt;</code></pre>
       </div>
 

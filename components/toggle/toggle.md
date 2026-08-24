@@ -20,7 +20,7 @@ buttons (bold, italic, underline) or feature toggles.
 ## Structure
 
 ```html
-<button class="toggle" aria-pressed="false" aria-label="Toggle bold">
+<button type="button" class="toggle" aria-pressed="false" aria-label="Toggle bold">
   <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"
        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"/>
@@ -30,7 +30,7 @@ buttons (bold, italic, underline) or feature toggles.
 
 ### With text
 ```html
-<button class="toggle" aria-pressed="false">
+<button type="button" class="toggle" aria-pressed="false">
   <svg aria-hidden="true" width="16" height="16" ...>...</svg>
   Italic
 </button>
@@ -46,8 +46,8 @@ buttons (bold, italic, underline) or feature toggles.
 | `outline`      | Border, transparent background       |
 
 ```html
-<button class="toggle" aria-pressed="false">Default</button>
-<button class="toggle" data-variant="outline" aria-pressed="false">Outline</button>
+<button type="button" class="toggle" aria-pressed="false">Default</button>
+<button type="button" class="toggle" data-variant="outline" aria-pressed="false">Outline</button>
 ```
 
 ---
@@ -55,7 +55,7 @@ buttons (bold, italic, underline) or feature toggles.
 ## Sizes
 
 ```html
-<button class="toggle" aria-pressed="false" aria-label="Bold">
+<button type="button" class="toggle" aria-pressed="false" aria-label="Bold">
   <svg aria-hidden="true" ...>...</svg>
 </button>
 ```

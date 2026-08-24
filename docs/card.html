@@ -82,12 +82,13 @@
   <link rel="stylesheet" href="../components/typography/typography.css">
 </head>
 <body>
+  <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
   <site-header></site-header>
 
   <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
 
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Card</h1>
         <p class="text-muted leading-relaxed mb-6">
@@ -118,13 +119,13 @@
               </div>
             </div>
             <div class="card-footer" style="justify-content: space-between">
-              <button class="btn" data-variant="outline">Cancel</button>
-              <button class="btn" data-variant="default">Deploy</button>
+              <button type="button" class="btn" data-variant="outline">Cancel</button>
+              <button type="button" class="btn" data-variant="default">Deploy</button>
             </div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
@@ -146,8 +147,8 @@
     &lt;/div&gt;
   &lt;/div&gt;
   &lt;div class="card-footer" style="justify-content: space-between"&gt;
-    &lt;button class="btn" data-variant="outline"&gt;Cancel&lt;/button&gt;
-    &lt;button class="btn" data-variant="default"&gt;Deploy&lt;/button&gt;
+    &lt;button type="button" class="btn" data-variant="outline"&gt;Cancel&lt;/button&gt;
+    &lt;button type="button" class="btn" data-variant="default"&gt;Deploy&lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>
         </div>
@@ -168,7 +169,7 @@
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
@@ -201,13 +202,13 @@
               <p style="margin: 0; font-size: var(--font-body-small); color: var(--text-muted); line-height: var(--font-height)">A deep dive into the principles that guide contemporary visual design.</p>
             </div>
             <div class="card-footer">
-              <button class="btn" data-variant="default" data-size="sm">Read more</button>
-              <button class="btn" data-variant="ghost" data-size="sm">Bookmark</button>
+              <button type="button" class="btn" data-variant="default" data-size="sm">Read more</button>
+              <button type="button" class="btn" data-variant="ghost" data-size="sm">Bookmark</button>
             </div>
           </article>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
@@ -222,8 +223,8 @@
     &lt;p style="margin: 0; font-size: var(--font-body-small); color: var(--text-muted)"&gt;Body text...&lt;/p&gt;
   &lt;/div&gt;
   &lt;div class="card-footer"&gt;
-    &lt;button class="btn" data-variant="default" data-size="sm"&gt;Read more&lt;/button&gt;
-    &lt;button class="btn" data-variant="ghost" data-size="sm"&gt;Bookmark&lt;/button&gt;
+    &lt;button type="button" class="btn" data-variant="default" data-size="sm"&gt;Read more&lt;/button&gt;
+    &lt;button type="button" class="btn" data-variant="ghost" data-size="sm"&gt;Bookmark&lt;/button&gt;
   &lt;/div&gt;
 &lt;/article&gt;</code></pre>
         </div>
@@ -238,7 +239,7 @@
                 <h3 class="card-title">Team Members</h3>
                 <p class="card-description">Manage who has access.</p>
               </div>
-              <button class="btn" data-variant="ghost" data-size="icon" aria-label="More options">
+              <button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="More options">
                 <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
               </button>
             </div>
@@ -253,7 +254,7 @@
               </div>
             </div>
             <div class="card-footer" style="padding-top: var(--space-04); border-top: var(--border-width-01) solid var(--border-primary)">
-              <button class="btn" data-variant="outline" data-size="sm" style="width: 100%">
+              <button type="button" class="btn" data-variant="outline" data-size="sm" style="width: 100%">
                 <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
                 Invite member
               </button>
@@ -261,7 +262,7 @@
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
@@ -272,7 +273,7 @@
       &lt;h3 class="card-title"&gt;Team Members&lt;/h3&gt;
       &lt;p class="card-description"&gt;Manage who has access.&lt;/p&gt;
     &lt;/div&gt;
-    &lt;button class="btn" data-variant="ghost" data-size="icon"
+    &lt;button type="button" class="btn" data-variant="ghost" data-size="icon"
             aria-label="More options"&gt;
       &lt;svg aria-hidden="true" ...&gt;...&lt;/svg&gt;
     &lt;/button&gt;
@@ -282,7 +283,7 @@
   &lt;/div&gt;
   &lt;div class="card-footer"
        style="padding-top: var(--space-04); border-top: var(--border-width-01) solid var(--border-primary)"&gt;
-    &lt;button class="btn" data-variant="outline" data-size="sm"
+    &lt;button type="button" class="btn" data-variant="outline" data-size="sm"
             style="width: 100%"&gt;
       &lt;svg aria-hidden="true" ...&gt;...&lt;/svg&gt;
       Invite member

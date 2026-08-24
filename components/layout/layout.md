@@ -33,7 +33,7 @@ Vertical rhythm for arbitrary content. Children are separated by the gap.
 <div class="layout-stack">
   <h2>Heading</h2>
   <p>Paragraph</p>
-  <button class="btn">Action</button>
+  <button type="button" class="btn">Action</button>
 </div>
 ```
 
@@ -72,7 +72,7 @@ Pushes groups to opposite ends and wraps when space runs out. Useful for page he
     <h2>Title</h2>
     <p class="muted">Description</p>
   </div>
-  <button class="btn">Action</button>
+  <button type="button" class="btn">Action</button>
 </div>
 ```
 

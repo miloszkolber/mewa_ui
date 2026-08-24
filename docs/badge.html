@@ -82,12 +82,13 @@
   <link rel="stylesheet" href="../components/typography/typography.css">
 </head>
 <body>
+  <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
   <site-header></site-header>
 
   <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
 
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Badge</h1>
         <p class="text-muted leading-relaxed mb-6">
@@ -107,7 +108,7 @@
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
@@ -125,7 +126,7 @@
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
@@ -143,7 +144,7 @@
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
@@ -161,7 +162,7 @@
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
@@ -202,7 +203,7 @@
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
@@ -215,22 +216,22 @@
         <p class="text-xs text-muted mb-3">Badge inside a <code>.btn</code> for notification counts.</p>
         <div class="preview">
           <div style="display: flex; gap: var(--space-03); align-items: center">
-            <button class="btn" data-variant="outline">
+            <button type="button" class="btn" data-variant="outline">
               Inbox
               <span class="badge" data-variant="default">3</span>
             </button>
-            <button class="btn" data-variant="default">
+            <button type="button" class="btn" data-variant="default">
               Notifications
               <span class="badge" data-variant="secondary">12</span>
             </button>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
-          <pre><code class="language-markup">&lt;button class="btn" data-variant="outline"&gt;
+          <pre><code class="language-markup">&lt;button type="button" class="btn" data-variant="outline"&gt;
   Inbox
   &lt;span class="badge" data-variant="default"&gt;3&lt;/span&gt;
 &lt;/button&gt;</code></pre>

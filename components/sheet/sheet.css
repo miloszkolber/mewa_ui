@@ -78,7 +78,7 @@
 
     /* -- Backdrop ---------------------------------------------- */
     &::backdrop {
-      background: oklch(0 0 0 / 0);
+      background: transparent;
       backdrop-filter: blur(0px);
     }
 

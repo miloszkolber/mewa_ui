@@ -82,12 +82,13 @@
   <link rel="stylesheet" href="../components/typography/typography.css">
 </head>
 <body>
+  <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
   <site-header></site-header>
 
   <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
 
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Button group</h1>
         <p class="text-muted leading-relaxed mb-6">
@@ -101,20 +102,20 @@
         <p class="text-xs text-muted mb-3">Default horizontal group with connected outline buttons.</p>
         <div class="preview">
           <div class="btn-group" role="group" aria-label="Actions">
-            <button class="btn" data-variant="outline">Save</button>
-            <button class="btn" data-variant="outline">Edit</button>
-            <button class="btn" data-variant="outline">Delete</button>
+            <button type="button" class="btn" data-variant="outline">Save</button>
+            <button type="button" class="btn" data-variant="outline">Edit</button>
+            <button type="button" class="btn" data-variant="outline">Delete</button>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="btn-group" role="group" aria-label="Actions"&gt;
-  &lt;button class="btn" data-variant="outline"&gt;Save&lt;/button&gt;
-  &lt;button class="btn" data-variant="outline"&gt;Edit&lt;/button&gt;
-  &lt;button class="btn" data-variant="outline"&gt;Delete&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="outline"&gt;Save&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="outline"&gt;Edit&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="outline"&gt;Delete&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         </div>
 
@@ -123,20 +124,20 @@
         <p class="text-xs text-muted mb-3">Icon-only button group for compact toolbars.</p>
         <div class="preview">
           <div class="btn-group" role="group" aria-label="Formatting">
-            <button class="btn" data-variant="outline" data-size="icon" aria-label="Bold"><i data-lucide="bold"></i></button>
-            <button class="btn" data-variant="outline" data-size="icon" aria-label="Italic"><i data-lucide="italic"></i></button>
-            <button class="btn" data-variant="outline" data-size="icon" aria-label="Underline"><i data-lucide="underline"></i></button>
+            <button type="button" class="btn" data-variant="outline" data-size="icon" aria-label="Bold"><i data-lucide="bold"></i></button>
+            <button type="button" class="btn" data-variant="outline" data-size="icon" aria-label="Italic"><i data-lucide="italic"></i></button>
+            <button type="button" class="btn" data-variant="outline" data-size="icon" aria-label="Underline"><i data-lucide="underline"></i></button>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="btn-group" role="group" aria-label="Formatting"&gt;
-  &lt;button class="btn" data-variant="outline" data-size="icon" aria-label="Bold"&gt;...&lt;/button&gt;
-  &lt;button class="btn" data-variant="outline" data-size="icon" aria-label="Italic"&gt;...&lt;/button&gt;
-  &lt;button class="btn" data-variant="outline" data-size="icon" aria-label="Underline"&gt;...&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="outline" data-size="icon" aria-label="Bold"&gt;...&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="outline" data-size="icon" aria-label="Italic"&gt;...&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="outline" data-size="icon" aria-label="Underline"&gt;...&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         </div>
 
@@ -145,20 +146,20 @@
         <p class="text-xs text-muted mb-3">Stacked buttons with connected top/bottom borders.</p>
         <div class="preview">
           <div class="btn-group" data-orientation="vertical" role="group" aria-label="Navigation">
-            <button class="btn" data-variant="outline">Top</button>
-            <button class="btn" data-variant="outline">Middle</button>
-            <button class="btn" data-variant="outline">Bottom</button>
+            <button type="button" class="btn" data-variant="outline">Top</button>
+            <button type="button" class="btn" data-variant="outline">Middle</button>
+            <button type="button" class="btn" data-variant="outline">Bottom</button>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="btn-group" data-orientation="vertical" role="group" aria-label="Nav"&gt;
-  &lt;button class="btn" data-variant="outline"&gt;Top&lt;/button&gt;
-  &lt;button class="btn" data-variant="outline"&gt;Middle&lt;/button&gt;
-  &lt;button class="btn" data-variant="outline"&gt;Bottom&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="outline"&gt;Top&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="outline"&gt;Middle&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="outline"&gt;Bottom&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         </div>
 
@@ -169,20 +170,20 @@
         <p class="text-xs text-muted mb-3">Use <code>&lt;hr role="separator"&gt;</code> to visually divide non-outline buttons. Outline buttons don't need separators since they have visible borders.</p>
         <div class="preview">
           <div class="btn-group" role="group" aria-label="Clipboard">
-            <button class="btn" data-variant="default">Copy</button>
+            <button type="button" class="btn" data-variant="default">Copy</button>
             <hr role="separator">
-            <button class="btn" data-variant="default">Paste</button>
+            <button type="button" class="btn" data-variant="default">Paste</button>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="btn-group" role="group" aria-label="Clipboard"&gt;
-  &lt;button class="btn" data-variant="default"&gt;Copy&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="default"&gt;Copy&lt;/button&gt;
   &lt;hr role="separator"&gt;
-  &lt;button class="btn" data-variant="default"&gt;Paste&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="default"&gt;Paste&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         </div>
 
@@ -192,26 +193,26 @@
         <div class="preview">
           <div style="display: flex; flex-direction: column; gap: var(--space-04); align-items: center">
             <div class="btn-group" role="group" aria-label="Small actions">
-              <button class="btn" data-variant="outline" data-size="sm">Save</button>
-              <button class="btn" data-variant="outline" data-size="sm">Edit</button>
-              <button class="btn" data-variant="outline" data-size="sm" aria-label="More"><i data-lucide="ellipsis"></i></button>
+              <button type="button" class="btn" data-variant="outline" data-size="sm">Save</button>
+              <button type="button" class="btn" data-variant="outline" data-size="sm">Edit</button>
+              <button type="button" class="btn" data-variant="outline" data-size="sm" aria-label="More"><i data-lucide="ellipsis"></i></button>
             </div>
             <div class="btn-group" role="group" aria-label="Default actions">
-              <button class="btn" data-variant="outline">Save</button>
-              <button class="btn" data-variant="outline">Edit</button>
-              <button class="btn" data-variant="outline" data-size="icon" aria-label="More"><i data-lucide="ellipsis"></i></button>
+              <button type="button" class="btn" data-variant="outline">Save</button>
+              <button type="button" class="btn" data-variant="outline">Edit</button>
+              <button type="button" class="btn" data-variant="outline" data-size="icon" aria-label="More"><i data-lucide="ellipsis"></i></button>
             </div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;!-- Small --&gt;
 &lt;div class="btn-group" role="group" aria-label="Actions"&gt;
-  &lt;button class="btn" data-variant="outline" data-size="sm"&gt;Save&lt;/button&gt;
-  &lt;button class="btn" data-variant="outline" data-size="sm"&gt;Edit&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="outline" data-size="sm"&gt;Save&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="outline" data-size="sm"&gt;Edit&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         </div>
 
@@ -220,20 +221,20 @@
         <p class="text-xs text-muted mb-3">A primary action button with a dropdown trigger.</p>
         <div class="preview">
           <div class="btn-group" role="group" aria-label="Split action">
-            <button class="btn" data-variant="outline">Save</button>
+            <button type="button" class="btn" data-variant="outline">Save</button>
             <hr role="separator">
-            <button class="btn" data-variant="outline" data-size="icon" aria-label="More options"><i data-lucide="chevron-down"></i></button>
+            <button type="button" class="btn" data-variant="outline" data-size="icon" aria-label="More options"><i data-lucide="chevron-down"></i></button>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-02)">
-          <button class="copy-btn">
+          <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="btn-group" role="group" aria-label="Split action"&gt;
-  &lt;button class="btn" data-variant="outline"&gt;Save&lt;/button&gt;
+  &lt;button type="button" class="btn" data-variant="outline"&gt;Save&lt;/button&gt;
   &lt;hr role="separator"&gt;
-  &lt;button class="btn" data-variant="outline" data-size="icon"
+  &lt;button type="button" class="btn" data-variant="outline" data-size="icon"
           aria-label="More options"&gt;
     &lt;i data-lucide="chevron-down"&gt;&lt;/i&gt;
   &lt;/button&gt;

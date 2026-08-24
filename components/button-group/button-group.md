@@ -19,27 +19,27 @@
 ### Horizontal (default)
 ```html
 <div class="btn-group" role="group" aria-label="Actions">
-  <button class="btn" data-variant="outline">Save</button>
-  <button class="btn" data-variant="outline">Edit</button>
-  <button class="btn" data-variant="outline">Delete</button>
+  <button type="button" class="btn" data-variant="outline">Save</button>
+  <button type="button" class="btn" data-variant="outline">Edit</button>
+  <button type="button" class="btn" data-variant="outline">Delete</button>
 </div>
 ```
 
 ### Vertical
 ```html
 <div class="btn-group" data-orientation="vertical" role="group" aria-label="Actions">
-  <button class="btn" data-variant="outline">Top</button>
-  <button class="btn" data-variant="outline">Middle</button>
-  <button class="btn" data-variant="outline">Bottom</button>
+  <button type="button" class="btn" data-variant="outline">Top</button>
+  <button type="button" class="btn" data-variant="outline">Middle</button>
+  <button type="button" class="btn" data-variant="outline">Bottom</button>
 </div>
 ```
 
 ### With separator
 ```html
 <div class="btn-group" role="group" aria-label="Actions">
-  <button class="btn" data-variant="default">Copy</button>
+  <button type="button" class="btn" data-variant="default">Copy</button>
   <hr role="separator">
-  <button class="btn" data-variant="default">Paste</button>
+  <button type="button" class="btn" data-variant="default">Paste</button>
 </div>
 ```
 

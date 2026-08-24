@@ -218,7 +218,7 @@
   }
 
   .layout-content {
-    inline-size: min(100%, var(--layout-content-max, 78rem));
+    inline-size: min(100% - var(--space-08), var(--app-shell-max, 90rem));
     margin-inline: auto;
     padding: var(--space-08) var(--space-06) var(--space-12);
   }
@@ -347,43 +347,6 @@
     inline-size: var(--size-05);
     block-size: var(--size-05);
     color: var(--text-muted);
-  }
-
-  .layout-operation-list {
-    display: grid;
-    gap: 0;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .layout-operation-row {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: start;
-    gap: var(--space-03);
-    padding: var(--space-05) var(--space-06);
-    border-block-end: var(--border-width-01) solid var(--border-primary);
-
-    &:last-child {
-      border-block-end: none;
-    }
-  }
-
-  .layout-status-dot {
-    inline-size: var(--size-03);
-    block-size: var(--size-03);
-    margin-block-start: var(--space-02);
-    border-radius: var(--radius-full);
-    background: var(--text-muted);
-  }
-
-  .layout-status-dot[data-state="running"] {
-    background: var(--surface-positive);
-  }
-
-  .layout-status-dot[data-state="attention"] {
-    background: var(--surface-caution);
   }
 
   .layout-operation-title {
@@ -558,7 +521,7 @@
   }
 
   .layout-top-main {
-    inline-size: min(100%, var(--layout-content-max, 78rem));
+    inline-size: min(100% - var(--space-08), var(--app-shell-max, 90rem));
     margin-inline: auto;
     padding: var(--space-12) var(--space-06);
   }
@@ -635,8 +598,6 @@
   .layout-availability-dot {
     inline-size: var(--size-03);
     block-size: var(--size-03);
-    border-radius: var(--radius-full);
-    background: var(--surface-positive);
   }
 
   .layout-resume-section {
@@ -828,6 +789,7 @@
 
     .layout-content,
     .layout-top-main {
+      inline-size: 100%;
       padding: var(--space-07) var(--space-03) var(--space-10);
     }
 
@@ -857,16 +819,6 @@
 
     .layout-filter-bar .btn {
       grid-column: auto;
-    }
-
-    .layout-operation-row {
-      grid-template-columns: auto minmax(0, 1fr);
-      padding-inline: var(--space-04);
-    }
-
-    .layout-operation-actions {
-      grid-column: 2;
-      justify-content: flex-start;
     }
 
     .layout-top-header-inner {
@@ -978,9 +930,5 @@
       background: Canvas;
     }
 
-    .layout-status-dot,
-    .layout-availability-dot {
-      background: CanvasText;
-    }
   }
 }

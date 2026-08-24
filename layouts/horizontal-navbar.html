@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="../src/base.css">
   <link rel="stylesheet" href="../src/tokens.css">
   <link rel="stylesheet" href="../components/layout/layout.css">
+  <link rel="stylesheet" href="../components/app-shell/app-shell.css">
   <link rel="stylesheet" href="../components/icon/icon.css">
   <link rel="stylesheet" href="../components/button/button.css">
   <link rel="stylesheet" href="../components/avatar/avatar.css">
@@ -46,7 +47,7 @@
       </div>
     </header>
 
-    <main class="layout-top-main" id="main-content" aria-labelledby="page-title">
+    <main class="layout-top-main app-content" id="main-content" aria-labelledby="page-title">
       <!-- Replace the name, role, location, and links with the profile's content. -->
       <section class="layout-resume-hero" aria-labelledby="page-title">
         <div>
@@ -65,7 +66,7 @@
 
         <aside class="layout-resume-aside" aria-label="Profile summary">
           <span class="avatar" data-size="lg"><span class="avatar-fallback">YN</span></span>
-          <div class="layout-availability"><span class="layout-availability-dot" aria-hidden="true"></span><span>Open to selected projects</span></div>
+          <div class="layout-availability"><span class="status-dot layout-availability-dot" data-state="positive" aria-hidden="true"></span><span>Open to selected projects</span></div>
           <p class="layout-description">Use this compact rail for availability, a portrait, a short metric, or another supporting detail.</p>
         </aside>
       </section>

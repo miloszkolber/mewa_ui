@@ -83,7 +83,7 @@
     }
 
     &::backdrop {
-      background: color-mix(in oklch, var(--surface-overlay), var(--color-black) 70%);
+      background: var(--surface-overlay);
     }
   }
 
@@ -120,18 +120,17 @@
     justify-content: center;
     width: 2.25rem;
     height: 2.25rem;
-    border: none;
-
-     background: var(--color-black);
-     color: var(--color-white);
+    border: var(--border-width-01) solid var(--border-secondary);
+    background: var(--background);
+    color: var(--text-primary);
     cursor: pointer;
     &:hover {
-       background: color-mix(in oklch, var(--color-black) 80%, var(--color-white));
+      background: var(--surface-secondary);
     }
 
-      &:focus-visible {
-       outline: var(--focus-ring-width) solid var(--border-ring);
-       outline-offset: var(--border-width-01);
+    &:focus-visible {
+      outline: var(--focus-ring-width) solid var(--border-ring);
+      outline-offset: var(--border-width-01);
     }
 
     & > svg {

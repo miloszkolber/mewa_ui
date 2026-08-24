@@ -82,12 +82,13 @@
   <link rel="stylesheet" href="../components/typography/typography.css">
 </head>
 <body>
+  <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
   <site-header></site-header>
 
   <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
 
-    <main style="flex: 1; min-width: 0; max-width: 64rem; padding: var(--space-07) var(--space-10) var(--space-15)">
+    <main id="main-content" class="app-content" style="flex: 1; min-width: 0; max-width: 64rem; padding: var(--space-07) var(--space-10) var(--space-15)" tabindex="-1">
       <div class="page-header">
         <h1>App Shell</h1>
         <p class="text-muted leading-relaxed mb-6">Shared application chrome for header-based services and sidebar workspaces. It provides a page frame, sticky header or toolbar, route navigation, page overview, inline stats, status markers, empty states, and an optional OS-aware theme toggle.</p>
@@ -173,6 +174,29 @@
             <span class="stat-status"><span class="status-dot" data-state="negative" aria-hidden="true"></span> Failed</span>
           </p>
         </div>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-8" id="app-shell-status-list">Status list</p>
+      <p class="text-xs text-muted mb-3">Use a compact border-separated list when each status has its own copy and optional action. The composition reuses the existing semantic status markers without adding nested cards.</p>
+      <div class="preview" style="display: block; text-align: left">
+        <ul class="app-status-list" aria-label="Worker status">
+          <li class="app-status-row">
+            <span class="status-icon" data-state="running" aria-hidden="true"><i data-lucide="loader-circle"></i></span>
+            <div class="app-status-copy">
+              <p class="app-status-title">Resolve model manifest</p>
+              <p class="app-status-description">Checking revisions and compatible quantizations.</p>
+            </div>
+            <div class="app-status-actions"><button class="btn" type="button" data-variant="outline" data-size="sm">View run</button></div>
+          </li>
+          <li class="app-status-row">
+            <span class="status-dot" data-state="positive" aria-hidden="true"></span>
+            <div class="app-status-copy">
+              <p class="app-status-title">Nightly snapshot</p>
+              <p class="app-status-description">Verified and retained for the scheduled window.</p>
+            </div>
+            <div class="app-status-actions"><button class="btn" type="button" data-variant="ghost" data-size="sm">Details</button></div>
+          </li>
+        </ul>
       </div>
 
       <p class="text-sm font-medium mb-2 mt-8">Empty state</p>

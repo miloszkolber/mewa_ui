@@ -81,14 +81,14 @@ Attributes on the `<i>` (`data-size`, `stroke-width`, `fill`, `style`, `aria-*`)
 
 ### Inside a button
 ```html
-<button class="btn" data-variant="outline" data-size="icon" aria-label="Settings">
+<button type="button" class="btn" data-variant="outline" data-size="icon" aria-label="Settings">
   <i data-lucide="settings"></i>
 </button>
 ```
 
 ### With text
 ```html
-<button class="btn" data-variant="default">
+<button type="button" class="btn" data-variant="default">
   <i data-lucide="save"></i>
   Save
 </button>

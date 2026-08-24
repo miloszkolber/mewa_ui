@@ -25,8 +25,8 @@ No JavaScript required.
     <!-- body content -->
   </div>
   <div class="card-footer">
-    <button class="btn" data-variant="outline">Cancel</button>
-    <button class="btn" data-variant="default">Save</button>
+    <button type="button" class="btn" data-variant="outline">Cancel</button>
+    <button type="button" class="btn" data-variant="default">Save</button>
   </div>
 </div>
 
@@ -88,7 +88,7 @@ No JavaScript required.
       <h3 class="card-title">Title</h3>
       <p class="card-description">Description</p>
     </div>
-    <button class="btn" data-variant="ghost" data-size="icon" aria-label="More options">
+    <button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="More options">
       <svg>...</svg>
     </button>
   </div>
