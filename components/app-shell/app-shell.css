@@ -15,6 +15,7 @@
   .app-shell > main {
     flex: 1;
     min-inline-size: 0;
+    scroll-margin-block-start: var(--app-shell-header-offset, var(--size-10));
   }
 
   /* Shared container math for shell regions. `--app-shell-max` picks the

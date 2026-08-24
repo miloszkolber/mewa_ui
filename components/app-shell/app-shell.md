@@ -13,7 +13,7 @@ A semantic page frame composed from `<body>`, `<header>`, `<nav>`, `<main>`, nat
 
 ## Page frame
 
-Put `.app-shell` on `<body>`. The direct `<main>` child grows to fill the viewport. Use a skip link before the header and give the main landmark a stable ID.
+Put `.app-shell` on `<body>`. The direct `<main>` child grows to fill the viewport. Use a skip link before the header and give the main landmark a stable ID. The main landmark includes a default sticky-header scroll offset. Set `--app-shell-header-offset` on `.app-shell` only when a consumer's wrapped header is taller than the default `3.5rem`.
 
 ```html
 <body class="app-shell">
