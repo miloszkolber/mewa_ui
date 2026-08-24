@@ -45,6 +45,14 @@ Each current component lives in `components/{name}/` with `{name}.md` as its mar
 
 Lucide is the primary icon source. Standalone SVG files live in `src/icons/` and inherit `currentColor` with the shared stroke treatment. Use the documented local loader or inline the matching SVG directly. Never use a remote icon CDN. Decorative icons use `aria-hidden="true"`; icon-only controls have a visible or programmatic accessible name.
 
+## Fleet conventions
+
+- Responsive tiers collapse at `max-width: 48rem` and `max-width: 37.5rem`. Use these two rem breakpoints for component and shell adaptation instead of introducing pixel or viewport-unit breakpoints.
+- Shell content width uses the two `--app-shell-max` presets: `90rem` for dense data surfaces (the shell default) and `64rem` for focused single-purpose tools. Do not introduce additional container widths.
+- Theme policy is OS-following by default with a manual toggle. Consumers ship the shared pre-paint snippet from `components/app-shell/app-shell.md` in `<head>` and load `app-shell.js` for the persisted toggle. Do not hand-roll deferred class-addition theme bootstrapping.
+- Icons load by preference: inline the SVG from `src/icons/` first, use the documented local loader second, and never reference a remote icon CDN. JavaScript path-literal icon copies are deprecated and are phased out during consumer migrations.
+- Consumer application scripts (a service's `assets/app.js` and equivalents) are exempt from the component module initialization contract. The `:not([data-init])` plus `MutationObserver` pattern binds library component modules only; application scripts coordinate their own state and lifecycle.
+
 ## Layouts
 
 `components/app-shell/` provides shared application header, toolbar, page-overview, inline-status, empty-state, skip-link, and optional theme primitives. It does not replace a complete shell template or own application route data.

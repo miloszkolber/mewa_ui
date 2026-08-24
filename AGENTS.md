@@ -97,6 +97,10 @@ Load `src/base.css` before `src/tokens.css`. The base file contains static primi
 
 Do not use literal palette colors or recreate a spacing-token taxonomy inside a component. Use existing semantic roles and the current static dimensions. Keep the square, border-led contract. `--radius-full` is the only shared circular radius token and is not a general component radius API.
 
+## Fleet conventions
+
+Consumer migrations follow the shared conventions documented in `DESIGN.md`: the `48rem` and `37.5rem` rem breakpoint tiers, the `64rem` and `90rem` `--app-shell-max` container presets, the OS-following theme policy with the shared pre-paint snippet and the `app-shell.js` toggle, inline-SVG-first icon loading from `src/icons/`, and the application-JS exemption from the component module init pattern. Do not introduce additional breakpoint tiers, container widths, or theme bootstrap mechanisms.
+
 ## Canonical shells
 
 `components/app-shell/` supplies shared header, toolbar, page-overview, inline-status, empty-state, skip-link, and optional OS-aware theme primitives for consumer-owned shells. It does not create a third complete shell template, replace Sidebar, or own application route data. Keep complete reusable left-rail and top-navigation examples under `layouts/`.
