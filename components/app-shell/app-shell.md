@@ -67,6 +67,14 @@ Use `.app-toolbar` with `.app-toolbar-inner` for a sticky breadcrumb-and-actions
 </header>
 ```
 
+## Edge accent
+
+Add `.app-shell-edge` beside `.app-shell` on `<body>` to pin a decorative diagonal hatch to the viewport's inline end. The accent is a flat hard-stop pattern painted in a border role, ignores pointer input, and never moves. Omit the class when the right edge must stay clean; the shell is fully usable without it.
+
+```html
+<body class="app-shell app-shell-edge">
+```
+
 ## Page overview
 
 Use one `.page-overview` near the start of `<main>` for route context, a sentence-case heading, a concise description, optional actions, and an inline stats strip. The uppercase `.eyebrow` is the reserved monospace technical label. Do not uppercase ordinary headings or controls.

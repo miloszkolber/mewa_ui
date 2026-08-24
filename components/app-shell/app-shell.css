@@ -154,6 +154,24 @@
     padding-block: var(--space-02);
   }
 
+  /* -- Edge accent --------------------------------------------------- */
+  /* Optional decorative hatch pinned to the viewport's inline end. The
+     pattern is a flat hard-stop stripe in a border role. It ignores
+     pointer input and introduces no motion. */
+  .app-shell-edge::after {
+    content: "";
+    position: fixed;
+    inset-block: 0;
+    inset-inline-end: 0;
+    inline-size: var(--space-03);
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--border-secondary) 0 var(--border-width-02),
+      transparent var(--border-width-02) var(--space-02)
+    );
+  }
+
   /* -- Page overview ------------------------------------------------ */
   .page-overview {
     display: flex;
@@ -418,6 +436,11 @@
 
     .status-icon {
       border: var(--border-width-01) solid CanvasText;
+    }
+
+    .app-shell-edge::after {
+      background: none;
+      border-inline-end: var(--border-width-02) solid CanvasText;
     }
 
     .app-status-row {

@@ -205,6 +205,16 @@
         <p class="app-empty" role="status">No jobs match the current filter.</p>
       </div>
 
+      <p class="text-sm font-medium mb-2 mt-8">Edge accent</p>
+      <p class="text-xs text-muted mb-3">Add the optional class beside <code>app-shell</code> on the body element to pin a flat diagonal hatch to the viewport's inline end. The accent is decorative, ignores pointer input, and stays omitted when the right edge must stay clean.</p>
+      <div style="position: relative; margin-top: var(--space-02)">
+        <button class="copy-btn" type="button">
+          <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          Copy
+        </button>
+        <pre><code class="language-markup">&lt;body class="app-shell app-shell-edge"&gt;</code></pre>
+      </div>
+
       <p class="text-sm font-medium mb-2 mt-8">Theme behavior</p>
       <p class="text-xs text-muted mb-3">The optional module follows the OS color scheme until a manual choice is stored. It hides the toggle when JavaScript is unavailable. Use the pre-paint snippet in the component skill to avoid a theme mismatch during initial rendering.</p>
     </main>
