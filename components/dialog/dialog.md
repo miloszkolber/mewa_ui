@@ -2,17 +2,17 @@
 
 ## Native basis
 `<dialog>` element + `showModal()`. The browser provides:
-- Focus trap (automatically)
+- Modal top-layer placement and inert background content
 - Escape key to close (automatically)
 - `::backdrop` for overlay
 - `aria-modal` behavior when opened with `showModal()`
 
-Requires minimal JavaScript — only for trigger wiring and backdrop-click-to-close.
+Requires minimal JavaScript for trigger wiring, keyboard focus wrapping, focus restoration, and backdrop-click-to-close.
 
 ---
 
 ## Native Web APIs
-- [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) — native modal element with built-in focus trap and Escape-to-close
+- [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) — native modal element with top-layer placement, inert background content, and Escape-to-close
 - [`HTMLDialogElement.showModal()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) — opens dialog as modal in the top layer with backdrop
 - [`::backdrop`](https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop) — pseudo-element for the overlay behind the modal
 
@@ -77,6 +77,7 @@ Requires minimal JavaScript — only for trigger wiring and backdrop-click-to-cl
 - `data-dialog-trigger="[id]"` on any element → opens that dialog
 - `data-dialog-close` on any element inside → closes the dialog
 - Click on backdrop → closes (click lands on `<dialog>` itself)
+- Tab and Shift+Tab wrap between the dialog's first and last enabled controls
 - Place `<dialog>` elements as direct children of `<body>`
 
 ---

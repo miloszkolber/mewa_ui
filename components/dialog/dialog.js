@@ -12,6 +12,20 @@ function openDialog(dialog, trigger) {
   }
 }
 
+function focusableElements(dialog) {
+  const selector = [
+    'a[href]',
+    'area[href]',
+    'button:not([disabled])',
+    'input:not([disabled]):not([type="hidden"])',
+    'select:not([disabled])',
+    'textarea:not([disabled])',
+    '[contenteditable="true"]',
+    '[tabindex]:not([tabindex="-1"]):not([disabled]):not([type="hidden"])'
+  ].join(',');
+  return Array.from(dialog.querySelectorAll(selector)).filter((element) => !element.matches(':disabled') && !element.closest('[hidden], [inert]'));
+}
+
 function init() {
 document.querySelectorAll('[data-dialog-trigger]:not([data-init])').forEach((trigger) => {
   trigger.dataset.init = '';
@@ -27,6 +41,20 @@ document.querySelectorAll('[data-dialog-trigger]:not([data-init])').forEach((tri
 });
 document.querySelectorAll('dialog:not(.alert-dialog):not(.sheet):not([data-init])').forEach((dialog) => {
   dialog.dataset.init = '';
+  dialog.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab' || !dialog.open) return;
+    const focusable = focusableElements(dialog);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && (document.activeElement === first || document.activeElement === dialog)) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
   dialog.addEventListener('click', (e) => {
     if (e.target === dialog) dialog.close();
   });

@@ -956,4 +956,28 @@ test("dropdown menus rebind a persistent trigger when its target is replaced", (
   assert.equal(listeners(firstMenu, "keydown"), 1, "reinserted trigger restores one menu listener set");
 });
 
+test("dialogs wrap keyboard focus without including hidden or disabled controls", () => {
+  const dialog = node("dialog", { class: "dialog" });
+  dialog.open = true;
+  const first = node("input");
+  const hiddenGroup = node("div", { hidden: "" });
+  const hiddenInput = node("input");
+  hiddenGroup.append(hiddenInput);
+  const disabled = node("button", { disabled: "", tabindex: "0" });
+  const hiddenByType = node("input", { type: "hidden", tabindex: "0" });
+  const last = node("button");
+  dialog.append(first, hiddenGroup, disabled, hiddenByType, last);
+
+  const { document } = loadModule("dialog", dialog);
+  last.focus();
+  const forward = key(last, "Tab");
+  assert.equal(forward.defaultPrevented, true);
+  assert.equal(document.activeElement, first);
+
+  first.focus();
+  const backward = key(first, "Tab", { shiftKey: true });
+  assert.equal(backward.defaultPrevented, true);
+  assert.equal(document.activeElement, last);
+});
+
 if (failures) process.exitCode = 1;
