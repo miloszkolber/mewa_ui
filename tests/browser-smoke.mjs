@@ -583,11 +583,6 @@ async function runTargetedInteractions(base) {
   await page.keyboard.press("Escape");
 
   await loadPage(base, "/docs/dropdown-menu.html", desktop);
-  await page.click('[data-dropdown-menu-trigger="demo-dropdown-checks"]');
-  await page.waitForFunction(() => document.querySelector("#demo-dropdown-checks")?.matches(":popover-open"), { timeout: 5000 });
-  const checkedBefore = await page.$eval("#demo-dropdown-checks [role=menuitemcheckbox]", (item) => item.getAttribute("aria-checked"));
-  await page.click("#demo-dropdown-checks [role=menuitemcheckbox]");
-  assert.notEqual(await page.$eval("#demo-dropdown-checks [role=menuitemcheckbox]", (item) => item.getAttribute("aria-checked")), checkedBefore);
   await page.evaluate(() => {
     const outside = document.createElement("button");
     outside.id = "dropdown-outside-focus";
@@ -596,10 +591,111 @@ async function runTargetedInteractions(base) {
     document.querySelector("main")?.append(outside);
   });
   const outsideControl = "#dropdown-outside-focus";
+  const actionTrigger = '[data-dropdown-menu-trigger="demo-dropdown"]';
+  const actionMenu = "#demo-dropdown";
+  const actionItem = `${actionMenu} [role=menuitem]`;
+  const checkTrigger = '[data-dropdown-menu-trigger="demo-dropdown-checks"]';
+  const checkMenu = "#demo-dropdown-checks";
+  const checkItem = `${checkMenu} [role=menuitemcheckbox]`;
+
+  await page.evaluate(() => {
+    const actionTarget = document.querySelectorAll("#demo-dropdown [role=menuitem]")[1];
+    const checkTarget = document.querySelector("#demo-dropdown-checks [role=menuitemcheckbox]");
+    window.__dropdownActivationCounts = {
+      actionClicks: 0,
+      actionTriggerClicks: 0,
+      checkClicks: 0,
+      checkTriggerClicks: 0
+    };
+    document.querySelector('[data-dropdown-menu-trigger="demo-dropdown"]')?.addEventListener("click", () => {
+      window.__dropdownActivationCounts.actionTriggerClicks += 1;
+    });
+    document.querySelector('[data-dropdown-menu-trigger="demo-dropdown-checks"]')?.addEventListener("click", () => {
+      window.__dropdownActivationCounts.checkTriggerClicks += 1;
+    });
+    actionTarget?.addEventListener("click", () => {
+      window.__dropdownActivationCounts.actionClicks += 1;
+    });
+    checkTarget?.addEventListener("click", () => {
+      window.__dropdownActivationCounts.checkClicks += 1;
+    });
+    const closeFromKeydown = (event) => {
+      if (event.key === "Enter" || event.key === " ") event.currentTarget.closest('[role="menu"]')?.hidePopover();
+    };
+    actionTarget?.addEventListener("keydown", closeFromKeydown);
+    checkTarget?.addEventListener("keydown", closeFromKeydown);
+  });
+
+  await page.$eval(actionItem, (item) => {
+    item.addEventListener("click", () => {
+      document.querySelector("#dropdown-outside-focus")?.focus();
+    }, { once: true });
+  });
+  await page.click(actionTrigger);
+  await page.waitForFunction(() => document.querySelector("#demo-dropdown")?.matches(":popover-open"), { timeout: 5000 });
+  await page.keyboard.press("Enter");
+  await page.waitForFunction(() => !document.querySelector("#demo-dropdown")?.matches(":popover-open"), { timeout: 5000 });
+  assert.equal(await page.$eval(outsideControl, (control) => document.activeElement === control), true, "keyboard actions that move focus externally must not restore the dropdown trigger");
+
+  for (const key of ["Enter", "Space"]) {
+    await page.click(actionTrigger);
+    await page.waitForFunction(() => document.querySelector("#demo-dropdown")?.matches(":popover-open"), { timeout: 5000 });
+    await page.evaluate(() => document.querySelectorAll("#demo-dropdown [role=menuitem]")[1]?.focus());
+    await page.waitForFunction(() => document.activeElement === document.querySelectorAll("#demo-dropdown [role=menuitem]")[1], { timeout: 5000 });
+    const before = await page.evaluate(() => ({
+      actionClicks: window.__dropdownActivationCounts.actionClicks,
+      actionTriggerClicks: window.__dropdownActivationCounts.actionTriggerClicks
+    }));
+    await page.keyboard.press(key);
+    await page.waitForFunction(() => !document.querySelector("#demo-dropdown")?.matches(":popover-open"), { timeout: 5000 });
+    const after = await page.evaluate(() => ({
+      actionClicks: window.__dropdownActivationCounts.actionClicks,
+      actionTriggerClicks: window.__dropdownActivationCounts.actionTriggerClicks
+    }));
+    assert.equal(after.actionClicks, before.actionClicks + 1, `dropdown action ${key} activates the target exactly once`);
+    assert.equal(after.actionTriggerClicks, before.actionTriggerClicks, `dropdown action ${key} does not re-click the trigger`);
+    assert.equal(await page.$eval(actionTrigger, (trigger) => document.activeElement === trigger), true, `dropdown action ${key} restores trigger focus`);
+  }
+
+  for (const key of ["Enter", "Space"]) {
+    await page.click(checkTrigger);
+    await page.waitForFunction(() => document.querySelector("#demo-dropdown-checks")?.matches(":popover-open"), { timeout: 5000 });
+    const before = await page.evaluate(() => ({
+      checked: document.querySelector("#demo-dropdown-checks [role=menuitemcheckbox]")?.getAttribute("aria-checked"),
+      checkClicks: window.__dropdownActivationCounts.checkClicks,
+      checkTriggerClicks: window.__dropdownActivationCounts.checkTriggerClicks
+    }));
+    await page.keyboard.press(key);
+    await page.waitForFunction(() => !document.querySelector("#demo-dropdown-checks")?.matches(":popover-open"), { timeout: 5000 });
+    const after = await page.evaluate(() => ({
+      checked: document.querySelector("#demo-dropdown-checks [role=menuitemcheckbox]")?.getAttribute("aria-checked"),
+      checkClicks: window.__dropdownActivationCounts.checkClicks,
+      checkTriggerClicks: window.__dropdownActivationCounts.checkTriggerClicks
+    }));
+    assert.notEqual(after.checked, before.checked, `dropdown checkable ${key} toggles the target exactly once`);
+    assert.equal(after.checkClicks, before.checkClicks, `dropdown checkable ${key} does not synthesize an extra click`);
+    assert.equal(after.checkTriggerClicks, before.checkTriggerClicks, `dropdown checkable ${key} does not re-click the trigger`);
+    assert.equal(await page.$eval(checkTrigger, (trigger) => document.activeElement === trigger), true, `dropdown checkable ${key} restores trigger focus`);
+  }
+
+  await page.focus(outsideControl);
+  const beforeProgrammaticTriggerClicks = await page.evaluate(() => window.__dropdownActivationCounts.checkTriggerClicks);
+  await page.$eval(checkTrigger, (trigger) => trigger.click());
+  await page.waitForFunction(() => document.querySelector("#demo-dropdown-checks")?.matches(":popover-open"), { timeout: 5000 });
+  await page.keyboard.press("Escape");
+  await page.waitForFunction(() => !document.querySelector("#demo-dropdown-checks")?.matches(":popover-open"), { timeout: 5000 });
+  assert.equal(await page.evaluate(() => window.__dropdownActivationCounts.checkTriggerClicks), beforeProgrammaticTriggerClicks + 1, "programmatic activation clicks the trigger exactly once");
+  assert.equal(await page.$eval(checkTrigger, (trigger) => document.activeElement === trigger), true, "programmatic activation from outside followed by Escape restores the trigger");
+
+  await page.click(checkTrigger);
+  await page.waitForFunction(() => document.querySelector("#demo-dropdown-checks")?.matches(":popover-open"), { timeout: 5000 });
+  const checkedBefore = await page.$eval(checkItem, (item) => item.getAttribute("aria-checked"));
+  await page.click(checkItem);
+  assert.notEqual(await page.$eval(checkItem, (item) => item.getAttribute("aria-checked")), checkedBefore);
   await page.click(outsideControl);
   await page.waitForFunction(() => !document.querySelector("#demo-dropdown-checks")?.matches(":popover-open"), { timeout: 5000 });
   assert.equal(await page.$eval(outsideControl, (control) => document.activeElement === control), true, "dropdown light-dismiss preserves focus on the outside control");
-  await page.click('[data-dropdown-menu-trigger="demo-dropdown-checks"]');
+  await page.click(checkTrigger);
   await page.waitForFunction(() => document.querySelector("#demo-dropdown-checks")?.matches(":popover-open"), { timeout: 5000 });
   await page.keyboard.press("Escape");
   await page.waitForFunction(() => !document.querySelector("#demo-dropdown-checks")?.matches(":popover-open"), { timeout: 5000 });

@@ -919,9 +919,14 @@ test("resizable panels respond to keyboard and pointer separator changes", () =>
   assert.equal(runtime.document.activeElement, runtime.document.body);
 });
 
-test("dropdown menus rebind a persistent trigger when its target is replaced", () => {
+test("dropdown menus restore keyboard focus without stealing external focus and rebind targets", () => {
   const root = node("section");
   const trigger = node("button", { "data-dropdown-menu-trigger": "actions", "aria-expanded": "false" });
+  let triggerClicks = 0;
+  trigger.click = () => {
+    triggerClicks += 1;
+    fire(trigger, "click");
+  };
   const firstMenu = node("div", { id: "actions", popover: "auto" });
   const firstItem = node("div", { role: "menuitemcheckbox", "aria-checked": "false" }, "First");
   firstMenu.append(firstItem);
@@ -937,11 +942,33 @@ test("dropdown menus rebind a persistent trigger when its target is replaced", (
   firstMenu.remove();
   const replacement = node("div", { id: "actions", popover: "auto" });
   const replacementItem = node("div", { role: "menuitemcheckbox", "aria-checked": "false" }, "Replacement");
-  replacement.append(replacementItem);
+  const replacementAction = node("div", { role: "menuitem" }, "Action");
+  replacement.append(replacementItem, replacementAction);
   let replacementToggles = 0;
-  replacement.togglePopover = () => { replacementToggles += 1; };
-  replacement.hidePopover = () => fire(replacement, "toggle", { newState: "closed" });
+  let focusAtToggle = null;
+  let closeRequested = false;
+  replacement.togglePopover = () => {
+    replacementToggles += 1;
+    focusAtToggle = runtime.document.activeElement;
+  };
+  replacement.hidePopover = () => {
+    closeRequested = true;
+    if (replacement.contains(runtime.document.activeElement)) trigger.focus();
+  };
+  const flushClose = () => {
+    if (!closeRequested) return;
+    closeRequested = false;
+    fire(replacement, "toggle", { newState: "closed" });
+  };
+  const outside = node("button", { type: "button" }, "Outside");
+  let actionClicks = 0;
+  replacementAction.click = () => {
+    actionClicks += 1;
+    outside.focus();
+    replacement.hidePopover();
+  };
   root.append(replacement);
+  root.append(outside);
 
   assert.equal(replacement.style.positionAnchor, "--dropdown-menu-actions");
   assert.equal(listeners(trigger, "click"), 1, "persistent trigger keeps one listener");
@@ -950,18 +977,66 @@ test("dropdown menus rebind a persistent trigger when its target is replaced", (
   assert.equal(listeners(replacement, "mouseleave"), 1);
   assert.equal(listeners(replacement, "click"), 1);
   assert.equal(listeners(replacement, "keydown"), 1, "replacement receives one keyboard listener");
+  outside.focus();
   fire(trigger, "click");
   assert.equal(firstToggles, 0);
   assert.equal(replacementToggles, 1);
+  assert.equal(focusAtToggle, trigger, "programmatic activation establishes the trigger as the native focus source");
+
+  fire(replacement, "toggle", { newState: "open" });
+  assert.equal(runtime.document.activeElement, replacementItem);
+  key(replacementItem, "Escape");
+  flushClose();
+  assert.equal(runtime.document.activeElement, trigger, "Escape after external programmatic activation returns to the trigger");
+
+  const closeFromTarget = () => replacement.hidePopover();
+  replacementItem.addEventListener("keydown", closeFromTarget);
+  replacementAction.addEventListener("keydown", closeFromTarget);
+  for (const keyValue of ["Enter", " "]) {
+    fire(replacement, "toggle", { newState: "open" });
+    assert.equal(runtime.document.activeElement, replacementItem);
+    const beforeTriggerClicks = triggerClicks;
+    const checked = replacementItem.getAttribute("aria-checked");
+    key(replacementItem, keyValue);
+    assert.equal(closeRequested, true, `${keyValue} target handler requests close before bubbling`);
+    assert.equal(runtime.document.activeElement, trigger, "native close restoration can move focus before bubbling");
+    flushClose();
+    assert.equal(trigger.getAttribute("aria-expanded"), "false", `${keyValue} checkable close remains closed`);
+    assert.equal(runtime.document.activeElement, trigger, `${keyValue} close restores focus to the trigger`);
+    assert.equal(replacementItem.getAttribute("aria-checked"), checked === "true" ? "false" : "true", `${keyValue} toggles the target item once`);
+    assert.equal(triggerClicks, beforeTriggerClicks, `${keyValue} does not re-click the trigger after native focus restoration`);
+  }
+
+  for (const keyValue of ["Enter", " "]) {
+    fire(replacement, "toggle", { newState: "open" });
+    replacementAction.focus();
+    const beforeActionClicks = actionClicks;
+    const beforeTriggerClicks = triggerClicks;
+    key(replacementAction, keyValue);
+    assert.equal(actionClicks, beforeActionClicks + 1, `${keyValue} activates the target action once`);
+    assert.equal(triggerClicks, beforeTriggerClicks, `${keyValue} does not re-click the trigger after native focus restoration`);
+    assert.equal(runtime.document.activeElement, outside, `${keyValue} action keeps its deliberate external focus`);
+    flushClose();
+    assert.equal(trigger.getAttribute("aria-expanded"), "false", `${keyValue} action close remains closed`);
+    assert.equal(runtime.document.activeElement, outside, `${keyValue} action close remains externally focused`);
+  }
+
+  replacementItem.removeEventListener("keydown", closeFromTarget);
+  replacementAction.removeEventListener("keydown", closeFromTarget);
 
   fire(replacement, "toggle", { newState: "open" });
   assert.equal(trigger.getAttribute("aria-expanded"), "true");
   assert.equal(runtime.document.activeElement, replacementItem);
-  const outside = node("button", { type: "button" }, "Outside");
-  root.append(outside);
   outside.focus();
   fire(replacement, "toggle", { newState: "closed" });
   assert.equal(runtime.document.activeElement, outside, "light-dismiss must not steal focus from an outside control");
+
+  fire(replacement, "toggle", { newState: "open" });
+  replacementAction.focus();
+  key(replacementAction, "Enter");
+  flushClose();
+  assert.equal(runtime.document.activeElement, outside, "actions that move focus externally must not restore the trigger");
+
   fire(replacement, "toggle", { newState: "open" });
   assert.equal(runtime.document.activeElement, replacementItem);
   fire(firstMenu, "toggle", { newState: "closed" });
@@ -972,6 +1047,7 @@ test("dropdown menus rebind a persistent trigger when its target is replaced", (
   fire(replacement, "mousemove", { clientX: 1, clientY: 1 });
   assert.equal(replacementItem.hasAttribute("data-highlighted"), true);
   key(replacementItem, "Escape");
+  flushClose();
   assert.equal(trigger.getAttribute("aria-expanded"), "false");
   assert.equal(runtime.document.activeElement, trigger, "Escape returns focus to the trigger");
 

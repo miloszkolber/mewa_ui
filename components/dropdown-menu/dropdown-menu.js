@@ -8,8 +8,9 @@ function bindMenu(trigger, state, menu) {
   trigger.style.anchorName = anchorId;
   menu.style.positionAnchor = anchorId;
 
+  const itemSelector = '[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]';
   const isDisabled = (item) => item.disabled || item.getAttribute('aria-disabled') === 'true';
-  const getItems = () => Array.from(menu.querySelectorAll('[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]'))
+  const getItems = () => Array.from(menu.querySelectorAll(itemSelector))
     .filter((item) => !isDisabled(item));
   const activateCheckable = (item) => {
     if (!item || isDisabled(item)) return;
@@ -33,18 +34,16 @@ function bindMenu(trigger, state, menu) {
     const open = e.newState === 'open';
     trigger.setAttribute('aria-expanded', open);
     if (open) {
-      state.restoreFocusOnClose = false;
       const first = getItems()[0];
       if (first) highlight(first);
     } else {
       getItems().forEach((i) => { i.removeAttribute('data-highlighted'); });
-      if (state.restoreFocusOnClose) trigger.focus();
-      state.restoreFocusOnClose = false;
+      if (menu.contains(document.activeElement)) trigger.focus();
     }
   };
   const onMousemove = (e) => {
     if (state.menu !== menu || !trigger.isConnected) return;
-    const item = e.target.closest('[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]');
+    const item = e.target.closest(itemSelector);
     if (item && !isDisabled(item)) highlight(item);
   };
   const onMouseleave = () => {
@@ -59,24 +58,23 @@ function bindMenu(trigger, state, menu) {
   const onKeydown = (e) => {
     if (state.menu !== menu || !trigger.isConnected) return;
     const items = getItems();
-    const current = items.indexOf(document.activeElement);
+    const targetItem = e.target?.closest?.(itemSelector);
+    const current = items.indexOf(targetItem || document.activeElement);
     switch (e.key) {
       case 'ArrowDown': e.preventDefault(); highlight(items[(current + 1) % items.length]); break;
       case 'ArrowUp': e.preventDefault(); highlight(items[(current - 1 + items.length) % items.length]); break;
       case 'Home': e.preventDefault(); highlight(items[0]); break;
       case 'End': e.preventDefault(); highlight(items[items.length - 1]); break;
       case 'Escape':
-        state.restoreFocusOnClose = true;
         menu.hidePopover();
         break;
       case 'Enter': case ' ':
         e.preventDefault();
-        if (document.activeElement) {
-          const role = document.activeElement.getAttribute('role');
-          if (role === 'menuitemcheckbox' || role === 'menuitemradio') activateCheckable(document.activeElement);
+        if (targetItem && menu.contains(targetItem) && !isDisabled(targetItem)) {
+          const role = targetItem.getAttribute('role');
+          if (role === 'menuitemcheckbox' || role === 'menuitemradio') activateCheckable(targetItem);
           else {
-            document.activeElement.click();
-            state.restoreFocusOnClose = true;
+            targetItem.click();
             menu.hidePopover();
           }
         }
@@ -132,12 +130,13 @@ function rebindTargets() {
 function init() {
   document.querySelectorAll('[data-dropdown-menu-trigger]:not([data-init])').forEach((trigger) => {
     trigger.dataset.init = '';
-    const state = { menu: null, unbindMenu: null, onTriggerClick: null, restoreFocusOnClose: false };
+    const state = { menu: null, unbindMenu: null, onTriggerClick: null };
     triggerStates.set(trigger, state);
     initializedTriggers.add(trigger);
     state.onTriggerClick = () => {
       const currentMenu = document.getElementById(trigger.dataset.dropdownMenuTrigger);
       if (!currentMenu || !currentMenu.isConnected || typeof currentMenu.togglePopover !== 'function') return;
+      trigger.focus();
       currentMenu.togglePopover();
     };
     trigger.addEventListener('click', state.onTriggerClick);
