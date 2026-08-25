@@ -148,7 +148,7 @@ test("component CSS stays square, tokenized, shadow-free, and motionless", () =>
     assert(!/\b(?:box-shadow|text-shadow)\s*:/i.test(source), `${filename}: shadows are forbidden`);
     if (component.slug !== "spinner") {
       assert(!/\b(?:animation|transition)(?:-[\w]+)?\s*:/i.test(source), `${filename}: motion is forbidden`);
-      assert(!/@keyframes|view-transition|scroll-behavior\s*:/i.test(source), `${filename}: motion is forbidden`);
+      assert(!/@keyframes|view-transition|\bscroll-behavior\s*:/i.test(source), `${filename}: motion is forbidden`);
     }
     assert(!/var\(\s*--color-[\w-]+\s*\)/i.test(source), `${filename}: palette primitives are forbidden`);
     for (const match of source.matchAll(/border-radius\s*:\s*([^;{}]+)/gi)) {

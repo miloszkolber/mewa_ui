@@ -104,7 +104,7 @@ A disabled tab is skipped.
 
 Native button activation also selects a clicked or keyboard-activated tab.
 
-Do not document Space or Enter as a separate manual activation mode.
+Space and Enter use the native button activation that selects the tab.
 
 ## Programmatic activation
 
