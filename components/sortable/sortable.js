@@ -122,11 +122,11 @@ function init() {
       });
     }
 
-    const allItems = getAllItems();
-    allItems.forEach((item, index) => {
-      item.setAttribute('tabindex', index === 0 ? '0' : '-1');
+    getAllItems().forEach((item) => {
+      item.setAttribute('tabindex', '-1');
       createStepControls(item);
     });
+    markActive(getItems()[0], { focus: false });
     updateStepControls();
 
     let dragged = null;
