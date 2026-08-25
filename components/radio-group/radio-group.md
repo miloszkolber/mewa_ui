@@ -1,98 +1,141 @@
-# Pattern: Radio Group
+# Radio Group
+
+## Purpose
+
+Radio Group selects one value from a short visible option set.
+
+Use Radio Group when seeing all choices helps comparison.
+
+Use Select when the option set should stay compact.
+
+Do not use Radio Group for independent choices.
 
 ## Native basis
-`<input type="radio">` elements with shared `name` attribute for mutual exclusivity, grouped by `<fieldset>` + `<legend>`.
 
----
+Use native `<input type="radio">` controls with one shared `name`.
+
+Group related radios with `<fieldset>` and `<legend>`.
+
+The browser owns exclusivity, keyboard movement, focus, validation, and form submission.
+
+Radio Group requires no JavaScript.
 
 ## Native Web APIs
-- [`<input type="radio">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio) — native radio button with group exclusivity via `name`
-- [`<fieldset>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset) — semantic group container with native `disabled` propagation
-- [`<legend>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/legend) — accessible group label for fieldsets
-- [`:checked`](https://developer.mozilla.org/en-US/docs/Web/CSS/:checked) — matches selected radio state
-- [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus ring
-- [`:has()`](https://developer.mozilla.org/en-US/docs/Web/CSS/:has) — parent-state styling (card highlight when radio is checked)
-- [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — increase control contrast when requested
-- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — Windows High Contrast Mode support
 
----
+- [`<input type="radio">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/radio) provides native mutually exclusive choice behavior.
+- [`<fieldset>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset) provides a semantic group and native disabled propagation.
+- [`<legend>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/legend) gives the group an accessible name.
+- [`:checked`](https://developer.mozilla.org/en-US/docs/Web/CSS/:checked) exposes the selected state to CSS.
+- [`:has()`](https://developer.mozilla.org/en-US/docs/Web/CSS/:has) lets the stylesheet reflect checked and focused state on a choice surface.
 
 ## Structure
 
-### Default (simple)
+Keep one shared `name` for every radio in the group.
+
+Give each radio a unique ID and stable submitted value.
 
 ```html
 <fieldset class="radio-group">
-  <legend class="label">Choose a plan</legend>
+  <legend>Plan</legend>
+
   <div class="radio-item">
-    <input class="radio" type="radio" name="plan" id="free" value="free" checked>
-    <label for="free">Free</label>
+    <input class="radio" type="radio" name="plan" id="plan-free" value="free" checked>
+    <label for="plan-free">Free</label>
   </div>
+
   <div class="radio-item">
-    <input class="radio" type="radio" name="plan" id="pro" value="pro">
-    <label for="pro">Pro</label>
-  </div>
-  <div class="radio-item">
-    <input class="radio" type="radio" name="plan" id="enterprise" value="enterprise">
-    <label for="enterprise">Enterprise</label>
+    <input class="radio" type="radio" name="plan" id="plan-pro" value="pro">
+    <label for="plan-pro">Pro</label>
   </div>
 </fieldset>
 ```
 
-### With description
+## Supporting text
+
+Use `.radio-item-block` when a choice needs one short description.
 
 ```html
 <fieldset class="radio-group">
-  <legend class="label">Spacing</legend>
+  <legend>Density</legend>
+
   <div class="radio-item-block">
-    <input class="radio" type="radio" name="spacing" id="default" value="default" checked>
-    <label for="default">Default</label>
-    <span class="radio-description">Standard spacing for most use cases.</span>
+    <input class="radio" type="radio" name="density" id="density-compact" value="compact" checked>
+    <label for="density-compact">Compact</label>
+    <span class="radio-description">Show more rows in the available space.</span>
   </div>
+
   <div class="radio-item-block">
-    <input class="radio" type="radio" name="spacing" id="comfortable" value="comfortable">
-    <label for="comfortable">Comfortable</label>
-    <span class="radio-description">More space between elements.</span>
+    <input class="radio" type="radio" name="density" id="density-comfortable" value="comfortable">
+    <label for="density-comfortable">Comfortable</label>
+    <span class="radio-description">Use more space between rows.</span>
   </div>
 </fieldset>
 ```
 
-### Card variant
+## Choice surface
+
+Use `.radio-card` only when the complete option needs a larger selectable surface.
+
+Keep the native radio inside the surface.
+
+Keep one associated label for the radio.
+
+Do not nest buttons, links, or other form controls inside a Radio Card.
 
 ```html
 <fieldset class="radio-group">
-  <legend class="label">Select a plan</legend>
+  <legend>Storage profile</legend>
+
   <div class="radio-card">
-    <input class="radio" type="radio" name="card-plan" id="c-plus" value="plus">
-    <label for="c-plus">Plus</label>
-    <span class="radio-description">For individuals and small teams.</span>
+    <input class="radio" type="radio" name="storage" id="storage-local" value="local" checked>
+    <label for="storage-local">Local</label>
+    <span class="radio-description">Store artifacts on this device.</span>
   </div>
+
   <div class="radio-card">
-    <input class="radio" type="radio" name="card-plan" id="c-pro" value="pro" checked>
-    <label for="c-pro">Pro</label>
-    <span class="radio-description">For growing businesses.</span>
+    <input class="radio" type="radio" name="storage" id="storage-remote" value="remote">
+    <label for="storage-remote">Remote</label>
+    <span class="radio-description">Store artifacts on the remote service.</span>
   </div>
 </fieldset>
 ```
 
-### Keyboard
+## Keyboard
 
-| Key | Action |
-|---|---|
-| `Tab` / `Shift+Tab` | Move focus into / out of the radio group |
-| `↓` / `→` | Move to next radio, check it |
-| `↑` / `←` | Move to previous radio, check it |
-| `Space` | Check the focused radio |
+Tab moves focus into or out of the radio group.
 
----
+Arrow keys move between enabled radios and select the focused option.
 
-## Notes
+Space selects the focused radio.
 
-- Styled with `appearance: none` and a custom dot via `::after`.
-- The `name` attribute is required for mutual exclusivity.
-- No JavaScript needed — browsers handle group behavior natively.
-- Use `.radio-item` for simple label. Use `.radio-item-block` for label + description.
-- Use `.radio-card` on a non-label container for card-style selection (radio positioned top-right, card highlights on check via `:has()`). Keep one nested `<label>` per radio so the HTML remains valid.
-- `<fieldset disabled>` disables all radios in the group natively.
-- Native radios retain their keyboard behavior and `:focus-visible` indicator. Card focus is reflected by `:has(.radio:focus-visible)`.
-- Selection changes are immediate. The component adds no JavaScript, animation, or transition.
+The browser provides these interactions.
+
+## States
+
+Use `checked` for the initial selected option.
+
+Use `required` on one radio when the group requires a selection.
+
+Use `<fieldset disabled>` when the complete group is unavailable.
+
+Use `disabled` on one radio when one option is unavailable.
+
+Explain an unavailable option when the reason is not obvious.
+
+## Accessibility
+
+Keep a visible legend for the group.
+
+Keep each visible option label associated with its radio.
+
+Keep submitted values stable.
+
+Do not add `role="radiogroup"` to a native fieldset.
+
+Do not add custom roving focus to native radios.
+
+## Runtime
+
+Radio Group requires no component module.
+
+The complete group remains usable without JavaScript.
