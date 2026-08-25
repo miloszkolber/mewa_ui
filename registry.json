@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "name": "mewa_ui",
   "library": "mewa_ui",
   "canonicalAssets": {
@@ -14,9 +14,194 @@
     "icons": "src/icons/",
     "components": "components/",
     "documentation": "docs/",
-    "layouts": [
-      "layouts/layouts.css",
-      "layouts/layouts.js"
+    "system": "system/"
+  },
+  "designTokens": {
+    "semantic": [
+      {
+        "name": "--background",
+        "purpose": "Page canvas background.",
+        "stability": "stable"
+      },
+      {
+        "name": "--background-glass",
+        "purpose": "Translucent page canvas for approved sticky shell chrome.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-primary",
+        "purpose": "Primary continuous content surface.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-primary-glass",
+        "purpose": "Translucent primary surface for approved sticky chrome.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-secondary",
+        "purpose": "Quiet surface for hover, selection, and secondary grouping.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-secondary-glass",
+        "purpose": "Translucent secondary surface for approved sticky chrome.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-positive",
+        "purpose": "Supporting surface for positive status.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-negative",
+        "purpose": "Supporting surface for negative status.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-caution",
+        "purpose": "Supporting surface for caution status.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-overlay",
+        "purpose": "Backdrop surface behind modal top-layer content.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-inverted",
+        "purpose": "Highest-contrast normal surface for primary actions and signets.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-destructive",
+        "purpose": "Filled destructive action surface.",
+        "stability": "stable"
+      },
+      {
+        "name": "--text-primary",
+        "purpose": "Primary readable text and icon color.",
+        "stability": "stable"
+      },
+      {
+        "name": "--text-secondary",
+        "purpose": "Supporting readable text and icon color.",
+        "stability": "stable"
+      },
+      {
+        "name": "--text-muted",
+        "purpose": "Metadata and low-emphasis text color.",
+        "stability": "stable"
+      },
+      {
+        "name": "--text-disabled",
+        "purpose": "Disabled text and icon color.",
+        "stability": "stable"
+      },
+      {
+        "name": "--text-inverted",
+        "purpose": "Text and icon color on inverted surfaces.",
+        "stability": "stable"
+      },
+      {
+        "name": "--text-positive",
+        "purpose": "Positive status text and icon color.",
+        "stability": "stable"
+      },
+      {
+        "name": "--text-negative",
+        "purpose": "Negative status text and icon color.",
+        "stability": "stable"
+      },
+      {
+        "name": "--text-caution",
+        "purpose": "Caution status text and icon color.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-primary",
+        "purpose": "Default structural boundary.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-secondary",
+        "purpose": "Stronger internal structural boundary.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-muted",
+        "purpose": "Low-emphasis or dashed boundary.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-subtle",
+        "purpose": "Quiet boundary for low-separation regions.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-ring",
+        "purpose": "Authored focus-indicator color.",
+        "stability": "stable"
+      },
+      {
+        "name": "--chart-1",
+        "purpose": "Highest-contrast monochrome chart series.",
+        "stability": "stable"
+      },
+      {
+        "name": "--chart-2",
+        "purpose": "Second monochrome chart series.",
+        "stability": "stable"
+      },
+      {
+        "name": "--chart-3",
+        "purpose": "Third monochrome chart series.",
+        "stability": "stable"
+      },
+      {
+        "name": "--chart-4",
+        "purpose": "Fourth monochrome chart series.",
+        "stability": "stable"
+      },
+      {
+        "name": "--chart-5",
+        "purpose": "Lowest-contrast monochrome chart series.",
+        "stability": "stable"
+      }
+    ],
+    "foundationFamilies": [
+      {
+        "prefix": "--font-",
+        "purpose": "Typography family, size, weight, line-height, and tracking primitives."
+      },
+      {
+        "prefix": "--space-",
+        "purpose": "Spacing primitives for gaps, padding, and margins."
+      },
+      {
+        "prefix": "--size-",
+        "purpose": "Shared dimensions and interactive-size primitives."
+      },
+      {
+        "prefix": "--border-width-",
+        "purpose": "Structural border-width primitives."
+      },
+      {
+        "prefix": "--radius-",
+        "purpose": "Exceptional circular geometry primitives."
+      },
+      {
+        "prefix": "--opacity-",
+        "purpose": "Opacity primitives for authored component states."
+      },
+      {
+        "prefix": "--z-",
+        "purpose": "Shared stacking-level primitives."
+      },
+      {
+        "prefix": "--blur-",
+        "purpose": "Blur primitives reserved for approved sticky shell chrome."
+      }
     ]
   },
   "components": [
@@ -24,7 +209,12 @@
       "name": "Typography",
       "slug": "typography",
       "category": "Primitives",
-      "nativeBasis": "Native HTML text elements: `<h1>`–`<h4>`, `<p>`, `<blockquote>`, `<code>`, `<small>`, `<kbd>`, `<ul>`/`<ol>`. Pure CSS — no JavaScript or ARIA required.",
+      "purpose": "Formats document text, code, quotations, keyboard notation, and lists.",
+      "useWhen": "Use Typography for normal document hierarchy and readable prose.",
+      "avoidWhen": "Do not use Typography classes to imitate controls or status.",
+      "fallback": "Native HTML remains complete without JavaScript.",
+      "stability": "stable",
+      "nativeBasis": "Native HTML text elements keep document semantics and reading order.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -33,13 +223,18 @@
         "css": "components/typography/typography.css"
       },
       "docs": "docs/typography.html",
-      "description": "Typography primitives for headings, prose, quotes, code, keyboard notation, and lists."
+      "description": "Formats document text, code, quotations, keyboard notation, and lists."
     },
     {
       "name": "Layout",
       "slug": "layout",
       "category": "Primitives",
-      "nativeBasis": "Intrinsic layout primitives built on CSS Grid and Flexbox: `.layout-container`, `.layout-stack`, `.layout-grid`, `.layout-sidebar`, `.layout-center`, `.layout-split`. Pure CSS — no JavaScript or ARIA required.",
+      "purpose": "Creates intrinsic containers, stacks, grids, sidebar splits, centering, and opposite-end groups.",
+      "useWhen": "Use Layout for local page and component composition.",
+      "avoidWhen": "Do not use Layout as a replacement for App Shell or a complete shell.",
+      "fallback": "Use normal document flow when no layout helper is necessary.",
+      "stability": "stable",
+      "nativeBasis": "CSS Grid and Flexbox provide intrinsic local composition.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -48,13 +243,18 @@
         "css": "components/layout/layout.css"
       },
       "docs": "docs/layout.html",
-      "description": "Intrinsic CSS Grid and Flexbox primitives for containers, stacks, grids, splits, and centering."
+      "description": "Creates intrinsic containers, stacks, grids, sidebar splits, centering, and opposite-end groups."
     },
     {
       "name": "Separator",
       "slug": "separator",
       "category": "Primitives",
-      "nativeBasis": "`<hr>` element (horizontal rule) and `<div role=\"separator\">` for vertical orientation.",
+      "purpose": "Marks a real visual or semantic division.",
+      "useWhen": "Use Separator for a topic break or a labelled structural split.",
+      "avoidWhen": "Do not add a separator only to decorate empty space.",
+      "fallback": "Keep the content adjacent when no real division exists.",
+      "stability": "stable",
+      "nativeBasis": "Use `<hr>` for horizontal rules and `role=\"separator\"` for documented vertical divisions.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -63,13 +263,18 @@
         "css": "components/separator/separator.css"
       },
       "docs": "docs/separator.html",
-      "description": "Horizontal rules and vertical separators that communicate a visual division."
+      "description": "Marks a real visual or semantic division."
     },
     {
       "name": "Icon",
       "slug": "icon",
       "category": "Primitives",
-      "nativeBasis": "Inline `<svg>` elements copied from the standalone files in `src/icons/` are the no-JavaScript basis. The optional `<i data-lucide=\"name\">` hook can be expanded by a local loader, such as the documentation site's loader, but Icon has no required component runtime and never uses a CDN or external icon set.",
+      "purpose": "Presents a local Lucide glyph inside text or a control.",
+      "useWhen": "Use Icon to support a visible label or a familiar icon-only action.",
+      "avoidWhen": "Do not use an icon as the only status explanation.",
+      "fallback": "Use text without an icon when the glyph adds no value.",
+      "stability": "stable",
+      "nativeBasis": "Inline local SVG is the complete native basis.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -78,13 +283,18 @@
         "css": "components/icon/icon.css"
       },
       "docs": "docs/icon.html",
-      "description": "Local Lucide SVG files with an optional loader hook and accessible decorative-icon guidance."
+      "description": "Presents a local Lucide glyph inside text or a control."
     },
     {
       "name": "Button",
       "slug": "button",
       "category": "Actions",
-      "nativeBasis": "`<button>` element. Also works on `<a>` for link-style buttons.",
+      "purpose": "Starts an action, submits a form, or styles a navigation link as a button.",
+      "useWhen": "Use a button for an action and an anchor for navigation.",
+      "avoidWhen": "Do not put a navigation destination on a button element.",
+      "fallback": "Use native button or link behavior without a component runtime.",
+      "stability": "stable",
+      "nativeBasis": "`<button>` provides action behavior and `<a>` provides navigation behavior.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -93,13 +303,18 @@
         "css": "components/button/button.css"
       },
       "docs": "docs/button.html",
-      "description": "Action and link-style button treatments built on semantic native controls."
+      "description": "Starts an action, submits a form, or styles a navigation link as a button."
     },
     {
       "name": "Toggle",
       "slug": "toggle",
       "category": "Actions",
-      "nativeBasis": "`<button>` element with `aria-pressed`. The browser provides click and keyboard (Enter/Space) handling automatically. No extra JavaScript needed for basic usage. A two-state button that can be either on or off. Common for toolbar formatting buttons (bold, italic, underline) or feature toggles.",
+      "purpose": "Changes one independent pressed state.",
+      "useWhen": "Use Toggle for formatting controls and independent two-state tools.",
+      "avoidWhen": "Do not use Toggle for a submitted form setting when Checkbox or Switch matches the task.",
+      "fallback": "Use Checkbox or Switch when a native submitted control is required.",
+      "stability": "stable",
+      "nativeBasis": "`<button aria-pressed>` provides activation semantics while the module synchronizes pressed state.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -109,13 +324,18 @@
         "js": "components/toggle/toggle.js"
       },
       "docs": "docs/toggle.html",
-      "description": "Two-state pressed buttons with native keyboard activation and managed aria-pressed state."
+      "description": "Changes one independent pressed state."
     },
     {
       "name": "Toggle Group",
       "slug": "toggle-group",
       "category": "Actions",
-      "nativeBasis": "`role=\"group\"` container with `<button class=\"toggle\">` items using `aria-pressed` for state. Supports single (radio-like) and multiple (checkbox-like) selection modes with roving tabindex keyboard navigation.",
+      "purpose": "Coordinates a set of related pressed buttons.",
+      "useWhen": "Use Toggle Group for one or several choices in a compact toolbar.",
+      "avoidWhen": "Do not use Toggle Group when native radio or checkbox controls fit the form task.",
+      "fallback": "Use Radio Group or Checkbox Group for native form submission.",
+      "stability": "stable",
+      "nativeBasis": "A labelled button group uses `aria-pressed` and roving focus.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -125,13 +345,18 @@
         "js": "components/toggle-group/toggle-group.js"
       },
       "docs": "docs/toggle-group.html",
-      "description": "Grouped toggle buttons supporting single or multiple selection and roving focus."
+      "description": "Coordinates a set of related pressed buttons."
     },
     {
       "name": "Button Group",
       "slug": "button-group",
       "category": "Actions",
-      "nativeBasis": "`<div>` container with `.btn` buttons. Visually merges adjacent buttons with connected borders.",
+      "purpose": "Connects related buttons into one visual control group.",
+      "useWhen": "Use Button Group when adjacent actions share one task or object.",
+      "avoidWhen": "Do not group unrelated actions only to save space.",
+      "fallback": "Use independent buttons when the actions are not one group.",
+      "stability": "stable",
+      "nativeBasis": "Native buttons keep their own activation and form behavior.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -140,13 +365,18 @@
         "css": "components/button-group/button-group.css"
       },
       "docs": "docs/button-group.html",
-      "description": "Connected button clusters that group related actions under one visual boundary."
+      "description": "Connects related buttons into one visual control group."
     },
     {
       "name": "Toolbar",
       "slug": "toolbar",
       "category": "Actions",
-      "nativeBasis": "`role=\"toolbar\"` container. Groups related controls (buttons, toggles, separators) into a single keyboard-navigable bar.",
+      "purpose": "Groups frequently used controls with managed arrow-key navigation.",
+      "useWhen": "Use Toolbar for a compact row of related application controls.",
+      "avoidWhen": "Do not use Toolbar for normal form fields or route navigation.",
+      "fallback": "Use a normal control group when arrow-key navigation is not necessary.",
+      "stability": "stable",
+      "nativeBasis": "`role=\"toolbar\"` groups controls while the module manages roving focus.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -156,13 +386,18 @@
         "js": "components/toolbar/toolbar.js"
       },
       "docs": "docs/toolbar.html",
-      "description": "Keyboard-navigable toolbar grouping related controls, toggles, and separators."
+      "description": "Groups frequently used controls with managed arrow-key navigation."
     },
     {
       "name": "Label",
       "slug": "label",
       "category": "Forms and inputs",
-      "nativeBasis": "`<label>` element. Browser provides built-in click-to-focus association with form controls.",
+      "purpose": "Names one native form control.",
+      "useWhen": "Use Label with an explicit `for` and `id` pair.",
+      "avoidWhen": "Do not use placeholder text as the only control name.",
+      "fallback": "Use another visible naming element only when the control cannot use `<label>`.",
+      "stability": "stable",
+      "nativeBasis": "`<label>` provides the native control association.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -171,13 +406,18 @@
         "css": "components/label/label.css"
       },
       "docs": "docs/label.html",
-      "description": "Native labels that explicitly associate visible text with form controls."
+      "description": "Names one native form control."
     },
     {
       "name": "Field",
       "slug": "field",
       "category": "Forms and inputs",
-      "nativeBasis": "`Field` is a semantic composition around a native form control. Use a plain `<div class=\"field\">` for one labelled control and a native `<fieldset class=\"fieldset\">` with a `<legend>` for related controls. Reserve a labelled `role=\"group\"` for structural groups that cannot use a fieldset. The browser remains responsible for focus, validation, submission, and reset.",
+      "purpose": "Composes a label, native control, help text, error text, and related fieldsets.",
+      "useWhen": "Use Field as the standard wrapper for form controls and control groups.",
+      "avoidWhen": "Do not add an unnamed group role around one control.",
+      "fallback": "Use the native control directly when no supporting composition is needed.",
+      "stability": "stable",
+      "nativeBasis": "Native labels, fieldsets, validation, submission, and reset remain authoritative.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -186,13 +426,18 @@
         "css": "components/field/field.css"
       },
       "docs": "docs/field.html",
-      "description": "Semantic labelled-control and fieldset compositions with explicit descriptions and errors."
+      "description": "Composes a label, native control, help text, error text, and related fieldsets."
     },
     {
       "name": "Text Field",
       "slug": "text-field",
       "category": "Forms and inputs",
-      "nativeBasis": "`Text Field` is an explicit composition of one real `<label>`, one real `<input>`, and optional description and error text. It follows the Kernel naming model while keeping the HTML visible and useful without a runtime component. Use the semantic `type` that matches the value, such as `email`, `password`, `search`, `tel`, or `url`.",
+      "purpose": "Collects one line of text with labels, descriptions, icons, and validation.",
+      "useWhen": "Use Text Field for text, email, password, search, URL, and similar native input types.",
+      "avoidWhen": "Do not use Text Field for multi-line content or fixed option selection.",
+      "fallback": "Use the raw native input when the composition needs no shared styling.",
+      "stability": "stable",
+      "nativeBasis": "A labelled native `<input>` owns editing, autofill, validation, and events.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -201,13 +446,18 @@
         "css": "components/text-field/text-field.css"
       },
       "docs": "docs/text-field.html",
-      "description": "Explicit labelled native input composition with descriptions, errors, autofill, and validation."
+      "description": "Collects one line of text with labels, descriptions, icons, and validation."
     },
     {
       "name": "Textarea",
       "slug": "textarea",
       "category": "Forms and inputs",
-      "nativeBasis": "`<textarea>` element with `field-sizing: content` for auto-growing.",
+      "purpose": "Collects multi-line text.",
+      "useWhen": "Use Textarea when the user can enter more than one line.",
+      "avoidWhen": "Do not use Textarea for a short fixed-format value.",
+      "fallback": "Use Text Field for one-line input.",
+      "stability": "stable",
+      "nativeBasis": "Native `<textarea>` owns editing and validation.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -216,13 +466,18 @@
         "css": "components/textarea/textarea.css"
       },
       "docs": "docs/textarea.html",
-      "description": "Native multi-line text controls with content-sized growth and form validation."
+      "description": "Collects multi-line text."
     },
     {
       "name": "Checkbox",
       "slug": "checkbox",
       "category": "Forms and inputs",
-      "nativeBasis": "`<input type=\"checkbox\">` element styled with CSS `appearance: none`.",
+      "purpose": "Selects one independent option or several independent options.",
+      "useWhen": "Use Checkbox for submitted choices and select-all groups.",
+      "avoidWhen": "Do not use Checkbox for one immediate system state when Switch communicates the effect better.",
+      "fallback": "Use native checkboxes without the group enhancement.",
+      "stability": "stable",
+      "nativeBasis": "Native checkbox state remains authoritative and the optional module coordinates documented groups.",
       "requiresJs": false,
       "enhancementJs": true,
       "jsMode": "optional",
@@ -232,13 +487,18 @@
         "js": "components/checkbox/checkbox.js"
       },
       "docs": "docs/checkbox.html",
-      "description": "Native checkbox controls with labels, descriptions, validation, indeterminate state, and an optional select-all group enhancement."
+      "description": "Selects one independent option or several independent options."
     },
     {
       "name": "Radio Group",
       "slug": "radio-group",
       "category": "Forms and inputs",
-      "nativeBasis": "`<input type=\"radio\">` elements with shared `name` attribute for mutual exclusivity, grouped by `<fieldset>` + `<legend>`.",
+      "purpose": "Selects one value from a visible set.",
+      "useWhen": "Use Radio Group when the options are short and all options should remain visible.",
+      "avoidWhen": "Do not use Radio Group for independent choices or a very long option set.",
+      "fallback": "Use Select for a compact fixed list.",
+      "stability": "stable",
+      "nativeBasis": "Native radio inputs share selection through a common `name` inside a fieldset.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -247,13 +507,18 @@
         "css": "components/radio-group/radio-group.css"
       },
       "docs": "docs/radio-group.html",
-      "description": "Mutually exclusive native radio inputs grouped by fieldset and legend."
+      "description": "Selects one value from a visible set."
     },
     {
       "name": "Switch",
       "slug": "switch",
       "category": "Forms and inputs",
-      "nativeBasis": "`<input type=\"checkbox\" role=\"switch\">` element styled as a toggle switch.",
+      "purpose": "Changes an immediate binary system state.",
+      "useWhen": "Use Switch when activation takes effect immediately.",
+      "avoidWhen": "Do not use Switch for a value that takes effect only after form submission.",
+      "fallback": "Use Checkbox for a submitted choice.",
+      "stability": "stable",
+      "nativeBasis": "A native checkbox with switch semantics owns focus, state, and submission.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -262,13 +527,18 @@
         "css": "components/switch/switch.css"
       },
       "docs": "docs/switch.html",
-      "description": "Native checkbox controls with switch semantics for binary settings."
+      "description": "Changes an immediate binary system state."
     },
     {
       "name": "Slider",
       "slug": "slider",
       "category": "Forms and inputs",
-      "nativeBasis": "`<input type=\"range\">` — native range input with built-in keyboard, touch, and assistive technology support.",
+      "purpose": "Selects a value from a continuous or stepped numeric range.",
+      "useWhen": "Use Slider when spatial adjustment helps the user understand the value.",
+      "avoidWhen": "Do not use Slider when precise text entry is the only useful path.",
+      "fallback": "Use Number Field when exact numeric entry is primary.",
+      "stability": "stable",
+      "nativeBasis": "Native range input owns pointer and keyboard adjustment while the module updates documented output.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -278,13 +548,18 @@
         "js": "components/slider/slider.js"
       },
       "docs": "docs/slider.html",
-      "description": "Native range inputs styled for horizontal or vertical values with an enhanced filled track."
+      "description": "Selects a value from a continuous or stepped numeric range."
     },
     {
       "name": "Select",
       "slug": "select",
       "category": "Forms and inputs",
-      "nativeBasis": "`<select>` element with custom styling via `appearance: none`.",
+      "purpose": "Selects one or several values from a fixed native option list.",
+      "useWhen": "Use Select for a short or medium fixed option set.",
+      "avoidWhen": "Do not use Select when the user needs to search a long list.",
+      "fallback": "Use Combobox when search is required.",
+      "stability": "stable",
+      "nativeBasis": "Native `<select>` owns the picker, keyboard behavior, and form submission.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -293,13 +568,18 @@
         "css": "components/select/select.css"
       },
       "docs": "docs/select.html",
-      "description": "Native select controls with labelled options and optional optgroup sections."
+      "description": "Selects one or several values from a fixed native option list."
     },
     {
       "name": "Number Field",
       "slug": "number-field",
       "category": "Forms and inputs",
-      "nativeBasis": "`<input type=\"number\">` with custom increment/decrement buttons.",
+      "purpose": "Collects a numeric value with explicit increment and decrement controls.",
+      "useWhen": "Use Number Field when small step changes are common.",
+      "avoidWhen": "Do not use Number Field when a range or free text input communicates the task better.",
+      "fallback": "Use native number input without step buttons when the extra controls are unnecessary.",
+      "stability": "stable",
+      "nativeBasis": "Native number input owns validation while the module coordinates step buttons.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -309,13 +589,18 @@
         "js": "components/number-field/number-field.js"
       },
       "docs": "docs/number-field.html",
-      "description": "Native number inputs with keyboard-friendly increment and decrement buttons."
+      "description": "Collects a numeric value with explicit increment and decrement controls."
     },
     {
       "name": "File Input",
       "slug": "file-input",
       "category": "Forms and inputs",
-      "nativeBasis": "`<input type=\"file\">` element with custom `::file-selector-button` styling.",
+      "purpose": "Opens the native file picker.",
+      "useWhen": "Use File Input when the user must choose one or more local files.",
+      "avoidWhen": "Do not create a custom file picker that hides the native input contract.",
+      "fallback": "Use native file input without additional composition.",
+      "stability": "stable",
+      "nativeBasis": "Native file input owns selection, security, and form submission.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -324,13 +609,18 @@
         "css": "components/file-input/file-input.css"
       },
       "docs": "docs/file-input.html",
-      "description": "Native file picker inputs with styled file-selector controls and form semantics."
+      "description": "Opens the native file picker."
     },
     {
       "name": "Date Field",
       "slug": "date-field",
       "category": "Forms and inputs",
-      "nativeBasis": "`<input type=\"date\">` element with native browser date picker.",
+      "purpose": "Collects a date or local date and time with the browser control.",
+      "useWhen": "Use Date Field when the browser picker meets the task.",
+      "avoidWhen": "Do not use Date Field when the interface requires a controlled month grid or date-range preview.",
+      "fallback": "Use Date Picker only when a custom visible calendar is required.",
+      "stability": "stable",
+      "nativeBasis": "Native date input owns parsing, picker behavior, and validation.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -339,13 +629,18 @@
         "css": "components/date-field/date-field.css"
       },
       "docs": "docs/date-field.html",
-      "description": "Native date or datetime inputs that delegate calendar editing to browser controls."
+      "description": "Collects a date or local date and time with the browser control."
     },
     {
       "name": "Date Picker",
       "slug": "date-picker",
       "category": "Forms and inputs",
-      "nativeBasis": "`<table>` element rendered as a month grid with navigation controls. Uses `role=\"grid\"` for accessible day cell navigation. The `.date-picker` markup API follows the Date Picker component name.",
+      "purpose": "Selects a date from a custom accessible month grid.",
+      "useWhen": "Use Date Picker when the product requires a consistent visible calendar.",
+      "avoidWhen": "Do not use Date Picker when a native Date Field is sufficient.",
+      "fallback": "Use Date Field when a no-JavaScript date selector is required.",
+      "stability": "stable",
+      "nativeBasis": "A grid-based month view uses managed keyboard navigation and selection.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -355,13 +650,18 @@
         "js": "components/date-picker/date-picker.js"
       },
       "docs": "docs/date-picker.html",
-      "description": "Accessible month-grid date pickers with keyboard day navigation and date selection."
+      "description": "Selects a date from a custom accessible month grid."
     },
     {
       "name": "Date Range Picker",
       "slug": "date-range-picker",
       "category": "Forms and inputs",
-      "nativeBasis": "Date Range Picker is a native-first pair of `<input type=\"date\">` controls. A `<fieldset>` and `<legend>` name the group, while separate labels keep the start and end controls independently addressable. The optional module progressively adds cross-field constraints and a range status. Without JavaScript, both date inputs still open the browser or operating-system date picker and submit ordinary form values.",
+      "purpose": "Collects a start date and an end date with native inputs.",
+      "useWhen": "Use Date Range Picker for a submitted interval that benefits from a shared summary.",
+      "avoidWhen": "Do not use Date Range Picker for one date or a custom calendar grid.",
+      "fallback": "Use the two native date inputs without cross-field enhancement.",
+      "stability": "stable",
+      "nativeBasis": "Two native date inputs remain usable while the optional module validates their relationship.",
       "requiresJs": false,
       "enhancementJs": true,
       "jsMode": "optional",
@@ -371,13 +671,18 @@
         "js": "components/date-range-picker/date-range-picker.js"
       },
       "docs": "docs/date-range-picker.html",
-      "description": "Paired native date inputs for a labelled start/end range with optional cross-field validation."
+      "description": "Collects a start date and an end date with native inputs."
     },
     {
       "name": "Combobox",
       "slug": "combobox",
       "category": "Forms and inputs",
-      "nativeBasis": "Button trigger + `popover` popup containing a search input and `role=\"listbox\"`. The `popover` API provides top-layer rendering and light-dismiss. Requires JavaScript for filtering, keyboard navigation, selection, and ARIA management. Follows the WAI-ARIA Combobox design pattern. The trigger is an outline button. Clicking it opens a popover with a search input at the top and a scrollable list of options below. DOM focus moves to the search input when the popover opens.",
+      "purpose": "Selects one option from a searchable list.",
+      "useWhen": "Use Combobox when a long option set needs search and keyboard selection.",
+      "avoidWhen": "Do not use Combobox for free text or a short fixed list.",
+      "fallback": "Use Select when a no-JavaScript selection path is required.",
+      "stability": "stable",
+      "nativeBasis": "A button opens a searchable listbox popover and the module manages selection and form-value synchronization.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -387,13 +692,18 @@
         "js": "components/combobox/combobox.js"
       },
       "docs": "docs/combobox.html",
-      "description": "Searchable listbox popovers combining a trigger, text input, filtering, and selection."
+      "description": "Selects one option from a searchable list."
     },
     {
       "name": "Time Field",
       "slug": "time-field",
       "category": "Forms and inputs",
-      "nativeBasis": "`Time Field` is a labelled `<fieldset>` containing native hour and minute text inputs, a native period `<select>`, and one hidden input for the submitted 24-hour value. The browser owns editing, focus, form submission, and constraint validation. The optional module only keeps the visible segments and the hidden value in sync and adds bounded stepping.",
+      "purpose": "Collects a structured time from native numeric fields and a period selector.",
+      "useWhen": "Use Time Field when separate time segments improve entry and validation.",
+      "avoidWhen": "Do not use Time Field when a native time input is the simpler contract.",
+      "fallback": "Use the native segment controls without synchronization or use a native time input.",
+      "stability": "stable",
+      "nativeBasis": "Native controls remain usable while the optional module synchronizes the submitted value.",
       "requiresJs": false,
       "enhancementJs": true,
       "jsMode": "optional",
@@ -403,13 +713,18 @@
         "js": "components/time-field/time-field.js"
       },
       "docs": "docs/time-field.html",
-      "description": "Grouped native time segments with optional synchronized 24-hour submission and stepping."
+      "description": "Collects a structured time from native numeric fields and a period selector."
     },
     {
       "name": "Form",
       "slug": "form",
       "category": "Forms and inputs",
-      "nativeBasis": "`<form>` element with consistent field layout using Label, Text Field, and description/error helpers. Composes with all form control components (Text Field, Textarea, Select, Checkbox, Radio Group, Switch, Slider, etc.).",
+      "purpose": "Composes a complete native submission task.",
+      "useWhen": "Use Form for one coherent submit and validation flow.",
+      "avoidWhen": "Do not use Form as a visual wrapper when no submission exists.",
+      "fallback": "Use semantic page sections when no form submission exists.",
+      "stability": "stable",
+      "nativeBasis": "Native form submission, reset, and constraint validation remain authoritative.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -418,13 +733,18 @@
         "css": "components/form/form.css"
       },
       "docs": "docs/form.html",
-      "description": "Native form layout that composes labelled controls, descriptions, errors, and validation."
+      "description": "Composes a complete native submission task."
     },
     {
       "name": "Badge",
       "slug": "badge",
       "category": "Data display",
-      "nativeBasis": "`<span>` element. No interactivity required — pure visual indicator.",
+      "purpose": "Shows short non-interactive status or metadata.",
+      "useWhen": "Use Badge for a concise label that supplements nearby content.",
+      "avoidWhen": "Do not use Badge as a button, link, or sole status explanation.",
+      "fallback": "Use plain text when no badge emphasis is necessary.",
+      "stability": "stable",
+      "nativeBasis": "Ordinary text semantics remain available inside the visual badge.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -433,13 +753,18 @@
         "css": "components/badge/badge.css"
       },
       "docs": "docs/badge.html",
-      "description": "Compact non-interactive labels for status, category, or metadata."
+      "description": "Shows short non-interactive status or metadata."
     },
     {
       "name": "Avatar",
       "slug": "avatar",
       "category": "Data display",
-      "nativeBasis": "`<img>` element wrapped in a container `<span>` with a text fallback for when the image fails to load.",
+      "purpose": "Shows a person or entity image with a fallback and optional status.",
+      "useWhen": "Use Avatar when identity recognition helps the task.",
+      "avoidWhen": "Do not use Avatar as a decorative circle without identity meaning.",
+      "fallback": "Use initials or visible identity text when image fallback behavior is unnecessary.",
+      "stability": "stable",
+      "nativeBasis": "Image and fallback content present identity while the module handles documented fallback behavior.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -449,13 +774,18 @@
         "js": "components/avatar/avatar.js"
       },
       "docs": "docs/avatar.html",
-      "description": "Image avatars with initials fallback, circular sizing, optional status badges, and groups."
+      "description": "Shows a person or entity image with a fallback and optional status."
     },
     {
       "name": "Card",
       "slug": "card",
       "category": "Data display",
-      "nativeBasis": "`<div>` for layout grouping. `<article>` for standalone self-contained content. No JavaScript required.",
+      "purpose": "Groups one standalone object or a small related content set.",
+      "useWhen": "Use Card when the group must read as one independent object.",
+      "avoidWhen": "Do not use Card as the default wrapper for sections, tables, rows, forms, or other cards.",
+      "fallback": "Use App Section or normal document flow for page regions.",
+      "stability": "stable",
+      "nativeBasis": "The chosen semantic container keeps its normal document meaning.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -464,13 +794,18 @@
         "css": "components/card/card.css"
       },
       "docs": "docs/card.html",
-      "description": "Border-led containers for grouping related content or standalone article sections."
+      "description": "Groups one standalone object or a small related content set."
     },
     {
       "name": "Image",
       "slug": "image",
       "category": "Data display",
-      "nativeBasis": "`<figure>` element wrapping an `<img>` with optional `<figcaption>`. Uses `<dialog>` for fullscreen preview/lightbox.",
+      "purpose": "Presents an image, caption, fallback, and optional larger preview.",
+      "useWhen": "Use Image when visual content carries information.",
+      "avoidWhen": "Do not use Image when a CSS decoration has no content meaning.",
+      "fallback": "Use a plain `<figure>` and `<img>` when no preview is required.",
+      "stability": "stable",
+      "nativeBasis": "Figure and image semantics remain primary while the module adds the documented preview.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -480,13 +815,18 @@
         "js": "components/image/image.js"
       },
       "docs": "docs/image.html",
-      "description": "Figure and image presentation with captions, sizing, error fallback, and optional lightbox preview."
+      "description": "Presents an image, caption, fallback, and optional larger preview."
     },
     {
       "name": "Statistic",
       "slug": "statistic",
       "category": "Data display",
-      "nativeBasis": "`<div>` containers displaying a numeric value with a label and optional trend indicator.",
+      "purpose": "Shows one value with a label, description, and optional trend.",
+      "useWhen": "Use Statistic for a small summary that helps the next decision.",
+      "avoidWhen": "Do not use Statistic for a value already obvious in the primary data view.",
+      "fallback": "Use plain text or table cells when the value belongs in a larger data structure.",
+      "stability": "stable",
+      "nativeBasis": "Static semantic text presents the metric without runtime behavior.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -495,13 +835,18 @@
         "css": "components/statistic/statistic.css"
       },
       "docs": "docs/statistic.html",
-      "description": "Compact value, label, and optional trend compositions for metric summaries."
+      "description": "Shows one value with a label, description, and optional trend."
     },
     {
       "name": "Table",
       "slug": "table",
       "category": "Data display",
-      "nativeBasis": "`<table>` with semantic `<caption>`, `<thead>`, `<tbody>`, `<tfoot>`, scoped headers, and native table cells. Table is the structural component. It has no required JavaScript and remains a normal HTML table in every rendering environment.",
+      "purpose": "Presents data with stable row and column relationships.",
+      "useWhen": "Use Table when headers define the meaning of cells.",
+      "avoidWhen": "Do not use Table for general page layout.",
+      "fallback": "Use lists or definition lists when data is not tabular.",
+      "stability": "stable",
+      "nativeBasis": "Native table semantics expose captions and header relationships.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -510,13 +855,18 @@
         "css": "components/table/table.css"
       },
       "docs": "docs/table.html",
-      "description": "Structural semantic tables with captions, scoped headers, row groups, and responsive overflow."
+      "description": "Presents data with stable row and column relationships."
     },
     {
       "name": "Data Table",
       "slug": "data-table",
       "category": "Data display",
-      "nativeBasis": "Data Table is a progressive enhancement around the structural [Table](../table/table.md) component. It composes a semantic `<table>` with a labelled [Text Field](../text-field/text-field.md) filter and native [Pagination](../pagination/pagination.md) links. The table and links remain usable HTML when the optional module is not loaded.",
+      "purpose": "Adds filtering, sorting, status, and pagination around Table.",
+      "useWhen": "Use Data Table when the documented data controls are necessary.",
+      "avoidWhen": "Do not use Data Table when a static Table meets the task.",
+      "fallback": "Use Table with server-owned forms and links.",
+      "stability": "stable",
+      "nativeBasis": "The semantic table and native links remain usable while the optional module adds client behavior.",
       "requiresJs": false,
       "enhancementJs": true,
       "jsMode": "optional",
@@ -526,13 +876,18 @@
         "js": "components/data-table/data-table.js"
       },
       "docs": "docs/data-table.html",
-      "description": "Progressively enhanced semantic tables with filtering, sorting, result status, and pagination."
+      "description": "Adds filtering, sorting, status, and pagination around Table."
     },
     {
       "name": "Collapsible",
       "slug": "collapsible",
       "category": "Data display",
-      "nativeBasis": "`<details>` element providing native expand/collapse behavior with immediate state changes.",
+      "purpose": "Reveals and hides supplementary content.",
+      "useWhen": "Use Collapsible for optional detail that can remain closed.",
+      "avoidWhen": "Do not hide required instructions or primary actions in a disclosure.",
+      "fallback": "Keep the content visible when hiding it does not improve the task.",
+      "stability": "stable",
+      "nativeBasis": "Native `<details>` and `<summary>` provide the disclosure behavior.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -541,13 +896,18 @@
         "css": "components/collapsible/collapsible.css"
       },
       "docs": "docs/collapsible.html",
-      "description": "Native details disclosures for immediate expand and collapse of content."
+      "description": "Reveals and hides supplementary content."
     },
     {
       "name": "Timeline",
       "slug": "timeline",
       "category": "Data display",
-      "nativeBasis": "`<ol>` element with timeline items connected by a vertical line.",
+      "purpose": "Presents events or steps in chronological or procedural order.",
+      "useWhen": "Use Timeline when sequence is the main relationship.",
+      "avoidWhen": "Do not use Timeline for an unordered status list.",
+      "fallback": "Use a normal list when order is not the main meaning.",
+      "stability": "stable",
+      "nativeBasis": "An ordered list preserves sequence without runtime behavior.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -556,13 +916,18 @@
         "css": "components/timeline/timeline.css"
       },
       "docs": "docs/timeline.html",
-      "description": "Ordered event lists with connected visual markers for chronological content."
+      "description": "Presents events or steps in chronological or procedural order."
     },
     {
       "name": "Tree View",
       "slug": "tree-view",
       "category": "Data display",
-      "nativeBasis": "Nested `<ul>` elements with `role=\"tree\"` / `role=\"treeitem\"` ARIA pattern for hierarchical data.",
+      "purpose": "Presents hierarchical items with expandable branches.",
+      "useWhen": "Use Tree View when parent and child structure must remain visible.",
+      "avoidWhen": "Do not use Tree View for a flat route list or ordinary disclosure list.",
+      "fallback": "Use nested lists and details when managed tree navigation is not required.",
+      "stability": "stable",
+      "nativeBasis": "A tree pattern exposes hierarchy while the module manages branch navigation and roving focus.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -572,13 +937,18 @@
         "js": "components/tree-view/tree-view.js"
       },
       "docs": "docs/tree-view.html",
-      "description": "Hierarchical trees with native disclosure branches, treeitem roles, and arrow-key navigation."
+      "description": "Presents hierarchical items with expandable branches."
     },
     {
       "name": "Carousel",
       "slug": "carousel",
       "category": "Data display",
-      "nativeBasis": "CSS `scroll-snap` on an overflow container, with `IntersectionObserver` for active-slide tracking and native `<button>` elements for navigation.",
+      "purpose": "Presents a sequence of slides in a bounded scroll region.",
+      "useWhen": "Use Carousel when sequential visual items must share one space.",
+      "avoidWhen": "Do not use Carousel for required content that should remain visible in a normal list.",
+      "fallback": "Use a normal list or horizontal scroll region when controls are not required.",
+      "stability": "stable",
+      "nativeBasis": "Native scrolling remains available while the module coordinates controls and active indicators.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -588,13 +958,18 @@
         "js": "components/carousel/carousel.js"
       },
       "docs": "docs/carousel.html",
-      "description": "Scroll-snap carousels with accessible slide controls, active indicators, and optional looping."
+      "description": "Presents a sequence of slides in a bounded scroll region."
     },
     {
       "name": "Scroll Area",
       "slug": "scroll-area",
       "category": "Data display",
-      "nativeBasis": "CSS overflow with custom-styled scrollbars using both standard and Webkit scrollbar properties.",
+      "purpose": "Contains overflow inside a bounded region.",
+      "useWhen": "Use Scroll Area when a local region must scroll independently.",
+      "avoidWhen": "Do not create nested scrolling when normal page flow works.",
+      "fallback": "Use normal document scrolling.",
+      "stability": "stable",
+      "nativeBasis": "Native overflow and browser scrollbars provide the behavior.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -603,13 +978,18 @@
         "css": "components/scroll-area/scroll-area.css"
       },
       "docs": "docs/scroll-area.html",
-      "description": "Bounded overflow regions with tokenized native scrollbar styling."
+      "description": "Contains overflow inside a bounded region."
     },
     {
       "name": "Sortable",
       "slug": "sortable",
       "category": "Data display",
-      "nativeBasis": "HTML Drag and Drop API + keyboard reordering for accessible drag-and-drop lists. Uses native `draggable`, `DataTransfer`, and DOM manipulation — no SortableJS or drag libraries.",
+      "purpose": "Reorders a user-owned list.",
+      "useWhen": "Use Sortable when item order changes meaning or execution.",
+      "avoidWhen": "Do not use Sortable when order is fixed or when drag would be the only path.",
+      "fallback": "Use explicit move controls or a fixed list when reorder interaction is unnecessary.",
+      "stability": "stable",
+      "nativeBasis": "The module supports drag, keyboard movement, and announced position changes.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -619,13 +999,18 @@
         "js": "components/sortable/sortable.js"
       },
       "docs": "docs/sortable.html",
-      "description": "Reorderable lists using native drag-and-drop plus keyboard movement and status announcements."
+      "description": "Reorders a user-owned list."
     },
     {
       "name": "Spinner",
       "slug": "spinner",
       "category": "Feedback and status",
-      "nativeBasis": "Static SVG loading indicator. No JavaScript or animation is used.",
+      "purpose": "Shows that an indeterminate task is active.",
+      "useWhen": "Use Spinner for short active work with an accompanying status name.",
+      "avoidWhen": "Do not use Spinner for decoration or known completion.",
+      "fallback": "Use Progress when completion is known or text status when motion adds no value.",
+      "stability": "stable",
+      "nativeBasis": "CSS rotation provides the single sanctioned animation.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -634,13 +1019,18 @@
         "css": "components/spinner/spinner.css"
       },
       "docs": "docs/spinner.html",
-      "description": "Static SVG status indicators for loading states without animation."
+      "description": "Shows that an indeterminate task is active."
     },
     {
       "name": "Skeleton",
       "slug": "skeleton",
       "category": "Feedback and status",
-      "nativeBasis": "Static placeholder `<div>` elements. No JavaScript or animation is used.",
+      "purpose": "Reserves the shape of content that is loading.",
+      "useWhen": "Use Skeleton when the final structure is known and the placeholder prevents layout shift.",
+      "avoidWhen": "Do not use Skeleton for unknown content or as an animated effect.",
+      "fallback": "Keep existing content visible or use a text loading status.",
+      "stability": "stable",
+      "nativeBasis": "Static decorative shapes remain hidden from assistive technology.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -649,13 +1039,18 @@
         "css": "components/skeleton/skeleton.css"
       },
       "docs": "docs/skeleton.html",
-      "description": "Static loading placeholder blocks with accessible structure and no runtime or motion."
+      "description": "Reserves the shape of content that is loading."
     },
     {
       "name": "Progress",
       "slug": "progress",
       "category": "Feedback and status",
-      "nativeBasis": "`<progress>` element with CSS styling for the track and indicator bar.",
+      "purpose": "Shows known task completion.",
+      "useWhen": "Use Progress when the system knows the current value and maximum.",
+      "avoidWhen": "Do not use Progress for an indeterminate task.",
+      "fallback": "Use Spinner or status text for indeterminate work.",
+      "stability": "stable",
+      "nativeBasis": "Native `<progress>` exposes the bounded completion value.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -664,13 +1059,18 @@
         "css": "components/progress/progress.css"
       },
       "docs": "docs/progress.html",
-      "description": "Native progress indicators for bounded completion values with semantic value support."
+      "description": "Shows known task completion."
     },
     {
       "name": "Callout",
       "slug": "callout",
       "category": "Feedback and status",
-      "nativeBasis": "A semantic `<div class=\"callout\">` with a context-neutral `<p class=\"callout-title\">` and description. Add `role=\"alert\"` only when urgent error content is inserted dynamically.",
+      "purpose": "Presents persistent important information in the page flow.",
+      "useWhen": "Use Callout for guidance, warning, success, or error content that remains visible.",
+      "avoidWhen": "Do not add a live alert role to static information.",
+      "fallback": "Use normal prose when emphasis is unnecessary.",
+      "stability": "stable",
+      "nativeBasis": "Normal semantic content remains in flow unless an urgent dynamic role is explicitly required.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -679,13 +1079,18 @@
         "css": "components/callout/callout.css"
       },
       "docs": "docs/callout.html",
-      "description": "Inline contextual messages with neutral static semantics and an opt-in urgent alert mode."
+      "description": "Presents persistent important information in the page flow."
     },
     {
       "name": "Alert Dialog",
       "slug": "alert-dialog",
       "category": "Feedback and status",
-      "nativeBasis": "`<dialog>` element used as a modal that requires user response. Unlike a standard dialog, it has no backdrop-close and no close button — the user must choose an action.",
+      "purpose": "Requires an explicit response to a high-impact decision.",
+      "useWhen": "Use Alert Dialog for destructive or blocking confirmation.",
+      "avoidWhen": "Do not use Alert Dialog for low-risk information or an easy undo.",
+      "fallback": "Use Dialog for neutral modal tasks or inline undo for low-risk actions.",
+      "stability": "stable",
+      "nativeBasis": "Native modal dialog behavior combines with explicit alert-dialog semantics and scripted trigger coordination.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -695,13 +1100,18 @@
         "js": "components/alert-dialog/alert-dialog.js"
       },
       "docs": "docs/alert-dialog.html",
-      "description": "Modal confirmation surfaces built on dialog that require an explicit user response."
+      "description": "Requires an explicit response to a high-impact decision."
     },
     {
       "name": "Toast",
       "slug": "toast",
       "category": "Feedback and status",
-      "nativeBasis": "`popover` API for top-layer rendering and non-modal behavior. Requires JavaScript for triggering, auto-dismiss, stacking, and ARIA live region announcements. Follows `role=\"status\"` with `aria-live=\"polite\"`.",
+      "purpose": "Announces a brief non-blocking result.",
+      "useWhen": "Use Toast for a short status that does not require a decision.",
+      "avoidWhen": "Do not use Toast for a blocking error or essential instructions.",
+      "fallback": "Use Callout for persistent content or Dialog for blocking decisions.",
+      "stability": "stable",
+      "nativeBasis": "A manual popover and polite live status provide non-blocking feedback.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -711,13 +1121,18 @@
         "js": "components/toast/toast.js"
       },
       "docs": "docs/toast.html",
-      "description": "Top-layer status surfaces with live announcements, stacking, and dismissal behavior."
+      "description": "Announces a brief non-blocking result."
     },
     {
       "name": "Popover",
       "slug": "popover",
       "category": "Overlays",
-      "nativeBasis": "`popover` attribute — native Popover API with CSS anchor positioning for placement.",
+      "purpose": "Shows non-modal contextual content in the top layer.",
+      "useWhen": "Use Popover for a small surface that relates to one trigger.",
+      "avoidWhen": "Do not use Popover for a blocking task or large form.",
+      "fallback": "Keep content inline when a top-layer surface is unnecessary.",
+      "stability": "stable",
+      "nativeBasis": "Native Popover API supplies top-layer and light-dismiss behavior while the module coordinates documented positioning.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -727,13 +1142,18 @@
         "js": "components/popover/popover.js"
       },
       "docs": "docs/popover.html",
-      "description": "Native Popover API surfaces with declarative triggers and CSS anchor placement."
+      "description": "Shows non-modal contextual content in the top layer."
     },
     {
       "name": "Tooltip",
       "slug": "tooltip",
       "category": "Overlays",
-      "nativeBasis": "Popover API (`popover=\"hint\"`) for hover/focus hint popups with CSS anchor positioning for placement.",
+      "purpose": "Shows a short supplementary hint on hover and focus.",
+      "useWhen": "Use Tooltip to clarify an unfamiliar icon or terse control.",
+      "avoidWhen": "Do not place essential instructions only in a tooltip.",
+      "fallback": "Use visible helper text when the information is required.",
+      "stability": "stable",
+      "nativeBasis": "A hint popover provides supplementary text for hover and keyboard focus.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -743,13 +1163,18 @@
         "js": "components/tooltip/tooltip.js"
       },
       "docs": "docs/tooltip.html",
-      "description": "Hover and focus hint popups using popover hint semantics, delay, and collision-aware placement."
+      "description": "Shows a short supplementary hint on hover and focus."
     },
     {
       "name": "Dialog",
       "slug": "dialog",
       "category": "Overlays",
-      "nativeBasis": "`<dialog>` element + `showModal()`. The browser provides: - Focus trap (automatically) - Escape key to close (automatically) - `::backdrop` for overlay - `aria-modal` behavior when opened with `showModal()` Requires minimal JavaScript — only for trigger wiring and backdrop-click-to-close.",
+      "purpose": "Contains a focused modal task.",
+      "useWhen": "Use Dialog for a task that must temporarily block the page.",
+      "avoidWhen": "Do not use Dialog for ordinary page content or a simple status.",
+      "fallback": "Use inline content when blocking the page is unnecessary.",
+      "stability": "stable",
+      "nativeBasis": "Native modal dialog behavior provides the top layer while the module coordinates triggers and focus restoration.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -759,13 +1184,18 @@
         "js": "components/dialog/dialog.js"
       },
       "docs": "docs/dialog.html",
-      "description": "Modal dialog surfaces using native showModal, close controls, and focus restoration."
+      "description": "Contains a focused modal task."
     },
     {
       "name": "Sheet",
       "slug": "sheet",
       "category": "Overlays",
-      "nativeBasis": "`<dialog>` element + `showModal()`. Same native benefits as Dialog: - Focus trap (automatically) - Escape key to close (automatically) - `::backdrop` for overlay - `aria-modal` behavior when opened with `showModal()` A sheet is a dialog variant that slides in from an edge of the screen. Uses `data-side` attribute to control which edge: `top`, `right`, `bottom`, `left`.",
+      "purpose": "Presents an edge-aligned modal task.",
+      "useWhen": "Use Sheet when the task benefits from a persistent edge orientation.",
+      "avoidWhen": "Do not use Sheet only to imitate a fashionable panel.",
+      "fallback": "Use Dialog when edge alignment does not improve the task.",
+      "stability": "stable",
+      "nativeBasis": "Native modal dialog behavior provides the blocking surface while CSS applies the documented edge.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -775,13 +1205,18 @@
         "js": "components/sheet/sheet.js"
       },
       "docs": "docs/sheet.html",
-      "description": "Edge-aligned modal dialog variants using a side attribute and native modal behavior."
+      "description": "Presents an edge-aligned modal task."
     },
     {
       "name": "Accordion",
       "slug": "accordion",
       "category": "Overlays",
-      "nativeBasis": "`<details>` / `<summary>` elements. The browser provides: - Click to toggle (automatically) - Enter/Space to toggle when focused (automatically) - `open` attribute for state (automatically) For single-open behavior (closing others when one opens), minimal JavaScript is required. For multi-open, pure HTML with no JS works.",
+      "purpose": "Groups several disclosure sections.",
+      "useWhen": "Use Accordion when users can inspect one or several optional sections.",
+      "avoidWhen": "Do not use Accordion for primary sequential content that should remain visible.",
+      "fallback": "Use independent Collapsible elements or visible sections.",
+      "stability": "stable",
+      "nativeBasis": "Native details elements support multi-open behavior and the optional module coordinates single-open behavior.",
       "requiresJs": false,
       "enhancementJs": true,
       "jsMode": "optional",
@@ -791,13 +1226,18 @@
         "js": "components/accordion/accordion.js"
       },
       "docs": "docs/accordion.html",
-      "description": "Native details and summary disclosures with optional single-open coordination."
+      "description": "Groups several disclosure sections."
     },
     {
       "name": "Command Palette",
       "slug": "command-palette",
       "category": "Overlays",
-      "nativeBasis": "`<dialog>` + search input for a command palette. Uses `showModal()` for focus trap and Escape-to-close.",
+      "purpose": "Finds and activates global application commands.",
+      "useWhen": "Use Command Palette for a large command set that benefits from search.",
+      "avoidWhen": "Do not use Command Palette as the only route to normal navigation or common actions.",
+      "fallback": "Use visible buttons, menus, or navigation for common actions.",
+      "stability": "stable",
+      "nativeBasis": "A native modal dialog contains search and commands while the module manages filtering and activation.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -807,13 +1247,18 @@
         "js": "components/command-palette/command-palette.js"
       },
       "docs": "docs/command-palette.html",
-      "description": "Modal command search surfaces with keyboard filtering, highlighting, and activation."
+      "description": "Finds and activates global application commands."
     },
     {
       "name": "Breadcrumbs",
       "slug": "breadcrumbs",
       "category": "Navigation",
-      "nativeBasis": "`<nav>` + `<ol>` for hierarchical path display. Pure CSS — no JavaScript required.",
+      "purpose": "Shows the current route within a hierarchy.",
+      "useWhen": "Use Breadcrumbs when parent routes help orientation or navigation.",
+      "avoidWhen": "Do not use Breadcrumbs on a flat site or as a page title replacement.",
+      "fallback": "Use the page title alone when parent-route context adds no value.",
+      "stability": "stable",
+      "nativeBasis": "Native links inside an ordered navigation list expose the hierarchy.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -822,13 +1267,18 @@
         "css": "components/breadcrumbs/breadcrumbs.css"
       },
       "docs": "docs/breadcrumbs.html",
-      "description": "Hierarchical navigation trails using a labelled nav and ordered list."
+      "description": "Shows the current route within a hierarchy."
     },
     {
       "name": "Pagination",
       "slug": "pagination",
       "category": "Navigation",
-      "nativeBasis": "`<nav>` + `<ul>` + `<a>` links for page navigation. Pure CSS — no JavaScript required.",
+      "purpose": "Moves between result pages.",
+      "useWhen": "Use Pagination when the result set has stable page URLs.",
+      "avoidWhen": "Do not use Pagination for a small list or an in-page tab switch.",
+      "fallback": "Use one continuous result list when paging is unnecessary.",
+      "stability": "stable",
+      "nativeBasis": "Native links preserve navigation, history, and no-JavaScript use.",
       "requiresJs": false,
       "enhancementJs": false,
       "jsMode": "none",
@@ -837,13 +1287,18 @@
         "css": "components/pagination/pagination.css"
       },
       "docs": "docs/pagination.html",
-      "description": "Navigation landmarks containing native links for paging through a collection."
+      "description": "Moves between result pages."
     },
     {
       "name": "Tabs",
       "slug": "tabs",
       "category": "Navigation",
-      "nativeBasis": "`role=\"tablist\"` + `role=\"tab\"` + `role=\"tabpanel\"`. No native HTML element provides this pattern. Requires JavaScript for keyboard navigation and panel switching. Follows the WAI-ARIA Tabs design pattern.",
+      "purpose": "Switches among related panels within one route.",
+      "useWhen": "Use Tabs when panels are peers and only one panel is active.",
+      "avoidWhen": "Do not use Tabs for application routes or sequential steps.",
+      "fallback": "Use route links for navigation or visible sections when simultaneous access is better.",
+      "stability": "stable",
+      "nativeBasis": "ARIA tab roles expose the panel relationship while the module manages selection and roving focus.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -853,13 +1308,18 @@
         "js": "components/tabs/tabs.js"
       },
       "docs": "docs/tabs.html",
-      "description": "WAI-ARIA tablists with keyboard navigation and coordinated tab panels."
+      "description": "Switches among related panels within one route."
     },
     {
       "name": "Dropdown Menu",
       "slug": "dropdown-menu",
       "category": "Navigation",
-      "nativeBasis": "`popover` API + `<button>` trigger. The browser provides light-dismiss (click outside to close) and top-layer rendering. Requires JavaScript for keyboard navigation and ARIA management.",
+      "purpose": "Shows a compact set of actions from one trigger.",
+      "useWhen": "Use Dropdown Menu when visible buttons would create excessive local clutter.",
+      "avoidWhen": "Do not use Dropdown Menu for primary site navigation or form option selection.",
+      "fallback": "Use visible buttons when the action set is small.",
+      "stability": "stable",
+      "nativeBasis": "A popover menu exposes action items while the module manages the menu keyboard model.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -869,13 +1329,18 @@
         "js": "components/dropdown-menu/dropdown-menu.js"
       },
       "docs": "docs/dropdown-menu.html",
-      "description": "Popover menus with keyboard navigation, highlighted items, and checkbox or radio states."
+      "description": "Shows a compact set of actions from one trigger."
     },
     {
       "name": "Navigation Menu",
       "slug": "navigation-menu",
       "category": "Navigation",
-      "nativeBasis": "`<nav>` + `<ul>` for site-level navigation with dropdown panels.",
+      "purpose": "Groups related site routes in top-level navigation popovers.",
+      "useWhen": "Use Navigation Menu when a route group is too large for flat top navigation.",
+      "avoidWhen": "Do not use Navigation Menu for application actions or a small route set.",
+      "fallback": "Use flat route links when the route set fits.",
+      "stability": "stable",
+      "nativeBasis": "Semantic navigation links remain routes while popovers expose grouped destinations.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -885,13 +1350,18 @@
         "js": "components/navigation-menu/navigation-menu.js"
       },
       "docs": "docs/navigation-menu.html",
-      "description": "Site navigation lists with native popover dropdown panels and anchored route groups."
+      "description": "Groups related site routes in top-level navigation popovers."
     },
     {
       "name": "App Shell",
       "slug": "app-shell",
       "category": "Application",
-      "nativeBasis": "A semantic page frame composed from `<body>`, `<header>`, `<nav>`, `<main>`, native route links, and native action buttons, with an optional OS-aware persisted theme enhancement.",
+      "purpose": "Provides reusable application header, toolbar, page overview, content, status, and empty-state primitives.",
+      "useWhen": "Use App Shell to compose shared application chrome and utility page regions.",
+      "avoidWhen": "Do not treat App Shell as a complete route template or business-content component.",
+      "fallback": "Use semantic page landmarks directly when shared shell styling is unnecessary.",
+      "stability": "stable",
+      "nativeBasis": "Semantic landmarks and page regions work without JavaScript while the optional module adds theme persistence.",
       "requiresJs": false,
       "enhancementJs": true,
       "jsMode": "optional",
@@ -901,13 +1371,18 @@
         "js": "components/app-shell/app-shell.js"
       },
       "docs": "docs/app-shell.html",
-      "description": "Shared application headers, toolbars, content canvas, page overviews, compact status lists, empty states, and optional theme control."
+      "description": "Provides reusable application header, toolbar, page overview, content, status, and empty-state primitives."
     },
     {
       "name": "Sidebar",
       "slug": "sidebar",
       "category": "Application",
-      "nativeBasis": "`<aside>` + `<nav>` + `<dialog>` + `<button>` for a full application sidebar with a flat link list, a collapsible desktop width, a mobile navigation dialog, and a keyboard shortcut.",
+      "purpose": "Provides collapsible desktop navigation and a mobile navigation dialog.",
+      "useWhen": "Use Sidebar for applications with persistent route navigation.",
+      "avoidWhen": "Do not use Sidebar for a small flat site that fits top navigation.",
+      "fallback": "Use top-level route links when persistent sidebar navigation is unnecessary.",
+      "stability": "stable",
+      "nativeBasis": "Semantic aside and nav content combine with a native mobile dialog while the module manages collapse state.",
       "requiresJs": true,
       "enhancementJs": false,
       "jsMode": "required",
@@ -917,13 +1392,18 @@
         "js": "components/sidebar/sidebar.js"
       },
       "docs": "docs/sidebar.html",
-      "description": "Application sidebars with flat navigation, collapsible desktop rails, mobile dialogs, and shortcuts."
+      "description": "Provides collapsible desktop navigation and a mobile navigation dialog."
     },
     {
       "name": "Resizable",
       "slug": "resizable",
       "category": "Application",
-      "nativeBasis": "Two semantic panels in a flex container, separated by a static `<div role=\"separator\">`. When the module loads it upgrades the divider with a keyboard focus target, ARIA separator value properties, native Pointer Events, and a native `<output>` live region. CSS keeps both panels usable when JavaScript is unavailable.",
+      "purpose": "Presents two panels with an optional adjustable separator.",
+      "useWhen": "Use Resizable when changing the split improves a repeated work task.",
+      "avoidWhen": "Do not use Resizable for decorative balance or when a static split is sufficient.",
+      "fallback": "Use a static CSS split when user-controlled resizing adds no value.",
+      "stability": "stable",
+      "nativeBasis": "A static separator remains understandable while the optional module adds pointer and keyboard resizing.",
       "requiresJs": false,
       "enhancementJs": true,
       "jsMode": "optional",
@@ -933,7 +1413,7 @@
         "js": "components/resizable/resizable.js"
       },
       "docs": "docs/resizable.html",
-      "description": "Two-panel layouts with semantic separators, keyboard or pointer resizing, and live size output."
+      "description": "Presents two panels with an optional adjustable separator."
     }
   ]
 }
