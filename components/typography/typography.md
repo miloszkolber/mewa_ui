@@ -1,141 +1,196 @@
-# Pattern: Typography
+# Typography
+
+## Purpose
+
+Typography defines the shared text hierarchy for interface copy, prose, code, quotations, keyboard notation, and lists.
+
+Use native text elements that match the content meaning.
+
+Use Typography classes only to apply an existing visual role without changing semantics.
+
+Do not choose a heading level from its visual size.
+
+Do not use Typography classes to imitate controls, status, or navigation state.
 
 ## Native basis
-Native HTML text elements: `<h1>`–`<h4>`, `<p>`, `<blockquote>`, `<code>`, `<small>`, `<kbd>`, `<ul>`/`<ol>`.
-Pure CSS — no JavaScript or ARIA required.
 
----
+Typography uses native headings, paragraphs, lists, quotations, code, keyboard notation, and small-print elements.
+
+Typography adds no JavaScript behavior.
 
 ## Native Web APIs
-- [`<h1>`–`<h6>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements) — semantic heading hierarchy
-- [`<blockquote>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blockquote) — quoted block content
-- [`<code>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/code) — inline code fragment
-- [`<kbd>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/kbd) — keyboard input keycap
-- [`<ul>`/`<ol>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ul) — unordered and ordered lists
-- [`<small>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/small) — side comments and small print
-- [`text-wrap: balance`](https://developer.mozilla.org/en-US/docs/Web/CSS/text-wrap) — balanced line wrapping for headings
-- [`text-wrap: pretty`](https://developer.mozilla.org/en-US/docs/Web/CSS/text-wrap) — orphan prevention for body text
-- [`hanging-punctuation`](https://developer.mozilla.org/en-US/docs/Web/CSS/hanging-punctuation) — optical quote alignment for blockquotes
-- [Logical properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values) — `border-inline-start`, `padding-inline-start` for RTL support
-- [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — enhanced contrast for high-contrast preference
-- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — Windows High Contrast Mode with system colors
 
----
+- [`<h1>` through `<h6>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Heading_Elements) provide section hierarchy.
+- [`<p>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/p) provides paragraph structure.
+- [`<blockquote>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/blockquote) identifies block quotations.
+- [`<code>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/code) identifies code fragments.
+- [`<kbd>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/kbd) identifies user keyboard input.
+- [`<ul>` and `<ol>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ul) provide list semantics.
+- [`<small>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/small) identifies side comments and small print.
+- [`text-wrap`](https://developer.mozilla.org/en-US/docs/Web/CSS/text-wrap) improves line distribution without changing semantics.
 
-## Structure
+## Headings
 
-### Headings
+Use one `h1` for the primary page task or document topic when the page structure calls for it.
+
+Use subsequent heading levels to represent section nesting.
+
 ```html
-<h1 class="h1">Taxing Laughter: The Joke Tax Chronicles</h1>
-<h2 class="h2">The People of the Kingdom</h2>
-<h3 class="h3">The Joke Tax</h3>
-<h4 class="h4">People stopped telling jokes</h4>
+<h1 class="h1">Worker control</h1>
+<h2 class="h2">Current jobs</h2>
+<h3 class="h3">Failed jobs</h3>
 ```
 
-### Paragraph
+Keep heading text concise.
+
+Use sentence case.
+
+Do not use a heading only to make text large or bold.
+
+## Paragraphs
+
+Use `.p` for normal prose that needs the shared paragraph rhythm.
+
 ```html
-<p class="p">The king, seeing how much happier his subjects were, realized the error of his ways and repealed the joke tax.</p>
+<p class="p">Inspect current workers and retry failed jobs.</p>
 ```
 
-### Lead (large intro paragraph)
+Use `.lead` for one short introductory paragraph that needs more emphasis than normal supporting text.
+
 ```html
-<p class="lead">A modal dialog that interrupts the user with important content and expects a response.</p>
+<p class="lead">Review the current execution state before changing worker settings.</p>
 ```
 
-### Large text
-```html
-<div class="large">Are you absolutely sure?</div>
-```
+Do not use Lead for every section description.
 
-### Small text
-```html
-<small class="small">Email address</small>
-```
+## Supporting text
 
-### Muted text
-```html
-<p class="muted">Enter your email address.</p>
-```
+Use `.small` for secondary text that remains normal content.
 
-### Blockquote
+Use `.muted` for low-emphasis supporting information.
+
+Use `--text-disabled` through the owning component for disabled content instead of Muted.
+
+Do not use muted styling to hide important instructions.
+
+## Strong text
+
+Use semantic `<strong>` when importance is part of the content meaning.
+
+Use `.large` only when an existing design composition needs stronger text without creating a heading.
+
+Do not replace semantic headings with `.large`.
+
+## Quotations
+
+Use `<blockquote class="blockquote">` for a block quotation.
+
 ```html
 <blockquote class="blockquote">
-  <p>"After all," he said, "everyone enjoys a good joke, so it's only fair that they should pay for the privilege."</p>
+  <p>Use the native platform before adding a replacement runtime.</p>
 </blockquote>
 ```
 
-### Inline code
+Keep quotation marks in the quoted content only when they belong to the source text.
+
+Do not use Blockquote only to create an indented callout.
+
+## Code
+
+Use `<code class="code">` for inline code, paths, identifiers, and short commands.
+
 ```html
-<code class="code">base.css</code>
+<code class="code">registry.json</code>
 ```
 
-### Keyboard input
+Use a semantic `<pre><code>` region for multi-line code.
+
+Do not use inline Code as a badge.
+
+## Keyboard notation
+
+Use `<kbd class="kbd">` for a key or key combination that the user can press.
+
 ```html
-Press <kbd class="kbd">⌘S</kbd> to save
+Press <kbd class="kbd">Ctrl+B</kbd> to toggle the sidebar.
 ```
 
-### Lists
+Do not use Kbd for application labels or arbitrary monospace text.
+
+## Lists
+
+Use `<ul>` for unordered items.
+
+Use `<ol>` when order has meaning.
+
 ```html
-<ul>
-  <li>First item</li>
-  <li>Second item
-    <ul>
-      <li>Nested item</li>
-    </ul>
-  </li>
-</ul>
+<ol>
+  <li>Choose the source.</li>
+  <li>Review the files.</li>
+  <li>Start the download.</li>
+</ol>
 ```
 
----
+Keep component-owned lists on their component classes so Typography does not override their layout.
 
-## Classes
+Use Table for data with stable row and column relationships.
 
-| Class | Element | Description |
-|---|---|---|
-| `.h1` | `<h1>` or any | 2.5rem semibold heading (--font-h1), tight line-height, balanced wrapping |
-| `.h2` | `<h2>` or any | 2rem semibold heading (--font-h2) |
-| `.h3` | `<h3>` or any | 1.5rem semibold heading (--font-h3) |
-| `.h4` | `<h4>` or any | 1rem semibold heading (--font-h4) |
-| `.p` | `<p>` | Body text, 1.61 line-height, auto-spacing between siblings |
-| `.lead` | `<p>` | Muted intro paragraph |
-| `.large` | `<div>` or any | Semibold text |
-| `.small` | `<small>` or any | 0.875rem medium text |
-| `.muted` | `<p>` or any | Muted-foreground text |
-| `.blockquote` | `<blockquote>` | Italic block with inline-start border, hanging punctuation |
-| `.code` | `<code>` | Monospace inline code with muted background |
-| `.kbd` | `<kbd>` | Monospace keycap: muted background, 1px border, xsmall size |
+## Visual classes
 
-### Element styles (`@layer base`)
+`.h1` uses the shared first-level heading treatment.
 
-| Element | Description |
-|---|---|
-| `body` | Baseline font size and line height |
-| `ul`, `ol` (classless) | `padding-inline-start: var(--space-05)`, no block margin |
-| `li` (classless lists) | `margin-block: var(--space-01)`; nested lists get `margin-top: var(--space-01)` |
+`.h2` uses the shared second-level heading treatment.
 
----
+`.h3` uses the shared third-level heading treatment.
+
+`.h4` uses the shared compact heading treatment.
+
+`.p` uses normal prose rhythm.
+
+`.lead` uses emphasized introductory prose.
+
+`.large` uses strong larger text without adding heading semantics.
+
+`.small` uses the small body scale.
+
+`.muted` uses the muted text role.
+
+`.blockquote` uses the shared quotation border and spacing.
+
+`.code` uses Geist Mono with a quiet surface treatment.
+
+`.kbd` uses Geist Mono with a compact key treatment.
+
+Use the semantic element first and the class second.
+
+## Behavior
+
+Typography is static document content.
+
+Typography does not create interaction.
+
+Typography does not create live regions.
+
+Typography does not add JavaScript.
 
 ## Accessibility
 
-- Use heading levels in order (`h1` → `h2` → `h3`). Do not skip levels.
-- Headings create the document outline used by screen readers for navigation.
-- `<blockquote>` is announced as a quote by assistive technology — no extra ARIA needed.
-- `<code>` is announced as code — no extra ARIA needed.
-- `prefers-contrast: more` — removes tight letter-spacing on headings, adds outline to inline code, thickens blockquote border, and promotes muted text to foreground color.
-- `forced-colors: active` — blockquote border, inline code, and keycaps adapt to system colors (`CanvasText`, `Canvas`, `ButtonFace`, `ButtonText`).
+Keep heading levels aligned with the actual document hierarchy.
 
----
+Keep important instructions at normal readable contrast.
 
-## Notes
+Use native quotation, code, keyboard, and list elements when their semantics apply.
 
-- The `body` rule sets the baseline font size; all typography classes are sized relative to it.
-- These are utility classes for prose content — not a component with variants/sizes.
-- The `.h1`–`.h4` classes allow applying heading styles to non-heading elements when semantic headings aren't appropriate.
-- Typography classes compose freely with other components (Card content, Dialog body, Callout description).
-- `text-wrap: balance` is used on all headings (h1–h4) for better visual line distribution.
-- `text-wrap: pretty` is used on paragraphs and lead text for orphan prevention.
-- `hanging-punctuation: first last` is used on blockquotes for optical quote alignment.
-- Blockquote uses `border-inline-start` / `padding-inline-start` (logical properties) for automatic RTL support.
-- Lists are styled by typography itself in `@layer base` (`ul`/`ol`/`li` rules) — no separate list component. Nested lists keep the same indentation rhythm. Rules are scoped to classless lists so component lists (steps, pagination, navigation menu, …) keep their own layout.
-- For prose tables, use the Table component (`table.css`) — typography does not ship its own table styles.
-- `<mark>` highlighting is intentionally not covered: there is no semantic highlight token, and the amber primitives are reserved for status colors. Use `.muted` or inline styles if you need emphasis.
+Keep text readable at 200 percent zoom.
+
+Keep line wrapping usable at narrow widths.
+
+Do not communicate status through typography style alone.
+
+Do not use visually smaller text for content that is necessary to complete the task when normal body text fits.
+
+## Runtime
+
+Typography requires no component module.
+
+The complete text system works without JavaScript.
