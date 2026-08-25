@@ -1,44 +1,100 @@
-# Pattern: Date Field
+# Date Field
+
+## Purpose
+
+Date Field collects one date or local date and time with the browser control.
+
+Use Date Field when the native browser picker meets the task.
+
+Use Date Picker when the interface requires a visible custom month grid.
+
+Do not replace the native picker only to make its popup match application styling.
 
 ## Native basis
-`<input type="date">` element with native browser date picker.
 
----
+Date Field uses `<input type="date">` or `<input type="datetime-local">`.
+
+The browser owns date parsing, editing, picker presentation, keyboard behavior, and validation.
 
 ## Native Web APIs
-- [`<input type="date">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date) — native date picker with calendar UI
-- [`<input type="datetime-local">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local) — date and time picker
 
----
+- [`<input type="date">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date) provides native date entry and selection.
+- [`<input type="datetime-local">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local) provides local date and time entry.
+- [`min`](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/min) and [`max`](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/max) constrain the accepted range.
+- [`required`](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/required) provides native required validation.
 
 ## Structure
 
-### Date
 ```html
-<label class="label" for="birthday">Birthday</label>
-<input class="date-input" type="date" id="birthday">
+<div class="field">
+  <label class="label" for="start-date">Start date</label>
+  <input class="date-input"
+         id="start-date"
+         name="start_date"
+         type="date">
+</div>
 ```
 
-### Date and time
+Use `datetime-local` when the task needs a local date and time.
+
 ```html
-<label class="label" for="meeting">Meeting</label>
-<input class="date-input" type="datetime-local" id="meeting">
+<div class="field">
+  <label class="label" for="run-at">Run at</label>
+  <input class="date-input"
+         id="run-at"
+         name="run_at"
+         type="datetime-local">
+</div>
 ```
 
-### With constraints
+## Constraints
+
+Use native constraints when they match the product rule.
+
 ```html
-<input class="date-input" type="date" id="start" min="2024-01-01" max="2025-12-31">
+<input class="date-input"
+       id="archive-date"
+       name="archive_date"
+       type="date"
+       min="2026-01-01"
+       max="2026-12-31"
+       required>
 ```
 
----
+Keep server validation authoritative for business rules.
 
-## Notes
+Do not calculate a fixed future date in library markup.
 
-- Uses the `.date-input` class — the native date picker provides the calendar UI.
-- No custom calendar implementation needed — the browser handles it.
-- The calendar popup is rendered by the OS/browser and cannot be styled.
-- The calendar indicator is a full-height square hit area at the end of the field, with the icon painted at a compact 1rem scale and centered.
-- The input remains the only focusable control. Its native `:focus-visible` indicator and browser date-segment keyboard behavior remain intact.
-- Date values use the native `min`, `max`, `required`, `disabled`, and `readonly` attributes. Keep a real `<label>` associated with each input.
-- Date and time state changes are immediate. This component adds no animation, transition, smooth scrolling, or custom focus management.
-- For a fully custom month grid, use the [Date Picker](../date-picker/date-picker.md) component instead of replacing the browser picker.
+## Behavior
+
+The input remains the only focusable control.
+
+The browser opens its native picker through the platform affordance.
+
+The browser owns date-segment keyboard editing.
+
+The browser submits the normalized native value.
+
+The component adds no JavaScript behavior.
+
+State changes are immediate.
+
+## Accessibility
+
+Give every Date Field a visible label.
+
+Associate the label with `for` and `id`.
+
+Use Field descriptions and errors when additional guidance is necessary.
+
+Keep `required`, `disabled`, and `readonly` on the native input.
+
+Do not add ARIA that duplicates native date-input semantics.
+
+Do not hide the native picker indicator from keyboard or pointer users.
+
+## Runtime
+
+Date Field requires no component module.
+
+The complete input works without JavaScript.
