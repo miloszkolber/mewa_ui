@@ -94,26 +94,25 @@ test("docs have exact parity with the registry", () => {
   assert.deepEqual(docs, slugs);
 });
 
-test("every component skill keeps implementation-specific guidance", () => {
+test("every component skill states purpose, implementation, behavior, accessibility, and runtime", () => {
   for (const component of registry.components) {
     const source = read(component.files.skill);
     assert.match(source, /^#\s+\S/m, `${component.slug}: missing title`);
+    assert.match(source, /^## Purpose\s*$/im, `${component.slug}: missing Purpose`);
     assert.match(source, /^## Native basis\s*$/im, `${component.slug}: missing Native basis`);
     assert.match(source, /^## Native Web APIs\s*$/im, `${component.slug}: missing Native Web APIs`);
     assert(
-      /^## (?:Structure|Markup|Usage|Examples|Variants)\b/im.test(source) || /```html\b/i.test(source),
+      /^## (?:Structure|Markup|Usage|Examples|Variants|Default|Multi-open structure|One field|Container)\b/im.test(source) || /```html\b/i.test(source),
       `${component.slug}: missing structure or HTML example`
     );
-    assert(
-      /^## (?:Accessibility|ARIA)\b/im.test(source) || /\baccessib(?:le|ility)\b/i.test(stripMarkdownFences(source)),
-      `${component.slug}: missing accessibility guidance`
-    );
-    if (component.jsMode !== "none") {
-      assert(
-        /^## (?:Behavior|Keyboard|Events|Progressive enhancement|No-JavaScript|Runtime|Notes)\b/im.test(source),
-        `${component.slug}: enhanced skill must explain behavior or fallback`
-      );
-    }
+    assert.match(source, /^## Behavior\s*$/im, `${component.slug}: missing Behavior`);
+    assert.match(source, /^## Accessibility\s*$/im, `${component.slug}: missing Accessibility`);
+    assert.match(source, /^## Runtime\s*$/im, `${component.slug}: missing Runtime`);
+    assert(!/style\s*=\s*["']/i.test(source), `${component.slug}: canonical Markdown examples must not use inline style attributes`);
+
+    const prose = stripMarkdownFences(source);
+    assert(/\bUse\b/.test(prose), `${component.slug}: missing explicit use guidance`);
+    assert(/\bDo not\b/.test(prose), `${component.slug}: missing explicit misuse guidance`);
   }
 });
 
@@ -179,15 +178,9 @@ test("shared CSS rejects raw pixel breakpoints and retired width presets", () =>
   for (const filename of stylesheets) {
     const source = stripCssComments(read(filename));
     assert(!/@media[^{]*\(\s*(?:min|max)-width\s*:\s*\d+(?:\.\d+)?px\s*\)/i.test(source), `${filename}: use rem breakpoints`);
+    assert(!/@media[^{]*\(\s*width\s*[<>]=?\s*\d+(?:\.\d+)?px\s*\)/i.test(source), `${filename}: use rem breakpoints`);
     assert(!/\b78rem\b/.test(source), `${filename}: 78rem is not an approved global canvas`);
-    assert(!/\b767px\b/.test(source), `${filename}: 767px is not an approved breakpoint`);
-  }
-});
-
-test("canonical Markdown examples do not use inline style attributes in high-risk skills", () => {
-  for (const slug of ["button", "card", "checkbox", "combobox", "select", "switch", "table", "app-shell"]) {
-    const source = read(`components/${slug}/${slug}.md`);
-    assert(!/style="/i.test(source), `${slug}: canonical examples must not use inline style attributes`);
+    assert(!/\b767px\b|\b768px\b/.test(source), `${filename}: pixel shell breakpoints are not approved`);
   }
 });
 
@@ -205,14 +198,17 @@ test("high-risk native-first runtime contracts do not regress", () => {
   assert.match(tabs, /automatic activation/i, "Tabs must document automatic activation");
   assert(!/manual activation mode/i.test(tabs), "Tabs must not document an unsupported manual activation mode");
 
-  const resizableScript = read("components/resizable/resizable.js");
-  const resizableCss = read("components/resizable/resizable.css");
-  const resizableSkill = read("components/resizable/resizable.md");
-  assert.match(resizableScript, /createPointerControls/, "Resizable must provide a non-drag pointer path");
-  assert.match(resizableScript, /data-resizable-decrease/);
-  assert.match(resizableScript, /data-resizable-increase/);
-  assert.match(resizableCss, /\.resizable-step[\s\S]*inline-size:\s*var\(--size-07\)/, "Resizable pointer controls must use a 32px target");
-  assert.match(resizableSkill, /Do not rely on dragging as the only pointer path\./);
+  for (const slug of ["resizable", "sortable"]) {
+    const script = read(`components/${slug}/${slug}.js`);
+    const css = read(`components/${slug}/${slug}.css`);
+    const skill = read(`components/${slug}/${slug}.md`);
+    assert.match(script, /data-(?:resizable|sortable)-(?:decrease|increase)/, `${slug}: missing non-drag pointer controls`);
+    assert.match(css, new RegExp(`\\.${slug === "resizable" ? "resizable" : "sortable"}-step[\\s\\S]*(?:inline-size|width):\\s*var\\(--size-07\\)`), `${slug}: pointer controls must use a 32px target`);
+    assert(/Do not (?:rely on dragging|make dragging)/.test(skill), `${slug}: skill must prohibit drag-only interaction`);
+  }
+
+  const carouselCss = read("components/carousel/carousel.css");
+  assert.match(carouselCss, /\.carousel-dot[\s\S]*width:\s*var\(--size-06\)/, "Carousel direct-slide controls must use a 24px target");
 });
 
 test("agent-facing source does not reference the retired layouts directory", () => {
