@@ -1,149 +1,164 @@
 # mewa_ui
 
-mewa_ui is a framework-free UI library of semantic HTML, tokenized CSS, local SVG icons, and small native-first ES modules. Use the current `src/`, `components/`, `docs/`, `layouts/`, `registry.json`, and this guide only.
+mewa_ui is a framework-free UI library for semantic HTML, tokenized CSS, local SVG icons, and small ES modules.
+
+Use this file as a routing index.
+
+## Read order
+
+1. Read `DESIGN.md`.
+2. Read `system/foundations.md`.
+3. Read `system/components.md`.
+4. Read the matching `components/{slug}/{slug}.md`.
+5. Read `system/patterns.md` for page composition.
+6. Read `system/layouts.md` for shell composition.
+7. Read `system/accessibility.md` for interaction acceptance.
+8. Read `registry.json` for asset metadata.
 
 ## Source of truth
 
-1. `src/base.css` defines static foundations, Geist fonts, typography, geometry, spacing, browser defaults, and palette primitives.
-2. `src/tokens.css` defines light and dark semantic roles for surfaces, text, borders, and charts.
-3. `components/{slug}/{slug}.md` is the markup contract. Its Native basis, structure, attributes, ARIA, keyboard, and fallback notes are authoritative.
-4. `components/{slug}/{slug}.css` is the component stylesheet. `components/{slug}/{slug}.js`, when present, is the component module.
-5. `docs/{slug}.html` is the static reference page for the same component. It is a usage reference, not a second implementation source.
-6. `registry.json` is the machine-readable inventory. Match by `slug`, and use its `requiresJs`, `enhancementJs`, `files`, `docs`, and `nativeBasis` fields.
-7. `components/app-shell/` contains reusable application chrome primitives. `layouts/` contains the two complete reusable shell templates, with `layouts/layouts.css` and `layouts/layouts.js` as layout-local assets.
+`src/base.css` defines fonts, palette primitives, typography, spacing, sizes, borders, reset rules, and browser foundations.
 
-Do not infer an API from a similarly named library. If a class, attribute, variant, or behavior is not in the matching skill and implementation, do not use it.
+`src/tokens.css` defines semantic light and dark theme roles.
 
-## Naming and asset loading
+`components/{slug}/{slug}.md` defines exact component markup and accessibility guidance.
 
-- Use the registry's title-case `name` in prose and its lowercase kebab-case `slug` in paths. `Table` is the structural table. `Data Table` is its optional filtering, sorting, status, and pagination enhancement. `Date Field` uses native date inputs. `Date Picker` is the custom month grid.
-- Load the foundations in this order, before component CSS:
+`components/{slug}/{slug}.css` defines component presentation.
 
-  ```html
-  <link rel="stylesheet" href="/ui/src/base.css">
-  <link rel="stylesheet" href="/ui/src/tokens.css">
-  ```
+`components/{slug}/{slug}.js` defines required or optional component enhancement.
 
-- Load only the stylesheet for each component used:
+`registry.json` defines the machine-readable component inventory.
 
-  ```html
-  <link rel="stylesheet" href="/ui/components/{slug}/{slug}.css">
-  ```
+`docs/{slug}.html` demonstrates the component.
 
-- Load a component module only when `registry.json` says `requiresJs: true`, or when an optional `enhancementJs: true` mode is wanted:
+`layouts/` contains complete reference compositions.
 
-  ```html
-  <script type="module" src="/ui/components/{slug}/{slug}.js"></script>
-  ```
+`system/` defines component selection and page composition.
 
-- Icons are local files under `src/icons/`. Inline the matching SVG for the no-JavaScript path. A local loader may optionally expand the documented `data-lucide` hook, but it is a documentation or embedding concern, not a required component module. Never use a remote icon CDN.
-- Decorative icons need `aria-hidden="true"`. Icon-only controls need a visible or programmatic accessible name.
-- There is no framework, package runtime, generated snippet catalog, or production build step to add.
+## Absolute rules
 
-## Component catalog
+Use semantic HTML first.
 
-Every item links to its current documentation page and the machine-readable registry. Search `registry.json` for the shown `slug` to read the complete entry.
+Use links for navigation.
 
-### Primitives
+Use buttons for actions.
 
-- **Typography** (`typography`) — [docs](docs/typography.html) · [registry](registry.json) — Native headings, prose, quotes, code, keyboard notation, and lists.
-- **Layout** (`layout`) — [docs](docs/layout.html) · [registry](registry.json) — Intrinsic Grid and Flexbox containers, stacks, grids, splits, and centering.
-- **Separator** (`separator`) — [docs](docs/separator.html) · [registry](registry.json) — Horizontal rules and vertical visual divisions.
-- **Icon** (`icon`) — [docs](docs/icon.html) · [registry](registry.json) — Inline local Lucide SVG presentation with an optional loader hook and no required component JavaScript.
+Use native form controls when they meet the task.
 
-### Actions
+Load `src/base.css` before `src/tokens.css`.
 
-- **Button** (`button`) — [docs](docs/button.html) · [registry](registry.json) — Semantic actions and link-style button variants.
-- **Toggle** (`toggle`) — [docs](docs/toggle.html) · [registry](registry.json) — Two-state buttons exposing `aria-pressed`.
-- **Toggle Group** (`toggle-group`) — [docs](docs/toggle-group.html) · [registry](registry.json) — Single or multiple pressed-button selection with roving focus.
-- **Button Group** (`button-group`) — [docs](docs/button-group.html) · [registry](registry.json) — Connected groups of related buttons.
-- **Toolbar** (`toolbar`) — [docs](docs/toolbar.html) · [registry](registry.json) — Keyboard-navigable groups of controls.
+Load only the component assets listed in `registry.json`.
 
-### Forms and inputs
+Use only documented classes and `data-*` attributes.
 
-- **Label** (`label`) — [docs](docs/label.html) · [registry](registry.json) — Explicit native label and control association.
-- **Field** (`field`) — [docs](docs/field.html) · [registry](registry.json) — Labelled control and fieldset composition with descriptions and errors.
-- **Text Field** (`text-field`) — [docs](docs/text-field.html) · [registry](registry.json) — Labelled native input composition with validation.
-- **Textarea** (`textarea`) — [docs](docs/textarea.html) · [registry](registry.json) — Native multi-line text input with content-sized growth.
-- **Checkbox** (`checkbox`) — [docs](docs/checkbox.html) · [registry](registry.json) — Native checked and indeterminate checkbox control.
-- **Radio Group** (`radio-group`) — [docs](docs/radio-group.html) · [registry](registry.json) — Mutually exclusive radios in a named fieldset.
-- **Switch** (`switch`) — [docs](docs/switch.html) · [registry](registry.json) — Binary setting using a checkbox with switch semantics.
-- **Slider** (`slider`) — [docs](docs/slider.html) · [registry](registry.json) — Native range input with horizontal and vertical presentation.
-- **Select** (`select`) — [docs](docs/select.html) · [registry](registry.json) — Native select and optgroup styling.
-- **Number Field** (`number-field`) — [docs](docs/number-field.html) · [registry](registry.json) — Native number input with increment and decrement controls.
-- **File Input** (`file-input`) — [docs](docs/file-input.html) · [registry](registry.json) — Native file picker with styled selector button.
-- **Date Field** (`date-field`) — [docs](docs/date-field.html) · [registry](registry.json) — Native date or datetime input and browser picker.
-- **Date Picker** (`date-picker`) — [docs](docs/date-picker.html) · [registry](registry.json) — Accessible custom month grid with date navigation.
-- **Date Range Picker** (`date-range-picker`) — [docs](docs/date-range-picker.html) · [registry](registry.json) — Native start and end date inputs with optional cross-field checks.
-- **Combobox** (`combobox`) — [docs](docs/combobox.html) · [registry](registry.json) — Searchable popover listbox with keyboard selection.
-- **Time Field** (`time-field`) — [docs](docs/time-field.html) · [registry](registry.json) — Native time segments with optional synchronized submission.
-- **Form** (`form`) — [docs](docs/form.html) · [registry](registry.json) — Native form layout, labels, descriptions, errors, and validation.
+Use semantic color roles.
 
-### Data display
+Use square geometry.
 
-- **Badge** (`badge`) — [docs](docs/badge.html) · [registry](registry.json) — Non-interactive status or metadata indicator.
-- **Avatar** (`avatar`) — [docs](docs/avatar.html) · [registry](registry.json) — Image, fallback, badge, and avatar-group presentation.
-- **Card** (`card`) — [docs](docs/card.html) · [registry](registry.json) — Grouped or standalone content container.
-- **Image** (`image`) — [docs](docs/image.html) · [registry](registry.json) — Figure, caption, sizing, fallback, and lightbox presentation.
-- **Statistic** (`statistic`) — [docs](docs/statistic.html) · [registry](registry.json) — Value, label, and trend summary.
-- **Table** (`table`) — [docs](docs/table.html) · [registry](registry.json) — Structural semantic table with caption and scoped headers.
-- **Data Table** (`data-table`) — [docs](docs/data-table.html) · [registry](registry.json) — Optional filtering, sorting, result status, and native pagination around Table.
-- **Collapsible** (`collapsible`) — [docs](docs/collapsible.html) · [registry](registry.json) — Native details disclosure.
-- **Timeline** (`timeline`) — [docs](docs/timeline.html) · [registry](registry.json) — Ordered events with connected markers.
-- **Tree View** (`tree-view`) — [docs](docs/tree-view.html) · [registry](registry.json) — Hierarchical tree and keyboard branch navigation.
-- **Carousel** (`carousel`) — [docs](docs/carousel.html) · [registry](registry.json) — Scroll-snap slides with controls and active indicators.
-- **Scroll Area** (`scroll-area`) — [docs](docs/scroll-area.html) · [registry](registry.json) — Bounded overflow and scrollbar styling.
-- **Sortable** (`sortable`) — [docs](docs/sortable.html) · [registry](registry.json) — Native drag-and-drop and keyboard reordering.
+Use borders instead of shadows.
 
-### Feedback and status
+Use blur only on top-level sticky shell chrome.
 
-- **Spinner** (`spinner`) — [docs](docs/spinner.html) · [registry](registry.json) — Static loading status indicator.
-- **Skeleton** (`skeleton`) — [docs](docs/skeleton.html) · [registry](registry.json) — Static loading placeholder.
-- **Progress** (`progress`) — [docs](docs/progress.html) · [registry](registry.json) — Native bounded completion indicator.
-- **Callout** (`callout`) — [docs](docs/callout.html) · [registry](registry.json) — Important alert content region.
-- **Alert Dialog** (`alert-dialog`) — [docs](docs/alert-dialog.html) · [registry](registry.json) — Explicit-response modal confirmation.
-- **Toast** (`toast`) — [docs](docs/toast.html) · [registry](registry.json) — Top-layer live status notification.
+Keep the main canvas continuous.
 
-### Overlays
+Do not place a card inside another card.
 
-- **Popover** (`popover`) — [docs](docs/popover.html) · [registry](registry.json) — Native Popover API surface with anchored placement.
-- **Tooltip** (`tooltip`) — [docs](docs/tooltip.html) · [registry](registry.json) — Hover and focus hint popup using `popover="hint"`.
-- **Dialog** (`dialog`) — [docs](docs/dialog.html) · [registry](registry.json) — Native modal dialog with focus restoration.
-- **Sheet** (`sheet`) — [docs](docs/sheet.html) · [registry](registry.json) — Edge-aligned dialog variant.
-- **Accordion** (`accordion`) — [docs](docs/accordion.html) · [registry](registry.json) — Native multi-open disclosure with optional single-open enhancement.
-- **Command Palette** (`command-palette`) — [docs](docs/command-palette.html) · [registry](registry.json) — Modal command search and keyboard activation.
+Do not wrap a table in a card.
 
-### Navigation
+Keep state changes immediate.
 
-- **Breadcrumbs** (`breadcrumbs`) — [docs](docs/breadcrumbs.html) · [registry](registry.json) — Ordered hierarchical route trail.
-- **Pagination** (`pagination`) — [docs](docs/pagination.html) · [registry](registry.json) — Native page links in a navigation landmark.
-- **Tabs** (`tabs`) — [docs](docs/tabs.html) · [registry](registry.json) — ARIA tabs with keyboard panel switching.
-- **Dropdown Menu** (`dropdown-menu`) — [docs](docs/dropdown-menu.html) · [registry](registry.json) — Popover menu with keyboard item management.
-- **Navigation Menu** (`navigation-menu`) — [docs](docs/navigation-menu.html) · [registry](registry.json) — Site routes with popover dropdown groups.
+Spinner rotation is the only animation exception.
 
-### Application
+Use local icons from `src/icons/`.
 
-- **App Shell** (`app-shell`) — [docs](docs/app-shell.html) · [registry](registry.json) — Shared header, toolbar, page-overview, status, empty-state, and optional OS-aware theme primitives.
-- **Sidebar** (`sidebar`) — [docs](docs/sidebar.html) · [registry](registry.json) — Collapsible desktop rail and mobile navigation dialog.
-- **Resizable** (`resizable`) — [docs](docs/resizable.html) · [registry](registry.json) — Two-panel split with a static separator and optional pointer and keyboard resizing.
+Inline the SVG for the no-JavaScript path.
 
-## JavaScript and progressive enhancement
+Keep every control named and keyboard operable.
 
-- `requiresJs: true` means the documented interaction depends on the module. Load the matching `.js` file after the markup. Required modules include keyboard coordination, filtering, custom calendar navigation, modal trigger wiring, anchored overlays, drag reordering, and live status behavior.
-- `enhancementJs: true` means the native markup is complete without the module. Load the module only for the documented enhancement. The current optional entries are Accordion, App Shell, Checkbox, Data Table, Date Range Picker, Resizable, and Time Field.
-- Entries with `requiresJs: false`, `enhancementJs: false`, and no `files.js` are CSS and native HTML components. Do not add a runtime just to reproduce their behavior.
-- Keep native links, form submission, browser validation, disclosure, date controls, and dialog or popover semantics useful when a module is omitted. Server-rendered validation and navigation remain authoritative.
-- Component modules use modern ES modules and are intended to tolerate repeated loading and markup inserted after navigation. Do not replace them with a framework, polling loop, focus-trap package, or positioning package.
+Keep every status understandable without color.
 
-## Accessibility and motion
+Support increased contrast and forced colors.
 
-- Start with the documented native element. Keep visible labels, stable `id` values, `for` associations, descriptions, error references, accessible names, and `aria-*` relationships intact.
-- Use links for navigation and buttons for actions. Preserve native `disabled`, `readonly`, `required`, `hidden`, `open`, `min`, `max`, `step`, `aria-current`, `aria-sort`, and `role="status"` state where the skill specifies them.
-- Every pointer or drag path needs the documented keyboard path. Use live output or status text when a resize, reorder, filter, or navigation result is not otherwise apparent.
-- Keep `:focus-visible`, `prefers-contrast: more`, `forced-colors: active`, and narrow-width behavior usable. Do not communicate state with color alone.
-- The canonical source is motionless. Do not add `animation`, `transition`, smooth scrolling, View Transitions, scroll-driven effects, Web Animations, shimmer, or spinning loaders. State changes, disclosures, overlays, tabs, drag updates, and navigation are immediate.
-- Geometry is square by default. Use semantic token roles from `src/tokens.css`. Do not add shadows, shadow tokens, visual elevation halos, or a general radius scale. Circular geometry is reserved for meaningful circular objects.
+Keep the documented native fallback.
 
-## API boundary
+## Component selection
 
-Use only classes and `data-*` hooks documented by the matching component skill and implementation. Do not invent classes, undocumented `data-*` hooks, token names, compatibility aliases, or undocumented variants. Do not copy paths from another source tree, generate duplicate CSS or JavaScript snippets, or introduce a second source tree.
+Use `system/components.md` to choose among all 59 components.
+
+Use `Table` for structural tabular data.
+
+Use `Data Table` for documented filtering, sorting, result status, and pagination around Table.
+
+Use `Date Field` for a native browser date control.
+
+Use `Date Picker` for a custom month grid.
+
+Use `Select` for a short fixed option list.
+
+Use `Combobox` for a searchable option list.
+
+Use `Checkbox` for a submitted independent choice.
+
+Use `Switch` for an immediate binary system state.
+
+Use `Card` only for one independent object or small content group.
+
+Use App Shell for reusable application chrome and page regions.
+
+Use Sidebar for collapsible application navigation.
+
+Use a pattern before you create a new component.
+
+## JavaScript modes
+
+`requiresJs: true` means the documented interactive component requires its module.
+
+`enhancementJs: true` means native markup works without the module.
+
+`jsMode: "none"` means the component has no component runtime.
+
+Keep modules idempotent.
+
+Keep modules safe for markup inserted after navigation.
+
+Do not add a production dependency.
+
+## Layouts
+
+The repository has two shell families.
+
+The repository has three reference HTML files.
+
+`layouts/vertical-navbar.html` is the utility sidebar reference.
+
+`layouts/horizontal-navbar.html` is the top-navigation reference.
+
+`layouts/app-shell-sidebar.html` is a branded sidebar composition.
+
+Do not describe the branded sidebar composition as a third family.
+
+Use `90rem` for dense application canvases.
+
+Use `64rem` for focused tools and content pages.
+
+Use `60rem` for wide content-and-rail collapse.
+
+Use `48rem` for shell navigation changes.
+
+Use `37.5rem` for compact single-column changes.
+
+## Validation
+
+Run `npm test`.
+
+Run `npm run test:browser` when Chromium is available.
+
+Check changed markup with the keyboard.
+
+Check changed markup at 200% zoom.
+
+Check changed markup at 320px width.
+
+Check the no-JavaScript path.
+
+Reject undocumented APIs.
