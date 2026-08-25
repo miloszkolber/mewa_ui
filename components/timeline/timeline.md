@@ -1,49 +1,94 @@
 # Timeline
 
+## Purpose
+
+Timeline presents events or steps when sequence is the primary relationship.
+
+Use Timeline for chronology, execution history, or a completed process record.
+
+Use a normal list when order does not need a visual sequence.
+
+Do not use Timeline for a flat status list or application navigation.
+
 ## Native basis
 
-`<ol>` element with timeline items connected by a vertical line.
+Timeline uses an ordered `<ol>` with semantic list items.
+
+Visual markers and connector lines do not replace the ordered-list semantics.
 
 ## Native Web APIs
 
-- [`<ol>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ol) — ordered list conveying sequence
-- [`::before`](https://developer.mozilla.org/en-US/docs/Web/CSS/::before) — pseudo-element for connector line and dot
+- [`<ol>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ol) communicates sequence.
+- [`<li>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/li) identifies each event or step.
+- [`<time>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/time) provides machine-readable dates and times.
 
 ## Structure
 
 ```html
 <ol class="timeline">
   <li class="timeline-item">
-    <div class="timeline-dot" aria-hidden="true"></div>
+    <span class="timeline-dot" aria-hidden="true"></span>
     <div class="timeline-content">
-      <p class="timeline-title">Event title</p>
-      <p class="timeline-description">Event description text.</p>
-      <time class="timeline-time" datetime="2024-01">January 2024</time>
+      <p class="timeline-title">Job queued</p>
+      <p class="timeline-description">The scheduler accepted the request.</p>
+      <time class="timeline-time" datetime="2026-08-25T09:10:00Z">09:10 UTC</time>
     </div>
   </li>
   <li class="timeline-item">
-    <div class="timeline-dot" data-variant="active" aria-hidden="true"></div>
+    <span class="timeline-dot" data-variant="active" aria-hidden="true"></span>
     <div class="timeline-content">
-      <p class="timeline-title">Current event</p>
-      <p class="timeline-description">This is the current step.</p>
-      <time class="timeline-time" datetime="2024-03">March 2024</time>
+      <p class="timeline-title">Processing</p>
+      <p class="timeline-description">Worker 03 is resolving the manifest.</p>
+      <time class="timeline-time" datetime="2026-08-25T09:12:00Z">09:12 UTC</time>
     </div>
   </li>
 </ol>
 ```
 
-## Dot variants (`data-variant`)
+Keep events in logical chronological or procedural order.
 
-| Value     | Description                     |
-|-----------|---------------------------------|
-| `default` | Muted dot (default)             |
-| `active`  | Primary-colored dot             |
+Use a real `<time>` element when a machine-readable date or time exists.
+
+## Active state
+
+Use `data-variant="active"` only when one current item needs visual emphasis.
+
+Do not use active marker color as the only indication of current state.
+
+Include visible text that communicates the current event or step.
+
+Do not use several active markers unless several items are genuinely current.
+
+## Behavior
+
+Timeline is static semantic content.
+
+Timeline adds no keyboard interaction.
+
+Timeline adds no JavaScript behavior.
+
+Application code owns live updates when timeline data changes.
+
+Do not put a live region on the complete Timeline when many items can update.
+
+Use a separate status message when a new event needs announcement.
 
 ## Accessibility
 
-- `<ol>` provides sequential ordering for screen readers
-- `<time>` element used for machine-readable dates
+Keep the ordered-list structure.
 
-## Visual notes
+Keep marker shapes decorative and hidden from assistive technology.
 
-- Timeline dots are square markers. Use `data-variant="active"` for the current event without changing the connector geometry.
+Keep event titles and descriptions as normal readable text.
+
+Use visible status text in addition to any active marker treatment.
+
+Use valid `datetime` values on `<time>` elements.
+
+Do not use CSS-generated text to provide event meaning.
+
+## Runtime
+
+Timeline requires no component module.
+
+The complete sequence works without JavaScript.
