@@ -22,7 +22,7 @@ A shell is a composition.
 
 App Shell owns shared header, toolbar, page overview, content canvas, status, empty-state, and optional theme primitives.
 
-Sidebar owns the collapsible desktop rail and mobile navigation behavior.
+Sidebar owns the collapsible desktop rail, workspace wrapper, and mobile navigation behavior.
 
 Layout owns local Grid and Flexbox composition.
 
@@ -58,7 +58,7 @@ Use the Sidebar footer control for desktop collapse.
 
 Use the Sidebar mobile dialog below `48rem`.
 
-Place the main region next to the desktop sidebar.
+Use `.sidebar-workspace` for the toolbar and main-content column.
 
 Use App Shell `.app-toolbar` when breadcrumbs and local page actions are needed.
 
@@ -86,7 +86,7 @@ Do not repeat the same product brand in the toolbar and sidebar.
       <!-- Use the Sidebar component contract here. -->
     </aside>
 
-    <div class="layout-main-shell">
+    <div class="sidebar-workspace">
       <header class="app-toolbar">
         <div class="app-toolbar-inner">
           <!-- Breadcrumbs and local actions. -->
@@ -103,6 +103,8 @@ Do not repeat the same product brand in the toolbar and sidebar.
       </main>
     </div>
   </div>
+
+  <!-- Keep the Sidebar mobile dialog as a direct body child. -->
 </body>
 ```
 
@@ -289,7 +291,7 @@ Do not blur a menu or dialog.
 
 Use consumer CSS for business-specific page composition.
 
-Use `layout-` names only inside the consumer when a local layout hook is necessary.
+Use local layout names only when a business-specific composition needs them.
 
 Prefer component classes for component appearance.
 
