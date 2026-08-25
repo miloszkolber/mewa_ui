@@ -1,66 +1,92 @@
-# Pattern: Button Group
+# Button Group
+
+## Purpose
+
+Button Group connects related actions into one visual control group.
+
+Use Button Group when adjacent buttons operate on the same task or object.
+
+Do not group unrelated actions only to reduce spacing.
+
+Use Toolbar when the group needs managed arrow-key navigation.
 
 ## Native basis
-`<div>` container with `.btn` buttons. Visually merges adjacent buttons with connected borders.
 
----
+Use native buttons inside a labelled `role="group"` container.
+
+Each button keeps its own native activation and form behavior.
+
+Button Group requires no JavaScript.
 
 ## Native Web APIs
-- [`role="group"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/group_role) — groups related buttons
-- [`aria-label`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-label) — accessible name for the group
-- [`role="separator"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/separator_role) — visually divides buttons within a group
-- [Logical properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values) — `margin-inline-start` for RTL support
-- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — maps separator to system `ButtonText` color
 
----
+- [`role="group"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/group_role) identifies a related control group.
+- [`aria-label`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-label) can name the group when no visible label exists.
+- [`role="separator"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/separator_role) identifies a structural separator.
 
-## Structure
+## Horizontal structure
 
-### Horizontal (default)
 ```html
-<div class="btn-group" role="group" aria-label="Actions">
-  <button type="button" class="btn" data-variant="outline">Save</button>
-  <button type="button" class="btn" data-variant="outline">Edit</button>
-  <button type="button" class="btn" data-variant="outline">Delete</button>
+<div class="btn-group" role="group" aria-label="Document actions">
+  <button class="btn" type="button" data-variant="outline">Save</button>
+  <button class="btn" type="button" data-variant="outline">Duplicate</button>
+  <button class="btn" type="button" data-variant="outline">Archive</button>
 </div>
 ```
 
-### Vertical
+Use Outline when the connected border treatment helps the group read as one unit.
+
+## Vertical structure
+
 ```html
-<div class="btn-group" data-orientation="vertical" role="group" aria-label="Actions">
-  <button type="button" class="btn" data-variant="outline">Top</button>
-  <button type="button" class="btn" data-variant="outline">Middle</button>
-  <button type="button" class="btn" data-variant="outline">Bottom</button>
+<div class="btn-group"
+     data-orientation="vertical"
+     role="group"
+     aria-label="Document actions">
+  <button class="btn" type="button" data-variant="outline">Save</button>
+  <button class="btn" type="button" data-variant="outline">Duplicate</button>
+  <button class="btn" type="button" data-variant="outline">Archive</button>
 </div>
 ```
 
-### With separator
+Use vertical orientation only when the surrounding layout requires a vertical action set.
+
+## Separator
+
+Use a separator only when filled adjacent buttons need a visible division.
+
 ```html
-<div class="btn-group" role="group" aria-label="Actions">
-  <button type="button" class="btn" data-variant="default">Copy</button>
+<div class="btn-group" role="group" aria-label="Clipboard actions">
+  <button class="btn" type="button" data-variant="default">Copy</button>
   <hr role="separator">
-  <button type="button" class="btn" data-variant="default">Paste</button>
+  <button class="btn" type="button" data-variant="default">Paste</button>
 </div>
 ```
 
----
+Do not add separators between Outline buttons when their borders already provide the division.
+
+## Behavior
+
+Tab reaches each native button in normal document order.
+
+Enter and Space activate the focused button.
+
+Button Group adds no roving focus.
+
+Button Group adds no shared pressed state.
+
+Button Group adds no JavaScript behavior.
 
 ## Accessibility
 
-| Attribute | Element | Purpose |
-|-----------|---------|---------|
-| `role="group"` | Container | Groups related buttons |
-| `aria-label` | Container | Accessible name for the group |
-| `role="separator"` | `<hr>` | Visually divides buttons |
+Give the group an accessible name when nearby context does not name it.
 
----
+Keep every child button label specific.
 
-## Notes
+Keep destructive actions visually distinct from routine actions.
 
-- Button groups work best with the `outline` variant — the connected borders create a cohesive unit.
-- Hovered or focused buttons are raised above their neighbors so the focus ring and hover border stay visible.
-- Adjacent button borders collapse so only one border renders between buttons.
-- Use `<hr role="separator">` to visually divide non-outline buttons (e.g., `default` variant).
-- Outline buttons already have visible borders and don't need separators.
-- Uses CSS logical properties (`margin-inline-start`) for automatic RTL support.
-- No JavaScript required — this is purely a CSS layout component.
+Do not place a second control group inside Button Group.
+
+## Runtime
+
+Button Group requires no component module.

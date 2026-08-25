@@ -45,11 +45,8 @@ function snapshotAttributes(element, attributes) {
 
 function restoreAttributes(element, snapshot) {
   snapshot.forEach((value, attribute) => {
-    if (value === null) {
-      element.removeAttribute(attribute);
-    } else {
-      element.setAttribute(attribute, value);
-    }
+    if (value === null) element.removeAttribute(attribute);
+    else element.setAttribute(attribute, value);
   });
 }
 
@@ -82,6 +79,31 @@ function createOutput(root) {
   output.setAttribute('aria-atomic', 'true');
   root.append(output);
   return output;
+}
+
+function createPointerControls(root, output, valueLabel) {
+  const controls = document.createElement('div');
+  controls.className = 'resizable-controls';
+  controls.setAttribute('data-resizable-controls', '');
+  controls.setAttribute('aria-label', `Resize ${valueLabel}`);
+
+  const decrease = document.createElement('button');
+  decrease.className = 'resizable-step';
+  decrease.setAttribute('type', 'button');
+  decrease.setAttribute('data-resizable-decrease', '');
+  decrease.setAttribute('aria-label', `Decrease ${valueLabel}`);
+  decrease.textContent = '−';
+
+  const increase = document.createElement('button');
+  increase.className = 'resizable-step';
+  increase.setAttribute('type', 'button');
+  increase.setAttribute('data-resizable-increase', '');
+  increase.setAttribute('aria-label', `Increase ${valueLabel}`);
+  increase.textContent = '+';
+
+  controls.append(decrease, increase);
+  root.insertBefore(controls, output);
+  return { controls, decrease, increase };
 }
 
 function init() {
@@ -146,7 +168,9 @@ function init() {
       'data-page-step',
       readNumber(root, 'data-page-step', DEFAULT_PAGE_STEP)
     );
-    const pageStep = requestedPageStep >= step ? requestedPageStep : Math.max(step, DEFAULT_PAGE_STEP);
+    const pageStep = requestedPageStep >= step
+      ? requestedPageStep
+      : Math.max(step, DEFAULT_PAGE_STEP);
 
     const containerSize = () => group.getBoundingClientRect()[dimension] || 0;
     const panelSize = () => panels[0].getBoundingClientRect()[dimension] || 0;
@@ -166,12 +190,10 @@ function init() {
     const controls = readConfiguredString(handle, root, 'data-controls')
       || handle.getAttribute('aria-controls')
       || panels.map((panel) => panel.id).filter(Boolean).join(' ');
+
     handle.setAttribute('aria-label', accessibleLabel);
-    if (controls) {
-      handle.setAttribute('aria-controls', controls);
-    } else {
-      handle.removeAttribute('aria-controls');
-    }
+    if (controls) handle.setAttribute('aria-controls', controls);
+    else handle.removeAttribute('aria-controls');
 
     const existingOutput = getOutput(root);
     const outputAttributes = existingOutput
@@ -179,11 +201,13 @@ function init() {
       : null;
     const outputText = existingOutput?.textContent || '';
     const outputValue = existingOutput?.value || '';
-    let output = getOutput(root);
+    let output = existingOutput;
     if (!output) output = createOutput(root);
     output.classList.add('resizable-output');
     output.setAttribute('aria-live', output.getAttribute('aria-live') || 'polite');
     output.setAttribute('aria-atomic', output.getAttribute('aria-atomic') || 'true');
+
+    const pointerControls = createPointerControls(root, output, valueLabel);
 
     function quantize(next) {
       const bounded = clamp(Number(next) || 0, minimum, maximum);
@@ -197,6 +221,9 @@ function init() {
       handle.setAttribute('aria-valuetext', text);
       output.value = text;
       output.textContent = text;
+      const interactionDisabled = handle.disabled || handle.getAttribute('aria-disabled') === 'true';
+      pointerControls.decrease.disabled = interactionDisabled || next <= minimum;
+      pointerControls.increase.disabled = interactionDisabled || next >= maximum;
     }
 
     function setPanelBasis(next) {
@@ -253,7 +280,19 @@ function init() {
       setValue(next, 'keyboard');
     }
 
+    function onDecrease() {
+      if (pointerControls.decrease.disabled) return;
+      setValue(value - pageStep, 'pointer');
+    }
+
+    function onIncrease() {
+      if (pointerControls.increase.disabled) return;
+      setValue(value + pageStep, 'pointer');
+    }
+
     handle.addEventListener('keydown', onKeydown);
+    pointerControls.decrease.addEventListener('click', onDecrease);
+    pointerControls.increase.addEventListener('click', onIncrease);
 
     let drag = null;
 
@@ -327,17 +366,14 @@ function init() {
       finishPointer();
       handle.removeEventListener('keydown', onKeydown);
       handle.removeEventListener('pointerdown', startPointer);
-      if (resizeObserver) {
-        resizeObserver.disconnect();
-      } else {
-        window.removeEventListener('resize', updateLayout);
-      }
+      pointerControls.decrease.removeEventListener('click', onDecrease);
+      pointerControls.increase.removeEventListener('click', onIncrease);
+      pointerControls.controls.remove();
+      if (resizeObserver) resizeObserver.disconnect();
+      else window.removeEventListener('resize', updateLayout);
       restoreAttributes(handle, handleAttributes);
-      if (groupOrientation === null) {
-        group.removeAttribute('data-orientation');
-      } else {
-        group.setAttribute('data-orientation', groupOrientation);
-      }
+      if (groupOrientation === null) group.removeAttribute('data-orientation');
+      else group.setAttribute('data-orientation', groupOrientation);
       panels[0].style.flexBasis = panelStyles.flexBasis;
       panels[0].style.flexGrow = panelStyles.flexGrow;
       panels[0].style.flexShrink = panelStyles.flexShrink;

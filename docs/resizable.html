@@ -5,15 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <meta name="description" content="Resizable component — two native panels with keyboard and pointer resizing.">
-  <meta property="og:title" content="Resizable — mewa_ui">
-  <meta property="og:description" content="Resizable component — two native panels with keyboard and pointer resizing.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://mewa.local/resizable.html">
-  <meta property="og:site_name" content="mewa_ui">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Resizable — mewa_ui">
-  <meta name="twitter:description" content="Resizable component — two native panels with keyboard and pointer resizing.">
+  <meta name="description" content="Resizable component — accessible adjustable two-panel split.">
   <title>Resizable — mewa_ui</title>
   <script src="js/layout.js"></script>
   <link rel="stylesheet" href="../src/base.css">
@@ -36,10 +28,10 @@
   <link rel="stylesheet" href="../components/collapsible/collapsible.css">
   <link rel="stylesheet" href="../components/combobox/combobox.css">
   <link rel="stylesheet" href="../components/command-palette/command-palette.css">
+  <link rel="stylesheet" href="../components/data-table/data-table.css">
   <link rel="stylesheet" href="../components/date-field/date-field.css">
   <link rel="stylesheet" href="../components/date-picker/date-picker.css">
   <link rel="stylesheet" href="../components/date-range-picker/date-range-picker.css">
-  <link rel="stylesheet" href="../components/data-table/data-table.css">
   <link rel="stylesheet" href="../components/dialog/dialog.css">
   <link rel="stylesheet" href="../components/dropdown-menu/dropdown-menu.css">
   <link rel="stylesheet" href="../components/field/field.css">
@@ -84,103 +76,44 @@
 <body>
   <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
   <site-header></site-header>
-
   <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
-
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Resizable</h1>
-        <p class="text-muted leading-relaxed mb-6">
-          A two-panel split with a separator that becomes focusable when JavaScript loads. Drag the divider with a pointer or focus it and use Arrow, Home, End, and Page keys. Without JavaScript, both panels remain available in a 35/65 split.
-        </p>
+        <p class="text-muted leading-relaxed mb-6">Use Resizable when changing a two-panel split improves the task. The module adds keyboard resizing, dragging, and visible decrease and increase controls.</p>
       </div>
 
-      <p class="text-sm font-medium mb-2 mt-6">Project workspace</p>
-      <p class="text-xs text-muted mb-3">When JavaScript initializes, the separator reports the first panel's percentage through ARIA and the output status.</p>
-      <div class="preview">
-        <section class="resizable" aria-labelledby="workspace-title">
-          <h2 id="workspace-title" class="text-sm" style="margin: 0">Launch brief</h2>
-          <div class="resizable-group" data-orientation="vertical" style="min-block-size: 18rem">
-            <aside class="resizable-panel" id="workspace-files" aria-label="Project files">
-              <p style="font-weight: var(--font-weight-strong); margin: 0 0 var(--space-03)">Files</p>
-              <nav aria-label="Project files">
-                <ul style="display: grid; gap: var(--space-02); list-style: none; margin: 0; padding: 0">
-                  <li><button class="btn" type="button" data-variant="outline" style="inline-size: 100%; justify-content: flex-start">brief.md</button></li>
-                  <li><button class="btn" type="button" data-variant="ghost" style="inline-size: 100%; justify-content: flex-start">checklist.md</button></li>
-                  <li><button class="btn" type="button" data-variant="ghost" style="inline-size: 100%; justify-content: flex-start">notes.md</button></li>
-                </ul>
-              </nav>
-            </aside>
-            <div class="resizable-handle" role="separator" aria-orientation="vertical" data-label="Resize file list" data-value-min="20" data-value-max="80" data-value-now="35" data-value-label="File list width"></div>
-            <article class="resizable-panel" id="workspace-document" aria-label="Document preview">
-              <p class="text-muted" style="font-family: var(--font-mono); font-size: var(--font-body-xsmall); margin: 0 0 var(--space-02)">brief.md</p>
-              <h3 class="text-sm" style="margin: 0 0 var(--space-03)">Launch brief</h3>
-              <p style="margin: 0 0 var(--space-04)">Project overview and launch criteria for the first production workspace.</p>
-              <h4 class="text-sm" style="margin: 0 0 var(--space-02)">Release checklist</h4>
-              <ul style="margin: 0; padding-inline-start: var(--space-05)">
-                <li>Confirm project owners</li>
-                <li>Review launch communication</li>
-                <li>Schedule the retrospective</li>
-              </ul>
-            </article>
+      <p class="text-sm font-medium mb-2 mt-6">Two-panel split</p>
+      <p class="text-xs text-muted mb-3">The generated step controls provide a non-drag pointer path.</p>
+      <div class="preview" style="flex-direction: column; align-items: stretch">
+        <section class="resizable" aria-label="Project workspace">
+          <div class="resizable-group" data-orientation="vertical">
+            <aside class="resizable-panel" id="demo-files" aria-label="Project files">Files</aside>
+            <div class="resizable-handle" role="separator" aria-orientation="vertical" data-value-min="20" data-value-max="80" data-value-now="35" data-value-label="File list width"></div>
+            <article class="resizable-panel" id="demo-preview">Preview</article>
           </div>
-          <output class="resizable-output" aria-live="polite" aria-atomic="true">File list width: 35 percent</output>
         </section>
       </div>
+
       <div style="position: relative; margin-top: var(--space-02)">
-        <button type="button" class="copy-btn">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1 0-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-          Copy
-        </button>
-        <pre><code class="language-markup">&lt;section class="resizable"&gt;
+        <button type="button" class="copy-btn">Copy</button>
+        <pre><code class="language-markup">&lt;section class="resizable" aria-label="Project workspace"&gt;
   &lt;div class="resizable-group" data-orientation="vertical"&gt;
-    &lt;aside class="resizable-panel" id="files"&gt;Files&lt;/aside&gt;
+    &lt;aside class="resizable-panel" id="files" aria-label="Project files"&gt;
+      Files
+    &lt;/aside&gt;
     &lt;div class="resizable-handle" role="separator"
-      aria-orientation="vertical" data-label="Resize file list" data-value-min="20" data-value-max="80"
-      data-value-now="35" data-value-label="File list width"&gt;&lt;/div&gt;
-    &lt;article class="resizable-panel" id="document"&gt;Document&lt;/article&gt;
+         aria-orientation="vertical"
+         data-value-min="20" data-value-max="80"
+         data-value-now="35" data-value-label="File list width"&gt;&lt;/div&gt;
+    &lt;article class="resizable-panel" id="preview"&gt;Preview&lt;/article&gt;
   &lt;/div&gt;
-  &lt;output class="resizable-output" aria-live="polite"&gt;File list width: 35 percent&lt;/output&gt;
 &lt;/section&gt;</code></pre>
       </div>
-
-      <p class="text-sm font-medium mb-2 mt-8">Horizontal orientation</p>
-      <p class="text-xs text-muted mb-3">Use <code>data-orientation="horizontal"</code> and <code>aria-orientation="horizontal"</code> for a stacked split. Up and Down adjust the first panel's height.</p>
-      <div class="preview">
-        <section class="resizable" data-orientation="horizontal" aria-label="Inspector and preview">
-          <div class="resizable-group" data-orientation="horizontal" style="min-block-size: 20rem">
-            <section class="resizable-panel" id="workspace-inspector" style="background: var(--surface-secondary)">
-              <p style="font-weight: var(--font-weight-strong); margin: 0 0 var(--space-02)">Inspector</p>
-              <p class="text-muted" style="margin: 0">Properties and metadata for the selected file.</p>
-            </section>
-            <div class="resizable-handle" role="separator" aria-orientation="horizontal" data-label="Resize inspector" data-value-min="25" data-value-max="75" data-value-now="45" data-value-label="Inspector height"></div>
-            <section class="resizable-panel" id="workspace-preview">
-              <p style="font-weight: var(--font-weight-strong); margin: 0 0 var(--space-02)">Preview</p>
-              <p class="text-muted" style="margin: 0">Rendered content remains in the second panel.</p>
-            </section>
-          </div>
-          <output class="resizable-output" aria-live="polite" aria-atomic="true">Inspector height: 45 percent</output>
-        </section>
-      </div>
-
-      <p class="text-sm font-medium mb-2 mt-8">Keyboard and pointer behavior</p>
-      <p class="text-xs text-muted mb-3">Tab to the separator. Arrow keys move by one percentage point, Page Up and Page Down move by ten, and Home and End jump to the declared bounds. Pointer capture keeps a drag active after the pointer leaves the handle.</p>
-      <div class="preview">
-        <div style="display: grid; gap: var(--space-02); font-size: var(--font-body-small)">
-          <p style="margin: 0"><kbd class="kbd">←</kbd> / <kbd class="kbd">→</kbd> Adjust width</p>
-          <p style="margin: 0"><kbd class="kbd">Home</kbd> / <kbd class="kbd">End</kbd> Move to minimum or maximum</p>
-          <p style="margin: 0"><kbd class="kbd">Page Up</kbd> / <kbd class="kbd">Page Down</kbd> Move by the page step</p>
-        </div>
-      </div>
-
-      <p class="text-sm font-medium mb-2 mt-8">No-JavaScript fallback</p>
-      <p class="text-xs text-muted mb-3">The two panels are ordinary flow content and stay visible with the stylesheet alone. The handle is a static divider until the module is loaded.</p>
-
     </main>
   </div>
-
   <script src="js/site.js" defer></script>
   <script type="module" src="../components/resizable/resizable.js"></script>
-      </body>
+</body>
 </html>

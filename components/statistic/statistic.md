@@ -1,45 +1,109 @@
 # Statistic
 
+## Purpose
+
+Statistic presents one decision-relevant value with a short label and optional comparison.
+
+Use Statistic when a compact summary helps the user understand current state before acting.
+
+Use Table when several values need stable row and column comparison.
+
+Do not use Statistic for decorative dashboard numbers that do not affect a decision.
+
 ## Native basis
 
-`<div>` containers displaying a numeric value with a label and optional trend indicator.
+Statistic uses normal semantic text inside a non-interactive container.
+
+The component adds no ARIA role or JavaScript behavior.
 
 ## Native Web APIs
 
-- [`<div>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div) — generic container
+- [`<p>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/p) provides normal text semantics.
+- [`<data>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/data) can expose a machine-readable value when the application needs one.
+- [`<time>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/time) can expose a machine-readable date or duration when appropriate.
 
 ## Structure
 
 ```html
-<!-- Basic statistic -->
 <div class="statistic">
-  <p class="statistic-title">Total Revenue</p>
-  <p class="statistic-value">$45,231.89</p>
-  <p class="statistic-description">+20.1% from last month</p>
+  <p class="statistic-title">Active workers</p>
+  <p class="statistic-value">12</p>
+  <p class="statistic-description">Across 4 nodes</p>
 </div>
+```
 
-<!-- Statistic with trend -->
+Keep the title short.
+
+Keep the value visually strongest.
+
+Use the description only when it adds context that the title and value do not provide.
+
+## Trend
+
+Use `data-trend="up"` or `data-trend="down"` only when direction has clear product meaning.
+
+```html
 <div class="statistic">
-  <p class="statistic-title">Subscriptions</p>
-  <p class="statistic-value">+2,350</p>
+  <p class="statistic-title">Failed jobs</p>
+  <p class="statistic-value">3</p>
   <p class="statistic-description">
-    <span class="statistic-trend" data-trend="up">
-      <svg><!-- arrow up icon --></svg>
-      +12.5%
+    <span class="statistic-trend" data-trend="down">
+      <i data-lucide="arrow-down" aria-hidden="true"></i>
+      25 percent fewer
     </span>
-    from last month
+    than yesterday
   </p>
 </div>
 ```
 
-## Trend (`data-trend`)
+Do not assume that an upward trend is positive.
 
-| Value  | Description                     |
-|--------|---------------------------------|
-| `up`   | Positive trend (green)          |
-| `down` | Negative trend (red)            |
+Do not assume that a downward trend is negative.
+
+Choose trend wording from the actual metric meaning.
+
+Pair every trend color with explicit text.
+
+## Numeric formatting
+
+Use localized formatting when the value is user-facing.
+
+Use tabular numerals for changing numeric values when alignment matters.
+
+Keep units visible when the number is ambiguous without them.
+
+Use a machine-readable element only when application logic benefits from it.
+
+Do not abbreviate a number when the precise value matters to the task.
+
+## Behavior
+
+Statistic is static content.
+
+Statistic does not update itself.
+
+Application code owns live data updates and announcements.
+
+Do not add a live region to a Statistic only because its value can change.
+
+Use a separate status region when an asynchronous change must be announced.
 
 ## Accessibility
 
-- Use semantic text content — values are read inline
-- Trends are conveyed by text, not color alone ("+12.5%")
+Keep the label and value as readable text.
+
+Keep trend meaning understandable without color or icon shape.
+
+Hide decorative trend icons from assistive technology.
+
+Keep units and comparison periods available in text.
+
+Do not use an icon-only Statistic.
+
+Do not use `aria-label` to replace visible metric text.
+
+## Runtime
+
+Statistic requires no component module.
+
+The complete component works without JavaScript.

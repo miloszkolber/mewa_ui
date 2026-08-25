@@ -1,93 +1,82 @@
-# Pattern: Separator
+# Separator
+
+## Purpose
+
+Separator marks a real visual or semantic division.
+
+Use Separator for a thematic break or a labelled structural split.
+
+Do not add Separator only to decorate empty space.
 
 ## Native basis
-`<hr>` element (horizontal rule) and `<div role="separator">` for vertical orientation.
 
----
+Use `<hr>` for a horizontal thematic break.
+
+Use a non-interactive element with `role="separator"` for a vertical structural division.
+
+Separator requires no JavaScript.
 
 ## Native Web APIs
-- [`<hr>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/hr) — thematic break / horizontal rule with implicit `role="separator"`
-- [`role="separator"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/separator_role) — ARIA separator role for non-`<hr>` elements (vertical orientation)
-- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — Windows High Contrast Mode support with system colors
-- [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — increased contrast when requested by the user
 
----
+- [`<hr>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/hr) provides the native horizontal separator role.
+- [`role="separator"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/separator_role) identifies a non-native separator.
+- [`aria-orientation`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-orientation) communicates vertical orientation when needed.
 
-## Structure
+## Horizontal structure
 
-### Horizontal (default)
 ```html
 <hr class="separator">
 ```
 
-### Vertical
+Do not add a redundant separator role to `<hr>`.
+
+## Vertical structure
+
 ```html
-<div class="separator" data-orientation="vertical" role="separator"></div>
+<div class="separator"
+     data-orientation="vertical"
+     role="separator"
+     aria-orientation="vertical"></div>
 ```
 
-### With label
+Use vertical Separator only inside a parent layout that gives it a useful block size.
+
+## Labelled visual division
+
+Use `.separator-label` when visible text sits between two horizontal rules.
+
 ```html
 <div class="separator-label">
   <hr class="separator">
-  <span>or continue with</span>
+  <span>Or continue with</span>
   <hr class="separator">
 </div>
 ```
 
-### Decorative (hidden from screen readers)
+Treat the rules as part of the visual composition.
+
+Keep the visible label as normal readable text.
+
+## Decorative separator
+
+Hide a separator from assistive technology when it carries no semantic division.
+
 ```html
-<hr class="separator" role="none">
+<hr class="separator" aria-hidden="true">
 ```
 
-### In a list
-```html
-<ul>
-  <li>Item 1</li>
-  <li role="separator"><hr class="separator"></li>
-  <li>Item 2</li>
-</ul>
-```
+Do not hide a real thematic break.
 
-### Between menu items
-```html
-<div class="flex items-center gap-4" style="height:1.25rem;">
-  <span>Blog</span>
-  <div class="separator" data-orientation="vertical" role="separator"></div>
-  <span>Docs</span>
-  <div class="separator" data-orientation="vertical" role="separator"></div>
-  <span>Source</span>
-</div>
-```
+## Accessibility
 
----
+Use semantic separation only when the content relationship changes.
 
-## Variants
+Keep decorative separators out of the accessibility tree.
 
-| `data-orientation` | Direction  | Element                   |
-|--------------------|------------|---------------------------|
-| *(default)*        | Horizontal | `<hr>`                    |
-| `vertical`         | Vertical   | `<div role="separator">` |
+Keep vertical structural separators non-focusable unless another component upgrades them to an adjustable separator.
 
----
+Use Resizable for an interactive adjustable separator.
 
-## ARIA
+## Runtime
 
-| Attribute          | Element     | Purpose                                           |
-|--------------------|-------------|---------------------------------------------------|
-| `role="separator"` | `<div>`     | Required on vertical separators (non-`<hr>`)      |
-| `role="none"`      | `<hr>`      | Marks decorative separators — hidden from AT      |
-| `aria-hidden="true"`| `<hr>`     | Alternative way to hide decorative separators     |
-| `aria-orientation` | `<div>`     | Implicit from `role="separator"`; defaults to horizontal |
-
----
-
-## Notes
-
-- `<hr>` has implicit `role="separator"` — no extra ARIA needed for horizontal.
-- Vertical separators use `<div role="separator">` since `<hr>` is semantic horizontal only.
-- Decorative separators (purely visual with no semantic meaning) should use `role="none"` or `aria-hidden="true"` to hide from screen readers.
-- The vertical separator requires the parent to be a flex container.
-- The labeled separator uses a flex layout with two `<hr>` elements flanking the label text.
-- In `forced-colors` mode, the separator uses `CanvasText` system color for visibility.
-- In `prefers-contrast: more` mode, the separator uses `--text-primary` and doubles in thickness (2px) for visibility.
-- Separators are purely visual — no JavaScript required.
+Separator requires no component module.

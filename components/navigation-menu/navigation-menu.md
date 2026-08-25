@@ -1,41 +1,56 @@
 # Navigation Menu
 
+## Purpose
+
+Navigation Menu groups related site routes under a top-level navigation trigger.
+
+Use Navigation Menu when a flat top navigation cannot present a route group clearly.
+
+Use normal route links when the route set is small.
+
+Use Dropdown Menu for application actions.
+
+Do not use Navigation Menu for form options or command actions.
+
 ## Native basis
 
-`<nav>` + `<ul>` for site-level navigation with dropdown panels.
+Navigation Menu uses `<nav>`, lists, native links, button triggers, and the Popover API.
+
+Declarative `popovertarget` handles open and close behavior.
+
+The module only assigns CSS anchor pairs for documented positioning.
 
 ## Native Web APIs
 
-- [`<nav>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav) — navigation landmark
-- [`popover` API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API) — dropdown panels without JS show/hide
-- [`popovertarget`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#popovertarget) — declarative button→popover trigger
-- [CSS Anchor Positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning) — positions dropdown relative to trigger
-- [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus ring
-- [`:has()`](https://developer.mozilla.org/en-US/docs/Web/CSS/:has) — updates the chevron direction when dropdown is open
-- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — maps dropdown border to system color
-
----
+- [`<nav>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav) provides the navigation landmark.
+- [`<a>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) provides route navigation.
+- [Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API) provides top-layer dropdown panels and light dismiss.
+- [`popovertarget`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#popovertarget) declaratively connects a trigger and popover.
+- [CSS Anchor Positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning) aligns each panel to its trigger.
 
 ## Structure
 
 ```html
-<nav class="nav-menu" aria-label="Main">
+<nav class="nav-menu" aria-label="Primary">
   <ul class="nav-menu-list">
-    <li class="nav-menu-item"><a class="nav-menu-link" href="#">Home</a></li>
     <li class="nav-menu-item">
-      <button class="nav-menu-trigger" type="button" popovertarget="nav-dd">
-        Products
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      <a class="nav-menu-link" href="/overview" aria-current="page">Overview</a>
+    </li>
+    <li class="nav-menu-item">
+      <button class="nav-menu-trigger"
+              type="button"
+              popovertarget="resource-routes">
+        Resources
+        <i data-lucide="chevron-down" aria-hidden="true"></i>
       </button>
-      <div class="nav-menu-content" id="nav-dd" popover>
-        <a class="nav-menu-content-link" href="#">
-          <strong>Analytics</strong>
-          <p>View your dashboard</p>
+      <div class="nav-menu-content" id="resource-routes" popover>
+        <a class="nav-menu-content-link" href="/models">
+          <strong>Models</strong>
+          <span>Browse available model files.</span>
         </a>
-        <a class="nav-menu-content-link" href="#">
-          <strong>Reports</strong>
-          <p>Generate custom reports</p>
+        <a class="nav-menu-content-link" href="/datasets">
+          <strong>Datasets</strong>
+          <span>Browse available datasets.</span>
         </a>
       </div>
     </li>
@@ -43,33 +58,76 @@
 </nav>
 ```
 
----
+Keep every destination as a native link.
 
-## ARIA
+Keep `aria-current="page"` on the current route link.
 
-| Attribute | Element | Purpose |
-|-----------|---------|---------|
-| `aria-label` | `<nav>` | Accessible name for the navigation |
-| `aria-hidden="true"` | chevron `<svg>` | Decorative indicator, hidden from screen readers |
+Give the navigation landmark an accessible name.
 
----
+## Content links
+
+Use a short title for each route.
+
+Add one short description only when route names alone are ambiguous.
+
+Do not repeat the same label and description.
+
+Do not add cards inside the navigation panel.
+
+Keep route groups compact and scan-friendly.
+
+## Behavior
+
+The trigger uses native button activation.
+
+The Popover API opens and closes the route panel.
+
+Light dismiss closes an open panel.
+
+Escape closes the open popover through native behavior.
+
+The module assigns an anchor name to each trigger and panel pair.
+
+The module adds no click handler for show or hide behavior.
+
+The chevron state follows native `:popover-open` state through CSS.
+
+State changes are immediate.
 
 ## Keyboard
 
-| Key | Action |
-|-----|--------|
-| `Tab` | Moves focus between nav items |
-| `Enter` / `Space` | Opens dropdown (on trigger) |
-| `Escape` | Closes dropdown (native popover behavior) |
+Tab moves through route links and menu triggers in document order.
 
----
+Enter activates a route link or trigger.
 
-## Notes
+Space activates a button trigger.
 
-- The `popover` API handles open/close — no JS click handlers needed.
-- `popovertarget` on the button declaratively toggles the popover. No `togglePopover()` calls.
-- CSS anchor positioning aligns the dropdown to its trigger. The JS only sets unique `anchor-name` / `position-anchor` pairs.
-- The dropdown uses compact one- and two-token padding so grouped routes stay dense without shrinking focus targets.
-- The chevron direction updates via `:has(+ .nav-menu-content:popover-open)` — no JS class toggling.
-- Icon-only triggers must have `aria-label`.
-- Dropdown content typically contains `nav-menu-content-link` items with a title and optional description.
+Escape closes an open route popover.
+
+The component does not implement menuitem roles or arrow-key menu navigation.
+
+Do not add `role="menu"` to route navigation.
+
+## Accessibility
+
+Keep route navigation as native links.
+
+Give every navigation landmark an accessible name.
+
+Hide decorative chevrons and icons from assistive technology.
+
+Give an icon-only trigger an accessible name when one is unavoidable.
+
+Keep the current route available through `aria-current="page"`.
+
+Do not use tab roles for route navigation.
+
+Do not place essential site routes only in a Command Palette.
+
+## Runtime
+
+Load `navigation-menu.js` when anchored dropdown positioning is required.
+
+Native route links and declarative popovers remain usable without the module.
+
+Without the module, browser default popover placement can differ from the documented anchored position.

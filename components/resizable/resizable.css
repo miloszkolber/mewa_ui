@@ -51,8 +51,6 @@
     inline-size: var(--size-06);
     min-block-size: var(--size-06);
     align-self: stretch;
-    /* The handle floats over the panel seam instead of consuming space,
-       so panel sizes never shift when the handle appears or is focused. */
     margin: 0 calc(-1 * var(--size-03));
     padding: 0;
     border: 0;
@@ -65,6 +63,7 @@
       transparent calc(50% + (var(--border-width-01) / 2))
     );
     color: var(--text-muted);
+
     &::after {
       position: absolute;
       inset-block-start: 50%;
@@ -95,7 +94,6 @@
       color: var(--text-muted);
     }
 
-    /* Dragging stays contrasty so the move target is unmistakable. */
     .resizable[data-init] &[data-resizing] {
       background: linear-gradient(
         to right,
@@ -134,6 +132,7 @@
       var(--border-primary) calc(50% + (var(--border-width-01) / 2)),
       transparent calc(50% + (var(--border-width-01) / 2))
     );
+
     .resizable[data-init] & {
       cursor: row-resize;
     }
@@ -169,6 +168,43 @@
     }
   }
 
+  .resizable-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-01);
+  }
+
+  .resizable-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--size-07);
+    block-size: var(--size-07);
+    padding: 0;
+    border: var(--border-width-01) solid var(--border-primary);
+    border-radius: 0;
+    background: var(--surface-primary);
+    color: var(--text-primary);
+    font: inherit;
+    font-family: var(--font-mono);
+    cursor: pointer;
+  }
+
+  .resizable-step:hover {
+    background: var(--surface-secondary);
+  }
+
+  .resizable-step:focus-visible {
+    outline: var(--focus-ring-width) solid var(--border-ring);
+    outline-offset: var(--border-width-01);
+  }
+
+  .resizable-step:disabled {
+    background: var(--surface-secondary);
+    color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+
   .resizable-output {
     display: block;
     color: var(--text-secondary);
@@ -177,24 +213,13 @@
   }
 
   @media (prefers-contrast: more) {
-    .resizable-group {
+    .resizable-group,
+    .resizable-step {
       border-width: var(--border-width-02);
     }
 
-    .resizable-handle {
-      flex-basis: calc(var(--size-06) + var(--size-01));
-      border-inline: var(--border-width-01) solid var(--border-primary);
-
-      &::after {
-        border-width: var(--border-width-02);
-      }
-    }
-
-    .resizable-group[data-orientation="horizontal"] .resizable-handle,
-    .resizable[data-orientation="horizontal"] .resizable-handle {
-      flex-basis: calc(var(--size-06) + var(--size-01));
-      border-inline: 0;
-      border-block: var(--border-width-01) solid var(--border-primary);
+    .resizable-handle::after {
+      border-width: var(--border-width-02);
     }
   }
 
@@ -213,24 +238,30 @@
       background: ButtonFace;
       border-inline: var(--border-width-01) solid ButtonBorder;
       color: ButtonText;
-
-      .resizable[data-init] &:hover,
-      .resizable[data-init] &:focus-visible,
-      .resizable[data-init] &[data-resizing] {
-        background: Highlight;
-        border-color: Highlight;
-        color: HighlightText;
-      }
-
-      .resizable[data-init] &:focus-visible {
-        outline-color: Highlight;
-      }
     }
 
-    .resizable-group[data-orientation="horizontal"] .resizable-handle,
-    .resizable[data-orientation="horizontal"] .resizable-handle {
-      border-inline: 0;
-      border-block: var(--border-width-01) solid ButtonBorder;
+    .resizable[data-init] .resizable-handle:hover,
+    .resizable[data-init] .resizable-handle:focus-visible,
+    .resizable[data-init] .resizable-handle[data-resizing] {
+      background: Highlight;
+      border-color: Highlight;
+      color: HighlightText;
+    }
+
+    .resizable-step {
+      border-color: ButtonBorder;
+      background: ButtonFace;
+      color: ButtonText;
+    }
+
+    .resizable-step:hover,
+    .resizable-step:focus-visible {
+      background: Highlight;
+      color: HighlightText;
+    }
+
+    .resizable-step:disabled {
+      color: GrayText;
     }
 
     .resizable-output {

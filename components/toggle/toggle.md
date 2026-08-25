@@ -1,81 +1,97 @@
-# Pattern: Toggle
+# Toggle
+
+## Purpose
+
+Toggle changes one independent pressed tool state.
+
+Use Toggle for controls such as bold, pin, mute, or another reversible pressed action.
+
+Use Checkbox for a submitted independent choice.
+
+Use Switch for an immediate binary system setting.
+
+Do not use Toggle for route navigation.
 
 ## Native basis
-`<button>` element with `aria-pressed`. The browser provides click and keyboard
-(Enter/Space) handling automatically. No extra JavaScript needed for basic usage.
 
-A two-state button that can be either on or off. Common for toolbar formatting
-buttons (bold, italic, underline) or feature toggles.
+Toggle uses a native `<button>` with `aria-pressed`.
 
----
+The browser provides focus and button activation.
+
+The module synchronizes the pressed state after activation.
 
 ## Native Web APIs
-- [`<button>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) — native clickable element with built-in keyboard handling
-- [`aria-pressed`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-pressed) — communicates toggle on/off state to assistive technology
-- [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — adds visible borders in high-contrast mode
-- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — maps pressed state to system Highlight in Windows High Contrast Mode
 
----
+- [`<button>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) provides native action behavior.
+- [`aria-pressed`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-pressed) exposes the pressed state.
+- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) preserves selected-state contrast.
 
 ## Structure
 
 ```html
-<button type="button" class="toggle" aria-pressed="false" aria-label="Toggle bold">
-  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"
-       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"/>
-  </svg>
+<button class="toggle"
+        type="button"
+        aria-pressed="false"
+        aria-label="Pin job">
+  <i data-lucide="pin" aria-hidden="true"></i>
 </button>
 ```
 
-### With text
+Use visible text when the action is not clear from the icon.
+
 ```html
-<button type="button" class="toggle" aria-pressed="false">
-  <svg aria-hidden="true" width="16" height="16" ...>...</svg>
-  Italic
+<button class="toggle" type="button" aria-pressed="false">
+  <i data-lucide="eye" aria-hidden="true"></i>
+  Show details
 </button>
 ```
 
----
+## Variant
 
-## Variants
+Omit `data-variant` for the default quiet treatment.
 
-| `data-variant` | Purpose                              |
-|----------------|--------------------------------------|
-| *(default)*    | Transparent background, subtle hover |
-| `outline`      | Border, transparent background       |
+Use `data-variant="outline"` when the control needs a persistent boundary.
 
-```html
-<button type="button" class="toggle" aria-pressed="false">Default</button>
-<button type="button" class="toggle" data-variant="outline" aria-pressed="false">Outline</button>
-```
+Do not use a filled primary Button treatment for a normal Toggle.
 
----
+## Behavior
 
-## Sizes
+Activating a standalone Toggle switches `aria-pressed` between `true` and `false`.
 
-```html
-<button type="button" class="toggle" aria-pressed="false" aria-label="Bold">
-  <svg aria-hidden="true" ...>...</svg>
-</button>
-```
+A Toggle inside Toggle Group is managed by the Toggle Group module.
 
----
+The standalone Toggle module skips grouped toggles.
 
-## ARIA
+Pressed state remains visible during hover.
 
-| Attribute         | Element    | Value               |
-|--------------------|-----------|----------------------|
-| `aria-pressed`     | `<button>` | `"true"` or `"false"` — toggled on click |
-| `aria-label`       | `<button>` | Required for icon-only toggles |
+State changes are immediate.
 
----
+## Keyboard
 
-## Notes
+Enter activates the native button.
 
-- Toggles inside a `.toggle-group` are managed by toggle-group.js and skipped by toggle.js.
-- The toggle is just a button with `aria-pressed` — no custom elements needed.
-- Icon-only toggles must have `aria-label` for screen readers.
-- For toggle groups (e.g., text alignment), wrap in a container with `role="group"` and `aria-label`.
-- Pressed toggles keep their selected surface when hovered.
-- The pressed state uses `--surface-secondary` / `--text-primary` to match the system’s semantic token conventions.
+Space activates the native button.
+
+Tab follows normal document order.
+
+Do not add arrow-key navigation to a standalone Toggle.
+
+## Accessibility
+
+Keep `aria-pressed` on the button.
+
+Give an icon-only Toggle an accessible name.
+
+Hide decorative icons from assistive technology.
+
+Keep visible text stable when pressed state changes.
+
+Do not change the accessible name from “Pin job” to “Unpin job” when `aria-pressed` already communicates state unless the action model explicitly requires command wording.
+
+Keep focus visible.
+
+## Runtime
+
+Load `toggle.js` for standalone Toggle behavior.
+
+Without the module, the button remains operable but `aria-pressed` does not change automatically.

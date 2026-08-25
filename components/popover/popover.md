@@ -1,78 +1,99 @@
 # Popover
 
+## Purpose
+
+Popover shows small non-modal contextual content in the top layer.
+
+Use Popover when one trigger needs a compact contextual surface.
+
+Use Dialog when the task must block the page.
+
+Do not use Popover for essential content that should remain visible.
+
 ## Native basis
 
-`popover` attribute — native Popover API with CSS anchor positioning for placement.
+Use the native Popover API.
+
+Use `popovertarget` for declarative open and close behavior.
+
+Use CSS Anchor Positioning for placement.
+
+The module assigns the documented anchor relationship.
 
 ## Native Web APIs
 
-- [`popover` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/popover) — native popover API with light-dismiss (click outside / Escape)
-- [`popovertarget`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#popovertarget) — declarative button→popover wiring with no JS
-- [CSS Anchor Positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning) — positions popover relative to trigger via `position-area`
-- [`position-area`](https://developer.mozilla.org/en-US/docs/Web/CSS/position-area) — grid-based anchor positioning for side/align placement
-- [`position-try-fallbacks`](https://developer.mozilla.org/en-US/docs/Web/CSS/position-try-fallbacks) — automatic flip when popover overflows viewport
+- [`popover`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/popover) provides top-layer rendering and light dismiss.
+- [`popovertarget`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#popovertarget) provides declarative trigger wiring.
+- [CSS Anchor Positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning) positions the surface beside its trigger.
+- [`position-try-fallbacks`](https://developer.mozilla.org/en-US/docs/Web/CSS/position-try-fallbacks) flips the surface when space is limited.
 
 ## Structure
 
-```html
-<button class="btn" type="button" data-variant="outline" popovertarget="my-popover">Open Popover</button>
+Give the trigger a meaningful visible or accessible name.
 
-<div class="popover" id="my-popover" popover>
+Keep the popover content semantically complete.
+
+```html
+<button class="btn"
+        type="button"
+        data-variant="outline"
+        popovertarget="display-options">
+  Display options
+</button>
+
+<div class="popover" id="display-options" popover>
   <div class="popover-header">
-    <p class="popover-title">Dimensions</p>
-    <p class="popover-description">Set the dimensions for the layer.</p>
+    <p class="popover-title">Display options</p>
+    <p class="popover-description">Choose the visible detail level.</p>
   </div>
   <div class="popover-content">
-    <!-- any content -->
+    <!-- Contextual controls. -->
   </div>
 </div>
 ```
 
-### With side and alignment
+## Placement
 
-```html
-<button class="btn" type="button" popovertarget="pop-top">Top</button>
-<div class="popover" id="pop-top" popover data-side="top">...</div>
+Use `data-side="top"`, `right`, `bottom`, or `left` when the default bottom placement does not fit the task.
 
-<button class="btn" type="button" popovertarget="pop-right">Right</button>
-<div class="popover" id="pop-right" popover data-side="right">...</div>
+Use `data-align="start"`, `center`, or `end` for alignment on the secondary axis.
 
-<button class="btn" type="button" popovertarget="pop-end">End aligned</button>
-<div class="popover" id="pop-end" popover data-align="end">...</div>
-```
+Let position fallbacks move the popover when the preferred placement does not fit.
 
-## Attributes
+Do not hardcode viewport coordinates in consumer code.
 
-| Attribute | Element | Values | Default | Description |
-|---|---|---|---|---|
-| `popover` | `.popover` | `"auto"` | `"auto"` | Enables native Popover API |
-| `popovertarget` | trigger `<button>` | popover `id` | — | Declarative trigger wiring |
-| `data-side` | `.popover` | `top`, `right`, `bottom`, `left` | `bottom` | Which side of the trigger to position |
-| `data-align` | `.popover` | `start`, `center`, `end` | `center` | Alignment along the side axis |
+## Behavior
 
-## ARIA
+Native `popovertarget` toggles the surface.
 
-No additional ARIA attributes are needed. The native `popover` attribute and `popovertarget` handle accessibility automatically:
+Native light dismiss closes an automatic popover after outside activation or Escape.
 
-| Feature | Handled by |
-|---|---|
-| Toggle open/close | `popovertarget` (declarative, no JS) |
-| Light dismiss | Popover API (click outside or Escape closes) |
-| Focus management | Sequential focus follows the document order. Add `autofocus` to an appropriate initial control only when opening should intentionally place focus there. |
+The module assigns unique CSS anchor names.
 
-## Keyboard
+The module retries initialization when a trigger appears before its target.
 
-| Key | Action |
-|---|---|
-| Enter / Space | Toggle popover (on trigger button) |
-| Escape | Close popover (native light-dismiss) |
+The popover remains non-modal.
 
-## Notes
+Focus stays in normal sequential order unless a child uses `autofocus`.
 
-- The popover renders in the **top layer**, so it appears above all other content regardless of `z-index`.
-- The panel uses semantic surfaces. Keep the border visible instead of adding a shadow.
-- CSS anchor positioning (`position-area`) handles placement — the JS only assigns unique anchor names per trigger–popover pair.
-- `position-try-fallbacks: flip-block` (or `flip-inline` for left/right sides) automatically repositions when the popover would overflow the viewport.
-- The `popover` attribute defaults to `"auto"` which provides light-dismiss behavior. Use `popover="manual"` if you need the popover to stay open until explicitly closed.
-- The browser does not promise to move focus into a popover. Keep the sequential focus order useful, and use `autofocus` only for a clearly appropriate initial control.
-- Do not place the `.popover` element inside scroll containers — it renders in the top layer and will not scroll with parent content.
+## Accessibility
+
+Keep the trigger keyboard operable.
+
+Keep the trigger name descriptive of the content or action.
+
+Use semantic headings, labels, and controls inside the popover.
+
+Do not rely on the Popover API to name the trigger or content.
+
+Do not move required instructions into a popover.
+
+Do not add dialog semantics to a non-modal popover.
+
+## Runtime
+
+Load `popover.js` for the documented anchored placement behavior.
+
+Native open, close, and light-dismiss behavior remains available without the module.
+
+Placement falls back to normal browser positioning without the module.

@@ -1,29 +1,31 @@
 /* -- Sidebar component ------------------------------------------ */
 
 @layer components {
-
-  /* -- Shell layout --------------------------------------------- */
   .sidebar-layout {
     display: flex;
-    min-height: 100vh;
     min-height: 100dvh;
   }
 
-  /* -- Sidebar panel -------------------------------------------- */
-  .app-sidebar {
+  .sidebar-workspace {
     display: flex;
+    flex: 1;
+    min-inline-size: 0;
+    min-block-size: 100dvh;
     flex-direction: column;
-    width: var(--sidebar-width, 16rem);
-    height: 100vh;
-    height: 100dvh;
+  }
+
+  .app-sidebar {
     position: sticky;
     top: 0;
-    background-color: var(--surface-primary);
-    border-right: var(--border-width-01) solid var(--border-muted);
-    flex-shrink: 0;
-    overflow-x: clip;
-    overflow-y: hidden;
     z-index: var(--z-sidebar);
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    width: var(--sidebar-width, 16rem);
+    height: 100dvh;
+    overflow: hidden;
+    border-inline-end: var(--border-width-01) solid var(--border-muted);
+    background: var(--surface-primary);
 
     &::after {
       content: "";
@@ -31,7 +33,7 @@
       inset-block: 0;
       inset-inline-end: 0;
       inline-size: var(--size-03);
-      pointer-events: none;
+      border-inline-start: var(--border-width-01) solid var(--border-muted);
       background: repeating-linear-gradient(
         135deg,
         var(--surface-primary) 0,
@@ -39,7 +41,7 @@
         var(--border-muted) 0.3rem,
         var(--border-muted) 0.375rem
       );
-      border-inline-start: var(--border-width-01) solid var(--border-muted);
+      pointer-events: none;
     }
 
     & > .sidebar-header,
@@ -49,13 +51,13 @@
     }
 
     &[data-side="right"] {
-      border-right: none;
-      border-left: var(--border-width-01) solid var(--border-muted);
       order: 1;
+      border-inline-start: var(--border-width-01) solid var(--border-muted);
+      border-inline-end: 0;
 
       &::after {
-        inset-inline-end: auto;
         inset-inline-start: 0;
+        inset-inline-end: auto;
         border-inline-start: 0;
         border-inline-end: var(--border-width-01) solid var(--border-muted);
       }
@@ -63,51 +65,40 @@
       & > .sidebar-header,
       & > .sidebar-content,
       & > .sidebar-footer {
-        margin-inline-end: 0;
         margin-inline-start: var(--size-03);
+        margin-inline-end: 0;
       }
     }
 
     &[data-state="collapsed"] {
-      /* 56px icon rail plus the 12px decorative hatch that pins to the
-         inline end of the panel. */
       width: var(--sidebar-width-collapsed, calc(var(--size-10) + var(--size-03)));
 
-      /* Keep labels in the accessibility tree while removing them from the icon rail. */
       & .sidebar-link > span,
       & .sidebar-trigger-label,
       & .sidebar-logo-text {
         position: absolute;
         inline-size: var(--border-width-01);
         block-size: var(--border-width-01);
-        padding: 0;
         margin: calc(-1 * var(--border-width-01));
+        padding: 0;
         overflow: hidden;
+        border: 0;
         clip: rect(0 0 0 0);
         clip-path: inset(50%);
-        border: 0;
         white-space: nowrap;
+      }
+
+      & .sidebar-header,
+      & .sidebar-footer {
+        justify-content: center;
+        padding: var(--space-03);
       }
 
       & .sidebar-nav {
         padding: 0;
       }
 
-      & .sidebar-link {
-        justify-content: center;
-        inline-size: var(--size-08);
-        padding: 0;
-      }
-
-      & .sidebar-header {
-        justify-content: center;
-        padding: var(--space-03);
-      }
-
-      & .sidebar-footer {
-        padding: var(--space-03);
-      }
-
+      & .sidebar-link,
       & .sidebar-trigger {
         justify-content: center;
         inline-size: var(--size-08);
@@ -115,30 +106,27 @@
       }
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 48rem) {
       display: none;
     }
   }
 
-  /* -- Sidebar header ------------------------------------------- */
-  /* The brand is the same signet component as the app header brand:
-     a 32px square mark with a 16px icon, aligned with the item icons below. */
   .sidebar-header {
     display: flex;
-    align-items: center;
-    padding: var(--space-03);
-    gap: var(--space-02);
-    border-bottom: var(--border-width-01) solid var(--border-muted);
     flex-shrink: 0;
+    align-items: center;
+    gap: var(--space-02);
+    padding: var(--space-03);
+    border-block-end: var(--border-width-01) solid var(--border-muted);
   }
 
   .sidebar-logo {
     display: flex;
     align-items: center;
     gap: var(--space-02);
+    color: var(--text-primary);
     font-size: var(--font-body-small);
     font-weight: var(--font-weight-strong);
-    color: var(--text-primary);
     text-decoration: none;
 
     &:focus-visible {
@@ -149,65 +137,58 @@
 
   .sidebar-logo-mark {
     display: inline-flex;
+    flex: none;
     align-items: center;
     justify-content: center;
     inline-size: var(--size-07);
     block-size: var(--size-07);
-    flex: none;
     background: var(--surface-inverted);
     color: var(--text-inverted);
 
-    & svg,
-    & i {
+    & :is(svg, i) {
       inline-size: var(--size-04);
       block-size: var(--size-04);
     }
   }
 
-  /* -- Sidebar content ----------------------------------------- */
   .sidebar-content {
     display: flex;
-    flex-direction: column;
     flex: 1;
+    flex-direction: column;
+    gap: var(--space-02);
+    padding: var(--space-02);
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: var(--space-02);
-    gap: var(--space-02);
-    scrollbar-width: thin;
     scrollbar-color: var(--border-muted) transparent;
+    scrollbar-width: thin;
   }
 
-  /* -- Sidebar nav ---------------------------------------------- */
   .sidebar-nav {
     display: flex;
     flex-direction: column;
     gap: var(--space-01);
   }
 
-  /* -- Nav links ------------------------------------------------- */
-  /* Items are always 40px tall; collapsed links become 40x40 buttons
-     inside the 56px rail, so both states share the same box model. */
   .sidebar-link {
+    position: relative;
     display: flex;
     align-items: center;
     gap: var(--space-03);
     block-size: var(--size-08);
     padding-inline: var(--space-03);
-
-    font-size: var(--font-body-small);
     color: var(--text-primary);
+    font-size: var(--font-body-small);
     text-decoration: none;
-    position: relative;
 
-    &:hover {
-      background-color: var(--surface-secondary);
+    &:hover,
+    &[data-active="true"],
+    &[aria-current="page"] {
+      background: var(--surface-secondary);
       color: var(--text-primary);
     }
 
     &[data-active="true"],
     &[aria-current="page"] {
-      background-color: var(--surface-secondary);
-      color: var(--text-primary);
       font-weight: var(--font-weight-strong);
     }
 
@@ -217,29 +198,23 @@
     }
 
     & svg {
+      flex-shrink: 0;
       width: var(--size-04);
       height: var(--size-04);
-      flex-shrink: 0;
     }
   }
 
-  /* -- Sidebar footer ------------------------------------------- */
   .sidebar-footer {
     display: flex;
+    flex-shrink: 0;
     flex-direction: column;
     gap: var(--space-03);
     padding: var(--space-03);
-    border-top: var(--border-width-01) solid var(--border-muted);
-    font-size: var(--font-body-small);
+    border-block-start: var(--border-width-01) solid var(--border-muted);
     color: var(--text-primary);
-    flex-shrink: 0;
-
-    & p {
-      margin: 0;
-    }
+    font-size: var(--font-body-small);
   }
 
-  /* -- Footer collapse control --------------------------------- */
   .sidebar-trigger {
     display: flex;
     align-items: center;
@@ -248,8 +223,8 @@
     width: 100%;
     block-size: var(--size-08);
     padding-inline: var(--space-03);
-    border: none;
-    background-color: transparent;
+    border: 0;
+    background: transparent;
     color: var(--text-primary);
     font: inherit;
     line-height: var(--font-height-none);
@@ -257,7 +232,7 @@
     cursor: pointer;
 
     &:hover {
-      background-color: var(--surface-secondary);
+      background: var(--surface-secondary);
     }
 
     &:focus-visible {
@@ -266,29 +241,26 @@
     }
 
     & svg {
+      flex-shrink: 0;
       width: var(--size-04);
       height: var(--size-04);
-      flex-shrink: 0;
     }
   }
 
-  /* -- Mobile sidebar (<dialog> sheet overlay) ----------------- */
   .sidebar-mobile {
-    display: none;
-    border: none;
-    padding: 0;
-    margin: 0;
     position: fixed;
     inset: 0;
-    width: var(--sidebar-width, 16rem);
-    max-width: 80vw;
-    height: 100%;
-    background-color: var(--surface-primary);
-    color: var(--text-primary);
     z-index: var(--z-sidebar-mobile);
-    overflow: hidden;
+    display: none;
     flex-direction: column;
-
+    width: min(var(--sidebar-width, 16rem), 80vw);
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    background: var(--surface-primary);
+    color: var(--text-primary);
     translate: -100% 0;
 
     &[open] {
@@ -297,8 +269,8 @@
     }
 
     &[data-side="right"] {
-      right: 0;
-      left: auto;
+      inset-inline-start: auto;
+      inset-inline-end: 0;
       translate: 100% 0;
 
       &[open] {
@@ -307,29 +279,26 @@
     }
 
     &::backdrop {
-      background:
-        linear-gradient(var(--surface-overlay), var(--surface-overlay)),
-        var(--surface-overlay);
-      backdrop-filter: blur(var(--blur-02));
+      background: var(--surface-overlay);
     }
 
     & .sidebar-mobile-close {
       position: absolute;
-      top: var(--space-03);
-      right: var(--space-03);
+      inset-block-start: var(--space-03);
+      inset-inline-end: var(--space-03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: var(--size-06);
       height: var(--size-06);
-      border: none;
+      padding: 0;
+      border: 0;
       background: transparent;
       color: var(--text-primary);
       cursor: pointer;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
       &:hover {
-        background-color: var(--surface-secondary);
+        background: var(--surface-secondary);
       }
 
       &:focus-visible {
@@ -338,26 +307,28 @@
       }
 
       & svg {
-        width: 0.875rem;
-        height: 0.875rem;
+        width: var(--size-03);
+        height: var(--size-03);
       }
     }
 
-    @media (min-width: 768px) {
+    @media (width > 48rem) {
       display: none;
     }
   }
 
-  /* Keep the primary navigation available when JavaScript is disabled. */
-  @media (scripting: none) and (max-width: 767px) {
+  @media (scripting: none) and (max-width: 48rem) {
     .sidebar-layout {
-      display: flex;
       flex-direction: column;
     }
 
+    .sidebar-workspace {
+      min-block-size: 0;
+    }
+
     .app-sidebar {
-      display: flex;
       position: static;
+      display: flex;
       width: 100%;
       height: auto;
       min-height: 0;
@@ -385,7 +356,6 @@
     }
   }
 
-  /* -- Accessibility ------------------------------------------- */
   @media (prefers-contrast: more) {
     .sidebar-link,
     .sidebar-trigger {
@@ -396,20 +366,20 @@
   @media (forced-colors: active) {
     .app-sidebar,
     .sidebar-mobile {
+      border-color: CanvasText;
       background: Canvas;
       color: CanvasText;
-      border-color: CanvasText;
     }
 
     .app-sidebar::after {
-      background: Canvas;
       border-color: CanvasText;
+      background: Canvas;
     }
 
     .sidebar-link,
     .sidebar-trigger {
-      color: ButtonText;
       border-color: ButtonText;
+      color: ButtonText;
     }
 
     .sidebar-link:hover,
@@ -420,5 +390,4 @@
       color: HighlightText;
     }
   }
-
 }

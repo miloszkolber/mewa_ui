@@ -1,186 +1,206 @@
 # Text Field
 
+## Purpose
+
+Text Field collects one line of free text with an explicit label and optional help or error text.
+
+Use Text Field for text, email, password, search, telephone, URL, and similar native input types.
+
+Use Textarea for multi-line text.
+
+Use Select or Combobox for finite option selection.
+
+Do not use placeholder text as the only field label.
+
 ## Native basis
 
-`Text Field` is an explicit composition of one real `<label>`, one real `<input>`, and optional description and error text. It follows the Kernel naming model while keeping the HTML visible and useful without a runtime component. Use the semantic `type` that matches the value, such as `email`, `password`, `search`, `tel`, or `url`.
+Text Field uses one native `<input>` with one real `<label>`.
 
-## Native web APIs
+The browser owns editing, autocomplete, mobile input behavior, validation, and form submission.
 
-- [`<input>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input) — editing, autofill, input modes, and constraint validation
-- [`<label>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label) — native label-to-control association
-- [`autocomplete`](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) — browser-managed autofill
-- [`:user-invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid) — post-interaction validation styling
+The component adds no JavaScript behavior.
+
+## Native Web APIs
+
+- [`<input>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input) provides editing and type-specific behavior.
+- [`<label>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label) provides the native accessible name association.
+- [`autocomplete`](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) provides browser-managed autofill.
+- [`inputmode`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inputmode) can hint the mobile keyboard when the input type alone is insufficient.
+- [`enterkeyhint`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/enterkeyhint) can label the mobile enter key.
+- [`:user-invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid) exposes native invalid state after interaction.
 
 ## Structure
-
-### Default
 
 ```html
 <div class="text-field">
   <label class="text-field-label" for="profile-email">Email</label>
-  <input class="text-field-input" id="profile-email" name="email" type="email"
-         autocomplete="email" placeholder="you@example.com"
+  <input class="text-field-input"
+         id="profile-email"
+         name="email"
+         type="email"
+         autocomplete="email"
          aria-describedby="profile-email-description">
   <p class="text-field-description" id="profile-email-description">
-    We will never share your email address.
+    Use the address that receives account notices.
   </p>
 </div>
 ```
 
-The input is not a proxy or button. It remains the submitted, focusable form control. Keep `aria-describedby` explicit so the composition works before JavaScript loads.
+Keep the native input as the submitted and focusable control.
 
-### Required and invalid
+Give the input a `name` when its value belongs to a form submission.
+
+Choose the native input type that matches the value.
+
+## Required and invalid
+
+Use native `required` when the field is required.
+
+Use `aria-invalid="true"` when the application or server already knows the value is invalid.
+
+Use `data-invalid` only as the documented wrapper styling hook.
 
 ```html
 <div class="text-field" data-invalid>
   <label class="text-field-label" for="profile-name">
-    Full name <span class="text-field-required" aria-hidden="true">*</span>
+    Full name
+    <span class="text-field-required" aria-hidden="true">*</span>
   </label>
-  <input class="text-field-input" id="profile-name" name="name" type="text"
-         required aria-invalid="true"
+  <input class="text-field-input"
+         id="profile-name"
+         name="name"
+         type="text"
+         required
+         aria-invalid="true"
          aria-describedby="profile-name-error"
-         aria-errormessage="profile-name-error" value="">
+         aria-errormessage="profile-name-error">
   <p class="text-field-error" id="profile-name-error" role="alert">
     Enter your full name.
   </p>
 </div>
 ```
 
-Use `required` for native required validation and `aria-invalid="true"` for an error already known by the application. `data-invalid` styles the whole composition and is not a replacement for the ARIA state on the input.
+Keep `aria-errormessage` only while the referenced error is active.
 
-### Disabled and readonly
+Use `role="alert"` only when the error appears dynamically.
+
+Do not remove the entered value after validation fails.
+
+## Disabled and readonly
+
+Use `readonly` when users may still select and copy the value.
+
+Use `disabled` when the control is unavailable and should not submit.
+
+Use `data-disabled` only when the wrapper also needs disabled presentation.
 
 ```html
 <div class="text-field">
-  <label class="text-field-label" for="readonly-key">API key</label>
-  <input class="text-field-input" id="readonly-key" type="text"
-         value="sk-example" readonly
-         aria-describedby="readonly-key-description">
-  <p class="text-field-description" id="readonly-key-description">
-    You can select and copy this value.
-  </p>
-</div>
-<div class="text-field" data-disabled>
-  <label class="text-field-label" for="disabled-email">Email</label>
-  <input class="text-field-input" id="disabled-email" type="email" disabled>
+  <label class="text-field-label" for="api-key">API key</label>
+  <input class="text-field-input"
+         id="api-key"
+         name="api_key"
+         type="text"
+         value="sk-example"
+         readonly>
 </div>
 ```
 
-Use the native `readonly` or `disabled` attribute. `data-disabled` is an optional wrapper styling hook and does not disable an input by itself.
+## Hidden label
 
-### Hidden label
+Use `data-hidden` on the label only when the visual context makes the field purpose clear without repeated visible text.
 
 ```html
 <div class="text-field">
   <label class="text-field-label" data-hidden for="site-search">Search</label>
-  <input class="text-field-input" id="site-search" type="search" placeholder="Search">
+  <input class="text-field-input"
+         id="site-search"
+         name="q"
+         type="search"
+         placeholder="Search">
 </div>
 ```
 
-`data-hidden` visually clips the label while leaving its accessible name in the accessibility tree. Do not remove the label and rely only on placeholder text.
+Do not remove the label and rely on placeholder text.
 
-## Data attributes
+## Search with action
 
-| Attribute | Element | Values | Purpose |
-| --- | --- | --- | --- |
-| `data-invalid` | `.text-field` | presence | Marks a known application or server error |
-| `data-disabled` | `.text-field` | presence | Styles a wrapper when a native disabled state is also applied |
-| `data-hidden` | `.text-field-label` | presence | Visually hides, but does not remove, the label |
-
-## Accessibility
-
-- Pair the `<label>` `for` with the input `id`. Clicking the label focuses the input through native behavior.
-- Point `aria-describedby` to every description or error ID. Set `aria-errormessage` only when `aria-invalid="true"` is present.
-- Use `role="alert"` on an error that is inserted after validation. Do not use placeholder text as the accessible name.
-- Keep `required`, `disabled`, `readonly`, `autocomplete`, and `type` on the native input.
-- The stylesheet provides `:focus-visible`, `:user-invalid`, `prefers-contrast: more`, and forced-colors states without motion.
-
-## Keyboard and events
-
-Text Field adds no keyboard handlers and emits no custom events. Tab moves to the native input, and the input's type determines its browser and mobile keyboard behavior. Native `focus`, `blur`, `input`, `change`, `invalid`, `compositionstart`, and `compositionend` events are available on the input. Form `submit` and `reset` remain native.
-
-## Limitations
-
-This scaffold does not create IDs, auto-wire descriptions, implement floating labels, or replace the browser's editing and validation behavior. Floating labels, async validation, masking, and clear buttons belong to an embedding application. A no-JavaScript page still has a complete labelled `<input>` and native constraint validation.
-
-## Standalone controls
-
-Use `.text-field-input` for standalone native inputs and textareas. Use `.text-field` when a label, description, or error message belongs with the control.
-
-### Basic
+Compose a normal form when a search field has a submit action.
 
 ```html
-<label class="label" for="email">Email</label>
-<input class="text-field-input" type="email" id="email" placeholder="you@example.com">
-```
-
-### With description
-
-```html
-<div class="text-field">
-  <label class="text-field-label" for="username">Username</label>
-  <input class="text-field-input" type="text" id="username" placeholder="codylindley"
-         aria-describedby="username-description">
-  <p class="text-field-description" id="username-description">
-    Choose a unique username for your account.
-  </p>
-</div>
-```
-
-### Required and invalid
-
-```html
-<label class="label" for="name">
-  Name <span aria-hidden="true" class="text-negative">*</span>
-</label>
-<input class="text-field-input" type="text" id="name" required placeholder="Jane Doe">
-
-<div class="text-field" data-invalid>
-  <label class="text-field-label" for="bad-email">Email</label>
-  <input class="text-field-input" type="email" id="bad-email" aria-invalid="true"
-         aria-describedby="bad-email-error" aria-errormessage="bad-email-error" value="not-an-email">
-  <p class="text-field-error" id="bad-email-error" role="alert">Please enter a valid email address.</p>
-</div>
-```
-
-### With icon
-
-```html
-<div class="text-field" style="position:relative;">
-  <label class="text-field-label" data-hidden for="icon-search">Search</label>
-  <i data-lucide="search" aria-hidden="true" style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);color:var(--text-muted);width:1rem;height:1rem;"></i>
-  <input class="text-field-input" id="icon-search" type="search" placeholder="Search..." style="padding-left:2.25rem;">
-</div>
-```
-
-### File, password, and readonly
-
-```html
-<label class="label" for="avatar">Picture</label>
-<input class="text-field-input" type="file" id="avatar">
-
-<label class="label" for="password">Password</label>
-<input class="text-field-input" type="password" id="password" placeholder="Enter your password">
-
-<label class="label" for="api-key">API key</label>
-<input class="text-field-input" type="text" id="api-key" readonly value="sk-1234567890abcdef">
-```
-
-### With button
-
-```html
-<form role="search" aria-label="Search" style="display:flex;gap:0.5rem;">
-  <label class="text-field-label" data-hidden for="button-search">Search</label>
-  <input class="text-field-input" id="button-search" type="search" placeholder="Search...">
-  <button class="btn" type="submit" data-variant="default">Search</button>
+<form class="form" role="search" aria-label="Search jobs">
+  <div class="text-field">
+    <label class="text-field-label" data-hidden for="job-search">Search jobs</label>
+    <input class="text-field-input"
+           id="job-search"
+           name="q"
+           type="search"
+           enterkeyhint="search">
+  </div>
+  <div class="form-actions">
+    <button class="btn" type="submit" data-variant="default">Search</button>
+  </div>
 </form>
 ```
 
-### Textarea
+Do not add an inline layout style to the field to create a one-off composition.
 
-```html
-<label class="label" for="message">Message</label>
-<textarea class="text-field-input" id="message" placeholder="Your message..."></textarea>
-```
+Use Layout or consumer CSS when a repeated horizontal search composition is required.
 
-Standalone `.text-field-input` controls use the shared default type scale and geometry. Native `disabled`, `readonly`, `required`, `aria-invalid`, and `type` attributes remain on the control. `textarea.text-field-input` uses `field-sizing: content` for auto-growing text without JavaScript.
+## Icons
+
+Compose an icon only when it adds meaning or recognition.
+
+Use a documented component or consumer composition for icon placement.
+
+Do not position icons with inline styles in canonical Text Field markup.
+
+Hide decorative icons from assistive technology.
+
+Do not put the accessible name on a decorative icon instead of the field label.
+
+## Data attributes
+
+| Attribute | Purpose |
+| --- | --- |
+| `data-invalid` | Styles a Text Field with a known invalid state. |
+| `data-disabled` | Styles a wrapper whose native input is disabled. |
+| `data-hidden` | Visually hides the label while preserving its accessible name. |
+
+Native control attributes remain the source of truth.
+
+Do not invent additional Text Field state hooks.
+
+## Behavior
+
+Text Field adds no keyboard handlers.
+
+Text Field emits no custom events.
+
+Tab moves to the native input.
+
+The input type controls browser editing and mobile keyboard behavior.
+
+Native `input`, `change`, `invalid`, focus, composition, submit, and reset behavior remains available.
+
+## Accessibility
+
+Pair every label `for` value with the input `id`.
+
+Reference help and error text explicitly.
+
+Keep all referenced IDs unique.
+
+Use the correct native `type` and `autocomplete` value.
+
+Keep `required`, `disabled`, and `readonly` on the native input.
+
+Keep visible focus on the input.
+
+Do not use `aria-label` when a visible or deliberately hidden label already provides the name.
+
+## Runtime
+
+Text Field requires no component module.
+
+The complete labelled input and native validation path work without JavaScript.

@@ -1,136 +1,187 @@
-# Pattern: Checkbox
+# Checkbox
+
+## Purpose
+
+Checkbox selects one independent submitted choice.
+
+Checkbox can also coordinate several independent choices.
+
+Use the optional module only for the documented Select all pattern.
+
+Use Switch when one immediate system state changes on activation.
+
+Use Radio Group when exactly one visible option can be selected.
 
 ## Native basis
-`<input type="checkbox">` element styled with CSS `appearance: none`.
 
----
+Use `<input type="checkbox">`.
+
+The native input owns focus, keyboard activation, checked state, validation, and form submission.
+
+CSS changes the visual presentation.
+
+The optional module coordinates Select all state.
 
 ## Native Web APIs
-- [`<input type="checkbox">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) — native toggle control with built-in keyboard and form support
-- [`:checked`](https://developer.mozilla.org/en-US/docs/Web/CSS/:checked) — matches checked state
-- [`:indeterminate`](https://developer.mozilla.org/en-US/docs/Web/CSS/:indeterminate) — matches the indeterminate (mixed) state
-- [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus ring
-- [`:user-invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid) — post-interaction validation styling
-- [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — thicker borders for high-contrast preference
-- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — reverts to native checkbox in Windows High Contrast Mode
-- [`HTMLInputElement.indeterminate`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/indeterminate) — represents a mixed select-all state
-- [`MutationObserver`](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) — initializes enhanced groups inserted after SPA navigation
-- [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) — publishes group selection changes
 
----
+- [`<input type="checkbox">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) provides native binary form state.
+- [`:checked`](https://developer.mozilla.org/en-US/docs/Web/CSS/:checked) exposes the checked state to CSS.
+- [`:indeterminate`](https://developer.mozilla.org/en-US/docs/Web/CSS/:indeterminate) exposes a mixed state to CSS.
+- [`HTMLInputElement.indeterminate`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/indeterminate) sets a mixed Select all state.
+- [`:user-invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid) exposes native validation after interaction.
+- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) restores native high-contrast rendering.
+- [`MutationObserver`](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) initializes added checkbox groups.
+- [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) reports enhanced group changes.
 
 ## Structure
 
-### Basic
+Use `.checkbox-item` for a compact labelled choice.
+
 ```html
-<div class="flex items-center gap-2">
-  <input class="checkbox" type="checkbox" id="terms">
-  <label class="label" for="terms" style="margin:0;">Accept terms and conditions</label>
+<div class="checkbox-item">
+  <input class="checkbox" type="checkbox" id="terms" name="terms">
+  <label for="terms">Accept terms and conditions</label>
 </div>
 ```
 
-### With description
+Use `.checkbox-item-block` when the choice needs supporting text.
+
 ```html
 <div class="checkbox-item-block">
-  <input class="checkbox" type="checkbox" id="notify">
+  <input class="checkbox" type="checkbox" id="notify" name="notifications">
   <div>
     <label for="notify">Enable notifications</label>
-    <p class="checkbox-description">You can enable or disable notifications at any time.</p>
+    <p class="checkbox-description">Receive updates about completed jobs.</p>
   </div>
 </div>
 ```
 
-### Checked by default
-```html
-<input class="checkbox" type="checkbox" id="checked" checked>
-```
+Use the surrounding Field pattern when the choice needs help text or an error relationship.
 
-### Disabled
-```html
-<input class="checkbox" type="checkbox" disabled>
-<input class="checkbox" type="checkbox" disabled checked>
-```
+## States
 
-### Invalid
-```html
-<input class="checkbox" type="checkbox" aria-invalid="true" required>
-```
+Use `checked` for the initial selected state.
 
-### Checkbox group
+Use `disabled` when the choice cannot change.
+
+Use `required` when native validation requires the choice.
+
+Use `aria-invalid="true"` when the application knows the control is invalid.
+
+Set `indeterminate` only through JavaScript.
+
+Do not use `aria-checked="mixed"` on the native checkbox.
+
+## Select all group
+
+Use a fieldset and legend for the group.
+
+Keep each submitted item as a native checkbox.
+
+Use the optional module only when the Select all control must reflect all, none, or mixed item state.
+
 ```html
-<fieldset class="checkbox-group" data-checkbox-group aria-describedby="channels-help channels-status">
-  <legend>Select items to display</legend>
-  <p class="checkbox-description" id="channels-help">Choose which items are visible.</p>
+<fieldset class="checkbox-group"
+          data-checkbox-group
+          aria-describedby="channels-help channels-status">
+  <legend>Visible channels</legend>
+  <p class="checkbox-description" id="channels-help">Choose the channels to show.</p>
+
   <label class="checkbox-item checkbox-group-select-all" for="channels-all">
-    <input class="checkbox" data-checkbox-all id="channels-all" type="checkbox" aria-controls="channels-items">
+    <input class="checkbox"
+           data-checkbox-all
+           id="channels-all"
+           type="checkbox"
+           aria-controls="channels-items">
     <span>Select all</span>
   </label>
+
   <div class="checkbox-group-items" data-checkbox-items id="channels-items">
     <div class="checkbox-item">
-      <input class="checkbox" data-checkbox-item id="item-1" name="channels" type="checkbox" value="one" checked>
-      <label for="item-1">Item 1</label>
+      <input class="checkbox"
+             data-checkbox-item
+             id="channel-email"
+             name="channels"
+             type="checkbox"
+             value="email">
+      <label for="channel-email">Email</label>
     </div>
+
     <div class="checkbox-item">
-      <input class="checkbox" data-checkbox-item id="item-2" name="channels" type="checkbox" value="two">
-      <label for="item-2">Item 2</label>
+      <input class="checkbox"
+             data-checkbox-item
+             id="channel-push"
+             name="channels"
+             type="checkbox"
+             value="push">
+      <label for="channel-push">Push</label>
     </div>
   </div>
-  <output class="checkbox-group-status" data-checkbox-status id="channels-status" role="status" aria-live="polite"></output>
+
+  <output class="checkbox-group-status"
+          data-checkbox-status
+          id="channels-status"
+          role="status"></output>
 </fieldset>
 ```
 
-The group module is optional. Without it, the select-all control is an ordinary checkbox and the item controls remain native form controls. With it, the select-all control reflects all, none, or mixed item state and updates the polite status output. Disabled items are excluded from the count and are never changed by Select all.
+Disabled item checkboxes are excluded from Select all coordination.
 
----
+The module never changes a disabled item.
 
-## Keyboard
+## Data attributes
 
-| Key     | Action                         |
-| ------- | ------------------------------ |
-| `Space` | Toggles checked / unchecked    |
-| `Tab`   | Moves focus to the next control |
+| Attribute | Element | Owner | Purpose |
+| --- | --- | --- | --- |
+| `data-checkbox-group` | group root | Author | Enables the optional group enhancement. |
+| `data-checkbox-all` | Select all input | Author | Identifies the coordinating checkbox. |
+| `data-checkbox-items` | item container | Author | Identifies the controlled item region. |
+| `data-checkbox-item` | item input | Author | Identifies one coordinated checkbox. |
+| `data-checkbox-status` | status output | Author | Receives the selected-count announcement. |
+| `data-init` | group root | Module | Prevents duplicate initialization. |
 
-All keyboard behavior is provided natively by `<input type="checkbox">`.
+Do not author `data-init`.
 
----
+## Behavior
+
+Space toggles a native checkbox.
+
+Tab follows normal document order.
+
+The optional module synchronizes Select all checked and indeterminate state.
+
+The optional module updates the selected-count output.
+
+The optional module dispatches `checkbox-group:change`.
+
+The event detail contains `values`, `selected`, `total`, and `source`.
 
 ## Accessibility
 
-- The native `<input type="checkbox">` provides all keyboard and screen reader support.
-- Use `<label>` with `for` to associate the label text.
-- Use `<fieldset>` + `<legend>` for checkbox groups.
-- Use `aria-invalid="true"` for validation errors.
-- Use `indeterminate` property via JS for the indeterminate (mixed) state.
-- Use the group module's `data-checkbox-all`, `data-checkbox-item`, and `data-checkbox-status` hooks when a select-all control needs coordinated state. Keep the group in a `<fieldset>` with a `<legend>`.
-- Give the select-all control an `aria-controls` value that references the item container. The mixed state is exposed through the native checkbox's `indeterminate` property.
+Keep a visible label for every checkbox.
 
----
+Associate each label with `for` and `id`.
 
-## Notes
+Use `<fieldset>` and `<legend>` for a related checkbox group.
 
-- Styled with `appearance: none`; the check and indeterminate marks are Lucide glyphs (check and minus) applied as CSS masks so the mark inherits the checked color.
-- The checkmark uses a CSS-only approach — no SVG markup or icon font needed in the document.
-- Use `.checkbox-description` inside `.checkbox-item-block` for helper text; it is part of the checkbox component and does not depend on other components' classes.
-- Indeterminate state is set via JavaScript: `checkbox.indeterminate = true;`.
-- In `forced-colors: active`, the checkbox reverts to `appearance: auto` so Windows High Contrast Mode controls rendering.
+Use `aria-controls` on Select all when it coordinates a visible item region.
 
-## Progressive enhancement
+Keep error text referenced from the invalid control.
 
-Load `checkbox.css` with the foundation files. Load `checkbox.js` only when a group needs Select all coordination:
+Keep the group status polite.
 
-```html
-<link rel="stylesheet" href="/ui/src/base.css">
-<link rel="stylesheet" href="/ui/src/tokens.css">
-<link rel="stylesheet" href="/ui/components/checkbox/checkbox.css">
-<script type="module" src="/ui/components/checkbox/checkbox.js"></script>
-```
+Do not duplicate the same status with another live region.
 
-The module initializes each `.checkbox-group` or `[data-checkbox-group]` once and retries an incomplete root if its required hooks are not present yet. A `MutationObserver` initializes groups added after SPA navigation. It dispatches a bubbling `checkbox-group:change` event with `{ values, selected, total, source }` after a user changes an item or Select all.
+## No-JavaScript behavior
 
-The component complements [Field](../field/field.md), [Form](../form/form.md), and [Checkbox](checkbox.md)'s native single-control pattern. Use [Radio group](../radio-group/radio-group.md) when exactly one option must be selected.
+Each item remains a native submitted checkbox without the module.
 
-```js
-document.addEventListener('checkbox-group:change', (event) => {
-  console.log(event.detail.values, event.detail.source);
-});
-```
+The Select all control becomes an independent checkbox without the module.
+
+Do not include Select all when its independent no-JavaScript meaning would be misleading.
+
+## Runtime
+
+Checkbox requires no module for normal use.
+
+Load `checkbox.js` only for the Select all enhancement.

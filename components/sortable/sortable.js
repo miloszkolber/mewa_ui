@@ -1,190 +1,233 @@
 // -- Sortable -------------------------------------------------
 
 function init() {
-document.querySelectorAll('.sortable:not([data-init])').forEach((list) => {
-  list.dataset.init = '';
+  document.querySelectorAll('.sortable:not([data-init])').forEach((list) => {
+    list.dataset.init = '';
 
-  const isHorizontal = list.dataset.orientation === 'horizontal';
-  const NEXT_KEY = isHorizontal ? 'ArrowRight' : 'ArrowDown';
-  const PREV_KEY = isHorizontal ? 'ArrowLeft' : 'ArrowUp';
+    const isHorizontal = list.dataset.orientation === 'horizontal';
+    const NEXT_KEY = isHorizontal ? 'ArrowRight' : 'ArrowDown';
+    const PREV_KEY = isHorizontal ? 'ArrowLeft' : 'ArrowUp';
 
-  // -- Live region for announcements --
-  let liveRegion = list.parentElement?.querySelector('.sortable-live');
-  if (!liveRegion) {
-    liveRegion = document.createElement('span');
-    liveRegion.className = 'sortable-live';
-    liveRegion.setAttribute('aria-live', 'assertive');
-    liveRegion.setAttribute('role', 'status');
-    list.parentElement
-      ? list.parentElement.insertBefore(liveRegion, list.nextSibling)
-      : list.after(liveRegion);
-  }
+    let liveRegion = list.parentElement?.querySelector('.sortable-live');
+    if (!liveRegion) {
+      liveRegion = document.createElement('span');
+      liveRegion.className = 'sortable-live';
+      liveRegion.setAttribute('aria-live', 'polite');
+      liveRegion.setAttribute('role', 'status');
+      list.parentElement
+        ? list.parentElement.insertBefore(liveRegion, list.nextSibling)
+        : list.after(liveRegion);
+    }
 
-  function announce(msg) {
-    liveRegion.textContent = msg;
-  }
+    function announce(message) {
+      liveRegion.textContent = message;
+    }
 
-  function getItems() {
-    return Array.from(list.querySelectorAll('.sortable-item:not([aria-disabled="true"])'));
-  }
+    function getAllItems() {
+      return Array.from(list.querySelectorAll(':scope > .sortable-item'));
+    }
 
-  function getAllItems() {
-    return Array.from(list.querySelectorAll('.sortable-item'));
-  }
+    function getItems() {
+      return getAllItems().filter((item) => item.getAttribute('aria-disabled') !== 'true');
+    }
 
-  function getActiveItem() {
-    return list.querySelector('.sortable-item[data-active]');
-  }
+    function getActiveItem() {
+      return list.querySelector(':scope > .sortable-item[data-active]');
+    }
 
-  function setActive(item) {
-    getAllItems().forEach((el) => {
-      el.removeAttribute('data-active');
-      el.setAttribute('tabindex', '-1');
-    });
-    if (item) {
+    function markActive(item, { focus = true } = {}) {
+      getAllItems().forEach((candidate) => {
+        candidate.removeAttribute('data-active');
+        candidate.setAttribute('tabindex', '-1');
+      });
+      if (!item) return;
       item.setAttribute('data-active', '');
       item.setAttribute('tabindex', '0');
-      item.focus();
+      if (focus) item.focus();
     }
-  }
 
-  function getItemLabel(item) {
-    const handle = item.querySelector('.sortable-handle');
-    const clone = item.cloneNode(true);
-    if (handle) {
-      const handleClone = clone.querySelector('.sortable-handle');
-      if (handleClone) handleClone.remove();
+    function getItemLabel(item) {
+      const clone = item.cloneNode(true);
+      clone.querySelector('.sortable-handle')?.remove();
+      clone.querySelector('.sortable-actions')?.remove();
+      return clone.textContent.trim();
     }
-    return clone.textContent.trim();
-  }
 
-  // -- Initialize tabindex --
-  const allItems = getAllItems();
-  allItems.forEach((item, i) => {
-    item.setAttribute('tabindex', i === 0 ? '0' : '-1');
-  });
-
-  // -- Drag and drop --
-  let dragged = null;
-
-  list.querySelectorAll('.sortable-item').forEach((item) => {
-    if (item.getAttribute('aria-disabled') === 'true') return;
-
-    item.addEventListener('dragstart', (e) => {
-      dragged = item;
-      item.setAttribute('data-dragging', '');
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', '');
-    });
-
-    item.addEventListener('dragend', () => {
-      item.removeAttribute('data-dragging');
-      list.querySelectorAll('[data-over]').forEach((el) => el.removeAttribute('data-over'));
-      dragged = null;
-    });
-
-    item.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-      if (!dragged || dragged === item) return;
-      const rect = item.getBoundingClientRect();
-      const midpoint = isHorizontal
-        ? rect.left + rect.width / 2
-        : rect.top + rect.height / 2;
-      const pos = isHorizontal ? e.clientX : e.clientY;
-      list.querySelectorAll('[data-over]').forEach((el) => {
-        if (el !== item) el.removeAttribute('data-over');
-      });
-      item.setAttribute('data-over', pos < midpoint ? 'before' : 'after');
-    });
-
-    item.addEventListener('dragleave', () => {
-      item.removeAttribute('data-over');
-    });
-
-    item.addEventListener('drop', (e) => {
-      e.preventDefault();
-      const position = item.getAttribute('data-over');
-      item.removeAttribute('data-over');
-      if (!dragged || dragged === item) return;
-
-      if (position === 'before') {
-        list.insertBefore(dragged, item);
-      } else {
-        list.insertBefore(dragged, item.nextSibling);
-      }
-
+    function dispatchChange(item, source) {
       const items = getItems();
-      const newIndex = items.indexOf(dragged);
-      announce(`${getItemLabel(dragged)}, moved to position ${newIndex + 1} of ${items.length}`);
-      setActive(dragged);
-
+      const index = items.indexOf(item);
+      announce(`${getItemLabel(item)}, moved to position ${index + 1} of ${items.length}.`);
       list.dispatchEvent(new CustomEvent('sortable-change', {
         bubbles: true,
-        detail: { item: dragged, index: newIndex }
+        detail: { item, index, source }
       }));
+    }
+
+    function moveItem(item, direction, source) {
+      const items = getItems();
+      const index = items.indexOf(item);
+      if (index < 0) return false;
+      if (direction < 0 && index === 0) return false;
+      if (direction > 0 && index === items.length - 1) return false;
+
+      if (direction < 0) {
+        list.insertBefore(item, items[index - 1]);
+      } else {
+        const next = items[index + 1];
+        list.insertBefore(item, next.nextSibling);
+      }
+
+      updateStepControls();
+      dispatchChange(item, source);
+      return true;
+    }
+
+    function createStepControls(item) {
+      if (item.getAttribute('aria-disabled') === 'true') return;
+      if (item.querySelector(':scope > .sortable-actions')) return;
+
+      const actions = document.createElement('span');
+      actions.className = 'sortable-actions';
+
+      const previous = document.createElement('button');
+      previous.type = 'button';
+      previous.className = 'sortable-step';
+      previous.setAttribute('data-sortable-decrease', '');
+      previous.textContent = isHorizontal ? '←' : '↑';
+
+      const next = document.createElement('button');
+      next.type = 'button';
+      next.className = 'sortable-step';
+      next.setAttribute('data-sortable-increase', '');
+      next.textContent = isHorizontal ? '→' : '↓';
+
+      actions.append(previous, next);
+      item.append(actions);
+    }
+
+    function updateStepControls() {
+      const items = getItems();
+      items.forEach((item, index) => {
+        const label = getItemLabel(item);
+        const previous = item.querySelector('[data-sortable-decrease]');
+        const next = item.querySelector('[data-sortable-increase]');
+        if (previous) {
+          previous.disabled = index === 0;
+          previous.setAttribute('aria-label', `Move ${label} ${isHorizontal ? 'left' : 'up'}`);
+        }
+        if (next) {
+          next.disabled = index === items.length - 1;
+          next.setAttribute('aria-label', `Move ${label} ${isHorizontal ? 'right' : 'down'}`);
+        }
+      });
+    }
+
+    getAllItems().forEach((item) => {
+      item.setAttribute('tabindex', '-1');
+      createStepControls(item);
+    });
+    markActive(getItems()[0], { focus: false });
+    updateStepControls();
+
+    let dragged = null;
+
+    getAllItems().forEach((item) => {
+      if (item.getAttribute('aria-disabled') === 'true') return;
+
+      item.addEventListener('dragstart', (event) => {
+        dragged = item;
+        item.setAttribute('data-dragging', '');
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', '');
+      });
+
+      item.addEventListener('dragend', () => {
+        item.removeAttribute('data-dragging');
+        list.querySelectorAll('[data-over]').forEach((candidate) => candidate.removeAttribute('data-over'));
+        dragged = null;
+      });
+
+      item.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+        if (!dragged || dragged === item) return;
+        const rect = item.getBoundingClientRect();
+        const midpoint = isHorizontal
+          ? rect.left + rect.width / 2
+          : rect.top + rect.height / 2;
+        const pointer = isHorizontal ? event.clientX : event.clientY;
+        list.querySelectorAll('[data-over]').forEach((candidate) => {
+          if (candidate !== item) candidate.removeAttribute('data-over');
+        });
+        item.setAttribute('data-over', pointer < midpoint ? 'before' : 'after');
+      });
+
+      item.addEventListener('dragleave', () => {
+        item.removeAttribute('data-over');
+      });
+
+      item.addEventListener('drop', (event) => {
+        event.preventDefault();
+        const position = item.getAttribute('data-over');
+        item.removeAttribute('data-over');
+        if (!dragged || dragged === item) return;
+
+        if (position === 'before') list.insertBefore(dragged, item);
+        else list.insertBefore(dragged, item.nextSibling);
+
+        updateStepControls();
+        markActive(dragged);
+        dispatchChange(dragged, 'drag');
+      });
+    });
+
+    list.addEventListener('click', (event) => {
+      const control = event.target.closest('.sortable-step');
+      if (!control || control.disabled) return;
+      const item = control.closest('.sortable-item');
+      if (!item || item.getAttribute('aria-disabled') === 'true') return;
+      const direction = control.hasAttribute('data-sortable-decrease') ? -1 : 1;
+      if (moveItem(item, direction, 'pointer')) {
+        markActive(item, { focus: false });
+        control.focus();
+      }
+    });
+
+    list.addEventListener('keydown', (event) => {
+      if (event.target.closest('.sortable-step')) return;
+      const active = getActiveItem() || list.querySelector(':scope > .sortable-item[tabindex="0"]');
+      if (!active) return;
+      const items = getItems();
+      const index = items.indexOf(active);
+
+      if (event.key === NEXT_KEY && !event.altKey) {
+        event.preventDefault();
+        if (items[index + 1]) markActive(items[index + 1]);
+      } else if (event.key === PREV_KEY && !event.altKey) {
+        event.preventDefault();
+        if (items[index - 1]) markActive(items[index - 1]);
+      } else if (event.key === 'Home') {
+        event.preventDefault();
+        if (items.length) markActive(items[0]);
+      } else if (event.key === 'End') {
+        event.preventDefault();
+        if (items.length) markActive(items[items.length - 1]);
+      } else if (event.key === NEXT_KEY && event.altKey) {
+        event.preventDefault();
+        if (moveItem(active, 1, 'keyboard')) markActive(active);
+      } else if (event.key === PREV_KEY && event.altKey) {
+        event.preventDefault();
+        if (moveItem(active, -1, 'keyboard')) markActive(active);
+      }
+    });
+
+    list.addEventListener('focusin', (event) => {
+      const item = event.target.closest('.sortable-item');
+      if (!item || !list.contains(item)) return;
+      if (event.target.closest('.sortable-step')) markActive(item, { focus: false });
+      else if (event.target === item) markActive(item, { focus: false });
     });
   });
-
-  // -- Keyboard navigation --
-  list.addEventListener('keydown', (e) => {
-    const active = getActiveItem() || list.querySelector('.sortable-item[tabindex="0"]');
-    if (!active) return;
-    const items = getItems();
-    const idx = items.indexOf(active);
-
-    if (e.key === NEXT_KEY && !e.altKey) {
-      e.preventDefault();
-      const next = items[idx + 1];
-      if (next) setActive(next);
-    } else if (e.key === PREV_KEY && !e.altKey) {
-      e.preventDefault();
-      const prev = items[idx - 1];
-      if (prev) setActive(prev);
-    } else if (e.key === 'Home') {
-      e.preventDefault();
-      if (items.length) setActive(items[0]);
-    } else if (e.key === 'End') {
-      e.preventDefault();
-      if (items.length) setActive(items[items.length - 1]);
-
-    } else if (e.key === NEXT_KEY && e.altKey) {
-      e.preventDefault();
-      if (idx < items.length - 1) {
-        const sibling = items[idx + 1];
-        list.insertBefore(active, sibling.nextSibling);
-        const newItems = getItems();
-        const newIdx = newItems.indexOf(active);
-        announce(`${getItemLabel(active)}, moved to position ${newIdx + 1} of ${newItems.length}`);
-        setActive(active);
-        list.dispatchEvent(new CustomEvent('sortable-change', {
-          bubbles: true,
-          detail: { item: active, index: newIdx }
-        }));
-      }
-    } else if (e.key === PREV_KEY && e.altKey) {
-      e.preventDefault();
-      if (idx > 0) {
-        const sibling = items[idx - 1];
-        list.insertBefore(active, sibling);
-        const newItems = getItems();
-        const newIdx = newItems.indexOf(active);
-        announce(`${getItemLabel(active)}, moved to position ${newIdx + 1} of ${newItems.length}`);
-        setActive(active);
-        list.dispatchEvent(new CustomEvent('sortable-change', {
-          bubbles: true,
-          detail: { item: active, index: newIdx }
-        }));
-      }
-    }
-  });
-
-  // -- Focus management --
-  list.addEventListener('focusin', (e) => {
-    const item = e.target.closest('.sortable-item');
-    if (item && list.contains(item)) setActive(item);
-  });
-});
 }
 
 init();

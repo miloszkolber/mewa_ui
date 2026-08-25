@@ -3,11 +3,10 @@
     position: relative;
     width: 100%;
 
-    /* ── Viewport ──────────────────────────────── */
     & .carousel-viewport {
       display: flex;
-      overflow-x: auto;
       gap: var(--space-04);
+      overflow-x: auto;
       overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
@@ -15,74 +14,90 @@
       &::-webkit-scrollbar { display: none; }
     }
 
-    /* ── Slide ─────────────────────────────────── */
     & .carousel-slide {
       flex: 0 0 100%;
       min-width: 0;
       scroll-snap-align: start;
     }
 
-    /* ── Prev / Next buttons ───────────────────── */
     & .carousel-prev,
     & .carousel-next {
       position: absolute;
       top: 50%;
-      translate: 0 -50%;
+      z-index: var(--z-raised);
       display: inline-flex;
       align-items: center;
       justify-content: center;
       width: var(--size-07);
       height: var(--size-07);
       border: var(--border-width-01) solid var(--border-primary);
-       border-radius: 0;
+      border-radius: 0;
       background-color: var(--background);
       color: var(--text-primary);
-      cursor: pointer;
-
       font-size: var(--font-body-small);
-      z-index: var(--z-raised);
+      cursor: pointer;
+      translate: 0 -50%;
 
       &:hover { background-color: var(--surface-secondary); }
+
       &:focus-visible {
         outline: var(--focus-ring-width) solid var(--border-ring);
         outline-offset: var(--border-width-01);
       }
+
       &:disabled {
         background-color: var(--surface-secondary);
         color: var(--text-disabled);
         cursor: not-allowed;
         pointer-events: none;
       }
-      & svg { width: var(--size-04); height: var(--size-04); }
+
+      & svg {
+        width: var(--size-04);
+        height: var(--size-04);
+      }
     }
 
     & .carousel-prev { left: calc(-1 * var(--size-04)); }
     & .carousel-next { right: calc(-1 * var(--size-04)); }
 
-    /* ── Dot indicators ────────────────────────── */
     & .carousel-dots {
       display: flex;
       justify-content: center;
-      gap: var(--space-02);
-      padding-block: var(--space-03);
+      gap: var(--space-01);
+      padding-block: var(--space-02);
     }
 
     & .carousel-dot {
-      width: var(--size-02);
-      height: var(--size-02);
-       border-radius: 0;
-      border: none;
+      display: inline-grid;
+      width: var(--size-06);
+      height: var(--size-06);
+      place-items: center;
       padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--border-secondary);
       cursor: pointer;
-      background-color: var(--border-primary);
+
+      &::before {
+        content: "";
+        width: var(--size-02);
+        height: var(--size-02);
+        background: currentColor;
+      }
 
       &[aria-current="true"] {
-        background-color: var(--text-primary);
-        scale: 1.25;
+        color: var(--text-primary);
+      }
+
+      &[aria-current="true"]::before {
+        width: var(--size-03);
+        height: var(--size-02);
       }
 
       &:hover:not([aria-current="true"]) {
-        background-color: var(--text-muted);
+        color: var(--text-muted);
       }
 
       &:focus-visible {
@@ -91,12 +106,11 @@
       }
     }
 
-    /* ── Counter text ──────────────────────────── */
     & .carousel-counter {
-      text-align: center;
-      font-size: var(--font-body-small);
-      color: var(--text-muted);
       padding-block-start: var(--space-02);
+      color: var(--text-muted);
+      font-size: var(--font-body-small);
+      text-align: center;
     }
   }
 
@@ -105,8 +119,9 @@
     .carousel .carousel-next {
       border-width: var(--border-width-02);
     }
-    .carousel .carousel-dot {
-      border: var(--border-width-01) solid var(--text-primary);
+
+    .carousel .carousel-dot::before {
+      outline: var(--border-width-01) solid currentColor;
     }
   }
 
@@ -117,9 +132,13 @@
       background: ButtonFace;
       color: ButtonText;
     }
+
     .carousel .carousel-dot {
-      background: ButtonText;
-      &[aria-current="true"] { background: Highlight; }
+      color: ButtonText;
+    }
+
+    .carousel .carousel-dot[aria-current="true"] {
+      color: Highlight;
     }
   }
 }

@@ -5,17 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <meta name="description" content="Alert Dialog component — confirmation dialogs using native <dialog> element.">
-  <meta property="og:title" content="Alert dialog — mewa_ui">
-  <meta property="og:description" content="Alert Dialog component — confirmation dialogs using native <dialog> element.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://mewa.local/alert-dialog.html">
-  <meta property="og:site_name" content="mewa_ui">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Alert dialog — mewa_ui">
-  <meta name="twitter:description" content="Alert Dialog component — confirmation dialogs using native <dialog> element.">
+  <meta name="description" content="Alert Dialog component — high-impact confirmation using native dialog semantics.">
   <title>Alert dialog — mewa_ui</title>
-      <script src="js/layout.js"></script>
+  <script src="js/layout.js"></script>
   <link rel="stylesheet" href="../src/base.css">
   <link rel="stylesheet" href="../src/tokens.css">
   <link rel="stylesheet" href="css/docs-theme.css">
@@ -36,10 +28,10 @@
   <link rel="stylesheet" href="../components/collapsible/collapsible.css">
   <link rel="stylesheet" href="../components/combobox/combobox.css">
   <link rel="stylesheet" href="../components/command-palette/command-palette.css">
+  <link rel="stylesheet" href="../components/data-table/data-table.css">
   <link rel="stylesheet" href="../components/date-field/date-field.css">
   <link rel="stylesheet" href="../components/date-picker/date-picker.css">
   <link rel="stylesheet" href="../components/date-range-picker/date-range-picker.css">
-  <link rel="stylesheet" href="../components/data-table/data-table.css">
   <link rel="stylesheet" href="../components/dialog/dialog.css">
   <link rel="stylesheet" href="../components/dropdown-menu/dropdown-menu.css">
   <link rel="stylesheet" href="../components/field/field.css">
@@ -89,101 +81,57 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Alert dialog</h1>
-        <p class="text-muted leading-relaxed mb-6">
-           A modal dialog that interrupts the user and requires a response. Unlike a standard dialog, users cannot dismiss it by clicking the backdrop or pressing Escape — they must choose an action. Built on native <code>&lt;dialog&gt;</code>. Opening and closing are immediate with no animation, and focus returns to the trigger after a choice.
-        </p>
+        <p class="text-muted leading-relaxed mb-6">Use Alert Dialog for an irreversible or high-impact confirmation. Escape closes the native modal. Focus starts on the least destructive action.</p>
       </div>
-        <!-- Basic -->
-        <p class="text-sm font-medium mb-2 mt-6">Basic</p>
-        <p class="text-xs text-muted mb-3">Confirm/cancel pattern with title and description.</p>
-        <div class="preview">
-           <button class="btn" type="button" data-variant="outline" data-alert-dialog-trigger="demo-alert-dialog-1">Delete account</button>
 
-          <dialog id="demo-alert-dialog-1" class="alert-dialog" role="alertdialog" aria-modal="true" aria-labelledby="ad1-title" aria-describedby="ad1-desc">
-            <div class="alert-dialog-content">
-              <div class="alert-dialog-header">
-                <h2 class="alert-dialog-title" id="ad1-title">Are you absolutely sure?</h2>
-                <p class="alert-dialog-description" id="ad1-desc">This action cannot be undone. This will permanently delete your account and remove your data from our servers.</p>
-              </div>
-              <div class="alert-dialog-footer">
-                 <button class="btn" type="button" data-variant="outline" data-alert-dialog-close>Cancel</button>
-                 <button class="btn" type="button" data-variant="destructive" data-alert-dialog-close>Delete</button>
-              </div>
+      <p class="text-sm font-medium mb-2 mt-6">Destructive confirmation</p>
+      <p class="text-xs text-muted mb-3">Keep a clear cancellation path and restore focus after close.</p>
+      <div class="preview">
+        <button class="btn" type="button" data-variant="outline" data-alert-dialog-trigger="demo-alert-dialog" aria-haspopup="dialog">Delete account</button>
+
+        <dialog class="alert-dialog" id="demo-alert-dialog" role="alertdialog" aria-modal="true" aria-labelledby="demo-alert-title" aria-describedby="demo-alert-description">
+          <div class="alert-dialog-content">
+            <div class="alert-dialog-header">
+              <h2 class="alert-dialog-title" id="demo-alert-title">Delete account?</h2>
+              <p class="alert-dialog-description" id="demo-alert-description">This action permanently deletes the account.</p>
             </div>
-          </dialog>
-        </div>
-        <div style="position: relative; margin-top: var(--space-02)">
-          <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-            Copy
-          </button>
-           <pre><code class="language-markup">&lt;button class="btn" type="button" data-variant="outline"
-         data-alert-dialog-trigger="my-alert"&gt;
+            <div class="alert-dialog-footer">
+              <button class="btn" type="button" data-variant="outline" data-alert-dialog-close autofocus>Cancel</button>
+              <button class="btn" type="button" data-variant="destructive" data-alert-dialog-close>Delete account</button>
+            </div>
+          </div>
+        </dialog>
+      </div>
+
+      <div style="position: relative; margin-top: var(--space-02)">
+        <button type="button" class="copy-btn">Copy</button>
+        <pre><code class="language-markup">&lt;button class="btn" type="button" data-variant="outline"
+        data-alert-dialog-trigger="delete-account" aria-haspopup="dialog"&gt;
   Delete account
 &lt;/button&gt;
 
-&lt;dialog id="my-alert" class="alert-dialog"
-        role="alertdialog" aria-modal="true"
-        aria-labelledby="ad-title" aria-describedby="ad-desc"&gt;
+&lt;dialog class="alert-dialog" id="delete-account" role="alertdialog"
+        aria-modal="true" aria-labelledby="delete-title"
+        aria-describedby="delete-description"&gt;
   &lt;div class="alert-dialog-content"&gt;
     &lt;div class="alert-dialog-header"&gt;
-      &lt;h2 class="alert-dialog-title" id="ad-title"&gt;
-        Are you absolutely sure?
-      &lt;/h2&gt;
-      &lt;p class="alert-dialog-description" id="ad-desc"&gt;
-        This action cannot be undone.
+      &lt;h2 class="alert-dialog-title" id="delete-title"&gt;Delete account?&lt;/h2&gt;
+      &lt;p class="alert-dialog-description" id="delete-description"&gt;
+        This action permanently deletes the account.
       &lt;/p&gt;
     &lt;/div&gt;
     &lt;div class="alert-dialog-footer"&gt;
-       &lt;button class="btn" type="button" data-variant="outline"
-               data-alert-dialog-close&gt;Cancel&lt;/button&gt;
-       &lt;button class="btn" type="button" data-variant="destructive"
-               data-alert-dialog-close&gt;Delete&lt;/button&gt;
+      &lt;button class="btn" type="button" data-variant="outline"
+              data-alert-dialog-close autofocus&gt;Cancel&lt;/button&gt;
+      &lt;button class="btn" type="button" data-variant="destructive"
+              data-alert-dialog-close&gt;Delete account&lt;/button&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/dialog&gt;</code></pre>
-        </div>
-
-        <!-- Non-destructive -->
-        <p class="text-sm font-medium mb-2 mt-8">Confirmation</p>
-        <p class="text-xs text-muted mb-3">Non-destructive confirmation with standard action button.</p>
-        <div class="preview">
-           <button class="btn" type="button" data-variant="default" data-alert-dialog-trigger="demo-alert-dialog-2">Publish post</button>
-
-          <dialog id="demo-alert-dialog-2" class="alert-dialog" role="alertdialog" aria-modal="true" aria-labelledby="ad2-title" aria-describedby="ad2-desc">
-            <div class="alert-dialog-content">
-              <div class="alert-dialog-header">
-                <h2 class="alert-dialog-title" id="ad2-title">Publish this post?</h2>
-                <p class="alert-dialog-description" id="ad2-desc">Once published, this post will be visible to all users. You can unpublish it later from the dashboard.</p>
-              </div>
-              <div class="alert-dialog-footer">
-                 <button class="btn" type="button" data-variant="outline" data-alert-dialog-close>Cancel</button>
-                 <button class="btn" type="button" data-variant="default" data-alert-dialog-close>Publish</button>
-              </div>
-            </div>
-          </dialog>
-        </div>
-        <div style="position: relative; margin-top: var(--space-02)">
-          <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-            Copy
-          </button>
-           <pre><code class="language-markup">&lt;button class="btn" type="button" data-alert-dialog-trigger="publish-dialog"&gt;
-  Publish post
-&lt;/button&gt;
-
-&lt;dialog id="publish-dialog" class="alert-dialog" role="alertdialog"
-        aria-modal="true" aria-labelledby="..." aria-describedby="..."&gt;
-  ...
-&lt;/dialog&gt;</code></pre>
-        </div>
-
-        <!-- -- CSS --------------------------------------- -->
-
-        <!-- -- JavaScript -------------------------------- -->
+      </div>
     </main>
   </div>
   <script src="js/site.js" defer></script>
   <script type="module" src="../components/alert-dialog/alert-dialog.js"></script>
-                                                    </body>
+</body>
 </html>

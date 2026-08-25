@@ -1,161 +1,153 @@
-# Pattern: Tabs
+# Tabs
+
+## Purpose
+
+Tabs switches between peer panels inside one route.
+
+Use Tabs when only one related panel should be visible at a time.
+
+Use route links for application navigation.
+
+Do not use Tabs for sequential steps.
 
 ## Native basis
-`role="tablist"` + `role="tab"` + `role="tabpanel"`. No native HTML element
-provides this pattern. Requires JavaScript for keyboard navigation and
-panel switching. Follows the WAI-ARIA Tabs design pattern.
 
----
+No native HTML element provides the complete tabs pattern.
+
+Use `role="tablist"`, `role="tab"`, and `role="tabpanel"`.
+
+The module manages selection, panel visibility, and roving focus.
+
+Tabs uses automatic activation because panel content is already available without noticeable latency.
 
 ## Native Web APIs
-- [WAI-ARIA Tabs pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/) — role contract (`tablist`, `tab`, `tabpanel`) and roving tabindex keyboard navigation
-- [`:has()`](https://developer.mozilla.org/en-US/docs/Web/CSS/:has) — auto-detects vertical orientation for layout switching
-- [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus ring on tabs and panels
-- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — maps active tab indicator to system `Highlight`
 
----
+- [WAI-ARIA Tabs pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/) defines tab roles and keyboard behavior.
+- [`hidden`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden) removes inactive panels from rendering and the accessibility tree.
+- [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) provides keyboard focus treatment.
+- [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) supports documented programmatic activation.
 
 ## Structure
 
+Keep one selected tab.
+
+Keep only the selected tab in the normal tab sequence.
+
+Give every tab and panel a stable ID relationship.
+
 ```html
 <div class="tabs">
-  <!-- Tab list -->
   <div class="tab-list" role="tablist" aria-label="Account settings">
-    <button type="button" class="tab-trigger" role="tab"
+    <button class="tab-trigger"
+            type="button"
+            role="tab"
+            id="tab-account"
             aria-selected="true"
-            aria-controls="panel-account"
-            id="tab-account">
+            aria-controls="panel-account">
       Account
     </button>
-    <button type="button" class="tab-trigger" role="tab"
+    <button class="tab-trigger"
+            type="button"
+            role="tab"
+            id="tab-password"
             aria-selected="false"
             aria-controls="panel-password"
-            id="tab-password"
             tabindex="-1">
       Password
     </button>
   </div>
 
-  <!-- Tab panels -->
-  <div class="tab-content" role="tabpanel"
+  <div class="tab-content"
+       role="tabpanel"
        id="panel-account"
        aria-labelledby="tab-account"
        tabindex="0">
-    Account settings content...
+    Account settings content.
   </div>
 
-  <div class="tab-content" role="tabpanel"
+  <div class="tab-content"
+       role="tabpanel"
        id="panel-password"
        aria-labelledby="tab-password"
        tabindex="0"
        hidden>
-    Password settings content...
+    Password settings content.
   </div>
 </div>
 ```
 
----
+## Orientation
 
-## ARIA
+Omit `aria-orientation` for horizontal Tabs.
 
-| Attribute             | Where          | Value                                    |
-|-----------------------|----------------|------------------------------------------|
-| `role="tablist"`      | tab list       | Always                                   |
-| `role="tab"`          | each trigger   | Always                                   |
-| `role="tabpanel"`     | each panel     | Always                                   |
-| `aria-selected`       | each tab       | `true` for active, `false` for inactive  |
-| `aria-controls`       | each tab       | ID of the associated panel               |
-| `aria-labelledby`     | each panel     | ID of the associated tab                 |
-| `aria-label`          | tablist        | Description of the tab group             |
-| `aria-orientation`    | tablist        | `horizontal` (default) or `vertical`     |
-| `tabindex="0"`        | active tab     | In the tab order                         |
-| `tabindex="-1"`       | inactive tabs  | Removed from tab order (arrow keys only) |
-| `tabindex="0"`        | panels         | Panels are focusable for keyboard users  |
+Set `aria-orientation="vertical"` on the tablist for vertical Tabs.
 
----
+The stylesheet changes layout automatically from the ARIA orientation.
 
-## Keyboard interactions
+Do not add inline orientation styles.
 
-| Key         | Behavior                                              |
-|-------------|-------------------------------------------------------|
-| `Tab`       | Move focus to active tab, then into the active panel  |
-| `ArrowRight`| Move to next tab (horizontal) and activate            |
-| `ArrowLeft` | Move to previous tab (horizontal) and activate        |
-| `ArrowDown` | Move to next tab (vertical) and activate              |
-| `ArrowUp`   | Move to previous tab (vertical) and activate          |
-| `Home`      | Move to first tab and activate                        |
-| `End`       | Move to last tab and activate                         |
-| `Space/Enter`| Activate focused tab (manual activation mode)        |
+## Keyboard
 
----
+| Key | Horizontal | Vertical |
+| --- | --- | --- |
+| `ArrowRight` | Focus and activate the next tab. | No managed action. |
+| `ArrowLeft` | Focus and activate the previous tab. | No managed action. |
+| `ArrowDown` | No managed action. | Focus and activate the next tab. |
+| `ArrowUp` | No managed action. | Focus and activate the previous tab. |
+| `Home` | Focus and activate the first enabled tab. | Focus and activate the first enabled tab. |
+| `End` | Focus and activate the last enabled tab. | Focus and activate the last enabled tab. |
+| `Tab` | Continue normal document focus order. | Continue normal document focus order. |
+
+Arrow-key movement wraps through enabled tabs.
+
+A disabled tab is skipped.
+
+Native button activation also selects a clicked or keyboard-activated tab.
+
+Space and Enter use the native button activation that selects the tab.
 
 ## Programmatic activation
 
-Application code can switch tabs without a click. The module listens for a
-`tabs:activate` CustomEvent on the tablist; dispatch it with the tab id or the
-controlled panel id:
+Dispatch `tabs:activate` on the tablist when application code must select a tab.
+
+Pass the tab ID or controlled panel ID in `detail.id`.
 
 ```js
 tablist.dispatchEvent(new CustomEvent('tabs:activate', {
-  detail: { id: 'tab-password' },
+  detail: { id: 'tab-password' }
 }));
 ```
 
-The id may be a trigger's `id` or the `aria-controls` panel id. Disabled tabs
-and unknown ids are ignored, and activation stays immediate.
+The module ignores an unknown ID.
 
-## Vertical layout
+The module ignores a disabled tab.
 
-For vertical tabs, set `aria-orientation="vertical"` on the tablist. The CSS
-uses `:has()` to detect the orientation and adjust layout automatically — no
-inline styles needed:
+## Variants
 
-```html
-<div class="tabs">
-  <div class="tab-list" role="tablist"
-       aria-orientation="vertical"
-       aria-label="Settings">
-    <button type="button" class="tab-trigger" role="tab" aria-selected="true"
-            aria-controls="panel-general" id="tab-general">General</button>
-    <button type="button" class="tab-trigger" role="tab" aria-selected="false"
-            aria-controls="panel-security" id="tab-security"
-            tabindex="-1">Security</button>
-  </div>
+Use the default grouped track for a compact control-like tab set.
 
-  <div class="tab-content" role="tabpanel"
-       id="panel-general" aria-labelledby="tab-general" tabindex="0">
-    General settings...
-  </div>
-  <div class="tab-content" role="tabpanel"
-       id="panel-security" aria-labelledby="tab-security" tabindex="0" hidden>
-    Security settings...
-  </div>
-</div>
-```
+Use `data-variant="line"` for an underline treatment.
 
-### Vertical CSS
+Both variants use the shared 40px control rhythm.
 
-The vertical layout is handled automatically via `:has()` — when the tablist has
-`aria-orientation="vertical"`, the `.tabs` container switches to flex row layout.
-No additional CSS is needed beyond what's in the main CSS block above.
+Both variants remain square and motionless.
 
-The JavaScript already handles vertical orientation — arrow keys switch to
-Up/Down based on `aria-orientation`.
+## Accessibility
 
-## Visual variants
+Give every tablist an accessible name.
 
-- The default tab list is a grouped track on the page surface and its total height matches the button and input height (40px). Its selected trigger uses the border-primary fill, while inactive triggers use secondary text and remain transparent until hovered.
-- `data-variant="line"` switches to the documented underline treatment.
-- Both treatments remain square and motionless so the tab group follows the shared geometry contract.
+Keep `aria-selected` synchronized with visible panel state.
 
----
+Keep `aria-controls` and `aria-labelledby` relationships valid.
 
-## Notes
+Use `tabindex="0"` on a panel only when panel content needs a focus stop.
 
-- The selected trigger fills its track segment with the border-primary color. Idle triggers stay transparent and use secondary text for readable contrast, and in the line variant hover changes only the text color so the bottom border is never covered.
-- Only the active tab is in the tab order (`tabindex="0"`) — inactive tabs use `tabindex="-1"`
-- Arrow keys cycle through tabs (wrap around) — this is the roving tabindex pattern
-- The active panel uses `tabindex="0"` so it can receive focus from the tab trigger
-- Use `hidden` attribute on inactive panels for accessibility (screen readers skip them)
-- Disabled tabs should have `disabled` attribute and be skipped by keyboard navigation
-- For lazy-loaded content, panels can be rendered empty and populated on activation
+Do not use Tabs for route navigation.
+
+Do not lazy-load panel content when automatic activation would introduce noticeable latency.
+
+## Runtime
+
+Load `tabs.js` whenever Tabs appears.
+
+Without the module, the ARIA roles do not provide panel switching behavior.

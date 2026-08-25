@@ -1,98 +1,96 @@
-# Pattern: Label
+# Label
+
+## Purpose
+
+Label gives a visible name to one native form control.
+
+Use Label with a stable `for` and `id` association.
+
+Use Field when the control also needs help text, errors, or grouped layout.
+
+Do not use placeholder text as the only control name.
 
 ## Native basis
-`<label>` element. Browser provides built-in click-to-focus association with form controls.
 
----
+Use a native `<label>` element.
+
+The browser provides click-to-focus behavior for the associated control.
+
+Label requires no JavaScript.
 
 ## Native Web APIs
-- [`<label>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label) — associates text with a form control via `for`/`id`
-- [`:has()` selector](https://developer.mozilla.org/en-US/docs/Web/CSS/:has) — auto-detects disabled state from adjacent control
-- [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — increases disabled-label opacity for high-contrast preference
-- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — Windows High Contrast Mode support with `GrayText` for disabled labels
 
----
+- [`<label>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label) provides native control association.
+- [`for`](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/for) references the control ID.
+- [`:has()`](https://developer.mozilla.org/en-US/docs/Web/CSS/:has) lets the stylesheet reflect an adjacent disabled control.
+- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) preserves disabled-label contrast.
 
 ## Structure
 
-### Basic
 ```html
 <label class="label" for="email">Email</label>
-<input class="text-field-input" id="email" type="email">
+<input class="text-field-input" id="email" name="email" type="email">
 ```
 
-### With required indicator
+Keep one visible label for each editable form control.
+
+## Required field
+
+Use the native `required` attribute as the source of truth.
+
+Hide a visible required marker from assistive technology when the control already exposes `required`.
+
 ```html
 <label class="label" for="name">
-  Name <span aria-hidden="true" class="text-negative">*</span>
+  Name <span aria-hidden="true">*</span>
 </label>
-<input class="text-field-input" id="name" type="text" required>
+<input class="text-field-input" id="name" name="name" type="text" required>
 ```
 
-### With optional indicator
+## Optional field
+
+Use `.label-hint` for a short optional indicator.
+
 ```html
 <label class="label" for="bio">
-  Bio <span class="label-hint">(optional)</span>
+  Bio <span class="label-hint">Optional</span>
 </label>
-<textarea class="text-field-input" id="bio"></textarea>
+<textarea class="textarea" id="bio" name="bio"></textarea>
 ```
 
-### Disabled (explicit)
+## Disabled field
+
+Prefer the native `disabled` state on the control.
+
+The adjacent Label reflects the disabled control automatically.
+
 ```html
-<label class="label" data-disabled for="disabled-field">Disabled field</label>
-<input class="text-field-input" id="disabled-field" disabled>
+<label class="label" for="plan">Plan</label>
+<select class="select" id="plan" name="plan" disabled>
+  <option>Free</option>
+</select>
 ```
 
-### Disabled (auto-detected)
-The label auto-dims when the adjacent control is disabled — no `data-disabled` needed:
-```html
-<label class="label" for="auto-disabled">Auto-disabled</label>
-<input class="text-field-input" id="auto-disabled" disabled>
-```
+Use `data-disabled` on Label only when no adjacent native disabled control can express the state.
 
-### With checkbox (inline)
-```html
-<div class="flex items-center gap-2">
-  <input class="checkbox" type="checkbox" id="terms">
-  <label class="label" for="terms" style="margin:0;">Accept terms and conditions</label>
-</div>
-```
+## Checkbox, radio, and switch labels
 
-### With switch (inline)
-```html
-<div class="flex items-center gap-2">
-  <input class="switch" type="checkbox" role="switch" id="airplane">
-  <label class="label" for="airplane" style="margin:0;">Airplane Mode</label>
-</div>
-```
+Use the composition defined by Checkbox, Radio Group, or Switch.
 
-### Form field (label + input + description)
-```html
-<div>
-  <label class="label" for="username">Username</label>
-  <input class="text-field-input" id="username" type="text" placeholder="mewa">
-  <p class="field-description">This is your public display name.</p>
-</div>
-```
+Do not add inline margin overrides to Label.
 
----
+Do not recreate those component layouts with utility classes.
 
 ## Accessibility
 
-| Attribute | When | Value |
-|-----------|------|-------|
-| `for` | Always | Matches the `id` of the associated form control |
+Keep `for` equal to the target control ID.
 
-- Clicking the label focuses the associated input — this is native `<label>` behavior.
-- The required indicator `*` uses `aria-hidden="true"` since the `required` attribute on the input already conveys the requirement to assistive technology.
-- Do not use `<label>` without a `for` attribute or a nested input.
-- In `forced-colors` mode, label text maps to system `LinkText` color.
+Keep the visible label text consistent with the accessible control name.
 
----
+Do not use an empty Label.
 
-## Notes
+Do not add a second `aria-label` that conflicts with the visible Label.
 
-- The `.label` class is intentionally minimal — it styles the label text with appropriate font size, weight, and color.
-- Labels auto-detect disabled state from adjacent controls via `:has(+ :disabled)` — the explicit `data-disabled` attribute is also supported.
-- For inline use with checkboxes, switches, or radios, add `style="margin:0;"` to remove the default bottom margin.
-- Labels compose with Text Field, Textarea, Select, Checkbox, Radio Group, Switch, and all other form controls.
+## Runtime
+
+Label requires no component module.

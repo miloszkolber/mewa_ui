@@ -12,34 +12,31 @@ function openAlertDialog(dialog, trigger) {
 }
 
 function init() {
-document.querySelectorAll('[data-alert-dialog-trigger]:not([data-init])').forEach((trigger) => {
-  trigger.dataset.init = '';
-  const dialogId = trigger.dataset.alertDialogTrigger;
-  if (!document.getElementById(dialogId)) {
-    delete trigger.dataset.init;
-    return;
-  }
-  trigger.addEventListener('click', () => {
-    openAlertDialog(document.getElementById(dialogId), trigger);
-  });
-});
-
-document.querySelectorAll('dialog.alert-dialog:not([data-init])').forEach((dialog) => {
-  dialog.dataset.init = '';
-  dialog.addEventListener('cancel', (e) => {
-    e.preventDefault();
-  });
-
-  dialog.querySelectorAll('[data-alert-dialog-close]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      dialog.close();
+  document.querySelectorAll('[data-alert-dialog-trigger]:not([data-init])').forEach((trigger) => {
+    trigger.dataset.init = '';
+    const dialogId = trigger.dataset.alertDialogTrigger;
+    if (!document.getElementById(dialogId)) {
+      delete trigger.dataset.init;
+      return;
+    }
+    trigger.addEventListener('click', () => {
+      openAlertDialog(document.getElementById(dialogId), trigger);
     });
   });
 
-  dialog.addEventListener('close', () => {
-    if (dialog._trigger?.isConnected) dialog._trigger.focus();
+  document.querySelectorAll('dialog.alert-dialog:not([data-init])').forEach((dialog) => {
+    dialog.dataset.init = '';
+
+    dialog.querySelectorAll('[data-alert-dialog-close]').forEach((button) => {
+      button.addEventListener('click', () => {
+        dialog.close();
+      });
+    });
+
+    dialog.addEventListener('close', () => {
+      if (dialog._trigger?.isConnected) dialog._trigger.focus();
+    });
   });
-});
 }
 
 init();

@@ -1,121 +1,122 @@
-# Pattern: Card
+# Card
+
+## Purpose
+
+Card groups one independent object or one small self-contained content set.
+
+Use Card when the group must read as one object.
+
+Do not use Card as the default wrapper for page sections, forms, tables, row lists, or other cards.
 
 ## Native basis
-`<div>` for layout grouping. `<article>` for standalone self-contained content.
-No JavaScript required.
 
----
+Use `<div>` for visual grouping without standalone document meaning.
+
+Use `<article>` when the card can stand on its own outside the surrounding page.
+
+Card adds presentation only.
+
+Card requires no JavaScript.
 
 ## Native Web APIs
-- [CSS Container Queries (`@container`)](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries) — responsive layout based on card container width
-- [`aspect-ratio`](https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio) — intrinsic ratio for card media images
 
----
+- [`<article>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/article) identifies standalone content.
+- [CSS Container Queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries) compact the card when its own container becomes narrow.
 
 ## Structure
 
-```html
-<!-- Standard card -->
-<div class="card">
-  <div class="card-header">
-    <h3 class="card-title">Title</h3>
-    <p class="card-description">Supporting description.</p>
-  </div>
-  <div class="card-content">
-    <!-- body content -->
-  </div>
-  <div class="card-footer">
-    <button type="button" class="btn" data-variant="outline">Cancel</button>
-    <button type="button" class="btn" data-variant="default">Save</button>
-  </div>
-</div>
+Use the header for the object title and supporting context.
 
-<!-- Standalone content (use article) -->
+Use the content region for the primary object content.
+
+Use the footer only when the object owns local actions.
+
+```html
 <article class="card">
   <div class="card-header">
-    <h2 class="card-title">Article Heading</h2>
-    <p class="card-description">Published January 1, 2025</p>
+    <h2 class="card-title">Backup policy</h2>
+    <p class="card-description">Daily snapshot configuration.</p>
   </div>
+
   <div class="card-content">
-    <p>Body text...</p>
+    <p>Keep seven daily snapshots.</p>
+  </div>
+
+  <div class="card-footer">
+    <button class="btn" type="button" data-variant="outline">Edit policy</button>
   </div>
 </article>
+```
 
-<!-- Header only (no footer) -->
-<div class="card">
+Remove a region when the object does not need it.
+
+## Composition
+
+Use App Shell `.app-section` for a full-width working section.
+
+Use Table directly inside an App Section for tabular data.
+
+Use connected rows directly inside an App Section for dense lists.
+
+Use Statistic directly in page composition when a separate object boundary adds no value.
+
+Do not put a Card inside another Card.
+
+Do not wrap Table in Card.
+
+Do not wrap an entire settings form in Card by default.
+
+Do not add Card only to create spacing.
+
+Use the parent layout for spacing between cards.
+
+## Interactive cards
+
+Use an anchor as the Card root only when the whole object has one navigation destination.
+
+```html
+<a class="card" href="/projects/atlas">
   <div class="card-header">
-    <h3 class="card-title">Notifications</h3>
-    <p class="card-description">You have 3 unread messages.</p>
+    <h2 class="card-title">Atlas</h2>
+    <p class="card-description">Open project details.</p>
   </div>
-  <div class="card-content">
-    <!-- content with internal actions -->
-  </div>
-</div>
+</a>
 ```
 
----
+Do not place a button, link, input, or other interactive descendant inside an interactive Card link.
 
-## Semantic element selection
+Use a normal Card with explicit child actions when the object has several actions.
 
-| Use case                          | Element    |
-|-----------------------------------|------------|
-| UI grouping (form, settings panel)| `<div>`    |
-| Blog post, news article           | `<article>`|
-| Product in a listing              | `<article>`|
-| Dashboard metric                  | `<div>`    |
-| Navigation section group          | `<section>`|
+## Behavior
 
----
+Card has no interaction behavior.
 
-## Composition patterns
+Container queries reduce internal padding in narrow card containers.
 
-### Card with image
-```html
-<div class="card" style="overflow:hidden;">
-  <img src="..." alt="..." style="width:100%;aspect-ratio:16/9;object-fit:cover;">
-  <div class="card-header">
-    <h3 class="card-title">Title</h3>
-  </div>
-  <div class="card-content">...</div>
-</div>
-```
+Card uses one outer border.
 
-### Card with header action
-```html
-<div class="card">
-  <div class="card-header" style="flex-direction:row;align-items:center;justify-content:space-between;">
-    <div>
-      <h3 class="card-title">Title</h3>
-      <p class="card-description">Description</p>
-    </div>
-    <button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="More options">
-      <svg>...</svg>
-    </button>
-  </div>
-  <div class="card-content">...</div>
-</div>
-```
+Card uses no shadow.
 
-### Metric card
-```html
-<div class="card">
-  <div class="card-header" style="flex-direction:row;align-items:center;justify-content:space-between;padding-bottom:0.5rem;">
-    <p class="card-description" style="font-size:0.875rem;font-weight:500;">Total Revenue</p>
-    <svg aria-hidden="true">...</svg>
-  </div>
-  <div class="card-content" style="padding-top:0.5rem;">
-    <p style="font-size:1.75rem;font-weight:700;">$45,231.89</p>
-    <p class="card-description">+20.1% from last month</p>
-  </div>
-</div>
-```
+Card uses no radius.
 
----
+Card uses no animation.
 
-## Notes
+## Accessibility
 
-- Card is a container pattern — its children define its purpose
-- Avoid deeply nesting cards (card inside card) — use `--surface-secondary` instead
-- For interactive cards (click to navigate), wrap in `<a>` and apply card classes to it
-- `card-footer` uses `padding-top: 0` to avoid double-spacing with `card-content`
-- For a card grid, use CSS Grid on the parent — the card itself has no layout opinion
+Choose the semantic root before you apply `.card`.
+
+Use a heading when the card needs a document label.
+
+Keep heading levels consistent with the surrounding page.
+
+Keep interactive descendants in normal document order.
+
+Do not add a landmark role to every card.
+
+Do not use a clickable `<div>` as an interactive card.
+
+## Runtime
+
+Card requires no component module.
+
+The complete card remains usable without JavaScript.

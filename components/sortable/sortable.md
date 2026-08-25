@@ -1,122 +1,174 @@
 # Sortable
 
+## Purpose
+
+Sortable reorders a user-controlled list when item order has product meaning.
+
+Use Sortable when users must change execution order, priority, display order, or another persistent sequence.
+
+Do not use Sortable when order is fixed or cosmetic.
+
+Do not make dragging the only pointer path.
+
 ## Native basis
 
-HTML Drag and Drop API + keyboard reordering for accessible drag-and-drop lists. Uses native `draggable`, `DataTransfer`, and DOM manipulation — no SortableJS or drag libraries.
+Sortable uses a native list, draggable list items, compact move buttons, keyboard reordering, and a live status region.
+
+The module provides drag behavior, non-drag pointer controls, roving item focus, announcements, and change events.
 
 ## Native Web APIs
 
-- [Drag and Drop API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API) — native drag/drop with `dragstart`, `dragover`, `drop`, `dragend` events
-- [`draggable`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/draggable) — makes elements natively draggable
-- [`DataTransfer`](https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer) — drag operation data and `effectAllowed`/`dropEffect`
-- [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) — `sortable-change` event dispatched on reorder
-- [`aria-live`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-live) — live region announces position changes to screen readers
-- [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus ring on items
-- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — Windows High Contrast Mode support
-- [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — enhanced contrast support
+- [HTML Drag and Drop API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API) provides optional direct drag interaction.
+- [`draggable`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/draggable) marks items as draggable.
+- [`DataTransfer`](https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer) carries native drag state.
+- [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) reports reordered state.
+- [`aria-live`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-live) announces position changes.
 
 ## Structure
 
-### Default (vertical)
-
 ```html
-<ul class="sortable" role="listbox" aria-label="Reorder items">
-  <li class="sortable-item" draggable="true" role="option" tabindex="0">
-    <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
-    <span>Item 1</span>
+<ul class="sortable" aria-label="Job priority">
+  <li class="sortable-item" draggable="true" tabindex="0">
+    <span class="sortable-handle" aria-hidden="true">
+      <i data-lucide="grip-vertical"></i>
+    </span>
+    <span>Nightly sync</span>
   </li>
-  <li class="sortable-item" draggable="true" role="option" tabindex="-1">
-    <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
-    <span>Item 2</span>
-  </li>
-  <li class="sortable-item" draggable="true" role="option" tabindex="-1">
-    <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
-    <span>Item 3</span>
+  <li class="sortable-item" draggable="true" tabindex="-1">
+    <span class="sortable-handle" aria-hidden="true">
+      <i data-lucide="grip-vertical"></i>
+    </span>
+    <span>Index refresh</span>
   </li>
 </ul>
 ```
 
-### Horizontal
+Use normal list semantics by default.
+
+Do not add `role="listbox"` or `role="option"` unless the application also implements a real selection model.
+
+The module creates compact move controls inside each enabled item.
+
+The generated controls use 32px targets.
+
+## Horizontal orientation
+
+Add `data-orientation="horizontal"` when the ordered objects form a horizontal sequence.
 
 ```html
-<ul class="sortable" role="listbox" aria-label="Reorder items" data-orientation="horizontal">
-  <li class="sortable-item" draggable="true" role="option" tabindex="0">
-    <span>Item A</span>
-  </li>
-  <li class="sortable-item" draggable="true" role="option" tabindex="-1">
-    <span>Item B</span>
-  </li>
+<ul class="sortable"
+    data-orientation="horizontal"
+    aria-label="Pipeline stages">
+  <li class="sortable-item" draggable="true" tabindex="0">Prepare</li>
+  <li class="sortable-item" draggable="true" tabindex="-1">Run</li>
+  <li class="sortable-item" draggable="true" tabindex="-1">Verify</li>
 </ul>
 ```
 
-### Disabled item
+Use horizontal orientation only when horizontal order has meaning.
+
+## Disabled item
+
+Use `aria-disabled="true"` on an item that remains visible but cannot move.
 
 ```html
 <li class="sortable-item" aria-disabled="true" tabindex="-1">
-  <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
-  <span>Locked item</span>
+  <span>Required first step</span>
 </li>
 ```
 
-## Orientation
+Do not set `draggable="true"` on a disabled item.
 
-| `data-orientation` | Direction | Nav keys | Reorder keys |
-| --- | --- | --- | --- |
-| _(default)_ | Vertical (column) | `↑` / `↓` | `Alt + ↑` / `Alt + ↓` |
-| `horizontal` | Horizontal (row) | `←` / `→` | `Alt + ←` / `Alt + →` |
+The module skips disabled items during managed movement.
 
-## States
+## Behavior
 
-| `data-*` / attribute | Element | Visual |
-| --- | --- | --- |
-| `data-dragging` | `.sortable-item` | Reduced opacity + dashed border |
-| `data-over="before"` | `.sortable-item` | Primary-colored top (or start) border |
-| `data-over="after"` | `.sortable-item` | Primary-colored bottom (or end) border |
-| `data-active` | `.sortable-item` | Ring border + accent background (keyboard focus) |
-| `aria-disabled="true"` | `.sortable-item` | Reduced opacity, not draggable |
+Dragging an enabled item can place it before or after another item.
+
+The generated move buttons provide a non-drag single-pointer path.
+
+The first generated button moves the item earlier in the sequence.
+
+The second generated button moves the item later in the sequence.
+
+The module disables a move button at the relevant boundary.
+
+Keyboard navigation moves item focus without changing order.
+
+Alt plus the orientation arrow changes item order.
+
+Every successful reorder updates the live status.
+
+Every successful reorder dispatches `sortable-change`.
+
+State changes are immediate.
 
 ## Keyboard
 
-| Key | Action |
-| --- | --- |
-| `↓` / `→` | Move focus to next item |
-| `↑` / `←` | Move focus to previous item |
-| `Home` | Move focus to first item |
-| `End` | Move focus to last item |
-| `Alt + ↓` / `Alt + →` | Move focused item down / right |
-| `Alt + ↑` / `Alt + ←` | Move focused item up / left |
+For a vertical list, Arrow Down moves focus to the next enabled item.
 
-Arrow direction depends on orientation — vertical uses `↑`/`↓`, horizontal uses `←`/`→`.
+For a vertical list, Arrow Up moves focus to the previous enabled item.
 
-## ARIA
+For a horizontal list, Arrow Right moves focus to the next enabled item.
 
-| Attribute | Element | Purpose |
-| --- | --- | --- |
-| `role="listbox"` | `.sortable` | Identifies container as a reorderable list |
-| `aria-label` | `.sortable` | Accessible name for the list |
-| `role="option"` | `.sortable-item` | Individual draggable item |
-| `draggable="true"` | `.sortable-item` | Enables native drag |
-| `tabindex` | `.sortable-item` | Roving tabindex: `0` on active, `-1` on others |
-| `aria-disabled="true"` | `.sortable-item` | Marks item as non-interactive |
-| `aria-live="assertive"` | `.sortable-live` | Live region announces reorder to screen readers |
+For a horizontal list, Arrow Left moves focus to the previous enabled item.
+
+Home moves focus to the first enabled item.
+
+End moves focus to the last enabled item.
+
+Alt plus the next-direction arrow moves the active item later.
+
+Alt plus the previous-direction arrow moves the active item earlier.
+
+Tab can move into the generated pointer controls.
+
+Enter or Space activates a focused move button.
+
+## States
+
+`data-dragging` marks the actively dragged item.
+
+`data-over="before"` marks a before drop target.
+
+`data-over="after"` marks an after drop target.
+
+`data-active` marks the current roving-focus item.
+
+Do not author these module-managed states as persistent application data.
 
 ## Events
 
-| Event | Target | `detail` |
-| --- | --- | --- |
-| `sortable-change` | `.sortable` | `{ item: HTMLElement, index: number }` |
+The root dispatches `sortable-change` after every successful reorder.
 
-Dispatched via `CustomEvent` after every reorder (drag-drop or keyboard).
+The event bubbles.
 
-## Notes
+The event detail is `{ item, index, source }`.
 
-- JS handles `dragstart`, `dragend`, `dragover`, `dragleave`, and `drop` for mouse/touch reordering.
-- Keyboard reordering uses `Alt + Arrow` following the WAI-ARIA APG rearrangeable listbox pattern.
-- A `.sortable-live` region is auto-created by JS if not present in the markup.
-- `user-select: none` prevents text selection during drag.
-- `cursor: grab` / `cursor: grabbing` provides visual feedback.
-- Drop position is calculated from pointer midpoint — items drop before or after the target.
-- Items update immediately without transitions.
-- `forced-colors: active` maps to system colors for High Contrast Mode.
-- Disabled items (`aria-disabled="true"`) are skipped by keyboard navigation and cannot be dragged.
-- The `sortable-change` event bubbles so ancestors can listen for reorder events.
+`source` is `drag`, `pointer`, or `keyboard`.
+
+Persist the new order in application code after receiving the event.
+
+## Accessibility
+
+Give the list a visible heading or an accessible name when its purpose is not obvious.
+
+Keep item labels visible during reordering.
+
+Keep the move buttons available as the non-drag pointer path.
+
+Keep keyboard reordering available.
+
+Announce the new position after each reorder.
+
+Hide decorative drag-handle icons from assistive technology.
+
+Do not rely on cursor shape or drag visuals as the only explanation of reorder capability.
+
+Do not add selection semantics when the list does not support selection.
+
+## Runtime
+
+Load `sortable.js` whenever Sortable appears.
+
+Without the module, the list content remains readable but the documented reorder behavior is unavailable.

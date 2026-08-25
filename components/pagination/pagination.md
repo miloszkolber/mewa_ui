@@ -1,108 +1,89 @@
 # Pagination
 
+## Purpose
+
+Pagination moves between stable result pages.
+
+Use Pagination when each result page has a navigable URL.
+
+Do not use Pagination for a small result set or an in-page panel switch.
+
+Use Tabs for peer panels inside one route.
+
 ## Native basis
 
-`<nav>` + `<ul>` + `<a>` links for page navigation. Pure CSS — no JavaScript required.
+Use native anchors inside a labelled navigation landmark.
 
----
+Pagination requires no JavaScript.
 
 ## Native Web APIs
 
-- [`<nav>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav) — navigation landmark for screen readers
-- [`aria-current="page"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current) — identifies the active page
-- [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus ring
-- [`prefers-contrast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast) — thickens borders when high-contrast requested
-- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — maps active page border and hover to system colors
-
----
+- [`<nav>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav) provides the navigation landmark.
+- [`<a>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a) preserves URL navigation and browser history.
+- [`aria-current="page"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current) identifies the current result page.
+- [`aria-disabled`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-disabled) can identify a rendered non-link boundary control.
 
 ## Structure
 
-```html
-<nav class="pagination" aria-label="Pagination">
-  <ul class="pagination-list">
-    <li><a class="pagination-prev" href="#" aria-label="Go to previous page">
-      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
-      Previous
-    </a></li>
-    <li><a class="pagination-link" href="#">1</a></li>
-    <li><a class="pagination-link pagination-active" href="#" aria-current="page">2</a></li>
-    <li><a class="pagination-link" href="#">3</a></li>
-    <li><span class="pagination-ellipsis" aria-hidden="true">&hellip;</span></li>
-    <li><a class="pagination-next" href="#" aria-label="Go to next page">
-      Next
-      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-    </a></li>
-  </ul>
-</nav>
-```
+Keep page destinations as real links.
 
-### Simple (page numbers only)
+Render an unavailable Previous or Next control without `href`.
 
 ```html
 <nav class="pagination" aria-label="Pagination">
   <ul class="pagination-list">
-    <li><a class="pagination-link" href="#">1</a></li>
-    <li><a class="pagination-link pagination-active" href="#" aria-current="page">2</a></li>
-    <li><a class="pagination-link" href="#">3</a></li>
-    <li><a class="pagination-link" href="#">4</a></li>
-    <li><a class="pagination-link" href="#">5</a></li>
+    <li>
+      <span class="pagination-prev" aria-disabled="true" aria-label="Previous page">
+        <i data-lucide="chevron-left" aria-hidden="true"></i>
+      </span>
+    </li>
+    <li><a class="pagination-link pagination-active" href="?page=1" aria-current="page">1</a></li>
+    <li><a class="pagination-link" href="?page=2">2</a></li>
+    <li><a class="pagination-link" href="?page=3">3</a></li>
+    <li><span class="pagination-ellipsis" aria-hidden="true">…</span></li>
+    <li>
+      <a class="pagination-next" href="?page=2" aria-label="Next page">
+        <i data-lucide="chevron-right" aria-hidden="true"></i>
+      </a>
+    </li>
   </ul>
 </nav>
 ```
 
-### Icons only (compact)
+Do not leave a working `href` on a visually disabled boundary control.
 
-```html
-<nav class="pagination" aria-label="Pagination">
-  <ul class="pagination-list">
-    <li><a class="pagination-prev" href="#" aria-label="Go to previous page" aria-disabled="true">
-      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
-    </a></li>
-    <li><span style="font-size:0.875rem;color:var(--text-muted);padding:0 0.5rem;">Page 1 of 10</span></li>
-    <li><a class="pagination-next" href="#" aria-label="Go to next page">
-      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-    </a></li>
-  </ul>
-</nav>
-```
+Keep only the current page marked with `aria-current="page"`.
 
----
+## Page range
 
-## ARIA
+Show a compact subset when every page number would make the control difficult to scan.
 
-| Attribute | Element | Purpose |
-|-----------|---------|---------|
-| `aria-label="Pagination"` | `<nav>` | Names the navigation region |
-| `aria-current="page"` | Active link | Identifies the current page |
-| `aria-label="Go to previous/next page"` | Prev/Next | Descriptive label for icon-only triggers |
-| `aria-disabled="true"` | Prev/Next | Disables at page boundaries |
-| `aria-hidden="true"` | Ellipsis `<span>` | Hides decorative ellipsis from screen readers |
+Keep the first, current-nearby, and last useful destinations when the product needs direct page access.
 
----
+Use a decorative ellipsis for omitted ranges.
+
+Do not make the ellipsis interactive.
 
 ## Keyboard
 
-| Key | Action |
-|-----|--------|
-| `Tab` | Moves focus to the next pagination link |
-| `Shift + Tab` | Moves focus to the previous pagination link |
-| `Enter` | Activates the focused link |
+Tab moves through available page links.
 
-All links are native `<a>` elements — keyboard navigation works automatically.
+Enter follows the focused page link.
 
----
+Unavailable boundary controls do not enter the tab sequence.
 
-## Notes
+## Accessibility
 
-- Use `<a>` elements for page links — they support native keyboard focus and navigation.
-- Mark the active page with `aria-current="page"` and the `.pagination-active` class.
-- On the first page, add `aria-disabled="true"` to the Previous link. On the last page, add it to Next.
-- Use `<span class="pagination-ellipsis" aria-hidden="true">` for the "…" indicator — it's not a link.
-- Chevron SVG icons are preferred over text arrows for visual consistency.
-- CSS uses logical properties (`padding-inline`) for automatic RTL support. Prev/next are square icon buttons matching the page-link geometry.
-- No JavaScript required — this is a purely CSS component.
+Give the navigation landmark a concise name.
+
+Keep link text or accessible names clear enough to identify the destination.
+
+Use `aria-current="page"` on the current page link.
+
+Do not use a button for URL page navigation.
+
+Do not use `aria-disabled="true"` as the only mechanism preventing anchor navigation.
+
+## Runtime
+
+Pagination requires no component module.

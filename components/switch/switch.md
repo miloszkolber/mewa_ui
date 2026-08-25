@@ -1,69 +1,92 @@
-# Pattern: Switch
+# Switch
+
+## Purpose
+
+Switch changes an immediate binary system state.
+
+Use Switch when the change takes effect immediately.
+
+Use Checkbox when the value is only submitted later with a form.
+
+Do not use Switch for a multi-value choice.
 
 ## Native basis
-`<input type="checkbox" role="switch">` element styled as a toggle switch.
 
----
+Use `<input type="checkbox" role="switch">`.
+
+The native checkbox owns focus, checked state, and form behavior.
+
+CSS changes the visual presentation.
 
 ## Native Web APIs
-- [`<input type="checkbox">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) — native toggle control
-- [`role="switch"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/switch_role) — communicates on/off semantics
-- [`:checked`](https://developer.mozilla.org/en-US/docs/Web/CSS/:checked) — matches the on state
-- [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus ring
-- [`:has()`](https://developer.mozilla.org/en-US/docs/Web/CSS/:has) — parent-state styling for disabled label
-- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — Windows High Contrast Mode support
 
----
+- [`<input type="checkbox">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) provides native binary state.
+- [`role="switch"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/switch_role) exposes on and off semantics.
+- [`:checked`](https://developer.mozilla.org/en-US/docs/Web/CSS/:checked) exposes the on state to CSS.
+- [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) exposes keyboard focus.
+- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) preserves system high-contrast rendering.
 
 ## Structure
 
-### Default
+Use `.switch-item` for a short label.
 
 ```html
-<div class="switch-item flex items-center gap-2">
+<div class="switch-item">
   <input class="switch" type="checkbox" role="switch" id="airplane">
-  <label for="airplane">Airplane Mode</label>
+  <label for="airplane">Airplane mode</label>
 </div>
 ```
 
-### With description
+Use `.switch-item-block` when the setting needs supporting text.
 
 ```html
-<div class="switch-item" style="display:grid;grid-template-columns:1fr auto;gap:0 0.75rem;align-items:center;">
-  <label for="share" style="font-size:0.875rem;font-weight:var(--font-weight-strong);">Share across devices</label>
-  <input class="switch" type="checkbox" role="switch" id="share" style="grid-row:1/3;">
-  <span style="font-size:var(--font-body-small);color:var(--text-muted);">Sync settings across all your devices.</span>
+<div class="switch-item-block">
+  <label for="share">Share across devices</label>
+  <input class="switch" type="checkbox" role="switch" id="share">
+  <span class="switch-description">Sync settings across all devices.</span>
 </div>
 ```
 
----
+Keep the switch beside the label that names the state.
 
----
+## States
 
-## ARIA
+Use `checked` for the initial on state.
 
-| Attribute | Element | Purpose |
-|---|---|---|
-| `type="checkbox"` | `<input>` | Native toggle behavior |
-| `role="switch"` | `<input>` | Communicates on/off semantics |
-| `checked` | `<input>` | Default on state |
-| `disabled` | `<input>` | Disables interaction |
-| `aria-invalid="true"` | `<input>` | Marks invalid/error state |
-| `<label for="...">` | `<label>` | Associates label with switch |
+Use `disabled` when the setting cannot change.
 
-### Keyboard
+Use `aria-invalid="true"` only when the switch participates in a validation error.
 
-| Key | Action |
-|---|---|
-| `Space` | Toggle the switch on/off |
-| `Tab` / `Shift+Tab` | Move focus to/from the switch |
+Do not use a disabled Switch only to hide a permission problem.
 
----
+Explain the unavailable state when the reason is not obvious.
 
-## Notes
+## Behavior
 
-- Pure CSS — no JavaScript needed.
-- The borderless track pairs with a 1rem thumb inset evenly on both sides; `:checked` swaps logical start/end placement.
-- Uses `appearance: none` with an `::after` thumb. The track keeps a visible border in the default state so the control reads against the page surface, and disabled states keep their track, border, and thumb colors.
-- Wrap in `.switch-item` for automatic disabled label styling via `:has(.switch:disabled)`.
-- `aria-invalid="true"` shows the track in the destructive color.
+Space changes the native checked state.
+
+Tab moves focus through the switch in normal document order.
+
+The visual thumb changes position immediately.
+
+The component adds no JavaScript behavior.
+
+## Accessibility
+
+Keep a visible label.
+
+Associate the label with `for` and `id`.
+
+Keep `role="switch"` on the checkbox.
+
+Do not add a second `aria-checked` state.
+
+Keep the visible label phrased as the setting name.
+
+Do not put “on” or “off” in the label when the switch already exposes that state.
+
+## Runtime
+
+Switch requires no component module.
+
+The complete control remains usable without JavaScript.

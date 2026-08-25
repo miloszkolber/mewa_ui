@@ -1,143 +1,204 @@
 # Sidebar
 
+## Purpose
+
+Sidebar provides persistent application navigation with a collapsible desktop rail and a mobile navigation dialog.
+
+Use Sidebar when an application has several persistent routes that benefit from stable left or right navigation.
+
+Use top navigation when a small flat route set fits comfortably in the header.
+
+Do not use Sidebar for a single-purpose service without a route need.
+
+Do not recreate Sidebar behavior with Layout primitives.
+
 ## Native basis
 
-`<aside>` + `<nav>` + `<dialog>` + `<button>` for a full application sidebar with a flat link list, a collapsible desktop width, a mobile navigation dialog, and a keyboard shortcut.
+Sidebar uses `<aside>`, `<nav>`, native route links, a footer button, and a mobile `<dialog>`.
+
+The module manages desktop collapse, mobile dialog triggers, focus restoration, and the documented keyboard shortcut.
 
 ## Native Web APIs
 
-- [`<aside>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/aside) — complementary content landmark
-- [`<nav>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav) — navigation landmark for assistive technology
-- [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) — native modal for the mobile sidebar overlay
-- [`::backdrop`](https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop) — dialog overlay styling
-- [`<button>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) — keyboard-accessible footer collapse control
-- [`:focus-visible`](https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible) — keyboard-only focus ring on links and controls
-- [`overscroll-behavior`](https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior) — prevents scroll chaining in the nav area
+- [`<aside>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/aside) provides the complementary region.
+- [`<nav>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav) provides route navigation semantics.
+- [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) provides the mobile modal navigation surface.
+- [`aria-current="page"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current) identifies the current route.
+- [`matchMedia()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) coordinates the desktop and mobile modes at the shared shell tier.
 
-## Structure
+## Desktop structure
 
-### Full application layout
+Use `.sidebar-layout` for the rail and workspace pair.
+
+Use `.sidebar-workspace` for the region that contains the toolbar and main content.
 
 ```html
 <div class="sidebar-layout">
-  <aside class="app-sidebar" id="main-sidebar" data-state="expanded" aria-label="Primary navigation">
+  <aside class="app-sidebar"
+         id="workspace-sidebar"
+         data-state="expanded"
+         aria-label="Workspace navigation">
     <div class="sidebar-header">
-      <a class="sidebar-logo" href="/" aria-label="MyApp home">
-        <span class="sidebar-logo-mark" aria-hidden="true"><i data-lucide="command"></i></span>
-        <span class="sidebar-logo-text">MyApp</span>
+      <a class="sidebar-logo" href="/" aria-label="Workspace home">
+        <span class="sidebar-logo-mark" aria-hidden="true">
+          <i data-lucide="command"></i>
+        </span>
+        <span class="sidebar-logo-text">Workspace</span>
       </a>
     </div>
 
     <div class="sidebar-content">
-      <nav class="sidebar-nav" aria-label="Primary">
-        <a class="sidebar-link" href="#" aria-current="page">
-          <i data-lucide="house" aria-hidden="true"></i>
-          <span>Dashboard</span>
+      <nav class="sidebar-nav" aria-label="Workspace">
+        <a class="sidebar-link" href="/overview" aria-current="page">
+          <i data-lucide="layout-dashboard" aria-hidden="true"></i>
+          <span>Overview</span>
         </a>
-        <a class="sidebar-link" href="#inbox">
-          <i data-lucide="inbox" aria-hidden="true"></i>
-          <span>Inbox</span>
-        </a>
-        <a class="sidebar-link" href="#settings">
-          <i data-lucide="settings" aria-hidden="true"></i>
-          <span>Settings</span>
-        </a>
-        <a class="sidebar-link" href="#team">
-          <i data-lucide="users" aria-hidden="true"></i>
-          <span>Team</span>
+        <a class="sidebar-link" href="/jobs">
+          <i data-lucide="activity" aria-hidden="true"></i>
+          <span>Jobs</span>
         </a>
       </nav>
     </div>
 
     <div class="sidebar-footer">
-      <button class="sidebar-trigger" type="button" data-sidebar-trigger="main-sidebar" aria-controls="main-sidebar" aria-label="Hide menu" aria-expanded="true">
+      <button class="sidebar-trigger"
+              type="button"
+              data-sidebar-trigger="workspace-sidebar"
+              aria-controls="workspace-sidebar"
+              aria-expanded="true"
+              aria-label="Hide menu">
         <i data-lucide="panel-left" aria-hidden="true"></i>
         <span class="sidebar-trigger-label">Hide menu</span>
       </button>
     </div>
   </aside>
 
-  <dialog class="sidebar-mobile" id="mobile-sidebar" aria-label="Primary navigation">
-    <button class="sidebar-mobile-close" type="button" aria-label="Close navigation">
-      <i data-lucide="x" aria-hidden="true"></i>
-    </button>
-    <nav class="sidebar-nav" aria-label="Mobile primary">
-      <a class="sidebar-link" href="#" aria-current="page">Dashboard</a>
-      <a class="sidebar-link" href="#inbox">Inbox</a>
-      <a class="sidebar-link" href="#settings">Settings</a>
-    </nav>
-  </dialog>
-
-  <main>
-    <button type="button" data-sidebar-mobile="mobile-sidebar" aria-haspopup="dialog" aria-expanded="false" aria-label="Open primary navigation">
-      <i data-lucide="menu" aria-hidden="true"></i>
-    </button>
-    <!-- Main application content. -->
-  </main>
+  <div class="sidebar-workspace">
+    <main id="main-content">
+      <!-- Route content. -->
+    </main>
+  </div>
 </div>
 ```
 
-### Collapsed
+Keep one flat labelled navigation list when the route set permits it.
+
+Keep route links as native anchors.
+
+Keep the collapse control in the footer.
+
+Use `.sidebar-workspace` instead of a consumer-owned flex wrapper for the normal shell structure.
+
+Do not place business actions in the route list.
+
+## Collapsed state
+
+`data-state="expanded"` uses the full 16rem rail.
+
+`data-state="collapsed"` uses the compact icon rail.
+
+The same links remain in the DOM in both states.
+
+Labels remain available to assistive technology when visually hidden.
+
+The module keeps the footer control label and `aria-expanded` state synchronized.
+
+Use Tooltip only when collapsed icon meaning is not clear enough from the route context.
+
+## Right side
+
+Add `data-side="right"` when application structure requires right-side persistent navigation.
+
+Do not use the right-side variant only for visual novelty.
+
+Keep reading order and route access logical when the visual side changes.
+
+## Mobile navigation
+
+Use a native dialog below the 48rem shell tier.
 
 ```html
-<aside class="app-sidebar" id="main-sidebar" data-state="collapsed" aria-label="Primary navigation">
-  <!-- The same flat nav remains available as an icon rail. -->
-  <div class="sidebar-footer">
-    <button class="sidebar-trigger" type="button" data-sidebar-trigger="main-sidebar" aria-controls="main-sidebar" aria-label="Show menu" aria-expanded="false">
-      <i data-lucide="panel-left" aria-hidden="true"></i>
-      <span class="sidebar-trigger-label">Show menu</span>
-    </button>
-  </div>
-</aside>
+<button class="btn"
+        type="button"
+        data-variant="ghost"
+        data-size="icon-sm"
+        data-sidebar-mobile="workspace-mobile-nav"
+        aria-haspopup="dialog"
+        aria-expanded="false"
+        aria-label="Open workspace navigation">
+  <i data-lucide="menu" aria-hidden="true"></i>
+</button>
+
+<dialog class="sidebar-mobile"
+        id="workspace-mobile-nav"
+        aria-label="Workspace navigation">
+  <button class="sidebar-mobile-close"
+          type="button"
+          aria-label="Close workspace navigation">
+    <i data-lucide="x" aria-hidden="true"></i>
+  </button>
+
+  <nav class="sidebar-nav" aria-label="Mobile workspace">
+    <a class="sidebar-link" href="/overview" aria-current="page">Overview</a>
+    <a class="sidebar-link" href="/jobs">Jobs</a>
+  </nav>
+</dialog>
 ```
 
-The collapse control belongs in `.sidebar-footer`. It is a full-width button with a visible label when the sidebar is expanded and an icon-only, named button when collapsed. Set `data-sidebar-trigger` to the ID of the `<aside>`; `sidebar.js` toggles `data-state`, keeps `aria-expanded` synchronized, and updates the accessible and visible labels.
+Keep the desktop and mobile route sets equivalent.
 
-## Variants
+The module closes the mobile dialog after a route link activates.
 
-| `data-state` | Width | Behavior |
-| --- | --- | --- |
-| `expanded` | 16rem | Full sidebar with icon and text labels |
-| `collapsed` | 3.5rem | Icon rail with visually hidden labels and a footer icon-only collapse control |
+The module closes an open mobile dialog when the viewport crosses above 48rem.
 
-| `data-side` | Position |
-| --- | --- |
-| *(none)* | Left (default) |
-| `right` | Right side, border on left |
+## Behavior
 
-The nav stays flat in both widths. In collapsed mode, link and control labels remain available to assistive technology while CSS centers the icons. The mobile dialog remains closed and `display: none` until its native `open` state is set.
+The desktop collapse control toggles `data-state` between expanded and collapsed.
 
-## ARIA
+`Cmd+B` toggles the first desktop Sidebar on macOS.
 
-| Attribute | Element | Purpose |
-| --- | --- | --- |
-| `aria-label` | `.app-sidebar` or `.sidebar-nav` | Names the complementary and navigation landmarks |
-| `aria-current="page"` | `.sidebar-link` | Identifies the current page link |
-| `aria-controls` | `.sidebar-trigger` | Identifies the desktop sidebar controlled by the button |
-| `aria-expanded` | `.sidebar-trigger` | Reports whether the desktop sidebar is expanded |
-| `aria-label` | `.sidebar-trigger` | Announces “Hide menu” or “Show menu” |
-| `<dialog>` | `.sidebar-mobile` | Native modal with focus management and Escape dismissal |
+`Ctrl+B` toggles the first desktop Sidebar on other platforms.
 
-## Keyboard
+The mobile trigger opens the native dialog with `showModal()`.
 
-| Key | Action |
-| --- | --- |
-| `Cmd+B` | Toggle the desktop sidebar width on macOS |
-| `Ctrl+B` | Toggle the desktop sidebar width on Windows and Linux |
-| `Escape` | Close the mobile sidebar through native dialog behavior |
-| `Tab` | Move through links and the footer control in document order |
+Escape closes the mobile dialog through native behavior.
 
-## Notes
+The module restores focus after mobile navigation closes.
 
-- **Mobile**: Hide the desktop sidebar below 768px and use `<dialog class="sidebar-mobile">` for the mobile navigation dialog. Open it with a separate button using `data-sidebar-mobile="dialog-id"` and `aria-expanded`. Activating a mobile link closes the dialog and preserves native navigation.
-- **Flat navigation**: Put every route in one labelled `<nav class="sidebar-nav">` as a native `<a class="sidebar-link">`.
-- **Collapsed state**: The rail is 56px wide plus its 12px decorative hatch (68px total). Icons remain centered. Link and footer labels are visually hidden but remain accessible through the link text and the button’s updated `aria-label`.
-- **Footer control**: Keep one `.sidebar-trigger` in `.sidebar-footer`, give it an explicit `type="button"`, `data-sidebar-trigger`, `aria-controls`, `aria-expanded`, and accessible label. It shares link geometry — same fixed 40px row height and gutter, no border — so the footer reads as part of the nav.
-- **Row parity**: Links are always 40px tall; collapsed they resolve to 40x40 icon tiles centered in the 56px rail, so margins and paddings stay identical in both states and there is no layout shift.
-- **Brand**: The sidebar header uses the same signet as the app header brand — a 32px square inverted container with a 16px icon, aligned with the item icons below it.
-- **Progressive enhancement**: Links remain native navigation when JavaScript is unavailable. Desktop width changes and the mobile dialog trigger are the only scripted behavior.
-- **No JavaScript**: At narrow widths, `@media (scripting: none)` presents the flat desktop nav as a normal block and hides the inert dialog trigger and footer control.
-- **Responsive resize**: If an open mobile dialog crosses into the desktop breakpoint, the module closes it and restores focus to its trigger.
-- **Sidebar tokens**: Use the shared `--surface-*`, `--text-*`, and `--border-*` roles.
-- **Self-contained**: The sidebar needs no other component CSS for its core layout. Optional tooltips can label collapsed links when a consuming application provides them.
-- **Shell**: Wrap the rail and workspace in `.sidebar-layout`; use `.app-sidebar` for the sticky rail and keep the footer collapse control reachable in both expanded and collapsed states.
+State changes are immediate.
+
+The mobile backdrop uses the semantic overlay surface without blur.
+
+## No-JavaScript behavior
+
+Native route links remain usable without JavaScript.
+
+At 48rem and below, the stylesheet exposes the desktop route list as normal flow when scripting is unavailable.
+
+The stylesheet hides dead mobile and collapse controls when scripting is unavailable.
+
+Desktop collapse and the mobile dialog require the module.
+
+## Accessibility
+
+Give the sidebar and each navigation landmark a clear accessible name.
+
+Use `aria-current="page"` on only the current route in each route list.
+
+Keep the footer collapse control keyboard reachable in both desktop states.
+
+Hide decorative icons from assistive technology.
+
+Keep visible focus on links and controls.
+
+Keep collapsed link text in the accessibility tree.
+
+Do not use tab roles for application routes.
+
+Do not duplicate the same full product brand in adjacent App Shell and Sidebar regions.
+
+## Runtime
+
+Load `sidebar.js` whenever Sidebar uses collapse or mobile behavior.
+
+The route links remain native navigation without the module.

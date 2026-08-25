@@ -1,31 +1,46 @@
-# Pattern: Badge
+# Badge
+
+## Purpose
+
+Badge shows short non-interactive status or metadata.
+
+Use Badge to supplement nearby content with a concise label.
+
+Do not use Badge as a button or link.
+
+Do not use Badge as the only explanation of a status.
 
 ## Native basis
-`<span>` element. No interactivity required — pure visual indicator.
 
----
+Use a `<span>` for inline badge content.
+
+Badge adds presentation only.
+
+Badge requires no JavaScript.
 
 ## Native Web APIs
-- [`<span>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/span) — inline container for phrasing content
 
----
+- [`<span>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/span) provides an inline phrasing container.
+- [`aria-hidden`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-hidden) can hide a purely decorative badge.
 
 ## Structure
 
 ```html
-<span class="badge" data-variant="default">Badge</span>
+<span class="badge" data-variant="secondary">Draft</span>
 ```
 
----
+Keep badge text short.
+
+Keep badge text understandable without color.
 
 ## Variants
 
-| `data-variant` | Purpose                           |
-|----------------|-----------------------------------|
-| `default`      | Primary background, high emphasis  |
-| `secondary`    | Secondary background, medium       |
-| `outline`      | Border only, low emphasis          |
-| `count`        | Fixed 24x24 square counter, inside buttons |
+| `data-variant` | Use |
+| --- | --- |
+| `default` | Use for the strongest neutral metadata label. |
+| `secondary` | Use for normal metadata. |
+| `outline` | Use for low-emphasis metadata. |
+| `count` | Use for a compact static numeric counter. |
 
 ```html
 <span class="badge" data-variant="default">New</span>
@@ -34,20 +49,15 @@
 <span class="badge" data-variant="count">3</span>
 ```
 
-The count variant is a static 24x24 square used for notification counters. When the count exceeds 99, render `99+`.
+Use `99+` when a count greater than 99 does not need an exact visible value.
 
----
+Do not use Count as an interactive target.
 
 ## Status states
 
-Use `data-state` instead of `data-variant` when the badge communicates operational status. The visible label remains the authoritative state, while the filled semantic status surface provides a secondary visual cue. Status badges never use borders.
+Use `data-state` when the badge communicates operational status.
 
-| `data-state` | Purpose |
-|---|---|
-| `positive` | Completed, healthy, connected, or ready |
-| `caution` | Delayed, degraded, or requiring attention |
-| `negative` | Failed, unavailable, or destructive result |
-| `running` | Active work or an operation in progress |
+Use visible status text as the primary meaning.
 
 ```html
 <span class="badge" data-state="positive">Ready</span>
@@ -56,12 +66,28 @@ Use `data-state` instead of `data-variant` when the badge communicates operation
 <span class="badge" data-state="running">Running</span>
 ```
 
-Status changes are immediate and motionless. Do not use `data-state` for decorative color or combine it with `data-variant`.
+Use `positive` for completed, healthy, connected, or ready status.
 
----
+Use `caution` for delayed, degraded, or attention-needed status.
+
+Use `negative` for failed or unavailable status.
+
+Use `running` for active work.
+
+Do not combine `data-state` with `data-variant`.
+
+Do not use status state for decoration.
 
 ## Accessibility
 
-- Use descriptive text content — badges are read inline by screen readers.
-- Do not rely on status color alone. Use a label such as “Ready,” “Delayed,” “Failed,” or “Running.”
-- If the badge is purely decorative, add `aria-hidden="true"`.
+Keep meaningful Badge text in the accessibility tree.
+
+Use `aria-hidden="true"` only when the badge duplicates adjacent accessible text exactly.
+
+Pair status color with visible words.
+
+Do not put essential information only in Badge when surrounding context needs a complete sentence.
+
+## Runtime
+
+Badge requires no component module.

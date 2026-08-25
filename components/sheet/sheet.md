@@ -1,107 +1,152 @@
-# Pattern: Sheet
+# Sheet
+
+## Purpose
+
+Sheet presents a focused modal task aligned to one viewport edge.
+
+Use Sheet when edge alignment helps preserve the user's spatial context or supports a narrow secondary task.
+
+Use Dialog for a centered neutral modal task.
+
+Do not use Sheet only to imitate a sliding-panel aesthetic.
+
+Do not use Sheet for persistent application navigation.
 
 ## Native basis
-`<dialog>` element + `showModal()`. Same native benefits as Dialog:
-- Focus trap (automatically)
-- Escape key to close (automatically)
-- `::backdrop` for overlay
-- `aria-modal` behavior when opened with `showModal()`
 
-A sheet is a dialog variant that slides in from an edge of the screen.
-Uses `data-side` attribute to control which edge: `right` (default), `bottom`, or `left`.
+Sheet uses a native `<dialog>` opened with `showModal()`.
 
----
+`data-side` selects the right, left, or bottom edge.
+
+The module wires documented open and close controls.
+
+The component does not animate between states.
 
 ## Native Web APIs
-- [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) — native modal element with built-in focus trap and Escape-to-close
-- [`HTMLDialogElement.showModal()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) — opens sheet as modal in the top layer with backdrop
-- [`::backdrop`](https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop) — pseudo-element for the overlay behind the sheet
 
----
+- [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) provides modal top-layer behavior, inert background content, and Escape dismissal.
+- [`showModal()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) opens the sheet as a modal.
+- [`::backdrop`](https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop) provides the modal backdrop.
 
 ## Structure
 
 ```html
-<!-- Trigger -->
-<button type="button" class="btn" data-variant="outline"
-        data-sheet-trigger="my-sheet"
+<button class="btn"
+        type="button"
+        data-variant="outline"
+        data-sheet-trigger="settings-sheet"
         aria-haspopup="dialog">
-  Open Sheet
+  Open settings
 </button>
 
-<!-- Sheet -->
-<dialog id="my-sheet"
+<dialog id="settings-sheet"
         class="sheet"
         data-side="right"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="my-sheet-title">
-
+        aria-labelledby="settings-sheet-title">
   <div class="sheet-content">
     <div class="sheet-header">
-      <h2 class="sheet-title" id="my-sheet-title">Sheet Title</h2>
-      <p class="sheet-description">Supporting description.</p>
+      <h2 class="sheet-title" id="settings-sheet-title">Settings</h2>
+      <p class="sheet-description">Configure this workspace.</p>
     </div>
 
     <div class="sheet-body">
-      <!-- Content goes here -->
+      <!-- Focused task content. -->
     </div>
 
     <div class="sheet-footer">
-      <button type="button" class="btn" data-variant="outline" data-sheet-close>
+      <button class="btn"
+              type="button"
+              data-variant="outline"
+              data-sheet-close>
         Cancel
       </button>
-      <button type="button" class="btn" data-variant="default">
+      <button class="btn" type="button" data-variant="default">
         Save changes
       </button>
     </div>
   </div>
 
-  <button type="button" class="sheet-close-x" data-sheet-close aria-label="Close">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M18 6 6 18M6 6l12 12"/>
-    </svg>
+  <button class="sheet-close-x"
+          type="button"
+          data-sheet-close
+          aria-label="Close settings">
+    <i data-lucide="x" aria-hidden="true"></i>
   </button>
 </dialog>
 ```
 
----
+Give every sheet an accessible name through `aria-labelledby` or `aria-label`.
+
+Keep the title visible when it helps task orientation.
 
 ## Sides
 
-| `data-side` | Behavior                           |
-|-------------|------------------------------------|
-| `right`     | Slides in from right edge (default) |
-| `left`      | Slides in from left edge            |
-| `bottom`    | Slides up from bottom edge          |
+Omit `data-side` or use `data-side="right"` for the default right edge.
 
----
+Use `data-side="left"` when the task is spatially related to left-side content.
 
-## ARIA
+Use `data-side="bottom"` for a short task that benefits from full inline width.
 
-| Attribute            | Element          | Value                |
-|----------------------|------------------|----------------------|
-| `role="dialog"`      | `<dialog>`       | Identifies as dialog |
-| `aria-modal="true"`  | `<dialog>`       | Content behind is inert |
-| `aria-labelledby`    | `<dialog>`       | Points to title `id` |
-| `aria-haspopup="dialog"` | trigger     | Indicates dialog will open |
-| `aria-label="Close"` | `sheet-close-x`  | Labels the X button  |
+Do not create a top variant.
 
----
+Do not use side selection only for decoration.
 
-## Wiring conventions
+## Wiring
 
-- `data-sheet-trigger="[id]"` on any element → opens that sheet
-- `data-sheet-close` on any element inside → closes the sheet
-- Click on backdrop → closes (click lands on `<dialog>` itself)
-- Place `<dialog>` elements as direct children of `<body>`
+Set `data-sheet-trigger` to the target dialog ID.
 
----
+Put `data-sheet-close` on explicit close or cancel controls inside the sheet.
 
-## Notes
+Place modal dialogs near the end of `<body>` when practical.
 
-- Right/left sheets have a fixed width of `24rem` with `max-width: 100vw` for small screens.
-- Bottom sheets are full width with `height: auto` — they size to their content.
-- The selector is `dialog.sheet` (element + class) to avoid conflicts with `dialog.dialog`.
-- The `sheet-header` has `padding-right: 2rem` to avoid overlapping the close button.
+Keep application form submission separate from the generic close control.
+
+## Behavior
+
+Activating a documented trigger opens the native dialog with `showModal()`.
+
+Escape closes the sheet through native dialog behavior.
+
+Activating a `data-sheet-close` control closes the sheet.
+
+Backdrop activation closes the sheet when the implementation receives the click on the dialog surface.
+
+Closing restores focus according to the component module behavior.
+
+State changes are immediate.
+
+The sheet does not slide, fade, or transition.
+
+## Action hierarchy
+
+Use one filled primary action when the sheet has a clear commit action.
+
+Use Outline for cancel or secondary actions.
+
+Use a destructive filled action only for a final destructive confirmation.
+
+Use Alert Dialog instead when the user must explicitly confirm a high-impact irreversible action.
+
+## Accessibility
+
+Use the native dialog element.
+
+Do not add a redundant `role="dialog"` to `<dialog>`.
+
+Give icon-only close actions a specific accessible name.
+
+Hide decorative icons from assistive technology.
+
+Keep all required task controls reachable by keyboard.
+
+Keep focus visible inside the sheet.
+
+Do not place essential page content inside a sheet when it should remain visible in normal flow.
+
+## Runtime
+
+Load `sheet.js` whenever Sheet appears.
+
+The documented trigger and close wiring requires the module.
+
+Native Escape behavior remains owned by the browser after the dialog is open.
