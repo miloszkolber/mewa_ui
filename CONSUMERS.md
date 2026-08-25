@@ -12,7 +12,7 @@ Nine services consume this library. Each repository is the source of truth for i
 | moonlight_ui | `/repo/moonlight_ui` | Live bind mount `/repo/ui_library:/ui:ro` | Library edits reach the running container immediately. |
 | homelab_ui | `/repo/homelab_ui` | Live bind mount `/repo/ui_library:/ui:ro` | Library edits reach the running container immediately. |
 | rss | `/repo/rss` | Vendored subset `assets/ui` via `assets/sync-ui.sh` | Run `assets/sync-ui.sh`, then rebuild the image. |
-| dufs | `/repo/dufs` | Vendored `ui/` via `sync-ui.sh`, bind-mounted read-only into the container | Run `./sync-ui.sh`; the running container picks the files up without a rebuild. |
+| dufs | `/repo/dufs` | Vendored `ui/` via `sync-ui.sh`, bind-mounted read-only into the container | Run `./sync-ui.sh`, then restart the container: dufs 0.46 reads its assets package once at startup, so running containers do not pick up synced files. |
 | uncanny_lab | `/repo/uncanny_lab` | Vendored `web/static/ui`, embedded with `go:embed` | Sync the vendored set, then rebuild the image (the binary embeds the assets). |
 | mewa_bookmarks | `/repo/mewa_bookmarks` | Vendored subset `internal/web/static/ui`, embedded with `go:embed`, pinned in `VENDORED.md` | Sync the vendored set, update the pinned commit in `VENDORED.md`, then rebuild the image. |
 
