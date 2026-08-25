@@ -110,10 +110,12 @@ test("shell documentation contains all three shell recipes", () => {
   assert(!/\blayouts\//.test(layouts));
 });
 
-test("component selection documentation is generated rather than hand-maintained", () => {
+test("component selection documentation routes agents through registry metadata", () => {
   const guide = read("system/components.md");
-  assert.match(guide, /This file is generated from `registry\.json`\./);
-  assert.match(guide, /Run `npm run catalog:write`/);
+  assert.match(guide, /Read `registry\.json` for the complete component inventory\./);
+  for (const field of ["purpose", "useWhen", "avoidWhen", "fallback", "jsMode", "files", "stability"]) {
+    assert(guide.includes(`Use ` + "`" + `${field}` + "`"), `system/components.md is missing ${field}`);
+  }
 });
 
 test("foundation token documentation is generated from registry metadata", () => {

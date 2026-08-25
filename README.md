@@ -35,9 +35,9 @@ mewa_ui/
 ├── components/                  exact component contracts and implementations
 ├── docs/                        one static reference page per component
 ├── system/                      agent-facing selection and composition rules
-├── layouts/                     complete serveable reference compositions
-├── registry.json                machine-readable component inventory
+├── registry.json                machine-readable component and token inventory
 ├── DESIGN.md                    canonical design contract
+├── PROMPT.md                    application compliance prompt
 ├── llms.txt                     concise machine router
 └── AGENTS.md                    maintainer workflow
 ```
@@ -102,31 +102,26 @@ Do not wrap a table in a card.
 
 Use red, amber, and green only for status and destructive meaning.
 
-## Application shells
+## Shells
 
-The repository has two shell families.
+mewa_ui does not ship complete layout templates.
 
-The sidebar family uses Sidebar with utility application content.
+Compose application shells from App Shell, Sidebar, Layout, Breadcrumbs, Navigation Menu, and native landmarks.
 
-The top-navigation family uses a semantic header and route links.
+Use the sidebar shell for applications with persistent navigation.
 
-The repository keeps three reference files.
+Use the top-navigation shell for a small flat route set.
 
-- [`layouts/vertical-navbar.html`](layouts/vertical-navbar.html) shows the utility sidebar reference.
-- [`layouts/horizontal-navbar.html`](layouts/horizontal-navbar.html) shows the top-navigation reference.
-- [`layouts/app-shell-sidebar.html`](layouts/app-shell-sidebar.html) shows a branded sidebar composition.
+Use the focused-tool shell for a single-purpose service.
 
-The three files do not define three shell families.
+Read [`system/layouts.md`](system/layouts.md) before you compose a shell.
 
-App Shell supplies reusable shell regions.
+Do not copy a complete page template into the library.
 
-Sidebar supplies collapsible navigation behavior.
-
-`layouts/` supplies complete page compositions.
-
+<!-- COMPONENT-INVENTORY:START -->
 ## Component inventory
 
-The inventory mirrors `registry.json`.
+This section is generated from `registry.json`.
 
 `None` means the component has no module.
 
@@ -233,19 +228,7 @@ The inventory mirrors `registry.json`.
 | Sidebar | Provides collapsible desktop navigation and a mobile navigation dialog. | Required | [`components/sidebar/sidebar.md`](components/sidebar/sidebar.md) · [`docs/sidebar.html`](docs/sidebar.html) |
 | Resizable | Presents two panels with an optional adjustable separator. | Optional | [`components/resizable/resizable.md`](components/resizable/resizable.md) · [`docs/resizable.html`](docs/resizable.html) |
 
-## Layout and pattern ownership
-
-Use Layout for local Grid and Flexbox composition.
-
-Use App Shell for reusable chrome and page regions.
-
-Use Sidebar for collapsible navigation.
-
-Use a system pattern for repeated task composition.
-
-Use a layout file for a complete serveable shell.
-
-Do not move product-specific routes or business state into the library.
+<!-- COMPONENT-INVENTORY:END -->
 
 ## Accessibility baseline
 
@@ -267,9 +250,11 @@ Test forced colors and increased contrast.
 
 ## Documentation contract
 
-Each component skill must state its purpose, native basis, structure, behavior, accessibility requirements, and runtime.
+The registry owns selection metadata.
 
-`system/components.md` states the selection contract for all components.
+`system/components.md` is validated against the registry selection contract.
+
+Each component skill owns implementation-specific markup and behavior.
 
 Use active voice and present tense.
 
@@ -291,6 +276,12 @@ Run the browser smoke suite when Chromium is available.
 
 ```sh
 npm run test:browser
+```
+
+Run the catalog writer after registry selection metadata changes.
+
+```sh
+npm run catalog:write
 ```
 
 Inspect changed interfaces with keyboard-only input.

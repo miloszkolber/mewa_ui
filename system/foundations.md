@@ -18,61 +18,57 @@ Use the entire page as one working surface.
 
 Do not divide every content group into a separate card.
 
-## Color roles
+## Token ownership
 
-Use `--background` for the page canvas.
+Use `src/base.css` for static primitives.
 
-Use `--background-glass` for approved sticky page chrome.
+Use `src/tokens.css` for semantic theme roles.
 
-Use `--surface-primary` for a continuous content region.
+Use `registry.json` to read the purpose of each semantic token.
 
-Use `--surface-primary-glass` for approved sticky primary chrome.
+Do not consume a palette primitive in a component.
 
-Use `--surface-secondary` for selected rows, hover states, quiet groups, and secondary controls.
+Do not invent a semantic token for one component.
 
-Use `--surface-secondary-glass` for approved sticky secondary chrome.
+<!-- TOKEN-REFERENCE:START -->
+## Semantic token reference
 
-Use `--surface-inverted` for the strongest normal action or signet.
+This section is generated from `registry.json`.
 
-Use `--surface-destructive` for a destructive confirmation.
+| Token | Purpose |
+| --- | --- |
+| `--background` | Page canvas background. |
+| `--background-glass` | Translucent page canvas for approved sticky shell chrome. |
+| `--surface-primary` | Primary continuous content surface. |
+| `--surface-primary-glass` | Translucent primary surface for approved sticky chrome. |
+| `--surface-secondary` | Quiet surface for hover, selection, and secondary grouping. |
+| `--surface-secondary-glass` | Translucent secondary surface for approved sticky chrome. |
+| `--surface-positive` | Supporting surface for positive status. |
+| `--surface-negative` | Supporting surface for negative status. |
+| `--surface-caution` | Supporting surface for caution status. |
+| `--surface-overlay` | Backdrop surface behind modal top-layer content. |
+| `--surface-inverted` | Highest-contrast normal surface for primary actions and signets. |
+| `--surface-destructive` | Filled destructive action surface. |
+| `--text-primary` | Primary readable text and icon color. |
+| `--text-secondary` | Supporting readable text and icon color. |
+| `--text-muted` | Metadata and low-emphasis text color. |
+| `--text-disabled` | Disabled text and icon color. |
+| `--text-inverted` | Text and icon color on inverted surfaces. |
+| `--text-positive` | Positive status text and icon color. |
+| `--text-negative` | Negative status text and icon color. |
+| `--text-caution` | Caution status text and icon color. |
+| `--border-primary` | Default structural boundary. |
+| `--border-secondary` | Stronger internal structural boundary. |
+| `--border-muted` | Low-emphasis or dashed boundary. |
+| `--border-subtle` | Quiet boundary for low-separation regions. |
+| `--border-ring` | Authored focus-indicator color. |
+| `--chart-1` | Highest-contrast monochrome chart series. |
+| `--chart-2` | Second monochrome chart series. |
+| `--chart-3` | Third monochrome chart series. |
+| `--chart-4` | Fourth monochrome chart series. |
+| `--chart-5` | Lowest-contrast monochrome chart series. |
 
-Use `--surface-positive` for positive status support.
-
-Use `--surface-caution` for caution status support.
-
-Use `--surface-negative` for negative status support.
-
-Use `--surface-overlay` for a top-layer backdrop.
-
-Use `--text-primary` for primary content.
-
-Use `--text-secondary` for supporting content.
-
-Use `--text-muted` for metadata and low-emphasis labels.
-
-Use `--text-disabled` only for disabled content.
-
-Use `--text-inverted` on an inverted surface.
-
-Use the matching status text role on a status surface.
-
-Use `--border-primary` for normal boundaries.
-
-Use `--border-secondary` for stronger internal boundaries.
-
-Use `--border-muted` for low-emphasis boundaries.
-
-Use `--border-subtle` only when the boundary can remain quiet.
-
-Use `--border-ring` for authored focus indicators.
-
-Do not consume `--color-*` tokens outside foundation files.
-
-Do not use a raw color in a component or layout.
-
-Do not use status color for decoration.
-
-Pair every status color with visible text or an accessible name.
+<!-- TOKEN-REFERENCE:END -->
 
 ## Surface model
 
@@ -162,8 +158,6 @@ Use strong weight for labels, headings, selected routes, and primary values.
 
 Use tabular numerals for changing numeric values.
 
-Keep prose lines near 60 characters when the page contains long reading text.
-
 Keep technical labels concise.
 
 Do not repeat a title in the description.
@@ -206,9 +200,11 @@ Use `--size-07` for icon-only header tools and dense row actions.
 
 Keep icon-only controls square.
 
-Keep adjacent small targets at least 24px by 24px or provide sufficient spacing.
+Keep a custom pointer target at least 24px by 24px when possible.
 
-Do not reduce a target below the component contract.
+Add spacing when a permitted target is smaller than 24px.
+
+Do not reduce a target because the icon is small.
 
 ## Icons
 
@@ -221,8 +217,6 @@ Use the local loader only when the host already provides it.
 Use `currentColor` for icon stroke.
 
 Use a 16px icon in a normal control.
-
-Use a 14px icon in a compact control only when the component contract permits it.
 
 Use `aria-hidden="true"` for a decorative icon.
 
@@ -240,7 +234,7 @@ Use `--background-glass` or a matching glass surface with blur.
 
 Use `--blur-01` for normal sticky chrome.
 
-Use `--blur-02` only when the background remains legible and the component contract permits it.
+Use `--blur-02` only when the component contract permits it.
 
 Keep an opaque semantic background as the fallback.
 
