@@ -1,222 +1,310 @@
 # mewa_ui
 
-mewa_ui is a standalone library of square, border-led, shadow-free interface components built on semantic HTML principles, tokenized CSS, local SVG icons, and small native-first ES modules. It has no framework, no package runtime, and no production build step. Its foundations were originally derived from [shadcn-html](https://github.com/codylindley/shadcn-html) and have since diverged onto their own native-first contract.
+mewa_ui is a framework-free UI library for semantic utility applications.
 
-The canonical consumer surface is the repository root: `src/` for foundations and icons, `components/` for component implementations, `docs/` for the static reference site, and `layouts/` for the two application-shell templates when they are present. New work must use those canonical directories.
+The library uses semantic HTML, tokenized CSS, local SVG icons, and small native-first ES modules.
 
-## Contract at a glance
+The library has no production build step.
 
-- Start with semantic HTML and native controls. Use JavaScript only for behavior that HTML and CSS cannot express.
-- Load `src/base.css` before `src/tokens.css`. Add only the component stylesheets the consuming page uses.
-- Load a component module only when the inventory says `Yes` or `Optional` and the markup uses the behavior it provides. A native fallback must remain usable where the component skill documents one.
-- Use semantic roles from `src/tokens.css`. Red, amber, and green communicate status. Do not hardcode a palette into a component.
-- Geometry is square by default. `--border-radius` is zero, and `--radius-full` or a 50% circle is reserved for objects whose meaning requires circular geometry, such as avatars, radios, progress, or skeleton avatars. Do not add a general radius scale.
-- Elevation is expressed with borders, especially `--border-primary`. Do not add visual shadows, shadow tokens, or focus halos that look like elevation.
-- The canonical source is motionless. Do not add CSS animations, CSS transitions, smooth scrolling, View Transitions, scroll-driven effects, Web Animations, shimmer, or spinner motion. State changes, disclosure, overlay, navigation, and drag updates are immediate. The single exception is the Spinner component's rotation, because a loading indicator without motion is meaningless. If a consuming product adds motion outside mewa_ui, it must provide its own `prefers-reduced-motion` behavior.
-- Use `:focus-visible`, `prefers-contrast: more`, and `forced-colors: active` states. Keep labels, native validation, names, IDs, and ARIA relationships intact.
+The visual system uses square geometry, monochrome surfaces, structural borders, compact density, and soft blur on top-level sticky chrome.
 
-## Provenance
+The library includes 59 self-contained component folders and 59 static component pages.
 
-- Upstream: [codylindley/shadcn-html](https://github.com/codylindley/shadcn-html)
-- Upstream commit: `0964e09e16034e39a244589d457a866171991f1d` (2026-04-19, v0.7.13-alpha)
-- License: MIT (see `LICENSE`; upstream attribution retained)
+## Read the system
+
+Read the files in this order.
+
+1. Read [`DESIGN.md`](DESIGN.md) for the mandatory contract.
+2. Read [`system/foundations.md`](system/foundations.md) for visual rules.
+3. Read [`system/components.md`](system/components.md) for component selection.
+4. Read the matching component skill for exact markup.
+5. Read [`system/patterns.md`](system/patterns.md) for page composition.
+6. Read [`system/layouts.md`](system/layouts.md) for shell composition.
+7. Read [`system/accessibility.md`](system/accessibility.md) for acceptance rules.
+8. Read [`registry.json`](registry.json) for machine-readable assets.
+
+Do not infer an API from another library.
+
+Do not invent undocumented classes, attributes, variants, events, or tokens.
 
 ## Repository map
 
-```
-ui_library/
-├── src/base.css                   ← static palette, fonts, typography, geometry, and browser primitives
-├── src/tokens.css                 ← light and dark semantic color roles
-├── src/geist.woff2                ← Geist variable font, 400–550
-├── src/geistmono.woff2            ← Geist Mono variable font, 400–550
-├── src/icons/                     ← local Lucide SVG files, one file per icon
-├── components/                    ← 59 self-contained component folders
-│   └── {name}/
-│       ├── {name}.md              ← skill: native basis, structure, attributes, and ARIA
-│       ├── {name}.css             ← component stylesheet
-│       └── {name}.js              ← interaction module when the component needs one
-├── docs/                          ← 59 static component pages and doc-site scripts
-├── layouts/                       ← canonical application-shell templates
-└── AGENTS.md                     ← maintainer instructions
+```text
+mewa_ui/
+├── src/                         foundations, fonts, and local icons
+├── components/                  exact component contracts and implementations
+├── docs/                        one static reference page per component
+├── system/                      agent-facing selection and composition rules
+├── layouts/                     complete serveable reference compositions
+├── registry.json                machine-readable component inventory
+├── DESIGN.md                    canonical design contract
+├── llms.txt                     concise machine router
+└── AGENTS.md                    maintainer workflow
 ```
 
-The number in this map is the current source count: every `components/{name}/` directory has a matching skill and stylesheet, and every component has a matching `docs/{name}.html` page. The inventory below is the maintained human-readable index.
+`components/{slug}/{slug}.md` defines exact markup and accessibility behavior.
 
-## Consume the canonical system
+`components/{slug}/{slug}.css` defines component appearance.
 
-### Include foundations and components
+`components/{slug}/{slug}.js` defines required or optional enhancement behavior.
 
-Load the foundations in order, then the stylesheets for the components used by the page:
+`docs/{slug}.html` demonstrates the component.
+
+The documentation page does not define a second API.
+
+## Consume the library
+
+Load the foundations before component styles.
 
 ```html
 <link rel="stylesheet" href="/ui/src/base.css">
 <link rel="stylesheet" href="/ui/src/tokens.css">
 <link rel="stylesheet" href="/ui/components/button/button.css">
-<link rel="stylesheet" href="/ui/components/dialog/dialog.css">
+```
+
+Load a component module only when the registry marks it as required or optional.
+
+```html
 <script type="module" src="/ui/components/dialog/dialog.js"></script>
 ```
 
-The `components/{name}/{name}.md` skill is the markup contract. The `.css` and `.js` files are the implementation source of truth. Use the documented classes and `data-*` attributes exactly. Do not invent a class or attribute because it resembles an API from another UI library.
+Inline local SVG files for the complete no-JavaScript icon path.
 
-### Use local icons
+Never load a remote icon CDN.
 
-Icons live in `src/icons/` as standalone SVG files. Inline the matching SVG for the no-JavaScript path. When a local loader is available, `<i data-lucide="name">` is an optional convenience hook; the doc site's loader is in `docs/js/site.js`. Decorative icons need `aria-hidden="true"`; icon-only controls need an accessible name. Never load the Lucide CDN or any other external icon set.
+Use links for navigation.
 
-### Theme with tokens
+Use buttons for actions.
 
-`src/base.css` owns static primitives such as the Geist font faces, neutral and status palettes, typography, spacing, border widths, and the limited full-circle token. `src/tokens.css` owns semantic roles for light and dark themes: `--background*`, `--surface-*`, `--text-*`, `--border-*`, and `--chart-1` through `--chart-5`. Add or remove `class="dark"` on `<html>` to select the dark block. Put consumer overrides in a stylesheet loaded after both foundation files.
+Preserve labels, IDs, native constraints, accessible names, and ARIA relationships.
 
-### Preserve native behavior
+## Visual contract
 
-Use `<dialog>` for modal surfaces, the Popover API for popovers and tooltips, `<details>/<summary>` for disclosures, `<progress>` for completion, `<meter>` for bounded scalar measurements, `<output>` for computed values, and native form controls wherever the skill calls for them. Use links for navigation and buttons for actions. Keep a keyboard path for pointer or drag interactions. Do not replace native behavior with a framework, a focus-trap library, a positioning library, or a custom form submission path.
+Use square geometry by default.
 
-## Canonical application shells
+Use circles only when the object has circular meaning.
 
-`layouts/` is the only canonical home for complete reusable application-shell templates. The current three templates are `layouts/vertical-navbar.html` for a left collapsible sidebar, `layouts/horizontal-navbar.html` for top navigation, and `layouts/app-shell-sidebar.html` for the branded application shell with a collapsible sidebar and decorative edge accents. Keep all three serveable from the repository root, and compose them from current `src/`, `components/`, and layout-local files. `layouts/layouts.css` owns template-only layout rules, while `layouts/layouts.js` provides local icon inlining and the optional theme toggle. The App Shell component supplies shared header, toolbar, page-overview, status, empty-state, and optional theme primitives for consumer-owned shells.
+Use semantic borders instead of shadows.
 
-### Left collapsible sidebar
+Do not add decorative gradients.
 
-Use the `Sidebar` component for this shell. Start with `.sidebar-layout`, an `<aside class="app-sidebar">`, and a `<main>`. Put every route in one flat, labelled `<nav>` of native links and use `data-state="expanded"` or `data-state="collapsed"` for the two widths. Keep the collapse control in `.sidebar-footer` as a full-width labelled button in the expanded state and an icon-only named button in the collapsed state. The `vertical-navbar.html` template adds the breadcrumb header, workspace content, and optional utility rail around that shell. The `sidebar.js` module owns the footer control, `aria-expanded` synchronization, the `Cmd+B`/`Ctrl+B` shortcut, and the mobile `<dialog>` trigger. Keep the link's `aria-current="page"`. Tooltips on icon-only collapsed links are optional and come from the Tooltip component. Do not copy vertical navbar classes, shell markup, or runtime code into a second implementation.
+Use soft blur only on top-level sticky chrome.
 
-### Top navigation
+Keep the canonical source motionless.
 
-The `layouts/horizontal-navbar.html` template uses a semantic `<header>` with a labelled `<nav>` of native `<a>` routes and an action cluster. Keep route navigation as links, use buttons for actions, and keep decorative icons hidden from assistive technology. Use `components/layout/` primitives and `layouts/layouts.css` for the surrounding content. Use `components/navigation-menu/` only when the layout needs a documented Popover API route group. Do not use tab roles for route navigation.
+Spinner rotation is the only motion exception.
 
-Both shells are immediate and motionless. Use `--border-primary` and semantic surfaces for separation, not shadows or animation. Keep the shell usable at narrow widths, with a visible keyboard path to every control.
+Use one outer section border around dense rows.
+
+Do not put a card inside another card.
+
+Do not wrap a table in a card.
+
+Use red, amber, and green only for status and destructive meaning.
+
+## Application shells
+
+The repository has two shell families.
+
+The sidebar family uses Sidebar with utility application content.
+
+The top-navigation family uses a semantic header and route links.
+
+The repository keeps three reference files.
+
+- [`layouts/vertical-navbar.html`](layouts/vertical-navbar.html) shows the utility sidebar reference.
+- [`layouts/horizontal-navbar.html`](layouts/horizontal-navbar.html) shows the top-navigation reference.
+- [`layouts/app-shell-sidebar.html`](layouts/app-shell-sidebar.html) shows a branded sidebar composition.
+
+The three files do not define three shell families.
+
+App Shell supplies reusable shell regions.
+
+Sidebar supplies collapsible navigation behavior.
+
+`layouts/` supplies complete page compositions.
 
 ## Component inventory
 
-This is the complete current inventory, grouped by the same purpose groups used by `docs/js/layout.js`. `Yes` means the component's module is required for its documented behavior. `Optional` means the native markup works without the module, while the module enables a documented enhanced mode. `No` means the component has no component module. Icon loading is optional when using the doc-site loader, but inline SVG use needs no JavaScript.
+The inventory mirrors `registry.json`.
+
+`None` means the component has no module.
+
+`Optional` means native markup works without the documented enhancement.
+
+`Required` means the documented interaction needs the module.
 
 ### Primitives
 
-| Component | Native basis | JS | Skill and doc |
-|---|---|---|---|
-| Typography | Native HTML text elements: headings, paragraphs, quotes, code, keyboard notation, and lists | No | [`components/typography/typography.md`](components/typography/typography.md) · [`docs/typography.html`](docs/typography.html) |
-| Layout | CSS Grid and Flexbox primitives for containers, stacks, grids, sidebar splits, centering, and opposite-end groups | No | [`components/layout/layout.md`](components/layout/layout.md) · [`docs/layout.html`](docs/layout.html) |
-| Separator | `<hr>` for horizontal rules and `<div role="separator">` for a vertical separator | No | [`components/separator/separator.md`](components/separator/separator.md) · [`docs/separator.html`](docs/separator.html) |
-| Icon | Inline `<svg>` copied from a local standalone SVG file, with an optional loader hook | No | [`components/icon/icon.md`](components/icon/icon.md) · [`docs/icon.html`](docs/icon.html) |
+| Component | Purpose | Runtime | Contract and demo |
+| --- | --- | --- | --- |
+| Typography | Formats document text, code, quotations, keyboard notation, and lists. | None | [`components/typography/typography.md`](components/typography/typography.md) · [`docs/typography.html`](docs/typography.html) |
+| Layout | Creates intrinsic containers, stacks, grids, sidebar splits, centering, and opposite-end groups. | None | [`components/layout/layout.md`](components/layout/layout.md) · [`docs/layout.html`](docs/layout.html) |
+| Separator | Marks a real visual or semantic division. | None | [`components/separator/separator.md`](components/separator/separator.md) · [`docs/separator.html`](docs/separator.html) |
+| Icon | Presents a local Lucide glyph inside text or a control. | None | [`components/icon/icon.md`](components/icon/icon.md) · [`docs/icon.html`](docs/icon.html) |
 
 ### Actions
 
-| Component | Native basis | JS | Skill and doc |
-|---|---|---|---|
-| Button | `<button>`, with the same styling available on navigation `<a>` elements | No | [`components/button/button.md`](components/button/button.md) · [`docs/button.html`](docs/button.html) |
-| Toggle | `<button aria-pressed>` with a two-state pressed value | Yes | [`components/toggle/toggle.md`](components/toggle/toggle.md) · [`docs/toggle.html`](docs/toggle.html) |
-| Toggle Group | `role="group"` containing buttons with `aria-pressed` and roving focus | Yes | [`components/toggle-group/toggle-group.md`](components/toggle-group/toggle-group.md) · [`docs/toggle-group.html`](docs/toggle-group.html) |
-| Button Group | A `<div>` grouping connected `.btn` buttons with an accessible group name | No | [`components/button-group/button-group.md`](components/button-group/button-group.md) · [`docs/button-group.html`](docs/button-group.html) |
-| Toolbar | `role="toolbar"` containing related controls | Yes | [`components/toolbar/toolbar.md`](components/toolbar/toolbar.md) · [`docs/toolbar.html`](docs/toolbar.html) |
+| Component | Purpose | Runtime | Contract and demo |
+| --- | --- | --- | --- |
+| Button | Starts an action, submits a form, or styles a navigation link as a button. | None | [`components/button/button.md`](components/button/button.md) · [`docs/button.html`](docs/button.html) |
+| Toggle | Changes one independent pressed state. | Required | [`components/toggle/toggle.md`](components/toggle/toggle.md) · [`docs/toggle.html`](docs/toggle.html) |
+| Toggle Group | Coordinates a set of related pressed buttons. | Required | [`components/toggle-group/toggle-group.md`](components/toggle-group/toggle-group.md) · [`docs/toggle-group.html`](docs/toggle-group.html) |
+| Button Group | Connects related buttons into one visual control group. | None | [`components/button-group/button-group.md`](components/button-group/button-group.md) · [`docs/button-group.html`](docs/button-group.html) |
+| Toolbar | Groups frequently used controls with managed arrow-key navigation. | Required | [`components/toolbar/toolbar.md`](components/toolbar/toolbar.md) · [`docs/toolbar.html`](docs/toolbar.html) |
 
 ### Forms and inputs
 
-| Component | Native basis | JS | Skill and doc |
-|---|---|---|---|
-| Label | `<label>` associated with a control by `for` and `id` | No | [`components/label/label.md`](components/label/label.md) · [`docs/label.html`](docs/label.html) |
-| Field | A labelled native control or `<fieldset>/<legend>` group with explicit descriptions and errors | No | [`components/field/field.md`](components/field/field.md) · [`docs/field.html`](docs/field.html) |
-| Text Field | A labelled native `<input>` composition with descriptions, errors, autofill, and validation | No | [`components/text-field/text-field.md`](components/text-field/text-field.md) · [`docs/text-field.html`](docs/text-field.html) |
-| Textarea | `<textarea>` with native validation and `field-sizing: content` | No | [`components/textarea/textarea.md`](components/textarea/textarea.md) · [`docs/textarea.html`](docs/textarea.html) |
-| Checkbox | `<input type="checkbox">` with native checked and indeterminate states, plus an optional select-all group enhancement | Optional | [`components/checkbox/checkbox.md`](components/checkbox/checkbox.md) · [`docs/checkbox.html`](docs/checkbox.html) |
-| Radio Group | `<input type="radio">` elements sharing a `name` inside `<fieldset>/<legend>` | No | [`components/radio-group/radio-group.md`](components/radio-group/radio-group.md) · [`docs/radio-group.html`](docs/radio-group.html) |
-| Switch | `<input type="checkbox" role="switch">` | No | [`components/switch/switch.md`](components/switch/switch.md) · [`docs/switch.html`](docs/switch.html) |
-| Slider | `<input type="range">` with native keyboard and touch support | Yes | [`components/slider/slider.md`](components/slider/slider.md) · [`docs/slider.html`](docs/slider.html) |
-| Select | `<select>` with native options and optional `<optgroup>` labels | No | [`components/select/select.md`](components/select/select.md) · [`docs/select.html`](docs/select.html) |
-| Number Field | `<input type="number">` with stacked increment and decrement buttons | Yes | [`components/number-field/number-field.md`](components/number-field/number-field.md) · [`docs/number-field.html`](docs/number-field.html) |
-| File Input | `<input type="file">` with native picker and file-selector styling | No | [`components/file-input/file-input.md`](components/file-input/file-input.md) · [`docs/file-input.html`](docs/file-input.html) |
-| Date Field | `<input type="date">` or `<input type="datetime-local">` with the browser picker | No | [`components/date-field/date-field.md`](components/date-field/date-field.md) · [`docs/date-field.html`](docs/date-field.html) |
-| Date Picker | `<table>` month grid with `role="grid"` and button day cells | Yes | [`components/date-picker/date-picker.md`](components/date-picker/date-picker.md) · [`docs/date-picker.html`](docs/date-picker.html) |
-| Date Range Picker | `<fieldset>` containing two native date inputs and an optional live summary | Optional | [`components/date-range-picker/date-range-picker.md`](components/date-range-picker/date-range-picker.md) · [`docs/date-range-picker.html`](docs/date-range-picker.html) |
-| Combobox | Button trigger and Popover API popup containing a search input and `role="listbox"` | Yes | [`components/combobox/combobox.md`](components/combobox/combobox.md) · [`docs/combobox.html`](docs/combobox.html) |
-| Time Field | `<fieldset>` with labelled hour and minute inputs, an AM/PM `<select>`, and a hidden submitted value | Optional | [`components/time-field/time-field.md`](components/time-field/time-field.md) · [`docs/time-field.html`](docs/time-field.html) |
-| Form | `<form>` with native submission and constraint validation, composed with labelled fields | No | [`components/form/form.md`](components/form/form.md) · [`docs/form.html`](docs/form.html) |
+| Component | Purpose | Runtime | Contract and demo |
+| --- | --- | --- | --- |
+| Label | Names one native form control. | None | [`components/label/label.md`](components/label/label.md) · [`docs/label.html`](docs/label.html) |
+| Field | Composes a label, native control, help text, error text, and related fieldsets. | None | [`components/field/field.md`](components/field/field.md) · [`docs/field.html`](docs/field.html) |
+| Text Field | Collects one line of text with labels, descriptions, icons, and validation. | None | [`components/text-field/text-field.md`](components/text-field/text-field.md) · [`docs/text-field.html`](docs/text-field.html) |
+| Textarea | Collects multi-line text. | None | [`components/textarea/textarea.md`](components/textarea/textarea.md) · [`docs/textarea.html`](docs/textarea.html) |
+| Checkbox | Selects one independent option or several independent options. | Optional | [`components/checkbox/checkbox.md`](components/checkbox/checkbox.md) · [`docs/checkbox.html`](docs/checkbox.html) |
+| Radio Group | Selects one value from a visible set. | None | [`components/radio-group/radio-group.md`](components/radio-group/radio-group.md) · [`docs/radio-group.html`](docs/radio-group.html) |
+| Switch | Changes an immediate binary system state. | None | [`components/switch/switch.md`](components/switch/switch.md) · [`docs/switch.html`](docs/switch.html) |
+| Slider | Selects a value from a continuous or stepped numeric range. | Required | [`components/slider/slider.md`](components/slider/slider.md) · [`docs/slider.html`](docs/slider.html) |
+| Select | Selects one or several values from a fixed native option list. | None | [`components/select/select.md`](components/select/select.md) · [`docs/select.html`](docs/select.html) |
+| Number Field | Collects a numeric value with explicit increment and decrement controls. | Required | [`components/number-field/number-field.md`](components/number-field/number-field.md) · [`docs/number-field.html`](docs/number-field.html) |
+| File Input | Opens the native file picker. | None | [`components/file-input/file-input.md`](components/file-input/file-input.md) · [`docs/file-input.html`](docs/file-input.html) |
+| Date Field | Collects a date or local date and time with the browser control. | None | [`components/date-field/date-field.md`](components/date-field/date-field.md) · [`docs/date-field.html`](docs/date-field.html) |
+| Date Picker | Selects a date from a custom accessible month grid. | Required | [`components/date-picker/date-picker.md`](components/date-picker/date-picker.md) · [`docs/date-picker.html`](docs/date-picker.html) |
+| Date Range Picker | Collects a start date and an end date with native inputs. | Optional | [`components/date-range-picker/date-range-picker.md`](components/date-range-picker/date-range-picker.md) · [`docs/date-range-picker.html`](docs/date-range-picker.html) |
+| Combobox | Selects one option from a searchable list. | Required | [`components/combobox/combobox.md`](components/combobox/combobox.md) · [`docs/combobox.html`](docs/combobox.html) |
+| Time Field | Collects a structured time from native numeric fields and a period selector. | Optional | [`components/time-field/time-field.md`](components/time-field/time-field.md) · [`docs/time-field.html`](docs/time-field.html) |
+| Form | Composes a complete native submission task. | None | [`components/form/form.md`](components/form/form.md) · [`docs/form.html`](docs/form.html) |
 
 ### Data display
 
-| Component | Native basis | JS | Skill and doc |
-|---|---|---|---|
-| Badge | `<span>` for a non-interactive visual indicator | No | [`components/badge/badge.md`](components/badge/badge.md) · [`docs/badge.html`](docs/badge.html) |
-| Avatar | `<img>` inside a `<span>` with text fallback content | Yes | [`components/avatar/avatar.md`](components/avatar/avatar.md) · [`docs/avatar.html`](docs/avatar.html) |
-| Card | `<div>` for grouping or `<article>` for standalone content | No | [`components/card/card.md`](components/card/card.md) · [`docs/card.html`](docs/card.html) |
-| Image | `<figure>` with `<img>`, optional `<figcaption>`, and a native `<dialog>` preview | Yes | [`components/image/image.md`](components/image/image.md) · [`docs/image.html`](docs/image.html) |
-| Statistic | `<div>` containers for a value, label, and optional trend | No | [`components/statistic/statistic.md`](components/statistic/statistic.md) · [`docs/statistic.html`](docs/statistic.html) |
-| Table | `<table>` with semantic caption, header, body, and footer groups | No | [`components/table/table.md`](components/table/table.md) · [`docs/table.html`](docs/table.html) |
-| Data Table | Progressive enhancement around a semantic table, labelled filter, result status, and native pagination links | Optional | [`components/data-table/data-table.md`](components/data-table/data-table.md) · [`docs/data-table.html`](docs/data-table.html) |
-| Collapsible | `<details>` with a visible `<summary>` trigger | No | [`components/collapsible/collapsible.md`](components/collapsible/collapsible.md) · [`docs/collapsible.html`](docs/collapsible.html) |
-| Timeline | Ordered `<ol>` with items connected by a visual line | No | [`components/timeline/timeline.md`](components/timeline/timeline.md) · [`docs/timeline.html`](docs/timeline.html) |
-| Tree View | Nested `<ul>` elements with tree and treeitem roles and native disclosure branches | Yes | [`components/tree-view/tree-view.md`](components/tree-view/tree-view.md) · [`docs/tree-view.html`](docs/tree-view.html) |
-| Carousel | Overflow container with CSS `scroll-snap`, native buttons, and `IntersectionObserver` | Yes | [`components/carousel/carousel.md`](components/carousel/carousel.md) · [`docs/carousel.html`](docs/carousel.html) |
-| Scroll Area | CSS overflow with standard and WebKit scrollbar styling | No | [`components/scroll-area/scroll-area.md`](components/scroll-area/scroll-area.md) · [`docs/scroll-area.html`](docs/scroll-area.html) |
-| Sortable | Native HTML Drag and Drop API plus keyboard reordering | Yes | [`components/sortable/sortable.md`](components/sortable/sortable.md) · [`docs/sortable.html`](docs/sortable.html) |
+| Component | Purpose | Runtime | Contract and demo |
+| --- | --- | --- | --- |
+| Badge | Shows short non-interactive status or metadata. | None | [`components/badge/badge.md`](components/badge/badge.md) · [`docs/badge.html`](docs/badge.html) |
+| Avatar | Shows a person or entity image with a fallback and optional status. | Required | [`components/avatar/avatar.md`](components/avatar/avatar.md) · [`docs/avatar.html`](docs/avatar.html) |
+| Card | Groups one standalone object or a small related content set. | None | [`components/card/card.md`](components/card/card.md) · [`docs/card.html`](docs/card.html) |
+| Image | Presents an image, caption, fallback, and optional larger preview. | Required | [`components/image/image.md`](components/image/image.md) · [`docs/image.html`](docs/image.html) |
+| Statistic | Shows one value with a label, description, and optional trend. | None | [`components/statistic/statistic.md`](components/statistic/statistic.md) · [`docs/statistic.html`](docs/statistic.html) |
+| Table | Presents data with stable row and column relationships. | None | [`components/table/table.md`](components/table/table.md) · [`docs/table.html`](docs/table.html) |
+| Data Table | Adds filtering, sorting, status, and pagination around Table. | Optional | [`components/data-table/data-table.md`](components/data-table/data-table.md) · [`docs/data-table.html`](docs/data-table.html) |
+| Collapsible | Reveals and hides supplementary content. | None | [`components/collapsible/collapsible.md`](components/collapsible/collapsible.md) · [`docs/collapsible.html`](docs/collapsible.html) |
+| Timeline | Presents events or steps in chronological or procedural order. | None | [`components/timeline/timeline.md`](components/timeline/timeline.md) · [`docs/timeline.html`](docs/timeline.html) |
+| Tree View | Presents hierarchical items with expandable branches. | Required | [`components/tree-view/tree-view.md`](components/tree-view/tree-view.md) · [`docs/tree-view.html`](docs/tree-view.html) |
+| Carousel | Presents a sequence of slides in a bounded scroll region. | Required | [`components/carousel/carousel.md`](components/carousel/carousel.md) · [`docs/carousel.html`](docs/carousel.html) |
+| Scroll Area | Contains overflow inside a bounded region. | None | [`components/scroll-area/scroll-area.md`](components/scroll-area/scroll-area.md) · [`docs/scroll-area.html`](docs/scroll-area.html) |
+| Sortable | Reorders a user-owned list. | Required | [`components/sortable/sortable.md`](components/sortable/sortable.md) · [`docs/sortable.html`](docs/sortable.html) |
 
 ### Feedback and status
 
-| Component | Native basis | JS | Skill and doc |
-|---|---|---|---|
-| Spinner | Animated SVG arc loading indicator with `role="status"`; the single sanctioned animated primitive | No | [`components/spinner/spinner.md`](components/spinner/spinner.md) · [`docs/spinner.html`](docs/spinner.html) |
-| Skeleton | Static placeholder `<div>` elements | No | [`components/skeleton/skeleton.md`](components/skeleton/skeleton.md) · [`docs/skeleton.html`](docs/skeleton.html) |
-| Progress | Native `<progress>` element | No | [`components/progress/progress.md`](components/progress/progress.md) · [`docs/progress.html`](docs/progress.html) |
-| Callout | Semantic `<div>` with a context-neutral title and description; opt-in `role="alert"` only for urgent dynamic errors | No | [`components/callout/callout.md`](components/callout/callout.md) · [`docs/callout.html`](docs/callout.html) |
-| Alert Dialog | Native `<dialog>` with `role="alertdialog"` for an explicit response | Yes | [`components/alert-dialog/alert-dialog.md`](components/alert-dialog/alert-dialog.md) · [`docs/alert-dialog.html`](docs/alert-dialog.html) |
-| Toast | `popover="manual"` surface with `role="status"` and a polite live region | Yes | [`components/toast/toast.md`](components/toast/toast.md) · [`docs/toast.html`](docs/toast.html) |
+| Component | Purpose | Runtime | Contract and demo |
+| --- | --- | --- | --- |
+| Spinner | Shows that an indeterminate task is active. | None | [`components/spinner/spinner.md`](components/spinner/spinner.md) · [`docs/spinner.html`](docs/spinner.html) |
+| Skeleton | Reserves the shape of content that is loading. | None | [`components/skeleton/skeleton.md`](components/skeleton/skeleton.md) · [`docs/skeleton.html`](docs/skeleton.html) |
+| Progress | Shows known task completion. | None | [`components/progress/progress.md`](components/progress/progress.md) · [`docs/progress.html`](docs/progress.html) |
+| Callout | Presents persistent important information in the page flow. | None | [`components/callout/callout.md`](components/callout/callout.md) · [`docs/callout.html`](docs/callout.html) |
+| Alert Dialog | Requires an explicit response to a high-impact decision. | Required | [`components/alert-dialog/alert-dialog.md`](components/alert-dialog/alert-dialog.md) · [`docs/alert-dialog.html`](docs/alert-dialog.html) |
+| Toast | Announces a brief non-blocking result. | Required | [`components/toast/toast.md`](components/toast/toast.md) · [`docs/toast.html`](docs/toast.html) |
 
 ### Overlays
 
-| Component | Native basis | JS | Skill and doc |
-|---|---|---|---|
-| Popover | Popover API with `popover` and `popovertarget`, positioned with CSS anchors | Yes | [`components/popover/popover.md`](components/popover/popover.md) · [`docs/popover.html`](docs/popover.html) |
-| Tooltip | `popover="hint"` with CSS anchor positioning for hover and focus hints | Yes | [`components/tooltip/tooltip.md`](components/tooltip/tooltip.md) · [`docs/tooltip.html`](docs/tooltip.html) |
-| Dialog | Native `<dialog>` opened with `showModal()` | Yes | [`components/dialog/dialog.md`](components/dialog/dialog.md) · [`docs/dialog.html`](docs/dialog.html) |
-| Sheet | Native `<dialog>` opened with `showModal()` and a `data-side` edge | Yes | [`components/sheet/sheet.md`](components/sheet/sheet.md) · [`docs/sheet.html`](docs/sheet.html) |
-| Accordion | `<details>/<summary>` disclosures; single-open mode is enhanced, multi-open mode is native | Optional | [`components/accordion/accordion.md`](components/accordion/accordion.md) · [`docs/accordion.html`](docs/accordion.html) |
-| Command Palette | Native `<dialog>` containing a search input and command list | Yes | [`components/command-palette/command-palette.md`](components/command-palette/command-palette.md) · [`docs/command-palette.html`](docs/command-palette.html) |
+| Component | Purpose | Runtime | Contract and demo |
+| --- | --- | --- | --- |
+| Popover | Shows non-modal contextual content in the top layer. | Required | [`components/popover/popover.md`](components/popover/popover.md) · [`docs/popover.html`](docs/popover.html) |
+| Tooltip | Shows a short supplementary hint on hover and focus. | Required | [`components/tooltip/tooltip.md`](components/tooltip/tooltip.md) · [`docs/tooltip.html`](docs/tooltip.html) |
+| Dialog | Contains a focused modal task. | Required | [`components/dialog/dialog.md`](components/dialog/dialog.md) · [`docs/dialog.html`](docs/dialog.html) |
+| Sheet | Presents an edge-aligned modal task. | Required | [`components/sheet/sheet.md`](components/sheet/sheet.md) · [`docs/sheet.html`](docs/sheet.html) |
+| Accordion | Groups several disclosure sections. | Optional | [`components/accordion/accordion.md`](components/accordion/accordion.md) · [`docs/accordion.html`](docs/accordion.html) |
+| Command Palette | Finds and activates global application commands. | Required | [`components/command-palette/command-palette.md`](components/command-palette/command-palette.md) · [`docs/command-palette.html`](docs/command-palette.html) |
 
 ### Navigation
 
-| Component | Native basis | JS | Skill and doc |
-|---|---|---|---|
-| Breadcrumbs | `<nav>` containing an ordered `<ol>` path | No | [`components/breadcrumbs/breadcrumbs.md`](components/breadcrumbs/breadcrumbs.md) · [`docs/breadcrumbs.html`](docs/breadcrumbs.html) |
-| Pagination | `<nav>` containing a list of native `<a>` page links | No | [`components/pagination/pagination.md`](components/pagination/pagination.md) · [`docs/pagination.html`](docs/pagination.html) |
-| Tabs | WAI-ARIA `tablist`, `tab`, and `tabpanel` roles | Yes | [`components/tabs/tabs.md`](components/tabs/tabs.md) · [`docs/tabs.html`](docs/tabs.html) |
-| Dropdown Menu | Popover API with a button trigger and WAI-ARIA menu items | Yes | [`components/dropdown-menu/dropdown-menu.md`](components/dropdown-menu/dropdown-menu.md) · [`docs/dropdown-menu.html`](docs/dropdown-menu.html) |
-| Navigation Menu | `<nav>` and `<ul>` with Popover API dropdown panels | Yes | [`components/navigation-menu/navigation-menu.md`](components/navigation-menu/navigation-menu.md) · [`docs/navigation-menu.html`](docs/navigation-menu.html) |
+| Component | Purpose | Runtime | Contract and demo |
+| --- | --- | --- | --- |
+| Breadcrumbs | Shows the current route within a hierarchy. | None | [`components/breadcrumbs/breadcrumbs.md`](components/breadcrumbs/breadcrumbs.md) · [`docs/breadcrumbs.html`](docs/breadcrumbs.html) |
+| Pagination | Moves between result pages. | None | [`components/pagination/pagination.md`](components/pagination/pagination.md) · [`docs/pagination.html`](docs/pagination.html) |
+| Tabs | Switches among related panels within one route. | Required | [`components/tabs/tabs.md`](components/tabs/tabs.md) · [`docs/tabs.html`](docs/tabs.html) |
+| Dropdown Menu | Shows a compact set of actions from one trigger. | Required | [`components/dropdown-menu/dropdown-menu.md`](components/dropdown-menu/dropdown-menu.md) · [`docs/dropdown-menu.html`](docs/dropdown-menu.html) |
+| Navigation Menu | Groups related site routes in top-level navigation popovers. | Required | [`components/navigation-menu/navigation-menu.md`](components/navigation-menu/navigation-menu.md) · [`docs/navigation-menu.html`](docs/navigation-menu.html) |
 
 ### Application
 
-| Component | Native basis | JS | Skill and doc |
-|---|---|---|---|
-| App Shell | `<body>`, `<header>`, `<nav>`, and `<main>` page frame with native route links and an optional theme enhancement | Optional | [`components/app-shell/app-shell.md`](components/app-shell/app-shell.md) · [`docs/app-shell.html`](docs/app-shell.html) |
-| Sidebar | `<aside>` and `<nav>` with a `<dialog>` mobile overlay, a flat link list, and a footer collapse button | Yes | [`components/sidebar/sidebar.md`](components/sidebar/sidebar.md) · [`docs/sidebar.html`](docs/sidebar.html) |
-| Resizable | Two panels separated by a static `role="separator"`; the optional module adds the keyboard and pointer resizing behavior | Optional | [`components/resizable/resizable.md`](components/resizable/resizable.md) · [`docs/resizable.html`](docs/resizable.html) |
+| Component | Purpose | Runtime | Contract and demo |
+| --- | --- | --- | --- |
+| App Shell | Provides reusable application header, toolbar, page overview, content, status, and empty-state primitives. | Optional | [`components/app-shell/app-shell.md`](components/app-shell/app-shell.md) · [`docs/app-shell.html`](docs/app-shell.html) |
+| Sidebar | Provides collapsible desktop navigation and a mobile navigation dialog. | Required | [`components/sidebar/sidebar.md`](components/sidebar/sidebar.md) · [`docs/sidebar.html`](docs/sidebar.html) |
+| Resizable | Presents two panels with an optional adjustable separator. | Optional | [`components/resizable/resizable.md`](components/resizable/resizable.md) · [`docs/resizable.html`](docs/resizable.html) |
 
-## Migration candidates and coverage gaps
+## Layout and pattern ownership
 
-These candidates are product patterns worth building against the current native, square, motionless contract. They are intentionally listed separately from the shipped inventory so consumers do not mistake a proposal for a supported API. Resizable and Date Range Picker are shipped components and are not migration candidates.
+Use Layout for local Grid and Flexbox composition.
 
-Table remains the structural semantic table component, while Data Table is its optional progressive enhancement. Date Field delegates to the native browser date control, while Date Picker provides the custom accessible month-grid interaction.
+Use App Shell for reusable chrome and page regions.
 
-### Recreate as compositions or focused primitives
+Use Sidebar for collapsible navigation.
 
-- **Attachment row** — compose `File input`, `Badge`, `Progress`, and `Callout` into a removable `<article>` with filename, size, state, and an accessible remove button.
-- **Empty state** — `.app-empty` already covers a concise empty result message. A future illustrated empty composition may combine `Card`, `Image`, `Typography`, and `Button` around one recovery action, but remains a separate product pattern.
-- **Description list** — add a small `<dl>` pattern for metadata-heavy pages before creating a broad “metadata” component.
-- **Diff and chart** — use `<figure>`, `<figcaption>`, native `range`/`output`, SVG or canvas with a textual table fallback, and explicit summaries before introducing a visualization runtime.
-- **Freeform autocomplete** — extend the documented `Combobox` pattern only if a text-entry mode is needed. Do not create a second listbox implementation.
-- **Footer, tag input, OTP input, and hover card** — compare demand and native API support before adding them. Shared application headers are covered by App Shell, while complete template composition remains under `layouts/`.
+Use a system pattern for repeated task composition.
 
-The Kernel UI catalog is a useful parity checklist, not a requirement to add every named component. Its most relevant remaining gaps for this library are richer form composition and message or AI work surfaces. Karl Koch's semantic-HTML-first principles reinforce the existing contract: start with native elements, let pseudo-classes and browser validation express state, use `data-*` only for state the platform cannot represent, and keep the HTML useful without a framework runtime. Review [Karl Koch's semantic-HTML-first article](https://karlkoch.me/writing/why-i-built-a-semantic-html-first-library/) and the [Kernel UI component catalog](https://www.kernelui.com/components/) before promoting a candidate into the supported inventory.
+Use a layout file for a complete serveable shell.
 
-## Documentation site
+Do not move product-specific routes or business state into the library.
 
-The current documentation site is static and has one page per component. There is no `docs/index.html`; serve `docs/` over HTTP and start at `typography.html`. The site navigation and router are centralized in `docs/js/layout.js`. Navigation imports destination module scripts before swapping `<main>` immediately and deliberately has no View Transition or other animation. `docs/js/site.js` owns doc-site-only behavior such as local icon inlining, copy buttons, and page-ready hooks.
+## Accessibility baseline
 
-Doc pages load the foundation styles and the complete component stylesheet list, plus only the modules their demos use; the router imports a destination page's modules before swapping content. Consumers should load only the assets listed by the component inventory. The pages show copyable HTML examples, not generated CSS or JavaScript source.
+Start with native HTML before ARIA.
 
-## Maintain the system
+Keep visible focus on every interactive element.
 
-- Keep each component self-contained in `components/{name}/`. Its skill documents the HTML pattern, attributes, native basis, keyboard model, and ARIA. Edit the stylesheet and module directly. Do not create a framework wrapper or a second source tree.
-- When adding a component, add its skill, stylesheet, optional module, and `docs/{name}.html`. Add the page to `NAV` and `BUILT` in `docs/js/layout.js`, and add its stylesheet link following the current doc-page convention, and its module script only on pages whose demos use it.
-- Update the 59-row inventory in this file whenever a component is added, removed, renamed, or changes its JS requirement. Verify the row against the actual `components/{name}/` directory, the skill's Native basis section, and the matching doc page.
-- Keep component docs, markup examples, CSS, and JS aligned. Do not document a variant, state, API, or layout that the current source does not implement.
-- Preserve the no-animation contract, square geometry, semantic token usage, native fallback behavior, keyboard path, contrast modes, and forced-colors support in every change.
-- Keep `docs/` imports and `docs/js/layout.js` synchronized. A missing import can make a cross-page demo fail silently.
+Keep every pointer interaction available from a keyboard.
 
-Before changing a component skill or doc page, review the current component implementation and the relevant native references. The skill file is the markup reference; the stylesheet and module are the executable contract.
+Keep every drag interaction available through another single-pointer method.
+
+Keep text usable at 200 percent zoom.
+
+Keep content usable at 320 CSS pixels without two-dimensional page scrolling.
+
+Keep status understandable without color.
+
+Test forced colors and increased contrast.
+
+## Documentation contract
+
+Each component skill must state its purpose, native basis, structure, behavior, accessibility requirements, and runtime.
+
+`system/components.md` states the selection contract for all components.
+
+Use active voice and present tense.
+
+Use one instruction in each sentence.
+
+Keep every rule explicit and self-contained.
+
+Do not add extra files inside a component folder.
+
+## Validation
+
+Run the dependency-free contract suites.
+
+```sh
+npm test
+```
+
+Run the browser smoke suite when Chromium is available.
+
+```sh
+npm run test:browser
+```
+
+Inspect changed interfaces with keyboard-only input.
+
+Inspect changed interfaces at 200 percent zoom.
+
+Inspect changed interfaces at 320 CSS pixels.
+
+Inspect changed interfaces in forced-colors mode.
+
+## Provenance
+
+The original foundations came from shadcn-html.
+
+The current library follows its own native-first contract.
+
+The repository uses the MIT license.
