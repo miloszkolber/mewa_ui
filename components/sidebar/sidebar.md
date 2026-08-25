@@ -28,6 +28,10 @@ The module manages desktop collapse, mobile dialog triggers, focus restoration, 
 
 ## Desktop structure
 
+Use `.sidebar-layout` for the rail and workspace pair.
+
+Use `.sidebar-workspace` for the region that contains the toolbar and main content.
+
 ```html
 <div class="sidebar-layout">
   <aside class="app-sidebar"
@@ -69,9 +73,11 @@ The module manages desktop collapse, mobile dialog triggers, focus restoration, 
     </div>
   </aside>
 
-  <main id="main-content">
-    <!-- Route content. -->
-  </main>
+  <div class="sidebar-workspace">
+    <main id="main-content">
+      <!-- Route content. -->
+    </main>
+  </div>
 </div>
 ```
 
@@ -80,6 +86,8 @@ Keep one flat labelled navigation list when the route set permits it.
 Keep route links as native anchors.
 
 Keep the collapse control in the footer.
+
+Use `.sidebar-workspace` instead of a consumer-owned flex wrapper for the normal shell structure.
 
 Do not place business actions in the route list.
 
