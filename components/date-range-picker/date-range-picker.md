@@ -1,142 +1,179 @@
 # Date Range Picker
 
+## Purpose
+
+Date Range Picker collects a start date and an end date as one submitted interval.
+
+Use Date Range Picker when both endpoints belong to the same task and native date inputs meet the interaction need.
+
+Use Date Field for one date.
+
+Use Date Picker when the interface needs a visible custom month grid.
+
+Do not use Date Range Picker as a custom calendar surface.
+
 ## Native basis
 
-Date Range Picker is a native-first pair of `<input type="date">` controls. A `<fieldset>` and `<legend>` name the group, while separate labels keep the start and end controls independently addressable. The optional module progressively adds cross-field constraints and a range status. Without JavaScript, both date inputs still open the browser or operating-system date picker and submit ordinary form values.
+Date Range Picker uses two native `<input type="date">` controls inside a `<fieldset>`.
 
-## Native web APIs
+Each date remains independently editable and submittable without JavaScript.
 
-- [`<input type="date">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date) — date editing and the browser's native calendar UI
-- [`<fieldset>` and `<legend>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset) — accessible group naming
-- [`min` and `max`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date#min) — native date bounds
-- [`setCustomValidity()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/setCustomValidity) — optional cross-field validation added by the module
-- [`aria-errormessage`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-errormessage) — associates an active error with a control only while it is invalid
-- [`<output>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/output) — optional range status
+The optional module adds chronological cross-field validation and a shared status.
+
+## Native Web APIs
+
+- [`<input type="date">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date) provides date editing and the native picker.
+- [`<fieldset>` and `<legend>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset) provide group semantics.
+- [`min` and `max`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date#min) constrain native date values.
+- [`setCustomValidity()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/setCustomValidity) adds the optional chronological error.
+- [`aria-errormessage`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-errormessage) references the active error.
+- [`<output>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/output) provides the optional range summary.
 
 ## Structure
 
-### No-JavaScript fallback
-
 ```html
 <fieldset class="date-range-picker">
-  <legend>Trip dates</legend>
-  <p class="date-range-description" id="trip-dates-description">
-    Choose a start and end date.
-  </p>
-  <div class="date-range-controls">
-    <div class="date-range-field">
-      <label for="trip-start">Start date</label>
-      <input class="date-range-input" data-range-start id="trip-start"
-             name="start" type="date"
-             aria-describedby="trip-dates-description">
-    </div>
-    <span class="date-range-separator" aria-hidden="true">to</span>
-    <div class="date-range-field">
-      <label for="trip-end">End date</label>
-      <input class="date-range-input" data-range-end id="trip-end"
-             name="end" type="date"
-             aria-describedby="trip-dates-description">
-    </div>
-  </div>
-  <p class="date-range-error" data-range-error id="trip-dates-error" role="alert" hidden>
-    End date must be on or after the start date.
-  </p>
-  <output class="date-range-status" data-range-status aria-live="polite"></output>
-</fieldset>
-```
-
-The two controls are independently focusable and submit `start=YYYY-MM-DD` and `end=YYYY-MM-DD` when they have names. Add static `min` and `max` attributes when a server-rendered form needs bounds even if JavaScript is unavailable.
-
-### Required range
-
-```html
-<fieldset class="date-range-picker">
-  <legend>Reservation dates</legend>
-  <div class="date-range-controls">
-    <div class="date-range-field">
-      <label for="reservation-start">Start date <span aria-hidden="true">*</span></label>
-      <input class="date-range-input" data-range-start id="reservation-start"
-             name="start" type="date" required>
-    </div>
-    <span class="date-range-separator" aria-hidden="true">to</span>
-    <div class="date-range-field">
-      <label for="reservation-end">End date <span aria-hidden="true">*</span></label>
-      <input class="date-range-input" data-range-end id="reservation-end"
-             name="end" type="date" required>
-    </div>
-  </div>
-</fieldset>
-```
-
-`required` belongs on both native inputs. The indicators are decorative because the browser and the labels already expose the required state.
-
-### Known invalid range
-
-```html
-<fieldset class="date-range-picker" data-invalid>
   <legend>Report range</legend>
+  <p class="date-range-description" id="report-range-help">
+    Choose the first and last date to include.
+  </p>
+
   <div class="date-range-controls">
     <div class="date-range-field">
       <label for="report-start">Start date</label>
-      <input class="date-range-input" data-range-start id="report-start"
-             type="date" value="2026-08-21">
+      <input class="date-range-input"
+             id="report-start"
+             name="start"
+             type="date"
+             data-range-start
+             aria-describedby="report-range-help">
     </div>
+
     <span class="date-range-separator" aria-hidden="true">to</span>
+
     <div class="date-range-field">
       <label for="report-end">End date</label>
-      <input class="date-range-input" data-range-end id="report-end"
-             type="date" value="2026-08-10" aria-invalid="true"
-             aria-errormessage="report-error">
+      <input class="date-range-input"
+             id="report-end"
+             name="end"
+             type="date"
+             data-range-end
+             aria-describedby="report-range-help">
     </div>
   </div>
-  <p class="date-range-error" id="report-error" role="alert">
+
+  <p class="date-range-error"
+     id="report-range-error"
+     data-range-error
+     role="alert"
+     hidden>
     End date must be on or after the start date.
   </p>
+
+  <output class="date-range-status"
+          data-range-status
+          aria-live="polite"></output>
 </fieldset>
 ```
 
-Use `data-invalid` on the group when an application or server check knows the range is invalid. Keep `aria-invalid="true"` on the affected native controls.
+`data-range-start` and `data-range-end` are the required enhancement hooks.
+
+The description, error, and output are optional.
+
+Keep `name` attributes when the values belong to a form submission.
+
+## Required range
+
+Put `required` on both native inputs when both values are required.
+
+Do not use a visual asterisk as the source of required state.
+
+Use native `min` and `max` values when static bounds are known before JavaScript runs.
+
+## Known server error
+
+Keep server-rendered invalid state in the markup.
+
+Put `aria-invalid="true"` on the affected input.
+
+Reference the visible error with `aria-errormessage`.
+
+Use `data-invalid` on the root only as the documented group styling hook.
+
+The module preserves server-owned invalid state when its own chronological condition becomes valid.
 
 ## Progressive enhancement
 
-Load `date-range-picker.js` after the markup when the application wants cross-field behavior. Each `.date-range-picker` is initialized once using `data-init`; a `MutationObserver` initializes pickers inserted by an SPA. The module:
+Load the module when the application needs cross-field ordering behavior.
 
-1. Keeps author-provided `min` and `max` bounds and adds `start` as the end input's minimum and `end` as the start input's maximum.
-2. Uses `setCustomValidity()` on the end input when both dates are present and the end precedes the start.
-3. Updates a `[data-range-status]` `<output>` and a `[data-range-error]` message when those elements are present.
-4. Dispatches `date-range:change` after a native `change` event and `date-range:invalid` when the chronological validity changes.
+The module constrains the end input from the current start value.
 
-Values that arrive reversed from a server remain dormant until an input or change interaction makes the chronological error actionable. This keeps a hidden live-region error from announcing on page load. A server-rendered invalid state (`data-invalid`, `aria-invalid="true"`, `data-range-order-invalid`, or a visible range error) is preserved and remains active. A form reset restores the initial values and the module's invalidity baseline so later chronological transitions still emit the expected event.
+The module constrains the start input from the current end value.
+
+The module sets a custom error when both values exist and the end precedes the start.
+
+The module updates the optional error and status elements.
+
+The module does not announce a reversed server value on initial page load unless the server already exposes it as invalid.
+
+The module resets its managed state after a native form reset.
 
 ## Data attributes
 
-| Attribute | Element | Purpose |
-| --- | --- | --- |
-| `data-range-start` | start `<input>` | Identifies the first native date control |
-| `data-range-end` | end `<input>` | Identifies the second native date control |
-| `data-range-status` | `<output>` | Receives the optional selected-range summary |
-| `data-range-error` | error text | Receives the optional cross-field error |
-| `data-range-order-invalid` | `.date-range-picker` | Module state hook for an active chronological error |
-| `data-invalid` | `.date-range-picker` | Marks a known invalid range |
-| `data-disabled` | `.date-range-picker` | Styling hook when a wrapper needs a disabled presentation |
+| Attribute | Purpose |
+| --- | --- |
+| `data-range-start` | Identifies the start input. |
+| `data-range-end` | Identifies the end input. |
+| `data-range-status` | Identifies the optional summary output. |
+| `data-range-error` | Identifies the optional chronological error. |
+| `data-range-order-invalid` | Marks a chronological error owned by the module. |
+| `data-invalid` | Styles a known invalid group. |
+| `data-disabled` | Styles a wrapper when a native disabled state cannot represent the whole group. |
 
-The start and end markers are the only required component hooks. `data-invalid` and `data-disabled` do not replace native control attributes.
+Do not use wrapper data attributes instead of native `required`, `disabled`, `min`, or `max` attributes.
+
+Do not author `data-range-order-invalid` as application state.
+
+## Events
+
+The enhanced root dispatches `date-range:change` after a native change event.
+
+Its detail is `{ start, end, complete, valid }`.
+
+The enhanced root dispatches `date-range:invalid` when chronological validity changes.
+
+The invalid event also includes `reason: "order"`.
+
+Date values in event detail are ISO strings or `null`.
+
+## Keyboard
+
+Tab moves between the two native date inputs.
+
+The browser owns date-segment editing and native picker keys.
+
+The component does not add roving focus or range-grid keyboard behavior.
 
 ## Accessibility
 
-- Use a native `<fieldset>` and `<legend>` so the group has a name before any script runs.
-- Give each date control its own visible label and stable `id`. Use `aria-describedby` for shared help and associate the managed chronological error with the end control through `aria-errormessage` only while `aria-invalid="true"`.
-- Keep errors in an element with `role="alert"` when they are inserted after interaction. The module sets `aria-invalid` on the end input only for its managed chronological error.
-- The module removes only the `aria-invalid`, `aria-errormessage`, `data-invalid`, custom validity, and error state that it added. Existing server or application validity remains in place when the range becomes chronologically valid.
-- The status uses `<output aria-live="polite">` and is informational. It is not a replacement for the labels or validation message.
-- `required`, `disabled`, `min`, and `max` remain native HTML attributes and work without the module.
+Use one native fieldset and legend for the interval.
 
-## Keyboard and events
+Give each date input its own visible label.
 
-Tab moves between the start and end inputs. Each browser owns date segment keys, arrow-key editing, and the native calendar popup. This component does not provide a custom month grid, roving tabindex, presets, or a keyboard shortcut between endpoints.
+Keep shared help text explicitly referenced when present.
 
-Native `focus`, `input`, `change`, `invalid`, `submit`, and `reset` events remain available. With the module loaded, `date-range:change` bubbles from the fieldset with `detail: { start, end, complete, valid }`, where dates are ISO strings or `null`. `date-range:invalid` bubbles when chronological validity changes and includes the same detail plus `reason: "order"`.
+Reference an error only while the affected input is invalid.
 
-## Limitations
+Use the status output for information, not as a replacement for labels or errors.
 
-The calendar popup and date formatting are browser or operating-system UI and cannot be themed consistently. This component deliberately does not implement a custom calendar, timezone handling, presets, range hover states, or animation. Cross-field ordering and the live summary are progressive enhancements; server-side validation remains authoritative. For a custom month grid, compose the existing Date Picker component instead of treating these inputs as a calendar replacement.
+Keep server-side validation authoritative.
+
+Do not add custom calendar roles to the native date inputs.
+
+## Runtime
+
+`date-range-picker.js` is optional.
+
+Without the module, both date inputs remain fully usable and submit ordinary native values.
+
+Load the module only when chronological cross-field validation or the shared status is required.
