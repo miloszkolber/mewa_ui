@@ -44,6 +44,7 @@
     &[aria-orientation="vertical"] {
       flex-direction: column;
       width: auto;
+      block-size: auto;
 
       & .tab-trigger {
         justify-content: flex-start;

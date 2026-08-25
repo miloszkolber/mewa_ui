@@ -1,12 +1,13 @@
-@layer components {
-  /* Flipped placement needs the arrow on the opposite side. These named
-     tries re-position the tooltip AND carry the arrow side through a
-     custom property, so a flipped tip never keeps a stale arrow. */
-  @position-try --tip-flip-top { position-area: bottom; --tooltip-arrow-side: top; }
-  @position-try --tip-flip-bottom { position-area: top; --tooltip-arrow-side: bottom; }
-  @position-try --tip-flip-left { position-area: right; --tooltip-arrow-side: left; }
-  @position-try --tip-flip-right { position-area: left; --tooltip-arrow-side: right; }
+/* Flipped placement needs the arrow on the opposite side. These named
+   tries re-position the tooltip AND carry the arrow side through a custom
+   property, so a flipped tip never keeps a stale arrow. @position-try is a
+   top-level at-rule and is declared outside @layer on purpose. */
+@position-try --tip-flip-top { position-area: bottom; --tooltip-arrow-side: top; }
+@position-try --tip-flip-bottom { position-area: top; --tooltip-arrow-side: bottom; }
+@position-try --tip-flip-left { position-area: right; --tooltip-arrow-side: left; }
+@position-try --tip-flip-right { position-area: left; --tooltip-arrow-side: right; }
 
+@layer components {
   .tooltip {
     position: fixed;
     inset: auto;
@@ -83,19 +84,58 @@
 
     &:not([data-side]), &[data-side="top"] {
       & [data-arrow] { bottom: calc(-1 * var(--size-01)); left: 50%; margin-left: calc(-1 * var(--space-01)); }
-      &[--tooltip-arrow-side="top"] [data-arrow] { bottom: auto; top: calc(-1 * var(--size-01)); }
     }
     &[data-side="bottom"] {
       & [data-arrow] { top: calc(-1 * var(--size-01)); left: 50%; margin-left: calc(-1 * var(--space-01)); }
-      &[--tooltip-arrow-side="bottom"] [data-arrow] { top: auto; bottom: calc(-1 * var(--size-01)); }
     }
     &[data-side="left"] {
       & [data-arrow] { right: calc(-1 * var(--size-01)); top: 50%; margin-top: calc(-1 * var(--space-01)); }
-      &[--tooltip-arrow-side="left"] [data-arrow] { right: auto; left: calc(-1 * var(--size-01)); }
     }
     &[data-side="right"] {
       & [data-arrow] { left: calc(-1 * var(--size-01)); top: 50%; margin-top: calc(-1 * var(--space-01)); }
-      &[--tooltip-arrow-side="right"] [data-arrow] { left: auto; right: calc(-1 * var(--size-01)); }
+    }
+  }
+
+  /* -- Flipped arrow placement ---------------------------------
+     When the tooltip flips, the named position-try (or the fallback
+     script) sets --tooltip-arrow-side on the tooltip itself. A style query
+     reads that custom property and moves the caret to the edge the tooltip
+     now sits on. The selector repeats the base specificity and is declared
+     after it, so it wins the tie. */
+  @container style(--tooltip-arrow-side: top) {
+    .tooltip:not([data-side]) [data-arrow],
+    .tooltip[data-side] [data-arrow] {
+      bottom: auto;
+      top: calc(-1 * var(--size-01));
+      left: 50%;
+      margin: 0 0 0 calc(-1 * var(--space-01));
+    }
+  }
+  @container style(--tooltip-arrow-side: bottom) {
+    .tooltip:not([data-side]) [data-arrow],
+    .tooltip[data-side] [data-arrow] {
+      top: auto;
+      bottom: calc(-1 * var(--size-01));
+      left: 50%;
+      margin: 0 0 0 calc(-1 * var(--space-01));
+    }
+  }
+  @container style(--tooltip-arrow-side: left) {
+    .tooltip:not([data-side]) [data-arrow],
+    .tooltip[data-side] [data-arrow] {
+      right: auto;
+      left: calc(-1 * var(--size-01));
+      top: 50%;
+      margin: calc(-1 * var(--space-01)) 0 0 0;
+    }
+  }
+  @container style(--tooltip-arrow-side: right) {
+    .tooltip:not([data-side]) [data-arrow],
+    .tooltip[data-side] [data-arrow] {
+      left: auto;
+      right: calc(-1 * var(--size-01));
+      top: 50%;
+      margin: calc(-1 * var(--space-01)) 0 0 0;
     }
   }
 

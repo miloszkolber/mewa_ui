@@ -223,7 +223,8 @@ const documentationPages = listFiles(docsDir, (name) => name.endsWith(".html")).
 const sourceHtmlFiles = [
   ...documentationPages.map((slug) => path.join(docsDir, `${slug}.html`)),
   path.join(layoutsDir, "vertical-navbar.html"),
-  path.join(layoutsDir, "horizontal-navbar.html")
+  path.join(layoutsDir, "horizontal-navbar.html"),
+  path.join(layoutsDir, "app-shell-sidebar.html")
 ];
 
 test("the current machine catalog and source roots exist", () => {
@@ -235,7 +236,7 @@ test("the current machine catalog and source roots exist", () => {
   assert(exists(docsDir), "missing docs/");
   assert(exists(layoutsDir), "missing layouts/");
   assert(!exists(path.join(docsDir, "index.html")), "docs/ has no landing page contract");
-  assert.deepEqual(listFiles(layoutsDir, (name) => name.endsWith(".html")), ["horizontal-navbar.html", "vertical-navbar.html"]);
+  assert.deepEqual(listFiles(layoutsDir, (name) => name.endsWith(".html")), ["app-shell-sidebar.html", "horizontal-navbar.html", "vertical-navbar.html"]);
 });
 
 test("registry.json is the complete machine-readable catalog", () => {

@@ -72,7 +72,7 @@ Use `<dialog>` for modal surfaces, the Popover API for popovers and tooltips, `<
 
 ## Canonical application shells
 
-`layouts/` is the only canonical home for complete reusable application-shell templates. The current two templates are `layouts/vertical-navbar.html` for a left collapsible sidebar and `layouts/horizontal-navbar.html` for top navigation. Keep both serveable from the repository root, and compose them from current `src/`, `components/`, and layout-local files. `layouts/layouts.css` owns template-only layout rules, while `layouts/layouts.js` provides local icon inlining and the optional theme toggle. The App Shell component supplies shared header, toolbar, page-overview, status, empty-state, and optional theme primitives for consumer-owned shells without creating a third template.
+`layouts/` is the only canonical home for complete reusable application-shell templates. The current three templates are `layouts/vertical-navbar.html` for a left collapsible sidebar, `layouts/horizontal-navbar.html` for top navigation, and `layouts/app-shell-sidebar.html` for the branded application shell with a collapsible sidebar and decorative edge accents. Keep all three serveable from the repository root, and compose them from current `src/`, `components/`, and layout-local files. `layouts/layouts.css` owns template-only layout rules, while `layouts/layouts.js` provides local icon inlining and the optional theme toggle. The App Shell component supplies shared header, toolbar, page-overview, status, empty-state, and optional theme primitives for consumer-owned shells.
 
 ### Left collapsible sidebar
 

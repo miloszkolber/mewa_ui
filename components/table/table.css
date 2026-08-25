@@ -28,7 +28,8 @@
   }
 
   .table-head {
-    padding: var(--space-03) var(--space-04);
+    padding: var(--space-02) var(--space-04);
+    height: var(--size-08);
     font-family: var(--font-mono);
     font-size: var(--font-body-xsmall);
     font-weight: var(--font-weight-strong);
@@ -40,7 +41,8 @@
   }
 
   .table-cell {
-    padding: var(--space-03) var(--space-04);
+    padding: var(--space-02) var(--space-04);
+    height: var(--size-08);
     vertical-align: middle;
     color: var(--text-primary);
     border-block: 0;
@@ -74,11 +76,13 @@
      `.table-container` outer border as the single section canvas. */
   .table--dense .table-head {
     padding: var(--space-02) var(--space-04);
+    height: auto;
     border-block-end: var(--border-width-01) solid var(--border-primary);
   }
 
   .table--dense .table-cell {
     padding: var(--space-03) var(--space-04);
+    height: auto;
   }
 
   .table--dense .table-row {

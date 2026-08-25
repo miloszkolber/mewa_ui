@@ -11,7 +11,7 @@ New work must use the current source tree:
 - `src/icons/` owns the local Lucide SVG files.
 - `components/` owns the 59 current component folders. Each has a skill (`{name}.md`) and stylesheet (`{name}.css`), with `{name}.js` only when the documented behavior needs a module. `components/app-shell/` owns the shared application chrome primitives and optional theme enhancement.
 - `docs/` owns the static reference site, one HTML page per current component.
-- `layouts/` is the only canonical home for complete reusable application-shell templates. The current two templates are `layouts/vertical-navbar.html` for a left collapsible rail and `layouts/horizontal-navbar.html` for top navigation. `layouts/layouts.css` owns template-only rules and `layouts/layouts.js` provides local icon inlining and the optional theme toggle.
+- `layouts/` is the only canonical home for complete reusable application-shell templates. The current three templates are `layouts/vertical-navbar.html` for a left collapsible rail, `layouts/horizontal-navbar.html` for top navigation, and `layouts/app-shell-sidebar.html` for the branded application shell with a collapsible sidebar and decorative edge accents. `layouts/layouts.css` owns template-only rules and `layouts/layouts.js` provides local icon inlining and the optional theme toggle.
 
 ## Project structure
 

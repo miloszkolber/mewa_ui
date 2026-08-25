@@ -366,7 +366,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: inherit;
+    /* The wrapper is only a shared marker slot; the state ring belongs
+       to the inner dot so the base running-state border never doubles. */
+    border: 0;
     background: transparent;
 
     &::before {
@@ -638,6 +640,15 @@
     .app-status-actions {
       grid-column: 2;
       justify-content: flex-start;
+    }
+  }
+
+  /* The decorative edge hatch is a large-viewport affordance; hide it where
+     space is tight so it never crowds content on mobile. */
+  @media (max-width: 48rem) {
+    .app-shell-edge::before,
+    .app-shell-edge::after {
+      display: none;
     }
   }
 }

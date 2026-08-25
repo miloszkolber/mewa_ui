@@ -52,16 +52,30 @@ function positionFallback(tip, trigger) {
   left = Math.max(4, Math.min(left, window.innerWidth - r.width - 4));
   tip.style.top = `${top}px`;
   tip.style.left = `${left}px`;
+}
 
-  // When the clamp pushed the tip off its declared side, move the arrow to
-  // the side the tip actually ended up on.
-  let arrowSide = side;
-  if (side === 'top' && top > tr.top - 4) arrowSide = 'top';
-  if (side === 'bottom' && top < tr.top) arrowSide = 'bottom';
-  if (side === 'left' && left > tr.left - 4) arrowSide = 'left';
-  if (side === 'right' && left < tr.left) arrowSide = 'right';
-  if (arrowSide !== side) tip.style.setProperty('--tooltip-arrow-side', arrowSide);
-  else tip.style.removeProperty('--tooltip-arrow-side');
+// Set the arrow edge to the tooltip side that points back at the trigger.
+// This reads the tooltip's actual placed rect, so it is correct after a
+// native position-try flip (anchor positioning) and after the clamp above
+// (no anchor support). CSS then moves the caret via a style query on
+// --tooltip-arrow-side.
+function syncArrowSide(tip, trigger) {
+  const tr = trigger.getBoundingClientRect();
+  const r = tip.getBoundingClientRect();
+  if (!r.width || !r.height) return;
+  const side = tip.dataset.side || 'top';
+  const gap = 6;
+  let arrowSide;
+  if (side === 'top' || side === 'bottom') {
+    if (r.bottom <= tr.top + gap) arrowSide = 'bottom';
+    else if (r.top >= tr.bottom - gap) arrowSide = 'top';
+    else arrowSide = 'bottom';
+  } else {
+    if (r.right <= tr.left + gap) arrowSide = 'right';
+    else if (r.left >= tr.right - gap) arrowSide = 'left';
+    else arrowSide = 'right';
+  }
+  tip.style.setProperty('--tooltip-arrow-side', arrowSide);
 }
 
 function init() {
@@ -76,6 +90,14 @@ document.querySelectorAll('[data-tooltip-trigger]:not([data-init])').forEach((tr
   tip.style.positionAnchor = anchorId;
 
   trigger.setAttribute('aria-describedby', tip.id);
+
+  // Positioning (native flip or the no-anchor fallback) is finalized only
+  // after a layout pass, so defer the rect read past the toggle event to a
+  // frame where the placed box is final.
+  tip.addEventListener('toggle', () => {
+    if (!tip.matches(':popover-open')) return;
+    requestAnimationFrame(() => requestAnimationFrame(() => syncArrowSide(tip, trigger)));
+  });
 
   // Custom delays are not supported. Only `data-delay="0"` is honored,
   // and it disables the open delay; any other value keeps the 500 ms default.

@@ -12,7 +12,9 @@
     justify-content: space-between;
     width: 100%;
     gap: var(--space-03);
-    padding: var(--space-03) var(--space-04);
+    padding-block: 0;
+    padding-inline: var(--space-04);
+    block-size: var(--size-08);
     font-size: var(--font-body-small);
     font-weight: var(--font-weight-strong);
     cursor: pointer;

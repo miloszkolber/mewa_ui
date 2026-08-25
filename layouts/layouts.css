@@ -501,7 +501,7 @@
   .layout-top-nav-link {
     display: inline-flex;
     align-items: center;
-    min-block-size: var(--size-07);
+    min-block-size: var(--size-08);
     padding: var(--space-01) var(--space-03);
     color: var(--text-muted);
     font-size: var(--font-body-small);
