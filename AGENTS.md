@@ -26,7 +26,7 @@ Edit `src/base.css` for static foundation primitives.
 
 Edit `src/tokens.css` for semantic light and dark roles.
 
-Edit `components/{slug}/{slug}.md` for the exact component contract.
+Edit `components/{slug}/{slug}.md` for component implementation guidance.
 
 Edit `components/{slug}/{slug}.css` for component presentation.
 
@@ -34,13 +34,13 @@ Edit `components/{slug}/{slug}.js` for component enhancement behavior.
 
 Edit `docs/{slug}.html` for the rendered component reference.
 
-Edit `registry.json` for machine inventory metadata.
+Edit `registry.json` for component selection metadata and token purposes.
 
 Edit `system/` for selection and composition rules.
 
-Edit `layouts/` for complete reference compositions.
-
 Edit `README.md` for the human repository overview.
+
+Edit `PROMPT.md` for the reusable consumer-compliance workflow.
 
 Edit `llms.txt` for machine routing.
 
@@ -49,6 +49,24 @@ Do not create a second source tree.
 Do not add framework wrappers.
 
 Do not add generated component copies.
+
+Do not add complete shell templates.
+
+## Catalog workflow
+
+Treat `registry.json` as the source of component selection metadata.
+
+Treat `system/components.md` as generated output.
+
+Treat the README component inventory as generated output.
+
+Treat the semantic token reference in `system/foundations.md` as generated output.
+
+Run `npm run catalog:write` after registry selection metadata changes.
+
+Run `npm run catalog:check` before handoff.
+
+Do not hand-edit generated sections.
 
 ## Change sequence
 
@@ -73,19 +91,21 @@ Keep one Markdown skill in each component folder.
 
 Keep one stylesheet in each component folder.
 
-Keep one module only when the component needs JavaScript.
+Keep one same-name module only when the component needs JavaScript.
 
 Do not add extra reference files inside a component folder.
+
+Keep component selection metadata in `registry.json`.
 
 State the native basis in each component skill.
 
 State the native Web APIs in each component skill.
 
-State the supported structure.
+State the supported structure or provide a complete HTML example.
 
-State the supported attributes.
+State accessibility requirements.
 
-State the keyboard behavior for an interactive component.
+State keyboard or event behavior when the component manages interaction.
 
 State the no-JavaScript behavior for an enhanced component.
 
@@ -111,21 +131,15 @@ Confirm that the component has one clear responsibility.
 
 Confirm that the keyboard model is documented.
 
-Confirm that the no-JavaScript behavior is documented.
+Confirm that the fallback is documented.
 
-Add the skill.
-
-Add the stylesheet.
-
-Add the module only when required.
-
-Add the static documentation page.
+Add the component files.
 
 Add the registry entry.
 
-Add the README inventory row.
+Add the static documentation page.
 
-Add the machine catalog entry in `system/components.md`.
+Run `npm run catalog:write`.
 
 Add the page to the documentation router.
 
@@ -155,13 +169,15 @@ Support increased contrast.
 
 Support forced colors.
 
-Use rem units for media breakpoints.
+Use rem units for shared responsive breakpoints.
 
-Do not add a raw color to a component or layout.
+Do not add a raw color to a component.
 
 Do not add a general utility framework.
 
-Do not style a consumer-specific class in a component stylesheet.
+Do not style a consumer-specific selector in a component stylesheet.
+
+Do not add an unapproved global canvas width.
 
 ## JavaScript changes
 
@@ -187,19 +203,13 @@ Do not add a polling loop.
 
 Do not add a framework lifecycle.
 
-## Layout changes
+## Shell changes
 
-Treat App Shell and Sidebar as components.
+Keep shell recipes in `system/layouts.md`.
 
-Treat `layouts/` as complete reference compositions.
+Compose shells from App Shell, Sidebar, Layout, navigation components, and native landmarks.
 
-Maintain two shell families.
-
-Keep `app-shell-sidebar.html` as a branded sidebar composition.
-
-Keep layout classes under the `layout-` prefix.
-
-Keep layout CSS limited to composition.
+Keep page-specific shell CSS in consumers.
 
 Keep route navigation as native links.
 
@@ -211,7 +221,7 @@ Keep the skip link first.
 
 Do not duplicate the product brand in adjacent shell regions.
 
-Do not create a third shell family for a style variant.
+Do not add a complete shell template to the library.
 
 ## Documentation changes
 
@@ -231,7 +241,7 @@ Keep examples short.
 
 Avoid deep heading nesting.
 
-Keep `system/components.md` aligned with `registry.json`.
+Keep `system/components.md` generated from `registry.json`.
 
 Keep `llms.txt` short.
 
@@ -241,11 +251,13 @@ Do not copy the complete design contract into another file.
 
 Run `npm test`.
 
+Run `npm run catalog:check`.
+
 Run `npm run test:browser` when Chromium is available.
 
 Check changed HTML with the keyboard.
 
-Check changed HTML at 200% zoom.
+Check changed HTML at 200 percent zoom.
 
 Check changed HTML at 320px width.
 

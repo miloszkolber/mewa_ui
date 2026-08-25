@@ -4,7 +4,9 @@
   "private": true,
   "description": "Vanilla, accessible, monochrome component library for personal services.",
   "scripts": {
-    "pretest": "node tests/system-contract.test.js",
+    "catalog:check": "node scripts/catalog.mjs --check",
+    "catalog:write": "node scripts/catalog.mjs --write",
+    "pretest": "npm run catalog:check && node tests/system-contract.test.js",
     "test": "node tests/catalog-contract.test.js && node tests/runtime-contract.test.js",
     "test:browser": "node tests/browser-smoke.mjs"
   },

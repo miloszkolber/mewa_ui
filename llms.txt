@@ -1,6 +1,6 @@
 # mewa_ui
 
-mewa_ui is a framework-free UI library for semantic HTML, tokenized CSS, local SVG icons, and small ES modules.
+mewa_ui is a framework-free UI library for semantic HTML, tokenized CSS, local SVG icons, and small native-first ES modules.
 
 Use this file as a routing index.
 
@@ -13,7 +13,7 @@ Use this file as a routing index.
 5. Read `system/patterns.md` for page composition.
 6. Read `system/layouts.md` for shell composition.
 7. Read `system/accessibility.md` for interaction acceptance.
-8. Read `registry.json` for asset metadata.
+8. Read `registry.json` for asset and selection metadata.
 
 ## Source of truth
 
@@ -21,19 +21,17 @@ Use this file as a routing index.
 
 `src/tokens.css` defines semantic light and dark theme roles.
 
-`components/{slug}/{slug}.md` defines exact component markup and accessibility guidance.
+`registry.json` defines component selection metadata and semantic token purposes.
+
+`components/{slug}/{slug}.md` defines component-specific markup and behavior.
 
 `components/{slug}/{slug}.css` defines component presentation.
 
 `components/{slug}/{slug}.js` defines required or optional component enhancement.
 
-`registry.json` defines the machine-readable component inventory.
-
 `docs/{slug}.html` demonstrates the component.
 
-`layouts/` contains complete reference compositions.
-
-`system/` defines component selection and page composition.
+`system/` defines selection, patterns, shells, and accessibility rules.
 
 ## Absolute rules
 
@@ -81,7 +79,7 @@ Support increased contrast and forced colors.
 
 Keep the documented native fallback.
 
-## Component selection
+## Selection
 
 Use `system/components.md` to choose among all 59 components.
 
@@ -123,23 +121,19 @@ Keep modules safe for markup inserted after navigation.
 
 Do not add a production dependency.
 
-## Layouts
+## Shells
 
-The repository has two shell families.
+mewa_ui does not ship complete shell templates.
 
-The repository has three reference HTML files.
+Use the sidebar shell for persistent application navigation.
 
-`layouts/vertical-navbar.html` is the utility sidebar reference.
+Use the top-navigation shell for a small flat route set.
 
-`layouts/horizontal-navbar.html` is the top-navigation reference.
+Use the focused-tool shell for one primary task.
 
-`layouts/app-shell-sidebar.html` is a branded sidebar composition.
+Use a 90rem canvas for dense application pages.
 
-Do not describe the branded sidebar composition as a third family.
-
-Use `90rem` for dense application canvases.
-
-Use `64rem` for focused tools and content pages.
+Use a 64rem canvas for focused tools.
 
 Use `60rem` for wide content-and-rail collapse.
 
@@ -151,11 +145,13 @@ Use `37.5rem` for compact single-column changes.
 
 Run `npm test`.
 
+Run `npm run catalog:check`.
+
 Run `npm run test:browser` when Chromium is available.
 
 Check changed markup with the keyboard.
 
-Check changed markup at 200% zoom.
+Check changed markup at 200 percent zoom.
 
 Check changed markup at 320px width.
 
