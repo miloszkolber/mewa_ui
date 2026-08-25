@@ -34,7 +34,7 @@ function closeMobileDialog(dialog) {
   dialog.close();
   trigger?.setAttribute('aria-expanded', 'false');
   const desktopTrigger = document.querySelector('.app-sidebar .sidebar-trigger');
-  const focusTarget = window.matchMedia('(min-width: 768px)').matches ? desktopTrigger : trigger;
+  const focusTarget = window.matchMedia('(width > 48rem)').matches ? desktopTrigger : trigger;
   focusTarget?.focus({ preventScroll: true });
 }
 
@@ -69,7 +69,6 @@ function init() {
 
   document.querySelectorAll('.app-sidebar').forEach((sidebar) => syncTriggers(sidebar));
 
-  // -- Mobile dialog triggers --------------------------------
   document.querySelectorAll('[data-sidebar-mobile]:not([data-init])').forEach((trigger) => {
     trigger.dataset.init = '';
     const dialog = document.getElementById(trigger.dataset.sidebarMobile);
@@ -110,7 +109,6 @@ function init() {
 init();
 new MutationObserver(init).observe(document, { childList: true, subtree: true });
 
-// -- Keyboard shortcut: Cmd+B / Ctrl+B ----------------------
 if (!document.__sidebarKbInit) {
   document.__sidebarKbInit = true;
   document.addEventListener('keydown', (event) => {
@@ -124,7 +122,7 @@ if (!document.__sidebarKbInit) {
 
 if (!document.__sidebarViewportInit) {
   document.__sidebarViewportInit = true;
-  const desktopViewport = window.matchMedia('(min-width: 768px)');
+  const desktopViewport = window.matchMedia('(width > 48rem)');
   desktopViewport.addEventListener('change', (event) => {
     if (!event.matches) return;
     document.querySelectorAll('.sidebar-mobile[open]').forEach((dialog) => closeMobileDialog(dialog));
