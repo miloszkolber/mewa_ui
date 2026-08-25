@@ -1,168 +1,161 @@
 # Image
 
+## Purpose
+
+Image presents meaningful visual content with an optional caption, fallback, aspect ratio, and larger preview.
+
+Use Image when the visual itself carries information or needs a consistent figure treatment.
+
+Use a normal decorative CSS image when the visual has no content meaning.
+
+Do not use Image as a generic card or layout container.
+
 ## Native basis
 
-`<figure>` element wrapping an `<img>` with optional `<figcaption>`. Uses `<dialog>` for fullscreen preview/lightbox.
+Image uses `<figure>`, `<img>`, and optional `<figcaption>`.
+
+The optional preview enhancement creates one shared native `<dialog>`.
+
+The module also marks failed images so the documented fallback can appear.
 
 ## Native Web APIs
 
-- [`<figure>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/figure) — self-contained content with optional caption
-- [`<figcaption>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/figcaption) — caption for the figure
-- [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) — native modal for fullscreen lightbox preview
-- [`::backdrop`](https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop) — overlay behind lightbox dialog
-- [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#loading) — native lazy loading
-- [`object-fit`](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit) — how image fills its container
-- [`aspect-ratio`](https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio) — intrinsic aspect ratio control
+- [`<figure>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/figure) groups self-contained visual content.
+- [`<figcaption>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/figcaption) provides a visible caption.
+- [`<img>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img) provides intrinsic image loading and alternative text.
+- [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#loading) defers non-critical images.
+- [`aspect-ratio`](https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio) constrains the figure geometry.
+- [`object-fit`](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit) controls image fitting.
+- [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) provides modal preview behavior.
 
 ## Structure
 
-### Basic image
 ```html
 <figure class="image">
-  <img src="photo.jpg" alt="Description" />
+  <img src="/images/system-map.png"
+       alt="Service topology with three worker nodes">
 </figure>
 ```
 
-### With caption
+Add a caption when visible context helps interpretation.
+
 ```html
 <figure class="image">
-  <img src="photo.jpg" alt="Description" />
-  <figcaption class="image-caption">Photo caption text</figcaption>
+  <img src="/images/system-map.png"
+       alt="Service topology with three worker nodes">
+  <figcaption class="image-caption">
+    Current worker topology.
+  </figcaption>
 </figure>
 ```
 
-### With fallback
+Use `alt=""` when the image is decorative and nearby text already communicates its content.
+
+## Fallback
+
+Add `.image-fallback` when a failed image needs an explicit visual replacement.
+
 ```html
 <figure class="image">
-  <img src="photo.jpg" alt="Description" />
-  <div class="image-fallback">
-    <svg><!-- fallback icon --></svg>
+  <img src="/images/preview.png" alt="Generated preview">
+  <div class="image-fallback" aria-hidden="true">
+    <i data-lucide="image-off"></i>
   </div>
 </figure>
 ```
 
-### With lightbox preview
+Keep important failure information in visible text outside a decorative fallback icon.
+
+## Aspect ratio
+
+Use `data-ratio` only when the image region needs predictable geometry.
+
+Supported values are `1/1`, `4/3`, `3/2`, `16/9`, `21/9`, and `3/4`.
+
+```html
+<figure class="image" data-ratio="16/9">
+  <img src="/images/preview.png" alt="Generated preview">
+</figure>
+```
+
+Do not crop information-critical content only to satisfy a ratio.
+
+## Fit
+
+Omit `data-fit` for the default cover treatment.
+
+Use `data-fit="contain"` when the entire image must remain visible.
+
+Use `data-fit="fill"` only when distortion is acceptable.
+
+Use `data-fit="none"` only when natural image dimensions are required.
+
+## Circular variant
+
+Use `data-radius="full"` only when circular image geometry has semantic meaning.
+
+Use Avatar instead when the image represents a person or entity identity.
+
+Do not round normal media or preview surfaces.
+
+## Preview
+
+Add `data-preview` when a larger inspection view improves the task.
+
 ```html
 <figure class="image" data-preview>
-  <img src="photo.jpg" alt="Description" />
+  <img src="/images/log-scan.png" alt="Log scan with highlighted failures">
 </figure>
 ```
 
-### With aspect ratio
-```html
-<figure class="image" data-ratio="16/9">
-  <img src="photo.jpg" alt="Description" />
-</figure>
-```
+The module makes a preview-enabled figure keyboard operable.
 
-## Variants
+The module creates one shared dialog for all preview-enabled images.
 
-### Fit (`data-fit`)
+The preview provides zoom in, zoom out, rotate left, rotate right, reset, and close controls.
 
-| Value       | Behavior                        |
-| ----------- | ------------------------------- |
-| *(default)* | `object-fit: cover` (fills)     |
-| `contain`   | Fits inside, preserves ratio    |
-| `fill`      | Stretches to fill               |
-| `none`      | No resizing, natural size       |
+The preview opens with Enter, Space, or pointer activation.
 
-### Ratio (`data-ratio`)
+Escape closes the native dialog.
 
-| Value   | Aspect ratio  |
-|---------|--------------|
-| `1/1`   | Square        |
-| `4/3`   | Standard      |
-| `3/2`   | Classic photo |
-| `16/9`  | Widescreen    |
-| `21/9`  | Ultra-wide    |
-| `3/4`   | Portrait      |
+Backdrop activation closes the dialog.
 
-### Radius (`data-radius`)
+Do not enable preview when the source image has no additional useful detail.
 
-| Value  | Effect                       |
-| ------ | ---------------------------- |
-| *(default)* | Square (no radius)      |
-| `full` | Circular (`var(--radius-full)`) — avatar-style images only |
+## Behavior
 
-## Attributes
+A successful image load shows the image normally.
 
-| Attribute      | Effect                                    |
-| -------------- | ----------------------------------------- |
-| `data-preview` | Enables click- or keyboard-to-preview lightbox |
-| `data-ratio`   | Sets aspect ratio                         |
-| `data-fit`     | Sets object-fit mode                      |
-| `data-radius`  | Sets circular (`full`) variant            |
+A failed image receives `data-error` from the module.
 
-## Lightbox
+A successful later load clears `data-error`.
 
-When `data-preview` is set, clicking the image opens a fullscreen `<dialog>` lightbox with:
-- Zoom in / zoom out controls
-- Rotate left / rotate right
-- Reset to original
-- Close button and Escape key
-- Click backdrop to close
+Preview controls update image zoom and rotation immediately.
 
-The lightbox dialog is created once and shared by all preview-enabled images.
+Preview state resets each time a new image opens.
+
+The component adds no transition or animation.
 
 ## Accessibility
 
-- `<img>` must have a descriptive `alt` attribute
-- Decorative images should use `alt=""`
-- `<figcaption>` provides visible caption text
-- Preview figures are focusable buttons with an accessible name and respond to Enter or Space
-- Lightbox dialog uses `aria-label="Image preview"`
-- Lightbox controls have `aria-label` attributes
-- Escape key closes lightbox (native `<dialog>` behavior)
+Give every content image an appropriate `alt` value.
 
-## Notes
+Keep decorative images at `alt=""`.
 
-- Fallback is shown automatically when the image fails to load, using `:has()` to detect error state.
-- Use `loading="lazy"` on images below the fold for performance.
-- Lightbox supports keyboard: Enter or Space opens the preview, Escape closes it, and Tab navigates controls.
-- Multiple images with `data-preview` share a single dialog instance.
-# Image
+Use a visible caption when users need persistent context.
 
-## Native basis
+Let the module derive the preview control name from image alternative text when possible.
 
-`<img>` element wrapped in a `<figure>` with optional `<figcaption>`. Uses CSS `aspect-ratio` for controlled dimensions.
+Give a preview-enabled figure an explicit label when the derived label is not sufficient.
 
-## Native Web APIs
+Keep preview toolbar controls explicitly named.
 
-- [`<figure>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/figure) — self-contained content with optional caption
-- [`<figcaption>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/figcaption) — caption for the figure
-- [`aspect-ratio`](https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio) — intrinsic aspect ratio control
+Do not put essential information only in the enlarged preview.
 
-## Structure
+## Runtime
 
-```html
-<!-- Basic image -->
-<figure class="image">
-  <img src="https://example.com/photo.jpg" alt="Description" />
-</figure>
+Load `image.js` when the page uses automatic failure fallback or `data-preview`.
 
-<!-- Image with caption -->
-<figure class="image">
-  <img src="https://example.com/photo.jpg" alt="Description" />
-  <figcaption class="image-caption">Photo caption text</figcaption>
-</figure>
+A basic figure and image remain fully readable without JavaScript.
 
-<!-- Image with aspect ratio -->
-<figure class="image" data-ratio="16/9">
-  <img src="https://example.com/photo.jpg" alt="Description" />
-</figure>
-```
-
-## Ratios (`data-ratio`)
-
-| Value   | Aspect ratio |
-|---------|-------------|
-| `1/1`   | Square       |
-| `4/3`   | Standard     |
-| `16/9`  | Widescreen   |
-| `21/9`  | Ultra-wide   |
-
-## Accessibility
-
-- `<img>` must have a descriptive `alt` attribute
-- Decorative images should use `alt=""`
-- `<figcaption>` provides visible caption text
+Preview behavior requires the module.
