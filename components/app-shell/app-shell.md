@@ -4,13 +4,11 @@
 
 App Shell supplies shared chrome and page-region primitives for utility applications.
 
-Use App Shell for a top header, a sticky toolbar, a page overview, dense sections, status rows, and compact empty states.
+Use `system/layouts.md` when you need a complete shell composition.
 
-Do not use App Shell as a complete application template.
+Do not treat App Shell as a complete route template.
 
 Do not put route data or business logic in App Shell.
-
-Use `layouts/` when the task needs a complete serveable shell.
 
 ## Native basis
 
@@ -29,11 +27,11 @@ The optional module supplies an OS-aware persisted theme toggle.
 - [`Window.matchMedia()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) reads the OS color preference.
 - [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) stores the optional manual theme choice.
 
-## Page frame
+## Structure
 
 Put `.app-shell` on `<body>`.
 
-Put one skip link before the header.
+Put one skip link before repeated application chrome.
 
 Give the main landmark a stable ID.
 
@@ -83,13 +81,13 @@ Use native buttons for actions.
 
 Keep `aria-current="page"` on only one route in each navigation landmark.
 
-Use `.brand-mark` for the shared 32-pixel signet.
+Use `.brand-mark` for the shared 32px signet.
 
-Do not duplicate the product brand in a composed sidebar header.
+Do not duplicate the same product brand in another visible shell region.
 
 ## Toolbar
 
-Use `.app-toolbar` for a breadcrumb and page-action row in a sidebar shell.
+Use `.app-toolbar` for breadcrumbs and local page actions in a sidebar shell.
 
 Do not stack `.app-toolbar` under `.app-header`.
 
@@ -115,11 +113,13 @@ Add `.app-shell-edge` to `<body>` to show the optional viewport-edge hatch.
 
 Use the hatch only on a complete shell.
 
-Do not use the hatch on a component demo or an inner region.
+Do not use the hatch on an inner region.
 
 ```html
 <body class="app-shell app-shell-edge">
 ```
+
+The hatch disappears below `48rem`.
 
 ## Page overview
 
@@ -215,7 +215,7 @@ Put the outer border on the section.
 
 Remove the child container border when the child fills the section.
 
-Do not use `Card > Table` nesting.
+Do not wrap a table in Card.
 
 ```html
 <section class="app-section" aria-labelledby="jobs-title">
@@ -226,7 +226,9 @@ Do not use `Card > Table` nesting.
     </div>
   </div>
   <div class="table-container">
-    <table class="table table--dense">...</table>
+    <table class="table table--dense">
+      <!-- Table rows. -->
+    </table>
   </div>
 </section>
 ```
@@ -241,7 +243,7 @@ Use `.app-filter-tags` for tag links.
 
 Use `aria-current="page"` on the active link.
 
-Collapse the rail to full width at the documented layout breakpoint.
+Collapse the rail before it makes the primary content too narrow.
 
 Do not use a filter rail for primary application navigation.
 
@@ -263,9 +265,7 @@ Do not add an illustration when one sentence and one recovery action are suffici
 
 The shell keeps one continuous application canvas.
 
-The sticky header stays at the viewport start.
-
-The main landmark grows to fill short pages.
+The sticky header or toolbar stays at the viewport start.
 
 The current route uses a border-led active treatment.
 
@@ -275,7 +275,7 @@ Status rows align markers, copy, and actions without nested cards.
 
 Narrow viewports stack status actions below the copy.
 
-The optional edge hatch disappears when horizontal space becomes limited.
+The optional edge hatch disappears below `48rem`.
 
 ## Action sizing
 

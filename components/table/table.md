@@ -1,34 +1,54 @@
 # Table
 
+## Purpose
+
+Table presents data with stable row and column relationships.
+
+Use Table when headers define the meaning of cells.
+
+Use Data Table when the page also needs documented filtering, sorting, result status, or pagination.
+
+Do not use Table for page layout.
+
 ## Native basis
 
-`<table>` with semantic `<caption>`, `<thead>`, `<tbody>`, `<tfoot>`, scoped headers, and native table cells. Table is the structural component. It has no required JavaScript and remains a normal HTML table in every rendering environment.
+Use native `<table>` markup.
 
-## Native web APIs
+Use `<caption>` to name the data set.
 
-- [`<table>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/table) — tabular data container
-- [`<caption>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/caption) — accessible table name and description
-- [`<thead>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/thead), [`<tbody>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/tbody), and [`<tfoot>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/tfoot) — table row groups
-- [`<th scope>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/th#scope) — associates column and row headers with their cells
-- [`<td>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/td) — native data cell
-- [`<div>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div) with `overflow-x: auto` — keeps wide tables usable at narrow widths
+Use `<thead>`, `<tbody>`, and `<tfoot>` only when the data needs those row groups.
+
+Use scoped `<th>` cells for row and column headers.
+
+Table requires no JavaScript.
+
+## Native Web APIs
+
+- [`<table>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/table) provides tabular semantics.
+- [`<caption>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/caption) names the table.
+- [`<thead>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/thead) groups column headers.
+- [`<tbody>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/tbody) groups body rows.
+- [`<tfoot>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/tfoot) groups table summaries.
+- [`<th scope>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/th#scope) associates headers with cells.
 
 ## Structure
 
-### Plain table
+Keep one descriptive caption.
 
-Keep one descriptive caption and explicit header scopes. The same markup works with or without JavaScript.
+Keep explicit header scopes.
+
+Contain horizontal overflow in `.table-container`.
 
 ```html
 <div class="table-container" role="region" aria-label="Recent invoices" tabindex="0">
   <table class="table">
-    <caption class="table-caption">A list of recent invoices.</caption>
+    <caption class="table-caption">Recent invoices.</caption>
     <thead>
       <tr class="table-row">
         <th class="table-head" scope="col">Invoice</th>
         <th class="table-head" scope="col">Status</th>
         <th class="table-head" scope="col">Method</th>
-        <th class="table-head" scope="col" style="text-align: right">Amount</th>
+        <th class="table-head" scope="col">Amount</th>
       </tr>
     </thead>
     <tbody>
@@ -36,74 +56,73 @@ Keep one descriptive caption and explicit header scopes. The same markup works w
         <th class="table-cell" scope="row">INV001</th>
         <td class="table-cell">Paid</td>
         <td class="table-cell">Credit card</td>
-        <td class="table-cell" style="text-align: right">$250.00</td>
+        <td class="table-cell">$250.00</td>
       </tr>
     </tbody>
-    <tfoot>
-      <tr class="table-row">
-        <th class="table-cell" scope="row" colspan="3">Total</th>
-        <td class="table-cell" style="text-align: right">$2,500.00</td>
-      </tr>
-    </tfoot>
   </table>
 </div>
 ```
 
-### Table with a footer
+Use a column class in consumer CSS when a numeric column needs end alignment.
 
-Use `<tfoot>` for a total or other summary that belongs to the table. Keep the summary label in a row header when it describes the row.
+Do not use inline style attributes in canonical table markup.
+
+## Footer
+
+Use `<tfoot>` when the summary belongs to the table.
 
 ```html
-<div class="table-container" role="region" aria-label="Monthly usage" tabindex="0">
-  <table class="table">
-    <caption class="table-caption">Monthly usage</caption>
-    <thead>
-      <tr class="table-row">
-        <th class="table-head" scope="col">Workspace</th>
-        <th class="table-head" scope="col">Requests</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="table-row">
-        <th class="table-cell" scope="row">Atlas</th>
-        <td class="table-cell">42,000</td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr class="table-row">
-        <th class="table-cell" scope="row">Total</th>
-        <td class="table-cell">42,000</td>
-      </tr>
-    </tfoot>
-  </table>
-</div>
+<tfoot>
+  <tr class="table-row">
+    <th class="table-cell" scope="row" colspan="3">Total</th>
+    <td class="table-cell">$2,500.00</td>
+  </tr>
+</tfoot>
 ```
+
+Keep the summary label as a row header.
 
 ## Classes
 
 | Class | Element | Purpose |
 | --- | --- | --- |
-| `.table-container` | `<div>` | Bordered horizontal overflow region around the table |
-| `.table` | `<table>` | Table geometry and typography |
-| `.table-caption` | `<caption>` | Caption styling |
-| `.table-head` | `<th>` | Header styling |
-| `.table-cell` | `<th>` or `<td>` | Body and footer cell styling |
-| `.table-row` | `<tr>` | Row styling hook |
+| `.table-container` | `<div>` | Contains horizontal overflow. |
+| `.table` | `<table>` | Applies shared table geometry and typography. |
+| `.table-caption` | `<caption>` | Styles the caption. |
+| `.table-head` | `<th>` | Styles column headers. |
+| `.table-cell` | `<th>` or `<td>` | Styles body and footer cells. |
+| `.table-row` | `<tr>` | Provides the row styling hook. |
 
-Behavioral filtering, sorting, status, empty results, and pagination belong to [Data Table](../../docs/data-table.html). Data Table composes this structural markup with Text Field and Pagination. Its optional module does not change the underlying table semantics.
+## Behavior
+
+Table adds no filtering, sorting, pagination, or selection behavior.
+
+Wide tables scroll inside `.table-container`.
+
+The table keeps one semantic data structure at every viewport.
+
+The component adds no JavaScript behavior.
 
 ## Accessibility
 
-- Keep one descriptive `<caption>` for every table.
-- Use `scope="col"` for column headers and `scope="row"` for row headers. Use `headers` and `id` when a complex table needs explicit associations.
-- Keep row headers as `<th scope="row">` rather than turning the table into a collection of generic `<div>` elements.
-- Put wide tables inside `.table-container` so horizontal scrolling does not change the table's semantic structure.
-- When an overflow container has no links, buttons, or other focusable descendants, add `tabindex="0"`, `role="region"`, and an accessible name so keyboard users can scroll it. Do not add a redundant tab stop when the table already contains focusable controls.
+Keep one descriptive caption.
 
-## Notes
+Use `scope="col"` for column headers.
 
-- Table is CSS-only. It does not require a module, event handlers, or a runtime dependency.
-- Add only the table sections that the data needs. A footer is optional.
-- Header labels use 0.75rem Geist Mono in uppercase. Header fills, row hover fills, and horizontal row rules are intentionally omitted.
-- Avatar cells align the avatar and adjacent label on the middle axis without changing table semantics.
-- Use logical table markup before adding visual treatments. The stylesheet stays square, tokenized, and motionless.
+Use `scope="row"` for row headers.
+
+Use `headers` and `id` when a complex table needs explicit associations.
+
+Keep row headers as `<th>` elements.
+
+Add `tabindex="0"`, `role="region"`, and a name to an overflow container only when it has no focusable descendants.
+
+Do not add a redundant tab stop when the table already contains interactive controls.
+
+Do not hide required columns at narrow widths.
+
+## Runtime
+
+Table requires no component module.
+
+Use Data Table only when the extra behavior is required.
