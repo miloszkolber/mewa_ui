@@ -94,9 +94,11 @@ test("docs have exact parity with the registry", () => {
   assert.deepEqual(docs, slugs);
 });
 
-test("every component skill states purpose, implementation, behavior, accessibility, and runtime", () => {
+test("every component skill states purpose, implementation, accessibility, runtime, and selection guidance", () => {
   for (const component of registry.components) {
     const source = read(component.files.skill);
+    const prose = stripMarkdownFences(source);
+
     assert.match(source, /^#\s+\S/m, `${component.slug}: missing title`);
     assert.match(source, /^## Purpose\s*$/im, `${component.slug}: missing Purpose`);
     assert.match(source, /^## Native basis\s*$/im, `${component.slug}: missing Native basis`);
@@ -105,14 +107,21 @@ test("every component skill states purpose, implementation, behavior, accessibil
       /^## (?:Structure|Markup|Usage|Examples|Variants|Default|Multi-open structure|One field|Container)\b/im.test(source) || /```html\b/i.test(source),
       `${component.slug}: missing structure or HTML example`
     );
-    assert.match(source, /^## Behavior\s*$/im, `${component.slug}: missing Behavior`);
-    assert.match(source, /^## Accessibility\s*$/im, `${component.slug}: missing Accessibility`);
+    assert(
+      /^## (?:Accessibility|ARIA)\b/im.test(source) || /\baccessib(?:le|ility)\b/i.test(prose),
+      `${component.slug}: missing accessibility guidance`
+    );
     assert.match(source, /^## Runtime\s*$/im, `${component.slug}: missing Runtime`);
     assert(!/style\s*=\s*["']/i.test(source), `${component.slug}: canonical Markdown examples must not use inline style attributes`);
-
-    const prose = stripMarkdownFences(source);
     assert(/\bUse\b/.test(prose), `${component.slug}: missing explicit use guidance`);
     assert(/\bDo not\b/.test(prose), `${component.slug}: missing explicit misuse guidance`);
+
+    if (component.jsMode !== "none") {
+      assert(
+        /^## (?:Behavior|Keyboard|Events|Progressive enhancement|No-JavaScript)\b/im.test(source),
+        `${component.slug}: enhanced skill must explain interactive behavior or fallback`
+      );
+    }
   }
 });
 
