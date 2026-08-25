@@ -1,37 +1,76 @@
 # Skeleton
 
+## Purpose
+
+Skeleton reserves space for content that is still loading.
+
+Use Skeleton when the final structure is known and the placeholder prevents layout shift.
+
+Use Spinner when one compact active loading indicator communicates the state better.
+
+Do not animate Skeleton.
+
 ## Native basis
 
-Static placeholder `<div>` elements. No JavaScript or animation is used.
+Use static decorative placeholder elements.
+
+Skeleton adds no semantic loading state by itself.
+
+Skeleton requires no JavaScript.
 
 ## Native Web APIs
 
-- [`<div>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div) — generic block containers provide the static placeholder geometry
-- [`hidden`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden) — optionally removes a placeholder when the real content is ready
-- [`aria-hidden`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-hidden) — keeps decorative placeholder shapes out of the accessibility tree
-- [`role="status"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/status_role) — separately announces a loading state when an announcement is needed
+- [`aria-hidden`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-hidden) keeps placeholder shapes out of the accessibility tree.
+- [`role="status"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/status_role) can announce loading from a separate status element.
+- [`aria-busy`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-busy) can mark the region whose content is updating.
 
-## Structure
+## Line placeholder
+
+A normal Skeleton fills the inline size of its container.
 
 ```html
-<!-- Basic skeleton line -->
-<div class="skeleton" aria-hidden="true" style="height:1rem;width:12rem;"></div>
+<div class="skeleton" aria-hidden="true"></div>
+```
 
-<!-- Skeleton with rounded shape (avatar placeholder) -->
-<div class="skeleton skeleton-round" aria-hidden="true" style="width:2.5rem;height:2.5rem;"></div>
+Set the container width when a shorter line is needed.
 
-<!-- Composition: card skeleton -->
-<div aria-hidden="true" style="display:flex;align-items:center;gap:1rem;">
-  <div class="skeleton skeleton-round" style="width:2.5rem;height:2.5rem;"></div>
-  <div style="display:flex;flex-direction:column;gap:0.5rem;flex:1;">
-    <div class="skeleton" style="height:0.875rem;width:60%;"></div>
-    <div class="skeleton" style="height:0.875rem;width:40%;"></div>
-  </div>
+Do not add arbitrary inline dimensions to canonical component markup.
+
+## Circular placeholder
+
+Use `.skeleton-round` only for content that will become a circular identity or status object.
+
+```html
+<div class="skeleton skeleton-round" aria-hidden="true"></div>
+```
+
+Do not use circular geometry for normal text or rectangular content.
+
+## Loading composition
+
+Hide placeholder shapes from assistive technology.
+
+Announce loading separately when the update needs an announcement.
+
+```html
+<div aria-busy="true">
+  <p role="status">Loading account details</p>
+  <div class="skeleton" aria-hidden="true"></div>
 </div>
 ```
 
+Remove the loading status when the real content becomes available.
+
 ## Accessibility
 
-- Skeleton elements are decorative — screen readers should skip them
-- Use `aria-hidden="true"` on skeleton containers if they sit alongside real content
-- Announce the loading state separately with `role="status"` if needed
+Keep Skeleton decorative.
+
+Use one loading announcement for one loading region.
+
+Do not repeat hidden placeholder labels.
+
+Do not use Skeleton as a substitute for a useful empty state.
+
+## Runtime
+
+Skeleton requires no component module.

@@ -1,9 +1,14 @@
 @layer components {
   .skeleton {
+    inline-size: 100%;
+    min-block-size: var(--size-03);
     background-color: var(--surface-secondary);
   }
 
   .skeleton-round {
+    inline-size: var(--size-08);
+    block-size: var(--size-08);
+    min-block-size: 0;
     border-radius: var(--radius-full);
   }
 

@@ -1,28 +1,68 @@
 # Progress
 
+## Purpose
+
+Progress shows known or browser-managed task completion.
+
+Use Progress when the system can expose a current value and maximum.
+
+Use Spinner for short indeterminate work when a rotating status is clearer.
+
+Do not use Progress as decoration.
+
 ## Native basis
 
-`<progress>` element with CSS styling for the track and indicator bar.
+Use the native `<progress>` element.
+
+The browser exposes determinate and indeterminate states.
+
+Progress requires no JavaScript.
 
 ## Native Web APIs
 
-- [`<progress>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress) — native HTML progress indicator
-- [`::-webkit-progress-bar`](https://developer.mozilla.org/en-US/docs/Web/CSS/::-webkit-progress-bar) — track pseudo-element (WebKit)
-- [`::-webkit-progress-value`](https://developer.mozilla.org/en-US/docs/Web/CSS/::-webkit-progress-value) — indicator pseudo-element (WebKit)
-- [`::-moz-progress-bar`](https://developer.mozilla.org/en-US/docs/Web/CSS/::-moz-progress-bar) — indicator pseudo-element (Firefox)
+- [`<progress>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress) provides native progress semantics.
+- [`value`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress#value) exposes current completion.
+- [`max`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress#max) exposes the completion range.
 
-## Structure
+## Determinate structure
+
+Give Progress a visible or programmatic label.
 
 ```html
-<!-- Determinate progress -->
-<progress class="progress" value="66" max="100">66%</progress>
-
-<!-- Indeterminate progress (no value attribute) -->
-<progress class="progress" max="100">Loading...</progress>
+<label for="download-progress">Download progress</label>
+<progress class="progress"
+          id="download-progress"
+          value="66"
+          max="100">66%</progress>
 ```
+
+Update `value` when the task advances.
+
+Keep `max` stable unless the real task range changes.
+
+## Indeterminate structure
+
+Omit `value` when completion cannot be measured.
+
+```html
+<label for="sync-progress">Sync progress</label>
+<progress class="progress" id="sync-progress">Working</progress>
+```
+
+Use Spinner instead when the compact animated indicator fits the context better.
 
 ## Accessibility
 
-- `<progress>` is natively accessible — screen readers announce the percentage
-- The text content inside `<progress>` is the fallback for non-supporting browsers
-- Use `aria-label` if the progress bar lacks a visible label
+Keep the task name available outside the percentage value.
+
+Use a `<label>` association when Progress describes a labelled task.
+
+Use `aria-label` only when visible text cannot name the Progress element.
+
+Do not announce every small percentage change through a second live region.
+
+Keep fallback text concise.
+
+## Runtime
+
+Progress requires no component module.
