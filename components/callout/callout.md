@@ -1,68 +1,100 @@
 # Callout
 
+## Purpose
+
+Callout presents persistent important information in the page flow.
+
+Use Callout for guidance, caution, success, or error content that must remain visible.
+
+Use Toast for brief non-blocking status.
+
+Do not add a live role to static Callout content.
+
 ## Native basis
 
-`<div class="callout">` with a context-neutral title and description. Static callouts do not expose a live-region role. Add `role="alert"` only when an urgent error is inserted dynamically and should interrupt assistive technology.
+Use a normal semantic container for static Callout content.
+
+Add `role="alert"` only when an urgent error is inserted dynamically.
+
+Callout requires no JavaScript.
 
 ## Native Web APIs
 
-- [`role="alert"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/alert_role) — opt-in assertive announcement for urgent dynamically inserted errors
+- [`role="alert"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/alert_role) provides assertive announcement for urgent dynamic content.
 
 ## Structure
 
+Use a visible title when the callout needs a short category or summary.
+
+Hide decorative icons from assistive technology.
+
 ```html
-<!-- Static informational callout -->
 <div class="callout">
-  <svg class="callout-icon"><!-- icon --></svg>
+  <i class="callout-icon" data-lucide="info" aria-hidden="true"></i>
   <div class="callout-content">
-    <p class="callout-title">Heads up!</p>
-    <p class="callout-description">You can add components using the CLI.</p>
-  </div>
-</div>
-
-<!-- Static destructive callout -->
-<div class="callout" data-variant="destructive">
-  <svg class="callout-icon"><!-- icon --></svg>
-  <div class="callout-content">
-    <p class="callout-title">Error</p>
-    <p class="callout-description">Your session has expired.</p>
-  </div>
-</div>
-
-<!-- Static callout with action -->
-<div class="callout">
-  <svg class="callout-icon"><!-- icon --></svg>
-  <div class="callout-content">
-    <p class="callout-title">New feature available</p>
-    <p class="callout-description">Dark mode is now available.</p>
-  </div>
-  <div class="callout-action">
-    <button class="btn" type="button" data-variant="outline" data-size="sm">Enable</button>
-  </div>
-</div>
-
-<!-- Urgent error inserted after an action -->
-<div class="callout" data-variant="destructive" role="alert">
-  <svg class="callout-icon" aria-hidden="true"><!-- icon --></svg>
-  <div class="callout-content">
-    <p class="callout-title">Payment failed</p>
-    <p class="callout-description">Your payment could not be processed.</p>
+    <p class="callout-title">Connection required</p>
+    <p class="callout-description">Connect the service before starting a sync.</p>
   </div>
 </div>
 ```
 
-## Variants (`data-variant`)
+Use the destructive variant for negative or failure content.
 
-| Value         | Description                               |
-|---------------|-------------------------------------------|
-| `default`     | Standard informational callout              |
-| `destructive` | Error or warning styling with a negative surface fill; it is not live by default |
+```html
+<div class="callout" data-variant="destructive">
+  <i class="callout-icon" data-lucide="circle-alert" aria-hidden="true"></i>
+  <div class="callout-content">
+    <p class="callout-title">Sync failed</p>
+    <p class="callout-description">The remote service rejected the request.</p>
+  </div>
+</div>
+```
+
+Put one compact recovery action at the inline end when the action directly resolves the message.
+
+```html
+<div class="callout" data-variant="destructive">
+  <div class="callout-content">
+    <p class="callout-title">Authentication expired</p>
+    <p class="callout-description">Reconnect the account to continue.</p>
+  </div>
+  <div class="callout-action">
+    <button class="btn" type="button" data-variant="outline" data-size="sm">Reconnect</button>
+  </div>
+</div>
+```
+
+## Dynamic alert
+
+Use `role="alert"` only when an urgent failure appears after a user action or asynchronous update.
+
+```html
+<div class="callout" data-variant="destructive" role="alert">
+  <div class="callout-content">
+    <p class="callout-title">Payment failed</p>
+    <p class="callout-description">The payment provider rejected the transaction.</p>
+  </div>
+</div>
+```
+
+Do not pre-render an empty `role="alert"` container only to fill it repeatedly.
 
 ## Accessibility
 
-- Leave the role off for static or already-visible callouts
-- Add `role="alert"` only to urgent error content inserted dynamically
-- The alert role triggers an assertive live-region announcement, so do not use it for every callout
-- Icon should be decorative (`aria-hidden="true"`) when a title is present
-- Keep action controls as native buttons with an explicit type and a visible `:focus-visible` indicator
-- Callout content is static by default. It adds no animation or transition. Applications should manage focus when inserting an urgent callout after a user action.
+Keep static Callout content in normal reading order.
+
+Use `role="alert"` sparingly.
+
+Do not move focus to Callout automatically unless the application workflow requires it.
+
+Keep every recovery action keyboard reachable.
+
+Pair status color with visible text.
+
+Do not rely on an icon as the message label.
+
+## Runtime
+
+Callout requires no component module.
+
+The complete message remains available without JavaScript.

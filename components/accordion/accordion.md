@@ -1,155 +1,141 @@
-# Pattern: Accordion
+# Accordion
+
+## Purpose
+
+Accordion groups several related disclosures.
+
+Use Accordion when users can inspect optional sections independently or one at a time.
+
+Use Collapsible for one disclosure.
+
+Do not hide primary sequential content in Accordion.
 
 ## Native basis
-`<details>` / `<summary>` elements. The browser provides:
-- Click to toggle (automatically)
-- Enter/Space to toggle when focused (automatically)
-- `open` attribute for state (automatically)
 
-For single-open behavior (closing others when one opens), minimal JavaScript
-is required. For multi-open, pure HTML with no JS works.
+Use native `<details>` and `<summary>` elements.
 
----
+The browser owns focus, keyboard activation, open state, and disclosure semantics.
+
+Use the `name` attribute for an exclusive accordion that allows all items to close.
+
+Use the optional module only when one item must always remain open.
 
 ## Native Web APIs
-- [`<details>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details) — native disclosure widget with built-in open/close state
-- [`<summary>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/summary) — clickable heading that toggles the parent `<details>`
-- [`::details-content`](https://developer.mozilla.org/en-US/docs/Web/CSS/::details-content) — pseudo-element for styling collapsible content
-- [`toggle` event](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDetailsElement/toggle_event) — fires when the `open` state changes
 
----
+- [`<details>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details) provides native disclosure state.
+- [`<summary>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/summary) provides the native disclosure trigger.
+- [`name`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details#name) groups exclusive disclosures without JavaScript.
+- [`open`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details#open) exposes the current disclosure state.
+- [`toggle`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDetailsElement/toggle_event) reports disclosure state changes.
 
-## Structure
+## Multi-open structure
 
-### Multi-open (zero JS)
+Omit `name` when several items can remain open.
 
 ```html
 <div class="accordion">
   <details class="accordion-item" open>
     <summary class="accordion-trigger">
-      <span>Is it accessible?</span>
-      <svg class="accordion-chevron" aria-hidden="true" width="16" height="16"
-           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="m6 9 6 6 6-6"/>
-      </svg>
+      <span>Connection status</span>
+      <i class="accordion-chevron" data-lucide="chevron-down" aria-hidden="true"></i>
     </summary>
     <div class="accordion-content">
-      <p>Yes. It uses native HTML details/summary which are fully accessible
-         by default. Keyboard and screen reader support are built in.</p>
+      <p>The service is connected.</p>
     </div>
   </details>
 
   <details class="accordion-item">
     <summary class="accordion-trigger">
-      <span>Is it styled?</span>
-      <svg class="accordion-chevron" aria-hidden="true" width="16" height="16"
-           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="m6 9 6 6 6-6"/>
-      </svg>
+      <span>Storage status</span>
+      <i class="accordion-chevron" data-lucide="chevron-down" aria-hidden="true"></i>
     </summary>
     <div class="accordion-content">
-      <p>Yes. It follows the semantic token system for consistent theming.</p>
-    </div>
-  </details>
-
-  <details class="accordion-item">
-    <summary class="accordion-trigger">
-      <span>Is it animated?</span>
-      <svg class="accordion-chevron" aria-hidden="true" width="16" height="16"
-           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="m6 9 6 6 6-6"/>
-      </svg>
-    </summary>
-    <div class="accordion-content">
-      <p>Not currently. State changes are immediate and do not use CSS transitions.</p>
+      <p>The service has 48 GB available.</p>
     </div>
   </details>
 </div>
 ```
 
-### Single-open (one item at a time)
+## Exclusive structure
+
+Give each related `<details>` element the same `name`.
+
+```html
+<div class="accordion">
+  <details class="accordion-item" name="service-status" open>
+    <summary class="accordion-trigger">Connection</summary>
+    <div class="accordion-content">Connected.</div>
+  </details>
+
+  <details class="accordion-item" name="service-status">
+    <summary class="accordion-trigger">Storage</summary>
+    <div class="accordion-content">48 GB available.</div>
+  </details>
+</div>
+```
+
+Opening one named item closes another named item in the same group.
+
+The user can close the active item.
+
+This mode requires no component module.
+
+## Enforced one-open mode
+
+Use `data-type="single"` only when the interface must keep one item open.
+
+Keep the same native `<details>` structure.
 
 ```html
 <div class="accordion" data-type="single">
-  <!-- same structure — JS closes siblings on open -->
+  <details class="accordion-item" name="service-status" open>
+    <summary class="accordion-trigger">Connection</summary>
+    <div class="accordion-content">Connected.</div>
+  </details>
+
+  <details class="accordion-item" name="service-status">
+    <summary class="accordion-trigger">Storage</summary>
+    <div class="accordion-content">48 GB available.</div>
+  </details>
 </div>
 ```
 
-### Collapsible single (allow all closed)
+Load `accordion.js` for this stricter mode.
 
-```html
-<div class="accordion" data-type="single" data-collapsible>
-  <!-- same structure — can close active item -->
-</div>
-```
+The module reopens the last item when closing it would leave every item closed.
 
----
+## Keyboard
 
-## ARIA
+Tab moves focus between summary elements.
 
-The `<details>/<summary>` elements provide built-in accessibility:
+Enter toggles the focused summary.
 
-| Feature                    | How it works                                   |
-|----------------------------|------------------------------------------------|
-| Expand/collapse            | Native — `summary` is a button internally      |
-| `aria-expanded`            | Implicit from `open` attribute                 |
-| Focus management           | `summary` is focusable by default              |
-| Keyboard (Enter/Space)     | Native — toggles the `<details>` element       |
-| Screen reader announcement | Native — announces expanded/collapsed state    |
+Space toggles the focused summary.
 
-No additional ARIA attributes are needed when using `<details>/<summary>`.
+These interactions remain browser-native.
 
----
+## Accessibility
 
-## Keyboard interactions
+Keep a visible summary for every details element.
 
-| Key           | Behavior                                           |
-|---------------|----------------------------------------------------|
-| `Tab`         | Move focus between summary elements                |
-| `Enter`       | Toggle the focused item                            |
-| `Space`       | Toggle the focused item                            |
+Keep summary text specific to the hidden content.
 
-These are all browser-native — no JS needed.
+Do not add redundant `aria-expanded` to native summary elements.
 
----
+Do not nest Accordion inside Accordion.
 
-## Variants
+Keep required actions outside collapsed content.
 
-### Bordered
+## No-JavaScript behavior
 
-```html
-<div class="accordion" style="border:1px solid var(--border-primary);padding:0 1rem;">
-  <!-- items -->
-</div>
-```
+Multi-open Accordion remains fully functional.
 
-### Card-wrapped
+Named exclusive Accordion remains fully functional in current browsers.
 
-```html
-<div class="card">
-  <div class="card-header">
-    <h3 class="card-title">FAQ</h3>
-    <p class="card-description">Frequently asked questions.</p>
-  </div>
-  <div class="card-content">
-    <div class="accordion">
-      <!-- items -->
-    </div>
-  </div>
-</div>
-```
+The enforced one-open rule falls back to a normal named exclusive Accordion.
 
----
+## Runtime
 
-## Notes
+Accordion requires no module for normal multi-open or named exclusive use.
 
-- `<details name="group">` groups accordions — only one item in the group stays open at a time
-- The default `<details>` marker is removed; the chevron indicates state instead
-- `<details>/<summary>` is the most accessible accordion implementation — it works with zero JS and zero ARIA
-- For single-open behavior, the `toggle` event on `<details>` fires after the state changes
-- The `open` attribute is the source of truth for whether an item is expanded
-- Avoid nesting accordions — use a flat list with clear headings instead
-- The chevron state relies on the `details[open] >` selector — this is pure CSS
-- Disclosure state changes are immediate for now, with no CSS animation or transition
-- Set `data-type="single"` for accordion behavior (only one open); omit for disclosure list (any number open)
-- Set `data-collapsible` alongside `data-type="single"` to allow all items to be closed
+Load `accordion.js` only for `data-type="single"` enforced one-open behavior.

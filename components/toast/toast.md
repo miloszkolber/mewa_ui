@@ -1,118 +1,137 @@
-# Pattern: Toast
+# Toast
+
+## Purpose
+
+Toast announces a brief non-blocking result.
+
+Use Toast for status that does not require a decision.
+
+Use Callout for persistent important information.
+
+Use Dialog or Alert Dialog for blocking work.
+
+Do not use Toast as the only presentation of a form validation error.
 
 ## Native basis
-`popover` API for top-layer rendering and non-modal behavior.
-Requires JavaScript for triggering, auto-dismiss, stacking, and ARIA live
-region announcements. Follows `role="status"` with `aria-live="polite"`.
 
----
+Toast uses a manual Popover surface and a live status role.
+
+The module creates, stacks, pauses, dismisses, and announces Toast instances.
+
+The module exposes the `window.toast` API.
 
 ## Native Web APIs
-- [Popover API (`popover="manual"`)](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API) — top-layer rendering without light-dismiss for persistent notifications
-- [`aria-live` regions](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-live) — announces toast content changes to screen readers
 
----
+- [`popover="manual"`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/popover) keeps a Toast in the top layer without light dismiss.
+- [`role="status"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/status_role) provides polite status announcement.
+- [`role="alert"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/alert_role) provides assertive announcement for an urgent error status.
+- [`aria-atomic`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-atomic) announces the complete message.
 
-## Structure
+## Container
+
+The module creates the container when the page does not provide one.
+
+Provide one container only when the application needs a non-default position.
 
 ```html
-<!-- Toast container — place once in the page -->
-<div id="toast-container"
-     class="toast-container"
+<div class="toast-container"
+     id="toast-container"
      role="region"
      aria-label="Notifications"
-     data-position="bottom-right">
-</div>
-
-<!-- Individual toast (injected by JS) -->
-<div class="toast" role="status" aria-live="polite" aria-atomic="true"
-     popover="manual">
-  <div class="toast-content">
-    <div class="toast-text">
-      <p class="toast-title">Event created</p>
-      <p class="toast-description">Monday, January 3rd at 6:00pm</p>
-    </div>
-    <button class="toast-close" type="button" aria-label="Dismiss" data-toast-close>
-      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M18 6 6 18M6 6l12 12"/>
-      </svg>
-    </button>
-  </div>
-  <div class="toast-actions">
-    <button class="btn" type="button" data-variant="outline" data-size="sm"
-            data-toast-action>Undo</button>
-  </div>
-</div>
+     data-position="bottom-right"></div>
 ```
 
-### Variant: with icon
+Supported positions are `bottom-right`, `bottom-left`, `bottom-center`, `top-right`, `top-left`, and `top-center`.
 
-```html
-<div class="toast" data-variant="success" role="status"
-     aria-live="polite" popover="manual">
-  <div class="toast-content">
-    <svg class="toast-icon" aria-hidden="true" width="16" height="16">
-      <path d="M20 6 9 17l-5-5"/>
-    </svg>
-    <div class="toast-text">
-      <p class="toast-title">Saved successfully</p>
-    </div>
-    <button class="toast-close" type="button" aria-label="Dismiss" data-toast-close>
-      <svg aria-hidden="true" width="14" height="14">...</svg>
-    </button>
-  </div>
-</div>
+The default position is `bottom-right`.
+
+## API
+
+Show a neutral status with `toast.show()`.
+
+```js
+window.toast.show({
+  title: 'Settings saved',
+  description: 'The new configuration is active.'
+});
 ```
 
----
+Use `toast.success()`, `toast.warning()`, `toast.info()`, or `toast.error()` for semantic status variants.
 
-## ARIA
+Use `toast.dismiss()` to dismiss all visible Toast instances.
 
-| Attribute           | Where            | Value                       |
-|---------------------|------------------|-----------------------------|
-| `role="status"`     | non-destructive toast | Polite live region        |
-| `role="alert"`      | destructive toast    | Assertive live region     |
-| `aria-live`          | each toast           | `polite`, or `assertive` for destructive content |
-| `aria-atomic="true"`| each toast       | Announce entire toast, not just changes |
-| `aria-label`        | toast container  | e.g. "Notifications"       |
+## Actions
 
----
+Use one short action only when the action directly reverses or completes the reported result.
 
-## Positions
+```js
+window.toast.show({
+  title: 'Item removed',
+  action: {
+    label: 'Undo',
+    onClick() {
+      restoreItem();
+    }
+  }
+});
+```
 
-Omitting `data-position` places the container at `bottom-right`. Set `data-position` to choose another supported edge or centered position:
-- `bottom-right` (default)
-- `bottom-left`
-- `bottom-center`
-- `top-right`
-- `top-left`
-- `top-center`
+Do not put a multi-step task inside Toast.
 
-Toast width stays within the viewport at narrow sizes. Position names are physical viewport positions and do not change in right-to-left documents.
+## Duration
 
----
+The default duration is 4000ms.
 
-## Auto-dismiss timing
+Pass `duration: 8000` when the message needs more reading time.
 
-| Behavior    | Duration value     |
-|-------------|-------------------|
-| Default     | `4000` (4 seconds)|
-| Long        | `8000`            |
-| Persistent  | `Infinity`        |
+Pass `duration: Infinity` when application code must dismiss the Toast explicitly.
 
----
+A finite Toast pauses while the pointer is over it.
 
-## Notes
+A finite Toast pauses while focus is inside it.
 
-- The toast container should be a direct child of `<body>`
-- Toast surfaces are fully opaque and use the theme surfaces. Semantic variants use the 050-scale fill with 950-scale colored text in light mode and the 950-scale fill with colored text in dark mode.
-- `window.toast` exposes `show`, `success`, `warning`, `info`, `error`, and `dismiss`
-- Toast markup is built via DOM APIs, never `innerHTML`, so user content stays safe
-- Toasts use `popover="manual"` so they don't auto-dismiss on outside click
-- Finite-duration toasts pause while hovered or while one of their controls has focus, then resume with the remaining time
-- The stacking order is newest on top (CSS `flex-direction: column-reverse` for bottom positions)
-- Maximum visible toasts defaults to 3 — older toasts are dismissed
-- Swipe-to-dismiss can be added with touch event handling but is not required for MVP
-- For forms, show success/error toasts after submission rather than inline messages
-- The `toast()` API is imperative — call it from any event handler
+A finite Toast resumes with the remaining time.
+
+The container keeps at most three Toast instances visible.
+
+## Behavior
+
+The module creates Toast markup through controlled DOM operations.
+
+The module uses fixed local SVG strings for built-in status and close icons.
+
+The module uses `textContent` for application-provided title, description, and action label values.
+
+The newest Toast appears nearest the active stack edge.
+
+The close button dismisses one Toast.
+
+An action dismisses its Toast after the action callback runs.
+
+A destructive Toast uses assertive announcement.
+
+Other Toast variants use polite announcement.
+
+## Accessibility
+
+Keep the title concise.
+
+Keep descriptions short enough to understand without opening another surface.
+
+Use inline Field errors for form validation.
+
+Use Toast only as supplementary confirmation after form submission.
+
+Pause timed dismissal during hover and focus.
+
+Keep the close control keyboard reachable.
+
+Do not move focus to a newly created Toast.
+
+Do not use repeated assertive Toast messages for routine events.
+
+## Runtime
+
+Load `toast.js` before application code calls `window.toast`.
+
+Toast has no useful interactive fallback without the module.
