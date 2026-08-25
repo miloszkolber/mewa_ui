@@ -1,120 +1,181 @@
-# Pattern: Dropdown Menu
+# Dropdown Menu
+
+## Purpose
+
+Dropdown Menu presents a compact set of application actions from one trigger.
+
+Use Dropdown Menu when showing every action as a visible button would create unnecessary local clutter.
+
+Use Navigation Menu for grouped routes.
+
+Use Select or Combobox for form-value selection.
+
+Do not use Dropdown Menu for primary application navigation.
 
 ## Native basis
-`popover` API + `<button>` trigger. The browser provides light-dismiss
-(click outside to close) and top-layer rendering.
-Requires JavaScript for keyboard navigation and ARIA management.
 
----
+Dropdown Menu uses a native button trigger and the Popover API.
+
+CSS Anchor Positioning places the menu beside its trigger.
+
+The module provides the ARIA menu keyboard model, highlighted state, and checkable item behavior.
 
 ## Native Web APIs
-- [Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API) — top-layer rendering and light-dismiss (click outside to close)
-- [CSS Anchor Positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning) — positions dropdown relative to trigger without JavaScript
-- [WAI-ARIA Menu pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/) — keyboard navigation and role contract for menu items
-- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — maps border and highlight to system colors
 
----
+- [Popover API](https://developer.mozilla.org/en-US/docs/Web/API/Popover_API) provides top-layer rendering and light dismiss.
+- [CSS Anchor Positioning](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_anchor_positioning) positions the menu without a positioning library.
+- [WAI-ARIA Menu pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menubar/) defines menu and menuitem keyboard behavior.
+- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) preserves system-color highlights.
 
 ## Structure
 
 ```html
-<!-- Trigger -->
-<button class="btn" data-variant="outline"
+<button class="btn"
         type="button"
+        data-variant="outline"
+        data-dropdown-menu-trigger="job-actions"
         aria-haspopup="menu"
         aria-expanded="false"
-        aria-controls="my-menu"
-        data-dropdown-menu-trigger="my-menu">
-  Options
-  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24"
-       fill="none" stroke="currentColor" stroke-width="2">
-    <path d="m6 9 6 6 6-6"/>
-  </svg>
+        aria-controls="job-actions">
+  Actions
+  <i data-lucide="chevron-down" aria-hidden="true"></i>
 </button>
 
-<!-- Menu -->
-<div id="my-menu" role="menu" popover
+<div id="job-actions"
      class="dropdown-menu-content"
-     aria-label="Options menu">
-
-  <div role="group" aria-label="Navigation">
-    <button role="menuitem" class="dropdown-menu-item" type="button" tabindex="-1">
-      Profile
-    </button>
-    <button role="menuitem" class="dropdown-menu-item" type="button" tabindex="-1">
-      Settings
-    </button>
-  </div>
-
+     role="menu"
+     popover
+     aria-label="Job actions">
+  <button class="dropdown-menu-item"
+          type="button"
+          role="menuitem"
+          tabindex="-1">
+    Retry job
+  </button>
+  <button class="dropdown-menu-item"
+          type="button"
+          role="menuitem"
+          tabindex="-1">
+    View logs
+  </button>
   <div class="dropdown-menu-separator" role="separator"></div>
-
-  <div role="group" aria-label="Actions">
-    <button role="menuitem" class="dropdown-menu-item" type="button" tabindex="-1">
-      <svg aria-hidden="true" width="16" height="16">...</svg>
-      Export
-      <span class="dropdown-menu-shortcut">⌘E</span>
-    </button>
-    <button role="menuitem" class="dropdown-menu-item" type="button" data-variant="destructive" tabindex="-1">
-      Delete
-    </button>
-  </div>
+  <button class="dropdown-menu-item"
+          type="button"
+          role="menuitem"
+          data-variant="destructive"
+          tabindex="-1">
+    Delete job
+  </button>
 </div>
 ```
 
----
+Set `data-dropdown-menu-trigger` to the menu ID.
 
-## ARIA
+Give the menu an accessible name.
 
-| Attribute                  | Where            | Value                         |
-|----------------------------|------------------|-------------------------------|
-| `role="menu"`              | menu container   | Always                        |
-| `role="menuitem"`          | each item        | Always                        |
-| `role="separator"`         | dividers         | Always                        |
-| `role="group"`             | item groups      | Optional, with `aria-label`   |
-| `aria-haspopup="menu"`    | trigger button   | Always                        |
-| `aria-expanded`            | trigger button   | `true` when open, `false` when closed |
-| `aria-controls`            | trigger button   | ID of menu element            |
-| `aria-label`               | menu container   | Description of menu purpose   |
-| `tabindex="-1"`            | each menuitem    | Items not in tab order — use arrow keys |
-| `data-highlighted`         | focused item     | Set by JS for styling          |
+Keep normal action labels as verbs.
 
----
+## Checkable items
 
-## Checkbox and radio items
-
-For checkbox/radio items in the menu, use `aria-checked`. Both classes are set on the menu item, and the indicator is painted at the inline end so it never shifts the label. The glyph inherits the item color, including the destructive hover:
+Use `role="menuitemcheckbox"` for one independent menu setting.
 
 ```html
-<!-- Checkbox item -->
-<button role="menuitemcheckbox" class="dropdown-menu-item dropdown-menu-check" type="button"
-        aria-checked="true" tabindex="-1">
-  Show Sidebar
+<button class="dropdown-menu-item dropdown-menu-check"
+        type="button"
+        role="menuitemcheckbox"
+        aria-checked="true"
+        tabindex="-1">
+  Show timestamps
 </button>
+```
 
-<!-- Radio group -->
+Use `role="menuitemradio"` inside a labelled group for one menu choice from a small set.
+
+```html
 <div role="group" aria-label="Sort order">
-  <div class="dropdown-menu-label">Sort by</div>
-  <button role="menuitemradio" class="dropdown-menu-item dropdown-menu-radio" type="button"
-          aria-checked="true" tabindex="-1">
-    Date
+  <p class="dropdown-menu-label">Sort order</p>
+  <button class="dropdown-menu-item dropdown-menu-radio"
+          type="button"
+          role="menuitemradio"
+          aria-checked="true"
+          tabindex="-1">
+    Newest first
   </button>
-  <button role="menuitemradio" class="dropdown-menu-item dropdown-menu-radio" type="button"
-          aria-checked="false" tabindex="-1">
-    Name
+  <button class="dropdown-menu-item dropdown-menu-radio"
+          type="button"
+          role="menuitemradio"
+          aria-checked="false"
+          tabindex="-1">
+    Oldest first
   </button>
 </div>
 ```
 
----
+Do not use checkable menu items when a visible Checkbox, Radio Group, or Switch would improve discovery.
 
-## Notes
+## Behavior
 
-- Always use `popover` attribute for the menu — it renders in the top layer and avoids overflow clipping
-- CSS anchor positioning (`position-anchor`, `anchor()`) handles placement — no JS positioning needed
-- `position-try: flip-block` automatically flips the menu above the trigger if there's no room below
-- The `popover` API handles light-dismiss (click outside) automatically
-- Light-dismiss keeps focus on the newly focused outside control. Escape and keyboard activation that closes the menu return focus to the trigger.
-- For submenus, nest another `[popover]` element triggered by a `menuitem` with `aria-haspopup="menu"`
-- Escape closes the menu and returns focus to the trigger
-- Menu items use `tabindex="-1"` — only arrow keys move focus (roving focus pattern)
-- Trigger and menu item state changes are immediate. The component adds no animation or transition, and the focus ring remains visible for keyboard users.
+Activating the trigger toggles the native popover.
+
+Opening the menu focuses the first enabled menu item.
+
+Pointer movement highlights the menu item under the pointer.
+
+Arrow navigation wraps through enabled items.
+
+Type-ahead moves focus to the first enabled item whose label starts with the typed character.
+
+Enter or Space activates the focused item.
+
+Activating a normal menu item closes the menu.
+
+Activating a checkbox or radio item updates `aria-checked`.
+
+Escape closes the menu.
+
+Light dismiss keeps focus on the outside control that received focus.
+
+Keyboard closure restores focus to the trigger when focus remains inside the menu.
+
+State changes are immediate.
+
+## Keyboard
+
+| Key | Behavior |
+| --- | --- |
+| `ArrowDown` | Focus the next enabled item. |
+| `ArrowUp` | Focus the previous enabled item. |
+| `Home` | Focus the first enabled item. |
+| `End` | Focus the last enabled item. |
+| `Enter` | Activate the focused item. |
+| `Space` | Activate the focused item. |
+| `Escape` | Close the menu. |
+| Printable character | Focus the first matching item. |
+
+Menu items stay out of the normal Tab sequence with `tabindex="-1"`.
+
+Tab leaves the menu through normal browser focus movement and light dismiss behavior.
+
+## Accessibility
+
+Use `aria-haspopup="menu"` on the trigger.
+
+Keep `aria-expanded` synchronized with native popover state.
+
+Use `role="menu"` on the menu container.
+
+Use the documented menuitem role on each actionable item.
+
+Use `disabled` on native button items when possible.
+
+Skip disabled items during managed keyboard movement.
+
+Hide decorative icons from assistive technology.
+
+Do not add submenu markup until the component implements and documents submenu keyboard behavior.
+
+## Runtime
+
+Load `dropdown-menu.js` whenever Dropdown Menu appears.
+
+The popover can render without the module, but the documented menu focus and keyboard behavior require JavaScript.
