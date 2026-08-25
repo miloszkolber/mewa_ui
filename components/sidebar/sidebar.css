@@ -6,6 +6,14 @@
     min-height: 100dvh;
   }
 
+  .sidebar-workspace {
+    display: flex;
+    flex: 1;
+    min-inline-size: 0;
+    min-block-size: 100dvh;
+    flex-direction: column;
+  }
+
   .app-sidebar {
     position: sticky;
     top: 0;
@@ -312,6 +320,10 @@
   @media (scripting: none) and (max-width: 48rem) {
     .sidebar-layout {
       flex-direction: column;
+    }
+
+    .sidebar-workspace {
+      min-block-size: 0;
     }
 
     .app-sidebar {
