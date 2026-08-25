@@ -1,19 +1,45 @@
 # App Shell
 
+## Purpose
+
+App Shell supplies shared chrome and page-region primitives for utility applications.
+
+Use App Shell for a top header, a sticky toolbar, a page overview, dense sections, status rows, and compact empty states.
+
+Do not use App Shell as a complete application template.
+
+Do not put route data or business logic in App Shell.
+
+Use `layouts/` when the task needs a complete serveable shell.
+
 ## Native basis
 
-A semantic page frame composed from `<body>`, `<header>`, `<nav>`, `<main>`, native route links, and native action buttons. CSS provides shared application chrome without replacing navigation or document landmarks. The optional module adds an OS-aware, persisted theme toggle.
+App Shell uses `<body>`, `<header>`, `<nav>`, `<main>`, native links, and native buttons.
+
+CSS supplies shared chrome and page regions.
+
+The optional module supplies an OS-aware persisted theme toggle.
 
 ## Native Web APIs
 
-- [`<header>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/header) and [`<nav>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav) provide named application navigation.
-- [`aria-current="page"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current) exposes the current route on its native link.
-- [`Window.matchMedia()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) reads and follows the OS color-scheme preference until the user makes a manual choice.
-- [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) persists the optional manual theme choice when storage is available.
+- [`<header>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/header) identifies application chrome.
+- [`<nav>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav) identifies route navigation.
+- [`<main>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/main) identifies the primary page content.
+- [`aria-current="page"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-current) identifies the current route.
+- [`Window.matchMedia()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia) reads the OS color preference.
+- [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) stores the optional manual theme choice.
 
 ## Page frame
 
-Put `.app-shell` on `<body>`. The direct `<main>` child grows to fill the viewport. Use a skip link before the header and give the main landmark a stable ID. The main landmark includes a default sticky-header scroll offset. Set `--app-shell-header-offset` on `.app-shell` only when a consumer's wrapped header is taller than the default `3.5rem`.
+Put `.app-shell` on `<body>`.
+
+Put one skip link before the header.
+
+Give the main landmark a stable ID.
+
+Use native links for routes.
+
+Use native buttons for actions.
 
 ```html
 <body class="app-shell">
@@ -34,7 +60,12 @@ Put `.app-shell` on `<body>`. The direct `<main>` child grows to fill the viewpo
       </nav>
 
       <div class="app-header-actions">
-        <button class="btn" type="button" data-variant="outline" data-size="icon" data-theme-toggle aria-label="Toggle theme">
+        <button class="btn"
+                type="button"
+                data-variant="outline"
+                data-size="icon"
+                data-theme-toggle
+                aria-label="Toggle theme">
           <i data-lucide="moon" aria-hidden="true"></i>
           <i data-lucide="sun" aria-hidden="true"></i>
         </button>
@@ -43,16 +74,24 @@ Put `.app-shell` on `<body>`. The direct `<main>` child grows to fill the viewpo
   </header>
 
   <main id="main-content">
-    <!-- Page content -->
+    <div class="app-content">
+      <!-- Route content. -->
+    </div>
   </main>
 </body>
 ```
 
-Use native links for routes and native buttons for actions. Keep `aria-current="page"` on only the current route. `.brand-mark` is the same signet used by the Sidebar header: a 32px square inverted container with a 16px icon inside. `.brand-logo` is the icon slot inside it. The current route reads as a line tab — a 2px bottom border under the link — so hover never covers it.
+Keep `aria-current="page"` on only one route in each navigation landmark.
 
-## Toolbar alternative
+Use `.brand-mark` for the shared 32-pixel signet.
 
-Use `.app-toolbar` with `.app-toolbar-inner` for a sticky breadcrumb-and-actions bar in a sidebar application. Do not stack it below `.app-header`, because each region is independently sticky at the viewport start.
+Do not duplicate the product brand in a composed sidebar header.
+
+## Toolbar
+
+Use `.app-toolbar` for a breadcrumb and page-action row in a sidebar shell.
+
+Do not stack `.app-toolbar` under `.app-header`.
 
 ```html
 <header class="app-toolbar">
@@ -72,7 +111,11 @@ Use `.app-toolbar` with `.app-toolbar-inner` for a sticky breadcrumb-and-actions
 
 ## Edge accent
 
-Add `.app-shell-edge` beside `.app-shell` on `<body>` to pin a decorative diagonal hatch to both inline edges of the viewport. The accent is a flat hard-stop pattern painted in a border role, ignores pointer input, and never moves. Omit the class when the edges must stay clean; the shell is fully usable without it.
+Add `.app-shell-edge` to `<body>` to show the optional viewport-edge hatch.
+
+Use the hatch only on a complete shell.
+
+Do not use the hatch on a component demo or an inner region.
 
 ```html
 <body class="app-shell app-shell-edge">
@@ -80,7 +123,11 @@ Add `.app-shell-edge` beside `.app-shell` on `<body>` to pin a decorative diagon
 
 ## Page overview
 
-Use one `.page-overview` near the start of `<main>` for route context, a sentence-case heading, a concise description, optional actions, and an inline stats strip. The uppercase `.eyebrow` is the reserved monospace technical label. Do not uppercase ordinary headings or controls.
+Use one `.page-overview` near the start of the main content.
+
+Use the region for route context, one heading, one short description, and page actions.
+
+Use `.eyebrow` only for a short technical label.
 
 ```html
 <section class="page-overview" aria-labelledby="jobs-heading">
@@ -93,51 +140,65 @@ Use one `.page-overview` near the start of `<main>` for route context, a sentenc
   <div class="page-actions">
     <button class="btn" type="button" data-variant="outline">Refresh</button>
   </div>
-
-  <p class="stats">
-    <span><span class="stat-label">Queued:</span> <span class="stat-value">12</span></span>
-    <span class="stat-separator" aria-hidden="true">/</span>
-    <span><span class="stat-label">Failed:</span> <span class="stat-value">2</span></span>
-  </p>
 </section>
 ```
 
-Set `--app-shell-max: 64rem` on `.app-shell` for focused single-purpose tools. The default `90rem` canvas suits dense tables and media surfaces.
+Use `--app-shell-max: 90rem` for dense data surfaces.
+
+Use `--app-shell-max: 64rem` for a focused tool.
+
+Do not add another shell width preset.
 
 ## Shared content canvas
 
-Use `.app-content` for a content region that should use the same max-width and centered margin math as the header, toolbar, and page overview. It has no card treatment, so consumers can compose their own sections inside it.
+Use `.app-content` for content that follows the shell width and centering rules.
+
+Do not add a card treatment to `.app-content`.
 
 ```html
 <main id="main-content">
   <div class="app-content">
-    <!-- Route content uses the shared shell canvas. -->
+    <!-- Route content. -->
   </div>
 </main>
 ```
 
-## Status and empty states
+## Inline status
 
-`.status-dot` is a compact status marker. `.status-icon` is a circular status-glyph container. Both accept `data-state="positive"`, `data-state="caution"`, `data-state="negative"`, or `data-state="running"`. Always pair a color marker with visible status text. Use `.app-empty` for a short empty result message and add `role="status"` when asynchronous updates replace its text.
+Use `.status-dot` for a compact state marker.
+
+Use `.status-icon` when the glyph adds useful meaning.
+
+Use `data-state="positive"`, `data-state="caution"`, `data-state="negative"`, or `data-state="running"`.
+
+Always pair the marker with visible state text.
 
 ```html
 <span class="stat-status">
   <span class="status-dot" data-state="positive" aria-hidden="true"></span>
   Ready
 </span>
-
-<p class="app-empty" role="status">No jobs match the current filter.</p>
 ```
 
-For a dense collection of independently actionable statuses, use `.app-status-list` and one `.app-status-row` per item. Place the existing `.status-icon` or `.status-dot` first, keep copy in `.app-status-copy`, and put optional controls in `.app-status-actions`. Both markers share a fixed slot so titles align across rows. Rows are separated by borders and do not add nested cards.
+## Status list
+
+Use `.app-status-list` for dense independently actionable status rows.
+
+Use one `.app-status-row` for each item.
+
+Put the state marker first.
+
+Put optional controls in `.app-status-actions`.
+
+Do not wrap each row in a card.
 
 ```html
 <ul class="app-status-list" aria-label="Worker status">
   <li class="app-status-row">
-    <span class="status-icon" data-state="running" aria-hidden="true">...</span>
+    <span class="status-dot" data-state="running" aria-hidden="true"></span>
     <div class="app-status-copy">
       <p class="app-status-title">Resolve model manifest</p>
-      <p class="app-status-description">Checking revisions and compatible quantizations.</p>
+      <p class="app-status-description">Check compatible revisions.</p>
     </div>
     <div class="app-status-actions">
       <button class="btn" type="button" data-variant="outline" data-size="sm">View run</button>
@@ -146,78 +207,101 @@ For a dense collection of independently actionable statuses, use `.app-status-li
 </ul>
 ```
 
-## Filter rail
-
-Use `.app-filter-rail` for a narrow vertical filter navigation shared by bookmarks and rss. It keeps the same section canvas as dense rows but uses a vertical list with an inset left-border active indicator. Pair with `.app-filter-list` or `.app-filter-tags`.
-
-```html
-<aside class="app-filter-rail" aria-label="Bookmark filters">
-  <section class="app-section app-filter-section" aria-labelledby="filter-categories-title">
-    <div class="app-section-header">
-      <h2 class="app-section-title" id="filter-categories-title">Categories</h2>
-    </div>
-    <div class="app-section-content">
-      <ul class="app-filter-list">
-        <li><a href="/" aria-current="page"><span>All</span><small>12</small></a></li>
-        <li><a href="/?category=3"><span>Research</span><small>4</small></a></li>
-      </ul>
-    </div>
-  </section>
-</aside>
-```
-
-Active link uses `aria-current="page"` and receives the same `background: var(--surface-secondary)` treatment as category rows in rss. Keep the rail width at `16rem` (bookmarks) or `15–19rem` (rss) and collapse to full-width at `48rem`.
-
 ## Section canvas
 
-Use `.app-section` for a bordered full-width section that holds dense rows (tables, status lists, or custom row grids). It replaces the common but visually heavy `card > table` nesting. Put the border on the section, not on each row.
+Use `.app-section` for one bordered region that contains dense rows or a table.
+
+Put the outer border on the section.
+
+Remove the child container border when the child fills the section.
+
+Do not use `Card > Table` nesting.
 
 ```html
 <section class="app-section" aria-labelledby="jobs-title">
   <div class="app-section-header">
-    <h2 class="app-section-title" id="jobs-title">Scheduled services</h2>
+    <div>
+      <h2 class="app-section-title" id="jobs-title">Scheduled services</h2>
+      <p class="app-section-description">Current execution state.</p>
+    </div>
   </div>
   <div class="table-container">
-    <table class="table table--dense">…</table>
+    <table class="table table--dense">...</table>
   </div>
 </section>
 ```
 
-When a section directly wraps a table, status list, or bookmark list, the inner container's border is removed so the section provides the single outer canvas.
+## Filter rail
 
-For empty states inside a section, use `.app-empty--compact` (dashed border) rather than a standalone card.
+Use `.app-filter-rail` for narrow route or result filters beside primary content.
+
+Use `.app-filter-list` for category links.
+
+Use `.app-filter-tags` for tag links.
+
+Use `aria-current="page"` on the active link.
+
+Collapse the rail to full width at the documented layout breakpoint.
+
+Do not use a filter rail for primary application navigation.
+
+## Empty state
+
+Use `.app-empty` for a concise empty result message.
+
+Add `role="status"` only when an asynchronous update replaces the message.
+
+Use `.app-empty--compact` inside a bordered section.
+
+Do not add an illustration when one sentence and one recovery action are sufficient.
 
 ```html
-<p class="app-empty app-empty--compact" role="status">No bookmarks match.</p>
+<p class="app-empty app-empty--compact" role="status">No jobs match the current filter.</p>
 ```
 
-## Sizing guidance
+## Behavior
 
-- Header actions (`.app-header-actions` > `.btn`): default size, `data-variant="outline"` for Theme and Refresh. Do not use `data-size="sm"` in headers.
-- In-row actions (inside `.app-status-row`, `.bookmark-row`, table `actions` cells): `data-size="sm"`.
-- Filled destructive (`data-variant="destructive"`) reserved for the primary confirm in a dialog; secondary/row actions use outline or ghost variants with `data-variant="destructive"` for red text without filled mass.
-- Refresh buttons: outline + refresh icon + visible label ("Refresh", "Refresh inventory", "Refresh all") in `.app-header-actions`.
+The shell keeps one continuous application canvas.
 
-## Header refresh pattern
+The sticky header stays at the viewport start.
 
-Use the same outline button with icon and label in every header. Do not invent `secondary` variants or custom wording per service.
+The main landmark grows to fill short pages.
 
-```html
-<button class="btn" type="button" data-variant="outline">
-  <i data-lucide="refresh-cw" aria-hidden="true"></i>
-  Refresh
-</button>
-```
+The current route uses a border-led active treatment.
+
+Dense sections share one outer border.
+
+Status rows align markers, copy, and actions without nested cards.
+
+Narrow viewports stack status actions below the copy.
+
+The optional edge hatch disappears when horizontal space becomes limited.
+
+## Action sizing
+
+Use default Button size for header actions.
+
+Use small Button size for row actions.
+
+Use Outline for ordinary secondary actions.
+
+Use Ghost for low-emphasis row actions.
+
+Reserve a filled Destructive button for a destructive confirmation.
+
+Use an icon and visible label for Refresh actions.
 
 ## Optional theme enhancement
 
-Load the optional module only when the page includes `[data-theme-toggle]`. Without the module, the control stays hidden and the rest of the shell remains usable.
+Load the module only when the page contains `[data-theme-toggle]`.
+
+The theme control stays hidden until the module initializes.
 
 ```html
 <script type="module" src="/ui/components/app-shell/app-shell.js"></script>
 ```
 
-To avoid a first-paint mismatch, put this small inline decision script in `<head>` after the foundation links and before application styles. It follows the OS until a manual choice has been stored. The legacy key preserves existing mewa_ui consumer preferences during migration.
+Put the pre-paint preference script in `<head>` after the foundation styles.
 
 ```html
 <script>
@@ -234,18 +318,40 @@ To avoid a first-paint mismatch, put this small inline decision script in `<head
 </script>
 ```
 
-The module writes only `mewa-ui-theme`, updates the toggle's action label, and sets `data-theme="light"` or `data-theme="dark"` for the icon treatment: the moon is shown in light mode and the sun in dark mode, and the module's `data-theme` state swaps which one renders.
+The module writes the `mewa-ui-theme` storage key.
+
+The module follows the OS preference until the user selects a theme.
 
 ## Accessibility
 
-- Use one main landmark and a skip link whose fragment resolves to it.
-- Give every navigation landmark a visible heading or an `aria-label`.
-- Keep route navigation as native links. Do not add tab roles to application routes.
-- Give icon-only actions an accessible name and mark decorative SVGs `aria-hidden="true"`.
-- Pair status color with visible text and use live status semantics only for content that changes asynchronously.
-- Keep the shell usable at narrow widths and 200% zoom. Header rows wrap instead of hiding actions.
-- The shell is square, border-led, and motionless. Status circles are the only circular geometry it introduces.
+Use one main landmark.
 
-## No-JavaScript behavior
+Make the skip-link fragment resolve to the main landmark.
 
-The header, navigation, page overview, status text, empty state, and native actions remain usable without JavaScript. The optional theme control is hidden until its module initializes. When the inline preference script is omitted, `src/tokens.css` still provides the default light theme and consumers may rely on their own theme policy.
+Give every navigation landmark an accessible name.
+
+Keep routes as links.
+
+Do not add tab roles to route navigation.
+
+Give every icon-only action an accessible name.
+
+Hide decorative icons from assistive technology.
+
+Pair status color with visible text.
+
+Use live-region semantics only for asynchronous updates.
+
+Keep the shell usable at 200 percent zoom.
+
+Keep the shell usable at 320 CSS pixels.
+
+Keep every interactive control keyboard reachable.
+
+## Runtime
+
+The page frame, navigation, overview, status, sections, and empty states need no JavaScript.
+
+The theme toggle uses optional JavaScript.
+
+The shell stays usable when the optional module does not load.
