@@ -1,127 +1,186 @@
-# Pattern: Layout
+# Layout
+
+## Purpose
+
+Layout provides small intrinsic Grid and Flexbox primitives for local composition.
+
+Use Layout to arrange content inside a page, component, or documented pattern.
+
+Use App Shell and Sidebar guidance for application chrome.
+
+Do not treat Layout as a complete page shell.
+
+Do not create semantic structure with generic layout containers when native elements fit.
 
 ## Native basis
-Intrinsic layout primitives built on CSS Grid and Flexbox: `.layout-container`, `.layout-stack`, `.layout-grid`, `.layout-sidebar`, `.layout-center`, `.layout-split`.
-Pure CSS — no JavaScript or ARIA required.
 
----
+Layout uses CSS Grid, Flexbox, intrinsic sizing, logical properties, and custom properties.
+
+Layout adds no interaction or ARIA behavior.
 
 ## Native Web APIs
-- [CSS Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout) — `auto-fit` / `minmax()` intrinsic column wrapping
-- [Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout) — stacking, app-shell splits, wrapping
-- [`min()`](https://developer.mozilla.org/en-US/docs/Web/CSS/min) — fluid container width that cannot overflow
-- [`fit-content()`](https://developer.mozilla.org/en-US/docs/Web/CSS/fit-content) — sidebar sizing up to a cap
-- [Custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties) — `--gap`, `--min`, `--container-max`, `--sidebar-width` configuration
-- [Logical properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values) — `margin-inline`, `padding-inline` for RTL support
-- [CSS nesting](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting) — child selectors in the sidebar split
 
----
+- [CSS Grid](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout) provides intrinsic multi-column layout.
+- [Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout) provides stacks, splits, and wrapping.
+- [`min()`](https://developer.mozilla.org/en-US/docs/Web/CSS/min) constrains fluid container width.
+- [Custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties) configure local gaps and dimensions.
+- [Logical properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values) preserve writing-direction support.
 
-## Structure
+## Container
 
-### Container
-Constrains content to a centered max width. The padding keeps the content off the viewport edges.
+Use `.layout-container` for a centered focused-content region.
+
 ```html
 <div class="layout-container">
-  <p>Constrained, centered content.</p>
+  <p>Focused content.</p>
 </div>
 ```
 
-### Stack
-Vertical rhythm for arbitrary content. Children are separated by the gap.
+The default maximum is 64rem.
+
+Use App Shell canvas rules for 90rem dense application content.
+
+Do not introduce a third global content-width preset.
+
+## Stack
+
+Use `.layout-stack` for one-dimensional vertical flow.
+
 ```html
-<div class="layout-stack">
-  <h2>Heading</h2>
-  <p>Paragraph</p>
-  <button type="button" class="btn">Action</button>
+<div class="layout-stack" data-gap="md">
+  <h2>Connection</h2>
+  <p>Configure the selected endpoint.</p>
+  <button class="btn" type="button">Test connection</button>
 </div>
 ```
 
-### Grid
-Intrinsically responsive columns. Each column tries to be at least `--min` wide; columns wrap to new rows when they no longer fit.
+Use normal document flow when no explicit uniform gap is necessary.
+
+## Grid
+
+Use `.layout-grid` for intrinsically wrapping peer columns.
+
 ```html
-<div class="layout-grid">
-  <div>Card 1</div>
-  <div>Card 2</div>
-  <div>Card 3</div>
+<div class="layout-grid" data-gap="md">
+  <section>First region</section>
+  <section>Second region</section>
+  <section>Third region</section>
 </div>
 ```
 
-### Sidebar
-App-shell split. The first child is the sidebar (up to `--sidebar-width`), the last child takes the remaining space. When the container narrows, the content wraps below the sidebar — no media queries.
+The default minimum column width is 15rem.
+
+Set `--min` from a consumer stylesheet when a repeated composition needs another minimum.
+
+Do not put inline style attributes in canonical markup.
+
+## Sidebar split
+
+Use `.layout-sidebar` for a local two-region content split.
+
 ```html
 <div class="layout-sidebar">
-  <nav>Sidebar links</nav>
-  <main>Main content</main>
+  <aside>Filters</aside>
+  <section>Results</section>
 </div>
 ```
 
-### Center
-Centers children on both axes. Give the element an explicit size (for example `min-block-size: 50vh` or a fixed height) or it shrinks to its content.
+The first child uses the local sidebar basis.
+
+The last child grows into remaining space.
+
+The composition wraps intrinsically when the content can no longer fit.
+
+Use the Sidebar component when the first region is persistent application navigation.
+
+Do not recreate collapsible application navigation with `.layout-sidebar`.
+
+## Center
+
+Use `.layout-center` to center content inside a region that already has a meaningful block size.
+
 ```html
-<div class="layout-center" style="min-block-size: 16rem;">
-  <p>Centered content</p>
-</div>
+<section class="layout-center">
+  <p>No active jobs.</p>
+</section>
 ```
 
-### Split
-Pushes groups to opposite ends and wraps when space runs out. Useful for page headers and card footers.
+Set the region size from its owning component or consumer stylesheet.
+
+Do not add arbitrary inline heights only to make centering visible.
+
+## Split
+
+Use `.layout-split` for two local groups that belong at opposite inline ends.
+
 ```html
 <div class="layout-split">
   <div>
-    <h2>Title</h2>
-    <p class="muted">Description</p>
+    <h2>Workers</h2>
+    <p>Current execution state.</p>
   </div>
-  <button type="button" class="btn">Action</button>
+  <button class="btn" type="button" data-variant="outline">Refresh</button>
 </div>
 ```
 
----
+The groups wrap when available width becomes insufficient.
 
-## Classes
+Do not use Split when source order differs from the correct reading order.
 
-| Class | Description |
-|---|---|
-| `.layout-container` | Centered, max-width container |
-| `.layout-stack` | Vertical stack with uniform gap |
-| `.layout-grid` | Intrinsically responsive auto-fit grid |
-| `.layout-sidebar` | App-shell split that wraps below the content minimum |
-| `.layout-center` | Both-axis centering |
-| `.layout-split` | Opposite-end groups that wrap |
+## Gap values
 
----
+Use `data-gap="none"` for connected content.
+
+Use `data-gap="xs"` for a tight 0.5rem relation.
+
+Use `data-gap="sm"` for a 0.75rem relation.
+
+Use `data-gap="md"` for the normal 1rem relation.
+
+Use `data-gap="lg"` for a 1.5rem section relation.
+
+Use `data-gap="xl"` for a 2.5rem major relation.
+
+Use the smallest gap that clearly communicates the relationship.
 
 ## Custom properties
 
-| Property | Default | Applies to | Description |
-|---|---|---|---|
-| `--gap` | `var(--space-04)` | all | Gap between children |
-| `--min` | `15rem` | `.layout-grid` | Minimum column width |
-| `--container-max` | `64rem` | `.layout-container` | Maximum container width |
-| `--sidebar-width` | `14rem` | `.layout-sidebar` | Maximum sidebar width |
+`--gap` controls the local child gap.
 
-Override per instance with inline styles or a wrapping rule, for example `--min: 20rem`.
+`--min` controls the Grid minimum column width.
 
----
+`--container-max` controls a local container maximum.
 
-## Data attributes
+`--sidebar-width` controls the local split basis.
 
-| Attribute | Values | Description |
-|---|---|---|
-| `data-gap` | `none`, `xs`, `sm`, `md`, `lg`, `xl` | Named gap from the `--space-*` scale (maps to 0 / 0.5 / 0.75 / 1 / 1.5 / 2.5rem) |
+Define repeated overrides in consumer CSS.
 
----
+Do not create a new shared token for one local layout need.
 
-## ARIA
+## Behavior
 
-No ARIA required — these are purely visual layout containers. Structure semantics come from the elements placed inside them (for example `<nav>` for the sidebar, `<main>` for content).
+Layout responds to available container width through CSS.
 
----
+Layout does not change DOM order.
 
-## Notes
+Layout does not add focus targets.
 
-- All primitives are intrinsic: they respond to container width, not breakpoints. No media queries needed.
-- Default gaps use the `--space-*` scale from `src/base.css`; the `data-gap` attribute and `--gap` custom property map to it.
-- `.layout-sidebar` requires exactly two children: first = sidebar, last = content. Wrap groups in a single child when you need multiple elements on one side.
-- `.layout-center` needs an explicit size on the element itself to visibly center.
-- Layout is pure CSS — no `{name}.js` file exists; do not load one.
+Layout does not add JavaScript behavior.
+
+## Accessibility
+
+Choose semantic child and container elements before adding Layout classes.
+
+Use `<nav>`, `<aside>`, `<section>`, `<main>`, and other landmarks only when their semantics fit the content.
+
+Keep visual order consistent with reading and focus order.
+
+Do not add ARIA roles to Layout classes themselves.
+
+Do not use CSS ordering to create a different task order from the DOM.
+
+## Runtime
+
+Layout requires no component module.
+
+All primitives work without JavaScript.
