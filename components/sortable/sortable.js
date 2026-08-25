@@ -92,13 +92,13 @@ function init() {
       const previous = document.createElement('button');
       previous.type = 'button';
       previous.className = 'sortable-step';
-      previous.dataset.sortableDecrease = '';
+      previous.setAttribute('data-sortable-decrease', '');
       previous.textContent = isHorizontal ? '←' : '↑';
 
       const next = document.createElement('button');
       next.type = 'button';
       next.className = 'sortable-step';
-      next.dataset.sortableIncrease = '';
+      next.setAttribute('data-sortable-increase', '');
       next.textContent = isHorizontal ? '→' : '↓';
 
       actions.append(previous, next);
