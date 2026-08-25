@@ -92,7 +92,7 @@
       <div class="page-header">
         <h1>Avatar</h1>
         <p class="text-muted leading-relaxed mb-6">
-          An image element with a fallback for representing the user. Supports sizes, status badges, and avatar groups.
+          An image element with a fallback for representing the user. Supports sizes and status badges.
         </p>
       </div>
 
@@ -123,14 +123,20 @@
 
         <!-- Sizes -->
         <p class="text-sm font-medium mb-2 mt-8">Sizes</p>
-        <p class="text-xs text-muted mb-3">Small, default, and large variants.</p>
+        <p class="text-xs text-muted mb-3">Small, default, and large variants via <code>data-size</code>.</p>
         <div class="preview">
           <div style="display: flex; gap: var(--space-04); align-items: center">
+            <span class="avatar" data-size="sm">
+               <img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar" />
+              <span class="avatar-fallback">CN</span>
             </span>
             <span class="avatar">
                <img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar" />
               <span class="avatar-fallback">CN</span>
             </span>
+            <span class="avatar" data-size="lg">
+               <img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar" />
+              <span class="avatar-fallback">CN</span>
             </span>
           </div>
         </div>
@@ -139,7 +145,9 @@
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
+          <pre><code class="language-markup">&lt;span class="avatar" data-size="sm"&gt;...&lt;/span&gt;
 &lt;span class="avatar"&gt;...&lt;/span&gt;
+&lt;span class="avatar" data-size="lg"&gt;...&lt;/span&gt;</code></pre>
         </div>
 
         <!-- Badge -->
@@ -187,8 +195,8 @@
               </div>
               <span class="badge" data-variant="secondary">Admin</span>
             </div>
-            <div class="card-footer" style="padding-top: 0">
-              <button type="button" class="btn" data-variant="outline" data-size="sm" style="width: 100%">View Profile</button>
+            <div class="card-footer">
+              <button type="button" class="btn" data-variant="outline" data-size="sm" style="width: 100%; margin-top: var(--space-03)">View Profile</button>
             </div>
           </article>
         </div>

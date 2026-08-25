@@ -46,11 +46,14 @@
 
   .resizable-handle {
     position: relative;
+    z-index: 1;
     flex: 0 0 var(--size-06);
     inline-size: var(--size-06);
     min-block-size: var(--size-06);
     align-self: stretch;
-    margin: 0;
+    /* The handle floats over the panel seam instead of consuming space,
+       so panel sizes never shift when the handle appears or is focused. */
+    margin: 0 calc(-1 * var(--size-03));
     padding: 0;
     border: 0;
     border-radius: 0;
@@ -123,6 +126,7 @@
     min-inline-size: var(--size-06);
     block-size: var(--size-06);
     min-block-size: var(--size-06);
+    margin: calc(-1 * var(--size-03)) 0;
     background: linear-gradient(
       to bottom,
       transparent calc(50% - (var(--border-width-01) / 2)),

@@ -131,7 +131,7 @@ The nav stays flat in both widths. In collapsed mode, link and control labels re
 
 - **Mobile**: Hide the desktop sidebar below 768px and use `<dialog class="sidebar-mobile">` for the mobile navigation dialog. Open it with a separate button using `data-sidebar-mobile="dialog-id"` and `aria-expanded`. Activating a mobile link closes the dialog and preserves native navigation.
 - **Flat navigation**: Put every route in one labelled `<nav class="sidebar-nav">` as a native `<a class="sidebar-link">`.
-- **Collapsed state**: Icons remain centered. Link and footer labels are visually hidden but remain accessible through the link text and the button’s updated `aria-label`.
+- **Collapsed state**: The rail is 56px wide plus its 12px decorative hatch (68px total). Icons remain centered. Link and footer labels are visually hidden but remain accessible through the link text and the button’s updated `aria-label`.
 - **Footer control**: Keep one `.sidebar-trigger` in `.sidebar-footer`, give it an explicit `type="button"`, `data-sidebar-trigger`, `aria-controls`, `aria-expanded`, and accessible label. It shares link geometry — same fixed 40px row height and gutter, no border — so the footer reads as part of the nav.
 - **Row parity**: Links are always 40px tall; collapsed they resolve to 40x40 icon tiles centered in the 56px rail, so margins and paddings stay identical in both states and there is no layout shift.
 - **Brand**: The sidebar header uses the same signet as the app header brand — a 32px square inverted container with a 16px icon, aligned with the item icons below it.

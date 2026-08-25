@@ -18,7 +18,7 @@
     outline: none;
     flex-shrink: 0;
     height: var(--size-08);
-    padding: 0 var(--space-04);
+    padding: 0 var(--space-03);
     background-color: var(--surface-inverted);
     color: var(--text-inverted);
 
@@ -27,6 +27,11 @@
       flex-shrink: 0;
 
       &:not([class*="size-"]) { width: var(--size-04); height: var(--size-04); }
+    }
+
+    /* A spinner inside a button follows the button's own text color. */
+    & .spinner {
+      color: inherit;
     }
 
     &:focus-visible {

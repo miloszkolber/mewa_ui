@@ -4,11 +4,13 @@
   /* -- Default (pill) variant ----------------------------------- */
   .tab-list {
     display: inline-flex;
-    align-items: center;
-    background: var(--surface-secondary);
+    align-items: stretch;
+    background: var(--surface-primary);
     border: var(--border-width-01) solid var(--border-primary);
 
-    padding: var(--space-01);
+    /* The whole list matches the button and input height: 40px total. */
+    block-size: var(--size-08);
+    padding: var(--border-width-01);
     gap: var(--space-00);
 
     /* -- Line variant --------------------------------------------- */
@@ -55,7 +57,7 @@
     align-items: center;
     justify-content: center;
     gap: var(--space-02);
-    block-size: var(--size-08);
+    block-size: 100%;
     padding: 0 var(--space-04);
 
     font-size: var(--font-body-small);
@@ -67,14 +69,14 @@
     white-space: nowrap;
     outline: none;
 
-    /* Selected tab: the page surface fill with the secondary button's
-       text color, matching the button and input height. */
+    /* Selected tab: the border-primary fill reads as the filled
+       counterpart of the track border, matching button/input height. */
     &[aria-selected="true"] {
-      background: var(--surface-primary);
+      background: var(--border-primary);
       color: var(--text-primary);
 
       &:hover {
-        background: var(--surface-primary);
+        background: var(--border-primary);
         color: var(--text-primary);
       }
     }

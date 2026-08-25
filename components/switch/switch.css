@@ -6,8 +6,7 @@
     width: 2.75rem;
     height: var(--size-06);
     border-radius: 0;
-    background: var(--surface-secondary);
-    border: var(--border-width-01) solid var(--border-primary);
+    background: var(--border-primary);
     cursor: pointer;
     position: relative;
     flex-shrink: 0;
@@ -26,7 +25,6 @@
 
     &:checked {
       background: var(--surface-inverted);
-      border-color: var(--surface-inverted);
 
       &::after {
         inset-inline-start: calc(100% - 1.125rem - var(--space-01));
@@ -42,7 +40,6 @@
 
     &:disabled {
       background: var(--surface-secondary);
-      border-color: var(--border-muted);
       cursor: not-allowed;
 
       &::after {
@@ -51,7 +48,6 @@
 
       &:checked {
         background: var(--surface-secondary);
-        border-color: var(--border-muted);
 
         &::after { background: var(--text-disabled); }
       }

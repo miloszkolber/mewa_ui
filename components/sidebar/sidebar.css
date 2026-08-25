@@ -69,7 +69,9 @@
     }
 
     &[data-state="collapsed"] {
-      width: var(--sidebar-width-collapsed, var(--size-10));
+      /* 56px icon rail plus the 12px decorative hatch that pins to the
+         inline end of the panel. */
+      width: var(--sidebar-width-collapsed, calc(var(--size-10) + var(--size-03)));
 
       /* Keep labels in the accessibility tree while removing them from the icon rail. */
       & .sidebar-link > span,

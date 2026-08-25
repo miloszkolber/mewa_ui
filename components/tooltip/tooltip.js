@@ -52,6 +52,16 @@ function positionFallback(tip, trigger) {
   left = Math.max(4, Math.min(left, window.innerWidth - r.width - 4));
   tip.style.top = `${top}px`;
   tip.style.left = `${left}px`;
+
+  // When the clamp pushed the tip off its declared side, move the arrow to
+  // the side the tip actually ended up on.
+  let arrowSide = side;
+  if (side === 'top' && top > tr.top - 4) arrowSide = 'top';
+  if (side === 'bottom' && top < tr.top) arrowSide = 'bottom';
+  if (side === 'left' && left > tr.left - 4) arrowSide = 'left';
+  if (side === 'right' && left < tr.left) arrowSide = 'right';
+  if (arrowSide !== side) tip.style.setProperty('--tooltip-arrow-side', arrowSide);
+  else tip.style.removeProperty('--tooltip-arrow-side');
 }
 
 function init() {

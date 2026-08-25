@@ -43,7 +43,7 @@ main {
 /* -- Site sidebar ------------------------------------------ */
 .site-sidebar {
   width: 14rem; flex-shrink: 0;
-  border-right: 1px solid var(--border-muted);
+  border-right: 1px solid var(--border-primary);
   position: sticky; top: 3.5rem;
   z-index: 40;
   height: calc(100vh - 3.5rem);
@@ -119,12 +119,12 @@ main {
 .nav-filter-wrap {
   padding: 0.75rem;
   background: var(--surface-primary);
-  border-bottom: 1px solid var(--border-muted);
+  border-bottom: 1px solid var(--border-primary);
   flex-shrink: 0;
 }
 .nav-filter-input {
   background: var(--surface-secondary);
-  border-color: var(--border-muted);
+  border-color: var(--border-primary);
 }
 .nav-filter-input::placeholder {
   color: var(--text-muted);

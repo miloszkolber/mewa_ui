@@ -3,7 +3,7 @@
 @layer components {
   .number-field {
     display: inline-grid;
-    grid-template-columns: minmax(0, var(--size-11)) var(--size-07) var(--size-07);
+    grid-template-columns: minmax(0, var(--size-11)) var(--size-08) var(--size-08);
     grid-template-rows: 1fr;
     height: var(--size-08);
     border: var(--border-width-01) solid var(--border-secondary);
@@ -70,6 +70,12 @@
       line-height: var(--font-height-none);
       flex-shrink: 0;
       padding: 0;
+
+      /* Step glyphs are square icon buttons inside the control. */
+      & :where(i, svg) {
+        width: var(--size-04);
+        height: var(--size-04);
+      }
 
       &:focus-visible {
         outline: var(--focus-ring-width) solid var(--border-ring);

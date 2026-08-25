@@ -1,4 +1,12 @@
 @layer components {
+  /* Flipped placement needs the arrow on the opposite side. These named
+     tries re-position the tooltip AND carry the arrow side through a
+     custom property, so a flipped tip never keeps a stale arrow. */
+  @position-try --tip-flip-top { position-area: bottom; --tooltip-arrow-side: top; }
+  @position-try --tip-flip-bottom { position-area: top; --tooltip-arrow-side: bottom; }
+  @position-try --tip-flip-left { position-area: right; --tooltip-arrow-side: left; }
+  @position-try --tip-flip-right { position-area: left; --tooltip-arrow-side: right; }
+
   .tooltip {
     position: fixed;
     inset: auto;
@@ -19,7 +27,7 @@
     /* -- Default: top center -- */
     position-area: top;
     margin-bottom: var(--space-02);
-    position-try-fallbacks: flip-block, flip-inline;
+    position-try-fallbacks: --tip-flip-top, flip-inline, flip-block;
 
     &:popover-open {
       display: block;
@@ -31,18 +39,21 @@
       position-area: bottom;
       margin-bottom: 0;
       margin-top: var(--space-02);
+      position-try-fallbacks: --tip-flip-bottom, flip-inline, flip-block;
     }
 
     &[data-side="left"] {
       position-area: left;
       margin-bottom: 0;
       margin-right: var(--space-02);
+      position-try-fallbacks: --tip-flip-left, flip-block, flip-inline;
     }
 
     &[data-side="right"] {
       position-area: right;
       margin-bottom: 0;
       margin-left: var(--space-02);
+      position-try-fallbacks: --tip-flip-right, flip-block, flip-inline;
     }
 
     /* ----- Align variants (combined with side) ----- */
@@ -72,15 +83,19 @@
 
     &:not([data-side]), &[data-side="top"] {
       & [data-arrow] { bottom: calc(-1 * var(--size-01)); left: 50%; margin-left: calc(-1 * var(--space-01)); }
+      &[--tooltip-arrow-side="top"] [data-arrow] { bottom: auto; top: calc(-1 * var(--size-01)); }
     }
     &[data-side="bottom"] {
       & [data-arrow] { top: calc(-1 * var(--size-01)); left: 50%; margin-left: calc(-1 * var(--space-01)); }
+      &[--tooltip-arrow-side="bottom"] [data-arrow] { top: auto; bottom: calc(-1 * var(--size-01)); }
     }
     &[data-side="left"] {
       & [data-arrow] { right: calc(-1 * var(--size-01)); top: 50%; margin-top: calc(-1 * var(--space-01)); }
+      &[--tooltip-arrow-side="left"] [data-arrow] { right: auto; left: calc(-1 * var(--size-01)); }
     }
     &[data-side="right"] {
       & [data-arrow] { left: calc(-1 * var(--size-01)); top: 50%; margin-top: calc(-1 * var(--space-01)); }
+      &[--tooltip-arrow-side="right"] [data-arrow] { left: auto; right: calc(-1 * var(--size-01)); }
     }
   }
 

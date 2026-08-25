@@ -31,6 +31,14 @@
 </span>
 ```
 
+Sizes use the shared `data-size` shorthand: `sm` (32px), default (40px), and `lg` (48px).
+
+```html
+<span class="avatar" data-size="sm"><span class="avatar-fallback">CN</span></span>
+<span class="avatar"><span class="avatar-fallback">CN</span></span>
+<span class="avatar" data-size="lg"><span class="avatar-fallback">CN</span></span>
+```
+
 
 ## Accessibility
 
@@ -40,5 +48,5 @@
 
 ## Notes
 
-- The badge sits on the bottom-right edge of the square avatar and extends beyond it, so the avatar itself never clips its children.
+- The badge is a flat square flush on the bottom-right corner of the avatar; it is painted over the corner and never clips.
 - Image and fallback content is clipped by their own `overflow: hidden` and `border-radius: inherit`.

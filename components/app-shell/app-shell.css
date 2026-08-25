@@ -97,17 +97,19 @@
   /* -- Header navigation ------------------------------------------- */
   .app-nav {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     flex-wrap: wrap;
     gap: var(--space-01);
     min-inline-size: 0;
+    align-self: stretch;
+    margin-block: calc(-1 * var(--space-02));
   }
 
   .app-nav a {
     display: inline-flex;
     align-items: center;
-    min-block-size: var(--size-07);
-    padding: var(--space-01) var(--space-03);
+    block-size: 100%;
+    padding: 0 var(--space-03);
     color: var(--text-muted);
     font-size: var(--font-body-small);
     text-decoration: none;
@@ -119,13 +121,14 @@
     color: var(--text-primary);
   }
 
-  /* The current route reads as a line tab: an underline carries the state
-     and hover never covers it. */
+  /* The current route reads as a line tab that reaches the bottom border
+     of the header and covers it. */
   .app-nav a[aria-current="page"] {
     background: transparent;
     color: var(--text-primary);
     font-weight: var(--font-weight-strong);
     border-block-end: var(--border-width-02) solid var(--border-ring);
+    margin-block-end: calc(-1 * var(--border-width-01));
   }
 
   .app-nav a:focus-visible {

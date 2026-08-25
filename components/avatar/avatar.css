@@ -11,6 +11,10 @@
     flex-shrink: 0;
     background-color: var(--surface-secondary);
 
+    /* Same shorthand as other primitives: sm 32, default 40, lg 48. */
+    &[data-size="sm"] { width: var(--size-07); height: var(--size-07); }
+    &[data-size="lg"] { width: var(--size-09); height: var(--size-09); }
+
   }
 
   .avatar-image {
@@ -49,7 +53,6 @@
     height: 0.625rem;
     border-radius: var(--border-radius);
     background-color: var(--surface-positive);
-    border: var(--border-width-02) solid var(--background);
   }
 
   /* -- Accessibility ---------------------------------------- */

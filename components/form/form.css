@@ -11,7 +11,13 @@
   .form-field {
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: var(--space-01);
+
+    /* Keep label and description metrics identical to Text Field. */
+    & > .label {
+      margin-bottom: 0;
+      line-height: var(--font-height);
+    }
 
     /* -- Horizontal orientation (label beside control) ------- */
     &[data-orientation="horizontal"] {

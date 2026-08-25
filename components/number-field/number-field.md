@@ -25,7 +25,7 @@
 
 ## Notes
 
-- Places the native number input on the left and side-by-side step buttons on the right.
+- Places the native number input on the left and side-by-side square step buttons (plus/minus icons) on the right.
 - The input shows the standard focus ring; each step button shows an inset focus ring when keyboard-focused, so Tab order stays visible.
 - Native spinner buttons are hidden with `::-webkit-inner-spin-button`.
 - Use `min`, `max`, and `step` for range constraints.

@@ -144,7 +144,7 @@ Up/Down based on `aria-orientation`.
 
 ## Visual variants
 
-- The default tab list is a segmented group matching the button and input height. Its selected trigger uses the page surface fill with the secondary button's text color, while inactive triggers use secondary text and remain transparent until hovered.
+- The default tab list is a grouped track on the page surface and its total height matches the button and input height (40px). Its selected trigger uses the border-primary fill, while inactive triggers use secondary text and remain transparent until hovered.
 - `data-variant="line"` switches to the documented underline treatment.
 - Both treatments remain square and motionless so the tab group follows the shared geometry contract.
 
@@ -152,7 +152,7 @@ Up/Down based on `aria-orientation`.
 
 ## Notes
 
-- The selected trigger fills its track segment with the page surface. Idle triggers stay transparent and use secondary text for readable contrast, and in the line variant hover changes only the text color so the bottom border is never covered.
+- The selected trigger fills its track segment with the border-primary color. Idle triggers stay transparent and use secondary text for readable contrast, and in the line variant hover changes only the text color so the bottom border is never covered.
 - Only the active tab is in the tab order (`tabindex="0"`) — inactive tabs use `tabindex="-1"`
 - Arrow keys cycle through tabs (wrap around) — this is the roving tabindex pattern
 - The active panel uses `tabindex="0"` so it can receive focus from the tab trigger
