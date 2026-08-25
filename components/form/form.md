@@ -1,134 +1,200 @@
-# Pattern: Form
+# Form
+
+## Purpose
+
+Form composes one complete native submission task from labelled mewa_ui controls.
+
+Use Form when several fields submit or reset together.
+
+Use Field without Form when no submission exists.
+
+Do not use Form only as a visual container.
 
 ## Native basis
-`<form>` element with consistent field layout using Label, Text Field, and description/error helpers. Composes with all form control components (Text Field, Textarea, Select, Checkbox, Radio Group, Switch, Slider, etc.).
 
----
+Form uses the native `<form>` element.
+
+The browser owns submission, reset, constraint validation, autocomplete, and form-associated control behavior.
+
+Form composes Field and the selected input components.
 
 ## Native Web APIs
-- [`<form>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form) — native form with submission, validation, and reset
-- [`<fieldset>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset) — groups related fields with `<legend>`
-- [Constraint Validation API](https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation) — native browser validation (`required`, `pattern`, `min`, `max`, `minlength`, `maxlength`)
-- [`:user-valid` / `:user-invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid) — post-interaction validation styling without JS
-- [`aria-describedby`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-describedby) — connects descriptions and errors to inputs
-- [`aria-invalid`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-invalid) — marks invalid form controls for assistive technology
-- [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) — native form serialization
 
----
+- [`<form>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form) provides native submission and reset.
+- [`<fieldset>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/fieldset) groups related controls.
+- [Constraint Validation API](https://developer.mozilla.org/en-US/docs/Web/HTML/Constraint_validation) provides native field constraints.
+- [`:user-valid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-valid) and [`:user-invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid) expose post-interaction validation state.
+- [`FormData`](https://developer.mozilla.org/en-US/docs/Web/API/FormData) serializes successful controls when application code needs it.
 
 ## Structure
 
-### Default form
 ```html
-<form class="form">
+<form class="form" method="post" action="/profile">
   <div class="form-field">
-    <label class="label" for="f-name">Name</label>
-    <input class="text-field-input" type="text" id="f-name" required>
-    <p class="field-description">Your full name.</p>
+    <label class="label" for="profile-name">Name</label>
+    <input class="text-field-input"
+           id="profile-name"
+           name="name"
+           type="text"
+           autocomplete="name"
+           required>
   </div>
+
   <div class="form-field">
-    <label class="label" for="f-email">Email</label>
-    <input class="text-field-input" type="email" id="f-email" required>
+    <label class="label" for="profile-email">Email</label>
+    <input class="text-field-input"
+           id="profile-email"
+           name="email"
+           type="email"
+           autocomplete="email"
+           required>
   </div>
+
   <div class="form-actions">
-    <button class="btn" type="submit" data-variant="default">Submit</button>
+    <button class="btn" type="submit" data-variant="default">Save changes</button>
     <button class="btn" type="reset" data-variant="outline">Reset</button>
   </div>
 </form>
 ```
 
-### Inline field (checkbox, switch)
-```html
-<div class="form-field-inline">
-  <input class="checkbox" type="checkbox" id="terms">
-  <label for="terms">Accept terms</label>
-</div>
-```
+Give every successful form control a `name`.
 
-### Horizontal field (label beside control)
-```html
-<div class="form-field" data-orientation="horizontal">
-  <label class="label" for="f-user">Username</label>
-  <div>
-    <input class="text-field-input" type="text" id="f-user">
-    <p class="field-description">Your public display name.</p>
-  </div>
-</div>
-```
+Use a meaningful `action` and `method` when the browser owns submission.
 
-### Switch row (notification-style)
-```html
-<div class="form-field-row">
-  <div>
-    <label class="label" for="f-marketing">Marketing emails</label>
-    <p class="field-description">Receive emails about new products and features.</p>
-  </div>
-  <input class="switch" type="checkbox" role="switch" id="f-marketing">
-</div>
-```
+Do not omit `name` from a value that must submit.
 
-### Fieldset grouping
+## Related controls
+
+Use a native fieldset and legend for a group that answers one question.
+
 ```html
 <fieldset class="form-fieldset">
   <legend>Notifications</legend>
-  <p class="field-description">Choose what you want to be notified about.</p>
+  <p class="field-description" id="notification-description">
+    Choose the channels that can receive updates.
+  </p>
+
   <div class="form-group">
     <div class="form-field-inline">
-      <input class="checkbox" type="checkbox" id="opt-1">
-      <label for="opt-1">All new messages</label>
+      <input class="checkbox"
+             id="notify-email"
+             name="notification"
+             type="checkbox"
+             value="email"
+             aria-describedby="notification-description">
+      <label for="notify-email">Email</label>
     </div>
     <div class="form-field-inline">
-      <input class="checkbox" type="checkbox" id="opt-2">
-      <label for="opt-2">Direct messages only</label>
+      <input class="checkbox"
+             id="notify-push"
+             name="notification"
+             type="checkbox"
+             value="push"
+             aria-describedby="notification-description">
+      <label for="notify-push">Push</label>
     </div>
   </div>
 </fieldset>
 ```
 
-### Invalid field with error
+Do not add a generic group role when fieldset semantics fit.
+
+## Switch row
+
+Use `.form-field-row` for one immediate setting with supporting text.
+
+Keep the row flat and border-led.
+
+Do not treat the row as a nested card.
+
 ```html
-<div class="form-field" data-invalid>
-  <label class="label" for="f-email">Email</label>
-  <input class="text-field-input" type="email" id="f-email" aria-invalid="true" aria-describedby="f-email-err">
-  <p class="field-error" id="f-email-err" role="alert">Please enter a valid email address.</p>
+<div class="form-field-row">
+  <div>
+    <label class="label" for="auto-refresh">Automatic refresh</label>
+    <p class="field-description">Refresh data when the source changes.</p>
+  </div>
+  <input class="switch"
+         id="auto-refresh"
+         name="auto_refresh"
+         type="checkbox"
+         role="switch">
 </div>
 ```
 
----
+Use Switch only when changing the control has immediate meaning.
 
-## Data Attributes
+Use Checkbox when the value is only submitted later.
 
-| Attribute | Element | Values | Description |
-|---|---|---|---|
-| `data-orientation` | `.form-field` | `horizontal` | Places label beside the control instead of stacked above |
-| `data-invalid` | `.form-field` | (presence) | Marks field as invalid — description text turns destructive color |
-| `data-disabled` | `.form-field-row` | (presence) | Reduces opacity on the row |
+## Invalid field
 
----
+Keep invalid state on the native control.
 
-## ARIA
+Use wrapper state only for presentation.
 
-| Attribute | Element | Purpose |
-|---|---|---|
-| `for` / `id` | `<label>` → `<input>` | Associates label with control |
-| `aria-describedby` | `<input>` | Points to `.field-description` or `.field-error` `id` |
-| `aria-invalid="true"` | `<input>` | Marks control as invalid for assistive technology |
-| `role="alert"` | `.field-error` | Announces error messages to screen readers |
-| `role="group"` | container | Groups related controls (optional on `.form-field`) |
-| `required` | `<input>` | Native required validation |
+```html
+<div class="form-field" data-invalid>
+  <label class="label" for="account-email">Email</label>
+  <input class="text-field-input"
+         id="account-email"
+         name="email"
+         type="email"
+         aria-invalid="true"
+         aria-describedby="account-email-error"
+         aria-errormessage="account-email-error">
+  <p class="field-error" id="account-email-error" role="alert">
+    Enter a valid email address.
+  </p>
+</div>
+```
 
----
+Keep the entered value after validation fails.
 
-## Notes
+Use `role="alert"` only when the error appears dynamically.
 
-- `.form-field` provides consistent vertical spacing between fields.
-- `.form-field-inline` aligns checkbox/switch/radio horizontally with their label.
-- `.form-field-row` creates a card-like row for notification-style switch items (label + description on left, switch on right).
-- `.form-actions` provides a flex row for submit/reset buttons.
-- `.form-fieldset` styles native `<fieldset>` with legend and description.
-- `.form-group` is a vertical stack for grouping multiple inline fields.
-- No JavaScript needed for basic forms — use native Constraint Validation.
-- Prefer `:user-valid` / `:user-invalid` for post-interaction validation styling (defined in text-field.css).
-- Compose with Label, Text Field, Textarea, Select, Checkbox, Radio Group, Switch, Slider, etc.
-- `data-invalid` on `.form-field` turns the description text to destructive color; use alongside `aria-invalid="true"` on the control.
-- For custom JS validation, set `data-invalid` on the field wrapper and `aria-invalid="true"` on the input programmatically.
+## Data attributes
+
+| Attribute | Purpose |
+| --- | --- |
+| `data-orientation="horizontal"` | Places a label beside its control. |
+| `data-invalid` | Styles a field with a known invalid state. |
+| `data-disabled` | Styles a row whose native control is disabled. |
+
+Native attributes remain the source of truth.
+
+Do not use `data-invalid` instead of `aria-invalid` on the affected control.
+
+## Behavior
+
+Submit buttons use native form submission.
+
+Reset buttons use native reset behavior.
+
+Native constraints run without a component module.
+
+Application JavaScript can listen to native form events when the product needs custom submission.
+
+Form itself adds no JavaScript behavior.
+
+## Accessibility
+
+Give every control a visible label.
+
+Use explicit labels and stable IDs.
+
+Use fieldsets for related controls.
+
+Reference descriptions and errors from the affected controls.
+
+Keep action order consistent with the task.
+
+Keep one visually strongest submit action in the local action group.
+
+Do not disable submit only to hide incomplete validation requirements.
+
+## Runtime
+
+Form requires no component module.
+
+The complete native submission and validation path works without JavaScript.
+
+Load modules only for the individual controls that require them.
