@@ -6,16 +6,18 @@ Use this contract for every library change and every consumer interface.
 
 ## Read order
 
-1. Read this file before you select a component or a layout.
+1. Read this file before you select a component or a shell.
 2. Read `system/foundations.md` before you add visual rules.
 3. Read `system/components.md` before you select a component.
 4. Read the matching `components/{slug}/{slug}.md` before you write markup.
 5. Read `system/patterns.md` before you compose a page region.
-6. Read `system/layouts.md` before you compose an application shell.
+6. Read `system/layouts.md` before you compose application chrome.
 7. Read `system/accessibility.md` before you add interaction.
 8. Read `registry.json` before you load component assets.
 
-The component skill defines the exact markup and behavior.
+The registry owns component selection metadata.
+
+The component skill owns implementation-specific markup and behavior.
 
 The component stylesheet and module define the executable contract.
 
@@ -29,19 +31,17 @@ A component is a reusable control or content region.
 
 A pattern is a documented composition of components.
 
-A layout is a complete serveable page template.
+A shell is a documented composition of application chrome.
 
-The App Shell component supplies reusable application chrome.
+mewa_ui does not ship complete layout templates.
 
-The Sidebar component supplies collapsible navigation behavior.
+App Shell supplies reusable application chrome and page regions.
 
-The `layouts/` directory supplies complete reference compositions.
+Sidebar supplies collapsible navigation behavior.
 
-A layout can compose App Shell and Sidebar primitives.
+Layout supplies local Grid and Flexbox composition.
 
-A layout must not create a second component API.
-
-A consumer owns route data, business rules, and application state.
+A consumer owns routes, business rules, application state, and page-specific layout hooks.
 
 The library owns shared appearance, semantics, and interaction contracts.
 
@@ -49,7 +49,7 @@ The library owns shared appearance, semantics, and interaction contracts.
 
 1. Identify the user task.
 2. Identify the primary page landmark.
-3. Select one layout family.
+3. Select the smallest shell that supports the route structure.
 4. Select the smallest documented pattern that supports the task.
 5. Select native elements before custom interaction patterns.
 6. Select components from `system/components.md`.
@@ -80,9 +80,7 @@ Use borders to show structure.
 
 Do not use visual shadows.
 
-Do not use soft color gradients.
-
-Use the edge hatch only on a complete shell.
+Do not use decorative color gradients.
 
 Use soft blur only on top-level sticky chrome.
 
@@ -116,7 +114,9 @@ Use Geist Mono for code, output, keys, IDs, and technical labels.
 
 Use palette primitives only inside foundation files.
 
-Use semantic color roles inside components and layouts.
+Use semantic color roles inside components and consumers.
+
+Use the token purposes in `registry.json`.
 
 Use the numeric spacing and size tokens from `src/base.css`.
 
@@ -308,15 +308,23 @@ Use `system/components.md` to select a component.
 
 Use the component skill to implement the component.
 
+The registry stores each component purpose.
+
+The registry stores each selection condition.
+
+The registry stores each nearest misuse.
+
+The registry stores each fallback.
+
+The registry stores each runtime mode.
+
 Each component skill must state its native basis.
 
-Each component skill must state its required structure.
-
-Each component skill must state its supported attributes.
+Each component skill must state its supported structure.
 
 Each interactive component skill must state its keyboard behavior.
 
-Each interactive component skill must state its events or state changes.
+Each interactive component skill must state its state changes or events.
 
 Each enhanced component skill must state its no-JavaScript behavior.
 
@@ -336,31 +344,29 @@ Use a pattern when several components solve one repeated task.
 
 Keep patterns in `system/patterns.md`.
 
-Do not add pattern CSS until at least two consumers need the same hook.
+Do not add pattern CSS until repeated use needs a shared hook.
 
 Prefer composition before a new component.
 
 Promote a pattern to a component only when it has a stable API and repeated behavior.
 
-## Layouts
+## Shells
 
-Treat the sidebar shell and the top-navigation shell as the two layout families.
+Use `system/layouts.md` to select a shell composition.
 
-Treat `layouts/vertical-navbar.html` as the utility sidebar reference.
+Use the sidebar shell for persistent application navigation.
 
-Treat `layouts/horizontal-navbar.html` as the top-navigation reference.
+Use the top-navigation shell for a small flat route set.
 
-Treat `layouts/app-shell-sidebar.html` as a branded sidebar composition.
+Use the focused-tool shell for one primary task.
 
-Do not describe the branded composition as a third shell family.
+Compose shells from App Shell, Sidebar, Layout, navigation components, and native landmarks.
 
-Keep layout CSS limited to page composition.
+Keep page-specific shell CSS in the consumer.
 
-Do not restyle component internals from layout CSS unless the component contract defines the composition hook.
+Do not ship complete shell templates from this repository.
 
-Keep layout JavaScript limited to local icon loading and optional template behavior.
-
-Read `system/layouts.md` for the complete ownership rules.
+Do not create a new component only for one shell.
 
 ## Source ownership
 
@@ -368,21 +374,21 @@ Read `system/layouts.md` for the complete ownership rules.
 
 `src/tokens.css` owns semantic theme roles.
 
-`components/{slug}/{slug}.md` owns component markup guidance.
+`components/{slug}/{slug}.md` owns component implementation guidance.
 
 `components/{slug}/{slug}.css` owns component presentation.
 
 `components/{slug}/{slug}.js` owns component enhancement behavior.
 
-`registry.json` owns machine-readable component inventory.
+`registry.json` owns machine-readable component and token metadata.
 
 `docs/{slug}.html` owns the rendered reference example.
-
-`layouts/` owns complete reference compositions.
 
 `system/` owns design selection and composition rules.
 
 `README.md` owns the human repository overview.
+
+`PROMPT.md` owns the reusable consumer-compliance prompt.
 
 `llms.txt` owns the short machine routing guide.
 
@@ -417,6 +423,8 @@ Avoid long examples.
 Run `npm test`.
 
 Run `npm run test:browser` when Chromium is available.
+
+Run `npm run catalog:check` after registry changes.
 
 Check the changed page with a keyboard.
 
