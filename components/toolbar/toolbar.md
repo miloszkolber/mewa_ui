@@ -1,70 +1,132 @@
-# Pattern: Toolbar
+# Toolbar
+
+## Purpose
+
+Toolbar groups frequently used application controls into one managed keyboard region.
+
+Use Toolbar when related actions benefit from arrow-key navigation and compact visual grouping.
+
+Use a normal action row when standard Tab navigation is sufficient.
+
+Do not use Toolbar for route navigation, form fields, or unrelated page actions.
 
 ## Native basis
-`role="toolbar"` container. Groups related controls (buttons, toggles, separators) into a single keyboard-navigable bar.
 
----
+Toolbar uses a container with `role="toolbar"` and native child controls.
+
+The module manages roving focus across supported toolbar items.
+
+Child components keep ownership of their own pressed, selected, or action state.
 
 ## Native Web APIs
-- [`role="toolbar"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/toolbar_role) — a container for grouped controls
-- [`aria-orientation`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-orientation) — declares layout direction
-- [WAI-ARIA Toolbar Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/) — keyboard navigation specification
-- [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) — maps toolbar border to system `ButtonText` in Windows High Contrast Mode
 
----
+- [`role="toolbar"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/toolbar_role) identifies the composite control region.
+- [`aria-orientation`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-orientation) exposes horizontal or vertical keyboard direction.
+- [WAI-ARIA Toolbar Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/) defines managed toolbar focus behavior.
 
 ## Structure
 
 ```html
-<div class="toolbar" role="toolbar" aria-label="Formatting" aria-orientation="horizontal">
-  <div class="toggle-group" role="group" aria-label="Text style" data-type="multiple">
-    <button type="button" class="toggle" aria-pressed="false">
-      <svg aria-hidden="true" ...><!-- bold --></svg>
-    </button>
-    <button type="button" class="toggle" aria-pressed="false">
-      <svg aria-hidden="true" ...><!-- italic --></svg>
-    </button>
-  </div>
+<div class="toolbar"
+     role="toolbar"
+     aria-label="Editor controls"
+     aria-orientation="horizontal">
+  <button class="toggle"
+          type="button"
+          aria-pressed="false"
+          aria-label="Bold">
+    <i data-lucide="bold" aria-hidden="true"></i>
+  </button>
+
+  <button class="toggle"
+          type="button"
+          aria-pressed="false"
+          aria-label="Italic">
+    <i data-lucide="italic" aria-hidden="true"></i>
+  </button>
+
   <div class="separator" data-orientation="vertical" role="separator"></div>
-  <div class="toggle-group" role="group" aria-label="Alignment" data-type="single">
-    <button type="button" class="toggle" aria-pressed="true">
-      <svg aria-hidden="true" ...><!-- align-left --></svg>
-    </button>
-    <button type="button" class="toggle" aria-pressed="false">
-      <svg aria-hidden="true" ...><!-- align-center --></svg>
-    </button>
-  </div>
-  <div class="separator" data-orientation="vertical" role="separator"></div>
-  <a class="btn" data-variant="link" href="#" target="_blank">Link</a>
+
+  <button class="btn" type="button" data-variant="ghost">
+    Clear formatting
+  </button>
 </div>
 ```
 
----
+Give every Toolbar an accessible name.
+
+Keep separators between real logical groups.
+
+Do not add a separator only to decorate spacing.
+
+## Composition
+
+Toolbar can contain Button, Toggle, Toggle Group, Button Group, and Separator.
+
+Use the child component contract for child state and activation.
+
+Do not make Toolbar duplicate Toggle Group selection logic.
+
+Do not put text inputs or route links in Toolbar unless the component keyboard model explicitly supports that composition.
+
+## Orientation
+
+Use horizontal orientation by default.
+
+Set `aria-orientation="vertical"` when controls are visually stacked.
+
+Keep arrow-key direction synchronized with the visual orientation.
+
+Do not use CSS order to make keyboard order differ from visual order.
+
+## Behavior
+
+Tab enters the Toolbar through one managed tab stop.
+
+Arrow keys move focus between enabled toolbar controls.
+
+Home moves focus to the first enabled control.
+
+End moves focus to the last enabled control.
+
+Child controls activate with their native keyboard behavior.
+
+The Toolbar does not change child selection state.
+
+State changes are immediate.
+
+## Keyboard
+
+For horizontal orientation, Arrow Right moves to the next enabled item.
+
+For horizontal orientation, Arrow Left moves to the previous enabled item.
+
+For vertical orientation, Arrow Down moves to the next enabled item.
+
+For vertical orientation, Arrow Up moves to the previous enabled item.
+
+Home moves to the first enabled item.
+
+End moves to the last enabled item.
+
+Tab leaves the Toolbar after the managed focus stop.
 
 ## Accessibility
 
-| Attribute | Element | Purpose |
-|-----------|---------|---------|
-| `role="toolbar"` | Container | Identifies the toolbar pattern |
-| `aria-label` | Container | Accessible name |
-| `aria-orientation` | Container | `horizontal` (default) or `vertical` |
+Use `role="toolbar"` only when managed arrow navigation provides a real usability benefit.
 
-### Keyboard
+Give icon-only child controls accessible names.
 
-| Key | Action |
-|-----|--------|
-| `Tab` | Moves focus into/out of the toolbar (roving tabindex) |
-| `→` / `←` | Moves focus between toolbar items (horizontal) |
-| `↓` / `↑` | Moves focus between toolbar items (vertical) |
-| `Home` / `End` | First / last item |
+Keep disabled controls out of managed arrow movement when the module specifies it.
 
----
+Keep visible focus on every toolbar control.
 
-## Notes
+Keep child `aria-pressed` and other state owned by the child component.
 
-- Toolbars compose Toggle Groups, Button Groups, Buttons, and Separators.
-- The toolbar handles roving tabindex — only one item is in the tab order at a time.
-- Use vertical separators between logical groups of controls.
-- The toolbar does not enforce selection logic — that's handled by the child components.
+Do not put application route navigation inside Toolbar.
 
-- The toolbar has no padding or gap: toggle controls sit flush inside the toolbar border, and separators span its full height.
+## Runtime
+
+Load `toolbar.js` whenever Toolbar uses the documented managed keyboard behavior.
+
+Without the module, native child controls remain independently operable through normal Tab navigation.
