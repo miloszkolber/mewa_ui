@@ -6,6 +6,10 @@ function openSheet(sheet, trigger) {
   sheet._trigger = trigger;
   try {
     sheet.showModal();
+    // Keep initial focus on the surface. showModal() would otherwise focus
+    // the first control and select its text.
+    if (!sheet.hasAttribute('tabindex')) sheet.setAttribute('tabindex', '-1');
+    sheet.focus();
   } catch {
     // A target can be replaced between the click and showModal() in an SPA.
   }

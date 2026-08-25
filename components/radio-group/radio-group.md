@@ -75,49 +75,6 @@
 </fieldset>
 ```
 
-### Horizontal layout
-
-```html
-<fieldset class="radio-group" data-orientation="horizontal">
-  <legend class="label">Alignment</legend>
-  <div class="radio-item">
-    <input class="radio" type="radio" name="align" id="left" value="left" checked>
-    <label for="left">Left</label>
-  </div>
-  <div class="radio-item">
-    <input class="radio" type="radio" name="align" id="center" value="center">
-    <label for="center">Center</label>
-  </div>
-  <div class="radio-item">
-    <input class="radio" type="radio" name="align" id="right" value="right">
-    <label for="right">Right</label>
-  </div>
-</fieldset>
-```
-
----
-
-## Layout
-
-| Attribute | Value | Effect |
-|---|---|---|
-| `data-orientation` | `"horizontal"` | Items flow horizontally (row) |
-| _(default)_ | — | Items stack vertically (column) |
-
----
-
-## ARIA
-
-| Attribute | Element | Purpose |
-|---|---|---|
-| `<fieldset>` | group wrapper | Provides implicit `role="group"` |
-| `<legend>` | first child of fieldset | Accessible group label |
-| `name` (shared) | all `<input type="radio">` | Mutual exclusivity |
-| `checked` | `<input>` | Pre-selected option |
-| `disabled` | `<input>` or `<fieldset>` | Disables one or all options |
-| `aria-invalid="true"` | `<input>` | Marks invalid state |
-| `aria-describedby` | `<input>` | Links to description/error text |
-
 ### Keyboard
 
 | Key | Action |
@@ -137,6 +94,5 @@
 - Use `.radio-item` for simple label. Use `.radio-item-block` for label + description.
 - Use `.radio-card` on a non-label container for card-style selection (radio positioned top-right, card highlights on check via `:has()`). Keep one nested `<label>` per radio so the HTML remains valid.
 - `<fieldset disabled>` disables all radios in the group natively.
-- Add `data-orientation="horizontal"` to `.radio-group` for a horizontal layout.
 - Native radios retain their keyboard behavior and `:focus-visible` indicator. Card focus is reflected by `:has(.radio:focus-visible)`.
 - Selection changes are immediate. The component adds no JavaScript, animation, or transition.

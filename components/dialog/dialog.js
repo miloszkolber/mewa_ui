@@ -6,6 +6,11 @@ function openDialog(dialog, trigger) {
   dialog._trigger = trigger;
   try {
     dialog.showModal();
+    // Keep initial focus on the surface. showModal() would otherwise focus
+    // the first control and select its text; callers can opt in with an
+    // `autofocus` attribute on a dialog child when they want one.
+    if (!dialog.hasAttribute('tabindex')) dialog.setAttribute('tabindex', '-1');
+    dialog.focus();
   } catch {
     // A detached or already-open dialog can race SPA updates. Leave it closed
     // rather than surfacing a native InvalidStateError to the caller.

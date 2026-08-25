@@ -6,24 +6,24 @@
     width: 100%;
     height: var(--size-02);
     border: none;
-    border-radius: var(--radius-full);
+    border-radius: var(--border-radius);
     overflow: hidden;
     background-color: var(--surface-secondary);
   }
 
   .progress::-webkit-progress-bar {
     background-color: var(--surface-secondary);
-    border-radius: var(--radius-full);
+    border-radius: var(--border-radius);
   }
 
   .progress::-webkit-progress-value {
     background-color: var(--surface-inverted);
-    border-radius: var(--radius-full);
+    border-radius: var(--border-radius);
   }
 
   .progress::-moz-progress-bar {
     background-color: var(--surface-inverted);
-    border-radius: var(--radius-full);
+    border-radius: var(--border-radius);
   }
 
   /* -- Accessibility ---------------------------------------- */

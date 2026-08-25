@@ -166,3 +166,5 @@ The fallback markup supplies only the static separator role and orientation. The
 - When an SPA removes an initialized root, the module disconnects its `ResizeObserver` (or removes the window resize listener), removes interaction listeners, and restores the static fallback attributes and panel styles before allowing reinitialization.
 - Keep the output in the component when a visible value helps all users. If it is omitted, the module adds a tokenized output status after the group.
 - The CSS contains no transitions, animations, shadows, or rounded containers. Forced colors use system color keywords and keyboard focus uses `:focus-visible`.
+
+- The handle's background is transparent except for its border-colored line, so it never covers the panels. Hover keeps the line in the muted border role; only active dragging and keyboard focus use the stronger ring color.

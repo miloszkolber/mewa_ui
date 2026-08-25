@@ -12,7 +12,6 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
   if (!viewport) return;
 
   const slides = () => Array.from(viewport.querySelectorAll('.carousel-slide'));
-  const isVertical = carousel.dataset.orientation === 'vertical';
   const isLoop = carousel.hasAttribute('data-loop');
 
   let currentIndex = 0;
@@ -43,11 +42,7 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
     }
 
     const slide = allSlides[target];
-    if (isVertical) {
-       viewport.scrollTo({ top: slide.offsetTop - viewport.offsetTop, behavior: 'auto' });
-    } else {
-       viewport.scrollTo({ left: slide.offsetLeft - viewport.offsetLeft, behavior: 'auto' });
-    }
+    viewport.scrollTo({ left: slide.offsetLeft - viewport.offsetLeft, behavior: 'auto' });
   };
 
   // ── Update state (buttons, dots, counter) ───
@@ -133,8 +128,8 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
         if (target.hasAttribute('tabindex')) return;
       }
     }
-    const prevKey = isVertical ? 'ArrowUp' : 'ArrowLeft';
-    const nextKey = isVertical ? 'ArrowDown' : 'ArrowRight';
+    const prevKey = 'ArrowLeft';
+    const nextKey = 'ArrowRight';
     if (e.key === prevKey) { e.preventDefault(); goPrev(); }
     if (e.key === nextKey) { e.preventDefault(); goNext(); }
     if (e.key === 'Home') { e.preventDefault(); scrollToIndex(0); }

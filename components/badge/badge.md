@@ -25,18 +25,22 @@
 | `default`      | Primary background, high emphasis  |
 | `secondary`    | Secondary background, medium       |
 | `outline`      | Border only, low emphasis          |
+| `count`        | Fixed 24x24 square counter, inside buttons |
 
 ```html
 <span class="badge" data-variant="default">New</span>
 <span class="badge" data-variant="secondary">Draft</span>
 <span class="badge" data-variant="outline">v0.1.0</span>
+<span class="badge" data-variant="count">3</span>
 ```
+
+The count variant is a static 24x24 square used for notification counters. When the count exceeds 99, render `99+`.
 
 ---
 
 ## Status states
 
-Use `data-state` instead of `data-variant` when the badge communicates operational status. The visible label remains the authoritative state, while the semantic status surface and border provide a secondary visual cue.
+Use `data-state` instead of `data-variant` when the badge communicates operational status. The visible label remains the authoritative state, while the filled semantic status surface provides a secondary visual cue. Status badges never use borders.
 
 | `data-state` | Purpose |
 |---|---|

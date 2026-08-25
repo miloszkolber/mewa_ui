@@ -66,3 +66,5 @@
 - The toolbar handles roving tabindex — only one item is in the tab order at a time.
 - Use vertical separators between logical groups of controls.
 - The toolbar does not enforce selection logic — that's handled by the child components.
+
+- The toolbar has no padding or gap: toggle controls sit flush inside the toolbar border, and separators span its full height.

@@ -33,28 +33,6 @@
 </nav>
 ```
 
-### Custom separator (chevron icon)
-
-```html
-<nav class="breadcrumb" aria-label="Breadcrumb">
-  <ol class="breadcrumb-list">
-    <li class="breadcrumb-item"><a class="breadcrumb-link" href="#">Home</a></li>
-    <li class="breadcrumb-separator" aria-hidden="true">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round"
-           stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-    </li>
-    <li class="breadcrumb-item"><a class="breadcrumb-link" href="#">Components</a></li>
-    <li class="breadcrumb-separator" aria-hidden="true">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round"
-           stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-    </li>
-    <li class="breadcrumb-item"><span class="breadcrumb-page" aria-current="page">Breadcrumb</span></li>
-  </ol>
-</nav>
-```
-
 ### Collapsed (with ellipsis)
 
 ```html

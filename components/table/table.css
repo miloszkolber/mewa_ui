@@ -69,6 +69,38 @@
     font-weight: var(--font-weight-strong);
   }
 
+  /* -- Dense terminal variant: compact rows separated by a subtle hairline.
+     Add `table--dense` to the `<table>` and keep the default
+     `.table-container` outer border as the single section canvas. */
+  .table--dense .table-head {
+    padding: var(--space-02) var(--space-04);
+    border-block-end: var(--border-width-01) solid var(--border-primary);
+  }
+
+  .table--dense .table-cell {
+    padding: var(--space-03) var(--space-04);
+  }
+
+  .table--dense .table-row {
+    border-block-end: var(--border-width-01) dashed var(--border-muted);
+  }
+
+  .table--dense .table-row:last-child {
+    border-block-end: 0;
+  }
+
+  /* Optional status column keeps a fixed inline size; actions pin to the end. */
+  .table--dense .table-cell--status {
+    inline-size: 3rem;
+    padding-inline: var(--space-02);
+    text-align: center;
+  }
+
+  .table--dense .table-cell--actions {
+    text-align: end;
+    white-space: nowrap;
+  }
+
   /* -- Container query: compact table in narrow containers -- */
   @container (max-width: 480px){
     .table-head,

@@ -20,9 +20,15 @@
       border-bottom: var(--border-width-01) solid var(--border-primary);
 
       & .tab-trigger {
-        padding: var(--space-02) var(--space-04);
+        padding: 0 var(--space-04);
         border-bottom: var(--border-width-02) solid transparent;
         margin-bottom: -1px;
+
+        /* Hover changes text color only; it never covers the bottom border. */
+        &:not([aria-selected="true"]):hover {
+          background: transparent;
+          color: var(--text-primary);
+        }
 
         &[aria-selected="true"] {
           background: transparent;
@@ -49,7 +55,8 @@
     align-items: center;
     justify-content: center;
     gap: var(--space-02);
-    padding: var(--space-01) var(--space-02);
+    block-size: var(--size-08);
+    padding: 0 var(--space-04);
 
     font-size: var(--font-body-small);
     font-weight: var(--font-weight-strong);
@@ -60,13 +67,15 @@
     white-space: nowrap;
     outline: none;
 
+    /* Selected tab: the page surface fill with the secondary button's
+       text color, matching the button and input height. */
     &[aria-selected="true"] {
-      background: var(--surface-inverted);
-      color: var(--text-inverted);
+      background: var(--surface-primary);
+      color: var(--text-primary);
 
       &:hover {
-        background: color-mix(in oklch, var(--surface-inverted) 90%, var(--background));
-        color: var(--text-inverted);
+        background: var(--surface-primary);
+        color: var(--text-primary);
       }
     }
 

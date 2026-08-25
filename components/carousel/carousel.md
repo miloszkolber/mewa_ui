@@ -6,7 +6,7 @@ CSS `scroll-snap` on an overflow container, with `IntersectionObserver` for acti
 
 ## Native Web APIs
 
-- [`scroll-snap-type`](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-type) — mandatory snap scrolling for horizontal and vertical axes
+- [`scroll-snap-type`](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-type) — mandatory snap scrolling on the horizontal axis, so trackpad scrolling settles on a slide
 - [`scroll-snap-align`](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-align) — snap-point alignment per slide
 - [`scroll-snap-stop`](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-stop) — forces snap to each slide (prevents fast-scroll skip)
 - [`overscroll-behavior`](https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior) — prevents scroll chaining to parent
@@ -65,19 +65,6 @@ CSS `scroll-snap` on an overflow container, with `IntersectionObserver` for acti
 </div>
 ```
 
-### Vertical
-```html
-<div class="carousel" data-orientation="vertical" role="region" aria-roledescription="carousel" aria-label="Vertical slides">
-  <div class="carousel-viewport" aria-live="polite" style="height: 16rem;">
-    <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="1 of 3">…</div>
-    <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 3">…</div>
-    <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 3">…</div>
-  </div>
-  <button type="button" class="carousel-prev" aria-label="Previous slide"><i data-lucide="chevron-up"></i></button>
-  <button type="button" class="carousel-next" aria-label="Next slide"><i data-lucide="chevron-down"></i></button>
-</div>
-```
-
 ### Loop
 Add `data-loop` to the carousel container to enable infinite circular navigation:
 ```html
@@ -100,8 +87,6 @@ Set `flex-basis` on `.carousel-slide` to control per-slide width:
 
 | Attribute | Value | Behavior |
 | --- | --- | --- |
-| `data-orientation` | *(omitted)* | Horizontal scrolling; Left/Right arrows |
-| `data-orientation` | `vertical` | Vertical scrolling; Up/Down arrows |
 | `data-loop` | *(presence)* | Enables circular/infinite navigation |
 
 ## ARIA
@@ -125,8 +110,7 @@ Set `flex-basis` on `.carousel-slide` to control per-slide width:
 
 | Key | Action |
 | --- | --- |
-| `←` / `→` | Previous / Next slide (horizontal) |
-| `↑` / `↓` | Previous / Next slide (vertical) |
+| `←` / `→` | Previous / Next slide |
 | `Home` | Jump to first slide |
 | `End` | Jump to last slide |
 | `Tab` | Moves focus through interactive elements (buttons, dots) |
@@ -140,4 +124,5 @@ Set `flex-basis` on `.carousel-slide` to control per-slide width:
 - **No autoplay** — slides change only through explicit keyboard, pointer, or touch interaction.
 - **Immediate state changes** — carousel controls update without smooth scrolling or transitions.
 - **Scroll containment** — `overscroll-behavior: contain` prevents parent page scrolling when at carousel edges.
-- **Buttons disabled at edges** — in non-loop mode, prev is disabled at first slide, next at last slide.
+- **Buttons disabled at edges** — in non-loop mode, prev is disabled at first slide, next at last slide. The disabled buttons keep their border and a muted surface fill so they remain visible.
+- **Trackpad snapping** — the viewport uses `scroll-snap-type: x mandatory` and slides snap to the start edge, so horizontal scrolling always settles on a slide.

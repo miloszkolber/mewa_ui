@@ -482,8 +482,12 @@
     block-size: var(--size-07);
     background: var(--surface-inverted);
     color: var(--text-inverted);
-    font-size: var(--font-body-small);
-    font-weight: var(--font-weight-strong);
+
+    & svg,
+    & i {
+      inline-size: var(--size-04);
+      block-size: var(--size-04);
+    }
   }
 
   .layout-top-nav {

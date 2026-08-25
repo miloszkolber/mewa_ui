@@ -109,9 +109,11 @@
     }
   }
 
-  /* Fixed-width slot keeps column geometry identical in every sort state. */
+  /* Fixed-width slot keeps column geometry identical in every sort state.
+     No glyph is shown while the column is unsorted; only the sorted column
+     carries a plain up or down arrow. */
   .data-table-sort::after {
-    content: "↕";
+    content: "";
     flex: 0 0 auto;
     inline-size: var(--size-04);
     display: inline-flex;

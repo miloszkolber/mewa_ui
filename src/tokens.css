@@ -13,6 +13,7 @@
   --surface-caution: var(--color-amber-50);
   --surface-overlay: oklch(0 0 0 / 0.45);
   --surface-inverted: var(--color-neutral-950);
+  --surface-destructive: var(--color-red-600);
   /* Text roles */
   --text-primary: var(--color-neutral-950);
   --text-secondary: var(--color-neutral-700);
@@ -52,6 +53,7 @@
   --surface-caution: var(--color-amber-950);
   --surface-overlay: oklch(0 0 0 / 0.45);
   --surface-inverted: var(--color-neutral-50);
+  --surface-destructive: var(--color-red-400);
   /* Text roles */
   --text-primary: var(--color-neutral-50);
   --text-secondary: var(--color-neutral-300);

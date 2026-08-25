@@ -281,19 +281,16 @@
 &lt;/div&gt;</code></pre>
       </div>
 
-      <!-- Instant / Custom Delay -->
-      <p class="text-sm font-medium mb-2 mt-8">Custom delay</p>
-      <p class="text-xs text-muted mb-4">Use <code>data-delay</code> on the trigger to override the default 700 ms open delay.</p>
+      <!-- Instant / Disable delay -->
+      <p class="text-sm font-medium mb-2 mt-8">Disable the delay</p>
+      <p class="text-xs text-muted mb-4">The default open delay is 500 ms. Custom delays are not supported; <code>data-delay="0"</code> disables the delay so the tooltip opens immediately.</p>
       <div class="preview">
         <div style="display: flex; align-items: center; justify-content: center; gap: var(--space-04); flex-wrap: wrap; padding: var(--space-08) 0" >
-          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-instant" data-delay="0">Instant (0 ms)</button>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-instant" data-delay="0">Instant tooltip</button>
           <div class="tooltip" id="tip-instant" popover="hint" role="tooltip">No delay!</div>
 
-          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-fast" data-delay="200">Fast (200 ms)</button>
-          <div class="tooltip" id="tip-fast" popover="hint" role="tooltip">Fast tooltip</div>
-
-          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-slow" data-delay="1500">Slow (1500 ms)</button>
-          <div class="tooltip" id="tip-slow" popover="hint" role="tooltip">Slow tooltip</div>
+          <button type="button" class="btn" data-variant="outline" data-tooltip-trigger="tip-delay-disabled">Default (500 ms)</button>
+          <div class="tooltip" id="tip-delay-disabled" popover="hint" role="tooltip">Default delay</div>
         </div>
       </div>
       <div style="position: relative; margin-top: var(--space-02)">
@@ -301,11 +298,11 @@
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
           Copy
         </button>
-        <pre><code class="language-markup">&lt;!-- Instant --&gt;
-&lt;button type="button" data-tooltip-trigger="tip" data-delay="0"&gt;Instant&lt;/button&gt;
+        <pre><code class="language-markup">&lt;!-- Default delay --&gt;
+&lt;button type="button" data-tooltip-trigger="tip"&gt;Default&lt;/button&gt;
 
-&lt;!-- Custom delay --&gt;
-&lt;button type="button" data-tooltip-trigger="tip" data-delay="200"&gt;Fast&lt;/button&gt;</code></pre>
+&lt;!-- Disable the delay --&gt;
+&lt;button type="button" data-tooltip-trigger="tip" data-delay="0"&gt;Instant&lt;/button&gt;</code></pre>
       </div>
 
       <!-- Group behavior -->

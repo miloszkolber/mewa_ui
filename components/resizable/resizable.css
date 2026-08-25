@@ -81,7 +81,18 @@
     }
 
     .resizable[data-init] &:hover,
-    .resizable[data-init] &:focus-visible,
+    .resizable[data-init] &:focus-visible {
+      background: linear-gradient(
+        to right,
+        transparent calc(50% - (var(--border-width-01) / 2)),
+        var(--border-secondary) calc(50% - (var(--border-width-01) / 2)),
+        var(--border-secondary) calc(50% + (var(--border-width-01) / 2)),
+        transparent calc(50% + (var(--border-width-01) / 2))
+      );
+      color: var(--text-muted);
+    }
+
+    /* Dragging stays contrasty so the move target is unmistakable. */
     .resizable[data-init] &[data-resizing] {
       background: linear-gradient(
         to right,
@@ -131,7 +142,17 @@
     }
 
     .resizable[data-init] &:hover,
-    .resizable[data-init] &:focus-visible,
+    .resizable[data-init] &:focus-visible {
+      background: linear-gradient(
+        to bottom,
+        transparent calc(50% - (var(--border-width-01) / 2)),
+        var(--border-secondary) calc(50% - (var(--border-width-01) / 2)),
+        var(--border-secondary) calc(50% + (var(--border-width-01) / 2)),
+        transparent calc(50% + (var(--border-width-01) / 2))
+      );
+      color: var(--text-muted);
+    }
+
     .resizable[data-init] &[data-resizing] {
       background: linear-gradient(
         to bottom,
@@ -140,6 +161,7 @@
         var(--border-ring) calc(50% + (var(--border-width-02) / 2)),
         transparent calc(50% + (var(--border-width-02) / 2))
       );
+      color: var(--text-primary);
     }
   }
 

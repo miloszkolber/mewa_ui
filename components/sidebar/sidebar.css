@@ -93,22 +93,22 @@
 
       & .sidebar-link {
         justify-content: center;
-        inline-size: var(--size-07);
+        inline-size: var(--size-08);
         padding: 0;
       }
 
       & .sidebar-header {
         justify-content: center;
-        padding: var(--space-03) var(--space-02);
+        padding: var(--space-03);
       }
 
       & .sidebar-footer {
-        padding: var(--space-03) var(--space-02);
+        padding: var(--space-03);
       }
 
       & .sidebar-trigger {
         justify-content: center;
-        inline-size: var(--size-07);
+        inline-size: var(--size-08);
         padding-inline: 0;
       }
     }
@@ -119,10 +119,12 @@
   }
 
   /* -- Sidebar header ------------------------------------------- */
+  /* The brand is the same signet component as the app header brand:
+     a 32px square mark with a 16px icon, aligned with the item icons below. */
   .sidebar-header {
     display: flex;
     align-items: center;
-    padding: var(--space-04);
+    padding: var(--space-03);
     gap: var(--space-02);
     border-bottom: var(--border-width-01) solid var(--border-muted);
     flex-shrink: 0;
@@ -140,6 +142,23 @@
     &:focus-visible {
       outline: var(--focus-ring-width) solid var(--border-ring);
       outline-offset: var(--border-width-01);
+    }
+  }
+
+  .sidebar-logo-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--size-07);
+    block-size: var(--size-07);
+    flex: none;
+    background: var(--surface-inverted);
+    color: var(--text-inverted);
+
+    & svg,
+    & i {
+      inline-size: var(--size-04);
+      block-size: var(--size-04);
     }
   }
 
@@ -164,11 +183,13 @@
   }
 
   /* -- Nav links ------------------------------------------------- */
+  /* Items are always 40px tall; collapsed links become 40x40 buttons
+     inside the 56px rail, so both states share the same box model. */
   .sidebar-link {
     display: flex;
     align-items: center;
-    gap: var(--space-02);
-    block-size: var(--size-07);
+    gap: var(--space-03);
+    block-size: var(--size-08);
     padding-inline: var(--space-03);
 
     font-size: var(--font-body-small);
@@ -205,7 +226,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-03);
-    padding: var(--space-03) var(--space-04);
+    padding: var(--space-03);
     border-top: var(--border-width-01) solid var(--border-muted);
     font-size: var(--font-body-small);
     color: var(--text-primary);
@@ -221,9 +242,9 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: var(--space-02);
+    gap: var(--space-03);
     width: 100%;
-    block-size: var(--size-07);
+    block-size: var(--size-08);
     padding-inline: var(--space-03);
     border: none;
     background-color: transparent;

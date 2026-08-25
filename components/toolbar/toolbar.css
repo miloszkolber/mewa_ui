@@ -4,8 +4,8 @@
   .toolbar {
     display: flex;
     align-items: center;
-    gap: var(--space-01);
-    padding: var(--space-01);
+    gap: 0;
+    padding: 0;
     border: var(--border-width-01) solid var(--border-primary);
 
     background: var(--background);
@@ -14,7 +14,7 @@
     & > .separator[data-orientation="vertical"] {
       align-self: stretch;
       height: auto;
-      margin: var(--space-01) var(--space-01);
+      margin: 0;
     }
 
     &[aria-orientation="vertical"] {
@@ -24,7 +24,7 @@
       & > .separator:not([data-orientation]) {
         height: 1px;
         width: var(--size-06);
-        margin: var(--space-01) 0;
+        margin: 0;
       }
     }
   }

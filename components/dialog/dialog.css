@@ -4,8 +4,7 @@
   dialog.dialog {
     border: var(--border-width-01) solid var(--border-primary);
 
-    background-color: var(--surface-primary-glass);
-    backdrop-filter: blur(var(--blur-01));
+    background-color: var(--surface-primary);
     color: var(--text-primary);
     padding: 0;
     margin: auto;

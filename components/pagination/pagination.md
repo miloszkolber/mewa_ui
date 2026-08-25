@@ -104,5 +104,5 @@ All links are native `<a>` elements — keyboard navigation works automatically.
 - On the first page, add `aria-disabled="true"` to the Previous link. On the last page, add it to Next.
 - Use `<span class="pagination-ellipsis" aria-hidden="true">` for the "…" indicator — it's not a link.
 - Chevron SVG icons are preferred over text arrows for visual consistency.
-- CSS uses logical properties (`padding-inline`) for automatic RTL support.
+- CSS uses logical properties (`padding-inline`) for automatic RTL support. Prev/next are square icon buttons matching the page-link geometry.
 - No JavaScript required — this is a purely CSS component.

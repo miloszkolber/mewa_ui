@@ -64,6 +64,6 @@
 
 - Pure CSS — no JavaScript needed.
 - The borderless track pairs with a 1rem thumb inset evenly on both sides; `:checked` swaps logical start/end placement.
-- Uses `appearance: none` with an `::after` thumb and no track border, so padding reads even in both states.
+- Uses `appearance: none` with an `::after` thumb. The track keeps a visible border in the default state so the control reads against the page surface, and disabled states keep their track, border, and thumb colors.
 - Wrap in `.switch-item` for automatic disabled label styling via `:has(.switch:disabled)`.
 - `aria-invalid="true"` shows the track in the destructive color.

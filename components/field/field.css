@@ -5,7 +5,7 @@
   .field {
     display: flex;
     flex-direction: column;
-    gap: var(--space-02);
+    gap: var(--space-01);
     min-inline-size: 0;
   }
 
@@ -16,7 +16,7 @@
     font-family: var(--font-sans);
     font-size: var(--font-body-small);
     font-weight: var(--font-weight-strong);
-    line-height: var(--font-height-none);
+    line-height: var(--font-height);
     cursor: default;
   }
 
@@ -60,9 +60,11 @@
     select,
     textarea
   ):focus-visible {
+    /* Form controls keep their 1px border and add a 1px outline directly
+       outside it, unlike 2px + offset rings used on other elements. */
     border-color: var(--border-ring);
-    outline: var(--focus-ring-width) solid var(--border-ring);
-    outline-offset: var(--border-width-01);
+    outline: var(--border-width-01) solid var(--border-ring);
+    outline-offset: 0;
   }
 
   .field > :where(
@@ -79,7 +81,10 @@
     textarea
   ):disabled {
     cursor: not-allowed;
-    opacity: var(--opacity-05);
+    background: var(--surface-secondary);
+    color: var(--text-disabled);
+    border-color: var(--border-muted);
+    opacity: 1;
   }
 
   .field > :where(
@@ -106,7 +111,8 @@
     textarea
   ):is([aria-invalid="true"], :user-invalid):focus-visible {
     border-color: var(--text-negative);
-    outline-color: var(--text-negative);
+    outline: var(--border-width-01) solid var(--text-negative);
+    outline-offset: 0;
   }
 
   .field-description,
@@ -151,11 +157,11 @@
     flex-basis: 100%;
   }
 
-  /* A fieldset is the native grouping companion to .field. */
+  /* A fieldset is the native grouping companion to .field. Block layout
+     keeps the legend and its siblings left-aligned in every engine; the
+     legend is not a reliable flex item inside a flex fieldset. */
   .fieldset {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-04);
+    display: block;
     min-inline-size: 0;
     border: 0;
     margin: 0;
@@ -164,14 +170,19 @@
 
   .fieldset > legend {
     padding: 0;
+    margin: 0 0 var(--space-01);
     color: var(--text-primary);
     font-size: var(--font-body-small);
     font-weight: var(--font-weight-strong);
-    line-height: var(--font-height-none);
+    line-height: var(--font-height);
   }
 
   .fieldset > :is(.field-description, .field-error) {
-    margin-block-start: 0;
+    margin: 0 0 var(--space-03);
+  }
+
+  .fieldset > :not(legend):not(.field-description):not(.field-error) {
+    margin-block-start: var(--space-02);
   }
 
   .field-separator {

@@ -16,9 +16,6 @@
   }
   .breadcrumb-separator {
     color: var(--text-muted); font-size: var(--font-body-xsmall);
-    & svg { width: 0.875rem; height: 0.875rem; flex-shrink: 0; }
-
-    [dir="rtl"] & svg { scale: -1 1; }
   }
   .breadcrumb-page { color: var(--text-primary); font-weight: var(--font-weight); }
   .breadcrumb-ellipsis {

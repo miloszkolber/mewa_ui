@@ -22,7 +22,9 @@ Put `.app-shell` on `<body>`. The direct `<main>` child grows to fill the viewpo
   <header class="app-header">
     <div class="app-header-inner">
       <a class="brand" href="/" aria-label="Example service home">
-        <span class="brand-mark" aria-hidden="true">EX</span>
+        <span class="brand-mark" aria-hidden="true">
+          <i data-lucide="command"></i>
+        </span>
         <span>Example service</span>
       </a>
 
@@ -32,8 +34,9 @@ Put `.app-shell` on `<body>`. The direct `<main>` child grows to fill the viewpo
       </nav>
 
       <div class="app-header-actions">
-        <button class="btn" type="button" data-variant="outline" data-theme-toggle>
-          Theme
+        <button class="btn" type="button" data-variant="outline" data-size="icon" data-theme-toggle aria-label="Toggle theme">
+          <i data-lucide="moon" aria-hidden="true"></i>
+          <i data-lucide="sun" aria-hidden="true"></i>
         </button>
       </div>
     </div>
@@ -45,7 +48,7 @@ Put `.app-shell` on `<body>`. The direct `<main>` child grows to fill the viewpo
 </body>
 ```
 
-Use native links for routes and native buttons for actions. Keep `aria-current="page"` on only the current route. `.brand-logo` sizes an image or inline SVG. `.brand-mark` provides a square text fallback when no logo asset is available.
+Use native links for routes and native buttons for actions. Keep `aria-current="page"` on only the current route. `.brand-mark` is the same signet used by the Sidebar header: a 32px square inverted container with a 16px icon inside. `.brand-logo` is the icon slot inside it. The current route reads as a line tab — a 2px bottom border under the link — so hover never covers it.
 
 ## Toolbar alternative
 
@@ -69,7 +72,7 @@ Use `.app-toolbar` with `.app-toolbar-inner` for a sticky breadcrumb-and-actions
 
 ## Edge accent
 
-Add `.app-shell-edge` beside `.app-shell` on `<body>` to pin a decorative diagonal hatch to the viewport's inline end. The accent is a flat hard-stop pattern painted in a border role, ignores pointer input, and never moves. Omit the class when the right edge must stay clean; the shell is fully usable without it.
+Add `.app-shell-edge` beside `.app-shell` on `<body>` to pin a decorative diagonal hatch to both inline edges of the viewport. The accent is a flat hard-stop pattern painted in a border role, ignores pointer input, and never moves. Omit the class when the edges must stay clean; the shell is fully usable without it.
 
 ```html
 <body class="app-shell app-shell-edge">
@@ -126,7 +129,7 @@ Use `.app-content` for a content region that should use the same max-width and c
 <p class="app-empty" role="status">No jobs match the current filter.</p>
 ```
 
-For a dense collection of independently actionable statuses, use `.app-status-list` and one `.app-status-row` per item. Place the existing `.status-icon` or `.status-dot` first, keep copy in `.app-status-copy`, and put optional controls in `.app-status-actions`. Rows are separated by borders and do not add nested cards.
+For a dense collection of independently actionable statuses, use `.app-status-list` and one `.app-status-row` per item. Place the existing `.status-icon` or `.status-dot` first, keep copy in `.app-status-copy`, and put optional controls in `.app-status-actions`. Both markers share a fixed slot so titles align across rows. Rows are separated by borders and do not add nested cards.
 
 ```html
 <ul class="app-status-list" aria-label="Worker status">
@@ -141,6 +144,69 @@ For a dense collection of independently actionable statuses, use `.app-status-li
     </div>
   </li>
 </ul>
+```
+
+## Filter rail
+
+Use `.app-filter-rail` for a narrow vertical filter navigation shared by bookmarks and rss. It keeps the same section canvas as dense rows but uses a vertical list with an inset left-border active indicator. Pair with `.app-filter-list` or `.app-filter-tags`.
+
+```html
+<aside class="app-filter-rail" aria-label="Bookmark filters">
+  <section class="app-section app-filter-section" aria-labelledby="filter-categories-title">
+    <div class="app-section-header">
+      <h2 class="app-section-title" id="filter-categories-title">Categories</h2>
+    </div>
+    <div class="app-section-content">
+      <ul class="app-filter-list">
+        <li><a href="/" aria-current="page"><span>All</span><small>12</small></a></li>
+        <li><a href="/?category=3"><span>Research</span><small>4</small></a></li>
+      </ul>
+    </div>
+  </section>
+</aside>
+```
+
+Active link uses `aria-current="page"` and receives the same `background: var(--surface-secondary)` treatment as category rows in rss. Keep the rail width at `16rem` (bookmarks) or `15–19rem` (rss) and collapse to full-width at `48rem`.
+
+## Section canvas
+
+Use `.app-section` for a bordered full-width section that holds dense rows (tables, status lists, or custom row grids). It replaces the common but visually heavy `card > table` nesting. Put the border on the section, not on each row.
+
+```html
+<section class="app-section" aria-labelledby="jobs-title">
+  <div class="app-section-header">
+    <h2 class="app-section-title" id="jobs-title">Scheduled services</h2>
+  </div>
+  <div class="table-container">
+    <table class="table table--dense">…</table>
+  </div>
+</section>
+```
+
+When a section directly wraps a table, status list, or bookmark list, the inner container's border is removed so the section provides the single outer canvas.
+
+For empty states inside a section, use `.app-empty--compact` (dashed border) rather than a standalone card.
+
+```html
+<p class="app-empty app-empty--compact" role="status">No bookmarks match.</p>
+```
+
+## Sizing guidance
+
+- Header actions (`.app-header-actions` > `.btn`): default size, `data-variant="outline"` for Theme and Refresh. Do not use `data-size="sm"` in headers.
+- In-row actions (inside `.app-status-row`, `.bookmark-row`, table `actions` cells): `data-size="sm"`.
+- Filled destructive (`data-variant="destructive"`) reserved for the primary confirm in a dialog; secondary/row actions use outline or ghost variants with `data-variant="destructive"` for red text without filled mass.
+- Refresh buttons: outline + refresh icon + visible label ("Refresh", "Refresh inventory", "Refresh all") in `.app-header-actions`.
+
+## Header refresh pattern
+
+Use the same outline button with icon and label in every header. Do not invent `secondary` variants or custom wording per service.
+
+```html
+<button class="btn" type="button" data-variant="outline">
+  <i data-lucide="refresh-cw" aria-hidden="true"></i>
+  Refresh
+</button>
 ```
 
 ## Optional theme enhancement
@@ -168,7 +234,7 @@ To avoid a first-paint mismatch, put this small inline decision script in `<head
 </script>
 ```
 
-The module writes only `mewa-ui-theme`, updates the toggle's action label, and sets `data-theme="light"` or `data-theme="dark"` for an optional visual icon treatment. A storage failure affects persistence only.
+The module writes only `mewa-ui-theme`, updates the toggle's action label, and sets `data-theme="light"` or `data-theme="dark"` for the icon treatment: the moon is shown in light mode and the sun in dark mode, and the module's `data-theme` state swaps which one renders.
 
 ## Accessibility
 

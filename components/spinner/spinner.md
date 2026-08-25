@@ -2,7 +2,7 @@
 
 ## Native basis
 
-Static SVG loading indicator. No JavaScript or animation is used.
+SVG loading indicator with a CSS rotation animation. The spinner is the one sanctioned animated primitive in the library: a loading indicator is meaningless without motion. No JavaScript is used.
 
 ## Native Web APIs
 
@@ -18,6 +18,7 @@ Static SVG loading indicator. No JavaScript or animation is used.
 </svg>
 ```
 
+Use `data-size="md"`, `data-size="lg"`, or `data-size="xl"` for the same sizes as the Icon component. The rotation is a pure CSS transform and causes no layout shift; consuming applications that must respect a reduced-motion preference can pause it with their own stylesheet.
 
 ## Accessibility
 

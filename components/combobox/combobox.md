@@ -7,8 +7,9 @@ Requires JavaScript for filtering, keyboard navigation, selection, and
 ARIA management. Follows the WAI-ARIA Combobox design pattern.
 
 The trigger is an outline button. Clicking it opens a popover with a search
-input at the top and a scrollable list of options below. DOM focus moves to
-the search input when the popover opens.
+input at the top and a scrollable list of options below. Focus stays on the
+trigger when the popover opens; the search input is focused only when the
+user clicks it or tabs into it.
 
 ---
 
@@ -141,14 +142,16 @@ the search input when the popover opens.
 ## Notes
 
 - The trigger is a `.btn[data-variant="outline"]` — styled by the button system
-- When the popover opens, focus moves to the search input inside
+- When the popover opens, focus stays on the trigger; the search input is never focused automatically
+- Clicking inside the search row focuses the search input
 - When the popover closes, focus returns to the trigger button
 - Use `aria-activedescendant` to communicate the highlighted item to screen readers
 - The `popover` attribute enables top-layer rendering and light-dismiss
 - CSS anchor positioning (`position-anchor`, `anchor()`, `position-try-fallbacks: flip-block`) places the popover below the trigger; no JS positioning needed
 - The popover opens and closes immediately through the native Popover API
-- The check icon for selected items uses a CSS `::before` pseudo-element
-- The search row owns the full-width focus highlight, including its icon and padded click area
+- The check icon for selected items is painted at the inline end with a mask so it inherits the item color without shifting the label
+- The selected item keeps a distinct surface fill
+- The search row owns the full-width focus highlight; its 1px outline sits flush over the row border
 - Filter matching is case-insensitive and supports substring matching
 - The empty state element is shown when no items match the filter query
 - Group labels and separators auto-hide when their group has no visible items

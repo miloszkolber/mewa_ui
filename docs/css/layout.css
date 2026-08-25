@@ -17,7 +17,7 @@ main {
 
 /* -- Site header ------------------------------------------- */
 .site-header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 60;
   height: 3.5rem;
   border-bottom: 1px solid var(--border-primary);
   display: flex; align-items: center;
@@ -45,6 +45,7 @@ main {
   width: 14rem; flex-shrink: 0;
   border-right: 1px solid var(--border-muted);
   position: sticky; top: 3.5rem;
+  z-index: 40;
   height: calc(100vh - 3.5rem);
   background: var(--surface-primary);
   display: flex; flex-direction: column;
@@ -200,7 +201,7 @@ pre:focus-visible {
 .page-header {
   position: sticky;
   top: 3.5rem;
-  z-index: 50;
+  z-index: 10;
   background: var(--background);
   padding: 1rem 0 1rem;
   border-bottom: 1px solid var(--border-primary);

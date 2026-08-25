@@ -54,16 +54,17 @@
     }
   }
 
-  /* -- Checkbox / Radio indicators ----------------------------- */
+  /* -- Checkbox / Radio indicators: pinned to the inline end so they never
+         shift the label, and they inherit the item color. --------------- */
   .dropdown-menu-check,
   .dropdown-menu-radio {
-    padding-inline-start: var(--space-06);
+    padding-inline-end: var(--space-06);
     position: relative;
 
     &::before {
       content: '';
       position: absolute;
-      inset-inline-start: var(--space-02);
+      inset-inline-end: var(--space-02);
       top: 50%;
       transform: translateY(-50%);
       width: 0.875rem;
@@ -71,23 +72,28 @@
     }
   }
 
-  .dropdown-menu-check[aria-checked="true"]::before {
-    content: '';
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
-    background-size: contain;
-    background-repeat: no-repeat;
-  }
-
-  .dropdown-menu-radio[aria-checked="true"]::before {
-    content: '';
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='5'/%3E%3C/svg%3E");
-    background-size: contain;
-    background-repeat: no-repeat;
-  }
-
   .dropdown-menu-check[aria-checked="true"]::before,
   .dropdown-menu-radio[aria-checked="true"]::before {
-    color: var(--text-primary);
+    content: '';
+    /* Mask so the glyph inherits the item's current color. */
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+
+  .dropdown-menu-check[aria-checked="true"]::before {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+    background-color: currentColor;
+  }
+
+  .dropdown-menu-radio[aria-checked="true"]::before {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='5'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='5'/%3E%3C/svg%3E");
+    background-color: currentColor;
   }
 
   .dropdown-menu-separator {
@@ -97,7 +103,7 @@
   }
 
   .dropdown-menu-label {
-    padding: var(--space-02) var(--space-02);
+    padding: var(--space-01) var(--space-02);
     font-size: var(--font-body-xsmall);
     font-weight: var(--font-weight-strong);
     color: var(--text-muted);
@@ -108,6 +114,15 @@
     font-size: var(--font-body-xsmall);
     color: var(--text-muted);
     letter-spacing: 0.05em;
+  }
+
+  .dropdown-menu-item:hover .dropdown-menu-shortcut,
+  .dropdown-menu-item[data-highlighted] .dropdown-menu-shortcut,
+  .dropdown-menu-item:hover .dropdown-menu-check[aria-checked="true"]::before,
+  .dropdown-menu-item[data-highlighted] .dropdown-menu-check[aria-checked="true"]::before,
+  .dropdown-menu-item:hover .dropdown-menu-radio[aria-checked="true"]::before,
+  .dropdown-menu-item[data-highlighted] .dropdown-menu-radio[aria-checked="true"]::before {
+    color: inherit;
   }
 
   @media (forced-colors: active) {

@@ -45,11 +45,10 @@ Popover API (`popover="hint"`) for hover/focus hint popups with CSS anchor posit
 <div class="tooltip" id="tip-bottom-end" popover="hint" role="tooltip" data-side="bottom" data-align="end">Bottom end</div>
 ```
 
-### Custom delay
+### Disable the open delay
 
 ```html
-<button type="button" class="btn" data-tooltip-trigger="my-tip" data-delay="300">Fast tooltip</button>
-<button type="button" class="btn" data-tooltip-trigger="my-tip2" data-delay="0">Instant tooltip</button>
+<button type="button" class="btn" data-tooltip-trigger="my-tip" data-delay="0">Instant tooltip</button>
 ```
 
 ## Variants
@@ -83,8 +82,7 @@ Popover API (`popover="hint"`) for hover/focus hint popups with CSS anchor posit
 
 ## Notes
 
-- **Delay**: Default open delay is 700 ms. Set `data-delay` on the trigger to override. Set to `0` for instant.
-- **Close delay**: Default is 0 ms (instant close). Set `data-close-delay` on the trigger to override.
+- **Delay**: Default open delay is 500 ms. Custom delays are not supported; `data-delay="0"` on the trigger disables the open delay (instant tooltips).
 - **Group behavior**: Once any tooltip becomes visible, subsequent tooltips in the document open instantly (skip delay). After 400 ms with no tooltip visible, the delay resets.
 - **Collision avoidance**: Uses `position-try-fallbacks: flip-block, flip-inline` to automatically reposition when near viewport edges.
 - **Fallback placement**: In engines without `position-area` support the tooltip is placed with explicit coordinates relative to the trigger, so it never falls back to an off-screen static position.

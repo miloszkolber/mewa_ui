@@ -24,9 +24,7 @@
 
   /* -- Toast ---------------------------------------------------- */
   .toast {
-    /* The glass role is intentionally mostly opaque so live announcements remain readable. */
-    background-color: var(--surface-primary-glass);
-    backdrop-filter: blur(var(--blur-01));
+    background-color: var(--surface-primary);
     color: var(--text-primary);
     border: var(--border-width-01) solid var(--border-secondary);
 
@@ -35,7 +33,9 @@
     max-width: min(26rem, calc(100vw - var(--space-08)));
     pointer-events: auto;
 
-    /* -- Variants ------------------------------------------------- */
+    /* -- Variants: 050 fill with 950 text in light mode, 950 fill
+           with colored 500 text in dark mode. The colored title and
+           description inherit the variant text color. ----------------- */
     &[data-variant="destructive"] {
       background-color: var(--surface-negative);
       color: var(--text-negative);
@@ -47,23 +47,22 @@
       }
     }
 
-    /* -- Semantic variants (border + icon color) ----------------- */
     &[data-variant="success"] {
+      background-color: var(--surface-positive);
+      color: var(--text-positive);
       border-color: var(--text-positive);
-
-      & .toast-icon { color: var(--text-positive); }
     }
 
     &[data-variant="warning"] {
+      background-color: var(--surface-caution);
+      color: var(--text-caution);
       border-color: var(--text-caution);
-
-      & .toast-icon { color: var(--text-caution); }
     }
 
     &[data-variant="info"] {
-      border-color: var(--text-secondary);
-
-      & .toast-icon { color: var(--text-secondary); }
+      background-color: var(--surface-secondary);
+      color: var(--text-secondary);
+      border-color: var(--border-secondary);
     }
   }
 
@@ -95,7 +94,7 @@
   .toast-description {
     font-size: var(--font-body-small);
     color: var(--text-muted);
-    margin: var(--space-01) 0 0;
+    margin: 0;
     line-height: var(--font-height);
   }
 

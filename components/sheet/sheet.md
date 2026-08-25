@@ -8,7 +8,7 @@
 - `aria-modal` behavior when opened with `showModal()`
 
 A sheet is a dialog variant that slides in from an edge of the screen.
-Uses `data-side` attribute to control which edge: `top`, `right`, `bottom`, `left`.
+Uses `data-side` attribute to control which edge: `right` (default), `bottom`, or `left`.
 
 ---
 
@@ -74,7 +74,6 @@ Uses `data-side` attribute to control which edge: `top`, `right`, `bottom`, `lef
 |-------------|------------------------------------|
 | `right`     | Slides in from right edge (default) |
 | `left`      | Slides in from left edge            |
-| `top`       | Slides down from top edge           |
 | `bottom`    | Slides up from bottom edge          |
 
 ---
@@ -103,6 +102,6 @@ Uses `data-side` attribute to control which edge: `top`, `right`, `bottom`, `lef
 ## Notes
 
 - Right/left sheets have a fixed width of `24rem` with `max-width: 100vw` for small screens.
-- Top/bottom sheets are full width with `height: auto` — they size to their content.
+- Bottom sheets are full width with `height: auto` — they size to their content.
 - The selector is `dialog.sheet` (element + class) to avoid conflicts with `dialog.dialog`.
 - The `sheet-header` has `padding-right: 2rem` to avoid overlapping the close button.

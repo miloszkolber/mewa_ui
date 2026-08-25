@@ -192,60 +192,6 @@
 &lt;/dialog&gt;</code></pre>
           </div>
 
-        <!-- -- Example: Top ------------------------------------ -->
-          <p class="text-sm font-medium mb-2 mt-6">Top</p>
-           <p class="text-xs text-muted mb-3">Opens at the top edge without animation — useful for notifications or announcement banners.</p>
-          <div class="preview">
-             <button class="btn" type="button" data-variant="outline" data-sheet-trigger="sheet-top" aria-haspopup="dialog">Open Top Sheet</button>
-          </div>
-          <div style="position: relative; margin-top: var(--space-02)">
-             <button class="copy-btn" type="button">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-              Copy
-            </button>
-            <pre><code class="language-markup">&lt;!-- Trigger --&gt;
-&lt;button type="button" class="btn" data-variant="outline"
-        data-sheet-trigger="sheet-top"
-        aria-haspopup="dialog"&gt;Open Top Sheet&lt;/button&gt;
-
-&lt;!-- Sheet --&gt;
-&lt;dialog id="sheet-top" class="sheet" data-side="top"
-        role="dialog" aria-modal="true"
-        aria-labelledby="sheet-top-title"&gt;
-  &lt;div class="sheet-content"&gt;
-    &lt;div class="sheet-header"&gt;
-      &lt;h2 class="sheet-title" id="sheet-top-title"&gt;Notifications&lt;/h2&gt;
-      &lt;p class="sheet-description"&gt;You have 3 unread messages.&lt;/p&gt;
-    &lt;/div&gt;
-    &lt;div class="sheet-body"&gt;
-      &lt;div style="display: flex; flex-direction: column; gap: var(--space-03)"&gt;
-        &lt;div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--surface-secondary), transparent 50%)"&gt;
-          &lt;div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--surface-inverted); margin-top: var(--space-02); flex-shrink: 0"&gt;&lt;/div&gt;
-          &lt;div&gt;&lt;p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)"&gt;New comment on your post&lt;/p&gt;&lt;p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)"&gt;2 minutes ago&lt;/p&gt;&lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--surface-secondary), transparent 50%)"&gt;
-          &lt;div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--surface-inverted); margin-top: var(--space-02); flex-shrink: 0"&gt;&lt;/div&gt;
-          &lt;div&gt;&lt;p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)"&gt;Deployment successful&lt;/p&gt;&lt;p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)"&gt;15 minutes ago&lt;/p&gt;&lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--surface-secondary), transparent 50%)"&gt;
-          &lt;div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--text-muted); margin-top: var(--space-02); flex-shrink: 0"&gt;&lt;/div&gt;
-          &lt;div&gt;&lt;p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)"&gt;Team invitation accepted&lt;/p&gt;&lt;p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)"&gt;1 hour ago&lt;/p&gt;&lt;/div&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div class="sheet-footer"&gt;
-      &lt;button type="button" class="btn" data-variant="outline" data-size="sm" data-sheet-close&gt;Dismiss all&lt;/button&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-  &lt;button type="button" class="sheet-close-x" data-sheet-close aria-label="Close"&gt;
-    &lt;svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
-      &lt;path d="M18 6 6 18M6 6l12 12"/&gt;
-    &lt;/svg&gt;
-  &lt;/button&gt;
-&lt;/dialog&gt;</code></pre>
-          </div>
-
         <!-- -- Example: Bottom --------------------------------- -->
           <p class="text-sm font-medium mb-2 mt-6">Bottom</p>
            <p class="text-xs text-muted mb-3">Opens at the bottom edge without animation — great for cookie consent, action sheets, or preference panels.</p>
@@ -352,38 +298,6 @@
           <a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--text-primary)">Settings</a>
           <a href="#" style="display: flex; align-items: center; gap: var(--space-02); padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); text-decoration: none; color: var(--text-primary)">Help</a>
         </nav>
-      </div>
-    </div>
-     <button class="sheet-close-x" type="button" data-sheet-close aria-label="Close">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-  </dialog>
-
-  <!-- Top sheet -->
-  <dialog id="sheet-top" class="sheet" data-side="top" role="dialog" aria-modal="true" aria-labelledby="sheet-top-title">
-    <div class="sheet-content">
-      <div class="sheet-header">
-        <h2 class="sheet-title" id="sheet-top-title">Notifications</h2>
-        <p class="sheet-description">You have 3 unread messages.</p>
-      </div>
-      <div class="sheet-body">
-        <div style="display: flex; flex-direction: column; gap: var(--space-03)">
-          <div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--surface-secondary), transparent 50%)">
-            <div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--surface-inverted); margin-top: var(--space-02); flex-shrink: 0"></div>
-            <div><p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">New comment on your post</p><p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)">2 minutes ago</p></div>
-          </div>
-          <div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--surface-secondary), transparent 50%)">
-            <div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--surface-inverted); margin-top: var(--space-02); flex-shrink: 0"></div>
-            <div><p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">Deployment successful</p><p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)">15 minutes ago</p></div>
-          </div>
-          <div style="display: flex; align-items: flex-start; gap: var(--space-03); padding: var(--space-03); background: color-mix(in oklch, var(--surface-secondary), transparent 50%)">
-            <div style="width: var(--size-02); height: var(--size-02); border-radius: var(--radius-full); background: var(--text-muted); margin-top: var(--space-02); flex-shrink: 0"></div>
-            <div><p style="font-size: var(--font-body-small); font-weight: var(--font-weight-strong)">Team invitation accepted</p><p style="font-size: var(--font-body-xsmall); color: var(--text-muted); margin-top: var(--space-01)">1 hour ago</p></div>
-          </div>
-        </div>
-      </div>
-      <div class="sheet-footer">
-       <button class="btn" type="button" data-variant="outline" data-size="sm" data-sheet-close>Dismiss all</button>
       </div>
     </div>
      <button class="sheet-close-x" type="button" data-sheet-close aria-label="Close">

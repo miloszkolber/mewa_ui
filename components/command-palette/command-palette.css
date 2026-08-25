@@ -23,7 +23,8 @@
 
     &:focus-within {
       background-color: var(--surface-secondary);
-      outline: var(--focus-ring-width) solid var(--border-ring);
+      /* 1px ring flush with the search row hides its own border. */
+      outline: var(--border-width-01) solid var(--border-ring);
       outline-offset: calc(-1 * var(--border-width-01));
     }
 
@@ -43,7 +44,7 @@
 
   .command-palette-list { max-height: 18rem; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-01); }
   .command-palette-group { padding: var(--space-01) 0; }
-  .command-palette-group-heading { margin: 0; padding: var(--space-02) var(--space-02); font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); color: var(--text-muted); }
+  .command-palette-group-heading { margin: 0; padding: var(--space-01) var(--space-02); font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong); color: var(--text-muted); }
 
   .command-palette-item {
     display: flex; align-items: center; gap: var(--space-02); width: 100%;

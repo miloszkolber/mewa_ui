@@ -56,7 +56,7 @@
 | Value         | Description                               |
 |---------------|-------------------------------------------|
 | `default`     | Standard informational callout              |
-| `destructive` | Error or warning styling; it is not live by default |
+| `destructive` | Error or warning styling with a negative surface fill; it is not live by default |
 
 ## Accessibility
 

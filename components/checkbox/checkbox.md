@@ -108,8 +108,8 @@ All keyboard behavior is provided natively by `<input type="checkbox">`.
 
 ## Notes
 
-- Styled with `appearance: none` and a custom checkmark via `::after` pseudo-element.
-- The checkmark uses a CSS-only approach — no SVG or icon font needed.
+- Styled with `appearance: none`; the check and indeterminate marks are Lucide glyphs (check and minus) applied as CSS masks so the mark inherits the checked color.
+- The checkmark uses a CSS-only approach — no SVG markup or icon font needed in the document.
 - Use `.checkbox-description` inside `.checkbox-item-block` for helper text; it is part of the checkbox component and does not depend on other components' classes.
 - Indeterminate state is set via JavaScript: `checkbox.indeterminate = true;`.
 - In `forced-colors: active`, the checkbox reverts to `appearance: auto` so Windows High Contrast Mode controls rendering.

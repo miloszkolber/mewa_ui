@@ -82,27 +82,23 @@ Requires JavaScript for keyboard navigation and ARIA management.
 
 ## Checkbox and radio items
 
-For checkbox/radio items in the menu, use `aria-checked`:
+For checkbox/radio items in the menu, use `aria-checked`. Both classes are set on the menu item, and the indicator is painted at the inline end so it never shifts the label. The glyph inherits the item color, including the destructive hover:
 
 ```html
 <!-- Checkbox item -->
-<button role="menuitemcheckbox" class="dropdown-menu-item" type="button"
+<button role="menuitemcheckbox" class="dropdown-menu-item dropdown-menu-check" type="button"
         aria-checked="true" tabindex="-1">
-  <svg class="dropdown-menu-check" aria-hidden="true" width="16" height="16">
-    <path d="M20 6 9 17l-5-5"/>
-  </svg>
   Show Sidebar
 </button>
 
 <!-- Radio group -->
 <div role="group" aria-label="Sort order">
   <div class="dropdown-menu-label">Sort by</div>
-  <button role="menuitemradio" class="dropdown-menu-item" type="button"
+  <button role="menuitemradio" class="dropdown-menu-item dropdown-menu-radio" type="button"
           aria-checked="true" tabindex="-1">
-    <svg class="dropdown-menu-check" aria-hidden="true">...</svg>
     Date
   </button>
-  <button role="menuitemradio" class="dropdown-menu-item" type="button"
+  <button role="menuitemradio" class="dropdown-menu-item dropdown-menu-radio" type="button"
           aria-checked="false" tabindex="-1">
     Name
   </button>

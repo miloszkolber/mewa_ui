@@ -4,8 +4,7 @@
   /* -- Base -------------------------------------------------- */
   dialog.sheet {
     border: none;
-    background-color: var(--surface-primary-glass);
-    backdrop-filter: blur(var(--blur-01));
+    background-color: var(--surface-primary);
     color: var(--text-primary);
     padding: 0;
     margin: 0;
@@ -42,22 +41,6 @@
       transform: translateX(-100%);
 
       &[open] { transform: translateX(0); }
-    }
-
-    /* -- Side: top --------------------------------------------- */
-    &[data-side="top"] {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      bottom: auto;
-      width: 100%;
-      max-width: 100vw;
-      max-height: 100vh;
-      height: auto;
-      border-left: none;
-      border-bottom: var(--border-width-01) solid var(--border-primary);
-      transform: translateY(-100%);
-
-      &[open] { transform: translateY(0); }
     }
 
     /* -- Side: bottom ------------------------------------------ */

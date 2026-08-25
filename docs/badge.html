@@ -213,16 +213,16 @@
 
         <!-- In Button -->
         <p class="text-sm font-medium mb-2 mt-8">On a button</p>
-        <p class="text-xs text-muted mb-3">Badge inside a <code>.btn</code> for notification counts.</p>
+        <p class="text-xs text-muted mb-3">Badge inside a <code>.btn</code> for notification counts. Counts over 99 read <code>99+</code>.</p>
         <div class="preview">
           <div style="display: flex; gap: var(--space-03); align-items: center">
             <button type="button" class="btn" data-variant="outline">
               Inbox
-              <span class="badge" data-variant="default">3</span>
+              <span class="badge" data-variant="count">3</span>
             </button>
             <button type="button" class="btn" data-variant="default">
               Notifications
-              <span class="badge" data-variant="secondary">12</span>
+              <span class="badge" data-variant="count">99+</span>
             </button>
           </div>
         </div>
@@ -233,7 +233,7 @@
           </button>
           <pre><code class="language-markup">&lt;button type="button" class="btn" data-variant="outline"&gt;
   Inbox
-  &lt;span class="badge" data-variant="default"&gt;3&lt;/span&gt;
+  &lt;span class="badge" data-variant="count"&gt;3&lt;/span&gt;
 &lt;/button&gt;</code></pre>
         </div>
 

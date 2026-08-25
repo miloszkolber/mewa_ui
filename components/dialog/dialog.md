@@ -87,4 +87,4 @@ Requires minimal JavaScript for trigger wiring, keyboard focus wrapping, focus r
 - Dialog state changes are immediate for now, with no CSS transition.
 - The selector is `dialog.dialog` (element + class) to avoid styling native `<dialog>` elements used elsewhere.
 - For forms inside dialogs, use the `dialog-body` wrapper for the form content.
-- The modal surface uses the mostly opaque semantic glass role with a small backdrop blur. The native backdrop uses the stronger layered scrim.
+- The modal surface is fully opaque. The native backdrop uses the stronger layered scrim. Initial focus stays on the dialog itself rather than auto-selecting the first input; add `autofocus` on a dialog child when one specific control should receive focus.

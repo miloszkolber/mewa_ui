@@ -101,11 +101,11 @@
       font-family: var(--font-sans);
       color: var(--text-primary);
       padding: 0;
-      margin-bottom: var(--space-01);
+      margin-bottom: 0;
     }
 
     & > .field-description {
-      margin: -0.25rem 0 var(--space-02);
+      margin: 0 0 var(--space-01);
     }
   }
 

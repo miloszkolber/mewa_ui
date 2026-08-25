@@ -1,7 +1,6 @@
 // -- Tooltip --------------------------------------------------
 
-const DELAY_DEFAULT = 700;      // ms before first tooltip opens
-const CLOSE_DELAY_DEFAULT = 0;  // ms before tooltip closes
+const DELAY_DEFAULT = 500;      // ms before first tooltip opens
 const GROUP_TIMEOUT = 400;      // ms after last tooltip hides before delay resets
 const ANCHOR_SUPPORTED = typeof CSS !== 'undefined' && !!CSS.supports && CSS.supports('position-area', 'top');
 
@@ -68,8 +67,9 @@ document.querySelectorAll('[data-tooltip-trigger]:not([data-init])').forEach((tr
 
   trigger.setAttribute('aria-describedby', tip.id);
 
-  const delay = Number(trigger.dataset.delay ?? DELAY_DEFAULT);
-  const closeDelay = Number(trigger.dataset.closeDelay ?? CLOSE_DELAY_DEFAULT);
+  // Custom delays are not supported. Only `data-delay="0"` is honored,
+  // and it disables the open delay; any other value keeps the 500 ms default.
+  const delayDisabled = trigger.dataset.delay === '0';
 
   let openTimer = null;
   let closeTimer = null;
@@ -77,7 +77,7 @@ document.querySelectorAll('[data-tooltip-trigger]:not([data-init])').forEach((tr
   function show() {
     clearTimeout(closeTimer);
     clearTimeout(openTimer);
-    const wait = groupOpen ? 0 : delay;
+    const wait = groupOpen || delayDisabled ? 0 : DELAY_DEFAULT;
     openTimer = setTimeout(() => {
       let open = false;
       try {
@@ -95,7 +95,7 @@ document.querySelectorAll('[data-tooltip-trigger]:not([data-init])').forEach((tr
     closeTimer = setTimeout(() => {
       try { tip.hidePopover(); } catch (e) { /* already closed */ }
       scheduleGroupReset();
-    }, closeDelay);
+    }, 0);
   }
 
   trigger.addEventListener('mouseenter', show);

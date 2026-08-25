@@ -12,7 +12,7 @@ The canonical consumer surface is the repository root: `src/` for foundations an
 - Use semantic roles from `src/tokens.css`. Red, amber, and green communicate status. Do not hardcode a palette into a component.
 - Geometry is square by default. `--border-radius` is zero, and `--radius-full` or a 50% circle is reserved for objects whose meaning requires circular geometry, such as avatars, radios, progress, or skeleton avatars. Do not add a general radius scale.
 - Elevation is expressed with borders, especially `--border-primary`. Do not add visual shadows, shadow tokens, or focus halos that look like elevation.
-- The canonical source is motionless. Do not add CSS animations, CSS transitions, smooth scrolling, View Transitions, scroll-driven effects, Web Animations, shimmer, or spinner motion. State changes, disclosure, overlay, navigation, and drag updates are immediate. If a consuming product adds motion outside mewa_ui, it must provide its own `prefers-reduced-motion` behavior.
+- The canonical source is motionless. Do not add CSS animations, CSS transitions, smooth scrolling, View Transitions, scroll-driven effects, Web Animations, shimmer, or spinner motion. State changes, disclosure, overlay, navigation, and drag updates are immediate. The single exception is the Spinner component's rotation, because a loading indicator without motion is meaningless. If a consuming product adds motion outside mewa_ui, it must provide its own `prefers-reduced-motion` behavior.
 - Use `:focus-visible`, `prefers-contrast: more`, and `forced-colors: active` states. Keep labels, native validation, names, IDs, and ARIA relationships intact.
 
 ## Provenance
@@ -151,7 +151,7 @@ This is the complete current inventory, grouped by the same purpose groups used 
 
 | Component | Native basis | JS | Skill and doc |
 |---|---|---|---|
-| Spinner | Static SVG loading indicator with `role="status"` | No | [`components/spinner/spinner.md`](components/spinner/spinner.md) · [`docs/spinner.html`](docs/spinner.html) |
+| Spinner | Animated SVG arc loading indicator with `role="status"`; the single sanctioned animated primitive | No | [`components/spinner/spinner.md`](components/spinner/spinner.md) · [`docs/spinner.html`](docs/spinner.html) |
 | Skeleton | Static placeholder `<div>` elements | No | [`components/skeleton/skeleton.md`](components/skeleton/skeleton.md) · [`docs/skeleton.html`](docs/skeleton.html) |
 | Progress | Native `<progress>` element | No | [`components/progress/progress.md`](components/progress/progress.md) · [`docs/progress.html`](docs/progress.html) |
 | Callout | Semantic `<div>` with a context-neutral title and description; opt-in `role="alert"` only for urgent dynamic errors | No | [`components/callout/callout.md`](components/callout/callout.md) · [`docs/callout.html`](docs/callout.html) |

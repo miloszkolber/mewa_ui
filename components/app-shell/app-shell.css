@@ -84,8 +84,14 @@
   }
 
   .brand-logo {
-    inline-size: var(--size-06);
-    block-size: var(--size-06);
+    inline-size: var(--size-04);
+    block-size: var(--size-04);
+  }
+
+  .brand-mark svg,
+  .brand-mark i {
+    inline-size: var(--size-04);
+    block-size: var(--size-04);
   }
 
   /* -- Header navigation ------------------------------------------- */
@@ -113,10 +119,13 @@
     color: var(--text-primary);
   }
 
+  /* The current route reads as a line tab: an underline carries the state
+     and hover never covers it. */
   .app-nav a[aria-current="page"] {
-    background: var(--surface-secondary);
+    background: transparent;
     color: var(--text-primary);
     font-weight: var(--font-weight-strong);
+    border-block-end: var(--border-width-02) solid var(--border-ring);
   }
 
   .app-nav a:focus-visible {
@@ -127,9 +136,10 @@
   /* Button-based header navigation keeps the button component styling and
      only adds the current-page treatment. */
   .app-nav .btn[aria-current="page"] {
-    background: var(--surface-secondary);
+    background: var(--background);
     border-color: var(--border-primary);
     color: var(--text-primary);
+    border-block-end: var(--border-width-02) solid var(--border-ring);
   }
 
   .app-header-actions,
@@ -161,14 +171,14 @@
   }
 
   /* -- Edge accent --------------------------------------------------- */
-  /* Optional decorative hatch pinned to the viewport's inline end. The
-     pattern is a flat hard-stop stripe in a border role. It ignores
-     pointer input and introduces no motion. */
+  /* Optional decorative hatch pinned to both inline edges of the
+     viewport. The pattern is a flat hard-stop stripe in a border role.
+     It ignores pointer input and introduces no motion. */
+  .app-shell-edge::before,
   .app-shell-edge::after {
     content: "";
     position: fixed;
     inset-block: 0;
-    inset-inline-end: 0;
     inline-size: var(--space-03);
     pointer-events: none;
     background: repeating-linear-gradient(
@@ -176,6 +186,14 @@
       var(--border-secondary) 0 var(--border-width-02),
       transparent var(--border-width-02) var(--space-02)
     );
+  }
+
+  .app-shell-edge::before {
+    inset-inline-start: 0;
+  }
+
+  .app-shell-edge::after {
+    inset-inline-end: 0;
   }
 
   /* -- Page overview ------------------------------------------------ */
@@ -227,6 +245,7 @@
     flex-wrap: wrap;
     gap: var(--space-01) var(--space-02);
     margin: 0;
+    font-size: var(--font-body-xsmall);
   }
 
   .stat-label {
@@ -321,8 +340,8 @@
 
   .app-status-row {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: start;
+    grid-template-columns: var(--size-05) minmax(0, 1fr) auto;
+    align-items: center;
     gap: var(--space-03);
     padding: var(--space-04);
     border-block-end: var(--border-width-01) solid var(--border-primary);
@@ -330,6 +349,39 @@
 
   .app-status-row:last-child {
     border-block-end: 0;
+  }
+
+  /* Both markers occupy the same fixed slot so titles align across rows
+     whether the row uses an 8px dot or a 20px icon. */
+  .app-status-row > :is(.status-dot, .status-icon) {
+    justify-self: center;
+  }
+
+  .app-status-row > .status-dot {
+    inline-size: var(--size-05);
+    block-size: var(--size-05);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: inherit;
+    background: transparent;
+
+    &::before {
+      content: "";
+      inline-size: var(--size-02);
+      block-size: var(--size-02);
+      border-radius: var(--radius-full);
+      background: inherit;
+    }
+  }
+
+  .app-status-row > .status-dot[data-state="positive"]::before { background: var(--text-positive); }
+  .app-status-row > .status-dot[data-state="caution"]::before { background: var(--text-caution); }
+  .app-status-row > .status-dot[data-state="negative"]::before { background: var(--text-negative); }
+  .app-status-row > .status-dot[data-state="running"]::before {
+    background: transparent;
+    border: var(--border-width-02) solid var(--text-muted);
+    box-sizing: border-box;
   }
 
   .app-status-copy {
@@ -355,12 +407,103 @@
     gap: var(--space-02);
   }
 
+  /* -- Section canvas ------------------------------------------------- */
+  /* Use `.app-section` for a bordered full-width section that holds dense
+     rows (tables, status lists, or custom row grids). It replaces the
+     common but visually heavy `card > table` nesting. Put the border on the
+     section, not on each row. */
+  .app-section {
+    background: var(--surface-primary);
+    border: var(--border-width-01) solid var(--border-primary);
+    overflow: hidden;
+  }
+
+  .app-section-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-04);
+    padding: var(--space-04) var(--space-04) var(--space-03);
+    border-block-end: var(--border-width-01) solid var(--border-primary);
+  }
+
+  .app-section-title {
+    margin: 0;
+    font-size: var(--font-body);
+    font-weight: var(--font-weight-strong);
+    line-height: var(--font-height-tight);
+  }
+
+  .app-section-description {
+    margin: var(--space-01) 0 0;
+    color: var(--text-muted);
+    font-size: var(--font-body-small);
+  }
+
+  .app-section-content {
+    padding: var(--space-04);
+  }
+
+  /* When a section directly wraps a table, let the table provide its own
+     internal padding and keep the section's border as the single canvas. */
+  .app-section > .table-container,
+  .app-section > .app-status-list,
+  .app-section > .bookmark-list {
+    border: 0;
+  }
+
+  /* -- Filter rail (bookmarks + rss) ---------------------------------- */
+  /* Shared narrow filter navigation used by bookmarks and rss. The rail keeps
+     the same section canvas as dense rows but uses a vertical list with an
+     inset left-border active indicator. */
+  .app-filter-rail {
+    display: grid;
+    align-content: start;
+    gap: var(--space-04);
+    min-inline-size: 0;
+  }
+
+  .app-filter-list,
+  .app-filter-tags {
+    display: grid;
+    gap: var(--space-01);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .app-filter-list a,
+  .app-filter-tags a {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-02);
+    min-block-size: var(--size-07);
+    padding: var(--space-01) var(--space-02);
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  .app-filter-list a:hover,
+  .app-filter-list a[aria-current="page"],
+  .app-filter-tags a:hover,
+  .app-filter-tags a[aria-current="page"] {
+    background: var(--surface-secondary);
+    color: var(--text-primary);
+  }
+
   /* -- Empty state ---------------------------------------------------- */
   .app-empty {
     margin: 0;
     padding: var(--space-09) var(--space-04);
     color: var(--text-muted);
+    font-size: var(--font-body-small);
     text-align: center;
+  }
+
+  .app-empty--compact {
+    padding: var(--space-06) var(--space-04);
+    border: var(--border-width-01) dashed var(--border-muted);
   }
 
   /* -- Utilities ------------------------------------------------------- */
@@ -399,6 +542,12 @@
   [data-theme-toggle]:not([data-init]) {
     display: none;
   }
+
+  /* Icon theme toggle: one sun and one moon glyph; the module's data-theme
+     swaps which one is visible. */
+  [data-theme-toggle] [data-lucide="sun"] { display: none; }
+  [data-theme-toggle][data-theme="dark"] [data-lucide="sun"] { display: inline-flex; }
+  [data-theme-toggle][data-theme="dark"] [data-lucide="moon"] { display: none; }
 
   /* -- Accessibility ---------------------------------------------------- */
   @media (prefers-contrast: more) {
@@ -440,12 +589,27 @@
       border-color: CanvasText;
     }
 
+    .app-status-row > .status-dot {
+      background: Canvas;
+    }
+
+    .app-status-row > .status-dot::before {
+      background: CanvasText;
+    }
+
+    .app-status-row > .status-dot[data-state="running"]::before {
+      background: Canvas;
+      border-color: CanvasText;
+    }
+
     .status-icon {
       border: var(--border-width-01) solid CanvasText;
     }
 
+    .app-shell-edge::before,
     .app-shell-edge::after {
       background: none;
+      border-inline-start: var(--border-width-02) solid CanvasText;
       border-inline-end: var(--border-width-02) solid CanvasText;
     }
 

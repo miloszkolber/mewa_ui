@@ -196,9 +196,15 @@ function checkCopyableMarkupButtonTypes(html, filename) {
 function checkCssContract(css, filename, { allowRawColors = false } = {}) {
   const source = css.replace(/\/\*[\s\S]*?\*\//g, "");
   assert(!/\b(?:box-shadow|text-shadow)\s*:/i.test(source), `${filename}: visual shadows are forbidden`);
-  assert(!/\b(?:animation|transition)(?:-[\w]+)?\s*:/i.test(source), `${filename}: motion declarations are forbidden`);
-  assert(!/\bscroll-behavior\s*:/i.test(source), `${filename}: smooth scrolling belongs to consuming applications`);
-  assert(!/@(?:keyframes|starting-style)|view-transition/i.test(source), `${filename}: generated motion is forbidden`);
+  // The spinner is the one sanctioned animated primitive in the library.
+  // A loading indicator without motion is meaningless, so its rotation
+  // keyframes are the sole exception to the motionless contract.
+  const spinner = filename.endsWith("spinner.css");
+  if (!spinner) {
+    assert(!/\b(?:animation|transition)(?:-[\w]+)?\s*:/i.test(source), `${filename}: motion declarations are forbidden`);
+    assert(!/\bscroll-behavior\s*:/i.test(source), `${filename}: smooth scrolling belongs to consuming applications`);
+    assert(!/@(?:keyframes|starting-style)|view-transition/i.test(source), `${filename}: generated motion is forbidden`);
+  }
   if (!allowRawColors) {
     assert(!/(?:#[0-9a-f]{3,8}\b|\b(?:rgba?|hsla?)\s*\(|(?<![\w-])(?:white|black|red|green|blue|gray|grey)(?![\w-]))/i.test(source), `${filename}: component colors must use semantic tokens`);
     assert(!/var\(\s*--color-[\w-]+\s*\)/i.test(source), `${filename}: component colors must not consume palette primitives directly`);

@@ -108,7 +108,10 @@
               <a href="#app-shell-preview-history">History</a>
             </nav>
             <div class="app-header-actions">
-              <button class="btn" type="button" data-variant="outline" data-theme-toggle>Theme</button>
+              <button class="btn" type="button" data-variant="outline" data-size="icon" data-theme-toggle aria-label="Toggle theme">
+                <i data-lucide="moon" aria-hidden="true"></i>
+                <i data-lucide="sun" aria-hidden="true"></i>
+              </button>
             </div>
           </div>
         </header>
@@ -141,7 +144,10 @@
         &lt;a href="/history"&gt;History&lt;/a&gt;
       &lt;/nav&gt;
       &lt;div class="app-header-actions"&gt;
-        &lt;button class="btn" type="button" data-variant="outline" data-theme-toggle&gt;Theme&lt;/button&gt;
+        &lt;button class="btn" type="button" data-variant="outline" data-size="icon" data-theme-toggle aria-label="Toggle theme"&gt;
+          &lt;i data-lucide="moon" aria-hidden="true"&gt;&lt;/i&gt;
+          &lt;i data-lucide="sun" aria-hidden="true"&gt;&lt;/i&gt;
+        &lt;/button&gt;
       &lt;/div&gt;
     &lt;/div&gt;
   &lt;/header&gt;
@@ -206,7 +212,7 @@
       </div>
 
       <p class="text-sm font-medium mb-2 mt-8">Edge accent</p>
-      <p class="text-xs text-muted mb-3">Add the optional class beside <code>app-shell</code> on the body element to pin a flat diagonal hatch to the viewport's inline end. The accent is decorative, ignores pointer input, and stays omitted when the right edge must stay clean.</p>
+      <p class="text-xs text-muted mb-3">Add the optional class beside <code>app-shell</code> on the body element to pin a flat diagonal hatch to both inline edges of the viewport. The accent is decorative, ignores pointer input, and stays omitted when the edges must stay clean.</p>
       <div style="position: relative; margin-top: var(--space-02)">
         <button class="copy-btn" type="button">
           <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>

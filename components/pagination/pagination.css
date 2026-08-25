@@ -20,7 +20,12 @@
       opacity: var(--opacity-05);
     }
   }
-  .pagination-prev, .pagination-next { padding-inline: var(--space-03); gap: var(--space-02); }
+  .pagination-prev, .pagination-next {
+    /* Square icon-only buttons matching the page link size. */
+    inline-size: 2.25rem;
+    padding-inline: 0;
+    gap: 0;
+  }
   .pagination-active { border-color: var(--border-primary); background-color: var(--background); font-weight: var(--font-weight-strong); }
   .pagination-ellipsis {
     display: inline-flex; align-items: center; justify-content: center;

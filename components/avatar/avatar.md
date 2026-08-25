@@ -29,19 +29,6 @@
   <span class="avatar-fallback">CN</span>
   <span class="avatar-badge"></span>
 </span>
-
-<!-- Avatar group -->
-<div class="avatar-group">
-  <span class="avatar">
-    <img class="avatar-image" src="..." alt="..." />
-    <span class="avatar-fallback">A</span>
-  </span>
-  <span class="avatar">
-    <img class="avatar-image" src="..." alt="..." />
-    <span class="avatar-fallback">B</span>
-  </span>
-  <span class="avatar-group-count">+3</span>
-</div>
 ```
 
 
@@ -53,5 +40,5 @@
 
 ## Notes
 
-- The badge sits on the bottom-right edge of the circle and extends beyond it, so the avatar itself never clips its children.
-- Image and fallback content is clipped to the circle by their own `overflow: hidden` and `border-radius: inherit`.
+- The badge sits on the bottom-right edge of the square avatar and extends beyond it, so the avatar itself never clips its children.
+- Image and fallback content is clipped by their own `overflow: hidden` and `border-radius: inherit`.

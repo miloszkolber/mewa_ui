@@ -41,12 +41,14 @@
 
 | `data-variant`  | Surface              | Text                     | Hover                          |
 |-----------------|----------------------|--------------------------|--------------------------------|
-| `default`       | `--surface-inverted` | `--text-inverted`       | `opacity: 0.88`               |
-| `secondary`     | `--surface-secondary`| `--text-primary`        | `opacity: 0.8`                |
+| `default`       | `--surface-inverted` | `--text-inverted`       | mix with `--background`        |
+| `secondary`     | `--border-primary`   | `--text-primary`         | mix with `--text-primary`      |
 | `outline`       | `--background` + border | `--text-primary`     | `--surface-secondary` bg       |
 | `ghost`         | transparent          | `--text-primary`         | `--surface-secondary` bg       |
-| `destructive`   | `--surface-negative` | `--text-negative`        | `opacity: 0.88`                |
+| `destructive`   | `--surface-destructive` | `--text-inverted`    | mix with `--background`        |
 | `link`          | transparent          | `--text-primary`         | underline                      |
+
+The secondary fill equals the outline button's border so it reads as the filled form of the outline fit. Destructive uses the 600-scale red in light mode and the 400-scale red in dark mode, with inverted text (white or black) on top.
 
 ---
 

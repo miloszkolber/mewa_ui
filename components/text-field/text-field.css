@@ -4,7 +4,7 @@
   .text-field {
     display: flex;
     flex-direction: column;
-    gap: var(--space-02);
+    gap: var(--space-01);
     min-inline-size: 0;
   }
 
@@ -15,7 +15,7 @@
     font-family: var(--font-sans);
     font-size: var(--font-body-small);
     font-weight: var(--font-weight-strong);
-    line-height: var(--font-height-none);
+    line-height: var(--font-height);
     cursor: default;
   }
 
@@ -55,17 +55,19 @@
     block-size: var(--size-08);
   }
 
-  .text-field > textarea {
+  .text-field > textarea,
+  textarea.text-field-input {
     min-block-size: var(--size-12);
     padding-block: var(--space-02);
     resize: vertical;
+    field-sizing: content;
   }
 
   .text-field > :where(input, textarea, select):focus-visible,
   .text-field-input:focus-visible {
     border-color: var(--border-ring);
-    outline: var(--focus-ring-width) solid var(--border-ring);
-    outline-offset: var(--border-width-01);
+    outline: var(--border-width-01) solid var(--border-ring);
+    outline-offset: 0;
   }
 
   .text-field > :where(input, textarea, select)::placeholder,
@@ -76,7 +78,10 @@
   .text-field > :where(input, textarea, select):disabled,
   .text-field-input:disabled {
     cursor: not-allowed;
-    opacity: var(--opacity-05);
+    background: var(--surface-secondary);
+    color: var(--text-disabled);
+    border-color: var(--border-muted);
+    opacity: 1;
   }
 
   .text-field > :where(input, textarea, select):read-only:not(:disabled),
@@ -98,7 +103,8 @@
   .text-field[data-invalid] > :where(input, textarea, select):focus-visible,
   .text-field[data-invalid] > .text-field-input:focus-visible {
     border-color: var(--text-negative);
-    outline-color: var(--text-negative);
+    outline: var(--border-width-01) solid var(--text-negative);
+    outline-offset: 0;
   }
 
   .text-field-description,

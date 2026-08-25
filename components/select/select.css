@@ -20,12 +20,15 @@
     cursor: pointer;
     &:focus {
       border-color: var(--border-ring);
-      outline: var(--focus-ring-width) solid var(--border-ring);
-      outline-offset: var(--border-width-01);
+      outline: var(--border-width-01) solid var(--border-ring);
+      outline-offset: 0;
     }
 
     &:disabled {
-      opacity: var(--opacity-05);
+      background: var(--surface-secondary);
+      color: var(--text-disabled);
+      border-color: var(--border-muted);
+      opacity: 1;
       cursor: not-allowed;
     }
 
@@ -34,8 +37,8 @@
 
       &:focus {
         border-color: var(--text-negative);
-        outline: var(--focus-ring-width) solid var(--text-negative);
-        outline-offset: var(--border-width-01);
+        outline: var(--border-width-01) solid var(--text-negative);
+        outline-offset: 0;
       }
     }
 

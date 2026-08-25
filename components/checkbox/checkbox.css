@@ -1,6 +1,13 @@
 /* -- Checkbox component ----------------------------------------- */
 
 @layer components {
+  :where(.checkbox) {
+    /* Lucide check and minus glyphs, applied as alpha masks so the mark
+       inherits the current checked color. */
+    --checkbox-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+    --checkbox-minus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3C/svg%3E");
+  }
+
   .checkbox {
     appearance: none;
     width: 1.125rem;
@@ -11,6 +18,7 @@
     cursor: pointer;
     flex-shrink: 0;
     position: relative;
+    overflow: hidden;
     &:checked {
       background-color: var(--surface-inverted);
       border-color: var(--surface-inverted);
@@ -18,13 +26,10 @@
       &::after {
         content: '';
         position: absolute;
-        left: 5px;
-        top: 1px;
-        width: 6px;
-        height: 10px;
-        border: solid var(--text-inverted);
-        border-width: 0 var(--border-width-02) var(--border-width-02) 0;
-        transform: rotate(45deg);
+        inset: 0;
+        background-color: var(--text-inverted);
+        -webkit-mask: var(--checkbox-check) center / 0.75rem no-repeat;
+        mask: var(--checkbox-check) center / 0.75rem no-repeat;
       }
     }
 
@@ -35,12 +40,10 @@
       &::after {
         content: '';
         position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 10px;
-        height: 2px;
-        background: var(--text-inverted);
-        transform: translate(-50%, -50%);
+        inset: 0;
+        background-color: var(--text-inverted);
+        -webkit-mask: var(--checkbox-minus) center / 0.75rem no-repeat;
+        mask: var(--checkbox-minus) center / 0.75rem no-repeat;
       }
     }
 
@@ -50,8 +53,23 @@
     }
 
     &:disabled {
-      opacity: var(--opacity-05);
+      background: var(--surface-secondary);
+      border-color: var(--border-muted);
       cursor: not-allowed;
+
+      &:checked {
+        background: var(--text-disabled);
+        border-color: var(--text-disabled);
+
+        &::after { background-color: var(--background); }
+      }
+
+      &:indeterminate {
+        background: var(--text-disabled);
+        border-color: var(--text-disabled);
+
+        &::after { background-color: var(--background); }
+      }
     }
 
     &:is([aria-invalid="true"], :user-invalid) {
@@ -62,7 +80,7 @@
         border-color: var(--text-negative);
 
         &::after {
-          border-color: var(--text-negative);
+          background-color: var(--text-negative);
         }
       }
 
@@ -71,7 +89,7 @@
         border-color: var(--text-negative);
 
         &::after {
-          background: var(--text-negative);
+          background-color: var(--text-negative);
         }
       }
 
@@ -124,8 +142,14 @@
     display: flex;
     align-items: center;
     gap: var(--space-02);
-    padding-block-end: var(--space-03);
-    border-block-end: var(--border-width-01) solid var(--border-primary);
+    padding-block-end: 0;
+    border-block-end: 0;
+
+    & > label,
+    & > span {
+      font-size: var(--font-body-small);
+      line-height: var(--font-height);
+    }
   }
 
   .checkbox-group .checkbox-description {

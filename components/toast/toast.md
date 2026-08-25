@@ -106,7 +106,7 @@ Toast width stays within the viewport at narrow sizes. Position names are physic
 ## Notes
 
 - The toast container should be a direct child of `<body>`
-- Toast surfaces use the mostly opaque semantic glass role with a small backdrop blur so stacked notifications stay readable without a shadow.
+- Toast surfaces are fully opaque and use the theme surfaces. Semantic variants use the 050-scale fill with 950-scale colored text in light mode and the 950-scale fill with colored text in dark mode.
 - `window.toast` exposes `show`, `success`, `warning`, `info`, `error`, and `dismiss`
 - Toast markup is built via DOM APIs, never `innerHTML`, so user content stays safe
 - Toasts use `popover="manual"` so they don't auto-dismiss on outside click

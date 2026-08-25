@@ -24,30 +24,38 @@
       color: var(--text-inverted);
     }
 
+    /* Numeric counter: a fixed 1.5rem square for alignment inside buttons.
+       The visible text should read "99+" when the count exceeds 99. */
+    &[data-variant="count"] {
+      inline-size: var(--size-06);
+      block-size: var(--size-06);
+      padding: 0;
+      justify-content: center;
+      background: var(--surface-inverted);
+      color: var(--text-inverted);
+    }
+
     /* Semantic status is separate from visual emphasis. Keep the visible
-       label descriptive because color is supplementary. */
+       label descriptive because color is supplementary. No border: the
+       filled tone carries the status. */
     &[data-state="positive"] {
       background: var(--surface-positive);
       color: var(--text-positive);
-      border: var(--border-width-01) solid var(--text-positive);
     }
 
     &[data-state="caution"] {
       background: var(--surface-caution);
       color: var(--text-caution);
-      border: var(--border-width-01) solid var(--text-caution);
     }
 
     &[data-state="negative"] {
       background: var(--surface-negative);
       color: var(--text-negative);
-      border: var(--border-width-01) solid var(--text-negative);
     }
 
     &[data-state="running"] {
       background: var(--surface-secondary);
       color: var(--text-primary);
-      border: var(--border-width-01) solid var(--border-secondary);
     }
   }
 
