@@ -1,11 +1,13 @@
 // -- Tooltip --------------------------------------------------
 
-const DELAY_DEFAULT = 500;      // ms before first tooltip opens
-const GROUP_TIMEOUT = 400;      // ms after last tooltip hides before delay resets
-const ANCHOR_SUPPORTED = typeof CSS !== 'undefined' && !!CSS.supports && CSS.supports('position-area', 'top');
+const DELAY_DEFAULT = 500;
+const GROUP_TIMEOUT = 400;
+const ANCHOR_SUPPORTED = typeof CSS !== 'undefined'
+  && !!CSS.supports
+  && CSS.supports('position-area', 'top');
 
-let groupOpen = false;       // true while any tooltip is visible
-let groupTimer = null;       // timeout to reset groupOpen
+let groupOpen = false;
+let groupTimer = null;
 
 function markGroupOpen() {
   groupOpen = true;
@@ -17,137 +19,138 @@ function scheduleGroupReset() {
   groupTimer = setTimeout(() => { groupOpen = false; }, GROUP_TIMEOUT);
 }
 
-// Fallback placement for engines without position-area: anchor the tip
-// to the trigger's box with explicit coordinates instead of the static
-// position (which can land off-screen when the tip sits at the end of
-// the document).
 function positionFallback(tip, trigger) {
-  // Clear declarative placement and side-gap margins so explicit
-  // coordinates are the only positioning
   tip.style.positionArea = 'unset';
   tip.style.positionTryFallbacks = 'none';
   tip.style.marginTop = '0';
   tip.style.marginRight = '0';
   tip.style.marginBottom = '0';
   tip.style.marginLeft = '0';
-  const tr = trigger.getBoundingClientRect();
-  const r = tip.getBoundingClientRect();
-  if (!r.width || !r.height) return;
+
+  const triggerRect = trigger.getBoundingClientRect();
+  const tipRect = tip.getBoundingClientRect();
+  if (!tipRect.width || !tipRect.height) return;
+
   const side = tip.dataset.side || 'top';
   const align = tip.dataset.align || 'center';
   const gap = 6;
-  let top, left;
+  let top;
+  let left;
+
   if (side === 'top' || side === 'bottom') {
-    top = side === 'top' ? tr.top - r.height - gap : tr.bottom + gap;
-    if (align === 'start') left = tr.left;
-    else if (align === 'end') left = tr.right - r.width;
-    else left = tr.left + (tr.width - r.width) / 2;
+    top = side === 'top'
+      ? triggerRect.top - tipRect.height - gap
+      : triggerRect.bottom + gap;
+    if (align === 'start') left = triggerRect.left;
+    else if (align === 'end') left = triggerRect.right - tipRect.width;
+    else left = triggerRect.left + (triggerRect.width - tipRect.width) / 2;
   } else {
-    left = side === 'left' ? tr.left - r.width - gap : tr.right + gap;
-    if (align === 'start') top = tr.top;
-    else if (align === 'end') top = tr.bottom - r.height;
-    else top = tr.top + (tr.height - r.height) / 2;
+    left = side === 'left'
+      ? triggerRect.left - tipRect.width - gap
+      : triggerRect.right + gap;
+    if (align === 'start') top = triggerRect.top;
+    else if (align === 'end') top = triggerRect.bottom - tipRect.height;
+    else top = triggerRect.top + (triggerRect.height - tipRect.height) / 2;
   }
-  top = Math.max(4, Math.min(top, window.innerHeight - r.height - 4));
-  left = Math.max(4, Math.min(left, window.innerWidth - r.width - 4));
+
+  top = Math.max(4, Math.min(top, window.innerHeight - tipRect.height - 4));
+  left = Math.max(4, Math.min(left, window.innerWidth - tipRect.width - 4));
   tip.style.top = `${top}px`;
   tip.style.left = `${left}px`;
 }
 
-// Set the arrow edge to the tooltip side that points back at the trigger.
-// This reads the tooltip's actual placed rect, so it is correct after a
-// native position-try flip (anchor positioning) and after the clamp above
-// (no anchor support). CSS then moves the caret via a style query on
-// --tooltip-arrow-side.
 function syncArrowSide(tip, trigger) {
-  const tr = trigger.getBoundingClientRect();
-  const r = tip.getBoundingClientRect();
-  if (!r.width || !r.height) return;
+  const triggerRect = trigger.getBoundingClientRect();
+  const tipRect = tip.getBoundingClientRect();
+  if (!tipRect.width || !tipRect.height) return;
+
   const side = tip.dataset.side || 'top';
   const gap = 6;
   let arrowSide;
+
   if (side === 'top' || side === 'bottom') {
-    if (r.bottom <= tr.top + gap) arrowSide = 'bottom';
-    else if (r.top >= tr.bottom - gap) arrowSide = 'top';
+    if (tipRect.bottom <= triggerRect.top + gap) arrowSide = 'bottom';
+    else if (tipRect.top >= triggerRect.bottom - gap) arrowSide = 'top';
     else arrowSide = 'bottom';
   } else {
-    if (r.right <= tr.left + gap) arrowSide = 'right';
-    else if (r.left >= tr.right - gap) arrowSide = 'left';
+    if (tipRect.right <= triggerRect.left + gap) arrowSide = 'right';
+    else if (tipRect.left >= triggerRect.right - gap) arrowSide = 'left';
     else arrowSide = 'right';
   }
+
   tip.style.setProperty('--tooltip-arrow-side', arrowSide);
 }
 
 function init() {
-document.querySelectorAll('[data-tooltip-trigger]:not([data-init])').forEach((trigger) => {
-  trigger.dataset.init = '';
-  const tip = document.getElementById(trigger.dataset.tooltipTrigger);
-  if (!tip) return;
+  document.querySelectorAll('[data-tooltip-trigger]:not([data-init])').forEach((trigger) => {
+    trigger.dataset.init = '';
+    const tip = document.getElementById(trigger.dataset.tooltipTrigger);
+    if (!tip || !tip.classList.contains('tooltip')) {
+      delete trigger.dataset.init;
+      return;
+    }
 
-  // CSS anchor positioning — unique, ident-safe name per trigger-tooltip pair
-  const anchorId = `--tooltip-${tip.id.replace(/[^a-zA-Z0-9_-]/g, '-')}`;
-  trigger.style.anchorName = anchorId;
-  tip.style.positionAnchor = anchorId;
+    const anchorId = `--tooltip-${tip.id.replace(/[^a-zA-Z0-9_-]/g, '-')}`;
+    trigger.style.anchorName = anchorId;
+    tip.style.positionAnchor = anchorId;
+    trigger.setAttribute('aria-describedby', tip.id);
 
-  trigger.setAttribute('aria-describedby', tip.id);
+    tip.addEventListener('toggle', () => {
+      if (!tip.matches(':popover-open')) return;
+      requestAnimationFrame(() => requestAnimationFrame(() => syncArrowSide(tip, trigger)));
+    });
 
-  // Positioning (native flip or the no-anchor fallback) is finalized only
-  // after a layout pass, so defer the rect read past the toggle event to a
-  // frame where the placed box is final.
-  tip.addEventListener('toggle', () => {
-    if (!tip.matches(':popover-open')) return;
-    requestAnimationFrame(() => requestAnimationFrame(() => syncArrowSide(tip, trigger)));
+    const delayDisabled = trigger.dataset.delay === '0';
+    let openTimer = null;
+    let closeTimer = null;
+
+    function show() {
+      clearTimeout(closeTimer);
+      clearTimeout(openTimer);
+      const wait = groupOpen || delayDisabled ? 0 : DELAY_DEFAULT;
+      openTimer = setTimeout(() => {
+        try {
+          if (!tip.matches(':popover-open')) tip.showPopover();
+        } catch {
+          return;
+        }
+        if (!ANCHOR_SUPPORTED) positionFallback(tip, trigger);
+        markGroupOpen();
+      }, wait);
+    }
+
+    function hide() {
+      clearTimeout(openTimer);
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(() => {
+        try {
+          tip.hidePopover();
+        } catch {
+          // The native popover can already be closed.
+        }
+        scheduleGroupReset();
+      }, 0);
+    }
+
+    trigger.addEventListener('mouseenter', show);
+    trigger.addEventListener('mouseleave', hide);
+    trigger.addEventListener('focus', show);
+    trigger.addEventListener('blur', hide);
   });
-
-  // Custom delays are not supported. Only `data-delay="0"` is honored,
-  // and it disables the open delay; any other value keeps the 500 ms default.
-  const delayDisabled = trigger.dataset.delay === '0';
-
-  let openTimer = null;
-  let closeTimer = null;
-
-  function show() {
-    clearTimeout(closeTimer);
-    clearTimeout(openTimer);
-    const wait = groupOpen || delayDisabled ? 0 : DELAY_DEFAULT;
-    openTimer = setTimeout(() => {
-      let open = false;
-      try {
-        open = tip.matches(':popover-open');
-        if (!open) { tip.showPopover(); open = true; }
-      } catch { return; }
-      if (!ANCHOR_SUPPORTED) positionFallback(tip, trigger);
-      markGroupOpen();
-    }, wait);
-  }
-
-  function hide() {
-    clearTimeout(openTimer);
-    clearTimeout(closeTimer);
-    closeTimer = setTimeout(() => {
-      try { tip.hidePopover(); } catch (e) { /* already closed */ }
-      scheduleGroupReset();
-    }, 0);
-  }
-
-  trigger.addEventListener('mouseenter', show);
-  trigger.addEventListener('mouseleave', hide);
-  trigger.addEventListener('focus', show);
-  trigger.addEventListener('blur', hide);
-});
 }
 
 init();
 new MutationObserver(init).observe(document, { childList: true, subtree: true });
 
-// -- Scroll dismiss -------------------------------------------
 if (!document.__tooltipScrollInit) {
   document.__tooltipScrollInit = true;
   document.addEventListener('scroll', () => {
     document.querySelectorAll('.tooltip:popover-open').forEach((tip) => {
       try {
         tip.hidePopover();
-      } catch (e) {}
+      } catch {
+        // The native popover can already be closed.
+      }
     });
     scheduleGroupReset();
   }, { passive: true, capture: true });

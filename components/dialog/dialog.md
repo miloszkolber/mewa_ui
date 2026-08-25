@@ -1,90 +1,132 @@
-# Pattern: Dialog
+# Dialog
+
+## Purpose
+
+Dialog contains a focused modal task.
+
+Use Dialog when the user must complete or dismiss a task before returning to the page.
+
+Use Alert Dialog for a high-impact destructive decision.
+
+Do not use Dialog for ordinary page content or brief status feedback.
 
 ## Native basis
-`<dialog>` element + `showModal()`. The browser provides:
-- Modal top-layer placement and inert background content
-- Escape key to close (automatically)
-- `::backdrop` for overlay
-- `aria-modal` behavior when opened with `showModal()`
 
-Requires minimal JavaScript for trigger wiring, keyboard focus wrapping, focus restoration, and backdrop-click-to-close.
+Use a native `<dialog>` opened with `showModal()`.
 
----
+The browser places the modal in the top layer.
+
+The browser makes the rest of the document inert.
+
+The browser supports Escape dismissal.
+
+The module wires triggers, close controls, backdrop dismissal, and focus restoration.
 
 ## Native Web APIs
-- [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) — native modal element with top-layer placement, inert background content, and Escape-to-close
-- [`HTMLDialogElement.showModal()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) — opens dialog as modal in the top layer with backdrop
-- [`::backdrop`](https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop) — pseudo-element for the overlay behind the modal
 
----
+- [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) provides native modal semantics.
+- [`showModal()`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLDialogElement/showModal) opens the modal in the top layer.
+- [`::backdrop`](https://developer.mozilla.org/en-US/docs/Web/CSS/::backdrop) styles the modal backdrop.
+- [`autofocus`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/autofocus) identifies the intended initial focus target.
 
 ## Structure
 
+Give the dialog a visible title.
+
+Reference the title with `aria-labelledby`.
+
+Reference supporting text with `aria-describedby` when it explains the task.
+
+Do not add redundant `role="dialog"` or `aria-modal="true"` to native modal markup.
+
 ```html
-<!-- Trigger -->
-<button type="button" class="btn" data-variant="default"
-        data-dialog-trigger="my-dialog"
+<button class="btn"
+        type="button"
+        data-variant="default"
+        data-dialog-trigger="edit-profile"
         aria-haspopup="dialog">
-  Open
+  Edit profile
 </button>
 
-<!-- Dialog -->
-<dialog id="my-dialog"
-        class="dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="my-dialog-title">
-
+<dialog class="dialog"
+        id="edit-profile"
+        aria-labelledby="edit-profile-title"
+        aria-describedby="edit-profile-description">
   <div class="dialog-content">
     <div class="dialog-header">
-      <h2 class="dialog-title" id="my-dialog-title">Dialog Title</h2>
-      <p class="dialog-description">Supporting description.</p>
+      <h2 class="dialog-title" id="edit-profile-title">Edit profile</h2>
+      <p class="dialog-description" id="edit-profile-description">Update the public profile details.</p>
     </div>
 
     <div class="dialog-body">
-      <!-- Content goes here -->
+      <label for="profile-name">Name</label>
+      <input class="text-field-input" id="profile-name" name="name" autofocus>
     </div>
 
     <div class="dialog-footer">
-      <button type="button" class="btn" data-variant="outline" data-dialog-close>
-        Cancel
-      </button>
-      <button type="button" class="btn" data-variant="default">
-        Confirm
-      </button>
+      <button class="btn" type="button" data-variant="outline" data-dialog-close>Cancel</button>
+      <button class="btn" type="button" data-variant="default">Save changes</button>
     </div>
   </div>
 </dialog>
 ```
 
----
+Put the dialog near the end of `<body>` when practical.
 
----
+Do not add `tabindex` to the dialog element.
 
-## ARIA
+## Data attributes
 
-| Attribute            | Element     | Value                |
-|----------------------|-------------|----------------------|
-| `role="dialog"`      | `<dialog>`  | Identifies as dialog |
-| `aria-modal="true"`  | `<dialog>`  | Content behind is inert |
-| `aria-labelledby`    | `<dialog>`  | Points to title `id` |
-| `aria-haspopup="dialog"` | trigger | Indicates dialog will open |
+| Attribute | Element | Owner | Purpose |
+| --- | --- | --- | --- |
+| `data-dialog-trigger="id"` | trigger | Author | Opens the matching dialog. |
+| `data-dialog-close` | control inside dialog | Author | Closes the containing dialog. |
+| `data-init` | trigger and dialog | Module | Prevents duplicate initialization. |
 
----
+Do not author `data-init`.
 
-## Wiring conventions
+## Focus
 
-- `data-dialog-trigger="[id]"` on any element → opens that dialog
-- `data-dialog-close` on any element inside → closes the dialog
-- Click on backdrop → closes (click lands on `<dialog>` itself)
-- Tab and Shift+Tab wrap between the dialog's first and last enabled controls
-- Place `<dialog>` elements as direct children of `<body>`
+Use `autofocus` on the control that should receive initial focus.
 
----
+Let the browser select the initial focus target when no `autofocus` target is present.
 
-## Notes
+The module does not force focus onto the dialog surface.
 
-- Dialog state changes are immediate for now, with no CSS transition.
-- The selector is `dialog.dialog` (element + class) to avoid styling native `<dialog>` elements used elsewhere.
-- For forms inside dialogs, use the `dialog-body` wrapper for the form content.
-- The modal surface is fully opaque. The native backdrop uses the stronger layered scrim. Initial focus stays on the dialog itself rather than auto-selecting the first input; add `autofocus` on a dialog child when one specific control should receive focus.
+The module restores focus to the opening trigger after close.
+
+The module keeps Tab movement inside the open dialog.
+
+## Behavior
+
+Activating a documented trigger calls `showModal()`.
+
+Clicking a documented close control closes the dialog.
+
+Clicking the backdrop closes the dialog.
+
+Escape uses native dialog dismissal.
+
+Closing the dialog restores focus to the opening trigger when it still exists.
+
+State changes are immediate.
+
+## Accessibility
+
+Keep an explicit close or cancel action available.
+
+Keep the dialog title concise.
+
+Keep destructive confirmation in Alert Dialog instead of Dialog.
+
+Do not use a modal when inline editing is simpler.
+
+Do not add a second focus-trap library.
+
+## Runtime
+
+Load `dialog.js` whenever the documented trigger behavior appears.
+
+The dialog content remains semantic without the module.
+
+The external trigger does not open the dialog without the module.
