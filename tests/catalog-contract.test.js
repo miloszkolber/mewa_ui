@@ -191,6 +191,30 @@ test("canonical Markdown examples do not use inline style attributes in high-ris
   }
 });
 
+test("high-risk native-first runtime contracts do not regress", () => {
+  const dialog = read("components/dialog/dialog.js");
+  assert(!/dialog\.focus\(\)/.test(dialog), "Dialog must let native showModal and autofocus choose initial focus");
+  assert(!/setAttribute\(['\"]tabindex['\"]/.test(dialog), "Dialog must not add tabindex to native dialog");
+
+  for (const slug of ["popover", "tooltip"]) {
+    const source = read(`components/${slug}/${slug}.js`);
+    assert.match(source, /delete trigger\.dataset\.init/, `${slug}: missing-target initialization must retry`);
+  }
+
+  const tabs = read("components/tabs/tabs.md");
+  assert.match(tabs, /automatic activation/i, "Tabs must document automatic activation");
+  assert(!/manual activation mode/i.test(tabs), "Tabs must not document an unsupported manual activation mode");
+
+  const resizableScript = read("components/resizable/resizable.js");
+  const resizableCss = read("components/resizable/resizable.css");
+  const resizableSkill = read("components/resizable/resizable.md");
+  assert.match(resizableScript, /createPointerControls/, "Resizable must provide a non-drag pointer path");
+  assert.match(resizableScript, /data-resizable-decrease/);
+  assert.match(resizableScript, /data-resizable-increase/);
+  assert.match(resizableCss, /\.resizable-step[\s\S]*inline-size:\s*var\(--size-07\)/, "Resizable pointer controls must use a 32px target");
+  assert.match(resizableSkill, /Do not rely on dragging as the only pointer path\./);
+});
+
 test("agent-facing source does not reference the retired layouts directory", () => {
   const filesToCheck = [
     "DESIGN.md",
