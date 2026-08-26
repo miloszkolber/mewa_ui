@@ -91,15 +91,12 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Button</h1>
-        <p class="text-muted leading-relaxed mb-6">
-          Triggers an action or event. Six variants, two sizes. Uses <code>&lt;button&gt;</code> or <code>&lt;a&gt;</code>.
-          Zero JavaScript required.
-        </p>
+        <p class="text-muted leading-relaxed mb-6">Starts an action, submits a form, or presents a link with button styling. Choose the visual emphasis from the importance of the action, and keep navigation as a real link.</p>
       </div>
 
         <!-- Variants -->
         <p class="text-sm font-medium mb-2 mt-6">Variants</p>
-        <p class="text-xs text-muted mb-3">Six styles via <code>data-variant</code>. Default has a solid primary fill.</p>
+        <p class="text-xs text-muted mb-3">Choose a style that matches the action's importance. Default provides the strongest emphasis.</p>
         <div class="preview">
           <div style="display: flex; gap: var(--space-300); flex-wrap: wrap; justify-content: center">
             <button class="btn" type="button" data-variant="default">Default</button>
@@ -125,7 +122,7 @@
 
         <!-- Sizes -->
         <p class="text-sm font-medium mb-2 mt-8">Sizes</p>
-        <p class="text-xs text-muted mb-3">Two sizes via <code>data-size</code>, plus icon-only variants.</p>
+        <p class="text-xs text-muted mb-3">Use the compact size in dense rows and the default size for ordinary actions. Icon-only buttons have matching square sizes.</p>
         <div class="preview">
           <div style="display: flex; gap: var(--space-300); align-items: center; flex-wrap: wrap; justify-content: center">
             <button class="btn" type="button" data-variant="outline" data-size="sm">Small</button>
@@ -143,7 +140,7 @@
 
         <!-- Icon button -->
         <p class="text-sm font-medium mb-2 mt-8">Icon</p>
-        <p class="text-xs text-muted mb-3">Square button for icon-only actions. Requires <code>aria-label</code>.</p>
+        <p class="text-xs text-muted mb-3">Use a square button for familiar icon-only actions, and provide an <code>aria-label</code> that names the action.</p>
         <div class="preview">
           <div style="display: flex; gap: var(--space-300); align-items: center; flex-wrap: wrap; justify-content: center">
             <button class="btn" type="button" data-variant="outline" data-size="icon-sm" aria-label="Settings small">
@@ -227,7 +224,7 @@
 
         <!-- Disabled -->
         <p class="text-sm font-medium mb-2 mt-8">Disabled</p>
-        <p class="text-xs text-muted mb-3">50% opacity, no pointer events.</p>
+        <p class="text-xs text-muted mb-3">Disabled buttons remain visible but cannot be activated.</p>
         <div class="preview">
           <div style="display: flex; gap: var(--space-300); align-items: center; flex-wrap: wrap; justify-content: center">
             <button class="btn" type="button" data-variant="default" disabled>Default</button>

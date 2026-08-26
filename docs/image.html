@@ -91,9 +91,7 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Image</h1>
-        <p class="text-muted leading-relaxed mb-6">
-          A figure-based image component with fallback, lightbox preview, aspect ratio control, and caption. Built on <code>&lt;figure&gt;</code>, <code>&lt;dialog&gt;</code>, and native CSS.
-        </p>
+        <p class="text-muted leading-relaxed mb-6">Presents an image with an optional caption, fallback, aspect ratio, and larger preview. Use the lightbox only when seeing more detail helps the task.</p>
       </div>
 
         <!-- Default -->
@@ -183,7 +181,7 @@
 
         <!-- Aspect Ratios -->
         <p class="text-sm font-medium mb-2 mt-8">Aspect ratios</p>
-        <p class="text-xs text-muted mb-3">Controlled aspect ratios via <code>data-ratio</code>.</p>
+        <p class="text-xs text-muted mb-3">Choose a consistent aspect ratio with <code>data-ratio</code>.</p>
         <div class="preview">
           <div style="display: flex; gap: var(--space-400); flex-wrap: wrap; align-items: flex-start">
             <figure class="image" data-ratio="1/1" style="width: 120px">
@@ -217,7 +215,7 @@
 
         <!-- Fit Variants -->
         <p class="text-sm font-medium mb-2 mt-8">Object fit</p>
-        <p class="text-xs text-muted mb-3">Control how the image fills its container via <code>data-fit</code>.</p>
+        <p class="text-xs text-muted mb-3">Choose how the image fills its frame with <code>data-fit</code>.</p>
         <div class="preview">
           <div style="display: flex; gap: var(--space-400); flex-wrap: wrap; align-items: flex-start">
             <figure class="image" data-ratio="4/3" style="width: 180px; background: var(--surface-secondary)">

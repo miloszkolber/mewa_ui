@@ -91,7 +91,7 @@
     <main id="main-content" class="app-content" style="flex: 1; min-width: 0; max-width: 64rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" tabindex="-1">
       <div class="page-header">
         <h1>App Shell</h1>
-        <p class="text-muted leading-relaxed mb-6">Shared application chrome for header-based services and sidebar workspaces. It provides a page frame, sticky header or toolbar, route navigation, page overview, inline stats, status markers, empty states, and an optional OS-aware theme toggle.</p>
+        <p class="text-muted leading-relaxed mb-6">Provides the shared frame for an application: its header or toolbar, navigation, page introduction, status areas, and empty states. Combine these pieces to suit the product rather than copying a fixed page template.</p>
       </div>
 
       <p class="text-sm font-medium mb-2 mt-6">Header and page overview</p>
@@ -222,7 +222,7 @@
       </div>
 
       <p class="text-sm font-medium mb-2 mt-8">Theme behavior</p>
-      <p class="text-xs text-muted mb-3">The optional module follows the OS color scheme until a manual choice is stored. It hides the toggle when JavaScript is unavailable. Use the pre-paint snippet in the component skill to avoid a theme mismatch during initial rendering.</p>
+      <p class="text-xs text-muted mb-3">The theme follows the operating system until someone chooses a preference. The toggle stays hidden without JavaScript. Add the small pre-paint script before page content to prevent a flash of the wrong theme.</p>
     </main>
   </div>
 
