@@ -12,19 +12,19 @@
   .app-shell > main {
     flex: 1;
     min-inline-size: 0;
-    scroll-margin-block-start: var(--app-shell-header-offset, var(--size-10));
+    scroll-margin-block-start: var(--app-shell-header-offset, var(--size-1400));
   }
 
   .app-header-inner,
   .app-toolbar-inner,
   .page-overview,
   .app-content {
-    inline-size: min(100% - var(--space-08), var(--app-shell-max, 90rem));
+    inline-size: min(100% - var(--space-1000), var(--app-shell-max, var(--breakpoint-max-dense)));
     margin-inline: auto;
   }
 
   html:has(.app-header, .app-toolbar) {
-    scroll-padding-block-start: calc(var(--app-shell-header-offset, var(--size-10)) + var(--space-03));
+    scroll-padding-block-start: calc(var(--app-shell-header-offset, var(--size-1400)) + var(--space-300));
   }
 
   .app-header,
@@ -32,9 +32,9 @@
     position: sticky;
     inset-block-start: 0;
     z-index: var(--z-raised);
-    border-block-end: var(--border-width-01) solid var(--border-primary);
+    border-block-end: var(--border-width-025) solid var(--border-primary);
     background: var(--background-glass);
-    backdrop-filter: blur(var(--blur-01));
+    backdrop-filter: blur(var(--blur-100));
   }
 
   .app-header-inner,
@@ -42,17 +42,17 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: var(--space-02) var(--space-05);
-    min-block-size: var(--size-11);
-    padding-block: var(--space-02);
+    gap: var(--space-200) var(--space-500);
+    min-block-size: var(--size-1600);
+    padding-block: var(--space-200);
   }
 
   .brand {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-02);
+    gap: var(--space-200);
     color: var(--text-primary);
-    font-weight: var(--font-weight-strong);
+    font-weight: var(--font-weight-550);
     text-decoration: none;
     white-space: nowrap;
   }
@@ -62,46 +62,46 @@
   }
 
   .brand:focus-visible {
-    outline: var(--focus-ring-width) solid var(--border-ring);
-    outline-offset: var(--border-width-01);
+    outline: var(--focus-ring-width) solid var(--border-focus);
+    outline-offset: var(--border-width-025);
   }
 
   .brand-mark {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    inline-size: var(--size-07);
-    block-size: var(--size-07);
+    inline-size: var(--size-800);
+    block-size: var(--size-800);
     flex: none;
     background: var(--surface-inverted);
     color: var(--text-inverted);
-    font-size: var(--font-body-small);
-    font-weight: var(--font-weight-strong);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-550);
   }
 
   .brand-logo,
   .brand-mark :is(svg, i) {
-    inline-size: var(--size-04);
-    block-size: var(--size-04);
+    inline-size: var(--size-400);
+    block-size: var(--size-400);
   }
 
   .app-nav {
     display: flex;
     align-items: stretch;
     flex-wrap: wrap;
-    gap: var(--space-01);
+    gap: var(--space-100);
     min-inline-size: 0;
     align-self: stretch;
-    margin-block: calc(-1 * var(--space-02));
+    margin-block: calc(-1 * var(--space-200));
   }
 
   .app-nav a {
     display: inline-flex;
     align-items: center;
     block-size: 100%;
-    padding-inline: var(--space-03);
+    padding-inline: var(--space-300);
     color: var(--text-muted);
-    font-size: var(--font-body-small);
+    font-size: var(--font-size-350);
     text-decoration: none;
     white-space: nowrap;
   }
@@ -112,16 +112,16 @@
   }
 
   .app-nav a[aria-current="page"] {
-    margin-block-end: calc(-1 * var(--border-width-01));
-    border-block-end: var(--border-width-02) solid var(--border-ring);
+    margin-block-end: calc(-1 * var(--border-width-025));
+    border-block-end: var(--border-width-050) solid var(--border-focus);
     background: transparent;
     color: var(--text-primary);
-    font-weight: var(--font-weight-strong);
+    font-weight: var(--font-weight-550);
   }
 
   .app-nav a:focus-visible {
-    outline: var(--focus-ring-width) solid var(--border-ring);
-    outline-offset: var(--border-width-01);
+    outline: var(--focus-ring-width) solid var(--border-focus);
+    outline-offset: var(--border-width-025);
   }
 
   .app-header-actions,
@@ -129,7 +129,7 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: var(--space-02);
+    gap: var(--space-200);
     margin-inline-start: auto;
   }
 
@@ -138,12 +138,12 @@
     content: "";
     position: fixed;
     inset-block: 0;
-    inline-size: var(--space-03);
+    inline-size: var(--space-300);
     pointer-events: none;
     background: repeating-linear-gradient(
       -45deg,
-      var(--border-secondary) 0 var(--border-width-02),
-      transparent var(--border-width-02) var(--space-02)
+      var(--border-secondary) 0 var(--border-width-050),
+      transparent var(--border-width-050) var(--space-200)
     );
   }
 
@@ -160,30 +160,30 @@
     align-items: flex-end;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: var(--space-04) var(--space-05);
-    padding-block: var(--space-06) var(--space-05);
+    gap: var(--space-400) var(--space-500);
+    padding-block: var(--space-600) var(--space-500);
   }
 
   .eyebrow {
     margin: 0;
     color: var(--text-muted);
     font-family: var(--font-mono);
-    font-size: var(--font-body-xsmall);
-    font-weight: var(--font-weight-strong);
+    font-size: var(--font-size-300);
+    font-weight: var(--font-weight-550);
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
   .page-heading {
-    margin: var(--space-01) 0 0;
-    font-size: var(--font-h2);
+    margin: var(--space-100) 0 0;
+    font-size: var(--font-size-800);
     line-height: var(--font-height-tight);
     text-wrap: balance;
   }
 
   .page-description {
     max-inline-size: 62ch;
-    margin: var(--space-02) 0 0;
+    margin: var(--space-200) 0 0;
     color: var(--text-secondary);
     text-wrap: pretty;
   }
@@ -193,16 +193,16 @@
     align-items: center;
     justify-content: flex-end;
     flex-wrap: wrap;
-    gap: var(--space-02);
+    gap: var(--space-200);
   }
 
   .stats {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: var(--space-01) var(--space-02);
+    gap: var(--space-100) var(--space-200);
     margin: 0;
-    font-size: var(--font-body-xsmall);
+    font-size: var(--font-size-300);
   }
 
   .stat-label {
@@ -211,7 +211,7 @@
 
   .stat-value {
     color: var(--text-primary);
-    font-weight: var(--font-weight-strong);
+    font-weight: var(--font-weight-550);
     font-variant-numeric: tabular-nums;
   }
 
@@ -222,14 +222,14 @@
   .stat-status {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-02);
+    gap: var(--space-200);
   }
 
   .status-dot {
     display: inline-block;
-    inline-size: var(--size-02);
-    block-size: var(--size-02);
-    border-radius: var(--radius-full);
+    inline-size: var(--size-200);
+    block-size: var(--size-200);
+    border-radius: var(--border-radius-6400);
     background: var(--text-disabled);
     vertical-align: middle;
   }
@@ -247,7 +247,7 @@
   }
 
   .status-dot[data-state="running"] {
-    border: var(--border-width-02) solid var(--text-muted);
+    border: var(--border-width-050) solid var(--text-muted);
     background: transparent;
   }
 
@@ -255,17 +255,17 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    inline-size: var(--size-05);
-    block-size: var(--size-05);
+    inline-size: var(--size-500);
+    block-size: var(--size-500);
     flex: none;
-    border-radius: var(--radius-full);
+    border-radius: var(--border-radius-6400);
     background: var(--surface-secondary);
     color: var(--text-secondary);
   }
 
   .status-icon > svg {
-    inline-size: var(--size-03);
-    block-size: var(--size-03);
+    inline-size: var(--size-300);
+    block-size: var(--size-300);
   }
 
   .status-icon[data-state="positive"] {
@@ -284,7 +284,7 @@
   }
 
   .status-icon[data-state="running"] {
-    border: var(--border-width-01) solid var(--border-secondary);
+    border: var(--border-width-025) solid var(--border-secondary);
     background: var(--surface-secondary);
     color: var(--text-primary);
   }
@@ -299,11 +299,11 @@
 
   .app-status-row {
     display: grid;
-    grid-template-columns: var(--size-05) minmax(0, 1fr) auto;
+    grid-template-columns: var(--size-500) minmax(0, 1fr) auto;
     align-items: center;
-    gap: var(--space-03);
-    padding: var(--space-04);
-    border-block-end: var(--border-width-01) solid var(--border-primary);
+    gap: var(--space-300);
+    padding: var(--space-400);
+    border-block-end: var(--border-width-025) solid var(--border-primary);
   }
 
   .app-status-row:last-child {
@@ -318,17 +318,17 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    inline-size: var(--size-05);
-    block-size: var(--size-05);
+    inline-size: var(--size-500);
+    block-size: var(--size-500);
     border: 0;
     background: transparent;
   }
 
   .app-status-row > .status-dot::before {
     content: "";
-    inline-size: var(--size-02);
-    block-size: var(--size-02);
-    border-radius: var(--radius-full);
+    inline-size: var(--size-200);
+    block-size: var(--size-200);
+    border-radius: var(--border-radius-6400);
     background: var(--text-disabled);
   }
 
@@ -346,7 +346,7 @@
 
   .app-status-row > .status-dot[data-state="running"]::before {
     box-sizing: border-box;
-    border: var(--border-width-02) solid var(--text-muted);
+    border: var(--border-width-050) solid var(--text-muted);
     background: transparent;
   }
 
@@ -356,13 +356,13 @@
 
   .app-status-title {
     margin: 0;
-    font-weight: var(--font-weight-strong);
+    font-weight: var(--font-weight-550);
   }
 
   .app-status-description {
-    margin: var(--space-01) 0 0;
+    margin: var(--space-100) 0 0;
     color: var(--text-muted);
-    font-size: var(--font-body-small);
+    font-size: var(--font-size-350);
   }
 
   .app-status-actions {
@@ -370,12 +370,12 @@
     align-items: center;
     justify-content: flex-end;
     flex-wrap: wrap;
-    gap: var(--space-02);
+    gap: var(--space-200);
   }
 
   .app-section {
     overflow: hidden;
-    border: var(--border-width-01) solid var(--border-primary);
+    border: var(--border-width-025) solid var(--border-primary);
     background: var(--surface-primary);
   }
 
@@ -383,26 +383,26 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: var(--space-04);
-    padding: var(--space-04) var(--space-04) var(--space-03);
-    border-block-end: var(--border-width-01) solid var(--border-primary);
+    gap: var(--space-400);
+    padding: var(--space-400) var(--space-400) var(--space-300);
+    border-block-end: var(--border-width-025) solid var(--border-primary);
   }
 
   .app-section-title {
     margin: 0;
-    font-size: var(--font-body);
-    font-weight: var(--font-weight-strong);
+    font-size: var(--font-size-400);
+    font-weight: var(--font-weight-550);
     line-height: var(--font-height-tight);
   }
 
   .app-section-description {
-    margin: var(--space-01) 0 0;
+    margin: var(--space-100) 0 0;
     color: var(--text-muted);
-    font-size: var(--font-body-small);
+    font-size: var(--font-size-350);
   }
 
   .app-section-content {
-    padding: var(--space-04);
+    padding: var(--space-400);
   }
 
   .app-section > :is(.table-container, .app-status-list) {
@@ -412,14 +412,14 @@
   .app-filter-rail {
     display: grid;
     align-content: start;
-    gap: var(--space-04);
+    gap: var(--space-400);
     min-inline-size: 0;
   }
 
   .app-filter-list,
   .app-filter-tags {
     display: grid;
-    gap: var(--space-01);
+    gap: var(--space-100);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -430,9 +430,9 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: var(--space-02);
-    min-block-size: var(--size-07);
-    padding: var(--space-01) var(--space-02);
+    gap: var(--space-200);
+    min-block-size: var(--size-800);
+    padding: var(--space-100) var(--space-200);
     color: var(--text-secondary);
     text-decoration: none;
   }
@@ -447,23 +447,23 @@
 
   .app-empty {
     margin: 0;
-    padding: var(--space-09) var(--space-04);
+    padding: var(--space-1200) var(--space-400);
     color: var(--text-muted);
-    font-size: var(--font-body-small);
+    font-size: var(--font-size-350);
     text-align: center;
   }
 
   .app-empty--compact {
-    padding: var(--space-06) var(--space-04);
-    border: var(--border-width-01) dashed var(--border-muted);
+    padding: var(--space-600) var(--space-400);
+    border: var(--border-width-025) dashed var(--border-muted);
   }
 
   .skip-link {
     position: fixed;
-    inset-block-start: var(--space-03);
-    inset-inline-start: var(--space-03);
+    inset-block-start: var(--space-300);
+    inset-inline-start: var(--space-300);
     z-index: var(--z-toast);
-    padding: var(--space-02) var(--space-03);
+    padding: var(--space-200) var(--space-300);
     translate: 0 -200%;
     background: var(--surface-inverted);
     color: var(--text-inverted);
@@ -472,8 +472,8 @@
 
   .skip-link:focus-visible {
     translate: 0 0;
-    outline: var(--focus-ring-width) solid var(--border-ring);
-    outline-offset: var(--border-width-01);
+    outline: var(--focus-ring-width) solid var(--border-focus);
+    outline-offset: var(--border-width-025);
   }
 
   .visually-hidden {
@@ -507,14 +507,14 @@
   @media (prefers-contrast: more) {
     .app-header,
     .app-toolbar {
-      border-block-end-width: var(--border-width-02);
+      border-block-end-width: var(--border-width-050);
     }
 
     .status-dot[data-state="running"],
     .status-icon[data-state="running"],
     .app-status-row,
     .app-section {
-      border-width: var(--border-width-02);
+      border-width: var(--border-width-050);
     }
   }
 
@@ -555,7 +555,7 @@
 
     .app-shell-edge::before,
     .app-shell-edge::after {
-      border-inline: var(--border-width-02) solid CanvasText;
+      border-inline: var(--border-width-050) solid CanvasText;
       background: none;
     }
   }
@@ -579,7 +579,7 @@
     .page-overview,
     .app-content {
       inline-size: 100%;
-      padding-inline: var(--space-04);
+      padding-inline: var(--space-400);
     }
 
     .app-status-row {

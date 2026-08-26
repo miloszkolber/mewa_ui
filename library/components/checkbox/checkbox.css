@@ -12,7 +12,7 @@
     appearance: none;
     width: 1.125rem;
     height: 1.125rem;
-    border: var(--border-width-01) solid var(--border-primary);
+    border: var(--border-width-025) solid var(--border-primary);
 
     background: var(--background);
     cursor: pointer;
@@ -48,8 +48,8 @@
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-ring);
-      outline-offset: var(--border-width-01);
+      outline: var(--focus-ring-width) solid var(--border-focus);
+      outline-offset: var(--border-width-025);
     }
 
     &:disabled {
@@ -103,10 +103,10 @@
   .checkbox-item {
     display: flex;
     align-items: center;
-    gap: var(--space-02);
+    gap: var(--space-200);
 
     & > label {
-      font-size: var(--font-body-small);
+      font-size: var(--font-size-350);
       cursor: pointer;
     }
   }
@@ -114,56 +114,56 @@
   .checkbox-item-block {
     display: flex;
     align-items: flex-start;
-    gap: var(--space-02);
+    gap: var(--space-200);
 
     & > label {
-      font-size: var(--font-body-small);
+      font-size: var(--font-size-350);
       cursor: pointer;
     }
 
     & > .checkbox {
-      margin-top: var(--space-01);
+      margin-top: var(--space-100);
     }
 
     & .checkbox-description {
-      font-size: var(--font-body-xsmall);
+      font-size: var(--font-size-300);
       color: var(--text-muted);
-      margin-top: var(--space-01);
+      margin-top: var(--space-100);
     }
   }
 
   .checkbox-group-items {
     display: flex;
     flex-direction: column;
-    gap: var(--space-02);
+    gap: var(--space-200);
   }
 
   .checkbox-group-select-all {
     display: flex;
     align-items: center;
-    gap: var(--space-02);
+    gap: var(--space-200);
     padding-block-end: 0;
     border-block-end: 0;
 
     & > label,
     & > span {
-      font-size: var(--font-body-small);
-      line-height: var(--font-height);
+      font-size: var(--font-size-350);
+      line-height: var(--font-height-regular);
     }
   }
 
   .checkbox-group .checkbox-description {
-    margin-block: 0 var(--space-03);
+    margin-block: 0 var(--space-300);
     color: var(--text-muted);
-    font-size: var(--font-body-xsmall);
-    line-height: var(--font-height);
+    font-size: var(--font-size-300);
+    line-height: var(--font-height-regular);
   }
 
   .checkbox-group-status {
-    margin: var(--space-03) 0 0;
+    margin: var(--space-300) 0 0;
     color: var(--text-muted);
-    font-size: var(--font-body-xsmall);
-    line-height: var(--font-height);
+    font-size: var(--font-size-300);
+    line-height: var(--font-height-regular);
   }
 
   .checkbox-item:has(.checkbox:disabled),
@@ -175,7 +175,7 @@
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {
     .checkbox {
-      border-width: var(--border-width-02);
+      border-width: var(--border-width-050);
     }
 
     .checkbox:disabled {

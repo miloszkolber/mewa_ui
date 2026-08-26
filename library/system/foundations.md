@@ -30,6 +30,34 @@ Do not consume a palette primitive in a component.
 
 Do not invent a semantic token for one component.
 
+## Color palettes
+
+Use neutral, red, amber, green, and blue solid palettes.
+
+Use `000` for white in the neutral family.
+
+Use the symmetric `050` through `950` scale for every palette.
+
+Use each palette's own `050` and `950` as its symmetry endpoints.
+
+Keep neutral `000` as white outside the symmetric range.
+
+Pair each palette's `600` on its own `050` with its `400` on its own `950`.
+
+Do not define a pure-black primitive.
+
+Treat neutral as the CSS name for the grayscale family in Penpot.
+
+Keep one OKLCH hue across each chromatic palette.
+
+Use the tuned alpha primitives only through semantic roles.
+
+Do not recreate an alpha primitive with opacity on its matching solid token.
+
+Use red, amber, and green only for status and destructive meaning.
+
+Use blue for focus and approved informational emphasis.
+
 <!-- TOKEN-REFERENCE:START -->
 ## Semantic token reference
 
@@ -41,14 +69,19 @@ This section is generated from `registry.json`.
 | `--background-glass` | Translucent page canvas for approved sticky shell chrome. |
 | `--surface-primary` | Primary continuous content surface. |
 | `--surface-primary-glass` | Translucent primary surface for approved sticky chrome. |
-| `--surface-secondary` | Quiet surface for hover, selection, and secondary grouping. |
+| `--surface-secondary` | Quiet structural surface for secondary grouping. |
 | `--surface-secondary-glass` | Translucent secondary surface for approved sticky chrome. |
+| `--surface-hover` | Theme-aware translucent surface for pointer and keyboard hover feedback. |
+| `--surface-selected` | Theme-aware translucent surface for a selected or current item. |
+| `--surface-disabled` | Theme-aware translucent surface for a disabled control or region. |
 | `--surface-positive` | Supporting surface for positive status. |
 | `--surface-negative` | Supporting surface for negative status. |
 | `--surface-caution` | Supporting surface for caution status. |
-| `--surface-overlay` | Backdrop surface behind modal top-layer content. |
 | `--surface-inverted` | Highest-contrast normal surface for primary actions and signets. |
 | `--surface-destructive` | Filled destructive action surface. |
+| `--overlay-subtle` | Lowest-emphasis translucent overlay for local state and separation. |
+| `--overlay-moderate` | Medium-emphasis translucent overlay for local state and separation. |
+| `--overlay-strong` | Strong backdrop overlay behind modal top-layer content. |
 | `--text-primary` | Primary readable text and icon color. |
 | `--text-secondary` | Supporting readable text and icon color. |
 | `--text-muted` | Metadata and low-emphasis text color. |
@@ -61,12 +94,26 @@ This section is generated from `registry.json`.
 | `--border-secondary` | Stronger internal structural boundary. |
 | `--border-muted` | Low-emphasis or dashed boundary. |
 | `--border-subtle` | Quiet boundary for low-separation regions. |
-| `--border-ring` | Authored focus-indicator color. |
+| `--border-hover` | Boundary color for an interactive element under hover. |
+| `--border-selected` | Boundary color for a selected or current interactive element. |
+| `--border-disabled` | Boundary color for a disabled control or region. |
+| `--border-focus` | Theme-aware blue boundary for authored focus indicators. |
+| `--border-positive` | Boundary color for positive status and validation. |
+| `--border-negative` | Boundary color for negative status and validation. |
+| `--border-caution` | Boundary color for caution status and validation. |
 | `--chart-1` | Highest-contrast monochrome chart series. |
 | `--chart-2` | Second monochrome chart series. |
 | `--chart-3` | Third monochrome chart series. |
 | `--chart-4` | Fourth monochrome chart series. |
 | `--chart-5` | Lowest-contrast monochrome chart series. |
+| `--chart-neutral` | Primary neutral chart mark with theme-aware contrast. |
+| `--chart-positive` | Positive chart mark with theme-aware contrast. |
+| `--chart-negative` | Negative chart mark with theme-aware contrast. |
+| `--chart-caution` | Caution chart mark with theme-aware contrast. |
+| `--chart-area-neutral` | Translucent neutral chart area that adapts to its surface. |
+| `--chart-area-positive` | Translucent positive chart area that adapts to its surface. |
+| `--chart-area-negative` | Translucent negative chart area that adapts to its surface. |
+| `--chart-area-caution` | Translucent caution chart area that adapts to its surface. |
 
 <!-- TOKEN-REFERENCE:END -->
 
@@ -78,7 +125,13 @@ Use one bordered section as level one.
 
 Use rows, bands, and controls inside the section without another outer card.
 
-Use `--surface-secondary` to show local state inside a level-one section.
+Use `--surface-secondary` for quiet grouping inside a level-one section.
+
+Use `--surface-hover` for hover feedback.
+
+Use `--surface-selected` for a selected or current item.
+
+Use `--surface-disabled` for a disabled surface.
 
 Use a dialog, popover, tooltip, toast, or sheet as a top-layer surface.
 
@@ -96,11 +149,15 @@ Do not wrap an empty state in a card when the parent section already has a borde
 
 ## Borders
 
-Use `--border-width-01` for normal structure.
+Use `--border-width-025` for normal structure.
 
-Use `--border-width-02` for a strong divider or focus indicator.
+Use `--border-width-050` for a strong divider or focus indicator.
 
-Use `--border-width-03` only when the component skill specifies it.
+Use `--border-width-100` only when the component skill specifies it.
+
+Use `--border-focus` for an authored focus perimeter.
+
+Use the matching status border for status validation.
 
 Use a solid border for normal structure.
 
@@ -120,7 +177,7 @@ Use square corners on normal controls and surfaces.
 
 Use `--border-radius` when a component needs the shared square value.
 
-Use `--radius-full` for avatars, radio controls, circular progress, status dots, and circular skeletons.
+Use `--border-radius-6400` for avatars, radio controls, circular progress, status dots, and circular skeletons.
 
 Use an explicit `50%` value only when the component contract requires it.
 
@@ -134,11 +191,11 @@ Use `var(--font-sans)` for interface text.
 
 Use `var(--font-mono)` for code, terminal output, keyboard keys, IDs, and technical labels.
 
-Use `var(--font-body)` for normal body text.
+Use `var(--font-size-400)` for normal body text.
 
-Use `var(--font-body-small)` for supporting text and dense controls.
+Use `var(--font-size-350)` for supporting text and dense controls.
 
-Use `var(--font-body-xsmall)` for metadata and technical labels.
+Use `var(--font-size-300)` for metadata and technical labels.
 
 Use the heading tokens for document hierarchy.
 
@@ -156,6 +213,16 @@ Use normal font weight for body text.
 
 Use strong weight for labels, headings, selected routes, and primary values.
 
+Use `--font-weight-550` as the variable-font strong weight in CSS.
+
+Use weight 500 only as the Penpot fallback for the `550` token.
+
+Keep composed typography rules in Penpot only.
+
+Compose repository typography from the font primitives.
+
+Use the text-case and text-decoration primitives for explicit authored variants.
+
 Use tabular numerals for changing numeric values.
 
 Keep technical labels concise.
@@ -168,17 +235,21 @@ Do not add explanatory text when the control label already explains the action.
 
 Use the numeric `--space-*` scale.
 
-Use `--space-01` for a tight relation.
+Treat `100` as 4px throughout numeric dimension scales.
 
-Use `--space-02` for text and icon spacing.
+Use `025` for a 1px dimension when the scale includes quarter steps.
 
-Use `--space-03` for compact control groups.
+Use `--space-100` for a tight relation.
 
-Use `--space-04` for normal component padding and section gaps.
+Use `--space-200` for text and icon spacing.
 
-Use `--space-05` or `--space-06` between different local tasks.
+Use `--space-300` for compact control groups.
 
-Use `--space-08` or larger only between major page regions.
+Use `--space-400` for normal component padding and section gaps.
+
+Use `--space-500` or `--space-600` between different local tasks.
+
+Use `--space-1000` or larger only between major page regions.
 
 Use zero gap between connected rows.
 
@@ -190,13 +261,13 @@ Do not use an arbitrary pixel value when a current token matches the need.
 
 ## Interactive size
 
-Use `--size-08` for the default 40px control height.
+Use `--size-1000` for the default 40px control height.
 
-Use `--size-07` for the compact 32px control height.
+Use `--size-800` for the compact 32px control height.
 
-Use `--size-08` for normal buttons, inputs, tabs, pagination items, and primary navigation rows.
+Use `--size-1000` for normal buttons, inputs, tabs, pagination items, and primary navigation rows.
 
-Use `--size-07` for icon-only header tools and dense row actions.
+Use `--size-800` for icon-only header tools and dense row actions.
 
 Keep icon-only controls square.
 
@@ -232,9 +303,9 @@ Use blur only on sticky shell chrome.
 
 Use `--background-glass` or a matching glass surface with blur.
 
-Use `--blur-01` for normal sticky chrome.
+Use `--blur-100` for normal sticky chrome.
 
-Use `--blur-02` only when the component contract permits it.
+Use `--blur-200` only when the component contract permits it.
 
 Keep an opaque semantic background as the fallback.
 
@@ -280,9 +351,9 @@ Do not use Spinner as decoration.
 
 Use `60rem` when a wide main-and-rail composition needs one column.
 
-Use `48rem` when a shell changes navigation mode.
+Use the `--breakpoint-compact` value, `48rem`, when a shell changes navigation mode.
 
-Use `37.5rem` when a page needs compact single-column behavior.
+Use the `--breakpoint-narrow` value, `37.5rem`, for compact single-column behavior.
 
 Use rem units for each breakpoint.
 
@@ -294,9 +365,9 @@ Keep one page scroll direction for normal content.
 
 Contain horizontal overflow in the table, grid, code, or media region that needs it.
 
-Use a 90rem maximum for dense application canvases.
+Use the `--breakpoint-max-dense` value, `90rem`, for dense application canvases.
 
-Use a 64rem maximum for focused tools and content pages.
+Use the `--breakpoint-max-focused` value, `64rem`, for focused tools and content pages.
 
 Do not add a third global maximum.
 
@@ -329,6 +400,10 @@ Check every control for the documented height.
 Check every icon for local loading and accessible use.
 
 Check every status for visible text.
+
+Check every text and icon pair against its actual surface.
+
+Check alpha roles after compositing on each supported surface.
 
 Check every sticky region for an opaque fallback.
 

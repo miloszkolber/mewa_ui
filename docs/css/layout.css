@@ -34,9 +34,9 @@ main {
 }
 .header-brand-name {
   font-family: var(--font-sans);
-  font-size: var(--font-h4);
-  font-weight: var(--font-weight-strong);
-  letter-spacing: var(--font-tracking);
+  font-size: var(--font-size-400);
+  font-weight: var(--font-weight-550);
+  letter-spacing: var(--text-tracking-default);
   color: var(--text-primary);
   white-space: nowrap;
 }
@@ -58,9 +58,9 @@ main {
 }
 /* -- Nav section heading ----------------------------------- */
 .nav-heading {
-  font-size: var(--font-body-xsmall); font-weight: var(--font-weight-strong);
+  font-size: var(--font-size-300); font-weight: var(--font-weight-550);
   text-transform: uppercase;
-  letter-spacing: var(--font-tracking);
+  letter-spacing: var(--text-tracking-default);
   color: var(--text-primary);
   padding: 0 0.75rem;
   margin: 0 0 0.375rem;
@@ -71,7 +71,7 @@ main {
   display: flex; align-items: center; gap: 0.375rem;
   padding: 0.375rem 0.75rem;
 
-  font-size: var(--font-body-small);
+  font-size: var(--font-size-350);
   color: var(--text-secondary);
   text-decoration: none;
   background: transparent;
@@ -96,7 +96,7 @@ main {
   padding: 0.3125rem 0.75rem;
   margin-bottom: 2px;
 
-  font-size: var(--font-body-small);
+  font-size: var(--font-size-350);
   color: var(--text-secondary);
   text-decoration: none;
   cursor: pointer;
@@ -105,10 +105,10 @@ main {
   width: 100%;
   text-align: left;
   font-family: var(--font-sans);
-  line-height: var(--font-height);
+  line-height: var(--font-height-regular);
 }
 .nav-link:hover { color: var(--text-primary); background: var(--surface-secondary); }
-.nav-link.active { color: var(--text-primary); font-weight: var(--font-weight-strong); background: var(--surface-secondary); }
+.nav-link.active { color: var(--text-primary); font-weight: var(--font-weight-550); background: var(--surface-secondary); }
 .nav-link.disabled {
   opacity: 0.4;
   pointer-events: none;
@@ -155,12 +155,12 @@ pre {
   background: var(--surface-secondary);
   border: 1px solid var(--border-primary);
 
-  padding: var(--space-05) var(--space-06);
+  padding: var(--space-500) var(--space-600);
   overflow-x: auto;
   margin: 0;
   font-family: var(--font-mono);
-  font-size: var(--font-body-xsmall);
-  line-height: var(--font-height);
+  font-size: var(--font-size-300);
+  line-height: var(--font-height-regular);
 }
 code {
   font-family: var(--font-mono);
@@ -173,8 +173,8 @@ code {
 }
 pre code { background: none; padding: 0; border: none; font-size: inherit; }
 pre:focus-visible {
-  outline: var(--focus-ring-width) solid var(--border-ring);
-  outline-offset: var(--border-width-01);
+  outline: var(--focus-ring-width) solid var(--border-focus);
+  outline-offset: var(--border-width-025);
 }
 
 /* -- Copy button -------------------------------------------- */
@@ -183,8 +183,8 @@ pre:focus-visible {
   top: 0.625rem;
   right: 0.625rem;
   height: 1.875rem;
-  padding: 0 var(--space-02);
-  font-size: var(--font-body-xsmall);
+  padding: 0 var(--space-200);
+  font-size: var(--font-size-300);
   font-family: var(--font-mono);
   background: var(--background);
   color: var(--text-muted);
@@ -209,11 +209,11 @@ pre:focus-visible {
 }
 .page-header h1 {
   font-family: var(--font-sans);
-  font-size: var(--font-h1);
-  font-weight: var(--font-weight);
-  letter-spacing: var(--font-tracking);
+  font-size: var(--font-size-1000);
+  font-weight: var(--font-weight-400);
+  letter-spacing: var(--text-tracking-default);
   line-height: var(--font-height-tight);
-  margin: 0 0 var(--space-03);
+  margin: 0 0 var(--space-300);
 }
 .page-header > :last-child {
   margin-bottom: 0 !important;
@@ -230,22 +230,22 @@ pre:focus-visible {
   padding: 2rem 1rem 2rem 0;
 }
 .toc-title {
-  font-size: var(--font-body-xsmall);
-  font-weight: var(--font-weight-strong);
+  font-size: var(--font-size-300);
+  font-weight: var(--font-weight-550);
   text-transform: uppercase;
-  letter-spacing: var(--font-tracking);
+  letter-spacing: var(--text-tracking-default);
   color: var(--text-primary);
   margin: 0 0 0.5rem;
   padding: 0 0.5rem;
 }
 .toc-link {
   display: block;
-  padding: 0.1875rem var(--space-02);
-  font-size: var(--font-body-xsmall);
+  padding: 0.1875rem var(--space-200);
+  font-size: var(--font-size-300);
   color: var(--text-muted);
   text-decoration: none;
-  border-left: var(--border-width-02) solid transparent;
-  line-height: var(--font-height);
+  border-left: var(--border-width-050) solid transparent;
+  line-height: var(--font-height-regular);
 }
 .toc-link:hover { color: var(--text-primary); }
 .toc-link.active {
@@ -287,7 +287,7 @@ pre:focus-visible {
 }
 
 .site-nav-dialog::backdrop {
-  background: color-mix(in oklch, var(--surface-overlay), transparent 20%);
+  background: color-mix(in oklch, var(--overlay-strong), transparent 20%);
 }
 
 @media (max-width: 48rem) {
@@ -338,7 +338,7 @@ pre:focus-visible {
     min-width: 0;
   }
   .header-brand-name {
-    font-size: var(--font-body);
+    font-size: var(--font-size-400);
     line-height: var(--font-height-tight);
   }
   /* Shrink header action buttons on mobile */

@@ -84,9 +84,9 @@
 <body>
   <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
   <site-header></site-header>
-  <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
+  <div class="flex" style="margin-top: var(--space-1400); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)" id="main-content" tabindex="-1">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Sortable</h1>
         <p class="text-muted leading-relaxed mb-6">
@@ -100,7 +100,7 @@
         <p class="text-sm font-medium mb-2 mt-6">Default</p>
         <p class="text-xs text-muted mb-4">Drag items to reorder, or use keyboard: Tab to focus, Arrow keys to navigate, Alt+Arrow to move items.</p>
         <div class="preview">
-          <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-08) 0" >
+          <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-1000) 0" >
             <ul class="sortable" role="listbox" aria-label="Task priority" style="width: 20rem">
               <li class="sortable-item" draggable="true" role="option" tabindex="0"><span class="sortable-handle"><i data-lucide="grip-vertical"></i></span><span>Build components</span></li>
               <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i data-lucide="grip-vertical"></i></span><span>Write documentation</span></li>
@@ -109,7 +109,7 @@
             </ul>
           </div>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -130,7 +130,7 @@
         <p class="text-sm font-medium mb-2 mt-8">Horizontal</p>
         <p class="text-xs text-muted mb-4">Set <code>data-orientation="horizontal"</code> for a row layout. Arrow keys switch to Left/Right.</p>
         <div class="preview">
-          <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-08) 0" >
+          <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-1000) 0" >
             <ul class="sortable" role="listbox" aria-label="Reorder tags" data-orientation="horizontal" style="max-width: 28rem">
               <li class="sortable-item" draggable="true" role="option" tabindex="0"><span>React</span></li>
               <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span>TypeScript</span></li>
@@ -139,7 +139,7 @@
             </ul>
           </div>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -158,32 +158,32 @@
         <p class="text-sm font-medium mb-2 mt-8">With icons</p>
         <p class="text-xs text-muted mb-4">Rich content with icons alongside labels. The handle provides a clear drag affordance.</p>
         <div class="preview">
-          <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-08) 0" >
+          <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-1000) 0" >
             <ul class="sortable" role="listbox" aria-label="Prioritize features" style="width: 22rem">
               <li class="sortable-item" draggable="true" role="option" tabindex="0">
                 <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
-                <i data-lucide="layout-dashboard" style="width: var(--size-04); height: var(--size-04); flex-shrink: 0; color: var(--text-muted)"></i>
+                <i data-lucide="layout-dashboard" style="width: var(--size-400); height: var(--size-400); flex-shrink: 0; color: var(--text-muted)"></i>
                 <span>Dashboard</span>
               </li>
               <li class="sortable-item" draggable="true" role="option" tabindex="-1">
                 <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
-                <i data-lucide="settings" style="width: var(--size-04); height: var(--size-04); flex-shrink: 0; color: var(--text-muted)"></i>
+                <i data-lucide="settings" style="width: var(--size-400); height: var(--size-400); flex-shrink: 0; color: var(--text-muted)"></i>
                 <span>Settings</span>
               </li>
               <li class="sortable-item" draggable="true" role="option" tabindex="-1">
                 <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
-                <i data-lucide="users" style="width: var(--size-04); height: var(--size-04); flex-shrink: 0; color: var(--text-muted)"></i>
+                <i data-lucide="users" style="width: var(--size-400); height: var(--size-400); flex-shrink: 0; color: var(--text-muted)"></i>
                 <span>Team</span>
               </li>
               <li class="sortable-item" draggable="true" role="option" tabindex="-1">
                 <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
-                <i data-lucide="chart-column" style="width: var(--size-04); height: var(--size-04); flex-shrink: 0; color: var(--text-muted)"></i>
+                <i data-lucide="chart-column" style="width: var(--size-400); height: var(--size-400); flex-shrink: 0; color: var(--text-muted)"></i>
                 <span>Analytics</span>
               </li>
             </ul>
           </div>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -201,7 +201,7 @@
         <p class="text-sm font-medium mb-2 mt-8">Disabled items</p>
         <p class="text-xs text-muted mb-4">Set <code>aria-disabled="true"</code> to lock items in place. Disabled items are skipped by keyboard and cannot be dragged.</p>
         <div class="preview">
-          <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-08) 0" >
+          <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-1000) 0" >
             <ul class="sortable" role="listbox" aria-label="Reorder steps" style="width: 20rem">
               <li class="sortable-item" aria-disabled="true" tabindex="-1">
                 <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
@@ -223,7 +223,7 @@
             </ul>
           </div>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -239,7 +239,7 @@
         <p class="text-sm font-medium mb-2 mt-8">Keyboard reordering</p>
         <p class="text-xs text-muted mb-4">Focus the list with <kbd class="kbd">Tab</kbd>, navigate with <kbd class="kbd">↑</kbd>/<kbd class="kbd">↓</kbd>, reorder with <kbd class="kbd">Alt+↑</kbd>/<kbd class="kbd">Alt+↓</kbd>. A screen reader live region announces each move.</p>
         <div class="preview">
-          <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-08) 0" >
+          <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-1000) 0" >
             <ul class="sortable" role="listbox" aria-label="Rank languages" style="width: 20rem">
               <li class="sortable-item" draggable="true" role="option" tabindex="0"><span class="sortable-handle"><i data-lucide="grip-vertical"></i></span><span>JavaScript</span></li>
               <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i data-lucide="grip-vertical"></i></span><span>Python</span></li>
@@ -249,7 +249,7 @@
             </ul>
           </div>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy

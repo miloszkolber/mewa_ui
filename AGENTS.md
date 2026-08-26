@@ -167,6 +167,10 @@ Use semantic color roles.
 
 Use current spacing and size tokens.
 
+Use the canonical scale where `100` equals 4px.
+
+Use three-digit color steps such as `050`.
+
 Use square geometry.
 
 Use borders instead of shadows.
@@ -182,6 +186,8 @@ Support increased contrast.
 Support forced colors.
 
 Use rem units for shared responsive breakpoints.
+
+Keep media-query literals aligned with the named breakpoint tokens.
 
 Do not add a raw color to a component.
 

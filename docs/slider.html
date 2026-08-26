@@ -85,10 +85,10 @@
   <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
   <site-header></site-header>
 
-  <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
+  <div class="flex" style="margin-top: var(--space-1400); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
 
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)" id="main-content" tabindex="-1">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Slider</h1>
         <p class="text-muted leading-relaxed mb-6">
@@ -102,7 +102,7 @@
             <input class="slider" type="range" min="0" max="100" value="50">
           </div>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -117,7 +117,7 @@
             <input class="slider" type="range" id="d-vol" min="0" max="100" value="75">
           </div>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -131,21 +131,21 @@
         <p class="text-xs text-muted mb-3">Shows current value using a native <code>&lt;output&gt;</code> element.</p>
         <div class="preview">
           <div style="width: 100%; max-width: 20rem">
-            <div style="display: flex; justify-content: space-between; align-items: center; gap: var(--space-04)">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: var(--space-400)">
               <label class="label" for="d-temp" style="margin: 0">Temperature</label>
-              <output id="d-temp-output" class="text-muted" for="d-temp" style="font-size: var(--font-body-small); font-family: var(--font-mono)" >0.5</output>
+              <output id="d-temp-output" class="text-muted" for="d-temp" style="font-size: var(--font-size-350); font-family: var(--font-mono)" >0.5</output>
             </div>
             <input class="slider" type="range" id="d-temp" min="0" max="1" step="0.1" value="0.5" oninput="document.getElementById('d-temp-output').value = this.value">
           </div>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
           </button>
-          <pre><code class="language-markup">&lt;div style="display: flex; justify-content: space-between; align-items: center; gap: var(--space-04)"&gt;
+          <pre><code class="language-markup">&lt;div style="display: flex; justify-content: space-between; align-items: center; gap: var(--space-400)"&gt;
   &lt;label class="label" for="temp" style="margin: 0"&gt;Temperature&lt;/label&gt;
-  &lt;output id="temp-output" class="text-muted" style="font-size: var(--font-body-small); font-family: var(--font-mono)" for="temp"&gt;0.5&lt;/output&gt;
+  &lt;output id="temp-output" class="text-muted" style="font-size: var(--font-size-350); font-family: var(--font-mono)" for="temp"&gt;0.5&lt;/output&gt;
 &lt;/div&gt;
 &lt;input class="slider" type="range" id="temp" min="0" max="1" step="0.1" value="0.5"
   oninput="document.getElementById('temp-output').value = this.value"&gt;</code></pre>
@@ -156,14 +156,14 @@
         <p class="text-xs text-muted mb-3">Slider with discrete step increments.</p>
         <div class="preview">
           <div style="width: 100%; max-width: 20rem">
-            <div style="display: flex; justify-content: space-between; align-items: center; gap: var(--space-04)">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: var(--space-400)">
               <label class="label" for="d-step" style="margin: 0">Step: 25</label>
-              <output id="d-step-output" class="text-muted" for="d-step" style="font-size: var(--font-body-small); font-family: var(--font-mono)" >50</output>
+              <output id="d-step-output" class="text-muted" for="d-step" style="font-size: var(--font-size-350); font-family: var(--font-mono)" >50</output>
             </div>
             <input class="slider" type="range" id="d-step" min="0" max="100" step="25" value="50" oninput="document.getElementById('d-step-output').value = this.value">
           </div>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -177,7 +177,7 @@
         <div class="preview" style="min-height: 14rem">
           <input class="slider" type="range" data-orientation="vertical" min="0" max="100" value="60">
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -193,7 +193,7 @@
             <input class="slider" type="range" min="0" max="100" value="30" disabled>
           </div>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy

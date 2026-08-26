@@ -85,10 +85,10 @@
   <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
   <site-header></site-header>
 
-  <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
+  <div class="flex" style="margin-top: var(--space-1400); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
 
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)" id="main-content" tabindex="-1">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Form</h1>
         <p class="text-muted leading-relaxed mb-6">
@@ -99,7 +99,7 @@
         <!-- Default -->
         <p class="text-sm font-medium mb-2 mt-6">Default</p>
         <p class="text-xs text-muted mb-3">Simple form with labeled fields and descriptions.</p>
-        <div class="preview" style="padding: var(--space-07)">
+        <div class="preview" style="padding: var(--space-800)">
           <form class="form" style="width: 100%; max-width: 24rem" onsubmit="return false;">
             <div class="form-field">
               <label class="label" for="f-name">Username</label>
@@ -122,7 +122,7 @@
             </div>
           </form>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -153,7 +153,7 @@
         <!-- Inline fields -->
         <p class="text-sm font-medium mb-2 mt-8">Inline fields</p>
         <p class="text-xs text-muted mb-3">Checkbox and switch aligned with labels.</p>
-        <div class="preview" style="padding: var(--space-07)">
+        <div class="preview" style="padding: var(--space-800)">
           <form class="form" style="width: 100%; max-width: 24rem" onsubmit="return false;">
             <div class="form-field">
               <label class="label" for="f2-user">Username</label>
@@ -161,18 +161,18 @@
             </div>
             <div class="form-field-inline">
               <input class="checkbox" type="checkbox" id="f2-terms">
-              <label for="f2-terms" style="font-size: var(--font-body-small)">Accept terms and conditions</label>
+              <label for="f2-terms" style="font-size: var(--font-size-350)">Accept terms and conditions</label>
             </div>
             <div class="form-field-inline">
               <input class="switch" type="checkbox" role="switch" id="f2-news">
-              <label for="f2-news" style="font-size: var(--font-body-small)">Subscribe to newsletter</label>
+              <label for="f2-news" style="font-size: var(--font-size-350)">Subscribe to newsletter</label>
             </div>
             <div class="form-actions">
               <button class="btn" type="submit" data-variant="default">Create account</button>
             </div>
           </form>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -190,7 +190,7 @@
         <!-- Notification / switch rows -->
         <p class="text-sm font-medium mt-8">Switch rows (notifications)</p>
         <p class="text-xs text-muted mb-3">Notification-style rows with label, description, and switch.</p>
-        <div class="preview" style="padding: var(--space-07)">
+        <div class="preview" style="padding: var(--space-800)">
           <form class="form" style="width: 100%; max-width: 28rem" onsubmit="return false;">
             <div class="form-field-row">
               <div>
@@ -211,7 +211,7 @@
             </div>
           </form>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -235,7 +235,7 @@
         <!-- Fieldset grouping -->
         <p class="text-sm font-medium mb-2 mt-8">Fieldset grouping</p>
         <p class="text-xs text-muted mb-3">Group related fields with <code>&lt;fieldset&gt;</code> and <code>&lt;legend&gt;</code>.</p>
-        <div class="preview" style="padding: var(--space-07)">
+        <div class="preview" style="padding: var(--space-800)">
           <form class="form" style="width: 100%; max-width: 24rem" onsubmit="return false;">
             <div class="form-field">
               <label class="label" for="f4-name">Full name</label>
@@ -246,15 +246,15 @@
               <div class="form-group">
                 <div class="form-field-inline">
                   <input class="radio" type="radio" name="f4-notify" id="f4-all" checked>
-                  <label for="f4-all" style="font-size: var(--font-body-small)">All new messages</label>
+                  <label for="f4-all" style="font-size: var(--font-size-350)">All new messages</label>
                 </div>
                 <div class="form-field-inline">
                   <input class="radio" type="radio" name="f4-notify" id="f4-direct">
-                  <label for="f4-direct" style="font-size: var(--font-body-small)">Direct messages and mentions</label>
+                  <label for="f4-direct" style="font-size: var(--font-size-350)">Direct messages and mentions</label>
                 </div>
                 <div class="form-field-inline">
                   <input class="radio" type="radio" name="f4-notify" id="f4-none">
-                  <label for="f4-none" style="font-size: var(--font-body-small)">Nothing</label>
+                  <label for="f4-none" style="font-size: var(--font-size-350)">Nothing</label>
                 </div>
               </div>
             </fieldset>
@@ -263,7 +263,7 @@
             </div>
           </form>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -290,7 +290,7 @@
         <!-- Horizontal layout -->
         <p class="text-sm font-medium mb-2 mt-8">Horizontal layout</p>
         <p class="text-xs text-muted mb-3">Label placed beside the control with <code>data-orientation="horizontal"</code>.</p>
-        <div class="preview" style="padding: var(--space-07)">
+        <div class="preview" style="padding: var(--space-800)">
           <form class="form" style="width: 100%; max-width: 32rem" onsubmit="return false;">
             <div class="form-field" data-orientation="horizontal">
               <label class="label" for="f5-name">Name</label>
@@ -311,7 +311,7 @@
             </div>
           </form>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -328,7 +328,7 @@
         <!-- Validation / error state -->
         <p class="text-sm font-medium mb-2 mt-8">Validation with errors</p>
         <p class="text-xs text-muted mb-3">Fields with <code>data-invalid</code> and <code>aria-invalid</code> for error states.</p>
-        <div class="preview" style="padding: var(--space-07)">
+        <div class="preview" style="padding: var(--space-800)">
           <form class="form" style="width: 100%; max-width: 24rem" onsubmit="return false;" novalidate>
             <div class="form-field" data-invalid>
               <label class="label" for="f6-user">Username</label>
@@ -350,7 +350,7 @@
             </div>
           </form>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -368,7 +368,7 @@
         <!-- Full kitchen sink -->
         <p class="text-sm font-medium mb-2 mt-8">Full composition</p>
         <p class="text-xs text-muted mb-3">Comprehensive form composing multiple field types.</p>
-        <div class="preview" style="padding: var(--space-07)">
+        <div class="preview" style="padding: var(--space-800)">
           <form class="form" style="width: 100%; max-width: 28rem" onsubmit="return false;">
             <div class="form-field">
               <label class="label" for="f7-name">Username</label>
@@ -399,15 +399,15 @@
               <div class="form-group">
                 <div class="form-field-inline">
                   <input class="radio" type="radio" name="f7-notify" id="f7-all" checked>
-                  <label for="f7-all" style="font-size: var(--font-body-small)">All new messages</label>
+                  <label for="f7-all" style="font-size: var(--font-size-350)">All new messages</label>
                 </div>
                 <div class="form-field-inline">
                   <input class="radio" type="radio" name="f7-notify" id="f7-direct">
-                  <label for="f7-direct" style="font-size: var(--font-body-small)">Direct messages and mentions</label>
+                  <label for="f7-direct" style="font-size: var(--font-size-350)">Direct messages and mentions</label>
                 </div>
                 <div class="form-field-inline">
                   <input class="radio" type="radio" name="f7-notify" id="f7-nothing">
-                  <label for="f7-nothing" style="font-size: var(--font-body-small)">Nothing</label>
+                  <label for="f7-nothing" style="font-size: var(--font-size-350)">Nothing</label>
                 </div>
               </div>
             </fieldset>
@@ -430,7 +430,7 @@
             </div>
           </form>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy

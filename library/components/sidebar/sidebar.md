@@ -115,7 +115,7 @@ Keep reading order and route access logical when the visual side changes.
 
 ## Mobile navigation
 
-Use a native dialog below the 48rem shell tier.
+Use a native dialog below the `--breakpoint-compact` shell tier, 48rem.
 
 ```html
 <button class="btn"
@@ -149,7 +149,7 @@ Keep the desktop and mobile route sets equivalent.
 
 The module closes the mobile dialog after a route link activates.
 
-The module closes an open mobile dialog when the viewport crosses above 48rem.
+The module closes an open mobile dialog above `--breakpoint-compact`, 48rem.
 
 ## Behavior
 
@@ -173,7 +173,7 @@ The mobile backdrop uses the semantic overlay surface without blur.
 
 Native route links remain usable without JavaScript.
 
-At 48rem and below, the stylesheet exposes the desktop route list as normal flow when scripting is unavailable.
+At `--breakpoint-compact`, 48rem, the stylesheet exposes the desktop route list as normal flow when scripting is unavailable.
 
 The stylesheet hides dead mobile and collapse controls when scripting is unavailable.
 

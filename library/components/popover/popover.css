@@ -3,37 +3,37 @@
     position: fixed;
     inset: auto;
     margin: 0;
-    border: var(--border-width-01) solid var(--border-secondary);
+    border: var(--border-width-025) solid var(--border-secondary);
 
     background-color: var(--surface-primary);
     color: var(--text-primary);
-    padding: var(--space-04);
+    padding: var(--space-400);
 
     width: 20rem;
 
     /* -- Default: bottom center -- */
     position-area: bottom;
-    margin-top: var(--space-01);
+    margin-top: var(--space-100);
     position-try-fallbacks: flip-block;
 
     /* ----- Side variants ----- */
     &[data-side="top"] {
       position-area: top;
       margin-top: 0;
-      margin-bottom: var(--space-01);
+      margin-bottom: var(--space-100);
     }
 
     &[data-side="left"] {
       position-area: left;
       margin-top: 0;
-      margin-right: var(--space-01);
+      margin-right: var(--space-100);
       position-try-fallbacks: flip-inline;
     }
 
     &[data-side="right"] {
       position-area: right;
       margin-top: 0;
-      margin-left: var(--space-01);
+      margin-left: var(--space-100);
       position-try-fallbacks: flip-inline;
     }
 
@@ -53,21 +53,21 @@
     }
   }
 
-  .popover-header { margin-bottom: var(--space-03); }
-  .popover-title { margin: 0; font-size: var(--font-body-small); font-weight: var(--font-weight-strong); color: var(--text-primary); }
-  .popover-description { margin: var(--space-01) 0 0; font-size: var(--font-body-small); color: var(--text-muted); }
-  .popover-content { font-size: var(--font-body-small); }
+  .popover-header { margin-bottom: var(--space-300); }
+  .popover-title { margin: 0; font-size: var(--font-size-350); font-weight: var(--font-weight-550); color: var(--text-primary); }
+  .popover-description { margin: var(--space-100) 0 0; font-size: var(--font-size-350); color: var(--text-muted); }
+  .popover-content { font-size: var(--font-size-350); }
 
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {
-    .popover { border-width: var(--border-width-02); }
+    .popover { border-width: var(--border-width-050); }
   }
 
   @media (forced-colors: active) {
     .popover {
       background: Canvas;
       color: CanvasText;
-      border: var(--border-width-02) solid CanvasText;
+      border: var(--border-width-050) solid CanvasText;
       backdrop-filter: none;
     }
   }

@@ -8,15 +8,15 @@
 
   .timeline-item {
     display: flex;
-    gap: var(--space-04);
-    padding-bottom: var(--space-06);
+    gap: var(--space-400);
+    padding-bottom: var(--space-600);
     position: relative;
 
     &::before {
       content: '';
       position: absolute;
-      left: var(--space-01);
-      top: var(--space-04);
+      left: var(--space-100);
+      top: var(--space-400);
       bottom: 0;
       width: 1px;
       background-color: var(--border-primary);
@@ -37,7 +37,7 @@
     border-radius: 0;
     background-color: var(--border-primary);
     flex-shrink: 0;
-    margin-top: var(--space-02);
+    margin-top: var(--space-200);
     position: relative;
     z-index: var(--z-raised);
 
@@ -49,30 +49,30 @@
   .timeline-content {
     display: flex;
     flex-direction: column;
-    gap: var(--space-01);
+    gap: var(--space-100);
     min-width: 0;
     flex: 1;
   }
 
   .timeline-title {
     margin: 0;
-    font-size: var(--font-body-small);
-    font-weight: var(--font-weight-strong);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-550);
     color: var(--text-primary);
-    line-height: var(--font-height);
+    line-height: var(--font-height-regular);
   }
 
   .timeline-description {
     margin: 0;
-    font-size: var(--font-body-small);
+    font-size: var(--font-size-350);
     color: var(--text-muted);
-    line-height: var(--font-height);
+    line-height: var(--font-height-regular);
   }
 
   .timeline-time {
-    font-size: var(--font-body-xsmall);
+    font-size: var(--font-size-300);
     color: var(--text-muted);
-    margin-top: var(--space-01);
+    margin-top: var(--space-100);
   }
 
   @media (prefers-contrast: more) {

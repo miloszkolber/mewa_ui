@@ -4,11 +4,11 @@
   .toggle-group {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-00);
+    gap: var(--space-000);
 
     /* -- Outline variant: propagate border to children ---------- */
     &[data-variant="outline"] > .toggle {
-      border: var(--border-width-01) solid var(--border-secondary);
+      border: var(--border-width-025) solid var(--border-secondary);
       background: transparent;
 
       &:not([aria-pressed="true"]):hover {
@@ -39,7 +39,7 @@
 
     /* -- Spacing: adds gap between individual toggles ----------- */
     &[data-spacing] {
-      gap: var(--space-01);
+      gap: var(--space-100);
     }
 
     /* -- Disabled group ----------------------------------------- */

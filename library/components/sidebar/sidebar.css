@@ -24,7 +24,7 @@
     width: var(--sidebar-width, 16rem);
     height: 100dvh;
     overflow: hidden;
-    border-inline-end: var(--border-width-01) solid var(--border-muted);
+    border-inline-end: var(--border-width-025) solid var(--border-muted);
     background: var(--surface-primary);
 
     &::after {
@@ -32,8 +32,8 @@
       position: absolute;
       inset-block: 0;
       inset-inline-end: 0;
-      inline-size: var(--size-03);
-      border-inline-start: var(--border-width-01) solid var(--border-muted);
+      inline-size: var(--size-300);
+      border-inline-start: var(--border-width-025) solid var(--border-muted);
       background: repeating-linear-gradient(
         135deg,
         var(--surface-primary) 0,
@@ -47,39 +47,39 @@
     & > .sidebar-header,
     & > .sidebar-content,
     & > .sidebar-footer {
-      margin-inline-end: var(--size-03);
+      margin-inline-end: var(--size-300);
     }
 
     &[data-side="right"] {
       order: 1;
-      border-inline-start: var(--border-width-01) solid var(--border-muted);
+      border-inline-start: var(--border-width-025) solid var(--border-muted);
       border-inline-end: 0;
 
       &::after {
         inset-inline-start: 0;
         inset-inline-end: auto;
         border-inline-start: 0;
-        border-inline-end: var(--border-width-01) solid var(--border-muted);
+        border-inline-end: var(--border-width-025) solid var(--border-muted);
       }
 
       & > .sidebar-header,
       & > .sidebar-content,
       & > .sidebar-footer {
-        margin-inline-start: var(--size-03);
+        margin-inline-start: var(--size-300);
         margin-inline-end: 0;
       }
     }
 
     &[data-state="collapsed"] {
-      width: var(--sidebar-width-collapsed, calc(var(--size-10) + var(--size-03)));
+      width: var(--sidebar-width-collapsed, calc(var(--size-1400) + var(--size-300)));
 
       & .sidebar-link > span,
       & .sidebar-trigger-label,
       & .sidebar-logo-text {
         position: absolute;
-        inline-size: var(--border-width-01);
-        block-size: var(--border-width-01);
-        margin: calc(-1 * var(--border-width-01));
+        inline-size: var(--border-width-025);
+        block-size: var(--border-width-025);
+        margin: calc(-1 * var(--border-width-025));
         padding: 0;
         overflow: hidden;
         border: 0;
@@ -91,7 +91,7 @@
       & .sidebar-header,
       & .sidebar-footer {
         justify-content: center;
-        padding: var(--space-03);
+        padding: var(--space-300);
       }
 
       & .sidebar-nav {
@@ -101,7 +101,7 @@
       & .sidebar-link,
       & .sidebar-trigger {
         justify-content: center;
-        inline-size: var(--size-08);
+        inline-size: var(--size-1000);
         padding-inline: 0;
       }
     }
@@ -115,23 +115,23 @@
     display: flex;
     flex-shrink: 0;
     align-items: center;
-    gap: var(--space-02);
-    padding: var(--space-03);
-    border-block-end: var(--border-width-01) solid var(--border-muted);
+    gap: var(--space-200);
+    padding: var(--space-300);
+    border-block-end: var(--border-width-025) solid var(--border-muted);
   }
 
   .sidebar-logo {
     display: flex;
     align-items: center;
-    gap: var(--space-02);
+    gap: var(--space-200);
     color: var(--text-primary);
-    font-size: var(--font-body-small);
-    font-weight: var(--font-weight-strong);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-550);
     text-decoration: none;
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-ring);
-      outline-offset: var(--border-width-01);
+      outline: var(--focus-ring-width) solid var(--border-focus);
+      outline-offset: var(--border-width-025);
     }
   }
 
@@ -140,14 +140,14 @@
     flex: none;
     align-items: center;
     justify-content: center;
-    inline-size: var(--size-07);
-    block-size: var(--size-07);
+    inline-size: var(--size-800);
+    block-size: var(--size-800);
     background: var(--surface-inverted);
     color: var(--text-inverted);
 
     & :is(svg, i) {
-      inline-size: var(--size-04);
-      block-size: var(--size-04);
+      inline-size: var(--size-400);
+      block-size: var(--size-400);
     }
   }
 
@@ -155,8 +155,8 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    gap: var(--space-02);
-    padding: var(--space-02);
+    gap: var(--space-200);
+    padding: var(--space-200);
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-color: var(--border-muted) transparent;
@@ -166,18 +166,18 @@
   .sidebar-nav {
     display: flex;
     flex-direction: column;
-    gap: var(--space-01);
+    gap: var(--space-100);
   }
 
   .sidebar-link {
     position: relative;
     display: flex;
     align-items: center;
-    gap: var(--space-03);
-    block-size: var(--size-08);
-    padding-inline: var(--space-03);
+    gap: var(--space-300);
+    block-size: var(--size-1000);
+    padding-inline: var(--space-300);
     color: var(--text-primary);
-    font-size: var(--font-body-small);
+    font-size: var(--font-size-350);
     text-decoration: none;
 
     &:hover,
@@ -189,18 +189,18 @@
 
     &[data-active="true"],
     &[aria-current="page"] {
-      font-weight: var(--font-weight-strong);
+      font-weight: var(--font-weight-550);
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-ring);
-      outline-offset: var(--border-width-01);
+      outline: var(--focus-ring-width) solid var(--border-focus);
+      outline-offset: var(--border-width-025);
     }
 
     & svg {
       flex-shrink: 0;
-      width: var(--size-04);
-      height: var(--size-04);
+      width: var(--size-400);
+      height: var(--size-400);
     }
   }
 
@@ -208,26 +208,26 @@
     display: flex;
     flex-shrink: 0;
     flex-direction: column;
-    gap: var(--space-03);
-    padding: var(--space-03);
-    border-block-start: var(--border-width-01) solid var(--border-muted);
+    gap: var(--space-300);
+    padding: var(--space-300);
+    border-block-start: var(--border-width-025) solid var(--border-muted);
     color: var(--text-primary);
-    font-size: var(--font-body-small);
+    font-size: var(--font-size-350);
   }
 
   .sidebar-trigger {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: var(--space-03);
+    gap: var(--space-300);
     width: 100%;
-    block-size: var(--size-08);
-    padding-inline: var(--space-03);
+    block-size: var(--size-1000);
+    padding-inline: var(--space-300);
     border: 0;
     background: transparent;
     color: var(--text-primary);
     font: inherit;
-    line-height: var(--font-height-none);
+    line-height: var(--font-height-flat);
     text-align: start;
     cursor: pointer;
 
@@ -236,14 +236,14 @@
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-ring);
-      outline-offset: var(--border-width-01);
+      outline: var(--focus-ring-width) solid var(--border-focus);
+      outline-offset: var(--border-width-025);
     }
 
     & svg {
       flex-shrink: 0;
-      width: var(--size-04);
-      height: var(--size-04);
+      width: var(--size-400);
+      height: var(--size-400);
     }
   }
 
@@ -279,18 +279,18 @@
     }
 
     &::backdrop {
-      background: var(--surface-overlay);
+      background: var(--overlay-strong);
     }
 
     & .sidebar-mobile-close {
       position: absolute;
-      inset-block-start: var(--space-03);
-      inset-inline-end: var(--space-03);
+      inset-block-start: var(--space-300);
+      inset-inline-end: var(--space-300);
       display: flex;
       align-items: center;
       justify-content: center;
-      width: var(--size-06);
-      height: var(--size-06);
+      width: var(--size-600);
+      height: var(--size-600);
       padding: 0;
       border: 0;
       background: transparent;
@@ -302,13 +302,13 @@
       }
 
       &:focus-visible {
-        outline: var(--focus-ring-width) solid var(--border-ring);
-        outline-offset: var(--border-width-01);
+        outline: var(--focus-ring-width) solid var(--border-focus);
+        outline-offset: var(--border-width-025);
       }
 
       & svg {
-        width: var(--size-03);
-        height: var(--size-03);
+        width: var(--size-300);
+        height: var(--size-300);
       }
     }
 
@@ -359,7 +359,7 @@
   @media (prefers-contrast: more) {
     .sidebar-link,
     .sidebar-trigger {
-      border: var(--border-width-01) solid var(--text-primary);
+      border: var(--border-width-025) solid var(--text-primary);
     }
   }
 

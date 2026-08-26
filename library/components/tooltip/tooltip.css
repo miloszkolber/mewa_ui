@@ -17,9 +17,9 @@
 
     background-color: var(--surface-inverted);
     color: var(--text-inverted);
-    padding: var(--space-02) var(--space-03);
-    font-size: var(--font-body-xsmall);
-    line-height: var(--font-height);
+    padding: var(--space-200) var(--space-300);
+    font-size: var(--font-size-300);
+    line-height: var(--font-height-regular);
 
     pointer-events: none;
     max-width: 16rem;
@@ -27,7 +27,7 @@
 
     /* -- Default: top center -- */
     position-area: top;
-    margin-bottom: var(--space-02);
+    margin-bottom: var(--space-200);
     position-try-fallbacks: --tip-flip-top, flip-inline, flip-block;
 
     &:popover-open {
@@ -39,21 +39,21 @@
     &[data-side="bottom"] {
       position-area: bottom;
       margin-bottom: 0;
-      margin-top: var(--space-02);
+      margin-top: var(--space-200);
       position-try-fallbacks: --tip-flip-bottom, flip-inline, flip-block;
     }
 
     &[data-side="left"] {
       position-area: left;
       margin-bottom: 0;
-      margin-right: var(--space-02);
+      margin-right: var(--space-200);
       position-try-fallbacks: --tip-flip-left, flip-block, flip-inline;
     }
 
     &[data-side="right"] {
       position-area: right;
       margin-bottom: 0;
-      margin-left: var(--space-02);
+      margin-left: var(--space-200);
       position-try-fallbacks: --tip-flip-right, flip-block, flip-inline;
     }
 
@@ -75,24 +75,24 @@
     /* ----- Arrow ----- */
     & [data-arrow] {
       position: absolute;
-      width: var(--size-02);
-      height: var(--size-02);
+      width: var(--size-200);
+      height: var(--size-200);
       background: inherit;
       transform: rotate(45deg);
       border: none;
     }
 
     &:not([data-side]), &[data-side="top"] {
-      & [data-arrow] { bottom: calc(-1 * var(--size-01)); left: 50%; margin-left: calc(-1 * var(--space-01)); }
+      & [data-arrow] { bottom: calc(-1 * var(--size-100)); left: 50%; margin-left: calc(-1 * var(--space-100)); }
     }
     &[data-side="bottom"] {
-      & [data-arrow] { top: calc(-1 * var(--size-01)); left: 50%; margin-left: calc(-1 * var(--space-01)); }
+      & [data-arrow] { top: calc(-1 * var(--size-100)); left: 50%; margin-left: calc(-1 * var(--space-100)); }
     }
     &[data-side="left"] {
-      & [data-arrow] { right: calc(-1 * var(--size-01)); top: 50%; margin-top: calc(-1 * var(--space-01)); }
+      & [data-arrow] { right: calc(-1 * var(--size-100)); top: 50%; margin-top: calc(-1 * var(--space-100)); }
     }
     &[data-side="right"] {
-      & [data-arrow] { left: calc(-1 * var(--size-01)); top: 50%; margin-top: calc(-1 * var(--space-01)); }
+      & [data-arrow] { left: calc(-1 * var(--size-100)); top: 50%; margin-top: calc(-1 * var(--space-100)); }
     }
   }
 
@@ -106,36 +106,36 @@
     .tooltip:not([data-side]) [data-arrow],
     .tooltip[data-side] [data-arrow] {
       bottom: auto;
-      top: calc(-1 * var(--size-01));
+      top: calc(-1 * var(--size-100));
       left: 50%;
-      margin: 0 0 0 calc(-1 * var(--space-01));
+      margin: 0 0 0 calc(-1 * var(--space-100));
     }
   }
   @container style(--tooltip-arrow-side: bottom) {
     .tooltip:not([data-side]) [data-arrow],
     .tooltip[data-side] [data-arrow] {
       top: auto;
-      bottom: calc(-1 * var(--size-01));
+      bottom: calc(-1 * var(--size-100));
       left: 50%;
-      margin: 0 0 0 calc(-1 * var(--space-01));
+      margin: 0 0 0 calc(-1 * var(--space-100));
     }
   }
   @container style(--tooltip-arrow-side: left) {
     .tooltip:not([data-side]) [data-arrow],
     .tooltip[data-side] [data-arrow] {
       right: auto;
-      left: calc(-1 * var(--size-01));
+      left: calc(-1 * var(--size-100));
       top: 50%;
-      margin: calc(-1 * var(--space-01)) 0 0 0;
+      margin: calc(-1 * var(--space-100)) 0 0 0;
     }
   }
   @container style(--tooltip-arrow-side: right) {
     .tooltip:not([data-side]) [data-arrow],
     .tooltip[data-side] [data-arrow] {
       left: auto;
-      right: calc(-1 * var(--size-01));
+      right: calc(-1 * var(--size-100));
       top: 50%;
-      margin: calc(-1 * var(--space-01)) 0 0 0;
+      margin: calc(-1 * var(--space-100)) 0 0 0;
     }
   }
 
@@ -144,7 +144,7 @@
     .tooltip {
       background: Canvas;
       color: CanvasText;
-      border: var(--border-width-01) solid CanvasText;
+      border: var(--border-width-025) solid CanvasText;
     }
   }
 }

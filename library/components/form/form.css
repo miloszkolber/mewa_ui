@@ -4,31 +4,31 @@
   .form {
     display: flex;
     flex-direction: column;
-    gap: var(--space-06);
+    gap: var(--space-600);
   }
 
   /* -- Form field -------------------------------------------- */
   .form-field {
     display: flex;
     flex-direction: column;
-    gap: var(--space-01);
+    gap: var(--space-100);
 
     /* Keep label and description metrics identical to Text Field. */
     & > .label {
       margin-bottom: 0;
-      line-height: var(--font-height);
+      line-height: var(--font-height-regular);
     }
 
     /* -- Horizontal orientation (label beside control) ------- */
     &[data-orientation="horizontal"] {
       flex-direction: row;
       align-items: start;
-      gap: var(--space-04);
+      gap: var(--space-400);
 
       & > .label {
         margin-bottom: 0;
-        padding-top: var(--space-02);
-        min-width: var(--size-15);
+        padding-top: var(--space-200);
+        min-width: var(--size-3200);
         flex-shrink: 0;
       }
     }
@@ -45,7 +45,7 @@
   .form-field-inline {
     display: flex;
     align-items: center;
-    gap: var(--space-02);
+    gap: var(--space-200);
 
     & > .label {
       margin-bottom: 0;
@@ -58,21 +58,21 @@
     flex-direction: row;
     align-items: start;
     justify-content: space-between;
-    gap: var(--space-04);
-    border: var(--border-width-01) solid var(--border-primary);
+    gap: var(--space-400);
+    border: var(--border-width-025) solid var(--border-primary);
 
-    padding: var(--space-04);
+    padding: var(--space-400);
 
 
     & > div {
       display: flex;
       flex-direction: column;
-      gap: var(--space-01);
+      gap: var(--space-100);
     }
 
     & > div > .label {
       margin-bottom: 0;
-      line-height: var(--font-height);
+      line-height: var(--font-height-regular);
     }
 
     & > div > .field-description {
@@ -87,9 +87,9 @@
   /* -- Button actions row ----------------------------------- */
   .form-actions {
     display: flex;
-    gap: var(--space-02);
+    gap: var(--space-200);
     align-items: center;
-    padding-top: var(--space-02);
+    padding-top: var(--space-200);
   }
 
   /* -- Fieldset --------------------------------------------- */
@@ -99,11 +99,11 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-04);
+    gap: var(--space-400);
 
     & > legend {
-      font-size: var(--font-body-small);
-      font-weight: var(--font-weight-strong);
+      font-size: var(--font-size-350);
+      font-weight: var(--font-weight-550);
       font-family: var(--font-sans);
       color: var(--text-primary);
       padding: 0;
@@ -111,7 +111,7 @@
     }
 
     & > .field-description {
-      margin: 0 0 var(--space-01);
+      margin: 0 0 var(--space-100);
     }
   }
 
@@ -119,13 +119,13 @@
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: var(--space-03);
+    gap: var(--space-300);
   }
 
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {
     .form-field-row {
-      border-width: var(--border-width-02);
+      border-width: var(--border-width-050);
     }
   }
 

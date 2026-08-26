@@ -127,7 +127,7 @@ test("every component skill states purpose, implementation, accessibility, runti
 
 test("semantic tokens have machine-readable purposes", () => {
   const tokensCss = read("library/src/tokens.css");
-  const cssNames = new Set(Array.from(tokensCss.matchAll(/^\s*(--(?:background|surface|text|border|chart)-?[\w-]*)\s*:/gm), (match) => match[1]));
+  const cssNames = new Set(Array.from(tokensCss.matchAll(/^\s*(--(?:background|surface|overlay|text|border|chart)-?[\w-]*)\s*:/gm), (match) => match[1]));
   const metadata = registry.designTokens?.semantic || [];
   const metadataNames = new Set(metadata.map((token) => token.name));
 
@@ -152,7 +152,7 @@ test("component CSS stays square, tokenized, shadow-free, and motionless", () =>
     }
     assert(!/var\(\s*--color-[\w-]+\s*\)/i.test(source), `${filename}: palette primitives are forbidden`);
     for (const match of source.matchAll(/border-radius\s*:\s*([^;{}]+)/gi)) {
-      assert(/^(?:0|50%|inherit|var\(--radius-full\)|var\(--border-radius\))$/i.test(match[1].trim()), `${filename}: unsupported radius ${match[1].trim()}`);
+      assert(/^(?:0|50%|inherit|var\(--border-radius-6400\)|var\(--border-radius-000\))$/i.test(match[1].trim()), `${filename}: unsupported radius ${match[1].trim()}`);
     }
   }
 });
@@ -212,12 +212,12 @@ test("high-risk native-first runtime contracts do not regress", () => {
     const css = read(`library/components/${slug}/${slug}.css`);
     const skill = read(`library/components/${slug}/${slug}.md`);
     assert.match(script, /data-(?:resizable|sortable)-(?:decrease|increase)/, `${slug}: missing non-drag pointer controls`);
-    assert.match(css, new RegExp(`\\.${slug === "resizable" ? "resizable" : "sortable"}-step[\\s\\S]*(?:inline-size|width):\\s*var\\(--size-07\\)`), `${slug}: pointer controls must use a 32px target`);
+    assert.match(css, new RegExp(`\\.${slug === "resizable" ? "resizable" : "sortable"}-step[\\s\\S]*(?:inline-size|width):\\s*var\\(--size-800\\)`), `${slug}: pointer controls must use a 32px target`);
     assert(/Do not (?:rely on dragging|make dragging)/.test(skill), `${slug}: skill must prohibit drag-only interaction`);
   }
 
   const carouselCss = read("library/components/carousel/carousel.css");
-  assert.match(carouselCss, /\.carousel-dot[\s\S]*width:\s*var\(--size-06\)/, "Carousel direct-slide controls must use a 24px target");
+  assert.match(carouselCss, /\.carousel-dot[\s\S]*width:\s*var\(--size-600\)/, "Carousel direct-slide controls must use a 24px target");
 });
 
 test("agent-facing source does not reference the retired layouts directory", () => {

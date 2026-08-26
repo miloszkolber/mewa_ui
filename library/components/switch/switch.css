@@ -4,7 +4,7 @@
   .switch {
     appearance: none;
     width: 2.75rem;
-    height: var(--size-06);
+    height: var(--size-600);
     border-radius: 0;
     background: var(--border-primary);
     cursor: pointer;
@@ -16,7 +16,7 @@
       content: '';
       position: absolute;
       top: 50%;
-      inset-inline-start: var(--space-01);
+      inset-inline-start: var(--space-100);
       width: 1.125rem;
       height: 1.125rem;
       background: var(--surface-inverted);
@@ -27,15 +27,15 @@
       background: var(--surface-inverted);
 
       &::after {
-        inset-inline-start: calc(100% - 1.125rem - var(--space-01));
+        inset-inline-start: calc(100% - 1.125rem - var(--space-100));
         transform: translateY(-50%);
         background: var(--background);
       }
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-ring);
-      outline-offset: var(--border-width-01);
+      outline: var(--focus-ring-width) solid var(--border-focus);
+      outline-offset: var(--border-width-025);
     }
 
     &:disabled {
@@ -68,10 +68,10 @@
   .switch-item {
     display: flex;
     align-items: center;
-    gap: var(--space-02);
+    gap: var(--space-200);
 
     & > label {
-      font-size: var(--font-body-small);
+      font-size: var(--font-size-350);
       cursor: pointer;
     }
   }
@@ -79,7 +79,7 @@
   .switch-item-block {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 0 var(--space-03);
+    gap: 0 var(--space-300);
     align-items: center;
 
     & > .switch {
@@ -87,15 +87,15 @@
     }
 
     & > label {
-      font-size: var(--font-body-small);
-      font-weight: var(--font-weight-strong);
+      font-size: var(--font-size-350);
+      font-weight: var(--font-weight-550);
       cursor: pointer;
     }
 
     & > .switch-description {
-      font-size: var(--font-body-small);
+      font-size: var(--font-size-350);
       color: var(--text-muted);
-      line-height: var(--font-height);
+      line-height: var(--font-height-regular);
     }
   }
 
@@ -109,7 +109,7 @@
   @media (forced-colors: active) {
     .switch {
       background: ButtonFace;
-      border: var(--border-width-01) solid ButtonText;
+      border: var(--border-width-025) solid ButtonText;
 
       &::after {
         background: ButtonText;

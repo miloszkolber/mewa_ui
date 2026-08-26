@@ -40,12 +40,27 @@
       },
       {
         "name": "--surface-secondary",
-        "purpose": "Quiet surface for hover, selection, and secondary grouping.",
+        "purpose": "Quiet structural surface for secondary grouping.",
         "stability": "stable"
       },
       {
         "name": "--surface-secondary-glass",
         "purpose": "Translucent secondary surface for approved sticky chrome.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-hover",
+        "purpose": "Theme-aware translucent surface for pointer and keyboard hover feedback.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-selected",
+        "purpose": "Theme-aware translucent surface for a selected or current item.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-disabled",
+        "purpose": "Theme-aware translucent surface for a disabled control or region.",
         "stability": "stable"
       },
       {
@@ -64,11 +79,6 @@
         "stability": "stable"
       },
       {
-        "name": "--surface-overlay",
-        "purpose": "Backdrop surface behind modal top-layer content.",
-        "stability": "stable"
-      },
-      {
         "name": "--surface-inverted",
         "purpose": "Highest-contrast normal surface for primary actions and signets.",
         "stability": "stable"
@@ -76,6 +86,21 @@
       {
         "name": "--surface-destructive",
         "purpose": "Filled destructive action surface.",
+        "stability": "stable"
+      },
+      {
+        "name": "--overlay-subtle",
+        "purpose": "Lowest-emphasis translucent overlay for local state and separation.",
+        "stability": "stable"
+      },
+      {
+        "name": "--overlay-moderate",
+        "purpose": "Medium-emphasis translucent overlay for local state and separation.",
+        "stability": "stable"
+      },
+      {
+        "name": "--overlay-strong",
+        "purpose": "Strong backdrop overlay behind modal top-layer content.",
         "stability": "stable"
       },
       {
@@ -139,8 +164,38 @@
         "stability": "stable"
       },
       {
-        "name": "--border-ring",
-        "purpose": "Authored focus-indicator color.",
+        "name": "--border-hover",
+        "purpose": "Boundary color for an interactive element under hover.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-selected",
+        "purpose": "Boundary color for a selected or current interactive element.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-disabled",
+        "purpose": "Boundary color for a disabled control or region.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-focus",
+        "purpose": "Theme-aware blue boundary for authored focus indicators.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-positive",
+        "purpose": "Boundary color for positive status and validation.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-negative",
+        "purpose": "Boundary color for negative status and validation.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-caution",
+        "purpose": "Boundary color for caution status and validation.",
         "stability": "stable"
       },
       {
@@ -167,9 +222,53 @@
         "name": "--chart-5",
         "purpose": "Lowest-contrast monochrome chart series.",
         "stability": "stable"
+      },
+      {
+        "name": "--chart-neutral",
+        "purpose": "Primary neutral chart mark with theme-aware contrast.",
+        "stability": "stable"
+      },
+      {
+        "name": "--chart-positive",
+        "purpose": "Positive chart mark with theme-aware contrast.",
+        "stability": "stable"
+      },
+      {
+        "name": "--chart-negative",
+        "purpose": "Negative chart mark with theme-aware contrast.",
+        "stability": "stable"
+      },
+      {
+        "name": "--chart-caution",
+        "purpose": "Caution chart mark with theme-aware contrast.",
+        "stability": "stable"
+      },
+      {
+        "name": "--chart-area-neutral",
+        "purpose": "Translucent neutral chart area that adapts to its surface.",
+        "stability": "stable"
+      },
+      {
+        "name": "--chart-area-positive",
+        "purpose": "Translucent positive chart area that adapts to its surface.",
+        "stability": "stable"
+      },
+      {
+        "name": "--chart-area-negative",
+        "purpose": "Translucent negative chart area that adapts to its surface.",
+        "stability": "stable"
+      },
+      {
+        "name": "--chart-area-caution",
+        "purpose": "Translucent caution chart area that adapts to its surface.",
+        "stability": "stable"
       }
     ],
     "foundationFamilies": [
+      {
+        "prefix": "--color-",
+        "purpose": "Solid and tuned-alpha color primitives for foundation and semantic token definitions."
+      },
       {
         "prefix": "--font-",
         "purpose": "Typography family, size, weight, line-height, and tracking primitives."
@@ -187,8 +286,16 @@
         "purpose": "Structural border-width primitives."
       },
       {
-        "prefix": "--radius-",
-        "purpose": "Exceptional circular geometry primitives."
+        "prefix": "--border-radius-",
+        "purpose": "Border-radius primitives for square and exceptional circular geometry."
+      },
+      {
+        "prefix": "--text-case-",
+        "purpose": "Text-case primitives for authored typography variants."
+      },
+      {
+        "prefix": "--text-decoration-",
+        "purpose": "Text-decoration primitives for authored typography variants."
       },
       {
         "prefix": "--opacity-",
@@ -201,6 +308,14 @@
       {
         "prefix": "--blur-",
         "purpose": "Blur primitives reserved for approved sticky shell chrome."
+      },
+      {
+        "prefix": "--breakpoint-",
+        "purpose": "Named responsive tiers and approved global canvas maximums."
+      },
+      {
+        "prefix": "--index-",
+        "purpose": "Numeric stacking primitives used by semantic z-index aliases."
       }
     ]
   },

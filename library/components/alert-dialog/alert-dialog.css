@@ -1,12 +1,12 @@
 @layer components {
   dialog.alert-dialog {
-    border: var(--border-width-01) solid var(--border-secondary);
+    border: var(--border-width-025) solid var(--border-secondary);
 
     background: var(--background);
     color: var(--text-primary);
     padding: 0;
     max-width: 28rem;
-    width: calc(100% - var(--size-07));
+    width: calc(100% - var(--size-800));
 
     margin: auto;
     position: fixed;
@@ -15,46 +15,46 @@
     &::backdrop {
       /* Layer the semantic scrim to keep modal content distinct in both themes. */
       background:
-        linear-gradient(var(--surface-overlay), var(--surface-overlay)),
-        var(--surface-overlay);
-      backdrop-filter: blur(var(--blur-02));
+        linear-gradient(var(--overlay-strong), var(--overlay-strong)),
+        var(--overlay-strong);
+      backdrop-filter: blur(var(--blur-200));
       pointer-events: auto;
     }
   }
 
   .alert-dialog-content {
-    padding: var(--space-06);
+    padding: var(--space-600);
   }
 
   .alert-dialog-header {
-    margin-bottom: var(--space-05);
+    margin-bottom: var(--space-500);
   }
 
   .alert-dialog-title {
     margin: 0;
-    font-size: var(--font-h4);
-    font-weight: var(--font-weight-strong);
+    font-size: var(--font-size-400);
+    font-weight: var(--font-weight-550);
     letter-spacing: -0.01em;
     line-height: var(--font-height-tight);
   }
 
   .alert-dialog-description {
-    margin: var(--space-02) 0 0;
-    font-size: var(--font-body-small);
+    margin: var(--space-200) 0 0;
+    font-size: var(--font-size-350);
     color: var(--text-muted);
-    line-height: var(--font-height);
+    line-height: var(--font-height-regular);
   }
 
   .alert-dialog-footer {
     display: flex;
     justify-content: flex-end;
-    gap: var(--space-02);
+    gap: var(--space-200);
   }
 
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {
     dialog.alert-dialog {
-      border-width: var(--border-width-02);
+      border-width: var(--border-width-050);
     }
   }
 
@@ -62,7 +62,7 @@
     dialog.alert-dialog {
       background: Canvas;
       color: CanvasText;
-      border: var(--border-width-02) solid CanvasText;
+      border: var(--border-width-050) solid CanvasText;
     }
 
     &::backdrop {

@@ -3,7 +3,7 @@
 @layer components {
   .resizable {
     display: grid;
-    gap: var(--space-03);
+    gap: var(--space-300);
     inline-size: 100%;
     min-inline-size: 0;
   }
@@ -15,7 +15,7 @@
     min-block-size: 12rem;
     min-inline-size: 0;
     overflow: hidden;
-    border: var(--border-width-01) solid var(--border-primary);
+    border: var(--border-width-025) solid var(--border-primary);
     background: var(--surface-primary);
 
     &[data-orientation="horizontal"] {
@@ -31,7 +31,7 @@
     min-block-size: 0;
     min-inline-size: 0;
     overflow: auto;
-    padding: var(--space-04);
+    padding: var(--space-400);
     background: var(--surface-primary);
     color: var(--text-primary);
 
@@ -47,20 +47,20 @@
   .resizable-handle {
     position: relative;
     z-index: 1;
-    flex: 0 0 var(--size-06);
-    inline-size: var(--size-06);
-    min-block-size: var(--size-06);
+    flex: 0 0 var(--size-600);
+    inline-size: var(--size-600);
+    min-block-size: var(--size-600);
     align-self: stretch;
-    margin: 0 calc(-1 * var(--size-03));
+    margin: 0 calc(-1 * var(--size-300));
     padding: 0;
     border: 0;
     border-radius: 0;
     background: linear-gradient(
       to right,
-      transparent calc(50% - (var(--border-width-01) / 2)),
-      var(--border-primary) calc(50% - (var(--border-width-01) / 2)),
-      var(--border-primary) calc(50% + (var(--border-width-01) / 2)),
-      transparent calc(50% + (var(--border-width-01) / 2))
+      transparent calc(50% - (var(--border-width-025) / 2)),
+      var(--border-primary) calc(50% - (var(--border-width-025) / 2)),
+      var(--border-primary) calc(50% + (var(--border-width-025) / 2)),
+      transparent calc(50% + (var(--border-width-025) / 2))
     );
     color: var(--text-muted);
 
@@ -68,9 +68,9 @@
       position: absolute;
       inset-block-start: 50%;
       inset-inline-start: 50%;
-      inline-size: var(--size-01);
-      block-size: var(--size-08);
-      border-inline: var(--border-width-01) solid currentColor;
+      inline-size: var(--size-100);
+      block-size: var(--size-1000);
+      border-inline: var(--border-width-025) solid currentColor;
       content: "";
       pointer-events: none;
       transform: translate(-50%, -50%);
@@ -86,10 +86,10 @@
     .resizable[data-init] &:focus-visible {
       background: linear-gradient(
         to right,
-        transparent calc(50% - (var(--border-width-01) / 2)),
-        var(--border-secondary) calc(50% - (var(--border-width-01) / 2)),
-        var(--border-secondary) calc(50% + (var(--border-width-01) / 2)),
-        transparent calc(50% + (var(--border-width-01) / 2))
+        transparent calc(50% - (var(--border-width-025) / 2)),
+        var(--border-secondary) calc(50% - (var(--border-width-025) / 2)),
+        var(--border-secondary) calc(50% + (var(--border-width-025) / 2)),
+        transparent calc(50% + (var(--border-width-025) / 2))
       );
       color: var(--text-muted);
     }
@@ -97,17 +97,17 @@
     .resizable[data-init] &[data-resizing] {
       background: linear-gradient(
         to right,
-        transparent calc(50% - (var(--border-width-02) / 2)),
-        var(--border-ring) calc(50% - (var(--border-width-02) / 2)),
-        var(--border-ring) calc(50% + (var(--border-width-02) / 2)),
-        transparent calc(50% + (var(--border-width-02) / 2))
+        transparent calc(50% - (var(--border-width-050) / 2)),
+        var(--border-focus) calc(50% - (var(--border-width-050) / 2)),
+        var(--border-focus) calc(50% + (var(--border-width-050) / 2)),
+        transparent calc(50% + (var(--border-width-050) / 2))
       );
       color: var(--text-primary);
     }
 
     .resizable[data-init] &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-ring);
-      outline-offset: var(--border-width-01);
+      outline: var(--focus-ring-width) solid var(--border-focus);
+      outline-offset: var(--border-width-025);
     }
 
     .resizable[data-init] &:disabled,
@@ -119,18 +119,18 @@
 
   .resizable-group[data-orientation="horizontal"] .resizable-handle,
   .resizable[data-orientation="horizontal"] .resizable-handle {
-    flex-basis: var(--size-06);
+    flex-basis: var(--size-600);
     inline-size: auto;
-    min-inline-size: var(--size-06);
-    block-size: var(--size-06);
-    min-block-size: var(--size-06);
-    margin: calc(-1 * var(--size-03)) 0;
+    min-inline-size: var(--size-600);
+    block-size: var(--size-600);
+    min-block-size: var(--size-600);
+    margin: calc(-1 * var(--size-300)) 0;
     background: linear-gradient(
       to bottom,
-      transparent calc(50% - (var(--border-width-01) / 2)),
-      var(--border-primary) calc(50% - (var(--border-width-01) / 2)),
-      var(--border-primary) calc(50% + (var(--border-width-01) / 2)),
-      transparent calc(50% + (var(--border-width-01) / 2))
+      transparent calc(50% - (var(--border-width-025) / 2)),
+      var(--border-primary) calc(50% - (var(--border-width-025) / 2)),
+      var(--border-primary) calc(50% + (var(--border-width-025) / 2)),
+      transparent calc(50% + (var(--border-width-025) / 2))
     );
 
     .resizable[data-init] & {
@@ -138,20 +138,20 @@
     }
 
     &::after {
-      inline-size: var(--size-08);
-      block-size: var(--size-01);
+      inline-size: var(--size-1000);
+      block-size: var(--size-100);
       border-inline: 0;
-      border-block: var(--border-width-01) solid currentColor;
+      border-block: var(--border-width-025) solid currentColor;
     }
 
     .resizable[data-init] &:hover,
     .resizable[data-init] &:focus-visible {
       background: linear-gradient(
         to bottom,
-        transparent calc(50% - (var(--border-width-01) / 2)),
-        var(--border-secondary) calc(50% - (var(--border-width-01) / 2)),
-        var(--border-secondary) calc(50% + (var(--border-width-01) / 2)),
-        transparent calc(50% + (var(--border-width-01) / 2))
+        transparent calc(50% - (var(--border-width-025) / 2)),
+        var(--border-secondary) calc(50% - (var(--border-width-025) / 2)),
+        var(--border-secondary) calc(50% + (var(--border-width-025) / 2)),
+        transparent calc(50% + (var(--border-width-025) / 2))
       );
       color: var(--text-muted);
     }
@@ -159,10 +159,10 @@
     .resizable[data-init] &[data-resizing] {
       background: linear-gradient(
         to bottom,
-        transparent calc(50% - (var(--border-width-02) / 2)),
-        var(--border-ring) calc(50% - (var(--border-width-02) / 2)),
-        var(--border-ring) calc(50% + (var(--border-width-02) / 2)),
-        transparent calc(50% + (var(--border-width-02) / 2))
+        transparent calc(50% - (var(--border-width-050) / 2)),
+        var(--border-focus) calc(50% - (var(--border-width-050) / 2)),
+        var(--border-focus) calc(50% + (var(--border-width-050) / 2)),
+        transparent calc(50% + (var(--border-width-050) / 2))
       );
       color: var(--text-primary);
     }
@@ -171,17 +171,17 @@
   .resizable-controls {
     display: flex;
     justify-content: flex-end;
-    gap: var(--space-01);
+    gap: var(--space-100);
   }
 
   .resizable-step {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    inline-size: var(--size-07);
-    block-size: var(--size-07);
+    inline-size: var(--size-800);
+    block-size: var(--size-800);
     padding: 0;
-    border: var(--border-width-01) solid var(--border-primary);
+    border: var(--border-width-025) solid var(--border-primary);
     border-radius: 0;
     background: var(--surface-primary);
     color: var(--text-primary);
@@ -195,8 +195,8 @@
   }
 
   .resizable-step:focus-visible {
-    outline: var(--focus-ring-width) solid var(--border-ring);
-    outline-offset: var(--border-width-01);
+    outline: var(--focus-ring-width) solid var(--border-focus);
+    outline-offset: var(--border-width-025);
   }
 
   .resizable-step:disabled {
@@ -209,17 +209,17 @@
     display: block;
     color: var(--text-secondary);
     font-family: var(--font-mono);
-    font-size: var(--font-body-xsmall);
+    font-size: var(--font-size-300);
   }
 
   @media (prefers-contrast: more) {
     .resizable-group,
     .resizable-step {
-      border-width: var(--border-width-02);
+      border-width: var(--border-width-050);
     }
 
     .resizable-handle::after {
-      border-width: var(--border-width-02);
+      border-width: var(--border-width-050);
     }
   }
 
@@ -236,7 +236,7 @@
 
     .resizable-handle {
       background: ButtonFace;
-      border-inline: var(--border-width-01) solid ButtonBorder;
+      border-inline: var(--border-width-025) solid ButtonBorder;
       color: ButtonText;
     }
 

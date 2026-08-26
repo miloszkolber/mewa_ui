@@ -36,9 +36,9 @@ Use `.layout-container` for a centered focused-content region.
 </div>
 ```
 
-The default maximum is 64rem.
+The default maximum is `--breakpoint-max-focused`, 64rem.
 
-Use App Shell canvas rules for 90rem dense application content.
+Use App Shell canvas rules with `--breakpoint-max-dense`, 90rem, for dense application content.
 
 Do not introduce a third global content-width preset.
 

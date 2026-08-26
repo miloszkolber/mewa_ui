@@ -5,16 +5,16 @@
 
 @layer components {
   .spinner {
-    width: var(--size-04);
-    height: var(--size-04);
+    width: var(--size-400);
+    height: var(--size-400);
     color: var(--text-muted);
     flex-shrink: 0;
     animation: spinner-rotate 0.8s linear infinite;
 
     /* Same data-size scale as the Icon component. */
-    &[data-size="md"] { width: var(--size-05); height: var(--size-05); }
-    &[data-size="lg"] { width: var(--size-06); height: var(--size-06); }
-    &[data-size="xl"] { width: var(--size-07); height: var(--size-07); }
+    &[data-size="md"] { width: var(--size-500); height: var(--size-500); }
+    &[data-size="lg"] { width: var(--size-600); height: var(--size-600); }
+    &[data-size="xl"] { width: var(--size-800); height: var(--size-800); }
   }
 
   @keyframes spinner-rotate {

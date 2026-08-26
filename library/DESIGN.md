@@ -116,23 +116,39 @@ Use palette primitives only inside foundation files.
 
 Use semantic color roles inside components and consumers.
 
+Use neutral as the CSS name for the Penpot grayscale family.
+
+Use `000` for white and `050` through `950` for the neutral scale.
+
+Do not define a pure-black primitive.
+
+Keep palette symmetry across each palette's own `050` and `950` endpoints.
+
+Test chromatic `600` primarily on the same palette's `050`.
+
+Test chromatic `400` primarily on the same palette's `950`.
+
+Keep chromatic palette hues constant in OKLCH.
+
+Use tuned alpha primitives through semantic roles.
+
 Use the token purposes in `registry.json`.
 
 Use the numeric spacing and size tokens from `library/src/base.css`.
 
 Do not add a second spacing scale.
 
-Use `--border-radius: 0` for normal geometry.
+Use `--border-radius-000` for normal geometry.
 
-Use `--radius-full` only when circular geometry carries meaning.
+Use `--border-radius-6400` only when circular geometry carries meaning.
 
-Use `--border-width-01` for normal structure.
+Use `--border-width-025` for normal structure.
 
-Use `--border-width-02` for focus and strong emphasis.
+Use `--border-width-050` for focus and strong emphasis.
 
-Use `--border-width-03` only when the component contract requires it.
+Use `--border-width-100` only when the component contract requires it.
 
-Use `--blur-01` for sticky shell chrome.
+Use `--blur-100` for sticky shell chrome.
 
 Do not use blur on controls, cards, rows, dialogs, or body content.
 
@@ -142,7 +158,13 @@ Use `--background` for the page canvas.
 
 Use `--surface-primary` for a continuous content region.
 
-Use `--surface-secondary` for hover, selection, quiet grouping, and alternating emphasis.
+Use `--surface-secondary` for quiet grouping and alternating emphasis.
+
+Use `--surface-hover` for hover feedback.
+
+Use `--surface-selected` for selected and current state.
+
+Use `--surface-disabled` for disabled surfaces.
 
 Use `--surface-inverted` for the primary high-contrast action.
 
@@ -153,6 +175,10 @@ Use `--border-primary` for normal separation.
 Use `--border-secondary` for stronger internal separation.
 
 Use `--border-muted` for low-emphasis or dashed boundaries.
+
+Use `--border-focus` for authored focus indicators.
+
+Use the matching semantic border for status validation.
 
 Use one border to define one visual boundary.
 
@@ -252,15 +278,15 @@ Use the Spinner component only while work is in progress.
 
 Use `60rem` to collapse a wide content-and-rail composition.
 
-Use `48rem` to change shell navigation and major page structure.
+Use the `--breakpoint-compact` value, `48rem`, for shell navigation and major page structure.
 
-Use `37.5rem` to apply compact single-column behavior.
+Use the `--breakpoint-narrow` value, `37.5rem`, for compact single-column behavior.
 
 Use rem units for responsive breakpoints.
 
-Use `90rem` for dense application canvases.
+Use the `--breakpoint-max-dense` value, `90rem`, for dense application canvases.
 
-Use `64rem` for focused tools and content pages.
+Use the `--breakpoint-max-focused` value, `64rem`, for focused tools and content pages.
 
 Do not add another global canvas preset.
 

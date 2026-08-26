@@ -84,9 +84,9 @@
 <body>
   <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
   <site-header></site-header>
-  <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
+  <div class="flex" style="margin-top: var(--space-1400); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)" id="main-content" tabindex="-1">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Text Field</h1>
         <p class="text-muted leading-relaxed mb-6">A Kernel-aligned, native composition of a real <code>&lt;label&gt;</code>, real <code>&lt;input&gt;</code>, and optional description or error text. Zero JavaScript.</p>
@@ -101,7 +101,7 @@
           <p class="text-field-description" id="text-field-email-help">We will never share your email address.</p>
         </div>
       </div>
-      <div style="position: relative; margin-top: var(--space-02)">
+      <div style="position: relative; margin-top: var(--space-200)">
         <button class="copy-btn" type="button">Copy</button>
         <pre><code class="language-markup">&lt;div class="text-field"&gt;
   &lt;label class="text-field-label" for="email"&gt;Email&lt;/label&gt;
@@ -124,7 +124,7 @@
       </div>
 
       <p class="text-sm font-medium mb-2 mt-8">Readonly and disabled</p>
-      <div class="preview" style="display: grid; gap: var(--space-03)">
+      <div class="preview" style="display: grid; gap: var(--space-300)">
         <div class="text-field" style="width: 100%; max-width: 24rem">
           <label class="text-field-label" for="text-field-readonly">API key</label>
           <input class="text-field-input" id="text-field-readonly" type="text" value="sk-example" readonly aria-describedby="text-field-readonly-help">
@@ -157,13 +157,13 @@
           <p class="text-field-description" id="text-field-standalone-email-help">Use the standalone input class with native validation.</p>
         </div>
       </div>
-      <div style="position: relative; margin-top: var(--space-02)">
+      <div style="position: relative; margin-top: var(--space-200)">
         <button class="copy-btn" type="button">Copy</button>
         <pre><code class="language-markup">&lt;label class="label" for="email"&gt;Email&lt;/label&gt;
 &lt;input class="text-field-input" type="email" id="email" placeholder="you@example.com" aria-describedby="email-help"&gt;
 &lt;p class="text-field-description" id="email-help"&gt;Use the standalone input class with native validation.&lt;/p&gt;</code></pre>
       </div>
-      <div class="preview" style="display: grid; gap: var(--space-03)">
+      <div class="preview" style="display: grid; gap: var(--space-300)">
         <div style="width: 100%; max-width: 24rem">
           <label class="label" for="text-field-standalone-file">Picture</label>
           <input class="file-input" type="file" id="text-field-standalone-file" name="picture">
@@ -176,21 +176,21 @@
       <p class="text-xs text-muted mb-3 mt-3">Standalone controls support native <code>disabled</code>, <code>readonly</code>, <code>required</code>, <code>aria-invalid</code>, file inputs, passwords, search fields, and inline buttons.</p>
 
       <p class="text-sm font-medium mb-2 mt-8">Standalone input variants</p>
-      <div class="preview" style="display: grid; gap: var(--space-03)">
+      <div class="preview" style="display: grid; gap: var(--space-300)">
         <div style="position: relative; width: 100%; max-width: 24rem">
-          <i data-lucide="search" aria-hidden="true" class="text-muted" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); width: var(--size-04); height: var(--size-04)"></i>
+          <i data-lucide="search" aria-hidden="true" class="text-muted" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); width: var(--size-400); height: var(--size-400)"></i>
           <input class="text-field-input" style="padding-left: 2.25rem" type="search" aria-label="Search" placeholder="Search...">
         </div>
         <div style="width: 100%; max-width: 24rem">
           <label class="label" for="text-field-standalone-password">Password</label>
           <input class="text-field-input" type="password" id="text-field-standalone-password" placeholder="Enter your password">
         </div>
-        <div style="display: flex; gap: var(--space-02); width: 100%; max-width: 24rem">
+        <div style="display: flex; gap: var(--space-200); width: 100%; max-width: 24rem">
           <input class="text-field-input" type="search" aria-label="Search" placeholder="Search...">
           <button class="btn" type="button" data-variant="default">Search</button>
         </div>
       </div>
-      <div style="position: relative; margin-top: var(--space-02)">
+      <div style="position: relative; margin-top: var(--space-200)">
         <button class="copy-btn" type="button">Copy</button>
         <pre><code class="language-markup">&lt;div class="text-field" style="position: relative"&gt;
   &lt;label class="text-field-label" data-hidden for="icon-search"&gt;Search&lt;/label&gt;
@@ -202,7 +202,7 @@
 &lt;label class="label" for="password"&gt;Password&lt;/label&gt;
 &lt;input class="text-field-input" id="password" type="password" placeholder="Enter your password"&gt;
 
-&lt;form role="search" aria-label="Search" style="display: flex; gap: var(--space-02)"&gt;
+&lt;form role="search" aria-label="Search" style="display: flex; gap: var(--space-200)"&gt;
   &lt;label class="text-field-label" data-hidden for="button-search"&gt;Search&lt;/label&gt;
   &lt;input class="text-field-input" id="button-search" type="search" placeholder="Search..."&gt;
   &lt;button class="btn" type="submit" data-variant="default"&gt;Search&lt;/button&gt;
@@ -211,7 +211,7 @@
 
       <p class="text-sm font-medium mb-2 mt-8">Form composition</p>
       <div class="preview">
-        <form style="width: 100%; max-width: 24rem; display: flex; flex-direction: column; gap: var(--space-05)" onsubmit="return false;">
+        <form style="width: 100%; max-width: 24rem; display: flex; flex-direction: column; gap: var(--space-500)" onsubmit="return false;">
           <div>
             <label class="label" for="text-field-form-name">Name <span class="text-negative" aria-hidden="true">*</span></label>
             <input class="text-field-input" type="text" id="text-field-form-name" required placeholder="Jane Doe">
@@ -225,7 +225,7 @@
             <label class="label" for="text-field-form-bio">Bio</label>
             <textarea class="text-field-input" id="text-field-form-bio" placeholder="Tell us about yourself..."></textarea>
           </div>
-          <div style="display: flex; gap: var(--space-02); justify-content: flex-end">
+          <div style="display: flex; gap: var(--space-200); justify-content: flex-end">
             <button class="btn" data-variant="outline" type="reset">Cancel</button>
             <button class="btn" data-variant="default" type="submit">Submit</button>
           </div>

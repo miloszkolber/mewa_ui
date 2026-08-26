@@ -85,10 +85,10 @@
   <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
   <site-header></site-header>
 
-  <div class="flex" style="margin-top: var(--space-10); min-height: calc(100vh - 3.5rem)">
+  <div class="flex" style="margin-top: var(--space-1400); min-height: calc(100vh - 3.5rem)">
     <site-nav></site-nav>
 
-    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-07) var(--space-10) var(--space-15)" id="main-content" tabindex="-1">
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Toggle</h1>
         <p class="text-muted leading-relaxed mb-6">
@@ -101,17 +101,17 @@
         <p class="text-sm font-medium mb-2 mt-6">Default</p>
         <p class="text-xs text-muted mb-3">Transparent at rest. Background appears on hover and when pressed.</p>
         <div class="preview">
-          <div style="display: flex; gap: var(--space-03); align-items: center">
+          <div style="display: flex; gap: var(--space-300); align-items: center">
             <button type="button" class="toggle" aria-pressed="false" aria-label="Bookmark (unpressed)">
               <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
             </button>
             <button type="button" class="toggle" aria-pressed="true" aria-label="Bookmark (pressed)">
               <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
             </button>
-            <span class="text-muted" style="font-size: var(--font-body-xsmall); margin-left: var(--space-02)">← unpressed vs pressed</span>
+            <span class="text-muted" style="font-size: var(--font-size-300); margin-left: var(--space-200)">← unpressed vs pressed</span>
           </div>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -131,7 +131,7 @@
         <p class="text-sm font-medium mb-2 mt-8">Outline</p>
         <p class="text-xs text-muted mb-3">Visible border and secondary surface at rest.</p>
         <div class="preview">
-          <div style="display: flex; gap: var(--space-02)">
+          <div style="display: flex; gap: var(--space-200)">
             <button type="button" class="toggle" data-variant="outline" aria-pressed="true" aria-label="Toggle italic">
               <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="10" y1="4" y2="4"/><line x1="14" x2="5" y1="20" y2="20"/><line x1="15" x2="9" y1="4" y2="20"/></svg>
             </button>
@@ -140,7 +140,7 @@
             </button>
           </div>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -165,7 +165,7 @@
             Italic
           </button>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -179,11 +179,11 @@
         <!-- Size -->
         <p class="text-sm font-medium mb-2 mt-8">Size</p>
         <div class="preview">
-          <div style="display: flex; gap: var(--space-03); align-items: center">
+          <div style="display: flex; gap: var(--space-300); align-items: center">
             <button type="button" class="toggle" data-variant="outline" aria-pressed="false">Default</button>
           </div>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy
@@ -196,12 +196,12 @@
         <p class="text-sm font-medium mb-2 mt-8">Disabled</p>
         <p class="text-xs text-muted mb-3">Non-interactive at 50% opacity.</p>
         <div class="preview">
-          <div style="display: flex; gap: var(--space-03); align-items: center">
+          <div style="display: flex; gap: var(--space-300); align-items: center">
             <button type="button" class="toggle" data-variant="outline" aria-pressed="false" disabled>Disabled</button>
             <button type="button" class="toggle" data-variant="outline" aria-pressed="true" disabled>Disabled</button>
           </div>
         </div>
-        <div style="position: relative; margin-top: var(--space-02)">
+        <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             Copy

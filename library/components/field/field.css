@@ -5,7 +5,7 @@
   .field {
     display: flex;
     flex-direction: column;
-    gap: var(--space-01);
+    gap: var(--space-100);
     min-inline-size: 0;
   }
 
@@ -14,9 +14,9 @@
     display: block;
     color: var(--text-primary);
     font-family: var(--font-sans);
-    font-size: var(--font-body-small);
-    font-weight: var(--font-weight-strong);
-    line-height: var(--font-height);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-550);
+    line-height: var(--font-height-regular);
     cursor: default;
   }
 
@@ -32,13 +32,13 @@
     textarea
   ) {
     inline-size: 100%;
-    min-block-size: var(--size-08);
-    border: var(--border-width-01) solid var(--border-secondary);
+    min-block-size: var(--size-1000);
+    border: var(--border-width-025) solid var(--border-secondary);
     background: var(--background);
-    padding-inline: var(--space-03);
+    padding-inline: var(--space-300);
     color: var(--text-primary);
     font-family: var(--font-sans);
-    font-size: var(--font-body-small);
+    font-size: var(--font-size-350);
     outline: none;
   }
 
@@ -46,12 +46,12 @@
     input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
     select
   ) {
-    block-size: var(--size-08);
+    block-size: var(--size-1000);
   }
 
   .field > textarea {
-    min-block-size: var(--size-12);
-    padding-block: var(--space-02);
+    min-block-size: var(--size-2000);
+    padding-block: var(--space-200);
     resize: vertical;
   }
 
@@ -62,8 +62,8 @@
   ):focus-visible {
     /* Form controls keep their 1px border and add a 1px outline directly
        outside it, unlike 2px + offset rings used on other elements. */
-    border-color: var(--border-ring);
-    outline: var(--border-width-01) solid var(--border-ring);
+    border-color: var(--border-focus);
+    outline: var(--border-width-025) solid var(--border-focus);
     outline-offset: 0;
   }
 
@@ -111,15 +111,15 @@
     textarea
   ):is([aria-invalid="true"], :user-invalid):focus-visible {
     border-color: var(--text-negative);
-    outline: var(--border-width-01) solid var(--text-negative);
+    outline: var(--border-width-025) solid var(--text-negative);
     outline-offset: 0;
   }
 
   .field-description,
   .field-error {
     margin: 0;
-    font-size: var(--font-body-xsmall);
-    line-height: var(--font-height);
+    font-size: var(--font-size-300);
+    line-height: var(--font-height-regular);
   }
 
   .field-description {
@@ -146,7 +146,7 @@
   .field[data-orientation="horizontal"] {
     flex-direction: row;
     align-items: center;
-    gap: var(--space-02);
+    gap: var(--space-200);
   }
 
   .field[data-orientation="horizontal"] > :is(label, .field-label) {
@@ -170,19 +170,19 @@
 
   .fieldset > legend {
     padding: 0;
-    margin: 0 0 var(--space-01);
+    margin: 0 0 var(--space-100);
     color: var(--text-primary);
-    font-size: var(--font-body-small);
-    font-weight: var(--font-weight-strong);
-    line-height: var(--font-height);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-550);
+    line-height: var(--font-height-regular);
   }
 
   .fieldset > :is(.field-description, .field-error) {
-    margin: 0 0 var(--space-03);
+    margin: 0 0 var(--space-300);
   }
 
   .fieldset > :not(legend):not(.field-description):not(.field-error) {
-    margin-block-start: var(--space-02);
+    margin-block-start: var(--space-200);
   }
 
   .field-separator {
@@ -191,7 +191,7 @@
 
   .field-separator > hr {
     border: 0;
-    border-block-start: var(--border-width-01) solid currentColor;
+    border-block-start: var(--border-width-025) solid currentColor;
     margin: 0;
   }
 
@@ -201,7 +201,7 @@
       select,
       textarea
     ) {
-      border-width: var(--border-width-02);
+      border-width: var(--border-width-050);
     }
 
     .field > :disabled {
@@ -231,7 +231,7 @@
       select,
       textarea
     ):focus-visible {
-      outline: var(--border-width-02) solid Highlight;
+      outline: var(--border-width-050) solid Highlight;
       outline-offset: 1px;
     }
 

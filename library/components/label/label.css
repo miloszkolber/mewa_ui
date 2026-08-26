@@ -2,13 +2,13 @@
 
 @layer components {
   .label {
-    font-size: var(--font-body-small);
-    font-weight: var(--font-weight-strong);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-550);
     font-family: var(--font-sans);
-    line-height: var(--font-height-none);
+    line-height: var(--font-height-flat);
     color: var(--text-primary);
     display: block;
-    margin-bottom: var(--space-02);
+    margin-bottom: var(--space-200);
     cursor: default;
 
     &[data-disabled] {
@@ -25,8 +25,8 @@
 
   /* -- Hint text (optional, required indicators) ----------- */
   .label-hint {
-    font-weight: var(--font-weight);
-    font-size: var(--font-body-small);
+    font-weight: var(--font-weight-400);
+    font-size: var(--font-size-350);
     color: var(--text-muted);
   }
 
