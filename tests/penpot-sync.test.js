@@ -9,7 +9,6 @@ const root = path.resolve(__dirname, "..");
 const generatedFiles = [
   "penpot/source-contracts.generated.json",
   "penpot/foundations.generated.json",
-  "penpot/plan.generated.json",
   "penpot/sync-manifest.generated.json"
 ];
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
@@ -59,7 +58,7 @@ test("contract extraction records native CSS states for variant coverage", () =>
   assert(checkbox.states.includes("disabled"));
 });
 
-test("normalized sync manifest covers components, layout, variants, and source states", () => {
+test("sync manifest covers every registered component with axes, anatomy, and structure", () => {
   const manifest = json("penpot/sync-manifest.generated.json");
   const registry = json("registry.json");
   assert.equal(manifest.components.length, registry.components.length);
@@ -70,42 +69,12 @@ test("normalized sync manifest covers components, layout, variants, and source s
 
   for (const component of manifest.components) {
     assert.equal(component.key, `component.${component.id}`);
-    assert(component.masters.every((master) => master.key.startsWith(`${component.key}.master.`)));
     assert(component.composition.structures.length > 0, `${component.id}: missing canonical structure`);
-    assert(component.variants.length > 0, `${component.id}: missing variants`);
-    assert.equal(new Set(component.variants.map((variant) => variant.key)).size, component.variants.length, `${component.id}: duplicate variant keys`);
-
-    for (const container of [component.layout.master, component.layout.matrix]) {
-      assert(["flex", "grid"].includes(container.type), `${component.id}: invalid container type`);
-      assert.equal(typeof container.direction, "string", `${component.id}: missing container direction`);
-      assert.notEqual(container.gap, undefined, `${component.id}: missing container gap`);
-      for (const side of ["top", "right", "bottom", "left"]) assert.equal(typeof container.padding[side], "number", `${component.id}: missing ${side} padding`);
-      assert(["fixed", "hug", "fill"].includes(container.sizing.horizontal), `${component.id}: missing horizontal sizing`);
-      assert(["fixed", "hug", "fill"].includes(container.sizing.vertical), `${component.id}: missing vertical sizing`);
-      assert.equal(typeof container.sizing.width, "number", `${component.id}: missing layout width`);
-      assert.equal(typeof container.sizing.height, "number", `${component.id}: missing layout height`);
-    }
-    assert.equal(
-      component.layout.matrix.sizing.width,
-      (component.layout.matrix.cell.width * component.layout.matrix.columns)
-        + (component.layout.matrix.columnGap * (component.layout.matrix.columns - 1))
-        + component.layout.matrix.padding.left
-        + component.layout.matrix.padding.right,
-      `${component.id}: matrix width does not fit its declared cells`
-    );
-
-    const axisValues = component.axes.map((axis) => axis.values.length);
-    const compactVariantCount = 1 + axisValues.reduce((sum, count) => sum + count - 1, 0);
-    assert.equal(component.variants.length, compactVariantCount, `${component.id}: variants must use baseline-plus-value coverage`);
+    assert(component.anatomy.length > 0, `${component.id}: missing anatomy`);
+    assert(component.axes.length > 0, `${component.id}: missing axes`);
     for (const axis of component.axes) {
-      for (const value of axis.values) {
-        assert(component.variants.some((variant) => variant.tuple[axis.name] === value.value), `${component.id}: ${axis.name}=${value.value} is uncovered`);
-      }
-    }
-    for (const sourceAxis of component.sourceAxes.filter((axis) => axis.handling === "variant")) {
-      for (const value of sourceAxis.values) {
-        assert(component.variants.some((variant) => variant.tuple[sourceAxis.axis] === value), `${component.id}: source ${sourceAxis.name}=${value} is uncovered`);
-      }
+      assert(axis.values.length > 0, `${component.id}: axis ${axis.name} has no values`);
+      assert.equal(new Set(axis.values.map((value) => value.value)).size, axis.values.length, `${component.id}: duplicate axis values`);
     }
   }
 });
@@ -133,35 +102,37 @@ test("image ratios remain whole values and shared references resolve", () => {
   assert(references("navigation-menu").includes("shared.navigation.item"));
 });
 
-test("sync baselines preserve normal renderer states and CSS states stay on the state axis", () => {
+test("sync manifest preserves renderer-declared axis order and CSS states stay on the state axis", () => {
   const manifest = json("penpot/sync-manifest.generated.json");
   const component = (id) => manifest.components.find((entry) => entry.id === id);
-  const baseline = (id) => component(id).variants[0].tuple;
+  const axis = (id, name) => component(id).axes.find((entry) => entry.name === name);
 
-  assert.equal(baseline("button").interaction, "rest");
-  assert.equal(baseline("button").variant, "default");
-  assert.equal(baseline("toast").interaction, "rest");
-  assert.equal(baseline("toast").variant, "info");
-  assert.equal(baseline("sidebar").interaction, "rest");
+  assert.equal(axis("button", "interaction").values[0].value, "rest");
+  assert.equal(axis("button", "variant").values[0].value, "default");
+  assert.equal(axis("toast", "interaction").values[0].value, "rest");
+  assert.equal(axis("toast", "variant").values[0].value, "info");
+  assert.equal(axis("sidebar", "interaction").values[0].value, "rest");
   for (const entry of manifest.components) {
     const interaction = entry.axes.find((axis) => axis.name === "interaction");
     if (interaction?.values.some((value) => value.value === "rest")) {
-      assert.equal(entry.variants[0].tuple.interaction, "rest", `${entry.id}: non-rest interaction baseline`);
+      assert.equal(interaction.values[0].value, "rest", `${entry.id}: non-rest interaction baseline`);
     }
   }
-  assert(component("checkbox").axes.find((axis) => axis.name === "state").values.some((value) => value.value === "indeterminate"));
+  assert(axis("checkbox", "state").values.some((value) => value.value === "indeterminate"));
   assert(!component("checkbox").axes.some((axis) => axis.name === "interaction"));
-  assert(component("text-field").axes.find((axis) => axis.name === "state").values.some((value) => value.value === "read-only"));
+  assert(axis("text-field", "state").values.some((value) => value.value === "read-only"));
 });
 
-test("sync manifest contains every input required by the MCP writer", () => {
+test("sync manifest contains every input required by the Penpot writer", () => {
   const manifest = json("penpot/sync-manifest.generated.json");
   assert(manifest.foundations.sets["mewa-core"].length > 0);
   assert(Object.keys(manifest.visualRoles).length > 0);
   for (const shared of manifest.sharedComponents) {
     assert(shared.anatomy.length > 0, `${shared.key}: missing anatomy`);
-    assert(["flex", "grid"].includes(shared.layout.type), `${shared.key}: missing explicit layout`);
     for (const part of shared.anatomy) assert(manifest.visualRoles[part.role], `${shared.key}: unresolved role ${part.role}`);
+  }
+  for (const component of manifest.components) {
+    for (const part of component.anatomy) assert(manifest.visualRoles[part.role], `${component.id}: unresolved role ${part.role}`);
   }
 });
 

@@ -4,27 +4,42 @@ This directory is the editable source for the Penpot representation of `mewa_ui`
 
 It does not replace the library contracts. `library/components/*`, `library/src/*`, and
 `registry.json` remain the implementation source of truth. This layer extracts those
-contracts into a stable, inspectable plan, then adds only the information the design
-tool needs: component anatomy, atoms, variant axes, semantic tokens, and layout intent.
+contracts into one stable, inspectable manifest, then adds only the information the
+design tool needs: component anatomy, atoms, variant axes, semantic tokens, and
+composition intent.
+
+## Pipeline
+
+The pipeline is intentionally small. Three scripts read the library and produce three
+deterministic JSON snapshots.
+
+1. `extract-contracts.mjs` reads the Markdown, CSS, and optional module for every
+   component and writes `source-contracts.generated.json`.
+2. `extract-foundations.mjs` reads `library/src/base.css` and `tokens.css` and writes
+   `foundations.generated.json`.
+3. `compile-plan.mjs` combines both extractions with the visual policy and writes
+   `sync-manifest.generated.json` — the only input the Penpot application consumes.
+
+Run the full pipeline with `npm run penpot:extract`. Check freshness with
+`npm run penpot:check`.
 
 ## Files
 
-- `extract-contracts.mjs` reads the Markdown, CSS, and optional module for every
-  component and writes `source-contracts.generated.json`.
-- `blueprints.mjs` is the hand-maintained translation policy. It assigns each component
-  to a specific renderer and records the meaningful variant axes.
-- `compile-plan.mjs` combines the extraction and translation policy into
-  `plan.generated.json` and `sync-manifest.generated.json`. It validates renderer,
-  layout, source-axis, tuple, and shared-reference integrity.
-- `sync-manifest.generated.json` is the normalized Penpot input. It gives each
-  registered component stable keys and explicit variant axes and references.
-- `renderers.mjs` is the adjustable visual anatomy for each component family. It is
-  intentionally independent of the Penpot API so it can be inspected and tested before
-  it is applied to the live file.
-- `PLAYBOOK.md` is the live-application procedure and pitfall log. Read it before any
+- `extract-contracts.mjs` — component contract extraction (markup, CSS states, data
+  axes, canonical structure).
+- `extract-foundations.mjs` — token extraction (core, light, dark sets).
+- `compile-plan.mjs` — manifest compilation and validation. Derives each renderer key
+  from the contract id, folds contract axes and CSS states into the renderer-declared
+  axes, and validates coverage and shared references.
+- `renderers.mjs` — the hand-maintained visual policy. Each component family declares
+  its intent, anatomy (named parts with visual roles), and variant axes. It is
+  independent of the Penpot API so it can be reviewed and tested before application.
+- `visual-roles.mjs` — maps each anatomy role to its semantic token style.
+- `foundation-overrides.mjs` — records intentional tool limitations, such as the
+  550 → 500 weight fallback.
+- `PLAYBOOK.md` — the live-application procedure and pitfall log. Read it before any
   Penpot mutation.
-- `foundation-overrides.mjs` records intentional tool limitations.
-- `layout-presets.mjs` contains the explicit pixel geometry used by Penpot.
+- `AGENTS.md` — concise guidance for agents that build or maintain Penpot components.
 
 Generated JSON files are deterministic reviewable snapshots. Do not edit them directly.
 
@@ -43,11 +58,11 @@ Penpot components are building blocks, not visual displays. Compose from atoms u
 ## Workflow
 
 1. Run `npm run penpot:extract` after a component contract changes.
-2. Update `blueprints.mjs` or `renderers.mjs` when the Penpot representation needs a
-   new anatomy, variant, state, or layout rule.
+2. Update `renderers.mjs` when the Penpot representation needs a new anatomy, variant,
+   or state rule.
 3. Run `npm run penpot:check`.
 4. Inspect `sync-manifest.generated.json` before applying any changes through MCP.
-5. Read `PLAYBOOK.md` before any live mutation.
+5. Read `PLAYBOOK.md` and `AGENTS.md` before any live mutation.
 
 ## MCP application contract
 
