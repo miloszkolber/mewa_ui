@@ -2,37 +2,37 @@
   .table-container {
     width: 100%;
     overflow-x: auto;
-    border: var(--border-width-01) solid var(--border-primary);
+    border: var(--border-width-025) solid var(--border-primary);
 
     container-type: inline-size;
   }
 
   .table-container:focus-visible {
-    outline: var(--focus-ring-width) solid var(--border-ring);
+    outline: var(--focus-ring-width) solid var(--border-focus);
     outline-offset: calc(-1 * var(--focus-ring-width));
   }
 
   .table {
     width: 100%;
     border-collapse: collapse;
-    font-size: var(--font-body-small);
+    font-size: var(--font-size-350);
     text-align: left;
     caption-side: bottom;
   }
 
   .table-caption {
-    padding: var(--space-03) var(--space-04);
-    font-size: var(--font-body-small);
+    padding: var(--space-300) var(--space-400);
+    font-size: var(--font-size-350);
     color: var(--text-muted);
     text-align: center;
   }
 
   .table-head {
-    padding: var(--space-02) var(--space-04);
-    height: var(--size-08);
+    padding: var(--space-200) var(--space-400);
+    height: var(--size-1000);
     font-family: var(--font-mono);
-    font-size: var(--font-body-xsmall);
-    font-weight: var(--font-weight-strong);
+    font-size: var(--font-size-300);
+    font-weight: var(--font-weight-550);
     color: var(--text-muted);
     background-color: transparent;
     text-transform: uppercase;
@@ -41,8 +41,8 @@
   }
 
   .table-cell {
-    padding: var(--space-02) var(--space-04);
-    height: var(--size-08);
+    padding: var(--space-200) var(--space-400);
+    height: var(--size-1000);
     vertical-align: middle;
     color: var(--text-primary);
     border-block: 0;
@@ -51,7 +51,7 @@
       & > :where(div, span):has(.avatar) {
         display: inline-flex;
         align-items: center;
-        gap: var(--space-02);
+        gap: var(--space-200);
         vertical-align: middle;
       }
 
@@ -68,25 +68,25 @@
 
   tfoot .table-row {
     background-color: var(--surface-secondary);
-    font-weight: var(--font-weight-strong);
+    font-weight: var(--font-weight-550);
   }
 
   /* -- Dense terminal variant: compact rows separated by a subtle hairline.
      Add `table--dense` to the `<table>` and keep the default
      `.table-container` outer border as the single section canvas. */
   .table--dense .table-head {
-    padding: var(--space-02) var(--space-04);
+    padding: var(--space-200) var(--space-400);
     height: auto;
-    border-block-end: var(--border-width-01) solid var(--border-primary);
+    border-block-end: var(--border-width-025) solid var(--border-primary);
   }
 
   .table--dense .table-cell {
-    padding: var(--space-03) var(--space-04);
+    padding: var(--space-300) var(--space-400);
     height: auto;
   }
 
   .table--dense .table-row {
-    border-block-end: var(--border-width-01) dashed var(--border-muted);
+    border-block-end: var(--border-width-025) dashed var(--border-muted);
   }
 
   .table--dense .table-row:last-child {
@@ -96,7 +96,7 @@
   /* Optional status column keeps a fixed inline size; actions pin to the end. */
   .table--dense .table-cell--status {
     inline-size: 3rem;
-    padding-inline: var(--space-02);
+    padding-inline: var(--space-200);
     text-align: center;
   }
 
@@ -108,11 +108,11 @@
   /* -- Container query: compact table in narrow containers -- */
   @container (max-width: 480px){
     .table-head,
-    .table-cell { padding: var(--space-02) var(--space-03); font-size: var(--font-body-small); }
+    .table-cell { padding: var(--space-200) var(--space-300); font-size: var(--font-size-350); }
   }
 
   @media (prefers-contrast: more) {
-    .table-container { border-width: var(--border-width-02); }
+    .table-container { border-width: var(--border-width-050); }
   }
 
   @media (forced-colors: active) {

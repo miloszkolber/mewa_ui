@@ -3,10 +3,10 @@
 @layer components {
   .number-field {
     display: inline-grid;
-    grid-template-columns: minmax(0, var(--size-11)) var(--size-08) var(--size-08);
+    grid-template-columns: minmax(0, var(--size-1600)) var(--size-1000) var(--size-1000);
     grid-template-rows: 1fr;
-    height: var(--size-08);
-    border: var(--border-width-01) solid var(--border-secondary);
+    height: var(--size-1000);
+    border: var(--border-width-025) solid var(--border-secondary);
 
     background: var(--background);
 
@@ -25,9 +25,9 @@
       height: 100%;
       width: 100%;
       min-width: 0;
-      padding: 0 var(--space-03);
+      padding: 0 var(--space-300);
       text-align: start;
-      font-size: var(--font-body-small);
+      font-size: var(--font-size-350);
       font-family: var(--font-sans);
       color: var(--text-primary);
       -moz-appearance: textfield;
@@ -39,13 +39,13 @@
       }
 
       &:focus {
-        outline: var(--focus-ring-width) solid var(--border-ring);
-        outline-offset: var(--border-width-01);
+        outline: var(--focus-ring-width) solid var(--border-focus);
+        outline-offset: var(--border-width-025);
       }
 
       &:focus-visible {
-        outline: var(--focus-ring-width) solid var(--border-ring);
-        outline-offset: var(--border-width-01);
+        outline: var(--focus-ring-width) solid var(--border-focus);
+        outline-offset: var(--border-width-025);
       }
 
       &:is([aria-invalid="true"], :user-invalid) {
@@ -65,20 +65,20 @@
       background: transparent;
       color: var(--text-muted);
       cursor: pointer;
-      font-size: var(--font-body-small);
+      font-size: var(--font-size-350);
       font-family: var(--font-sans);
-      line-height: var(--font-height-none);
+      line-height: var(--font-height-flat);
       flex-shrink: 0;
       padding: 0;
 
       /* Step glyphs are square icon buttons inside the control. */
       & :where(i, svg) {
-        width: var(--size-04);
-        height: var(--size-04);
+        width: var(--size-400);
+        height: var(--size-400);
       }
 
       &:focus-visible {
-        outline: var(--focus-ring-width) solid var(--border-ring);
+        outline: var(--focus-ring-width) solid var(--border-focus);
         outline-offset: calc(-1 * var(--focus-ring-width));
       }
 
@@ -90,7 +90,7 @@
       &:first-of-type:not([data-action]),
       &[data-action="decrement"] {
         grid-column: 2;
-        border-inline-start: var(--border-width-01) solid var(--border-secondary);
+        border-inline-start: var(--border-width-025) solid var(--border-secondary);
       }
 
       &:last-of-type:not([data-action]),
@@ -100,7 +100,7 @@
 
       &:is(:last-of-type),
       &[data-action="increment"] {
-        border-inline-start: var(--border-width-01) solid var(--border-secondary);
+        border-inline-start: var(--border-width-025) solid var(--border-secondary);
       }
 
       &:disabled {
@@ -113,8 +113,8 @@
 
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {
-    .number-field { border-width: var(--border-width-02); }
-    .number-field button { border-width: var(--border-width-02); }
+    .number-field { border-width: var(--border-width-050); }
+    .number-field button { border-width: var(--border-width-050); }
   }
 
   @media (forced-colors: active) {

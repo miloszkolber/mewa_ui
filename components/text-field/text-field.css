@@ -4,7 +4,7 @@
   .text-field {
     display: flex;
     flex-direction: column;
-    gap: var(--space-01);
+    gap: var(--space-100);
     min-inline-size: 0;
   }
 
@@ -13,9 +13,9 @@
     display: block;
     color: var(--text-primary);
     font-family: var(--font-sans);
-    font-size: var(--font-body-small);
-    font-weight: var(--font-weight-strong);
-    line-height: var(--font-height);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-550);
+    line-height: var(--font-height-regular);
     cursor: default;
   }
 
@@ -26,10 +26,10 @@
   /* A hidden label remains in the accessibility tree. */
   .text-field-label[data-hidden] {
     position: absolute;
-    inline-size: var(--border-width-01);
-    block-size: var(--border-width-01);
+    inline-size: var(--border-width-025);
+    block-size: var(--border-width-025);
     padding: 0;
-    margin: calc(var(--border-width-01) * -1);
+    margin: calc(var(--border-width-025) * -1);
     overflow: hidden;
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
@@ -40,33 +40,33 @@
   .text-field > :where(input, textarea, select),
   .text-field-input {
     inline-size: 100%;
-    min-block-size: var(--size-08);
-    border: var(--border-width-01) solid var(--border-secondary);
+    min-block-size: var(--size-1000);
+    border: var(--border-width-025) solid var(--border-secondary);
     background: var(--background);
-    padding-inline: var(--space-03);
+    padding-inline: var(--space-300);
     color: var(--text-primary);
     font-family: var(--font-sans);
-    font-size: var(--font-body-small);
+    font-size: var(--font-size-350);
     outline: none;
   }
 
   .text-field > :where(input, select),
   .text-field-input:not(textarea) {
-    block-size: var(--size-08);
+    block-size: var(--size-1000);
   }
 
   .text-field > textarea,
   textarea.text-field-input {
-    min-block-size: var(--size-12);
-    padding-block: var(--space-02);
+    min-block-size: var(--size-2000);
+    padding-block: var(--space-200);
     resize: vertical;
     field-sizing: content;
   }
 
   .text-field > :where(input, textarea, select):focus-visible,
   .text-field-input:focus-visible {
-    border-color: var(--border-ring);
-    outline: var(--border-width-01) solid var(--border-ring);
+    border-color: var(--border-focus);
+    outline: var(--border-width-025) solid var(--border-focus);
     outline-offset: 0;
   }
 
@@ -103,15 +103,15 @@
   .text-field[data-invalid] > :where(input, textarea, select):focus-visible,
   .text-field[data-invalid] > .text-field-input:focus-visible {
     border-color: var(--text-negative);
-    outline: var(--border-width-01) solid var(--text-negative);
+    outline: var(--border-width-025) solid var(--text-negative);
     outline-offset: 0;
   }
 
   .text-field-description,
   .text-field-error {
     margin: 0;
-    font-size: var(--font-body-xsmall);
-    line-height: var(--font-height);
+    font-size: var(--font-size-300);
+    line-height: var(--font-height-regular);
   }
 
   .text-field-description {
@@ -137,7 +137,7 @@
   .text-field[data-orientation="horizontal"] {
     flex-direction: row;
     align-items: center;
-    gap: var(--space-02);
+    gap: var(--space-200);
   }
 
   .text-field[data-orientation="horizontal"] > :is(label, .text-field-label) {
@@ -147,7 +147,7 @@
   @media (prefers-contrast: more) {
     .text-field > :where(input, textarea, select),
     .text-field-input {
-      border-width: var(--border-width-02);
+      border-width: var(--border-width-050);
     }
 
     .text-field > :disabled,
@@ -171,7 +171,7 @@
 
     .text-field > :where(input, textarea, select):focus-visible,
     .text-field-input:focus-visible {
-      outline: var(--border-width-02) solid Highlight;
+      outline: var(--border-width-050) solid Highlight;
       outline-offset: 1px;
     }
 

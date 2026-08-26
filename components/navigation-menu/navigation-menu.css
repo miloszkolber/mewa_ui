@@ -1,15 +1,15 @@
 @layer components {
-  .nav-menu-list { display: flex; align-items: center; gap: var(--space-02); list-style: none; margin: 0; padding: 0; }
+  .nav-menu-list { display: flex; align-items: center; gap: var(--space-200); list-style: none; margin: 0; padding: 0; }
   .nav-menu-link, .nav-menu-trigger {
-    display: inline-flex; align-items: center; gap: var(--space-01);
-    padding: var(--space-02); border: none;
-    background: transparent; color: var(--text-primary); font-size: var(--font-body-small); font-weight: var(--font-weight-strong);
+    display: inline-flex; align-items: center; gap: var(--space-100);
+    padding: var(--space-200); border: none;
+    background: transparent; color: var(--text-primary); font-size: var(--font-size-350); font-weight: var(--font-weight-550);
     font-family: inherit; text-decoration: none; cursor: pointer;
     outline: none;
     &:hover { background-color: var(--surface-secondary); color: var(--text-primary); }
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-ring);
-      outline-offset: var(--border-width-01);
+      outline: var(--focus-ring-width) solid var(--border-focus);
+      outline-offset: var(--border-width-025);
     }
     & svg { width: 0.875rem; height: 0.875rem; color: var(--text-muted); }
   }
@@ -20,24 +20,24 @@
 
   .nav-menu-content {
     position: fixed; inset: auto;
-    margin: 0; border: var(--border-width-01) solid var(--border-primary);
+    margin: 0; border: var(--border-width-025) solid var(--border-primary);
     background-color: var(--surface-primary); color: var(--text-primary);
-    padding: var(--space-01);  min-width: 14rem;
+    padding: var(--space-100);  min-width: 14rem;
 
     /* -- Anchor positioning -- */
-    top: anchor(bottom); left: anchor(left); margin-top: var(--space-01);
+    top: anchor(bottom); left: anchor(left); margin-top: var(--space-100);
     position-try-fallbacks: flip-block;
 
   }
   .nav-menu-content-link {
-    display: block; padding: var(--space-02);
-    text-decoration: none; color: var(--text-primary); font-size: var(--font-body-small);
+    display: block; padding: var(--space-200);
+    text-decoration: none; color: var(--text-primary); font-size: var(--font-size-350);
     &:hover { background-color: var(--surface-secondary); }
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-ring);
-      outline-offset: var(--border-width-01);
+      outline: var(--focus-ring-width) solid var(--border-focus);
+      outline-offset: var(--border-width-025);
     }
-    & p { margin: 0; font-size: var(--font-body-xsmall); color: var(--text-muted); font-weight: var(--font-weight); }
+    & p { margin: 0; font-size: var(--font-size-300); color: var(--text-muted); font-weight: var(--font-weight-400); }
   }
 
   @media (forced-colors: active) {

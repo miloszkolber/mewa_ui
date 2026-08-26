@@ -127,7 +127,7 @@ test("every component skill states purpose, implementation, accessibility, runti
 
 test("semantic tokens have machine-readable purposes", () => {
   const tokensCss = read("src/tokens.css");
-  const cssNames = new Set(Array.from(tokensCss.matchAll(/^\s*(--(?:background|surface|text|border|chart)-?[\w-]*)\s*:/gm), (match) => match[1]));
+  const cssNames = new Set(Array.from(tokensCss.matchAll(/^\s*(--(?:background|surface|overlay|text|border|chart)-?[\w-]*)\s*:/gm), (match) => match[1]));
   const metadata = registry.designTokens?.semantic || [];
   const metadataNames = new Set(metadata.map((token) => token.name));
 
@@ -138,6 +138,87 @@ test("semantic tokens have machine-readable purposes", () => {
     assert(token.purpose.length >= 12, `${token.name}: purpose is too terse`);
     assert.equal(token.stability, "stable");
   });
+});
+
+test("foundation tokens match the shared Penpot contract", () => {
+  const base = read("src/base.css");
+  const tokens = read("src/tokens.css");
+  const steps = ["050", "100", "200", "300", "400", "500", "600", "700", "800", "900", "950"];
+
+  const readOklch = (name) => {
+    const match = base.match(new RegExp(`${name}:\\s*oklch\\(([\\d.]+)%\\s+([\\d.]+)(?:\\s+([\\d.]+))?\\)`));
+    assert(match, `src/base.css: ${name} must be a solid OKLCH color`);
+    return [Number(match[1]) / 100, Number(match[2]), Number(match[3] || 0)];
+  };
+
+  const relativeLuminance = ([lightness, chroma, hue]) => {
+    const angle = hue * Math.PI / 180;
+    const a = chroma * Math.cos(angle);
+    const b = chroma * Math.sin(angle);
+    const l = Math.pow(lightness + 0.3963377774 * a + 0.2158037573 * b, 3);
+    const m = Math.pow(lightness - 0.1055613458 * a - 0.0638541728 * b, 3);
+    const s = Math.pow(lightness - 0.0894841775 * a - 1.291485548 * b, 3);
+    const linear = [
+      4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+      -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+      -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s
+    ].map((channel) => Math.max(0, Math.min(1, channel)));
+    return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+  };
+
+  const contrast = (foreground, background) => {
+    const foregroundLuminance = relativeLuminance(foreground);
+    const backgroundLuminance = relativeLuminance(background);
+    return (Math.max(foregroundLuminance, backgroundLuminance) + 0.05) /
+      (Math.min(foregroundLuminance, backgroundLuminance) + 0.05);
+  };
+
+  for (const name of [
+    "--color-neutral-000",
+    "--color-neutral-050",
+    "--color-neutral-950",
+    "--color-alpha-neutral-050",
+    "--color-alpha-red-950",
+    "--space-100",
+    "--size-1000",
+    "--border-width-025",
+    "--font-weight-550",
+    "--breakpoint-compact"
+  ]) {
+    assert(base.includes(`${name}:`), `src/base.css: missing ${name}`);
+  }
+
+  for (const role of [
+    "--surface-hover",
+    "--surface-selected",
+    "--surface-disabled",
+    "--overlay-strong",
+    "--border-focus",
+    "--border-positive",
+    "--chart-area-positive"
+  ]) {
+    assert(tokens.includes(`${role}:`), `src/tokens.css: missing ${role}`);
+  }
+
+  assert(!/oklch\(0(?:%|\s)/i.test(base), "src/base.css: pure black is forbidden");
+  assert(!base.includes("--color-black:"), "src/base.css: black aliases are forbidden");
+  assert(!base.includes("--color-white:"), "src/base.css: white must use neutral 000");
+  assert.match(base, /--font-weight-550:\s*550/, "CSS must retain the variable-font 550 weight");
+
+  for (const family of ["red", "amber", "green", "blue"]) {
+    const palette = steps.map((step) => readOklch(`--color-${family}-${step}`));
+    assert(palette.every((color) => color[2] === palette[0][2]), `${family}: hue must stay constant across the palette`);
+  }
+
+  const lightAnchor = readOklch("--color-neutral-050");
+  const darkAnchor = readOklch("--color-neutral-950");
+  for (const family of ["neutral", "red", "amber", "green", "blue"]) {
+    const lightContrast = contrast(readOklch(`--color-${family}-600`), lightAnchor);
+    const darkContrast = contrast(readOklch(`--color-${family}-400`), darkAnchor);
+    assert(lightContrast >= 4.5, `${family} 600 must pass normal-text contrast on neutral 050`);
+    assert(darkContrast >= 4.5, `${family} 400 must pass normal-text contrast on neutral 950`);
+    assert(Math.abs(lightContrast - darkContrast) <= 0.1, `${family}: paired contrast must stay symmetrical across neutral 050 and 950`);
+  }
 });
 
 test("component CSS stays square, tokenized, shadow-free, and motionless", () => {
@@ -152,7 +233,7 @@ test("component CSS stays square, tokenized, shadow-free, and motionless", () =>
     }
     assert(!/var\(\s*--color-[\w-]+\s*\)/i.test(source), `${filename}: palette primitives are forbidden`);
     for (const match of source.matchAll(/border-radius\s*:\s*([^;{}]+)/gi)) {
-      assert(/^(?:0|50%|inherit|var\(--radius-full\)|var\(--border-radius\))$/i.test(match[1].trim()), `${filename}: unsupported radius ${match[1].trim()}`);
+      assert(/^(?:0|50%|inherit|var\(--border-radius-6400\)|var\(--border-radius-000\))$/i.test(match[1].trim()), `${filename}: unsupported radius ${match[1].trim()}`);
     }
   }
 });
@@ -212,12 +293,12 @@ test("high-risk native-first runtime contracts do not regress", () => {
     const css = read(`components/${slug}/${slug}.css`);
     const skill = read(`components/${slug}/${slug}.md`);
     assert.match(script, /data-(?:resizable|sortable)-(?:decrease|increase)/, `${slug}: missing non-drag pointer controls`);
-    assert.match(css, new RegExp(`\\.${slug === "resizable" ? "resizable" : "sortable"}-step[\\s\\S]*(?:inline-size|width):\\s*var\\(--size-07\\)`), `${slug}: pointer controls must use a 32px target`);
+    assert.match(css, new RegExp(`\\.${slug === "resizable" ? "resizable" : "sortable"}-step[\\s\\S]*(?:inline-size|width):\\s*var\\(--size-800\\)`), `${slug}: pointer controls must use a 32px target`);
     assert(/Do not (?:rely on dragging|make dragging)/.test(skill), `${slug}: skill must prohibit drag-only interaction`);
   }
 
   const carouselCss = read("components/carousel/carousel.css");
-  assert.match(carouselCss, /\.carousel-dot[\s\S]*width:\s*var\(--size-06\)/, "Carousel direct-slide controls must use a 24px target");
+  assert.match(carouselCss, /\.carousel-dot[\s\S]*width:\s*var\(--size-600\)/, "Carousel direct-slide controls must use a 24px target");
 });
 
 test("agent-facing source does not reference the retired layouts directory", () => {

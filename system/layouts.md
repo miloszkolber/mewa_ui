@@ -56,7 +56,7 @@ Use `aria-current="page"` on the current route.
 
 Use the Sidebar footer control for desktop collapse.
 
-Use the Sidebar mobile dialog below `48rem`.
+Use the Sidebar mobile dialog below `--breakpoint-compact`, `48rem`.
 
 Use `.sidebar-workspace` for the toolbar and main-content column.
 
@@ -174,7 +174,7 @@ Do not add a Sidebar when the route set fits the header.
 
 Use the focused-tool shell for a service with one primary task.
 
-Use a 64rem application canvas.
+Use the `--breakpoint-max-focused` application canvas, `64rem`.
 
 Keep navigation absent or minimal.
 
@@ -233,9 +233,9 @@ Do not keep the rail visible when it makes the main task too narrow.
 
 ## Content canvas
 
-Use a 90rem canvas for dense data and multi-column utility pages.
+Use `--breakpoint-max-dense`, `90rem`, for dense data and multi-column utility pages.
 
-Use a 64rem canvas for focused tools and content pages.
+Use `--breakpoint-max-focused`, `64rem`, for focused tools and content pages.
 
 Keep header, toolbar, page overview, and main content on the same canvas.
 
@@ -253,9 +253,9 @@ Use intrinsic wrapping before a media query.
 
 Use `60rem` for wide content-and-rail collapse.
 
-Use `48rem` for shell navigation changes.
+Use `--breakpoint-compact`, `48rem`, for shell navigation changes.
 
-Use `37.5rem` for compact single-column changes.
+Use `--breakpoint-narrow`, `37.5rem`, for compact single-column changes.
 
 Use rem units for each breakpoint.
 
@@ -275,7 +275,7 @@ Do not create page-level horizontal scrolling.
 
 Use blur only on a sticky shell header or toolbar.
 
-Use `--background-glass` with `--blur-01`.
+Use `--background-glass` with `--blur-100`.
 
 Keep the semantic background visible when blur is unavailable.
 

@@ -192,6 +192,34 @@ Keep status meaning available in forced colors.
 
 Do not use green or red as decoration.
 
+## Contrast
+
+Use WCAG 2 contrast as the shipped palette contract.
+
+Keep normal text at 4.5:1 or higher against its actual background.
+
+Keep large text at 3:1 or higher against its actual background.
+
+Keep required non-text boundaries and indicators at 3:1 or higher.
+
+Use chromatic `600` roles for readable status text on light surfaces.
+
+Use chromatic `400` roles for readable status text on dark surfaces.
+
+Pair `600` on neutral `050` with `400` on neutral `950`.
+
+Keep the paired WCAG contrast values approximately equal.
+
+Treat neutral `000` as the white endpoint outside this symmetry.
+
+Check alpha colors after they composite with the actual surface.
+
+Do not use an alpha primitive for readable text.
+
+Do not assume that matching numeric steps have equal contrast in both polarities.
+
+Keep disabled content understandable even when WCAG exempts it from minimum text contrast.
+
 ## Dialogs and popovers
 
 Give every dialog an accessible name.

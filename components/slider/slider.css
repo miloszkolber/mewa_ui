@@ -6,7 +6,7 @@
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: var(--size-02);
+    height: var(--size-200);
     margin: 0;
     border-radius: 0;
     background: var(--surface-secondary);
@@ -16,7 +16,7 @@
     accent-color: var(--surface-inverted);
 
     &::-webkit-slider-runnable-track {
-      height: var(--size-02);
+      height: var(--size-200);
       border-radius: 0;
       background: linear-gradient(
         to right,
@@ -28,46 +28,46 @@
     }
 
     &::-moz-range-track {
-      height: var(--size-02);
+      height: var(--size-200);
       border-radius: 0;
       background: var(--surface-secondary);
       border: none;
     }
 
     &::-moz-range-progress {
-      height: var(--size-02);
+      height: var(--size-200);
       border-radius: 0;
       background: var(--surface-inverted);
     }
 
     &::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: var(--size-05);
-      height: var(--size-05);
+      width: var(--size-500);
+      height: var(--size-500);
       border-radius: 0;
       background: var(--background);
-      border: var(--border-width-02) solid var(--surface-inverted);
-      margin-top: calc((var(--size-02) - var(--size-05)) / 2);
+      border: var(--border-width-050) solid var(--surface-inverted);
+      margin-top: calc((var(--size-200) - var(--size-500)) / 2);
       cursor: pointer;
     }
 
     &::-moz-range-thumb {
-      width: var(--size-05);
-      height: var(--size-05);
+      width: var(--size-500);
+      height: var(--size-500);
       border-radius: 0;
       background: var(--background);
-      border: var(--border-width-02) solid var(--surface-inverted);
+      border: var(--border-width-050) solid var(--surface-inverted);
       cursor: pointer;
     }
 
     &:focus-visible {
       &::-webkit-slider-thumb {
-        outline: var(--focus-ring-width) solid var(--border-ring);
-        outline-offset: var(--border-width-01);
+        outline: var(--focus-ring-width) solid var(--border-focus);
+        outline-offset: var(--border-width-025);
       }
       &::-moz-range-thumb {
-        outline: var(--focus-ring-width) solid var(--border-ring);
-        outline-offset: var(--border-width-01);
+        outline: var(--focus-ring-width) solid var(--border-focus);
+        outline-offset: var(--border-width-025);
       }
     }
 
@@ -82,11 +82,11 @@
     &[data-orientation="vertical"] {
       writing-mode: vertical-lr;
       direction: rtl;
-      width: var(--size-02);
+      width: var(--size-200);
       height: 12rem;
 
       &::-webkit-slider-runnable-track {
-        width: var(--size-02);
+        width: var(--size-200);
         background: linear-gradient(
           to top,
           var(--surface-inverted) 0%,
@@ -98,7 +98,7 @@
 
       &::-webkit-slider-thumb {
         margin-top: 0;
-        margin-left: calc((var(--size-02) - var(--size-05)) / 2);
+        margin-left: calc((var(--size-200) - var(--size-500)) / 2);
       }
     }
   }
@@ -118,11 +118,11 @@
     .slider {
       &::-webkit-slider-runnable-track {
         background: ButtonFace;
-        border: var(--border-width-01) solid ButtonText;
+        border: var(--border-width-025) solid ButtonText;
       }
       &::-moz-range-track {
         background: ButtonFace;
-        border: var(--border-width-01) solid ButtonText;
+        border: var(--border-width-025) solid ButtonText;
       }
       &::-moz-range-progress {
         background: Highlight;

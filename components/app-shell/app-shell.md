@@ -119,7 +119,7 @@ Do not use the hatch on an inner region.
 <body class="app-shell app-shell-edge">
 ```
 
-The hatch disappears below `48rem`.
+The hatch disappears below `--breakpoint-compact`, `48rem`.
 
 ## Page overview
 
@@ -143,9 +143,9 @@ Use `.eyebrow` only for a short technical label.
 </section>
 ```
 
-Use `--app-shell-max: 90rem` for dense data surfaces.
+Use `--app-shell-max: var(--breakpoint-max-dense)` for dense data surfaces.
 
-Use `--app-shell-max: 64rem` for a focused tool.
+Use `--app-shell-max: var(--breakpoint-max-focused)` for a focused tool.
 
 Do not add another shell width preset.
 
@@ -275,7 +275,7 @@ Status rows align markers, copy, and actions without nested cards.
 
 Narrow viewports stack status actions below the copy.
 
-The optional edge hatch disappears below `48rem`.
+The optional edge hatch disappears below `--breakpoint-compact`, `48rem`.
 
 ## Action sizing
 

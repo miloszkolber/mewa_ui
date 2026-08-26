@@ -1,6 +1,6 @@
 @layer components {
   .collapsible {
-    border: var(--border-width-01) solid var(--border-primary);
+    border: var(--border-width-025) solid var(--border-primary);
 
     overflow: hidden;
 
@@ -11,12 +11,12 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    gap: var(--space-03);
+    gap: var(--space-300);
     padding-block: 0;
-    padding-inline: var(--space-04);
-    block-size: var(--size-08);
-    font-size: var(--font-body-small);
-    font-weight: var(--font-weight-strong);
+    padding-inline: var(--space-400);
+    block-size: var(--size-1000);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-550);
     cursor: pointer;
     color: var(--text-primary);
     list-style: none;
@@ -26,8 +26,8 @@
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-ring);
-      outline-offset: var(--border-width-01);
+      outline: var(--focus-ring-width) solid var(--border-focus);
+      outline-offset: var(--border-width-025);
     }
 
     &::-webkit-details-marker {
@@ -36,8 +36,8 @@
   }
 
   .collapsible-chevron {
-    width: var(--size-04);
-    height: var(--size-04);
+    width: var(--size-400);
+    height: var(--size-400);
     color: var(--text-muted);
     flex-shrink: 0;
 
@@ -47,15 +47,15 @@
   }
 
   .collapsible-content {
-    padding: 0 var(--space-04) var(--space-03);
-    font-size: var(--font-body-small);
+    padding: 0 var(--space-400) var(--space-300);
+    font-size: var(--font-size-350);
     color: var(--text-muted);
-    line-height: var(--font-height);
+    line-height: var(--font-height-regular);
   }
 
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {
-    .collapsible { border-width: var(--border-width-02); }
+    .collapsible { border-width: var(--border-width-050); }
   }
 
   @media (forced-colors: active) {

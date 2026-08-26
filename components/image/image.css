@@ -26,7 +26,7 @@
     &[data-ratio="3/4"]  { aspect-ratio: 3 / 4; }
 
     /* -- Circular variant (avatar-style images only) ----------- */
-    &[data-radius="full"] { border-radius: var(--radius-full); }
+    &[data-radius="full"] { border-radius: var(--border-radius-6400); }
 
     /* -- Preview cursor -------------------------------------- */
     &[data-preview] {
@@ -44,8 +44,8 @@
       color: var(--text-muted);
 
       & > svg {
-        width: var(--size-08);
-        height: var(--size-08);
+        width: var(--size-1000);
+        height: var(--size-1000);
         opacity: var(--opacity-05);
       }
     }
@@ -57,9 +57,9 @@
 
   /* -- Caption ----------------------------------------------- */
   .image-caption {
-    padding: var(--space-03) 0 var(--space-01);
-    font-size: var(--font-body-small);
-    line-height: var(--font-height);
+    padding: var(--space-300) 0 var(--space-100);
+    font-size: var(--font-size-350);
+    line-height: var(--font-height-regular);
     color: var(--text-muted);
     text-wrap: pretty;
   }
@@ -83,7 +83,7 @@
     }
 
     &::backdrop {
-      background: var(--surface-overlay);
+      background: var(--overlay-strong);
     }
   }
 
@@ -107,10 +107,10 @@
 
   .image-lightbox-toolbar {
     position: absolute;
-    top: var(--space-04);
-    right: var(--space-04);
+    top: var(--space-400);
+    right: var(--space-400);
     display: flex;
-    gap: var(--space-01);
+    gap: var(--space-100);
     z-index: var(--z-raised);
   }
 
@@ -120,7 +120,7 @@
     justify-content: center;
     width: 2.25rem;
     height: 2.25rem;
-    border: var(--border-width-01) solid var(--border-secondary);
+    border: var(--border-width-025) solid var(--border-secondary);
     background: var(--background);
     color: var(--text-primary);
     cursor: pointer;
@@ -129,20 +129,20 @@
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-ring);
-      outline-offset: var(--border-width-01);
+      outline: var(--focus-ring-width) solid var(--border-focus);
+      outline-offset: var(--border-width-025);
     }
 
     & > svg {
-      width: var(--size-04);
-      height: var(--size-04);
+      width: var(--size-400);
+      height: var(--size-400);
     }
   }
 
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {
     .image-lightbox-btn {
-      border: var(--border-width-02) solid currentColor;
+      border: var(--border-width-050) solid currentColor;
     }
   }
 
@@ -157,7 +157,7 @@
     .image-lightbox-btn {
       background: CanvasText;
       color: Canvas;
-      border: var(--border-width-02) solid CanvasText;
+      border: var(--border-width-050) solid CanvasText;
     }
   }
 }

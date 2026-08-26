@@ -3,12 +3,12 @@
 @layer components {
   .textarea {
     width: 100%;
-    min-height: var(--size-12);
-    border: var(--border-width-01) solid var(--border-secondary);
+    min-height: var(--size-2000);
+    border: var(--border-width-025) solid var(--border-secondary);
 
     background: var(--background);
-    padding: var(--space-02) var(--space-03);
-    font-size: var(--font-body-small);
+    padding: var(--space-200) var(--space-300);
+    font-size: var(--font-size-350);
     font-family: var(--font-sans);
     color: var(--text-primary);
     outline: none;
@@ -17,8 +17,8 @@
     field-sizing: content;
 
     &:focus {
-      border-color: var(--border-ring);
-      outline: var(--border-width-01) solid var(--border-ring);
+      border-color: var(--border-focus);
+      outline: var(--border-width-025) solid var(--border-focus);
       outline-offset: 0;
     }
 
@@ -38,7 +38,7 @@
 
       &:focus {
         border-color: var(--text-negative);
-        outline: var(--border-width-01) solid var(--text-negative);
+        outline: var(--border-width-025) solid var(--text-negative);
         outline-offset: 0;
       }
     }
@@ -47,7 +47,7 @@
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {
     .textarea {
-      border-width: var(--border-width-02);
+      border-width: var(--border-width-050);
     }
 
     .textarea:disabled {
@@ -63,7 +63,7 @@
     }
 
     .textarea:focus {
-      outline: var(--border-width-02) solid Highlight;
+      outline: var(--border-width-050) solid Highlight;
       outline-offset: 1px;
     }
 

@@ -286,9 +286,9 @@ Look for shared-library CSS that contains consumer-specific selectors.
 
 Check the application at 320px.
 
-Check the application near 37.5rem.
+Check the application near `--breakpoint-narrow`, 37.5rem.
 
-Check the application near 48rem.
+Check the application near `--breakpoint-compact`, 48rem.
 
 Check the application near 60rem.
 

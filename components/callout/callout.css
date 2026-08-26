@@ -3,11 +3,11 @@
     position: relative;
     display: flex;
     align-items: flex-start;
-    gap: var(--space-02);
-    border: var(--border-width-01) solid var(--border-primary);
+    gap: var(--space-200);
+    border: var(--border-width-025) solid var(--border-primary);
 
-    padding: var(--space-04) var(--space-05);
-    font-size: var(--font-body-small);
+    padding: var(--space-400) var(--space-500);
+    font-size: var(--font-size-350);
     color: var(--text-primary);
     background-color: var(--background);
 
@@ -32,10 +32,10 @@
   }
 
   .callout-icon {
-    width: var(--size-04);
-    height: var(--size-04);
+    width: var(--size-400);
+    height: var(--size-400);
     flex-shrink: 0;
-    margin-top: var(--space-01);
+    margin-top: var(--space-100);
     color: var(--text-primary);
   }
 
@@ -46,17 +46,17 @@
 
   .callout-title {
     margin: 0;
-    font-size: var(--font-body-small);
-    font-weight: var(--font-weight-strong);
-    line-height: var(--font-height);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-550);
+    line-height: var(--font-height-regular);
     letter-spacing: -0.01em;
     color: var(--text-primary);
   }
 
   .callout-description {
     margin: 0;
-    font-size: var(--font-body-small);
-    line-height: var(--font-height);
+    font-size: var(--font-size-350);
+    line-height: var(--font-height-regular);
     color: var(--text-muted);
   }
 
@@ -68,7 +68,7 @@
 
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {
-    .callout { border-width: var(--border-width-02); }
+    .callout { border-width: var(--border-width-050); }
   }
 
   @media (forced-colors: active) {

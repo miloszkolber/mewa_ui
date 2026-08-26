@@ -117,10 +117,10 @@ The destructive variant uses the semantic destructive surface.
 
 | `data-size` | Height | Intended use |
 | --- | --- | --- |
-| `sm` | `var(--size-07)` | Use for compact row actions. |
-| Omitted | `var(--size-08)` | Use for normal actions. |
-| `icon` | `var(--size-08)` | Use for a normal icon-only action. |
-| `icon-sm` | `var(--size-07)` | Use for a compact icon-only action. |
+| `sm` | `var(--size-800)` | Use for compact row actions. |
+| Omitted | `var(--size-1000)` | Use for normal actions. |
+| `icon` | `var(--size-1000)` | Use for a normal icon-only action. |
+| `icon-sm` | `var(--size-800)` | Use for a compact icon-only action. |
 
 The `link` variant uses inline text geometry.
 

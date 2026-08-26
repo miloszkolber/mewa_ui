@@ -7,8 +7,8 @@
     z-index: var(--z-toast);
     display: flex;
     flex-direction: column-reverse;
-    gap: var(--space-02);
-    padding: var(--space-04);
+    gap: var(--space-200);
+    padding: var(--space-400);
     max-height: 100vh;
     pointer-events: none;
     bottom: 0;
@@ -26,11 +26,11 @@
   .toast {
     background-color: var(--surface-primary);
     color: var(--text-primary);
-    border: var(--border-width-01) solid var(--border-secondary);
+    border: var(--border-width-025) solid var(--border-secondary);
 
-    padding: var(--space-04);
-    min-width: min(20rem, calc(100vw - var(--space-08)));
-    max-width: min(26rem, calc(100vw - var(--space-08)));
+    padding: var(--space-400);
+    min-width: min(20rem, calc(100vw - var(--space-1000)));
+    max-width: min(26rem, calc(100vw - var(--space-1000)));
     pointer-events: auto;
 
     /* -- Variants: 050 fill with 950 text in light mode, 950 fill
@@ -68,15 +68,15 @@
 
   /* -- Inner elements ------------------------------------------- */
   .toast svg {
-    width: var(--size-04);
-    height: var(--size-04);
+    width: var(--size-400);
+    height: var(--size-400);
     flex-shrink: 0;
   }
 
   .toast-content {
     display: flex;
     align-items: flex-start;
-    gap: var(--space-03);
+    gap: var(--space-300);
   }
 
   .toast-text {
@@ -85,25 +85,25 @@
   }
 
   .toast-title {
-    font-size: var(--font-body-small);
-    font-weight: var(--font-weight-strong);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-550);
     margin: 0;
-    line-height: var(--font-height);
+    line-height: var(--font-height-regular);
   }
 
   .toast-description {
-    font-size: var(--font-body-small);
+    font-size: var(--font-size-350);
     color: var(--text-muted);
     margin: 0;
-    line-height: var(--font-height);
+    line-height: var(--font-height-regular);
   }
 
   .toast-close {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: var(--size-05);
-    height: var(--size-05);
+    width: var(--size-500);
+    height: var(--size-500);
     border: none;
     background: transparent;
     color: var(--text-muted);
@@ -118,25 +118,25 @@
 
   .toast-icon {
     flex-shrink: 0;
-    margin-top: var(--space-01);
+    margin-top: var(--space-100);
   }
 
   .toast-actions {
     display: flex;
-    gap: var(--space-02);
-    margin-top: var(--space-03);
+    gap: var(--space-200);
+    margin-top: var(--space-300);
   }
 
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {
-    .toast { border-width: var(--border-width-02); }
+    .toast { border-width: var(--border-width-050); }
   }
 
   @media (forced-colors: active) {
     .toast {
       background: Canvas;
       color: CanvasText;
-      border: var(--border-width-02) solid CanvasText;
+      border: var(--border-width-050) solid CanvasText;
       backdrop-filter: none;
     }
 
