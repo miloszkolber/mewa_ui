@@ -43,6 +43,10 @@ Generated JSON files are deterministic reviewable snapshots. Do not edit them di
 
 ## MCP application contract
 
+Read `PLAYBOOK.md` before any live Penpot mutation. It records the one-shot
+application procedure, the approved file structure, and every tool limitation
+discovered during application.
+
 The MCP application reads only `sync-manifest.generated.json`. It does not infer variants, containers, or shared instances from a documentation page at mutation time.
 
 Use the shared plugin-data namespace `mewa.ui`. Store each manifest `key` as shared plugin data named `key` on its managed page root, component, variant, and instance.
