@@ -16,6 +16,8 @@ Use outline or ghost buttons for secondary actions.
 
 Use the destructive variant only for the final destructive confirmation.
 
+Use the destructive-outline variant for a destructive option that opens its own confirmation.
+
 ## Do not use when
 
 Do not use a button element for navigation.
@@ -107,6 +109,7 @@ Replace the example path with the matching local SVG from `library/src/icons/`.
 | `outline` | Use for a normal secondary action. |
 | `ghost` | Use for a low-emphasis local action. |
 | `destructive` | Use for the final destructive confirmation. |
+| `destructive-outline` | Use for a non-final destructive option that opens a confirmation. |
 | `link` | Use for an inline action that must still be a button. |
 
 The secondary variant uses the primary border color as its fill.

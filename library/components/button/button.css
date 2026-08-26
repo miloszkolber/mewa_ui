@@ -99,6 +99,20 @@
       }
     }
 
+    &[data-variant="destructive-outline"] {
+      /* Non-final destructive option that opens its own confirmation.
+         The filled destructive variant stays reserved for that final
+         confirmation. */
+      background-color: var(--background);
+      color: var(--text-negative);
+      border: var(--border-width-025) solid var(--text-negative);
+
+      &:hover {
+        background-color: var(--surface-negative);
+        color: var(--text-negative);
+      }
+    }
+
     &[data-variant="link"] {
       background-color: transparent;
       color: var(--text-primary);
@@ -122,7 +136,8 @@
 
       &[data-variant="default"],
       &[data-variant="secondary"],
-      &[data-variant="destructive"] {
+      &[data-variant="destructive"],
+      &[data-variant="destructive-outline"] {
         border-color: currentColor;
       }
 
