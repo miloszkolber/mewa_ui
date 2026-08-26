@@ -16,6 +16,8 @@ Review every reachable interface at representative desktop and mobile widths. Tr
 
 Keep the interface technical, dense, restrained, and consistent with mewa_ui. Remove cards inside cards, unnecessary wrappers, repeated information, stray styling, and undocumented library APIs. Use the documented shell that fits the route structure. Prefer native HTML and existing components before proposing new library work.
 
+Before you finish, check every `var(--*)` in the consumer stylesheets against `library/src/base.css` and `library/src/tokens.css`. An undefined token silently resolves to nothing and breaks spacing, borders, and typography without a console error. Consumers have shipped invented names such as `--space-01` through `--space-07` and `--border-width-01`; map them to the documented `--space-100` scale, `--border-width-025`, and sibling tokens.
+
 When code changes are allowed, fix clear issues and validate them in the application. Preserve product behavior unless a flow change clearly improves usability without changing requirements. Put a shared solution in mewa_ui only when it serves a repeatable need.
 
 Finish with:
