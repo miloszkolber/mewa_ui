@@ -184,7 +184,9 @@ Do not delay the semantic state while its visual transition runs.
 
 Keep direct manipulation immediate so controls track user input.
 
-Disable state transitions when `prefers-reduced-motion: reduce` is active.
+Keep semantic state and focus updates immediate while a surface animates.
+
+Disable all transitions when `prefers-reduced-motion: reduce` is active.
 
 Keep content understandable when transitions are disabled.
 

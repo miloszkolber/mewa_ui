@@ -6,7 +6,7 @@ The library grew out of a practical need: several compact tools should feel like
 
 ## Character
 
-mewa_ui is technical, quiet, and dense. Square geometry, monochrome surfaces, structural borders, and restrained type keep attention on the work. Color is reserved for status and destructive meaning. Subtle, fast motion clarifies control state changes and ongoing activity.
+mewa_ui is technical, quiet, and dense. Square geometry, monochrome surfaces, structural borders, and restrained type keep attention on the work. Color is reserved for status and destructive meaning. Subtle, fast motion clarifies control states, modal surfaces, shell changes, and ongoing activity.
 
 The system favors a continuous working surface over stacks of decorative containers. Tables stay tables. Connected rows share one outer boundary. Cards are used for independent objects, not as a default wrapper for every section.
 

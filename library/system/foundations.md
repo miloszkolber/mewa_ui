@@ -325,17 +325,21 @@ Do not use blur as elevation.
 
 Use `--motion-duration-fast` for subtle visual state changes.
 
+Use `--motion-duration-spatial` for approved modal surfaces and Sidebar geometry.
+
 Use `--motion-easing-standard` for every state transition.
 
 Transition only color, background color, border color, opacity, and small state indicators.
 
-Keep opening, closing, direct manipulation, and layout changes immediate.
+Use only subtle opacity, offset, scale, slide, or width changes for spatial motion.
 
-Disable state transitions when reduced motion is requested.
+Keep direct manipulation, scrolling, and other layout changes immediate.
+
+Disable all transitions when reduced motion is requested.
 
 Use no smooth scroll behavior.
 
-Use no entrance or exit animation.
+Use entrance and exit motion only for approved modal surfaces.
 
 Use no hover movement.
 

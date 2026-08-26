@@ -152,7 +152,7 @@ test("component CSS stays square, tokenized, shadow-free, and motion-controlled"
       assert(!/\btransition\s*:\s*all\b/i.test(source), `${filename}: transition: all is forbidden`);
       assert(!/\btransition-delay\s*:/i.test(source), `${filename}: delayed state feedback is forbidden`);
       for (const match of source.matchAll(/transition-duration\s*:\s*([^;{}]+)/gi)) {
-        assert(/^(?:var\(--motion-duration-fast\)|0ms)$/i.test(match[1].trim()), `${filename}: unsupported transition duration ${match[1].trim()}`);
+        assert(/^(?:var\(--motion-duration-(?:fast|spatial)\)|0ms)$/i.test(match[1].trim()), `${filename}: unsupported transition duration ${match[1].trim()}`);
       }
       for (const match of source.matchAll(/transition-timing-function\s*:\s*([^;{}]+)/gi)) {
         assert.equal(match[1].trim(), "var(--motion-easing-standard)", `${filename}: unsupported transition easing`);
@@ -165,9 +165,10 @@ test("component CSS stays square, tokenized, shadow-free, and motion-controlled"
   }
 });
 
-test("the base contract provides fast state motion and a reduced-motion override", () => {
+test("the base contract provides state and spatial motion with a reduced-motion override", () => {
   const source = stripCssComments(read("library/src/base.css"));
   assert.match(source, /--motion-duration-fast:\s*100ms/);
+  assert.match(source, /--motion-duration-spatial:\s*160ms/);
   assert.match(source, /--motion-easing-standard:\s*cubic-bezier\(0\.2, 0, 0, 1\)/);
   assert.match(source, /transition-property:\s*color, background-color, border-color, opacity/);
   assert.match(source, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
