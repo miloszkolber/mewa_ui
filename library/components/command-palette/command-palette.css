@@ -7,9 +7,41 @@
     padding: 0; max-width: 32rem; width: calc(100% - var(--size-800));
      margin: auto; position: fixed; inset: 0;
     top: 15%; bottom: auto; overflow: hidden;
+    opacity: 0;
+    transform: translateY(var(--space-100)) scale(0.99);
+    transition-property: opacity, transform, overlay, display;
+    transition-duration: var(--motion-duration-spatial);
+    transition-timing-function: var(--motion-easing-standard);
+    transition-behavior: normal, normal, allow-discrete, allow-discrete;
+
+    &[open] {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
     &::backdrop {
       background: var(--overlay-strong);
       backdrop-filter: blur(var(--blur-200));
+      opacity: 0;
+      transition-property: opacity, overlay, display;
+      transition-duration: var(--motion-duration-spatial);
+      transition-timing-function: var(--motion-easing-standard);
+      transition-behavior: normal, allow-discrete, allow-discrete;
+    }
+
+    &[open]::backdrop {
+      opacity: 1;
+    }
+  }
+
+  @starting-style {
+    dialog.command-palette[open] {
+      opacity: 0;
+      transform: translateY(var(--space-100)) scale(0.99);
+    }
+
+    dialog.command-palette[open]::backdrop {
+      opacity: 0;
     }
   }
 
@@ -78,5 +110,12 @@
       &:hover, &[data-highlighted] { forced-color-adjust: none; background: Highlight; color: HighlightText; }
     }
     .command-palette-separator { background-color: CanvasText; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    dialog.command-palette,
+    dialog.command-palette::backdrop {
+      transition-duration: 0ms;
+    }
   }
 }

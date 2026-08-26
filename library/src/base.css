@@ -149,6 +149,7 @@
     --blur-100: 0.25rem;
     --blur-200: 0.5rem;
     --motion-duration-fast: 100ms;
+    --motion-duration-spatial: 160ms;
     --motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
     --breakpoint-narrow: 37.5rem;
      --breakpoint-compact: 48rem;

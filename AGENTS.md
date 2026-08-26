@@ -181,7 +181,11 @@ Use the fast motion primitives for subtle visual state feedback.
 
 Transition only color, background color, border color, opacity, and small state indicators.
 
-Keep opening, closing, direct manipulation, and layout changes immediate.
+Use the spatial motion duration for Dialog, Alert Dialog, Command Palette, Sheet, and Sidebar geometry.
+
+Use only subtle opacity, offset, scale, slide, or width changes for spatial motion.
+
+Keep direct manipulation, scrolling, and other layout changes immediate.
 
 Respect `prefers-reduced-motion`.
 

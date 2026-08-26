@@ -165,7 +165,7 @@ Escape closes the mobile dialog through native behavior.
 
 The module restores focus after mobile navigation closes.
 
-Control and navigation state feedback uses the shared fast motion primitives. Shell layout changes remain immediate.
+Control and navigation feedback uses the fast motion primitives. Desktop width and mobile disclosure use the spatial duration.
 
 The mobile backdrop uses the semantic overlay surface without blur.
 

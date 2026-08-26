@@ -260,9 +260,13 @@ Use `--motion-duration-fast` and `--motion-easing-standard` for visual state fee
 
 Transition only color, background color, border color, opacity, and small state indicators.
 
-Keep opening, closing, direct manipulation, and layout changes immediate.
+Use `--motion-duration-spatial` for Dialog, Alert Dialog, Command Palette, Sheet, and Sidebar geometry.
 
-Disable state transitions when `prefers-reduced-motion: reduce` is active.
+Use only subtle opacity, offset, scale, slide, or width changes for spatial motion.
+
+Keep direct manipulation, scrolling, and other layout changes immediate.
+
+Disable all transitions when `prefers-reduced-motion: reduce` is active.
 
 Do not add smooth scrolling.
 

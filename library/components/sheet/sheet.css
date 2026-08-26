@@ -21,6 +21,10 @@
       height: 100%;
       border-left: var(--border-width-025) solid var(--border-primary);
       transform: translateX(100%);
+      transition-property: transform, overlay, display;
+      transition-duration: var(--motion-duration-spatial);
+      transition-timing-function: var(--motion-easing-standard);
+      transition-behavior: normal, allow-discrete, allow-discrete;
     }
 
     &[open], &[data-side="right"][open] {
@@ -61,15 +65,36 @@
 
     /* -- Backdrop ---------------------------------------------- */
     &::backdrop {
-      background: transparent;
-      backdrop-filter: blur(0px);
+      background: var(--overlay-strong);
+      backdrop-filter: blur(var(--blur-200));
+      opacity: 0;
+      transition-property: opacity, overlay, display;
+      transition-duration: var(--motion-duration-spatial);
+      transition-timing-function: var(--motion-easing-standard);
+      transition-behavior: normal, allow-discrete, allow-discrete;
     }
 
     &[open]::backdrop {
-      background:
-        linear-gradient(var(--overlay-strong), var(--overlay-strong)),
-        var(--overlay-strong);
-      backdrop-filter: blur(var(--blur-200));
+      opacity: 1;
+    }
+  }
+
+  @starting-style {
+    dialog.sheet[open],
+    dialog.sheet[data-side="right"][open] {
+      transform: translateX(100%);
+    }
+
+    dialog.sheet[data-side="left"][open] {
+      transform: translateX(-100%);
+    }
+
+    dialog.sheet[data-side="bottom"][open] {
+      transform: translateY(100%);
+    }
+
+    dialog.sheet[open]::backdrop {
+      opacity: 0;
     }
   }
 
@@ -116,6 +141,13 @@
 
     &[open]::backdrop {
       backdrop-filter: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    dialog.sheet,
+    dialog.sheet::backdrop {
+      transition-duration: 0ms;
     }
   }
 }

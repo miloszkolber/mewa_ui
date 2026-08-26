@@ -13,18 +13,43 @@
     max-width: 28rem;
     width: calc(100vw - var(--size-800));
     max-height: calc(100vh - var(--size-800));
+    opacity: 0;
+    transform: translateY(var(--space-100)) scale(0.99);
+    transition-property: opacity, transform, overlay, display;
+    transition-duration: var(--motion-duration-spatial);
+    transition-timing-function: var(--motion-easing-standard);
+    transition-behavior: normal, normal, allow-discrete, allow-discrete;
+
+    &[open] {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
     /* -- Sizes ------------------------------------------------ */
     /* -- Backdrop --------------------------------------------- */
     &::backdrop {
-      background: transparent;
-      backdrop-filter: blur(0px);
+      background: var(--overlay-strong);
+      backdrop-filter: blur(var(--blur-200));
+      opacity: 0;
+      transition-property: opacity, overlay, display;
+      transition-duration: var(--motion-duration-spatial);
+      transition-timing-function: var(--motion-easing-standard);
+      transition-behavior: normal, allow-discrete, allow-discrete;
     }
 
     &[open]::backdrop {
-      background:
-        linear-gradient(var(--overlay-strong), var(--overlay-strong)),
-        var(--overlay-strong);
-      backdrop-filter: blur(var(--blur-200));
+      opacity: 1;
+    }
+  }
+
+  @starting-style {
+    dialog.dialog[open] {
+      opacity: 0;
+      transform: translateY(var(--space-100)) scale(0.99);
+    }
+
+    dialog.dialog[open]::backdrop {
+      opacity: 0;
     }
   }
 
@@ -53,6 +78,13 @@
 
     &[open]::backdrop {
       backdrop-filter: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    dialog.dialog,
+    dialog.dialog::backdrop {
+      transition-duration: 0ms;
     }
   }
 }
