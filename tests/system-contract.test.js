@@ -116,6 +116,16 @@ test("component selection documentation routes agents through registry metadata"
   }
 });
 
+test("dense row guidance names the shared semantic hooks", () => {
+  const patterns = read("library/system/patterns.md");
+  const shell = read("library/components/app-shell/app-shell.md");
+  for (const hook of ["app-dense-list", "app-dense-row", "app-dense-leading", "app-dense-copy", "app-dense-heading", "app-dense-actions"]) {
+    assert(patterns.includes(`.${hook}`), `patterns.md is missing .${hook}`);
+    assert(shell.includes(`.${hook}`), `app-shell.md is missing .${hook}`);
+  }
+  assert.match(shell, /<ul class="app-dense-list"[\s\S]*<li class="app-dense-row">/);
+});
+
 test("foundation token documentation is generated from registry metadata", () => {
   const foundations = read("library/system/foundations.md");
   assert.match(foundations, /<!-- TOKEN-REFERENCE:START -->/);

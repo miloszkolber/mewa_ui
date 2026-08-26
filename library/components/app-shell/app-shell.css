@@ -373,6 +373,130 @@
     gap: var(--space-200);
   }
 
+  .app-dense-list {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .app-dense-row {
+    display: grid;
+    grid-template-columns: var(--size-500) minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--space-300) var(--space-400);
+    min-inline-size: 0;
+    padding: var(--space-400);
+    border-block-end: var(--border-width-025) dashed var(--border-muted);
+    overflow-wrap: anywhere;
+  }
+
+  .app-dense-row:last-child {
+    border-block-end: 0;
+  }
+
+  .app-dense-row--plain {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .app-dense-leading {
+    display: inline-flex;
+    grid-column: 1;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--size-500);
+    min-block-size: var(--size-500);
+    justify-self: center;
+  }
+
+  .app-dense-leading.status-dot {
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .app-dense-leading.status-dot::before {
+    content: "";
+    inline-size: var(--size-200);
+    block-size: var(--size-200);
+    border-radius: var(--border-radius-6400);
+    background: var(--text-disabled);
+  }
+
+  .app-dense-leading.status-dot[data-state="positive"]::before {
+    background: var(--text-positive);
+  }
+
+  .app-dense-leading.status-dot[data-state="caution"]::before {
+    background: var(--text-caution);
+  }
+
+  .app-dense-leading.status-dot[data-state="negative"]::before {
+    background: var(--text-negative);
+  }
+
+  .app-dense-leading.status-dot[data-state="running"]::before {
+    box-sizing: border-box;
+    border: var(--border-width-050) solid var(--text-muted);
+    background: transparent;
+  }
+
+  .app-dense-copy {
+    display: grid;
+    grid-column: 2;
+    gap: var(--space-200);
+    min-inline-size: 0;
+  }
+
+  .app-dense-row--plain > .app-dense-copy {
+    grid-column: 1;
+  }
+
+  .app-dense-heading {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--space-200) var(--space-300);
+    min-inline-size: 0;
+  }
+
+  .app-dense-title,
+  .app-dense-description,
+  .app-dense-meta {
+    min-inline-size: 0;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .app-dense-title {
+    color: var(--text-primary);
+    font-size: var(--font-size-400);
+    font-weight: var(--font-weight-550);
+    line-height: var(--font-height-tight);
+  }
+
+  .app-dense-description {
+    color: var(--text-secondary);
+  }
+
+  .app-dense-meta {
+    color: var(--text-muted);
+    font-size: var(--font-size-300);
+  }
+
+  .app-dense-actions {
+    display: flex;
+    grid-column: 3;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: var(--space-200);
+  }
+
+  .app-dense-row--plain > .app-dense-actions {
+    grid-column: 2;
+  }
+
   .app-section {
     overflow: hidden;
     border: var(--border-width-025) solid var(--border-primary);
@@ -405,7 +529,7 @@
     padding: var(--space-400);
   }
 
-  .app-section > :is(.table-container, .app-status-list) {
+  .app-section > :is(.table-container, .app-status-list, .app-dense-list) {
     border: 0;
   }
 
@@ -513,6 +637,7 @@
     .status-dot[data-state="running"],
     .status-icon[data-state="running"],
     .app-status-row,
+    .app-dense-row,
     .app-section {
       border-width: var(--border-width-050);
     }
@@ -535,6 +660,19 @@
 
     .status-dot[data-state="running"],
     .app-status-row > .status-dot[data-state="running"]::before {
+      border-color: CanvasText;
+      background: Canvas;
+    }
+
+    .app-dense-leading.status-dot {
+      background: Canvas;
+    }
+
+    .app-dense-leading.status-dot::before {
+      background: CanvasText;
+    }
+
+    .app-dense-leading.status-dot[data-state="running"]::before {
       border-color: CanvasText;
       background: Canvas;
     }
@@ -595,6 +733,24 @@
     .app-status-actions {
       grid-column: 2;
       justify-content: flex-start;
+    }
+
+    .app-dense-row {
+      grid-template-columns: var(--size-500) minmax(0, 1fr);
+    }
+
+    .app-dense-row--plain {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .app-dense-actions,
+    .app-dense-row--plain > .app-dense-actions {
+      grid-column: 2;
+      justify-content: flex-start;
+    }
+
+    .app-dense-row--plain > .app-dense-actions {
+      grid-column: 1;
     }
 
     .page-actions {

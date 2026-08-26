@@ -181,6 +181,16 @@ test("component CSS stays square, tokenized, shadow-free, and motion-controlled"
   }
 });
 
+test("App Shell provides the shared dense row composition", () => {
+  const source = stripCssComments(read("library/components/app-shell/app-shell.css"));
+  for (const hook of ["app-dense-list", "app-dense-row", "app-dense-leading", "app-dense-copy", "app-dense-heading", "app-dense-actions"]) {
+    assert.match(source, new RegExp(`\\.${hook}\\b`), `missing .${hook}`);
+  }
+  assert.match(source, /\.app-dense-row\s*\{[\s\S]*border-block-end:\s*var\(--border-width-025\) dashed var\(--border-muted\)/);
+  assert.match(source, /\.app-section\s*>\s*:is\([^)]*\.app-dense-list/);
+  assert.match(source, /@media\s*\(max-width:\s*37\.5rem\)[\s\S]*\.app-dense-actions[\s\S]*grid-column:\s*2/);
+});
+
 test("the base contract provides state and spatial motion with a reduced-motion override", () => {
   const source = stripCssComments(read("library/src/base.css"));
   assert.match(source, /--motion-duration-fast:\s*100ms/);

@@ -245,6 +245,52 @@ Keep color on the `status-icon` via its own `data-state`.
 Synchronize the `data-state` on the row and on the `status-icon`.
 
 Do not add a new component for this swap.
+## Dense row list
+
+Use `.app-dense-list` for a collection of content rows.
+
+Use one `.app-dense-row` for each item.
+
+Put a marker or selection control in `.app-dense-leading`.
+
+Put the label and supporting content in `.app-dense-copy`.
+
+Use `.app-dense-heading` for the label and nearby metadata.
+
+Use `.app-dense-actions` for compact row actions.
+
+Use `.app-dense-row--plain` when a row has no leading slot.
+
+Put the outer border on `.app-section`.
+
+Do not wrap each row in a card.
+
+```html
+<section class="app-section">
+  <ul class="app-dense-list" aria-label="Feeds">
+    <li class="app-dense-row">
+      <span class="app-dense-leading status-dot" data-state="positive" aria-hidden="true"></span>
+      <div class="app-dense-copy">
+        <div class="app-dense-heading">
+          <h3 class="app-dense-title">Core updates</h3>
+          <span class="badge" data-variant="outline">Healthy</span>
+        </div>
+        <p class="app-dense-description">https://example.com/feed.xml</p>
+        <p class="app-dense-meta">Fetched today · Next fetch in 30 minutes</p>
+      </div>
+      <div class="app-dense-actions">
+        <button class="btn" type="button" data-variant="ghost" data-size="sm">Refresh</button>
+      </div>
+    </li>
+  </ul>
+</section>
+```
+
+Use native list elements when the items form a collection.
+
+Use `role="list"` and `role="listitem"` only when another semantic element must be the row.
+
+Keep the list usable without JavaScript.
 
 ## Section canvas
 

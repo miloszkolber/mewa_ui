@@ -76,6 +76,18 @@ Use a semantic list when the items form an ordered or unordered collection.
 
 Use a table when columns carry stable relationships.
 
+Use `.app-dense-list` and `.app-dense-row` for a shared content-row composition.
+
+Put a marker or selection control in `.app-dense-leading`.
+
+Put the label and supporting content in `.app-dense-copy`.
+
+Use `.app-dense-heading` for the label and nearby metadata.
+
+Put row actions in `.app-dense-actions`.
+
+Use `.app-dense-row--plain` when a row has no leading slot.
+
 Use one border between connected rows.
 
 Use a fixed first column only for a status marker, icon, or selection control.

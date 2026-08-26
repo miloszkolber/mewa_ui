@@ -3699,6 +3699,125 @@
             {
               "tag": "section",
               "attributes": {
+                "class": "app-section"
+              },
+              "children": [
+                {
+                  "tag": "ul",
+                  "attributes": {
+                    "class": "app-dense-list",
+                    "aria-label": "Feeds"
+                  },
+                  "children": [
+                    {
+                      "tag": "li",
+                      "attributes": {
+                        "class": "app-dense-row"
+                      },
+                      "children": [
+                        {
+                          "tag": "span",
+                          "attributes": {
+                            "class": "app-dense-leading status-dot",
+                            "data-state": "positive",
+                            "aria-hidden": "true"
+                          },
+                          "children": []
+                        },
+                        {
+                          "tag": "div",
+                          "attributes": {
+                            "class": "app-dense-copy"
+                          },
+                          "children": [
+                            {
+                              "tag": "div",
+                              "attributes": {
+                                "class": "app-dense-heading"
+                              },
+                              "children": [
+                                {
+                                  "tag": "h3",
+                                  "attributes": {
+                                    "class": "app-dense-title"
+                                  },
+                                  "children": [
+                                    {
+                                      "text": "Core updates"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "tag": "span",
+                                  "attributes": {
+                                    "class": "badge",
+                                    "data-variant": "outline"
+                                  },
+                                  "children": [
+                                    {
+                                      "text": "Healthy"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "tag": "p",
+                              "attributes": {
+                                "class": "app-dense-description"
+                              },
+                              "children": [
+                                {
+                                  "text": "https://example.com/feed.xml"
+                                }
+                              ]
+                            },
+                            {
+                              "tag": "p",
+                              "attributes": {
+                                "class": "app-dense-meta"
+                              },
+                              "children": [
+                                {
+                                  "text": "Fetched today · Next fetch in 30 minutes"
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "div",
+                          "attributes": {
+                            "class": "app-dense-actions"
+                          },
+                          "children": [
+                            {
+                              "tag": "button",
+                              "attributes": {
+                                "class": "btn",
+                                "type": "button",
+                                "data-variant": "ghost",
+                                "data-size": "sm"
+                              },
+                              "children": [
+                                {
+                                  "text": "Refresh"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "tag": "section",
+              "attributes": {
                 "class": "app-section",
                 "aria-labelledby": "jobs-title"
               },
@@ -3914,6 +4033,10 @@
           "name": "variant",
           "source": "contract",
           "values": [
+            {
+              "key": "component.app-shell.axis.variant.value.ghost",
+              "value": "ghost"
+            },
             {
               "key": "component.app-shell.axis.variant.value.outline",
               "value": "outline"

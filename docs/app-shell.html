@@ -205,6 +205,39 @@
         </ul>
       </div>
 
+      <p class="text-sm font-medium mb-2 mt-8" id="app-shell-dense-row-list">Dense row list</p>
+      <p class="text-xs text-muted mb-3">Use one shared border-separated list for content rows with an optional marker, copy, and compact actions.</p>
+      <div class="preview" style="display: block; padding: 0; text-align: left">
+        <section class="app-section" style="border: 0">
+          <ul class="app-dense-list" aria-label="Feeds">
+            <li class="app-dense-row">
+              <span class="app-dense-leading status-dot" data-state="positive" aria-hidden="true"></span>
+              <div class="app-dense-copy">
+                <div class="app-dense-heading">
+                  <h3 class="app-dense-title">Core updates</h3>
+                  <span class="badge" data-variant="outline">Healthy</span>
+                </div>
+                <p class="app-dense-description">https://example.com/feed.xml</p>
+                <p class="app-dense-meta">Fetched today · Next fetch in 30 minutes</p>
+              </div>
+              <div class="app-dense-actions">
+                <button class="btn" type="button" data-variant="ghost" data-size="sm">Refresh</button>
+              </div>
+            </li>
+            <li class="app-dense-row">
+              <span class="app-dense-leading" aria-hidden="true"><input class="checkbox" type="checkbox" aria-label="Select archive feed"></span>
+              <div class="app-dense-copy">
+                <div class="app-dense-heading"><h3 class="app-dense-title">Archive feed</h3></div>
+                <p class="app-dense-description">A selection control can occupy the same leading slot.</p>
+              </div>
+              <div class="app-dense-actions">
+                <button class="btn" type="button" data-variant="ghost" data-size="sm">Edit</button>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </div>
+
       <p class="text-sm font-medium mb-2 mt-8">Empty state</p>
       <p class="text-xs text-muted mb-3">Use a concise recovery message. Add live status semantics only when asynchronous content replaces it.</p>
       <div class="preview">
