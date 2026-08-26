@@ -1,6 +1,6 @@
 // -- site.js -------------------------------------------------
 // Doc-site-only script for the mewa_ui documentation site.
-// Component behavior lives in components/*.js.
+// Component behavior lives in library/components/*.js.
 // No ES modules — works with file:// protocol.
 // Include via <script src="js/site.js" defer></script>
 
@@ -32,7 +32,7 @@
 
   // -- Local icons ------------------------------------------
   // Replaces <i data-lucide="name"> with the matching inline SVG
-  // from ../src/icons/{name}.svg (relative to the page at docs/).
+  // from ../library/src/icons/{name}.svg (relative to the page at docs/).
   var iconCache = {};
 
   function initLocalIcons() {
@@ -58,7 +58,7 @@
         if (iconCache[name]) apply(iconCache[name]);
         return;
       }
-      fetch('../src/icons/' + name + '.svg')
+      fetch('../library/src/icons/' + name + '.svg')
         .then(function (r) {
           if (!r.ok) throw new Error(r.status);
           return r.text();
@@ -108,7 +108,7 @@
       });
     });
 
-    // Local icons (<i data-lucide="name"> → inline SVG from src/icons)
+    // Local icons (<i data-lucide="name"> → inline SVG from library/src/icons)
     initLocalIcons();
   }
 

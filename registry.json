@@ -4,17 +4,17 @@
   "library": "mewa_ui",
   "canonicalAssets": {
     "foundations": [
-      "src/base.css",
-      "src/tokens.css"
+      "library/src/base.css",
+      "library/src/tokens.css"
     ],
     "fonts": [
-      "src/geist.woff2",
-      "src/geistmono.woff2"
+      "library/src/geist.woff2",
+      "library/src/geistmono.woff2"
     ],
-    "icons": "src/icons/",
-    "components": "components/",
+    "icons": "library/src/icons/",
+    "components": "library/components/",
     "documentation": "docs/",
-    "system": "system/"
+    "system": "library/system/"
   },
   "designTokens": {
     "semantic": [
@@ -334,8 +334,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/typography/typography.md",
-        "css": "components/typography/typography.css"
+        "skill": "library/components/typography/typography.md",
+        "css": "library/components/typography/typography.css"
       },
       "docs": "docs/typography.html",
       "description": "Formats document text, code, quotations, keyboard notation, and lists."
@@ -354,8 +354,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/layout/layout.md",
-        "css": "components/layout/layout.css"
+        "skill": "library/components/layout/layout.md",
+        "css": "library/components/layout/layout.css"
       },
       "docs": "docs/layout.html",
       "description": "Creates intrinsic containers, stacks, grids, sidebar splits, centering, and opposite-end groups."
@@ -374,8 +374,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/separator/separator.md",
-        "css": "components/separator/separator.css"
+        "skill": "library/components/separator/separator.md",
+        "css": "library/components/separator/separator.css"
       },
       "docs": "docs/separator.html",
       "description": "Marks a real visual or semantic division."
@@ -394,8 +394,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/icon/icon.md",
-        "css": "components/icon/icon.css"
+        "skill": "library/components/icon/icon.md",
+        "css": "library/components/icon/icon.css"
       },
       "docs": "docs/icon.html",
       "description": "Presents a local Lucide glyph inside text or a control."
@@ -414,8 +414,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/button/button.md",
-        "css": "components/button/button.css"
+        "skill": "library/components/button/button.md",
+        "css": "library/components/button/button.css"
       },
       "docs": "docs/button.html",
       "description": "Starts an action, submits a form, or styles a navigation link as a button."
@@ -434,9 +434,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/toggle/toggle.md",
-        "css": "components/toggle/toggle.css",
-        "js": "components/toggle/toggle.js"
+        "skill": "library/components/toggle/toggle.md",
+        "css": "library/components/toggle/toggle.css",
+        "js": "library/components/toggle/toggle.js"
       },
       "docs": "docs/toggle.html",
       "description": "Changes one independent pressed state."
@@ -455,9 +455,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/toggle-group/toggle-group.md",
-        "css": "components/toggle-group/toggle-group.css",
-        "js": "components/toggle-group/toggle-group.js"
+        "skill": "library/components/toggle-group/toggle-group.md",
+        "css": "library/components/toggle-group/toggle-group.css",
+        "js": "library/components/toggle-group/toggle-group.js"
       },
       "docs": "docs/toggle-group.html",
       "description": "Coordinates a set of related pressed buttons."
@@ -476,8 +476,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/button-group/button-group.md",
-        "css": "components/button-group/button-group.css"
+        "skill": "library/components/button-group/button-group.md",
+        "css": "library/components/button-group/button-group.css"
       },
       "docs": "docs/button-group.html",
       "description": "Connects related buttons into one visual control group."
@@ -496,9 +496,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/toolbar/toolbar.md",
-        "css": "components/toolbar/toolbar.css",
-        "js": "components/toolbar/toolbar.js"
+        "skill": "library/components/toolbar/toolbar.md",
+        "css": "library/components/toolbar/toolbar.css",
+        "js": "library/components/toolbar/toolbar.js"
       },
       "docs": "docs/toolbar.html",
       "description": "Groups frequently used controls with managed arrow-key navigation."
@@ -517,8 +517,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/label/label.md",
-        "css": "components/label/label.css"
+        "skill": "library/components/label/label.md",
+        "css": "library/components/label/label.css"
       },
       "docs": "docs/label.html",
       "description": "Names one native form control."
@@ -537,8 +537,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/field/field.md",
-        "css": "components/field/field.css"
+        "skill": "library/components/field/field.md",
+        "css": "library/components/field/field.css"
       },
       "docs": "docs/field.html",
       "description": "Composes a label, native control, help text, error text, and related fieldsets."
@@ -557,8 +557,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/text-field/text-field.md",
-        "css": "components/text-field/text-field.css"
+        "skill": "library/components/text-field/text-field.md",
+        "css": "library/components/text-field/text-field.css"
       },
       "docs": "docs/text-field.html",
       "description": "Collects one line of text with labels, descriptions, icons, and validation."
@@ -577,8 +577,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/textarea/textarea.md",
-        "css": "components/textarea/textarea.css"
+        "skill": "library/components/textarea/textarea.md",
+        "css": "library/components/textarea/textarea.css"
       },
       "docs": "docs/textarea.html",
       "description": "Collects multi-line text."
@@ -597,9 +597,9 @@
       "enhancementJs": true,
       "jsMode": "optional",
       "files": {
-        "skill": "components/checkbox/checkbox.md",
-        "css": "components/checkbox/checkbox.css",
-        "js": "components/checkbox/checkbox.js"
+        "skill": "library/components/checkbox/checkbox.md",
+        "css": "library/components/checkbox/checkbox.css",
+        "js": "library/components/checkbox/checkbox.js"
       },
       "docs": "docs/checkbox.html",
       "description": "Selects one independent option or several independent options."
@@ -618,8 +618,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/radio-group/radio-group.md",
-        "css": "components/radio-group/radio-group.css"
+        "skill": "library/components/radio-group/radio-group.md",
+        "css": "library/components/radio-group/radio-group.css"
       },
       "docs": "docs/radio-group.html",
       "description": "Selects one value from a visible set."
@@ -638,8 +638,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/switch/switch.md",
-        "css": "components/switch/switch.css"
+        "skill": "library/components/switch/switch.md",
+        "css": "library/components/switch/switch.css"
       },
       "docs": "docs/switch.html",
       "description": "Changes an immediate binary system state."
@@ -658,9 +658,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/slider/slider.md",
-        "css": "components/slider/slider.css",
-        "js": "components/slider/slider.js"
+        "skill": "library/components/slider/slider.md",
+        "css": "library/components/slider/slider.css",
+        "js": "library/components/slider/slider.js"
       },
       "docs": "docs/slider.html",
       "description": "Selects a value from a continuous or stepped numeric range."
@@ -679,8 +679,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/select/select.md",
-        "css": "components/select/select.css"
+        "skill": "library/components/select/select.md",
+        "css": "library/components/select/select.css"
       },
       "docs": "docs/select.html",
       "description": "Selects one or several values from a fixed native option list."
@@ -699,9 +699,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/number-field/number-field.md",
-        "css": "components/number-field/number-field.css",
-        "js": "components/number-field/number-field.js"
+        "skill": "library/components/number-field/number-field.md",
+        "css": "library/components/number-field/number-field.css",
+        "js": "library/components/number-field/number-field.js"
       },
       "docs": "docs/number-field.html",
       "description": "Collects a numeric value with explicit increment and decrement controls."
@@ -720,8 +720,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/file-input/file-input.md",
-        "css": "components/file-input/file-input.css"
+        "skill": "library/components/file-input/file-input.md",
+        "css": "library/components/file-input/file-input.css"
       },
       "docs": "docs/file-input.html",
       "description": "Opens the native file picker."
@@ -740,8 +740,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/date-field/date-field.md",
-        "css": "components/date-field/date-field.css"
+        "skill": "library/components/date-field/date-field.md",
+        "css": "library/components/date-field/date-field.css"
       },
       "docs": "docs/date-field.html",
       "description": "Collects a date or local date and time with the browser control."
@@ -760,9 +760,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/date-picker/date-picker.md",
-        "css": "components/date-picker/date-picker.css",
-        "js": "components/date-picker/date-picker.js"
+        "skill": "library/components/date-picker/date-picker.md",
+        "css": "library/components/date-picker/date-picker.css",
+        "js": "library/components/date-picker/date-picker.js"
       },
       "docs": "docs/date-picker.html",
       "description": "Selects a date from a custom accessible month grid."
@@ -781,9 +781,9 @@
       "enhancementJs": true,
       "jsMode": "optional",
       "files": {
-        "skill": "components/date-range-picker/date-range-picker.md",
-        "css": "components/date-range-picker/date-range-picker.css",
-        "js": "components/date-range-picker/date-range-picker.js"
+        "skill": "library/components/date-range-picker/date-range-picker.md",
+        "css": "library/components/date-range-picker/date-range-picker.css",
+        "js": "library/components/date-range-picker/date-range-picker.js"
       },
       "docs": "docs/date-range-picker.html",
       "description": "Collects a start date and an end date with native inputs."
@@ -802,9 +802,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/combobox/combobox.md",
-        "css": "components/combobox/combobox.css",
-        "js": "components/combobox/combobox.js"
+        "skill": "library/components/combobox/combobox.md",
+        "css": "library/components/combobox/combobox.css",
+        "js": "library/components/combobox/combobox.js"
       },
       "docs": "docs/combobox.html",
       "description": "Selects one option from a searchable list."
@@ -823,9 +823,9 @@
       "enhancementJs": true,
       "jsMode": "optional",
       "files": {
-        "skill": "components/time-field/time-field.md",
-        "css": "components/time-field/time-field.css",
-        "js": "components/time-field/time-field.js"
+        "skill": "library/components/time-field/time-field.md",
+        "css": "library/components/time-field/time-field.css",
+        "js": "library/components/time-field/time-field.js"
       },
       "docs": "docs/time-field.html",
       "description": "Collects a structured time from native numeric fields and a period selector."
@@ -844,8 +844,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/form/form.md",
-        "css": "components/form/form.css"
+        "skill": "library/components/form/form.md",
+        "css": "library/components/form/form.css"
       },
       "docs": "docs/form.html",
       "description": "Composes a complete native submission task."
@@ -864,8 +864,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/badge/badge.md",
-        "css": "components/badge/badge.css"
+        "skill": "library/components/badge/badge.md",
+        "css": "library/components/badge/badge.css"
       },
       "docs": "docs/badge.html",
       "description": "Shows short non-interactive status or metadata."
@@ -884,9 +884,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/avatar/avatar.md",
-        "css": "components/avatar/avatar.css",
-        "js": "components/avatar/avatar.js"
+        "skill": "library/components/avatar/avatar.md",
+        "css": "library/components/avatar/avatar.css",
+        "js": "library/components/avatar/avatar.js"
       },
       "docs": "docs/avatar.html",
       "description": "Shows a person or entity image with a fallback and optional status."
@@ -905,8 +905,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/card/card.md",
-        "css": "components/card/card.css"
+        "skill": "library/components/card/card.md",
+        "css": "library/components/card/card.css"
       },
       "docs": "docs/card.html",
       "description": "Groups one standalone object or a small related content set."
@@ -925,9 +925,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/image/image.md",
-        "css": "components/image/image.css",
-        "js": "components/image/image.js"
+        "skill": "library/components/image/image.md",
+        "css": "library/components/image/image.css",
+        "js": "library/components/image/image.js"
       },
       "docs": "docs/image.html",
       "description": "Presents an image, caption, fallback, and optional larger preview."
@@ -946,8 +946,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/statistic/statistic.md",
-        "css": "components/statistic/statistic.css"
+        "skill": "library/components/statistic/statistic.md",
+        "css": "library/components/statistic/statistic.css"
       },
       "docs": "docs/statistic.html",
       "description": "Shows one value with a label, description, and optional trend."
@@ -966,8 +966,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/table/table.md",
-        "css": "components/table/table.css"
+        "skill": "library/components/table/table.md",
+        "css": "library/components/table/table.css"
       },
       "docs": "docs/table.html",
       "description": "Presents data with stable row and column relationships."
@@ -986,9 +986,9 @@
       "enhancementJs": true,
       "jsMode": "optional",
       "files": {
-        "skill": "components/data-table/data-table.md",
-        "css": "components/data-table/data-table.css",
-        "js": "components/data-table/data-table.js"
+        "skill": "library/components/data-table/data-table.md",
+        "css": "library/components/data-table/data-table.css",
+        "js": "library/components/data-table/data-table.js"
       },
       "docs": "docs/data-table.html",
       "description": "Adds filtering, sorting, status, and pagination around Table."
@@ -1007,8 +1007,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/collapsible/collapsible.md",
-        "css": "components/collapsible/collapsible.css"
+        "skill": "library/components/collapsible/collapsible.md",
+        "css": "library/components/collapsible/collapsible.css"
       },
       "docs": "docs/collapsible.html",
       "description": "Reveals and hides supplementary content."
@@ -1027,8 +1027,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/timeline/timeline.md",
-        "css": "components/timeline/timeline.css"
+        "skill": "library/components/timeline/timeline.md",
+        "css": "library/components/timeline/timeline.css"
       },
       "docs": "docs/timeline.html",
       "description": "Presents events or steps in chronological or procedural order."
@@ -1047,9 +1047,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/tree-view/tree-view.md",
-        "css": "components/tree-view/tree-view.css",
-        "js": "components/tree-view/tree-view.js"
+        "skill": "library/components/tree-view/tree-view.md",
+        "css": "library/components/tree-view/tree-view.css",
+        "js": "library/components/tree-view/tree-view.js"
       },
       "docs": "docs/tree-view.html",
       "description": "Presents hierarchical items with expandable branches."
@@ -1068,9 +1068,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/carousel/carousel.md",
-        "css": "components/carousel/carousel.css",
-        "js": "components/carousel/carousel.js"
+        "skill": "library/components/carousel/carousel.md",
+        "css": "library/components/carousel/carousel.css",
+        "js": "library/components/carousel/carousel.js"
       },
       "docs": "docs/carousel.html",
       "description": "Presents a sequence of slides in a bounded scroll region."
@@ -1089,8 +1089,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/scroll-area/scroll-area.md",
-        "css": "components/scroll-area/scroll-area.css"
+        "skill": "library/components/scroll-area/scroll-area.md",
+        "css": "library/components/scroll-area/scroll-area.css"
       },
       "docs": "docs/scroll-area.html",
       "description": "Contains overflow inside a bounded region."
@@ -1109,9 +1109,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/sortable/sortable.md",
-        "css": "components/sortable/sortable.css",
-        "js": "components/sortable/sortable.js"
+        "skill": "library/components/sortable/sortable.md",
+        "css": "library/components/sortable/sortable.css",
+        "js": "library/components/sortable/sortable.js"
       },
       "docs": "docs/sortable.html",
       "description": "Reorders a user-owned list."
@@ -1130,8 +1130,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/spinner/spinner.md",
-        "css": "components/spinner/spinner.css"
+        "skill": "library/components/spinner/spinner.md",
+        "css": "library/components/spinner/spinner.css"
       },
       "docs": "docs/spinner.html",
       "description": "Shows that an indeterminate task is active."
@@ -1150,8 +1150,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/skeleton/skeleton.md",
-        "css": "components/skeleton/skeleton.css"
+        "skill": "library/components/skeleton/skeleton.md",
+        "css": "library/components/skeleton/skeleton.css"
       },
       "docs": "docs/skeleton.html",
       "description": "Reserves the shape of content that is loading."
@@ -1170,8 +1170,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/progress/progress.md",
-        "css": "components/progress/progress.css"
+        "skill": "library/components/progress/progress.md",
+        "css": "library/components/progress/progress.css"
       },
       "docs": "docs/progress.html",
       "description": "Shows known task completion."
@@ -1190,8 +1190,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/callout/callout.md",
-        "css": "components/callout/callout.css"
+        "skill": "library/components/callout/callout.md",
+        "css": "library/components/callout/callout.css"
       },
       "docs": "docs/callout.html",
       "description": "Presents persistent important information in the page flow."
@@ -1210,9 +1210,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/alert-dialog/alert-dialog.md",
-        "css": "components/alert-dialog/alert-dialog.css",
-        "js": "components/alert-dialog/alert-dialog.js"
+        "skill": "library/components/alert-dialog/alert-dialog.md",
+        "css": "library/components/alert-dialog/alert-dialog.css",
+        "js": "library/components/alert-dialog/alert-dialog.js"
       },
       "docs": "docs/alert-dialog.html",
       "description": "Requires an explicit response to a high-impact decision."
@@ -1231,9 +1231,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/toast/toast.md",
-        "css": "components/toast/toast.css",
-        "js": "components/toast/toast.js"
+        "skill": "library/components/toast/toast.md",
+        "css": "library/components/toast/toast.css",
+        "js": "library/components/toast/toast.js"
       },
       "docs": "docs/toast.html",
       "description": "Announces a brief non-blocking result."
@@ -1252,9 +1252,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/popover/popover.md",
-        "css": "components/popover/popover.css",
-        "js": "components/popover/popover.js"
+        "skill": "library/components/popover/popover.md",
+        "css": "library/components/popover/popover.css",
+        "js": "library/components/popover/popover.js"
       },
       "docs": "docs/popover.html",
       "description": "Shows non-modal contextual content in the top layer."
@@ -1273,9 +1273,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/tooltip/tooltip.md",
-        "css": "components/tooltip/tooltip.css",
-        "js": "components/tooltip/tooltip.js"
+        "skill": "library/components/tooltip/tooltip.md",
+        "css": "library/components/tooltip/tooltip.css",
+        "js": "library/components/tooltip/tooltip.js"
       },
       "docs": "docs/tooltip.html",
       "description": "Shows a short supplementary hint on hover and focus."
@@ -1294,9 +1294,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/dialog/dialog.md",
-        "css": "components/dialog/dialog.css",
-        "js": "components/dialog/dialog.js"
+        "skill": "library/components/dialog/dialog.md",
+        "css": "library/components/dialog/dialog.css",
+        "js": "library/components/dialog/dialog.js"
       },
       "docs": "docs/dialog.html",
       "description": "Contains a focused modal task."
@@ -1315,9 +1315,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/sheet/sheet.md",
-        "css": "components/sheet/sheet.css",
-        "js": "components/sheet/sheet.js"
+        "skill": "library/components/sheet/sheet.md",
+        "css": "library/components/sheet/sheet.css",
+        "js": "library/components/sheet/sheet.js"
       },
       "docs": "docs/sheet.html",
       "description": "Presents an edge-aligned modal task."
@@ -1336,9 +1336,9 @@
       "enhancementJs": true,
       "jsMode": "optional",
       "files": {
-        "skill": "components/accordion/accordion.md",
-        "css": "components/accordion/accordion.css",
-        "js": "components/accordion/accordion.js"
+        "skill": "library/components/accordion/accordion.md",
+        "css": "library/components/accordion/accordion.css",
+        "js": "library/components/accordion/accordion.js"
       },
       "docs": "docs/accordion.html",
       "description": "Groups several disclosure sections."
@@ -1357,9 +1357,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/command-palette/command-palette.md",
-        "css": "components/command-palette/command-palette.css",
-        "js": "components/command-palette/command-palette.js"
+        "skill": "library/components/command-palette/command-palette.md",
+        "css": "library/components/command-palette/command-palette.css",
+        "js": "library/components/command-palette/command-palette.js"
       },
       "docs": "docs/command-palette.html",
       "description": "Finds and activates global application commands."
@@ -1378,8 +1378,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/breadcrumbs/breadcrumbs.md",
-        "css": "components/breadcrumbs/breadcrumbs.css"
+        "skill": "library/components/breadcrumbs/breadcrumbs.md",
+        "css": "library/components/breadcrumbs/breadcrumbs.css"
       },
       "docs": "docs/breadcrumbs.html",
       "description": "Shows the current route within a hierarchy."
@@ -1398,8 +1398,8 @@
       "enhancementJs": false,
       "jsMode": "none",
       "files": {
-        "skill": "components/pagination/pagination.md",
-        "css": "components/pagination/pagination.css"
+        "skill": "library/components/pagination/pagination.md",
+        "css": "library/components/pagination/pagination.css"
       },
       "docs": "docs/pagination.html",
       "description": "Moves between result pages."
@@ -1418,9 +1418,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/tabs/tabs.md",
-        "css": "components/tabs/tabs.css",
-        "js": "components/tabs/tabs.js"
+        "skill": "library/components/tabs/tabs.md",
+        "css": "library/components/tabs/tabs.css",
+        "js": "library/components/tabs/tabs.js"
       },
       "docs": "docs/tabs.html",
       "description": "Switches among related panels within one route."
@@ -1439,9 +1439,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/dropdown-menu/dropdown-menu.md",
-        "css": "components/dropdown-menu/dropdown-menu.css",
-        "js": "components/dropdown-menu/dropdown-menu.js"
+        "skill": "library/components/dropdown-menu/dropdown-menu.md",
+        "css": "library/components/dropdown-menu/dropdown-menu.css",
+        "js": "library/components/dropdown-menu/dropdown-menu.js"
       },
       "docs": "docs/dropdown-menu.html",
       "description": "Shows a compact set of actions from one trigger."
@@ -1460,9 +1460,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/navigation-menu/navigation-menu.md",
-        "css": "components/navigation-menu/navigation-menu.css",
-        "js": "components/navigation-menu/navigation-menu.js"
+        "skill": "library/components/navigation-menu/navigation-menu.md",
+        "css": "library/components/navigation-menu/navigation-menu.css",
+        "js": "library/components/navigation-menu/navigation-menu.js"
       },
       "docs": "docs/navigation-menu.html",
       "description": "Groups related site routes in top-level navigation popovers."
@@ -1481,9 +1481,9 @@
       "enhancementJs": true,
       "jsMode": "optional",
       "files": {
-        "skill": "components/app-shell/app-shell.md",
-        "css": "components/app-shell/app-shell.css",
-        "js": "components/app-shell/app-shell.js"
+        "skill": "library/components/app-shell/app-shell.md",
+        "css": "library/components/app-shell/app-shell.css",
+        "js": "library/components/app-shell/app-shell.js"
       },
       "docs": "docs/app-shell.html",
       "description": "Provides reusable application header, toolbar, page overview, content, status, and empty-state primitives."
@@ -1502,9 +1502,9 @@
       "enhancementJs": false,
       "jsMode": "required",
       "files": {
-        "skill": "components/sidebar/sidebar.md",
-        "css": "components/sidebar/sidebar.css",
-        "js": "components/sidebar/sidebar.js"
+        "skill": "library/components/sidebar/sidebar.md",
+        "css": "library/components/sidebar/sidebar.css",
+        "js": "library/components/sidebar/sidebar.js"
       },
       "docs": "docs/sidebar.html",
       "description": "Provides collapsible desktop navigation and a mobile navigation dialog."
@@ -1523,9 +1523,9 @@
       "enhancementJs": true,
       "jsMode": "optional",
       "files": {
-        "skill": "components/resizable/resizable.md",
-        "css": "components/resizable/resizable.css",
-        "js": "components/resizable/resizable.js"
+        "skill": "library/components/resizable/resizable.md",
+        "css": "library/components/resizable/resizable.css",
+        "js": "library/components/resizable/resizable.js"
       },
       "docs": "docs/resizable.html",
       "description": "Presents two panels with an optional adjustable separator."

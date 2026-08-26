@@ -2,7 +2,7 @@
 
 Use this file to apply the visual foundation.
 
-Read `DESIGN.md` before this file.
+Read `library/DESIGN.md` before this file.
 
 ## Identity
 
@@ -20,9 +20,9 @@ Do not divide every content group into a separate card.
 
 ## Token ownership
 
-Use `src/base.css` for static primitives.
+Use `library/src/base.css` for static primitives.
 
-Use `src/tokens.css` for semantic theme roles.
+Use `library/src/tokens.css` for semantic theme roles.
 
 Use `registry.json` to read the purpose of each semantic token.
 
@@ -279,7 +279,7 @@ Do not reduce a target because the icon is small.
 
 ## Icons
 
-Use an SVG from `src/icons/`.
+Use an SVG from `library/src/icons/`.
 
 Inline the SVG for the no-JavaScript path.
 

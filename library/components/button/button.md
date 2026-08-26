@@ -96,7 +96,7 @@ Give an icon-only button an accessible name.
 </button>
 ```
 
-Replace the example path with the matching local SVG from `src/icons/`.
+Replace the example path with the matching local SVG from `library/src/icons/`.
 
 ## Variants
 

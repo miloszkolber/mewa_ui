@@ -58,7 +58,7 @@ function safeTarget(requestUrl) {
   if (target !== root && !target.startsWith(`${root}${path.sep}`)) return null;
 
   const relative = path.relative(root, target);
-  const allowed = ["src", "components", "docs", "registry.json"];
+  const allowed = ["library", "docs", "registry.json"];
   if (!allowed.some((name) => relative === name || relative.startsWith(`${name}${path.sep}`))) return null;
   return target;
 }

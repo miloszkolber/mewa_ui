@@ -2,7 +2,7 @@
 
 Use this file as the accessibility acceptance contract.
 
-Read `DESIGN.md` before this file.
+Read `library/DESIGN.md` before this file.
 
 ## Native semantics
 

@@ -21,11 +21,11 @@ function test(name, callback) {
 }
 
 const systemFiles = [
-  "system/foundations.md",
-  "system/components.md",
-  "system/patterns.md",
-  "system/layouts.md",
-  "system/accessibility.md"
+  "library/system/foundations.md",
+  "library/system/components.md",
+  "library/system/patterns.md",
+  "library/system/layouts.md",
+  "library/system/accessibility.md"
 ];
 
 function sentenceWordCount(sentence) {
@@ -57,53 +57,51 @@ function checkCompactProse(filename) {
 
 test("the system stays limited to five connected specification files", () => {
   systemFiles.forEach((file) => assert(exists(file), `missing ${file}`));
-  const actual = fs.readdirSync(path.join(root, "system"))
+  const actual = fs.readdirSync(path.join(root, "library", "system"))
     .filter((name) => name.endsWith(".md"))
     .sort();
   assert.deepEqual(actual, systemFiles.map((file) => path.basename(file)).sort());
 });
 
 test("DESIGN routes agents through the complete contract", () => {
-  const design = read("DESIGN.md");
-  systemFiles.forEach((file) => assert(design.includes(`\`${file}\``), `DESIGN.md does not reference ${file}`));
+  const design = read("library/DESIGN.md");
+  systemFiles.forEach((file) => assert(design.includes(`\`${file}\``), `library/DESIGN.md does not reference ${file}`));
   assert.match(design, /mewa_ui does not ship complete layout templates\./);
   assert.match(design, /The registry owns component selection metadata\./);
   assert.match(design, /Spinner rotation is the only library motion exception\./);
 });
 
-test("the compliance prompt is complete and application-focused", () => {
+test("the compliance prompt is compact, exploratory, and application-focused", () => {
   const prompt = read("PROMPT.md");
-  for (const heading of [
-    "## Objective",
-    "## Visual review",
-    "## Component review",
-    "## Page and shell review",
-    "## Usability review",
-    "## Accessibility review",
-    "## Technical review",
-    "## Responsive review",
-    "## Library-gap review",
-    "## Implementation rules",
-    "## Validation",
-    "## Deliverable",
-    "## Writing rules"
-  ]) {
-    assert(prompt.includes(heading), `PROMPT.md is missing ${heading}`);
-  }
+  assert(prompt.split(/\r?\n/).length <= 50, "PROMPT.md must stay short enough to invite repository exploration");
+  assert.match(prompt, /Explore the application and the current mewa_ui repository/);
+  assert.match(prompt, /Follow repository instructions you discover/);
   assert.match(prompt, /\.opencode\//);
-  assert.match(prompt, /Remove cards inside cards\./);
-  assert.match(prompt, /Use the sidebar shell/);
-  assert.match(prompt, /Do not invent undocumented mewa_ui APIs\./);
+  assert.match(prompt, /Remove cards inside cards/);
+  assert.match(prompt, /undocumented library APIs/);
+  assert.match(prompt, /what you verified/);
+  assert.match(prompt, /Preserve names, facts, numbers, terminology, quotations, constraints/);
+});
+
+test("descriptive and instructional Markdown have explicit owners", () => {
+  const readme = read("README.md");
+  const agents = read("AGENTS.md");
+  assert.match(readme, /The repository keeps description separate from instruction\./);
+  assert.match(readme, /### For people/);
+  assert.match(readme, /### For agents and maintainers/);
+  assert(!/COMPONENT-INVENTORY/.test(readme), "README.md must not contain the generated agent catalog");
+  assert.match(agents, /Keep `README\.md` descriptive and written for people\./);
+  assert.match(agents, /Keep `library\/DESIGN\.md`, `library\/system\/`, and component Markdown instructional\./);
 });
 
 test("agent-facing prose stays shallow and compact", () => {
-  for (const file of ["DESIGN.md", "AGENTS.md", "llms.txt", "PROMPT.md", ...systemFiles]) {
+  for (const file of ["library/DESIGN.md", "AGENTS.md", "llms.txt", "PROMPT.md", ...systemFiles]) {
     checkCompactProse(file);
   }
 });
 
 test("shell documentation contains all three shell recipes", () => {
-  const layouts = read("system/layouts.md");
+  const layouts = read("library/system/layouts.md");
   assert.match(layouts, /## Sidebar shell/);
   assert.match(layouts, /## Top-navigation shell/);
   assert.match(layouts, /## Focused-tool shell/);
@@ -111,15 +109,15 @@ test("shell documentation contains all three shell recipes", () => {
 });
 
 test("component selection documentation routes agents through registry metadata", () => {
-  const guide = read("system/components.md");
+  const guide = read("library/system/components.md");
   assert.match(guide, /Read `registry\.json` for the complete component inventory\./);
   for (const field of ["purpose", "useWhen", "avoidWhen", "fallback", "jsMode", "files", "stability"]) {
-    assert(guide.includes(`Use ` + "`" + `${field}` + "`"), `system/components.md is missing ${field}`);
+    assert(guide.includes(`Use ` + "`" + `${field}` + "`"), `library/system/components.md is missing ${field}`);
   }
 });
 
 test("foundation token documentation is generated from registry metadata", () => {
-  const foundations = read("system/foundations.md");
+  const foundations = read("library/system/foundations.md");
   assert.match(foundations, /<!-- TOKEN-REFERENCE:START -->/);
   assert.match(foundations, /<!-- TOKEN-REFERENCE:END -->/);
   assert.match(foundations, /\| `--background` \| Page canvas background\. \|/);

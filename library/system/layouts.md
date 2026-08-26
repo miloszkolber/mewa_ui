@@ -2,9 +2,9 @@
 
 Use this file to compose application chrome.
 
-Read `DESIGN.md` before this file.
+Read `library/DESIGN.md` before this file.
 
-Read `system/patterns.md` before you add route content.
+Read `library/system/patterns.md` before you add route content.
 
 mewa_ui does not ship complete layout templates.
 

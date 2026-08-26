@@ -2,9 +2,9 @@
 
 Use this file for repository maintenance.
 
-Read `DESIGN.md` before you change the library.
+Read `library/DESIGN.md` before you change the library.
 
-Read the relevant file in `system/` before you change appearance, composition, or behavior.
+Read the relevant file in `library/system/` before you change appearance, composition, or behavior.
 
 ## Repository scope
 
@@ -18,25 +18,23 @@ Document a breaking change before you remove a current hook.
 
 Do not edit deployment files from this repository.
 
-Read `CONSUMERS.md` before you plan a consumer migration.
-
 ## Source ownership
 
-Edit `src/base.css` for static foundation primitives.
+Edit `library/src/base.css` for static foundation primitives.
 
-Edit `src/tokens.css` for semantic light and dark roles.
+Edit `library/src/tokens.css` for semantic light and dark roles.
 
-Edit `components/{slug}/{slug}.md` for component implementation guidance.
+Edit `library/components/{slug}/{slug}.md` for component implementation guidance.
 
-Edit `components/{slug}/{slug}.css` for component presentation.
+Edit `library/components/{slug}/{slug}.css` for component presentation.
 
-Edit `components/{slug}/{slug}.js` for component enhancement behavior.
+Edit `library/components/{slug}/{slug}.js` for component enhancement behavior.
 
 Edit `docs/{slug}.html` for the rendered component reference.
 
 Edit `registry.json` for component selection metadata and token purposes.
 
-Edit `system/` for selection and composition rules.
+Edit `library/system/` for selection and composition rules.
 
 Edit `README.md` for the human repository overview.
 
@@ -56,17 +54,31 @@ Do not add complete shell templates.
 
 Treat `registry.json` as the source of component selection metadata.
 
-Treat `system/components.md` as generated output.
+Treat `library/system/components.md` as generated output.
 
-Treat the README component inventory as generated output.
-
-Treat the semantic token reference in `system/foundations.md` as generated output.
+Treat the semantic token reference in `library/system/foundations.md` as generated output.
 
 Run `npm run catalog:write` after registry selection metadata changes.
 
 Run `npm run catalog:check` before handoff.
 
 Do not hand-edit generated sections.
+
+## Document roles
+
+Keep `README.md` descriptive and written for people.
+
+Keep `docs/` descriptive and example-focused.
+
+Keep `library/DESIGN.md`, `library/system/`, and component Markdown instructional.
+
+Keep `AGENTS.md`, `PROMPT.md`, and `llms.txt` concise and action-oriented.
+
+Keep machine-readable descriptions in `registry.json`.
+
+Do not turn `README.md` into an agent checklist.
+
+Do not copy implementation instructions into descriptive documentation.
 
 ## Change sequence
 
@@ -85,7 +97,7 @@ Do not hand-edit generated sections.
 
 ## Component changes
 
-Keep each component in `components/{slug}/`.
+Keep each component in `library/components/{slug}/`.
 
 Keep one Markdown skill in each component folder.
 
@@ -211,7 +223,7 @@ Do not add a framework lifecycle.
 
 ## Shell changes
 
-Keep shell recipes in `system/layouts.md`.
+Keep shell recipes in `library/system/layouts.md`.
 
 Compose shells from App Shell, Sidebar, Layout, navigation components, and native landmarks.
 
@@ -247,7 +259,7 @@ Keep examples short.
 
 Avoid deep heading nesting.
 
-Keep `system/components.md` generated from `registry.json`.
+Keep `library/system/components.md` generated from `registry.json`.
 
 Keep `llms.txt` short.
 

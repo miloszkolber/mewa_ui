@@ -12,7 +12,7 @@ Do not load remote icon assets.
 
 ## Native basis
 
-Inline SVG copied from `src/icons/` is the complete no-JavaScript path.
+Inline SVG copied from `library/src/icons/` is the complete no-JavaScript path.
 
 The optional `data-lucide` placeholder can be expanded by a consumer-owned local loader.
 
@@ -27,7 +27,7 @@ Icon has no component JavaScript module.
 
 ## Inline SVG
 
-Copy the matching file from `src/icons/`.
+Copy the matching file from `library/src/icons/`.
 
 Keep decorative state explicit.
 
@@ -44,7 +44,7 @@ Keep decorative state explicit.
 </svg>
 ```
 
-Do not copy an SVG from a remote CDN when the same icon exists in `src/icons/`.
+Do not copy an SVG from a remote CDN when the same icon exists in `library/src/icons/`.
 
 ## Local loader hook
 

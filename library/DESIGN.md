@@ -7,12 +7,12 @@ Use this contract for every library change and every consumer interface.
 ## Read order
 
 1. Read this file before you select a component or a shell.
-2. Read `system/foundations.md` before you add visual rules.
-3. Read `system/components.md` before you select a component.
-4. Read the matching `components/{slug}/{slug}.md` before you write markup.
-5. Read `system/patterns.md` before you compose a page region.
-6. Read `system/layouts.md` before you compose application chrome.
-7. Read `system/accessibility.md` before you add interaction.
+2. Read `library/system/foundations.md` before you add visual rules.
+3. Read `library/system/components.md` before you select a component.
+4. Read the matching `library/components/{slug}/{slug}.md` before you write markup.
+5. Read `library/system/patterns.md` before you compose a page region.
+6. Read `library/system/layouts.md` before you compose application chrome.
+7. Read `library/system/accessibility.md` before you add interaction.
 8. Read `registry.json` before you load component assets.
 
 The registry owns component selection metadata.
@@ -52,7 +52,7 @@ The library owns shared appearance, semantics, and interaction contracts.
 3. Select the smallest shell that supports the route structure.
 4. Select the smallest documented pattern that supports the task.
 5. Select native elements before custom interaction patterns.
-6. Select components from `system/components.md`.
+6. Select components from `library/system/components.md`.
 7. Read every selected component skill.
 8. Load only the required stylesheets and modules.
 9. Preserve the documented no-JavaScript path.
@@ -104,9 +104,9 @@ Use sentence case for headings, labels, buttons, and navigation.
 
 ## Foundations
 
-Load `src/base.css` first.
+Load `library/src/base.css` first.
 
-Load `src/tokens.css` second.
+Load `library/src/tokens.css` second.
 
 Use Geist for interface text.
 
@@ -134,7 +134,7 @@ Use tuned alpha primitives through semantic roles.
 
 Use the token purposes in `registry.json`.
 
-Use the numeric spacing and size tokens from `src/base.css`.
+Use the numeric spacing and size tokens from `library/src/base.css`.
 
 Do not add a second spacing scale.
 
@@ -326,11 +326,11 @@ Support `forced-colors: active`.
 
 Keep the no-JavaScript state understandable and usable.
 
-Read `system/accessibility.md` for the complete acceptance contract.
+Read `library/system/accessibility.md` for the complete acceptance contract.
 
 ## Component documentation
 
-Use `system/components.md` to select a component.
+Use `library/system/components.md` to select a component.
 
 Use the component skill to implement the component.
 
@@ -368,7 +368,7 @@ Do not include a variant that the stylesheet does not implement.
 
 Use a pattern when several components solve one repeated task.
 
-Keep patterns in `system/patterns.md`.
+Keep patterns in `library/system/patterns.md`.
 
 Do not add pattern CSS until repeated use needs a shared hook.
 
@@ -378,7 +378,7 @@ Promote a pattern to a component only when it has a stable API and repeated beha
 
 ## Shells
 
-Use `system/layouts.md` to select a shell composition.
+Use `library/system/layouts.md` to select a shell composition.
 
 Use the sidebar shell for persistent application navigation.
 
@@ -396,21 +396,21 @@ Do not create a new component only for one shell.
 
 ## Source ownership
 
-`src/base.css` owns static foundations.
+`library/src/base.css` owns static foundations.
 
-`src/tokens.css` owns semantic theme roles.
+`library/src/tokens.css` owns semantic theme roles.
 
-`components/{slug}/{slug}.md` owns component implementation guidance.
+`library/components/{slug}/{slug}.md` owns component implementation guidance.
 
-`components/{slug}/{slug}.css` owns component presentation.
+`library/components/{slug}/{slug}.css` owns component presentation.
 
-`components/{slug}/{slug}.js` owns component enhancement behavior.
+`library/components/{slug}/{slug}.js` owns component enhancement behavior.
 
 `registry.json` owns machine-readable component and token metadata.
 
 `docs/{slug}.html` owns the rendered reference example.
 
-`system/` owns design selection and composition rules.
+`library/system/` owns design selection and composition rules.
 
 `README.md` owns the human repository overview.
 

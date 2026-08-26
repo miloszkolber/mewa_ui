@@ -4,7 +4,7 @@
 
 App Shell supplies shared chrome and page-region primitives for utility applications.
 
-Use `system/layouts.md` when you need a complete shell composition.
+Use `library/system/layouts.md` when you need a complete shell composition.
 
 Do not treat App Shell as a complete route template.
 
@@ -298,7 +298,7 @@ Load the module only when the page contains `[data-theme-toggle]`.
 The theme control stays hidden until the module initializes.
 
 ```html
-<script type="module" src="/ui/components/app-shell/app-shell.js"></script>
+<script type="module" src="/ui/library/components/app-shell/app-shell.js"></script>
 ```
 
 Put the pre-paint preference script in `<head>` after the foundation styles.
