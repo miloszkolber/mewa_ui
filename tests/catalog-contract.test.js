@@ -94,6 +94,22 @@ test("docs have exact parity with the registry", () => {
   assert.deepEqual(docs, slugs);
 });
 
+test("human documentation stays free of internal and unrelated-library language", () => {
+  const discouragedPhrases = [
+    "Kernel-aligned",
+    "component skill",
+    "design-system demo",
+    "canonical popover pattern"
+  ];
+
+  for (const component of registry.components) {
+    const source = read(component.docs);
+    for (const phrase of discouragedPhrases) {
+      assert(!source.includes(phrase), `${component.docs}: contains internal-facing phrase ${phrase}`);
+    }
+  }
+});
+
 test("every component skill states purpose, implementation, accessibility, runtime, and selection guidance", () => {
   for (const component of registry.components) {
     const source = read(component.files.skill);
