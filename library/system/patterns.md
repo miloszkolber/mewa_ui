@@ -2,7 +2,7 @@
 
 Use this file to compose repeated interface tasks.
 
-Read `DESIGN.md` before this file.
+Read `library/DESIGN.md` before this file.
 
 Read each selected component skill before you write markup.
 

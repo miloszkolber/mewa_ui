@@ -5,7 +5,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
-const componentsDir = path.join(root, "components");
+const componentsDir = path.join(root, "library", "components");
 const docsDir = path.join(root, "docs");
 const registry = JSON.parse(fs.readFileSync(path.join(root, "registry.json"), "utf8"));
 
@@ -44,12 +44,12 @@ test("registry v2 defines the canonical source roots", () => {
   assert.equal(registry.schemaVersion, 2);
   assert.equal(registry.name, "mewa_ui");
   assert.deepEqual(registry.canonicalAssets, {
-    foundations: ["src/base.css", "src/tokens.css"],
-    fonts: ["src/geist.woff2", "src/geistmono.woff2"],
-    icons: "src/icons/",
-    components: "components/",
+    foundations: ["library/src/base.css", "library/src/tokens.css"],
+    fonts: ["library/src/geist.woff2", "library/src/geistmono.woff2"],
+    icons: "library/src/icons/",
+    components: "library/components/",
     documentation: "docs/",
-    system: "system/"
+    system: "library/system/"
   });
   assert(!exists("layouts"), "complete layout templates must not ship in this repository");
 });
@@ -68,11 +68,11 @@ test("registry selection metadata covers every component", () => {
     assert(["none", "optional", "required"].includes(component.jsMode), `${component.slug}: invalid jsMode`);
     assert.equal(component.requiresJs, component.jsMode === "required", `${component.slug}: requiresJs drift`);
     assert.equal(component.enhancementJs, component.jsMode === "optional", `${component.slug}: enhancementJs drift`);
-    assert.equal(component.files.skill, `components/${component.slug}/${component.slug}.md`);
-    assert.equal(component.files.css, `components/${component.slug}/${component.slug}.css`);
+    assert.equal(component.files.skill, `library/components/${component.slug}/${component.slug}.md`);
+    assert.equal(component.files.css, `library/components/${component.slug}/${component.slug}.css`);
     assert.equal(component.docs, `docs/${component.slug}.html`);
     if (component.jsMode === "none") assert.equal(component.files.js, undefined, `${component.slug}: unexpected module`);
-    else assert.equal(component.files.js, `components/${component.slug}/${component.slug}.js`);
+    else assert.equal(component.files.js, `library/components/${component.slug}/${component.slug}.js`);
     for (const file of [component.files.skill, component.files.css, component.files.js, component.docs].filter(Boolean)) {
       assert(exists(file), `${component.slug}: missing ${file}`);
     }
@@ -126,13 +126,13 @@ test("every component skill states purpose, implementation, accessibility, runti
 });
 
 test("semantic tokens have machine-readable purposes", () => {
-  const tokensCss = read("src/tokens.css");
+  const tokensCss = read("library/src/tokens.css");
   const cssNames = new Set(Array.from(tokensCss.matchAll(/^\s*(--(?:background|surface|text|border|chart)-?[\w-]*)\s*:/gm), (match) => match[1]));
   const metadata = registry.designTokens?.semantic || [];
   const metadataNames = new Set(metadata.map((token) => token.name));
 
   assert(metadata.length > 0, "registry designTokens.semantic is required");
-  assert.deepEqual(metadataNames, cssNames, "semantic token metadata must match src/tokens.css");
+  assert.deepEqual(metadataNames, cssNames, "semantic token metadata must match library/src/tokens.css");
   metadata.forEach((token) => {
     assert.equal(typeof token.purpose, "string");
     assert(token.purpose.length >= 12, `${token.name}: purpose is too terse`);
@@ -180,8 +180,8 @@ test("component CSS does not contain consumer-specific selectors", () => {
 
 test("shared CSS rejects raw pixel breakpoints and retired width presets", () => {
   const stylesheets = [
-    "src/base.css",
-    "src/tokens.css",
+    "library/src/base.css",
+    "library/src/tokens.css",
     ...registry.components.map((component) => component.files.css)
   ];
   for (const filename of stylesheets) {
@@ -194,44 +194,44 @@ test("shared CSS rejects raw pixel breakpoints and retired width presets", () =>
 });
 
 test("high-risk native-first runtime contracts do not regress", () => {
-  const dialog = read("components/dialog/dialog.js");
+  const dialog = read("library/components/dialog/dialog.js");
   assert(!/dialog\.focus\(\)/.test(dialog), "Dialog must let native showModal and autofocus choose initial focus");
   assert(!/setAttribute\(['\"]tabindex['\"]/.test(dialog), "Dialog must not add tabindex to native dialog");
 
   for (const slug of ["popover", "tooltip"]) {
-    const source = read(`components/${slug}/${slug}.js`);
+    const source = read(`library/components/${slug}/${slug}.js`);
     assert.match(source, /delete trigger\.dataset\.init/, `${slug}: missing-target initialization must retry`);
   }
 
-  const tabs = read("components/tabs/tabs.md");
+  const tabs = read("library/components/tabs/tabs.md");
   assert.match(tabs, /automatic activation/i, "Tabs must document automatic activation");
   assert(!/manual activation mode/i.test(tabs), "Tabs must not document an unsupported manual activation mode");
 
   for (const slug of ["resizable", "sortable"]) {
-    const script = read(`components/${slug}/${slug}.js`);
-    const css = read(`components/${slug}/${slug}.css`);
-    const skill = read(`components/${slug}/${slug}.md`);
+    const script = read(`library/components/${slug}/${slug}.js`);
+    const css = read(`library/components/${slug}/${slug}.css`);
+    const skill = read(`library/components/${slug}/${slug}.md`);
     assert.match(script, /data-(?:resizable|sortable)-(?:decrease|increase)/, `${slug}: missing non-drag pointer controls`);
     assert.match(css, new RegExp(`\\.${slug === "resizable" ? "resizable" : "sortable"}-step[\\s\\S]*(?:inline-size|width):\\s*var\\(--size-07\\)`), `${slug}: pointer controls must use a 32px target`);
     assert(/Do not (?:rely on dragging|make dragging)/.test(skill), `${slug}: skill must prohibit drag-only interaction`);
   }
 
-  const carouselCss = read("components/carousel/carousel.css");
+  const carouselCss = read("library/components/carousel/carousel.css");
   assert.match(carouselCss, /\.carousel-dot[\s\S]*width:\s*var\(--size-06\)/, "Carousel direct-slide controls must use a 24px target");
 });
 
 test("agent-facing source does not reference the retired layouts directory", () => {
   const filesToCheck = [
-    "DESIGN.md",
+    "library/DESIGN.md",
     "README.md",
     "AGENTS.md",
     "llms.txt",
     "PROMPT.md",
-    "system/foundations.md",
-    "system/components.md",
-    "system/patterns.md",
-    "system/layouts.md",
-    "system/accessibility.md",
+    "library/system/foundations.md",
+    "library/system/components.md",
+    "library/system/patterns.md",
+    "library/system/layouts.md",
+    "library/system/accessibility.md",
     "registry.json"
   ];
   for (const filename of filesToCheck) {

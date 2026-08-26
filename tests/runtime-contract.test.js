@@ -9,7 +9,7 @@ const path = require("node:path");
 const vm = require("node:vm");
 
 const root = path.resolve(__dirname, "..");
-const componentsDir = path.join(root, "components");
+const componentsDir = path.join(root, "library", "components");
 
 function dataProperty(name) {
   return name.slice(5).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());

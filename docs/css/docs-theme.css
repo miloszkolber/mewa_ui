@@ -1,5 +1,5 @@
 /* -- Documentation site overrides -------------------------- */
-/* Doc-site-only styles. Fonts come from src/base.css (Geist). */
+/* Doc-site-only styles. Fonts come from library/src/base.css (Geist). */
 
 /* -- Scrollbar --------------------------------------------- */
 ::-webkit-scrollbar { width: 5px; height: 5px; }

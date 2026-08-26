@@ -2,7 +2,7 @@
 
 Use this file to choose a component family.
 
-Read `DESIGN.md` before this file.
+Read `library/DESIGN.md` before this file.
 
 Read `registry.json` for the complete component inventory.
 
@@ -34,9 +34,9 @@ Select the smallest component that completes the task.
 
 Use one component for one primary responsibility.
 
-Use `system/patterns.md` when several components form one repeated task.
+Use `library/system/patterns.md` when several components form one repeated task.
 
-Use `system/layouts.md` when the page needs application chrome.
+Use `library/system/layouts.md` when the page needs application chrome.
 
 Do not select a component from visual appearance alone.
 
