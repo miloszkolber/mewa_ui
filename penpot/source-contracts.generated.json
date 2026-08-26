@@ -510,7 +510,7 @@
         "markdown": "library/components/app-shell/app-shell.md",
         "css": "library/components/app-shell/app-shell.css",
         "javascript": "library/components/app-shell/app-shell.js",
-        "hash": "ace7aeb63616ab157c5de116be37301ddf7a6ce561331239a91bc1dc2024df12"
+        "hash": "0b9fab8c21e4b8d3896d6a3336b8dc4fb065d8887f57f40cf128e10e548ecd88"
       },
       "canonicalMarkup": [
         "<body class=\"app-shell\">\n  <a class=\"skip-link\" href=\"#main-content\">Skip to content</a>\n\n  <header class=\"app-header\">\n    <div class=\"app-header-inner\">\n      <a class=\"brand\" href=\"/\" aria-label=\"Example service home\">\n        <span class=\"brand-mark\" aria-hidden=\"true\">\n          <i data-lucide=\"command\"></i>\n        </span>\n        <span>Example service</span>\n      </a>\n\n      <nav class=\"app-nav\" aria-label=\"Primary\">\n        <a href=\"/jobs\" aria-current=\"page\">Jobs</a>\n        <a href=\"/history\">History</a>\n      </nav>\n\n      <div class=\"app-header-actions\">\n        <button class=\"btn\"\n                type=\"button\"\n                data-variant=\"outline\"\n                data-size=\"icon\"\n                data-theme-toggle\n                aria-label=\"Toggle theme\">\n          <i data-lucide=\"moon\" aria-hidden=\"true\"></i>\n          <i data-lucide=\"sun\" aria-hidden=\"true\"></i>\n        </button>\n      </div>\n    </div>\n  </header>\n\n  <main id=\"main-content\">\n    <div class=\"app-content\">\n      <!-- Route content. -->\n    </div>\n  </main>\n</body>",
@@ -520,6 +520,7 @@
         "<main id=\"main-content\">\n  <div class=\"app-content\">\n    <!-- Route content. -->\n  </div>\n</main>",
         "<span class=\"stat-status\">\n  <span class=\"status-dot\" data-state=\"positive\" aria-hidden=\"true\"></span>\n  Ready\n</span>",
         "<ul class=\"app-status-list\" aria-label=\"Worker status\">\n  <li class=\"app-status-row\">\n    <span class=\"status-dot\" data-state=\"running\" aria-hidden=\"true\"></span>\n    <div class=\"app-status-copy\">\n      <p class=\"app-status-title\">Resolve model manifest</p>\n      <p class=\"app-status-description\">Check compatible revisions.</p>\n    </div>\n    <div class=\"app-status-actions\">\n      <button class=\"btn\" type=\"button\" data-variant=\"outline\" data-size=\"sm\">View run</button>\n    </div>\n  </li>\n</ul>",
+        "<li class=\"app-status-row\" data-state=\"positive\" aria-labelledby=\"device-status\">\n  <span class=\"status-icon\" data-state=\"positive\" aria-hidden=\"true\">\n    <svg class=\"status-glyph status-glyph-loading\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14\"/></svg>\n    <svg class=\"status-glyph status-glyph-positive\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg>\n    <svg class=\"status-glyph status-glyph-caution\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 8v4m0 4h.01\"/></svg>\n  </span>\n  <div class=\"app-status-copy\">\n    <p id=\"device-status\" class=\"app-status-title\">Device connected</p>\n    <p class=\"app-status-description\">Available at 192.0.2.10</p>\n  </div>\n</li>",
         "<section class=\"app-section\" aria-labelledby=\"jobs-title\">\n  <div class=\"app-section-header\">\n    <div>\n      <h2 class=\"app-section-title\" id=\"jobs-title\">Scheduled services</h2>\n      <p class=\"app-section-description\">Current execution state.</p>\n    </div>\n  </div>\n  <div class=\"table-container\">\n    <table class=\"table table--dense\">\n      <!-- Table rows. -->\n    </table>\n  </div>\n</section>",
         "<p class=\"app-empty app-empty--compact\" role=\"status\">No jobs match the current filter.</p>",
         "<script type=\"module\" src=\"/ui/library/components/app-shell/app-shell.js\"></script>",
@@ -971,6 +972,119 @@
         ],
         [
           {
+            "tag": "li",
+            "attributes": {
+              "class": "app-status-row",
+              "data-state": "positive",
+              "aria-labelledby": "device-status"
+            },
+            "children": [
+              {
+                "tag": "span",
+                "attributes": {
+                  "class": "status-icon",
+                  "data-state": "positive",
+                  "aria-hidden": "true"
+                },
+                "children": [
+                  {
+                    "tag": "svg",
+                    "attributes": {
+                      "class": "status-glyph status-glyph-loading",
+                      "viewBox": "0 0 24 24",
+                      "aria-hidden": "true"
+                    },
+                    "children": [
+                      {
+                        "tag": "path",
+                        "attributes": {
+                          "d": "M5 12h14"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "tag": "svg",
+                    "attributes": {
+                      "class": "status-glyph status-glyph-positive",
+                      "viewBox": "0 0 24 24",
+                      "aria-hidden": "true"
+                    },
+                    "children": [
+                      {
+                        "tag": "path",
+                        "attributes": {
+                          "d": "M20 6 9 17l-5-5"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "tag": "svg",
+                    "attributes": {
+                      "class": "status-glyph status-glyph-caution",
+                      "viewBox": "0 0 24 24",
+                      "aria-hidden": "true"
+                    },
+                    "children": [
+                      {
+                        "tag": "circle",
+                        "attributes": {
+                          "cx": "12",
+                          "cy": "12",
+                          "r": "10"
+                        },
+                        "children": []
+                      },
+                      {
+                        "tag": "path",
+                        "attributes": {
+                          "d": "M12 8v4m0 4h.01"
+                        },
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "tag": "div",
+                "attributes": {
+                  "class": "app-status-copy"
+                },
+                "children": [
+                  {
+                    "tag": "p",
+                    "attributes": {
+                      "id": "device-status",
+                      "class": "app-status-title"
+                    },
+                    "children": [
+                      {
+                        "text": "Device connected"
+                      }
+                    ]
+                  },
+                  {
+                    "tag": "p",
+                    "attributes": {
+                      "class": "app-status-description"
+                    },
+                    "children": [
+                      {
+                        "text": "Available at 192.0.2.10"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        [
+          {
             "tag": "section",
             "attributes": {
               "class": "app-section",
@@ -1073,6 +1187,7 @@
           "a",
           "body",
           "button",
+          "circle",
           "div",
           "h1",
           "h2",
@@ -1083,9 +1198,11 @@
           "nav",
           "ol",
           "p",
+          "path",
           "script",
           "section",
           "span",
+          "svg",
           "table",
           "ul"
         ],
@@ -1134,6 +1251,10 @@
           "stat-value",
           "stats",
           "status-dot",
+          "status-glyph",
+          "status-glyph-caution",
+          "status-glyph-loading",
+          "status-glyph-positive",
           "status-icon",
           "table",
           "table--dense",
@@ -1146,6 +1267,9 @@
           "aria-label",
           "aria-labelledby",
           "class",
+          "cx",
+          "cy",
+          "d",
           "data-lucide",
           "data-size",
           "data-state",
@@ -1153,9 +1277,11 @@
           "data-variant",
           "href",
           "id",
+          "r",
           "role",
           "src",
-          "type"
+          "type",
+          "viewBox"
         ]
       },
       "axes": {
@@ -1196,6 +1322,7 @@
         "Shared content canvas",
         "Inline status",
         "Status list",
+        "Status icon glyph swap",
         "Section canvas",
         "Filter rail",
         "Empty state",

@@ -207,6 +207,45 @@ Do not wrap each row in a card.
 </ul>
 ```
 
+## Status icon glyph swap
+
+Use this pattern when the glyph inside `status-icon` must change with state.
+
+Keep one `status-icon` per row.
+
+Put each state glyph inside the `status-icon`.
+
+Toggle glyph visibility from the row `data-state`.
+
+Keep color on the `status-icon` via its own `data-state`.
+
+```html
+<li class="app-status-row" data-state="positive" aria-labelledby="device-status">
+  <span class="status-icon" data-state="positive" aria-hidden="true">
+    <svg class="status-glyph status-glyph-loading" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>
+    <svg class="status-glyph status-glyph-positive" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+    <svg class="status-glyph status-glyph-caution" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+  </span>
+  <div class="app-status-copy">
+    <p id="device-status" class="app-status-title">Device connected</p>
+    <p class="app-status-description">Available at 192.0.2.10</p>
+  </div>
+</li>
+```
+
+```css
+.status-glyph { display: none; }
+.status-glyph-loading { display: block; }
+.app-status-row[data-state="positive"] .status-glyph-loading,
+.app-status-row[data-state="caution"] .status-glyph-loading { display: none; }
+.app-status-row[data-state="positive"] .status-glyph-positive { display: block; }
+.app-status-row[data-state="caution"] .status-glyph-caution { display: block; }
+```
+
+Synchronize the `data-state` on the row and on the `status-icon`.
+
+Do not add a new component for this swap.
+
 ## Section canvas
 
 Use `.app-section` for one bordered region that contains dense rows or a table.

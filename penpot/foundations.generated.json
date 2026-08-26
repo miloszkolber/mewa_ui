@@ -684,6 +684,271 @@
         "px": 256
       },
       {
+        "cssName": "--space-00",
+        "penpotName": "space.00",
+        "value": "var(--space-000)"
+      },
+      {
+        "cssName": "--space-01",
+        "penpotName": "space.01",
+        "value": "var(--space-100)"
+      },
+      {
+        "cssName": "--space-02",
+        "penpotName": "space.02",
+        "value": "var(--space-200)"
+      },
+      {
+        "cssName": "--space-03",
+        "penpotName": "space.03",
+        "value": "var(--space-300)"
+      },
+      {
+        "cssName": "--space-04",
+        "penpotName": "space.04",
+        "value": "var(--space-400)"
+      },
+      {
+        "cssName": "--space-05",
+        "penpotName": "space.05",
+        "value": "var(--space-500)"
+      },
+      {
+        "cssName": "--space-06",
+        "penpotName": "space.06",
+        "value": "var(--space-600)"
+      },
+      {
+        "cssName": "--space-07",
+        "penpotName": "space.07",
+        "value": "var(--space-800)"
+      },
+      {
+        "cssName": "--space-08",
+        "penpotName": "space.08",
+        "value": "var(--space-1000)"
+      },
+      {
+        "cssName": "--space-09",
+        "penpotName": "space.09",
+        "value": "var(--space-1200)"
+      },
+      {
+        "cssName": "--space-10",
+        "penpotName": "space.10",
+        "value": "var(--space-1400)"
+      },
+      {
+        "cssName": "--space-11",
+        "penpotName": "space.11",
+        "value": "var(--space-1600)"
+      },
+      {
+        "cssName": "--space-12",
+        "penpotName": "space.12",
+        "value": "var(--space-2000)"
+      },
+      {
+        "cssName": "--space-13",
+        "penpotName": "space.13",
+        "value": "var(--space-2400)"
+      },
+      {
+        "cssName": "--space-14",
+        "penpotName": "space.14",
+        "value": "var(--space-2800)"
+      },
+      {
+        "cssName": "--space-15",
+        "penpotName": "space.15",
+        "value": "var(--space-3200)"
+      },
+      {
+        "cssName": "--size-00",
+        "penpotName": "size.00",
+        "value": "var(--size-000)"
+      },
+      {
+        "cssName": "--size-01",
+        "penpotName": "size.01",
+        "value": "var(--size-100)"
+      },
+      {
+        "cssName": "--size-02",
+        "penpotName": "size.02",
+        "value": "var(--size-200)"
+      },
+      {
+        "cssName": "--size-03",
+        "penpotName": "size.03",
+        "value": "var(--size-300)"
+      },
+      {
+        "cssName": "--size-04",
+        "penpotName": "size.04",
+        "value": "var(--size-400)"
+      },
+      {
+        "cssName": "--size-05",
+        "penpotName": "size.05",
+        "value": "var(--size-500)"
+      },
+      {
+        "cssName": "--size-06",
+        "penpotName": "size.06",
+        "value": "var(--size-600)"
+      },
+      {
+        "cssName": "--size-07",
+        "penpotName": "size.07",
+        "value": "var(--size-800)"
+      },
+      {
+        "cssName": "--size-08",
+        "penpotName": "size.08",
+        "value": "var(--size-1000)"
+      },
+      {
+        "cssName": "--size-09",
+        "penpotName": "size.09",
+        "value": "var(--size-1200)"
+      },
+      {
+        "cssName": "--size-10",
+        "penpotName": "size.10",
+        "value": "var(--size-1400)"
+      },
+      {
+        "cssName": "--size-11",
+        "penpotName": "size.11",
+        "value": "var(--size-1600)"
+      },
+      {
+        "cssName": "--size-12",
+        "penpotName": "size.12",
+        "value": "var(--size-2000)"
+      },
+      {
+        "cssName": "--size-13",
+        "penpotName": "size.13",
+        "value": "var(--size-2400)"
+      },
+      {
+        "cssName": "--size-14",
+        "penpotName": "size.14",
+        "value": "var(--size-2800)"
+      },
+      {
+        "cssName": "--size-15",
+        "penpotName": "size.15",
+        "value": "var(--size-3200)"
+      },
+      {
+        "cssName": "--border-width-00",
+        "penpotName": "border.width.00",
+        "value": "var(--border-width-000)"
+      },
+      {
+        "cssName": "--border-width-01",
+        "penpotName": "border.width.01",
+        "value": "var(--border-width-025)"
+      },
+      {
+        "cssName": "--border-width-02",
+        "penpotName": "border.width.02",
+        "value": "var(--border-width-050)"
+      },
+      {
+        "cssName": "--border-width-03",
+        "penpotName": "border.width.03",
+        "value": "var(--border-width-100)"
+      },
+      {
+        "cssName": "--font-body",
+        "penpotName": "font.body",
+        "value": "var(--font-size-400)"
+      },
+      {
+        "cssName": "--font-body-small",
+        "penpotName": "font.body.small",
+        "value": "var(--font-size-350)"
+      },
+      {
+        "cssName": "--font-body-xsmall",
+        "penpotName": "font.body.xsmall",
+        "value": "var(--font-size-300)"
+      },
+      {
+        "cssName": "--font-h1",
+        "penpotName": "font.h1",
+        "value": "var(--font-size-1000)"
+      },
+      {
+        "cssName": "--font-h2",
+        "penpotName": "font.h2",
+        "value": "var(--font-size-800)"
+      },
+      {
+        "cssName": "--font-h3",
+        "penpotName": "font.h3",
+        "value": "var(--font-size-600)"
+      },
+      {
+        "cssName": "--font-h4",
+        "penpotName": "font.h4",
+        "value": "var(--font-size-400)"
+      },
+      {
+        "cssName": "--font-height",
+        "penpotName": "font.height",
+        "value": "var(--font-height-regular)"
+      },
+      {
+        "cssName": "--font-weight",
+        "penpotName": "font.weight",
+        "value": "var(--font-weight-400)"
+      },
+      {
+        "cssName": "--font-weight-strong",
+        "penpotName": "font.weight.strong",
+        "value": "var(--font-weight-550)"
+      },
+      {
+        "cssName": "--font-tracking",
+        "penpotName": "font.tracking",
+        "value": "var(--text-tracking-default)"
+      },
+      {
+        "cssName": "--font-spacing",
+        "penpotName": "font.spacing",
+        "value": "var(--space-100)"
+      },
+      {
+        "cssName": "--font-height-none",
+        "penpotName": "font.height.none",
+        "value": "var(--font-height-flat)"
+      },
+      {
+        "cssName": "--border-radius",
+        "penpotName": "border.radius",
+        "value": "var(--border-radius-000)"
+      },
+      {
+        "cssName": "--radius-full",
+        "penpotName": "radius.full",
+        "value": "var(--border-radius-6400)"
+      },
+      {
+        "cssName": "--blur-01",
+        "penpotName": "blur.01",
+        "value": "var(--blur-100)"
+      },
+      {
+        "cssName": "--blur-02",
+        "penpotName": "blur.02",
+        "value": "var(--blur-200)"
+      },
+      {
         "cssName": "--blur-100",
         "penpotName": "blur.100",
         "value": "0.25rem",

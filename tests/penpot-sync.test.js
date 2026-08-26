@@ -46,6 +46,9 @@ test("foundation extraction retains whitespace-separated custom property values"
   const foundations = json("penpot/foundations.generated.json");
   const core = new Map(foundations.sets["mewa-core"].map((record) => [record.cssName, record]));
   assert.equal(core.get("--space-100").value, "0.25rem");
+  assert.equal(core.get("--space-01").value, "var(--space-100)");
+  assert.equal(core.get("--font-body-small").value, "var(--font-size-350)");
+  assert.equal(core.get("--border-width-01").value, "var(--border-width-025)");
   assert.equal(core.get("--font-sans").value, "geist, sans-serif");
   assert.equal(core.get("--space-100").px, 4);
 });
