@@ -32,7 +32,7 @@ Do not invent a semantic token for one component.
 
 ## Color palettes
 
-Use neutral, red, amber, green, and blue solid palettes.
+Use neutral, red, amber, and green solid palettes.
 
 Use `000` for white in the neutral family.
 
@@ -55,8 +55,6 @@ Use the tuned alpha primitives only through semantic roles.
 Do not recreate an alpha primitive with opacity on its matching solid token.
 
 Use red, amber, and green only for status and destructive meaning.
-
-Use blue for focus and approved informational emphasis.
 
 <!-- TOKEN-REFERENCE:START -->
 ## Semantic token reference
@@ -97,7 +95,7 @@ This section is generated from `registry.json`.
 | `--border-hover` | Boundary color for an interactive element under hover. |
 | `--border-selected` | Boundary color for a selected or current interactive element. |
 | `--border-disabled` | Boundary color for a disabled control or region. |
-| `--border-focus` | Theme-aware blue boundary for authored focus indicators. |
+| `--border-focus` | Theme-aware neutral boundary for authored focus indicators. |
 | `--border-positive` | Boundary color for positive status and validation. |
 | `--border-negative` | Boundary color for negative status and validation. |
 | `--border-caution` | Boundary color for caution status and validation. |

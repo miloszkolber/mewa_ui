@@ -180,7 +180,7 @@
       },
       {
         "name": "--border-focus",
-        "purpose": "Theme-aware blue boundary for authored focus indicators.",
+        "purpose": "Theme-aware neutral boundary for authored focus indicators.",
         "stability": "stable"
       },
       {

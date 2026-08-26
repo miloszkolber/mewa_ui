@@ -41,7 +41,7 @@
   --border-hover: var(--color-neutral-300);
   --border-selected: var(--color-neutral-600);
   --border-disabled: var(--color-alpha-neutral-100);
-  --border-focus: var(--color-blue-600);
+  --border-focus: var(--color-neutral-600);
   --border-positive: var(--color-green-600);
   --border-negative: var(--color-red-600);
   --border-caution: var(--color-amber-600);
@@ -104,7 +104,7 @@
   --border-hover: var(--color-neutral-700);
   --border-selected: var(--color-neutral-400);
   --border-disabled: var(--color-alpha-neutral-900);
-  --border-focus: var(--color-blue-400);
+  --border-focus: var(--color-neutral-400);
   --border-positive: var(--color-green-400);
   --border-negative: var(--color-red-400);
   --border-caution: var(--color-amber-400);

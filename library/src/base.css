@@ -60,17 +60,6 @@
      --color-green-800: oklch(31.63% 0.0756 152.88);
      --color-green-900: oklch(25.64% 0.0633 152.88);
      --color-green-950: oklch(21.39% 0.0525 152.88);
-     --color-blue-050: oklch(94% 0.0152 245.01);
-     --color-blue-100: oklch(89.97% 0.0294 245.01);
-     --color-blue-200: oklch(83.76% 0.0498 245.01);
-     --color-blue-300: oklch(75.13% 0.0755 245.01);
-     --color-blue-400: oklch(66.38% 0.0988 245.01);
-     --color-blue-500: oklch(56.51% 0.1091 245.01);
-     --color-blue-600: oklch(46.77% 0.1027 245.01);
-     --color-blue-700: oklch(39.26% 0.0877 245.01);
-     --color-blue-800: oklch(32.16% 0.0719 245.01);
-     --color-blue-900: oklch(26.41% 0.059 245.01);
-     --color-blue-950: oklch(21.85% 0.0503 245.01);
 
     /* Alpha colors use tuned source colors instead of naive solid-token opacity. */
      --color-alpha-neutral-050: oklch(18.22% 0 0 / 0.05);
@@ -97,13 +86,6 @@
      --color-alpha-green-800: oklch(53.857% 0.13695 152.7 / 0.39);
      --color-alpha-green-900: oklch(53.857% 0.13695 152.7 / 0.25);
      --color-alpha-green-950: oklch(53.857% 0.13695 152.7 / 0.15);
-     --color-alpha-blue-050: oklch(51.363% 0.12811 245.21 / 0.1);
-     --color-alpha-blue-100: oklch(51.363% 0.12811 245.21 / 0.17);
-     --color-alpha-blue-200: oklch(51.363% 0.12811 245.21 / 0.3);
-     --color-alpha-blue-800: oklch(66.3% 0.1646 245 / 0.3);
-     --color-alpha-blue-900: oklch(66.3% 0.1646 245 / 0.19);
-     --color-alpha-blue-950: oklch(66.3% 0.1646 245 / 0.11);
-
     /* Typography */
      --font-sans: geist, sans-serif;
      --font-mono: geist-mono, monospace;
