@@ -178,6 +178,25 @@ Do not use placeholder text as the only label.
 
 Do not add a filter control that does not change the result.
 
+### Header single-choice filter
+
+Use Dropdown Menu when a compact header filter has a short fixed set and the
+result updates immediately. Keep the trigger in the local action group and
+give it a stable label that includes the current value.
+
+Use `popover` with `role="menu"`, one labelled `role="group"`, and
+`role="menuitemradio"` options. Keep the selected state in `aria-checked` and
+the application state in a data attribute. Let `dropdown-menu.js` own
+positioning, focus movement, Escape, and light dismiss. Close the popover after
+the application applies a choice, including keyboard activation.
+
+Keep a real search form and server-owned query parameters when the result must
+work without JavaScript. If the result is intentionally client-owned, hide the
+enhanced controls in a `noscript` fallback and state what requires JavaScript.
+
+Do not recreate menu focus management with document-level outside-click and
+Escape listeners.
+
 ## Filter rail
 
 Use `.app-filter-rail` for persistent category or tag navigation.
@@ -329,6 +348,29 @@ Return focus after cancellation or completion.
 Do not use a confirmation dialog for a low-risk action with an easy undo.
 
 Do not use destructive language for a neutral close action.
+
+## Media preview
+
+Use one native `dialog` per page for a focused media preview when the task needs
+media, metadata, and local preview navigation. Keep the media and its metadata
+in a two-panel `.lightbox-content` composition. Use a labelled `.lightbox-main`
+region for the image or video and a `.lightbox-info` region for the filename,
+description, and structured metadata.
+
+Use compact icon-only Buttons for close, previous, and next controls. Give each
+an explicit accessible name and keep the controls in the dialog tab order.
+Pause and release a video source from the dialog `close` event so Escape,
+backdrop-independent cancellation, and explicit close have the same cleanup.
+Return focus to the opening media control after the dialog closes.
+
+Stack the media and metadata panels at the narrow breakpoint. Keep the page
+canvas continuous and use the shared overlay and border tokens instead of a
+second modal surface scale.
+
+Do not replace this composition with the Image component when the preview also
+needs video, previous/next navigation, metadata, or task actions. Do not add a
+new component runtime when native dialog plus the documented Button contract
+meets the task.
 
 ## Command flow
 
