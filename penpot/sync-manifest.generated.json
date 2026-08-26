@@ -4400,6 +4400,10 @@
             {
               "key": "component.button.axis.variant.value.link",
               "value": "link"
+            },
+            {
+              "key": "component.button.axis.variant.value.destructive-outline",
+              "value": "destructive-outline"
             }
           ]
         },

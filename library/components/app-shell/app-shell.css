@@ -553,6 +553,12 @@
       border-color: CanvasText;
     }
 
+    .app-nav a[aria-current="page"],
+    .app-filter-list a[aria-current="page"],
+    .app-filter-tags a[aria-current="page"] {
+      border: var(--border-width-025) solid CanvasText;
+    }
+
     .app-shell-edge::before,
     .app-shell-edge::after {
       border-inline: var(--border-width-050) solid CanvasText;

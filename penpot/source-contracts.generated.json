@@ -510,7 +510,7 @@
         "markdown": "library/components/app-shell/app-shell.md",
         "css": "library/components/app-shell/app-shell.css",
         "javascript": "library/components/app-shell/app-shell.js",
-        "hash": "300001a4d96d150f526ec298cdb0a61aad3c75acc18cb48a86a7395297d622c8"
+        "hash": "ace7aeb63616ab157c5de116be37301ddf7a6ce561331239a91bc1dc2024df12"
       },
       "canonicalMarkup": [
         "<body class=\"app-shell\">\n  <a class=\"skip-link\" href=\"#main-content\">Skip to content</a>\n\n  <header class=\"app-header\">\n    <div class=\"app-header-inner\">\n      <a class=\"brand\" href=\"/\" aria-label=\"Example service home\">\n        <span class=\"brand-mark\" aria-hidden=\"true\">\n          <i data-lucide=\"command\"></i>\n        </span>\n        <span>Example service</span>\n      </a>\n\n      <nav class=\"app-nav\" aria-label=\"Primary\">\n        <a href=\"/jobs\" aria-current=\"page\">Jobs</a>\n        <a href=\"/history\">History</a>\n      </nav>\n\n      <div class=\"app-header-actions\">\n        <button class=\"btn\"\n                type=\"button\"\n                data-variant=\"outline\"\n                data-size=\"icon\"\n                data-theme-toggle\n                aria-label=\"Toggle theme\">\n          <i data-lucide=\"moon\" aria-hidden=\"true\"></i>\n          <i data-lucide=\"sun\" aria-hidden=\"true\"></i>\n        </button>\n      </div>\n    </div>\n  </header>\n\n  <main id=\"main-content\">\n    <div class=\"app-content\">\n      <!-- Route content. -->\n    </div>\n  </main>\n</body>",
@@ -1822,7 +1822,7 @@
         "markdown": "library/components/button/button.md",
         "css": "library/components/button/button.css",
         "javascript": null,
-        "hash": "cf342a5b737c5d71ad566ca5deebebe2311490a846ab5627f7d4644477b68109"
+        "hash": "4c4908738a7ff7120f2c6219e008a85ace096fb3f5a9aa5881af7a8a0f908adc"
       },
       "canonicalMarkup": [
         "<button class=\"btn\" type=\"button\" data-variant=\"default\">\n  Save changes\n</button>",
@@ -1994,6 +1994,7 @@
         "variant": [
           "default",
           "destructive",
+          "destructive-outline",
           "ghost",
           "link",
           "outline",
