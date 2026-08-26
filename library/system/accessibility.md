@@ -176,6 +176,20 @@ Do not announce the same update from two live regions.
 
 Do not place a live role on a large container that changes often.
 
+## Motion
+
+Use fast transitions only to clarify a visual state change.
+
+Do not delay the semantic state while its visual transition runs.
+
+Keep direct manipulation immediate so controls track user input.
+
+Disable state transitions when `prefers-reduced-motion: reduce` is active.
+
+Keep content understandable when transitions are disabled.
+
+Use Spinner only while work is actively in progress.
+
 ## Status and color
 
 Pair every status color with visible text.

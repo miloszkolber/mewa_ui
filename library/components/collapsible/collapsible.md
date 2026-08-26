@@ -64,7 +64,7 @@ Activating the summary toggles the native `open` state.
 
 Enter and Space activate the summary through browser behavior.
 
-State changes are immediate.
+Trigger state feedback uses the shared fast motion primitives. Content opening and closing remain immediate.
 
 The component adds no custom JavaScript.
 

@@ -110,7 +110,7 @@ Single mode clears other pressed items before setting the activated item state.
 
 Multiple mode toggles only the activated item.
 
-State changes are immediate.
+Visual selection feedback uses the shared fast motion primitives.
 
 ## Accessibility
 

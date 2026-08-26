@@ -67,7 +67,7 @@ Space changes the native checked state.
 
 Tab moves focus through the switch in normal document order.
 
-The visual thumb changes position immediately.
+The visual thumb uses the shared fast motion primitives when the checked state changes.
 
 The component adds no JavaScript behavior.
 

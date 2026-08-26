@@ -140,21 +140,38 @@ test("semantic tokens have machine-readable purposes", () => {
   });
 });
 
-test("component CSS stays square, tokenized, shadow-free, and motionless", () => {
+test("component CSS stays square, tokenized, shadow-free, and motion-controlled", () => {
   for (const component of registry.components) {
     const filename = component.files.css;
     const source = stripCssComments(read(filename));
     assert.match(source, /@layer\s+components/, `${filename}: missing components layer`);
     assert(!/\b(?:box-shadow|text-shadow)\s*:/i.test(source), `${filename}: shadows are forbidden`);
     if (component.slug !== "spinner") {
-      assert(!/\b(?:animation|transition)(?:-[\w]+)?\s*:/i.test(source), `${filename}: motion is forbidden`);
-      assert(!/@keyframes|view-transition|\bscroll-behavior\s*:/i.test(source), `${filename}: motion is forbidden`);
+      assert(!/\banimation(?:-[\w]+)?\s*:/i.test(source), `${filename}: continuous animation is forbidden`);
+      assert(!/@keyframes|view-transition|\bscroll-behavior\s*:/i.test(source), `${filename}: continuous or scroll motion is forbidden`);
+      assert(!/\btransition\s*:\s*all\b/i.test(source), `${filename}: transition: all is forbidden`);
+      assert(!/\btransition-delay\s*:/i.test(source), `${filename}: delayed state feedback is forbidden`);
+      for (const match of source.matchAll(/transition-duration\s*:\s*([^;{}]+)/gi)) {
+        assert(/^(?:var\(--motion-duration-fast\)|0ms)$/i.test(match[1].trim()), `${filename}: unsupported transition duration ${match[1].trim()}`);
+      }
+      for (const match of source.matchAll(/transition-timing-function\s*:\s*([^;{}]+)/gi)) {
+        assert.equal(match[1].trim(), "var(--motion-easing-standard)", `${filename}: unsupported transition easing`);
+      }
     }
     assert(!/var\(\s*--color-[\w-]+\s*\)/i.test(source), `${filename}: palette primitives are forbidden`);
     for (const match of source.matchAll(/border-radius\s*:\s*([^;{}]+)/gi)) {
       assert(/^(?:0|50%|inherit|var\(--border-radius-6400\)|var\(--border-radius-000\))$/i.test(match[1].trim()), `${filename}: unsupported radius ${match[1].trim()}`);
     }
   }
+});
+
+test("the base contract provides fast state motion and a reduced-motion override", () => {
+  const source = stripCssComments(read("library/src/base.css"));
+  assert.match(source, /--motion-duration-fast:\s*100ms/);
+  assert.match(source, /--motion-easing-standard:\s*cubic-bezier\(0\.2, 0, 0, 1\)/);
+  assert.match(source, /transition-property:\s*color, background-color, border-color, opacity/);
+  assert.match(source, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
+  assert.match(source, /transition-duration:\s*0ms/);
 });
 
 test("component CSS does not contain consumer-specific selectors", () => {

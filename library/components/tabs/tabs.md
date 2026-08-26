@@ -130,7 +130,7 @@ Use `data-variant="line"` for an underline treatment.
 
 Both variants use the shared 40px control rhythm.
 
-Both variants remain square and motionless.
+Both variants remain square and use fast selection feedback.
 
 ## Accessibility
 

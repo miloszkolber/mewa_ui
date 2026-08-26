@@ -68,7 +68,7 @@ test("DESIGN routes agents through the complete contract", () => {
   systemFiles.forEach((file) => assert(design.includes(`\`${file}\``), `library/DESIGN.md does not reference ${file}`));
   assert.match(design, /mewa_ui does not ship complete layout templates\./);
   assert.match(design, /The registry owns component selection metadata\./);
-  assert.match(design, /Spinner rotation is the only library motion exception\./);
+  assert.match(design, /Spinner rotation is the only continuous animation exception\./);
 });
 
 test("the compliance prompt is compact, exploratory, and application-focused", () => {

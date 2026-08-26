@@ -106,7 +106,7 @@ The module updates the value on native `input` events.
 
 The module does not change the submitted numeric value.
 
-State changes are immediate.
+Direct manipulation remains immediate. Focus and disabled-state feedback uses the shared fast motion primitives.
 
 ## Keyboard
 

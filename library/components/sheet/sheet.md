@@ -113,9 +113,9 @@ Backdrop activation closes the sheet when the implementation receives the click 
 
 Closing restores focus according to the component module behavior.
 
-State changes are immediate.
+Control state feedback uses the shared fast motion primitives.
 
-The sheet does not slide, fade, or transition.
+The sheet opens and closes without sliding or fading.
 
 ## Action hierarchy
 

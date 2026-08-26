@@ -256,9 +256,13 @@ Do not create compatibility aliases without a documented migration need.
 
 ## Motion
 
-Keep every state change immediate.
+Use `--motion-duration-fast` and `--motion-easing-standard` for visual state feedback.
 
-Do not add CSS transitions.
+Transition only color, background color, border color, opacity, and small state indicators.
+
+Keep opening, closing, direct manipulation, and layout changes immediate.
+
+Disable state transitions when `prefers-reduced-motion: reduce` is active.
 
 Do not add smooth scrolling.
 
@@ -270,7 +274,7 @@ Do not add Web Animations.
 
 Do not add shimmer.
 
-Spinner rotation is the only library motion exception.
+Spinner rotation is the only continuous animation exception.
 
 Use the Spinner component only while work is in progress.
 

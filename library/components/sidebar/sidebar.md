@@ -165,7 +165,7 @@ Escape closes the mobile dialog through native behavior.
 
 The module restores focus after mobile navigation closes.
 
-State changes are immediate.
+Control and navigation state feedback uses the shared fast motion primitives. Shell layout changes remain immediate.
 
 The mobile backdrop uses the semantic overlay surface without blur.
 

@@ -134,7 +134,7 @@ Preview controls update image zoom and rotation immediately.
 
 Preview state resets each time a new image opens.
 
-The component adds no transition or animation.
+Preview control states use the shared fast motion primitives. Image manipulation remains immediate.
 
 ## Accessibility
 

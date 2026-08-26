@@ -88,7 +88,7 @@ Selecting a date returns focus to the selected date button after the grid re-ren
 
 The month heading updates in a polite live region.
 
-State changes are immediate.
+Date selection feedback uses the shared fast motion primitives. Month changes remain immediate.
 
 ## Keyboard
 

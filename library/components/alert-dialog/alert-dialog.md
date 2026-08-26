@@ -87,7 +87,7 @@ Backdrop activation does not close Alert Dialog.
 
 Closing the dialog restores focus to the opening trigger when it still exists.
 
-State changes are immediate.
+Control state feedback uses the shared fast motion primitives. Opening and closing remain immediate.
 
 ## Accessibility
 

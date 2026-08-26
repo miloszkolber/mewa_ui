@@ -92,7 +92,7 @@ The module adds no click handler for show or hide behavior.
 
 The chevron state follows native `:popover-open` state through CSS.
 
-State changes are immediate.
+Item state feedback uses the shared fast motion primitives. Submenu opening and closing remain immediate.
 
 ## Keyboard
 

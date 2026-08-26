@@ -93,7 +93,7 @@ Child controls activate with their native keyboard behavior.
 
 The Toolbar does not change child selection state.
 
-State changes are immediate.
+Control state feedback uses the shared fast motion primitives.
 
 ## Keyboard
 

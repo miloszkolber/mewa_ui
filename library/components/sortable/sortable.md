@@ -101,7 +101,7 @@ Every successful reorder updates the live status.
 
 Every successful reorder dispatches `sortable-change`.
 
-State changes are immediate.
+Direct manipulation remains immediate. Discrete control-state feedback uses the shared fast motion primitives.
 
 ## Keyboard
 

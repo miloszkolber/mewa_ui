@@ -88,7 +88,7 @@ Arrow Left closes an open branch.
 
 Arrow Left moves to the parent item when the branch is already closed or the item is a leaf.
 
-State changes are immediate.
+Selection feedback uses the shared fast motion primitives. Expansion and collapse remain immediate.
 
 ## Activation
 

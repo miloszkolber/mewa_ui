@@ -77,7 +77,7 @@ The browser submits the normalized native value.
 
 The component adds no JavaScript behavior.
 
-State changes are immediate.
+Field state feedback uses the shared fast motion primitives. Value changes remain immediate.
 
 ## Accessibility
 

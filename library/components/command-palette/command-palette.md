@@ -114,7 +114,7 @@ Closing clears the query and restores the full command list.
 
 Closing returns focus to the trigger when the component opened from a trigger.
 
-State changes are immediate.
+Result state feedback uses the shared fast motion primitives. Opening, closing, and filtering remain immediate.
 
 ## Keyboard
 

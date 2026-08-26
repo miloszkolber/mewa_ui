@@ -177,9 +177,15 @@ Use borders instead of shadows.
 
 Use blur only on approved sticky shell chrome.
 
-Keep state changes immediate.
+Use the fast motion primitives for subtle visual state feedback.
 
-Keep Spinner rotation as the only animation exception.
+Transition only color, background color, border color, opacity, and small state indicators.
+
+Keep opening, closing, direct manipulation, and layout changes immediate.
+
+Respect `prefers-reduced-motion`.
+
+Keep Spinner rotation as the only continuous animation exception.
 
 Support increased contrast.
 

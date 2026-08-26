@@ -310,6 +310,10 @@
         "purpose": "Blur primitives reserved for approved sticky shell chrome."
       },
       {
+        "prefix": "--motion-",
+        "purpose": "Fast duration and easing primitives for subtle visual state feedback."
+      },
+      {
         "prefix": "--breakpoint-",
         "purpose": "Named responsive tiers and approved global canvas maximums."
       },

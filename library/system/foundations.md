@@ -323,11 +323,15 @@ Do not use blur as elevation.
 
 ## Motion
 
-Keep state changes immediate.
+Use `--motion-duration-fast` for subtle visual state changes.
 
-Use no transition duration token.
+Use `--motion-easing-standard` for every state transition.
 
-Use no animation duration token.
+Transition only color, background color, border color, opacity, and small state indicators.
+
+Keep opening, closing, direct manipulation, and layout changes immediate.
+
+Disable state transitions when reduced motion is requested.
 
 Use no smooth scroll behavior.
 

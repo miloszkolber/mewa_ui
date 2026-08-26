@@ -64,7 +64,7 @@ The standalone Toggle module skips grouped toggles.
 
 Pressed state remains visible during hover.
 
-State changes are immediate.
+Selection feedback uses the shared fast motion primitives.
 
 ## Keyboard
 

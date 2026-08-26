@@ -99,7 +99,7 @@ Card uses no shadow.
 
 Card uses no radius.
 
-Card uses no animation.
+Card adds no motion unless it contains an interactive stateful control.
 
 ## Accessibility
 

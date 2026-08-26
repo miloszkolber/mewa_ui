@@ -14,7 +14,7 @@ Do not use Spinner as decoration.
 
 Spinner uses an SVG arc with CSS rotation.
 
-Spinner is the only sanctioned animation in mewa_ui.
+Spinner is the only sanctioned continuous animation in mewa_ui.
 
 Spinner requires no JavaScript.
 

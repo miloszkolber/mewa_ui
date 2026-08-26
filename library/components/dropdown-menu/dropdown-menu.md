@@ -137,7 +137,7 @@ Light dismiss keeps focus on the outside control that received focus.
 
 Keyboard closure restores focus to the trigger when focus remains inside the menu.
 
-State changes are immediate.
+Item state feedback uses the shared fast motion primitives. Opening and closing remain immediate.
 
 ## Keyboard
 
