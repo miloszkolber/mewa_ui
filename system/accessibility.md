@@ -206,9 +206,13 @@ Use chromatic `600` roles for readable status text on light surfaces.
 
 Use chromatic `400` roles for readable status text on dark surfaces.
 
-Pair `600` on neutral `050` with `400` on neutral `950`.
+Test each palette primarily against its own endpoints.
+
+Pair each palette's `600` on its own `050` with its `400` on its own `950`.
 
 Keep the paired WCAG contrast values approximately equal.
+
+Do not use `400` on `050` or `600` on `950` for required 3:1 contrast in the current palette.
 
 Treat neutral `000` as the white endpoint outside this symmetry.
 

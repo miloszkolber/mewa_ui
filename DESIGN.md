@@ -122,9 +122,11 @@ Use `000` for white and `050` through `950` for the neutral scale.
 
 Do not define a pure-black primitive.
 
-Keep palette symmetry across neutral `050` and neutral `950`.
+Keep palette symmetry across each palette's own `050` and `950` endpoints.
 
-Pair chromatic `600` on neutral `050` with chromatic `400` on neutral `950`.
+Test chromatic `600` primarily on the same palette's `050`.
+
+Test chromatic `400` primarily on the same palette's `950`.
 
 Keep chromatic palette hues constant in OKLCH.
 

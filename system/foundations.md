@@ -38,11 +38,11 @@ Use `000` for white in the neutral family.
 
 Use the symmetric `050` through `950` scale for every palette.
 
-Use neutral `050` and neutral `950` as the symmetry endpoints.
+Use each palette's own `050` and `950` as its symmetry endpoints.
 
 Keep neutral `000` as white outside the symmetric range.
 
-Pair `600` on neutral `050` with `400` on neutral `950`.
+Pair each palette's `600` on its own `050` with its `400` on its own `950`.
 
 Do not define a pure-black primitive.
 
