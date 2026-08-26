@@ -10,10 +10,20 @@ const anatomy = (value) => list(value).map((item) => {
   return { name, role, ...(repeat ? { repeat: Number(repeat) } : {}) };
 });
 
-const axes = (value) => list(value).map((item) => {
-  const [name, rawValues] = item.split('=');
-  return { name, values: rawValues.split('/').map((entry) => entry.trim()), source: 'blueprint' };
+const axis = (name, values, source = 'blueprint') => ({
+  name,
+  values: [...new Set(values.map((value) => String(value).trim()).filter(Boolean))],
+  source,
 });
+
+// Existing definitions use compact strings for simple axes. Structured entries
+// preserve values that contain the compact separator, such as image aspect ratios.
+const axes = (value) => Array.isArray(value)
+  ? value.map(({ name, values, source = 'blueprint' }) => axis(name, values, source))
+  : list(value).map((item) => {
+    const [name, rawValues] = item.split('=');
+    return axis(name, rawValues.split('/'));
+  });
 
 const define = (intent, sourceMasters, sourceAnatomy, sourceAxes, layout = 'intrinsic') => ({
   intent,
@@ -204,7 +214,12 @@ export const rendererDefinitions = {
     'Responsive figure with ratio, fit, radius, caption, and fallback.',
     'photo|Photo / 4:3,contain|Contain / 1:1,fallback|Fallback',
     'figure:figure,image:responsive-image,fallback:image-fallback,caption:figcaption',
-    'ratio=1/1/4/3/3/2/16/9/21/9/3/4,fit=cover/contain/fill/none,radius=square/full,state=default/hover/focus/open/fallback',
+    [
+      axis('ratio', ['1/1', '4/3', '3/2', '16/9', '21/9', '3/4']),
+      axis('fit', ['cover', 'contain', 'fill', 'none']),
+      axis('radius', ['square', 'full']),
+      axis('state', ['default', 'hover', 'focus', 'open', 'fallback']),
+    ],
     'media',
   ),
   label: define(
@@ -302,7 +317,7 @@ export const rendererDefinitions = {
     'Collapsible route navigation shell with persistent and mobile modes.',
     'expanded|Expanded,collapsed|Collapsed,mobile-open|Mobile / open',
     'sidebar:sidebar-surface,trigger:icon-button,brand:brand,navigation:route-nav,link:nav-link:4,mobile-dialog:mobile-sheet',
-    'state=expanded/collapsed/mobile-open/open,side=left/right,interaction=hover/focus',
+    'state=expanded/collapsed/mobile-open/open,side=left/right,interaction=rest/hover/focus',
     'shell',
   ),
   skeleton: define(
@@ -442,6 +457,142 @@ export const rendererDefinitions = {
 
 export const rendererInventory = new Set(Object.keys(rendererDefinitions));
 
+const shared = (key, title, layout, sourceAnatomy) => ({
+  key,
+  title,
+  layout,
+  anatomy: anatomy(sourceAnatomy),
+  parts: anatomy(sourceAnatomy).map((part) => part.name),
+});
+
+export const sharedComponents = [
+  shared('shared.action.button', 'Button atom', 'inline', 'label:button-label,leading-icon:icon,trailing-icon:icon,loading:loading-indicator'),
+  shared('shared.action.icon-button', 'Icon button atom', 'inline', 'glyph:icon,accessible-name:sr-only-label'),
+  shared('shared.atom.icon', 'Icon atom', 'inline', 'glyph:icon'),
+  shared('shared.form.label', 'Label atom', 'inline', 'label:label,required-marker:required-marker'),
+  shared('shared.form.field', 'Field atom', 'form-field', 'label:label,control:text-control,description:supporting-copy,message:validation-message'),
+  shared('shared.disclosure.trigger', 'Disclosure atom', 'vertical-connected', 'trigger:summary-row,indicator:disclosure-icon,content:supporting-copy'),
+  shared('shared.overlay.backdrop', 'Overlay backdrop atom', 'overlay-centered', 'backdrop:overlay-strong'),
+  shared('shared.overlay.surface', 'Overlay surface atom', 'overlay-centered', 'surface:top-layer-surface,heading:heading,description:supporting-copy,actions:action-row'),
+  shared('shared.navigation.item', 'Navigation item atom', 'navigation', 'items:nav-link,current-item:current-nav-link,focus-ring:focus-ring'),
+];
+
+// References are intentionally explicit. They tell an eventual Penpot writer to
+// place an instance of a shared component rather than recreate a familiar atom.
+export const sharedComponentReferences = {
+  accordion: [{ part: 'trigger', key: 'shared.disclosure.trigger' }],
+  'alert-dialog': [
+    { part: 'backdrop', key: 'shared.overlay.backdrop' },
+    { part: 'dialog', key: 'shared.overlay.surface' },
+    { part: 'actions', key: 'shared.action.button' },
+  ],
+  'app-shell': [{ part: 'navigation', key: 'shared.navigation.item' }],
+  breadcrumbs: [{ part: 'item', key: 'shared.navigation.item' }],
+  button: [
+    { part: 'leading-icon', key: 'shared.atom.icon' },
+    { part: 'trailing-icon', key: 'shared.atom.icon' },
+  ],
+  'button-group': [{ part: 'button', key: 'shared.action.button' }],
+  carousel: [
+    { part: 'previous', key: 'shared.action.icon-button' },
+    { part: 'next', key: 'shared.action.icon-button' },
+  ],
+  collapsible: [{ part: 'summary', key: 'shared.disclosure.trigger' }],
+  combobox: [
+    { part: 'label', key: 'shared.form.label' },
+    { part: 'clear', key: 'shared.action.icon-button' },
+  ],
+  'command-palette': [
+    { part: 'backdrop', key: 'shared.overlay.backdrop' },
+    { part: 'dialog', key: 'shared.overlay.surface' },
+  ],
+  'data-table': [{ part: 'pagination', key: 'shared.navigation.item' }],
+  'date-field': [{ part: 'label', key: 'shared.form.label' }],
+  'date-picker': [
+    { part: 'previous', key: 'shared.action.icon-button' },
+    { part: 'next', key: 'shared.action.icon-button' },
+  ],
+  'date-range-picker': [{ part: 'legend', key: 'shared.form.label' }],
+  dialog: [
+    { part: 'backdrop', key: 'shared.overlay.backdrop' },
+    { part: 'dialog', key: 'shared.overlay.surface' },
+    { part: 'actions', key: 'shared.action.button' },
+  ],
+  'dropdown-menu': [
+    { part: 'trigger', key: 'shared.action.button' },
+    { part: 'menu', key: 'shared.overlay.surface' },
+  ],
+  field: [
+    { part: 'legend', key: 'shared.form.label' },
+    { part: 'control', key: 'shared.form.field' },
+  ],
+  'file-input': [{ part: 'label', key: 'shared.form.label' }],
+  form: [
+    { part: 'field', key: 'shared.form.field' },
+    { part: 'actions', key: 'shared.action.button' },
+  ],
+  icon: [
+    { part: 'glyph', key: 'shared.atom.icon' },
+    { part: 'button', key: 'shared.action.icon-button' },
+  ],
+  label: [{ part: 'label', key: 'shared.form.label' }],
+  'navigation-menu': [
+    { part: 'link', key: 'shared.navigation.item' },
+    { part: 'disclosure', key: 'shared.disclosure.trigger' },
+  ],
+  'number-field': [
+    { part: 'label', key: 'shared.form.label' },
+    { part: 'decrement', key: 'shared.action.icon-button' },
+    { part: 'increment', key: 'shared.action.icon-button' },
+  ],
+  pagination: [
+    { part: 'previous', key: 'shared.action.icon-button' },
+    { part: 'page', key: 'shared.navigation.item' },
+    { part: 'next', key: 'shared.action.icon-button' },
+  ],
+  popover: [
+    { part: 'trigger', key: 'shared.action.button' },
+    { part: 'surface', key: 'shared.overlay.surface' },
+  ],
+  'radio-group': [{ part: 'legend', key: 'shared.form.label' }],
+  sheet: [
+    { part: 'backdrop', key: 'shared.overlay.backdrop' },
+    { part: 'sheet', key: 'shared.overlay.surface' },
+    { part: 'close', key: 'shared.action.icon-button' },
+  ],
+  sidebar: [
+    { part: 'trigger', key: 'shared.action.icon-button' },
+    { part: 'navigation', key: 'shared.navigation.item' },
+  ],
+  select: [{ part: 'label', key: 'shared.form.label' }],
+  tabs: [{ part: 'tab', key: 'shared.navigation.item' }],
+  'text-field': [
+    { part: 'label', key: 'shared.form.label' },
+    { part: 'input', key: 'shared.form.field' },
+  ],
+  textarea: [{ part: 'label', key: 'shared.form.label' }],
+  'time-field': [{ part: 'legend', key: 'shared.form.label' }],
+  toast: [
+    { part: 'toast', key: 'shared.overlay.surface' },
+    { part: 'dismiss', key: 'shared.action.icon-button' },
+  ],
+  toggle: [
+    { part: 'button', key: 'shared.action.button' },
+    { part: 'icon', key: 'shared.atom.icon' },
+  ],
+  'toggle-group': [
+    { part: 'toggle', key: 'shared.action.button' },
+    { part: 'icon', key: 'shared.atom.icon' },
+  ],
+  toolbar: [{ part: 'button', key: 'shared.action.icon-button' }],
+  tooltip: [
+    { part: 'trigger', key: 'shared.action.icon-button' },
+    { part: 'surface', key: 'shared.overlay.surface' },
+  ],
+  'tree-view': [{ part: 'summary', key: 'shared.disclosure.trigger' }],
+};
+
+// Retain this concise role inventory for callers that only need a category map.
 export const sharedAtoms = {
   control: ['label', 'focus-ring', 'disabled-treatment'],
   field: ['label', 'control', 'description', 'message'],

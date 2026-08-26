@@ -118,11 +118,16 @@ function collectCss(css) {
   }
   const states = [];
   if (/:hover\b/.test(css)) states.push('hover');
-  if (/:focus(?:-visible)?\b/.test(css)) states.push('focus');
-  if (/\[disabled\]|\[aria-disabled/.test(css)) states.push('disabled');
-  if (/\[open\]|\[data-state\s*=\s*["']open/.test(css)) states.push('open');
+  if (/:focus(?:-visible)?\b(?!-within)/.test(css)) states.push('focus');
+  if (/:focus-within\b/.test(css)) states.push('focus-within');
+  if (/:active\b/.test(css)) states.push('active');
+  if (/:disabled\b|\[disabled\]|\[aria-disabled/.test(css)) states.push('disabled');
+  if (/:checked\b|\[aria-(?:checked|pressed)\s*=\s*["']true/.test(css)) states.push('checked');
+  if (/:indeterminate\b/.test(css)) states.push('indeterminate');
+  if (/:read-only\b/.test(css)) states.push('read-only');
+  if (/\[open\]|:open\b|\[data-state\s*=\s*["']open/.test(css)) states.push('open');
   if (/\[aria-selected\s*=\s*["']true/.test(css)) states.push('selected');
-  if (/\[aria-invalid\s*=\s*["']true|\[data-state\s*=\s*["']invalid/.test(css)) states.push('invalid');
+  if (/:user-invalid\b|:invalid\b|\[aria-invalid\s*=\s*["']true|\[data-state\s*=\s*["']invalid/.test(css)) states.push('invalid');
 
   return {
     classes: sort(classes),
@@ -211,7 +216,6 @@ for (const id of directories) {
 
 const document = {
   schemaVersion: 1,
-  generatedAt: new Date().toISOString(),
   sourceRoot: 'library/components',
   components,
 };

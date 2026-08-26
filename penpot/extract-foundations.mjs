@@ -8,7 +8,10 @@ const repo = path.resolve(here, '..');
 const base = await readFile(path.join(repo, 'library/src/base.css'), 'utf8');
 const semantic = await readFile(path.join(repo, 'library/src/tokens.css'), 'utf8');
 
-const propertyExpression = /(--[a-z0-9-]+)s*:s*([^;]+);/gi;
+// Capture only custom-property declarations. The previous expression used literal
+// `s*` tokens, which happened to match simple declarations but did not consume
+// whitespace and could produce incorrect values when a declaration contained it.
+const propertyExpression = /^\s*(--[a-z0-9-]+)\s*:\s*([^;{}]+);/gim;
 
 function properties(source) {
   return [...source.matchAll(propertyExpression)].map((match) => ({
@@ -54,7 +57,6 @@ function records(source) {
 
 const output = {
   schemaVersion: 1,
-  generatedAt: new Date().toISOString(),
   source: {
     base: 'library/src/base.css',
     semantic: 'library/src/tokens.css',

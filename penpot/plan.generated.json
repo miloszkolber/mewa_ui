@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-26T10:44:17.683Z",
   "sourceContracts": "penpot/source-contracts.generated.json",
   "foundations": "penpot/foundations.generated.json",
+  "syncManifest": "penpot/sync-manifest.generated.json",
   "visualRoles": {
     "action-group": {
       "fill": "text.primary",
@@ -779,355 +779,1557 @@
     "intrinsic": {
       "master": {
         "width": 280,
-        "height": 80
+        "height": 80,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 280,
+            "height": 80
+          }
+        }
       },
       "matrix": {
         "columns": 3,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 280,
+            "height": 80
+          }
+        }
       }
     },
     "inline": {
       "master": {
         "width": 280,
-        "height": 56
+        "height": 56,
+        "container": {
+          "type": "flex",
+          "direction": "row",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 280,
+            "height": 56
+          }
+        }
       },
       "matrix": {
         "columns": 4,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 280,
+            "height": 56
+          }
+        }
       }
     },
     "horizontal": {
       "master": {
         "width": 440,
-        "height": 112
+        "height": 112,
+        "container": {
+          "type": "flex",
+          "direction": "row",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 440,
+            "height": 112
+          }
+        }
       },
       "matrix": {
         "columns": 3,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 440,
+            "height": 112
+          }
+        }
       }
     },
     "vertical": {
       "master": {
         "width": 360,
-        "height": 224
+        "height": 224,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 360,
+            "height": 224
+          }
+        }
       },
       "matrix": {
         "columns": 3,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 360,
+            "height": 224
+          }
+        }
       }
     },
     "vertical-connected": {
       "master": {
         "width": 440,
-        "height": 256
+        "height": 256,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 440,
+            "height": 256
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 440,
+            "height": 256
+          }
+        }
       }
     },
     "connected-row": {
       "master": {
         "width": 360,
-        "height": 64
+        "height": 64,
+        "container": {
+          "type": "flex",
+          "direction": "row",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 360,
+            "height": 64
+          }
+        }
       },
       "matrix": {
         "columns": 3,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 360,
+            "height": 64
+          }
+        }
       }
     },
     "form-field": {
       "master": {
         "width": 440,
-        "height": 224
+        "height": 224,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 440,
+            "height": 224
+          }
+        }
       },
       "matrix": {
         "columns": 3,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 440,
+            "height": 224
+          }
+        }
       }
     },
     "form": {
       "master": {
         "width": 520,
-        "height": 360
+        "height": 360,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 520,
+            "height": 360
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 520,
+            "height": 360
+          }
+        }
       }
     },
     "layout": {
       "master": {
         "width": 720,
-        "height": 360
+        "height": 360,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 720,
+            "height": 360
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 720,
+            "height": 360
+          }
+        }
       }
     },
     "control": {
       "master": {
         "width": 440,
-        "height": 112
+        "height": 112,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 440,
+            "height": 112
+          }
+        }
       },
       "matrix": {
         "columns": 3,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 440,
+            "height": 112
+          }
+        }
       }
     },
     "calendar": {
       "master": {
         "width": 392,
-        "height": 396
+        "height": 396,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 392,
+            "height": 396
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 392,
+            "height": 396
+          }
+        }
       }
     },
     "table": {
       "master": {
         "width": 840,
-        "height": 420
+        "height": 420,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 840,
+            "height": 420
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 840,
+            "height": 420
+          }
+        }
       }
     },
     "data": {
       "master": {
         "width": 280,
-        "height": 132
+        "height": 132,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 280,
+            "height": 132
+          }
+        }
       },
       "matrix": {
         "columns": 3,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 280,
+            "height": 132
+          }
+        }
       }
     },
     "media": {
       "master": {
         "width": 440,
-        "height": 320
+        "height": 320,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 440,
+            "height": 320
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 440,
+            "height": 320
+          }
+        }
       }
     },
     "navigation": {
       "master": {
         "width": 480,
-        "height": 216
+        "height": 216,
+        "container": {
+          "type": "flex",
+          "direction": "row",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 480,
+            "height": 216
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 480,
+            "height": 216
+          }
+        }
       }
     },
     "overflow": {
       "master": {
         "width": 520,
-        "height": 280
+        "height": 280,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 520,
+            "height": 280
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 520,
+            "height": 280
+          }
+        }
       }
     },
     "separator": {
       "master": {
         "width": 440,
-        "height": 72
+        "height": 72,
+        "container": {
+          "type": "flex",
+          "direction": "row",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 440,
+            "height": 72
+          }
+        }
       },
       "matrix": {
         "columns": 3,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 440,
+            "height": 72
+          }
+        }
       }
     },
     "split": {
       "master": {
         "width": 680,
-        "height": 300
+        "height": 300,
+        "container": {
+          "type": "flex",
+          "direction": "row",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 680,
+            "height": 300
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 680,
+            "height": 300
+          }
+        }
       }
     },
     "sortable": {
       "master": {
         "width": 520,
-        "height": 256
+        "height": 256,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 520,
+            "height": 256
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 520,
+            "height": 256
+          }
+        }
       }
     },
     "toolbar": {
       "master": {
         "width": 320,
-        "height": 72
+        "height": 72,
+        "container": {
+          "type": "flex",
+          "direction": "row",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 320,
+            "height": 72
+          }
+        }
       },
       "matrix": {
         "columns": 3,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 320,
+            "height": 72
+          }
+        }
       }
     },
     "tree": {
       "master": {
         "width": 400,
-        "height": 300
+        "height": 300,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 400,
+            "height": 300
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 400,
+            "height": 300
+          }
+        }
       }
     },
     "typography": {
       "master": {
         "width": 620,
-        "height": 520
+        "height": 520,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 620,
+            "height": 520
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 620,
+            "height": 520
+          }
+        }
       }
     },
     "shell": {
       "master": {
         "width": 1120,
-        "height": 640
+        "height": 640,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 1120,
+            "height": 640
+          }
+        }
       },
       "matrix": {
         "columns": 1,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 1120,
+            "height": 640
+          }
+        }
       }
     },
     "overlay-centered": {
       "master": {
         "width": 560,
-        "height": 400
+        "height": 400,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 560,
+            "height": 400
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 560,
+            "height": 400
+          }
+        }
       }
     },
     "overlay-edge": {
       "master": {
         "width": 640,
-        "height": 480
+        "height": 480,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 640,
+            "height": 480
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 640,
+            "height": 480
+          }
+        }
       }
     },
     "overlay-corner": {
       "master": {
         "width": 420,
-        "height": 160
+        "height": 160,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 420,
+            "height": 160
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 420,
+            "height": 160
+          }
+        }
       }
     },
     "anchored-overlay": {
       "master": {
         "width": 460,
-        "height": 280
+        "height": 280,
+        "container": {
+          "type": "flex",
+          "direction": "column",
+          "gap": 16,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 460,
+            "height": 280
+          }
+        }
       },
       "matrix": {
         "columns": 2,
         "columnGap": 24,
         "rowGap": 24,
         "labelHeight": 20,
-        "padding": 24
+        "padding": 24,
+        "container": {
+          "type": "grid",
+          "direction": "row",
+          "gap": {
+            "row": 24,
+            "column": 24
+          },
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "sizing": {
+            "horizontal": "fixed",
+            "vertical": "hug",
+            "width": 460,
+            "height": 280
+          }
+        }
       }
     }
   },
+  "sharedComponents": [
+    {
+      "key": "shared.action.button",
+      "title": "Button atom",
+      "layout": "inline",
+      "anatomy": [
+        {
+          "name": "label",
+          "role": "button-label"
+        },
+        {
+          "name": "leading-icon",
+          "role": "icon"
+        },
+        {
+          "name": "trailing-icon",
+          "role": "icon"
+        },
+        {
+          "name": "loading",
+          "role": "loading-indicator"
+        }
+      ],
+      "parts": [
+        "label",
+        "leading-icon",
+        "trailing-icon",
+        "loading"
+      ]
+    },
+    {
+      "key": "shared.action.icon-button",
+      "title": "Icon button atom",
+      "layout": "inline",
+      "anatomy": [
+        {
+          "name": "glyph",
+          "role": "icon"
+        },
+        {
+          "name": "accessible-name",
+          "role": "sr-only-label"
+        }
+      ],
+      "parts": [
+        "glyph",
+        "accessible-name"
+      ]
+    },
+    {
+      "key": "shared.atom.icon",
+      "title": "Icon atom",
+      "layout": "inline",
+      "anatomy": [
+        {
+          "name": "glyph",
+          "role": "icon"
+        }
+      ],
+      "parts": [
+        "glyph"
+      ]
+    },
+    {
+      "key": "shared.form.label",
+      "title": "Label atom",
+      "layout": "inline",
+      "anatomy": [
+        {
+          "name": "label",
+          "role": "label"
+        },
+        {
+          "name": "required-marker",
+          "role": "required-marker"
+        }
+      ],
+      "parts": [
+        "label",
+        "required-marker"
+      ]
+    },
+    {
+      "key": "shared.form.field",
+      "title": "Field atom",
+      "layout": "form-field",
+      "anatomy": [
+        {
+          "name": "label",
+          "role": "label"
+        },
+        {
+          "name": "control",
+          "role": "text-control"
+        },
+        {
+          "name": "description",
+          "role": "supporting-copy"
+        },
+        {
+          "name": "message",
+          "role": "validation-message"
+        }
+      ],
+      "parts": [
+        "label",
+        "control",
+        "description",
+        "message"
+      ]
+    },
+    {
+      "key": "shared.disclosure.trigger",
+      "title": "Disclosure atom",
+      "layout": "vertical-connected",
+      "anatomy": [
+        {
+          "name": "trigger",
+          "role": "summary-row"
+        },
+        {
+          "name": "indicator",
+          "role": "disclosure-icon"
+        },
+        {
+          "name": "content",
+          "role": "supporting-copy"
+        }
+      ],
+      "parts": [
+        "trigger",
+        "indicator",
+        "content"
+      ]
+    },
+    {
+      "key": "shared.overlay.backdrop",
+      "title": "Overlay backdrop atom",
+      "layout": "overlay-centered",
+      "anatomy": [
+        {
+          "name": "backdrop",
+          "role": "overlay-strong"
+        }
+      ],
+      "parts": [
+        "backdrop"
+      ]
+    },
+    {
+      "key": "shared.overlay.surface",
+      "title": "Overlay surface atom",
+      "layout": "overlay-centered",
+      "anatomy": [
+        {
+          "name": "surface",
+          "role": "top-layer-surface"
+        },
+        {
+          "name": "heading",
+          "role": "heading"
+        },
+        {
+          "name": "description",
+          "role": "supporting-copy"
+        },
+        {
+          "name": "actions",
+          "role": "action-row"
+        }
+      ],
+      "parts": [
+        "surface",
+        "heading",
+        "description",
+        "actions"
+      ]
+    },
+    {
+      "key": "shared.navigation.item",
+      "title": "Navigation item atom",
+      "layout": "navigation",
+      "anatomy": [
+        {
+          "name": "items",
+          "role": "nav-link"
+        },
+        {
+          "name": "current-item",
+          "role": "current-nav-link"
+        },
+        {
+          "name": "focus-ring",
+          "role": "focus-ring"
+        }
+      ],
+      "parts": [
+        "items",
+        "current-item",
+        "focus-ring"
+      ]
+    }
+  ],
   "components": [
     {
       "id": "accordion",
@@ -8735,18 +9937,12 @@
         {
           "name": "ratio",
           "values": [
-            "1",
-            "1",
-            "4",
-            "3",
-            "3",
-            "2",
-            "16",
-            "9",
-            "21",
-            "9",
-            "3",
-            "4"
+            "1/1",
+            "4/3",
+            "3/2",
+            "16/9",
+            "21/9",
+            "3/4"
           ],
           "source": "blueprint"
         },
@@ -11925,6 +13121,7 @@
         {
           "name": "interaction",
           "values": [
+            "rest",
             "hover",
             "focus"
           ],

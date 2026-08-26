@@ -1,6 +1,5 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-26T10:44:17.594Z",
   "sourceRoot": "library/components",
   "components": [
     {
@@ -2869,6 +2868,7 @@
         ]
       },
       "states": [
+        "disabled",
         "focus",
         "hover"
       ],
@@ -3166,7 +3166,10 @@
       },
       "axes": {},
       "states": [
+        "checked",
+        "disabled",
         "focus",
+        "indeterminate",
         "invalid"
       ],
       "sections": [
@@ -3744,7 +3747,7 @@
       },
       "states": [
         "disabled",
-        "focus",
+        "focus-within",
         "hover",
         "selected"
       ],
@@ -4002,6 +4005,7 @@
       "states": [
         "disabled",
         "focus",
+        "focus-within",
         "hover",
         "open"
       ],
@@ -4594,6 +4598,7 @@
       },
       "axes": {},
       "states": [
+        "disabled",
         "focus",
         "hover",
         "invalid"
@@ -4950,6 +4955,7 @@
       },
       "axes": {},
       "states": [
+        "disabled",
         "focus",
         "invalid"
       ],
@@ -5397,6 +5403,8 @@
         ]
       },
       "states": [
+        "checked",
+        "disabled",
         "hover"
       ],
       "sections": [
@@ -5744,8 +5752,10 @@
         ]
       },
       "states": [
+        "disabled",
         "focus",
-        "invalid"
+        "invalid",
+        "read-only"
       ],
       "sections": [
         "Purpose",
@@ -5858,6 +5868,7 @@
       },
       "axes": {},
       "states": [
+        "disabled",
         "focus",
         "hover",
         "invalid"
@@ -6841,7 +6852,9 @@
         ]
       },
       "axes": {},
-      "states": [],
+      "states": [
+        "disabled"
+      ],
       "sections": [
         "Purpose",
         "Native basis",
@@ -7455,6 +7468,7 @@
         ]
       },
       "states": [
+        "disabled",
         "focus",
         "hover",
         "invalid"
@@ -8226,6 +8240,8 @@
       },
       "axes": {},
       "states": [
+        "checked",
+        "disabled",
         "focus",
         "hover",
         "invalid"
@@ -8653,6 +8669,7 @@
       },
       "axes": {},
       "states": [
+        "disabled",
         "focus",
         "invalid"
       ],
@@ -9633,6 +9650,7 @@
         ]
       },
       "states": [
+        "disabled",
         "focus"
       ],
       "sections": [
@@ -9857,6 +9875,7 @@
         ]
       },
       "states": [
+        "active",
         "disabled",
         "focus",
         "hover"
@@ -10271,6 +10290,8 @@
       },
       "axes": {},
       "states": [
+        "checked",
+        "disabled",
         "focus",
         "invalid"
       ],
@@ -10670,6 +10691,7 @@
         ]
       },
       "states": [
+        "disabled",
         "focus",
         "hover",
         "selected"
@@ -10999,8 +11021,10 @@
         ]
       },
       "states": [
+        "disabled",
         "focus",
-        "invalid"
+        "invalid",
+        "read-only"
       ],
       "sections": [
         "Purpose",
@@ -11101,6 +11125,7 @@
       },
       "axes": {},
       "states": [
+        "disabled",
         "focus",
         "invalid"
       ],
@@ -11378,8 +11403,10 @@
         ]
       },
       "states": [
+        "disabled",
         "focus",
-        "invalid"
+        "invalid",
+        "read-only"
       ],
       "sections": [
         "Purpose",
@@ -11746,6 +11773,8 @@
         ]
       },
       "states": [
+        "checked",
+        "disabled",
         "focus",
         "hover"
       ],
@@ -11929,6 +11958,7 @@
         ]
       },
       "states": [
+        "checked",
         "focus",
         "hover"
       ],
