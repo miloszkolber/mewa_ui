@@ -11,129 +11,126 @@ Run the application exactly once when the manifest and the connected file agree.
 
 Do not plan a repeated bidirectional sync. Penpot is generated output.
 
-After the application, review the file for layout collapse, section order,
-token binding, link integrity, and theme switching. Record only corrections
-here.
+Build from atoms upward. Composite components hold instances of the atoms.
 
-To regenerate after an approval, rebuild only the affected component sheet from
-the same procedure. Never re-run the whole file.
+## Atom-first architecture
 
-## Approved result
+Every component is a real Penpot library component. A component with several
+states or axes is one variant container with named variant properties, exactly
+like the `button` blueprint on `Examples`:
 
-The connected file has:
+- `button` has `variant` (primary, secondary, outline, ghost, link,
+  destructive), `state` (default, hover, pressed, focused), `type` (text,
+  textIcon, icon).
+- `badge` has `variant` (default, secondary, outline, count) and `state`
+  (positive, caution, negative, running).
+- `sidebar-item` has `variant` (default, compact) and `state` (default, hover,
+  selected, focused).
+- `checkbox`, `radio`, `switch` have one `state` axis.
 
-- 59 component pages with one managed sheet per page.
-- One component master and one variant-instance matrix per sheet.
-- Nine reusable atoms on the `01_SHARED` page.
-- Semantic token bindings on fills, strokes, and text.
-- Flex for anatomy, Grid for matrices.
+Do not draw state matrices. Do not draw component sheets. Variant containers
+are the deliverable.
+
+## Composition rule
+
+Composite components place instances of the atoms inside their own layout:
+
+- `sidebar` holds a `brand` instance and four `sidebar-item` instances.
+- `card` holds a real `button` instance in its footer.
+- `icon` wraps an instance from the connected `mewa_icons` library.
+
+Use `switchVariant(position, value)` on an instance to pick its variant.
+
+Never redraw an atom inside a composite. Use an instance.
+
+## Approved file structure
+
+- One component page per component, holding one variant container or one main
+  instance.
+- `button`, `icon`, `badge`, `label`, `brand`, `sidebar-item`, `sidebar`,
+  `card`, `checkbox`, `radio`, `switch`, `input`, `avatar`, `spinner`,
+  `separator` are the atomic set.
+- `mewa_icons` remains connected and is the only icon source.
+- The `Examples` page and its Figma imports stay untouched.
 - Two token themes, Light and Dark.
-- The `Examples` page unchanged.
-
-## Page contract
-
-Use one managed sheet per component page. The sheet is the only board on the
-page.
-
-Keep the sheet board named `{Title} / Component sheet`.
-
-Keep the child order:
-
-1. `Page title` text.
-2. `Section` text, `Variant and state coverage`.
-3. `Variant state matrix` board.
-4. `Section` text, `Component master`.
-5. `{Title} / Mewa / {Title}` main instance.
-
-Keep the master main instance linked to the library component.
-
-Keep the matrix inside one grid board with flex-track columns and fixed-width
-rows.
-
-Keep one linked component instance in every matrix cell.
-
-Keep one mawa-monospaced variant label above the instance in each cell.
 
 ## Token application
 
+Token application is asynchronous. After `applyToShapes`, the binding appears
+on a later read, not in the same call. Read tokens in a subsequent call to
+verify.
+
 Look up tokens in active sets first, then inactive sets.
 
-Apply color tokens with `applyToShapes(shape, ['fill'])` or `['strokeColor']`.
+Apply by name, never by copied value. The theme changes the resolved color
+later.
 
-Apply stroke width tokens with `['strokeWidth']`.
+### Token properties
 
-Apply text color with `['fill']` on text shapes.
+- Color: `fill`, `strokeColor`.
+- Spacing: `rowGap`, `columnGap`, `paddingTop`, `paddingRight`,
+  `paddingBottom`, `paddingLeft`.
+- Sizing: `width`, `height`.
+- Border radius: `borderRadiusTopLeft`, `borderRadiusTopRight`,
+  `borderRadiusBottomRight`, `borderRadiusBottomLeft`.
+- Typography: `typography` on a text shape. This sets family, size, weight,
+  line height, and letter spacing in one call.
+- Opacity: `opacity`.
+- Stroke width: `strokeWidth`.
 
-Never write a raw color when a semantic token covers the intent.
+Use the existing predefined typography styles (`body.base.default`,
+`body.base.strong`, `body.small.default`, `body.small.strong`,
+`body.xsmall.strong`, `heading.hX`, `code.base.default`). Do not hand-set
+font size, family, or weight.
 
 ## Pitfalls
 
-### Flexible layout does not recompute automatically
+### Variant containers need component main instances
 
-After building children, a flex board can report child positions all at zero.
+`createVariantContainer` rejects raw boards. Create each variant as a
+component with `createComponent`, take its `mainInstance()`, then build the
+container from the main instances.
 
-Fix by removing and re-adding the flex layout, waiting for Penpot to settle,
-then continuing. Use a delay of at least 250 ms after the re-add.
+### Library state races across calls
 
-### Child order resets after a layout repair
+Library lookups (`components.find`) occasionally return stale or empty state
+right after a mutation batch. Create dependent components in the same call as
+their parents, or re-read the library in a fresh call before using it.
 
-A layout repair can reorder children. After the repair, set the intended order
-with `setParentIndex` and wait again.
+### Duplicate library names
 
-### The resize zero value is invalid
+Old builds can leave two components with the same name. Identify ownership by
+component id prefix, or by variant properties when both are variants:
 
-Do not call `resize(width, 0)` or `resize(0, height)`. Penpot rejects zero.
+- New atoms use variant properties that match the blueprint, for example
+  `button` uses `[variant, state, type]`.
+- Figma imports on `Examples` use different property lists. Never remove
+  `Examples` imports.
 
-Give a board a real size or set the sizing to `auto` and let content drive it.
+### Flex layouts and layout repair
 
-### The horizontal sizing literal is `fix`
+Child positions report zero until Penpot recomputes. Repairs by removing and
+re-adding the flex layout are slow and can reorder children. Avoid them when a
+variant container is the target; build the container last and let Penpot lay
+out its variants.
 
-Use the layout literal `fix` for fixed sizing. `fixed` is invalid.
+### Resize and sizing literals
 
-Use `auto` for hug. Use `fill` to stretch in a parent flex.
+Never resize to zero. Use `fix` for fixed sizing, never `fixed`.
 
-### Font weight 500 is unavailable on loaded Geist
+### Long executions
 
-The loaded Geist variant does not support every weight. Use 600 for strong
-text in Penpot, or map the CSS 550 strong weight to 600.
-
-Keep that mapping in the renderer. Do not change the source CSS.
-
-### Token application is by name, not by id
-
-When a set is inactive, apply by name so the active theme still changes the
-color later.
-
-### Matrix geometry must be explicit
-
-Compute the matrix width as cell width times columns, plus gap times column
-count minus one, plus padding. Compute the matrix height from rows, row gap,
-and padding.
-
-Do not reuse the master width for the matrix.
-
-### Component instance overrides
-
-Set instance child properties after instantiation to show a variant. Instance
-child styles remain bound to the master and update with it.
-
-For a collapsed layout, resize inner regions when the instance root shrinks.
-
-### Specialized renderers beat a generic template
-
-Write a renderer per component family, aligned with `renderers.mjs` anatomy.
-
-Do not derive component structure from prose alone. Use the canonical markup
-tree and the component CSS as the source.
+Large batches that create many components can time out at the MCP layer even
+when they commit. After a timeout, re-read the page and library to confirm
+what committed before continuing. Never blindly re-run the whole batch.
 
 ## Verification
 
-After applying, check:
+After applying, check in a fresh connection:
 
-- Text, surface, and border tokens resolve in both themes.
-- All sheets have one grid matrix and one linked master instance.
-- Correct section order.
-- No zero-sized or collapsed boards.
-- No overlapping children at origin.
-- `Examples` untouched.
-- Library component count equals shared atoms plus registered components.
+- Each atomic component page has one variant container with the declared
+  variant properties.
+- Variant roots carry token bindings on fill, stroke, padding, and typography.
+- Composite components hold instances (query with `isComponentCopyInstance`).
+- `Examples` is untouched.
+- Library has no duplicated atom names.
