@@ -6,6 +6,8 @@
   "scripts": {
     "catalog:check": "node scripts/catalog.mjs --check",
     "catalog:write": "node scripts/catalog.mjs --write",
+    "penpot:extract": "node penpot/extract-contracts.mjs && node penpot/extract-foundations.mjs && node penpot/compile-plan.mjs",
+    "penpot:check": "node penpot/extract-contracts.mjs && node penpot/extract-foundations.mjs && node penpot/compile-plan.mjs && git diff --exit-code -- penpot/source-contracts.generated.json penpot/foundations.generated.json penpot/plan.generated.json",
     "pretest": "npm run catalog:check && node tests/system-contract.test.js",
     "test": "node tests/catalog-contract.test.js && node tests/runtime-contract.test.js",
     "test:browser": "node tests/browser-smoke.mjs"
