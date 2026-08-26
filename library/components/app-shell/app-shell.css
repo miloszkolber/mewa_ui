@@ -714,6 +714,7 @@
       flex-basis: 100%;
       overflow-x: auto;
       flex-wrap: nowrap;
+      margin-block: 0;
     }
   }
 

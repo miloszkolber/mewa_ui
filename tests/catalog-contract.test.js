@@ -237,6 +237,15 @@ test("shared CSS rejects raw pixel breakpoints and retired width presets", () =>
   }
 });
 
+test("App Shell resets the wrapped mobile navigation margin", () => {
+  const source = stripCssComments(read("library/components/app-shell/app-shell.css"));
+  assert.match(
+    source,
+    /\.app-nav\s*\{\s*flex-basis:\s*100%;[\s\S]*?flex-wrap:\s*nowrap;[\s\S]*?margin-block:\s*0;/,
+    "mobile App Shell navigation must not overlap adjacent wrapped header content"
+  );
+});
+
 test("high-risk native-first runtime contracts do not regress", () => {
   const dialog = read("library/components/dialog/dialog.js");
   assert(!/dialog\.focus\(\)/.test(dialog), "Dialog must let native showModal and autofocus choose initial focus");
