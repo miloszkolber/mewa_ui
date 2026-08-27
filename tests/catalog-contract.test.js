@@ -209,6 +209,7 @@ test("component CSS does not contain consumer-specific selectors", () => {
     "hf-ui",
     "media-ui",
     "memes-ui",
+    "magpie",
     "moonlight",
     "homelab",
     "dufs",
