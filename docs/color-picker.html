@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Color Picker component — native color selection with an editable hexadecimal value.">
+  <meta property="og:title" content="Color picker — mewa_ui">
+  <meta property="og:description" content="Color Picker component — native color selection with an editable hexadecimal value.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mewa.local/color-picker.html">
+  <meta property="og:site_name" content="mewa_ui">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Color picker — mewa_ui">
+  <meta name="twitter:description" content="Color Picker component — native color selection with an editable hexadecimal value.">
+  <title>Color picker — mewa_ui</title>
+  <script src="js/layout.js"></script>
+  <link rel="stylesheet" href="../library/src/base.css">
+  <link rel="stylesheet" href="../library/src/tokens.css">
+  <link rel="stylesheet" href="css/docs-theme.css">
+  <link rel="stylesheet" href="css/docs-utilities.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="../library/components/accordion/accordion.css">
+  <link rel="stylesheet" href="../library/components/alert-dialog/alert-dialog.css">
+  <link rel="stylesheet" href="../library/components/app-shell/app-shell.css">
+  <link rel="stylesheet" href="../library/components/avatar/avatar.css">
+  <link rel="stylesheet" href="../library/components/badge/badge.css">
+  <link rel="stylesheet" href="../library/components/breadcrumbs/breadcrumbs.css">
+  <link rel="stylesheet" href="../library/components/button-group/button-group.css">
+  <link rel="stylesheet" href="../library/components/button/button.css">
+  <link rel="stylesheet" href="../library/components/callout/callout.css">
+  <link rel="stylesheet" href="../library/components/card/card.css">
+  <link rel="stylesheet" href="../library/components/carousel/carousel.css">
+  <link rel="stylesheet" href="../library/components/checkbox/checkbox.css">
+  <link rel="stylesheet" href="../library/components/collapsible/collapsible.css">
+  <link rel="stylesheet" href="../library/components/combobox/combobox.css">
+  <link rel="stylesheet" href="../library/components/command-palette/command-palette.css">
+  <link rel="stylesheet" href="../library/components/date-field/date-field.css">
+  <link rel="stylesheet" href="../library/components/date-picker/date-picker.css">
+  <link rel="stylesheet" href="../library/components/date-range-picker/date-range-picker.css">
+  <link rel="stylesheet" href="../library/components/data-table/data-table.css">
+  <link rel="stylesheet" href="../library/components/dialog/dialog.css">
+  <link rel="stylesheet" href="../library/components/dropdown-menu/dropdown-menu.css">
+  <link rel="stylesheet" href="../library/components/field/field.css">
+  <link rel="stylesheet" href="../library/components/file-input/file-input.css">
+  <link rel="stylesheet" href="../library/components/form/form.css">
+  <link rel="stylesheet" href="../library/components/icon/icon.css">
+  <link rel="stylesheet" href="../library/components/image/image.css">
+  <link rel="stylesheet" href="../library/components/label/label.css">
+  <link rel="stylesheet" href="../library/components/layout/layout.css">
+  <link rel="stylesheet" href="../library/components/navigation-menu/navigation-menu.css">
+  <link rel="stylesheet" href="../library/components/number-field/number-field.css">
+  <link rel="stylesheet" href="../library/components/pagination/pagination.css">
+  <link rel="stylesheet" href="../library/components/popover/popover.css">
+  <link rel="stylesheet" href="../library/components/progress/progress.css">
+  <link rel="stylesheet" href="../library/components/radio-group/radio-group.css">
+  <link rel="stylesheet" href="../library/components/resizable/resizable.css">
+  <link rel="stylesheet" href="../library/components/scroll-area/scroll-area.css">
+  <link rel="stylesheet" href="../library/components/select/select.css">
+  <link rel="stylesheet" href="../library/components/separator/separator.css">
+  <link rel="stylesheet" href="../library/components/sheet/sheet.css">
+  <link rel="stylesheet" href="../library/components/sidebar/sidebar.css">
+  <link rel="stylesheet" href="../library/components/skeleton/skeleton.css">
+  <link rel="stylesheet" href="../library/components/slider/slider.css">
+  <link rel="stylesheet" href="../library/components/sortable/sortable.css">
+  <link rel="stylesheet" href="../library/components/spinner/spinner.css">
+  <link rel="stylesheet" href="../library/components/statistic/statistic.css">
+  <link rel="stylesheet" href="../library/components/switch/switch.css">
+  <link rel="stylesheet" href="../library/components/table/table.css">
+  <link rel="stylesheet" href="../library/components/tabs/tabs.css">
+  <link rel="stylesheet" href="../library/components/text-field/text-field.css">
+  <link rel="stylesheet" href="../library/components/textarea/textarea.css">
+  <link rel="stylesheet" href="../library/components/time-field/time-field.css">
+  <link rel="stylesheet" href="../library/components/timeline/timeline.css">
+  <link rel="stylesheet" href="../library/components/toast/toast.css">
+  <link rel="stylesheet" href="../library/components/toggle-group/toggle-group.css">
+  <link rel="stylesheet" href="../library/components/toggle/toggle.css">
+  <link rel="stylesheet" href="../library/components/toolbar/toolbar.css">
+  <link rel="stylesheet" href="../library/components/tooltip/tooltip.css">
+  <link rel="stylesheet" href="../library/components/tree-view/tree-view.css">
+  <link rel="stylesheet" href="../library/components/typography/typography.css">
+  <link rel="stylesheet" href="../library/components/color-picker/color-picker.css">
+  <link rel="stylesheet" href="../library/components/file-upload/file-upload.css">
+  <link rel="stylesheet" href="../library/components/input-otp/input-otp.css">
+  <link rel="stylesheet" href="../library/components/tag-input/tag-input.css">
+  <link rel="stylesheet" href="../library/components/header/header.css">
+  <link rel="stylesheet" href="../library/components/nav/nav.css">
+  <link rel="stylesheet" href="../library/components/footer/footer.css">
+  <link rel="stylesheet" href="../library/components/context-menu/context-menu.css">
+  <link rel="stylesheet" href="../library/components/hover-card/hover-card.css">
+  <link rel="stylesheet" href="../library/components/agent-activity/agent-activity.css">
+  <link rel="stylesheet" href="../library/components/code-block/code-block.css">
+  <link rel="stylesheet" href="../library/components/composer/composer.css">
+  <link rel="stylesheet" href="../library/components/file-diff/file-diff.css">
+  <link rel="stylesheet" href="../library/components/message/message.css">
+  <link rel="stylesheet" href="../library/components/message-scroller/message-scroller.css">
+  <link rel="stylesheet" href="../library/components/reasoning/reasoning.css">
+  <link rel="stylesheet" href="../library/components/sources/sources.css">
+  <link rel="stylesheet" href="../library/components/suggestion/suggestion.css">
+  <link rel="stylesheet" href="../library/components/thinking-indicator/thinking-indicator.css">
+  <link rel="stylesheet" href="../library/components/todo-list/todo-list.css">
+  <link rel="stylesheet" href="../library/components/tool-call/tool-call.css">
+</head>
+<body>
+  <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
+  <site-header></site-header>
+
+  <div class="flex" style="margin-top: var(--space-1400); min-height: calc(100vh - 3.5rem)">
+    <site-nav></site-nav>
+
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
+      <div class="page-header">
+        <h1>Color picker</h1>
+        <p class="text-muted leading-relaxed mb-6">Lets someone choose an opaque color with the platform picker or enter an exact hexadecimal value. The native color input remains the submitted field.</p>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-6">Color and hexadecimal value</p>
+      <p class="text-xs text-muted mb-3">The text field appears after its value can stay synchronized with the native picker.</p>
+      <div class="preview">
+        <div class="field">
+          <label for="demo-accent-color">Accent color</label>
+          <div class="color-picker">
+            <input class="color-picker-input" id="demo-accent-color" name="accent_color" type="color" value="#c43131" aria-describedby="demo-accent-color-description">
+            <input class="color-picker-hex" type="text" value="#c43131" maxlength="7" inputmode="text" autocomplete="off" spellcheck="false" aria-label="Hex color value" data-color-picker-hex hidden>
+          </div>
+          <p class="field-description" id="demo-accent-color-description">Choose an opaque color.</p>
+        </div>
+      </div>
+      <div style="position: relative; margin-top: var(--space-200)">
+        <button class="copy-btn" type="button">Copy</button>
+        <pre><code class="language-markup">&lt;div class="field"&gt;
+  &lt;label for="accent-color"&gt;Accent color&lt;/label&gt;
+  &lt;div class="color-picker"&gt;
+    &lt;input class="color-picker-input" id="accent-color"
+           name="accent_color" type="color" value="#c43131"
+           aria-describedby="accent-color-description"&gt;
+    &lt;input class="color-picker-hex" type="text" value="#c43131"
+           maxlength="7" inputmode="text" autocomplete="off"
+           spellcheck="false" aria-label="Hex color value"
+           data-color-picker-hex hidden&gt;
+  &lt;/div&gt;
+  &lt;p class="field-description" id="accent-color-description"&gt;
+    Choose an opaque color.
+  &lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-8">Without JavaScript</p>
+      <p class="text-xs text-muted mb-3">The native color input stays visible, labelled, focusable, and submitted. The exact-value field stays hidden until synchronization is available.</p>
+    </main>
+  </div>
+
+  <script src="js/site.js" defer></script>
+  <script type="module" src="../library/components/color-picker/color-picker.js"></script>
+</body>
+</html>

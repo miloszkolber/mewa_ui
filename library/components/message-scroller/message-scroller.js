@@ -1,0 +1,117 @@
+const messageScrollerInstances = new WeakMap();
+
+function messageScrollerThreshold(root) {
+  const configured = Number.parseFloat(root.dataset.threshold || '');
+  return Number.isFinite(configured) && configured > 0 ? configured : 24;
+}
+
+function initMessageScroller(root) {
+  if (root.hasAttribute('data-init')) return;
+  root.dataset.init = '';
+
+  const viewport = root.querySelector('.message-scroller-viewport');
+  const content = root.querySelector('.message-scroller-content');
+  const jump = root.querySelector('[data-message-scroller-jump]');
+  if (!viewport || !content) {
+    root.removeAttribute('data-init');
+    return;
+  }
+
+  const threshold = messageScrollerThreshold(root);
+  let pinned = root.dataset.defaultPinned !== 'false';
+  let conversationKey = root.dataset.conversationKey || '';
+
+  const atBottom = () => (
+    viewport.scrollHeight - viewport.clientHeight - viewport.scrollTop <= threshold
+  );
+
+  const syncJump = () => {
+    if (jump) jump.hidden = pinned;
+  };
+
+  const setPinned = (next, emit = true) => {
+    const changed = pinned !== next;
+    pinned = next;
+    root.dataset.pinned = pinned ? 'true' : 'false';
+    syncJump();
+    if (changed && emit) {
+      root.dispatchEvent(new CustomEvent('message-scroller:pinned-change', {
+        bubbles: true,
+        detail: { pinned }
+      }));
+    }
+  };
+
+  const scrollToBottom = (emit = true) => {
+    viewport.scrollTop = viewport.scrollHeight;
+    setPinned(true, emit);
+  };
+
+  const onScroll = () => setPinned(atBottom());
+  const onJump = () => scrollToBottom();
+
+  viewport.addEventListener('scroll', onScroll, { passive: true });
+  jump?.addEventListener('click', onJump);
+
+  const contentObserver = new MutationObserver(() => {
+    if (pinned) scrollToBottom(false);
+  });
+  contentObserver.observe(content, { childList: true, subtree: true, characterData: true });
+
+  const attributeObserver = new MutationObserver(() => {
+    const nextKey = root.dataset.conversationKey || '';
+    if (nextKey === conversationKey) return;
+    conversationKey = nextKey;
+    scrollToBottom();
+  });
+  attributeObserver.observe(root, { attributes: true, attributeFilter: ['data-conversation-key'] });
+
+  const resizeObserver = typeof ResizeObserver === 'function'
+    ? new ResizeObserver(() => {
+      if (pinned) scrollToBottom(false);
+    })
+    : null;
+  resizeObserver?.observe(viewport);
+  resizeObserver?.observe(content);
+
+  if (pinned) scrollToBottom(false);
+  else setPinned(false, false);
+
+  messageScrollerInstances.set(root, {
+    destroy() {
+      viewport.removeEventListener('scroll', onScroll);
+      jump?.removeEventListener('click', onJump);
+      contentObserver.disconnect();
+      attributeObserver.disconnect();
+      resizeObserver?.disconnect();
+      if (jump) jump.hidden = true;
+      root.removeAttribute('data-pinned');
+      root.removeAttribute('data-init');
+      messageScrollerInstances.delete(root);
+    }
+  });
+}
+
+function initMessageScrollers(scope = document) {
+  if (scope.matches?.('.message-scroller')) initMessageScroller(scope);
+  scope.querySelectorAll?.('.message-scroller').forEach(initMessageScroller);
+}
+
+function destroyMessageScrollers(scope) {
+  if (scope.nodeType !== 1) return;
+  if (scope.matches?.('.message-scroller')) messageScrollerInstances.get(scope)?.destroy();
+  scope.querySelectorAll?.('.message-scroller').forEach((root) => {
+    messageScrollerInstances.get(root)?.destroy();
+  });
+}
+
+initMessageScrollers();
+
+new MutationObserver((records) => {
+  records.forEach((record) => {
+    record.removedNodes.forEach(destroyMessageScrollers);
+    record.addedNodes.forEach((node) => {
+      if (node.nodeType === 1) initMessageScrollers(node);
+    });
+  });
+}).observe(document, { childList: true, subtree: true });

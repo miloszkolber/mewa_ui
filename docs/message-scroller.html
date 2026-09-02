@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Message Scroller component — a growing transcript with optional live-edge following.">
+  <meta property="og:title" content="Message Scroller — mewa_ui">
+  <meta property="og:description" content="A growing transcript with optional live-edge following.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mewa.local/message-scroller.html">
+  <meta property="og:site_name" content="mewa_ui">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Message Scroller — mewa_ui">
+  <meta name="twitter:description" content="A growing transcript with optional live-edge following.">
+  <title>Message Scroller — mewa_ui</title>
+  <script src="js/layout.js"></script>
+  <link rel="stylesheet" href="../library/src/base.css">
+  <link rel="stylesheet" href="../library/src/tokens.css">
+  <link rel="stylesheet" href="css/docs-theme.css">
+  <link rel="stylesheet" href="css/docs-utilities.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="../library/components/accordion/accordion.css">
+  <link rel="stylesheet" href="../library/components/alert-dialog/alert-dialog.css">
+  <link rel="stylesheet" href="../library/components/app-shell/app-shell.css">
+  <link rel="stylesheet" href="../library/components/avatar/avatar.css">
+  <link rel="stylesheet" href="../library/components/badge/badge.css">
+  <link rel="stylesheet" href="../library/components/breadcrumbs/breadcrumbs.css">
+  <link rel="stylesheet" href="../library/components/button-group/button-group.css">
+  <link rel="stylesheet" href="../library/components/button/button.css">
+  <link rel="stylesheet" href="../library/components/callout/callout.css">
+  <link rel="stylesheet" href="../library/components/card/card.css">
+  <link rel="stylesheet" href="../library/components/carousel/carousel.css">
+  <link rel="stylesheet" href="../library/components/checkbox/checkbox.css">
+  <link rel="stylesheet" href="../library/components/collapsible/collapsible.css">
+  <link rel="stylesheet" href="../library/components/combobox/combobox.css">
+  <link rel="stylesheet" href="../library/components/command-palette/command-palette.css">
+  <link rel="stylesheet" href="../library/components/date-field/date-field.css">
+  <link rel="stylesheet" href="../library/components/date-picker/date-picker.css">
+  <link rel="stylesheet" href="../library/components/date-range-picker/date-range-picker.css">
+  <link rel="stylesheet" href="../library/components/data-table/data-table.css">
+  <link rel="stylesheet" href="../library/components/dialog/dialog.css">
+  <link rel="stylesheet" href="../library/components/dropdown-menu/dropdown-menu.css">
+  <link rel="stylesheet" href="../library/components/field/field.css">
+  <link rel="stylesheet" href="../library/components/file-input/file-input.css">
+  <link rel="stylesheet" href="../library/components/form/form.css">
+  <link rel="stylesheet" href="../library/components/icon/icon.css">
+  <link rel="stylesheet" href="../library/components/image/image.css">
+  <link rel="stylesheet" href="../library/components/label/label.css">
+  <link rel="stylesheet" href="../library/components/layout/layout.css">
+  <link rel="stylesheet" href="../library/components/navigation-menu/navigation-menu.css">
+  <link rel="stylesheet" href="../library/components/number-field/number-field.css">
+  <link rel="stylesheet" href="../library/components/pagination/pagination.css">
+  <link rel="stylesheet" href="../library/components/popover/popover.css">
+  <link rel="stylesheet" href="../library/components/progress/progress.css">
+  <link rel="stylesheet" href="../library/components/radio-group/radio-group.css">
+  <link rel="stylesheet" href="../library/components/resizable/resizable.css">
+  <link rel="stylesheet" href="../library/components/scroll-area/scroll-area.css">
+  <link rel="stylesheet" href="../library/components/select/select.css">
+  <link rel="stylesheet" href="../library/components/separator/separator.css">
+  <link rel="stylesheet" href="../library/components/sheet/sheet.css">
+  <link rel="stylesheet" href="../library/components/sidebar/sidebar.css">
+  <link rel="stylesheet" href="../library/components/skeleton/skeleton.css">
+  <link rel="stylesheet" href="../library/components/slider/slider.css">
+  <link rel="stylesheet" href="../library/components/sortable/sortable.css">
+  <link rel="stylesheet" href="../library/components/spinner/spinner.css">
+  <link rel="stylesheet" href="../library/components/statistic/statistic.css">
+  <link rel="stylesheet" href="../library/components/switch/switch.css">
+  <link rel="stylesheet" href="../library/components/table/table.css">
+  <link rel="stylesheet" href="../library/components/tabs/tabs.css">
+  <link rel="stylesheet" href="../library/components/text-field/text-field.css">
+  <link rel="stylesheet" href="../library/components/textarea/textarea.css">
+  <link rel="stylesheet" href="../library/components/time-field/time-field.css">
+  <link rel="stylesheet" href="../library/components/timeline/timeline.css">
+  <link rel="stylesheet" href="../library/components/toast/toast.css">
+  <link rel="stylesheet" href="../library/components/toggle-group/toggle-group.css">
+  <link rel="stylesheet" href="../library/components/toggle/toggle.css">
+  <link rel="stylesheet" href="../library/components/toolbar/toolbar.css">
+  <link rel="stylesheet" href="../library/components/tooltip/tooltip.css">
+  <link rel="stylesheet" href="../library/components/tree-view/tree-view.css">
+  <link rel="stylesheet" href="../library/components/typography/typography.css">
+  <link rel="stylesheet" href="../library/components/color-picker/color-picker.css">
+  <link rel="stylesheet" href="../library/components/file-upload/file-upload.css">
+  <link rel="stylesheet" href="../library/components/input-otp/input-otp.css">
+  <link rel="stylesheet" href="../library/components/tag-input/tag-input.css">
+  <link rel="stylesheet" href="../library/components/header/header.css">
+  <link rel="stylesheet" href="../library/components/nav/nav.css">
+  <link rel="stylesheet" href="../library/components/footer/footer.css">
+  <link rel="stylesheet" href="../library/components/context-menu/context-menu.css">
+  <link rel="stylesheet" href="../library/components/hover-card/hover-card.css">
+  <link rel="stylesheet" href="../library/components/agent-activity/agent-activity.css">
+  <link rel="stylesheet" href="../library/components/code-block/code-block.css">
+  <link rel="stylesheet" href="../library/components/composer/composer.css">
+  <link rel="stylesheet" href="../library/components/file-diff/file-diff.css">
+  <link rel="stylesheet" href="../library/components/message/message.css">
+  <link rel="stylesheet" href="../library/components/message-scroller/message-scroller.css">
+  <link rel="stylesheet" href="../library/components/reasoning/reasoning.css">
+  <link rel="stylesheet" href="../library/components/sources/sources.css">
+  <link rel="stylesheet" href="../library/components/suggestion/suggestion.css">
+  <link rel="stylesheet" href="../library/components/thinking-indicator/thinking-indicator.css">
+  <link rel="stylesheet" href="../library/components/todo-list/todo-list.css">
+  <link rel="stylesheet" href="../library/components/tool-call/tool-call.css">
+</head>
+<body>
+  <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
+  <site-header></site-header>
+  <div class="flex" style="margin-top: var(--space-1400); min-height: calc(100vh - 3.5rem)">
+    <site-nav></site-nav>
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
+      <div class="page-header">
+        <h1>Message Scroller</h1>
+        <p class="text-muted leading-relaxed mb-6">Contains a growing transcript and follows new content only while the reader remains at its live edge. Native scrolling continues to work when the optional module is absent.</p>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-6">Conversation transcript</p>
+      <p class="text-xs text-muted mb-3">Scroll away to pause following. The jump action returns immediately to the latest message.</p>
+      <div class="preview">
+        <section class="message-scroller" data-default-pinned="false" data-conversation-key="docs-support-42">
+          <h2 class="message-scroller-label" id="docs-message-scroller-heading">Conversation</h2>
+          <div class="message-scroller-viewport"
+               id="docs-message-scroller-log"
+               role="log"
+               aria-live="off"
+               aria-relevant="additions text"
+               aria-labelledby="docs-message-scroller-heading"
+               tabindex="0">
+            <ol class="message-scroller-content">
+              <li class="message-scroller-entry">
+                <article aria-label="User message">
+                  <p>Can you check whether the release completed?</p>
+                </article>
+              </li>
+              <li class="message-scroller-entry">
+                <article aria-label="Assistant message">
+                  <p>I checked the deployment state and the most recent service events.</p>
+                </article>
+              </li>
+              <li class="message-scroller-entry">
+                <article aria-label="Assistant message">
+                  <p>The application instances are healthy. One background worker is still draining its previous queue.</p>
+                </article>
+              </li>
+              <li class="message-scroller-entry">
+                <article aria-label="User message">
+                  <p>Let me know when the worker is ready.</p>
+                </article>
+              </li>
+              <li class="message-scroller-entry">
+                <article aria-label="Assistant message">
+                  <p>The worker is ready and the release is complete.</p>
+                </article>
+              </li>
+            </ol>
+          </div>
+          <button class="message-scroller-jump"
+                  type="button"
+                  data-message-scroller-jump
+                  aria-controls="docs-message-scroller-log"
+                  hidden>
+            Jump to latest
+          </button>
+        </section>
+      </div>
+      <div style="position: relative; margin-top: var(--space-200)">
+        <button type="button" class="copy-btn">Copy</button>
+        <pre><code class="language-markup">&lt;section class="message-scroller" data-default-pinned="true"&gt;
+  &lt;h2 class="message-scroller-label" id="conversation-heading"&gt;Conversation&lt;/h2&gt;
+  &lt;div class="message-scroller-viewport"
+       id="conversation-log" role="log" aria-live="polite"
+       aria-labelledby="conversation-heading" tabindex="0"&gt;
+    &lt;ol class="message-scroller-content"&gt;…&lt;/ol&gt;
+  &lt;/div&gt;
+  &lt;button class="message-scroller-jump" type="button"
+          data-message-scroller-jump aria-controls="conversation-log" hidden&gt;
+    Jump to latest
+  &lt;/button&gt;
+&lt;/section&gt;</code></pre>
+      </div>
+    </main>
+  </div>
+  <script src="js/site.js" defer></script>
+  <script type="module" src="../library/components/message-scroller/message-scroller.js"></script>
+</body>
+</html>

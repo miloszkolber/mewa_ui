@@ -46,7 +46,7 @@ Pair each palette's `600` on its own `050` with its `400` on its own `950`.
 
 Do not define a pure-black primitive.
 
-Treat neutral as the CSS name for the grayscale family in Penpot.
+Treat neutral as the CSS name for the grayscale family.
 
 Keep one OKLCH hue across each chromatic palette.
 
@@ -212,10 +212,6 @@ Use normal font weight for body text.
 Use strong weight for labels, headings, selected routes, and primary values.
 
 Use `--font-weight-550` as the variable-font strong weight in CSS.
-
-Use weight 500 only as the Penpot fallback for the `550` token.
-
-Keep composed typography rules in Penpot only.
 
 Compose repository typography from the font primitives.
 

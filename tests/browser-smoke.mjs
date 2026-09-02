@@ -29,9 +29,13 @@ const representativeSlugs = [
   "app-shell",
   "sidebar",
   "form",
+  "file-upload",
+  "input-otp",
   "data-table",
   "combobox",
   "dialog",
+  "context-menu",
+  "message-scroller",
   "tabs",
   "resizable"
 ];

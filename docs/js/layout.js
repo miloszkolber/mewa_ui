@@ -71,8 +71,11 @@
     { heading: 'Forms and inputs', items: [
       { label: 'Label', href: 'label.html' },
       { label: 'Field', href: 'field.html' },
+      { label: 'Color picker', href: 'color-picker.html' },
       { label: 'Text field', href: 'text-field.html' },
       { label: 'Textarea', href: 'textarea.html' },
+      { label: 'Input OTP', href: 'input-otp.html' },
+      { label: 'Tag input', href: 'tag-input.html' },
       { label: 'Checkbox', href: 'checkbox.html' },
       { label: 'Radio group', href: 'radio-group.html' },
       { label: 'Switch', href: 'switch.html' },
@@ -80,6 +83,7 @@
       { label: 'Select', href: 'select.html' },
       { label: 'Number field', href: 'number-field.html' },
       { label: 'File input', href: 'file-input.html' },
+      { label: 'File upload', href: 'file-upload.html' },
       { label: 'Date field', href: 'date-field.html' },
       { label: 'Date picker', href: 'date-picker.html' },
       { label: 'Date range picker', href: 'date-range-picker.html' },
@@ -113,10 +117,12 @@
     { heading: 'Overlays', items: [
       { label: 'Popover', href: 'popover.html' },
       { label: 'Tooltip', href: 'tooltip.html' },
+      { label: 'Hover card', href: 'hover-card.html' },
       { label: 'Dialog', href: 'dialog.html' },
       { label: 'Sheet', href: 'sheet.html' },
       { label: 'Accordion', href: 'accordion.html' },
       { label: 'Command palette', href: 'command-palette.html' },
+      { label: 'Context menu', href: 'context-menu.html' },
     ]},
     { heading: 'Navigation', items: [
       { label: 'Breadcrumbs', href: 'breadcrumbs.html' },
@@ -126,9 +132,26 @@
       { label: 'Navigation menu', href: 'navigation-menu.html' },
     ]},
     { heading: 'Application', items: [
+      { label: 'Header', href: 'header.html' },
+      { label: 'Nav', href: 'nav.html' },
+      { label: 'Footer', href: 'footer.html' },
       { label: 'App shell', href: 'app-shell.html' },
       { label: 'Sidebar', href: 'sidebar.html' },
       { label: 'Resizable', href: 'resizable.html' },
+    ]},
+    { heading: 'AI', items: [
+      { label: 'Agent activity', href: 'agent-activity.html' },
+      { label: 'Code block', href: 'code-block.html' },
+      { label: 'Composer', href: 'composer.html' },
+      { label: 'File diff', href: 'file-diff.html' },
+      { label: 'Message', href: 'message.html' },
+      { label: 'Message scroller', href: 'message-scroller.html' },
+      { label: 'Reasoning', href: 'reasoning.html' },
+      { label: 'Sources', href: 'sources.html' },
+      { label: 'Suggestion', href: 'suggestion.html' },
+      { label: 'Thinking indicator', href: 'thinking-indicator.html' },
+      { label: 'Todo list', href: 'todo-list.html' },
+      { label: 'Tool call', href: 'tool-call.html' },
     ]},
   ];
 
@@ -151,6 +174,11 @@
     'tabs.html', 'dropdown-menu.html', 'navigation-menu.html',
     'scroll-area.html',
     'carousel.html', 'app-shell.html', 'sidebar.html', 'resizable.html', 'sortable.html',
+    'color-picker.html', 'file-upload.html', 'input-otp.html', 'tag-input.html',
+    'footer.html', 'header.html', 'nav.html', 'context-menu.html', 'hover-card.html',
+    'agent-activity.html', 'code-block.html', 'composer.html', 'file-diff.html',
+    'message.html', 'message-scroller.html', 'reasoning.html', 'sources.html',
+    'suggestion.html', 'thinking-indicator.html', 'todo-list.html', 'tool-call.html',
   ]);
 
   /* Detect current filename */

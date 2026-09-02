@@ -12,7 +12,7 @@ The system favors a continuous working surface over stacks of decorative contain
 
 ## What is included
 
-The repository contains 59 components, from basic controls and form fields to data tables, dialogs, navigation, and application shell primitives. Each component has:
+The repository contains 80 components, from basic controls and form fields to data tables, dialogs, navigation, application shell primitives, and AI response surfaces. Each component has:
 
 - a precise implementation contract;
 - its own stylesheet;

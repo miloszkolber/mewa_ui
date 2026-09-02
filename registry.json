@@ -1533,6 +1533,437 @@
       },
       "docs": "docs/resizable.html",
       "description": "Presents two panels with an optional adjustable separator."
+    },
+    {
+      "name": "Color Picker",
+      "slug": "color-picker",
+      "category": "Forms and inputs",
+      "purpose": "Selects a color through a native picker with optional editable hexadecimal synchronization.",
+      "useWhen": "Use Color Picker when a user needs both visual color selection and an exact color value.",
+      "avoidWhen": "Do not use Color Picker when the task accepts only a small fixed palette.",
+      "fallback": "Use a native color input alone when editable hexadecimal entry adds no value.",
+      "stability": "stable",
+      "nativeBasis": "A native color input remains usable while the optional module synchronizes an editable hexadecimal field.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "library/components/color-picker/color-picker.md",
+        "css": "library/components/color-picker/color-picker.css",
+        "js": "library/components/color-picker/color-picker.js"
+      },
+      "docs": "docs/color-picker.html",
+      "description": "Selects a color through a native picker with optional editable hexadecimal synchronization."
+    },
+    {
+      "name": "File Upload",
+      "slug": "file-upload",
+      "category": "Forms and inputs",
+      "purpose": "Selects files with optional drag-and-drop feedback, file details, and image previews.",
+      "useWhen": "Use File Upload when drag and drop or selected-file feedback improves native file selection.",
+      "avoidWhen": "Do not use File Upload when a compact native File Input is sufficient.",
+      "fallback": "Use File Input for simple local file selection.",
+      "stability": "stable",
+      "nativeBasis": "A labelled native file input preserves selection and submission while the optional module adds drop handling and previews.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "library/components/file-upload/file-upload.md",
+        "css": "library/components/file-upload/file-upload.css",
+        "js": "library/components/file-upload/file-upload.js"
+      },
+      "docs": "docs/file-upload.html",
+      "description": "Selects files with optional drag-and-drop feedback, file details, and image previews."
+    },
+    {
+      "name": "Input OTP",
+      "slug": "input-otp",
+      "category": "Forms and inputs",
+      "purpose": "Captures a fixed-length one-time code through segmented native inputs.",
+      "useWhen": "Use Input OTP when a short verification code benefits from visible character positions.",
+      "avoidWhen": "Do not use Input OTP for passwords, recovery keys, or variable-length values.",
+      "fallback": "Use one Text Field when segmentation does not improve entry.",
+      "stability": "stable",
+      "nativeBasis": "Native text inputs preserve entry while the optional module adds focus movement and distributed paste.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "library/components/input-otp/input-otp.md",
+        "css": "library/components/input-otp/input-otp.css",
+        "js": "library/components/input-otp/input-otp.js"
+      },
+      "docs": "docs/input-otp.html",
+      "description": "Captures a fixed-length one-time code through segmented native inputs."
+    },
+    {
+      "name": "Tag Input",
+      "slug": "tag-input",
+      "category": "Forms and inputs",
+      "purpose": "Commits free text into discrete removable values.",
+      "useWhen": "Use Tag Input when a form accepts several short freeform labels.",
+      "avoidWhen": "Do not use Tag Input for one fixed choice or a long searchable option set.",
+      "fallback": "Use a Text Field with a documented delimiter when discrete editing is unnecessary.",
+      "stability": "stable",
+      "nativeBasis": "A native text input preserves entry while the optional module renders committed values and synchronized hidden inputs.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "library/components/tag-input/tag-input.md",
+        "css": "library/components/tag-input/tag-input.css",
+        "js": "library/components/tag-input/tag-input.js"
+      },
+      "docs": "docs/tag-input.html",
+      "description": "Commits free text into discrete removable values."
+    },
+    {
+      "name": "Header",
+      "slug": "header",
+      "category": "Application",
+      "purpose": "Provides a reusable banner landmark for brand, primary navigation, and global actions.",
+      "useWhen": "Use Header when several routes share the same top-level banner structure.",
+      "avoidWhen": "Do not use Header as a generic wrapper inside page content.",
+      "fallback": "Use a native header landmark directly when shared component styling is unnecessary.",
+      "stability": "stable",
+      "nativeBasis": "A native header provides the banner landmark and remains complete without JavaScript.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "library/components/header/header.md",
+        "css": "library/components/header/header.css"
+      },
+      "docs": "docs/header.html",
+      "description": "Provides a reusable banner landmark for brand, primary navigation, and global actions."
+    },
+    {
+      "name": "Nav",
+      "slug": "nav",
+      "category": "Application",
+      "purpose": "Presents a small flat route set with explicit current-page state.",
+      "useWhen": "Use Nav when a short route set fits without nested disclosure.",
+      "avoidWhen": "Do not use Nav for actions, peer panels, or a large persistent application route tree.",
+      "fallback": "Use plain links without shared styling when a navigation component adds no value.",
+      "stability": "stable",
+      "nativeBasis": "A labelled native navigation landmark and links preserve routing without JavaScript.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "library/components/nav/nav.md",
+        "css": "library/components/nav/nav.css"
+      },
+      "docs": "docs/nav.html",
+      "description": "Presents a small flat route set with explicit current-page state."
+    },
+    {
+      "name": "Footer",
+      "slug": "footer",
+      "category": "Application",
+      "purpose": "Provides a reusable content-information landmark for secondary routes and service metadata.",
+      "useWhen": "Use Footer when several routes share the same closing navigation or service information.",
+      "avoidWhen": "Do not use Footer for primary actions or unrelated page content.",
+      "fallback": "Use a native footer landmark directly when shared component styling is unnecessary.",
+      "stability": "stable",
+      "nativeBasis": "A native footer provides the content-information landmark and remains complete without JavaScript.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "library/components/footer/footer.md",
+        "css": "library/components/footer/footer.css"
+      },
+      "docs": "docs/footer.html",
+      "description": "Provides a reusable content-information landmark for secondary routes and service metadata."
+    },
+    {
+      "name": "Context Menu",
+      "slug": "context-menu",
+      "category": "Overlays",
+      "purpose": "Shows a compact action menu at a pointer context position or from a keyboard trigger.",
+      "useWhen": "Use Context Menu when the same local actions benefit from right-click and keyboard access.",
+      "avoidWhen": "Do not use Context Menu as the only way to reach an essential action.",
+      "fallback": "Use Dropdown Menu when a visible trigger is the primary access path.",
+      "stability": "stable",
+      "nativeBasis": "A popover menu provides the surface while the module manages context positioning and the menu keyboard model.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "library/components/context-menu/context-menu.md",
+        "css": "library/components/context-menu/context-menu.css",
+        "js": "library/components/context-menu/context-menu.js"
+      },
+      "docs": "docs/context-menu.html",
+      "description": "Shows a compact action menu at a pointer context position or from a keyboard trigger."
+    },
+    {
+      "name": "Hover Card",
+      "slug": "hover-card",
+      "category": "Overlays",
+      "purpose": "Shows a rich supplementary preview from pointer hover or keyboard focus.",
+      "useWhen": "Use Hover Card when a linked subject benefits from optional preview content.",
+      "avoidWhen": "Do not place required instructions or primary actions only in Hover Card.",
+      "fallback": "Use Tooltip for a short hint or visible content when the information is essential.",
+      "stability": "stable",
+      "nativeBasis": "A non-modal popover provides the preview while the module coordinates hover, focus, dismissal, and positioning.",
+      "requiresJs": true,
+      "enhancementJs": false,
+      "jsMode": "required",
+      "files": {
+        "skill": "library/components/hover-card/hover-card.md",
+        "css": "library/components/hover-card/hover-card.css",
+        "js": "library/components/hover-card/hover-card.js"
+      },
+      "docs": "docs/hover-card.html",
+      "description": "Shows a rich supplementary preview from pointer hover or keyboard focus."
+    },
+    {
+      "name": "Agent Activity",
+      "slug": "agent-activity",
+      "category": "AI",
+      "purpose": "Presents one chronological stream of assistant reasoning, searches, tool calls, and related steps.",
+      "useWhen": "Use Agent Activity when several assistant operations need one ordered execution history.",
+      "avoidWhen": "Do not use Agent Activity for a single status or an unordered event feed.",
+      "fallback": "Use Tool Call for one operation or Timeline for non-assistant events.",
+      "stability": "stable",
+      "nativeBasis": "An ordered list preserves activity sequence without component JavaScript.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "library/components/agent-activity/agent-activity.md",
+        "css": "library/components/agent-activity/agent-activity.css"
+      },
+      "docs": "docs/agent-activity.html",
+      "description": "Presents one chronological stream of assistant reasoning, searches, tool calls, and related steps."
+    },
+    {
+      "name": "Code Block",
+      "slug": "code-block",
+      "category": "AI",
+      "purpose": "Presents code with an optional copy action, line numbers, and stable streamed updates.",
+      "useWhen": "Use Code Block when code needs controls or structure beyond a normal preformatted block.",
+      "avoidWhen": "Do not use Code Block for a short inline code term.",
+      "fallback": "Use native pre and code elements when copy, numbering, and streaming support are unnecessary.",
+      "stability": "stable",
+      "nativeBasis": "Native pre and code elements remain readable while the optional module adds copy and streamed-content coordination.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "library/components/code-block/code-block.md",
+        "css": "library/components/code-block/code-block.css",
+        "js": "library/components/code-block/code-block.js"
+      },
+      "docs": "docs/code-block.html",
+      "description": "Presents code with an optional copy action, line numbers, and stable streamed updates."
+    },
+    {
+      "name": "Composer",
+      "slug": "composer",
+      "category": "AI",
+      "purpose": "Provides a message-entry form with an expanding textarea and optional leading and trailing actions.",
+      "useWhen": "Use Composer for chat or assistant message entry.",
+      "avoidWhen": "Do not use Composer for a general multi-field form or a one-line search query.",
+      "fallback": "Use Textarea and Button directly when the composed action surface adds no value.",
+      "stability": "stable",
+      "nativeBasis": "A native form and textarea preserve entry and submission while the optional module coordinates state and enhancement behavior.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "library/components/composer/composer.md",
+        "css": "library/components/composer/composer.css",
+        "js": "library/components/composer/composer.js"
+      },
+      "docs": "docs/composer.html",
+      "description": "Provides a message-entry form with an expanding textarea and optional leading and trailing actions."
+    },
+    {
+      "name": "File Diff",
+      "slug": "file-diff",
+      "category": "AI",
+      "purpose": "Presents file changes with metadata and semantic added, removed, and context lines.",
+      "useWhen": "Use File Diff when line relationships and change type must remain scannable.",
+      "avoidWhen": "Do not use File Diff for a whole file without comparison semantics.",
+      "fallback": "Use Code Block for code that has no addition or removal relationship.",
+      "stability": "stable",
+      "nativeBasis": "A figure, optional native disclosure, and table preserve file and line relationships without JavaScript.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "library/components/file-diff/file-diff.md",
+        "css": "library/components/file-diff/file-diff.css"
+      },
+      "docs": "docs/file-diff.html",
+      "description": "Presents file changes with metadata and semantic added, removed, and context lines."
+    },
+    {
+      "name": "Message",
+      "slug": "message",
+      "category": "AI",
+      "purpose": "Presents an ordered conversation as authored rows with metadata and optional expansion.",
+      "useWhen": "Use Message for chat transcripts where order and authorship carry meaning.",
+      "avoidWhen": "Do not use Message as a generic comment card or unordered feed.",
+      "fallback": "Use a normal ordered list when authored message styling adds no value.",
+      "stability": "stable",
+      "nativeBasis": "An ordered list, list items, articles, and optional native details preserve transcript meaning without JavaScript.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "library/components/message/message.md",
+        "css": "library/components/message/message.css"
+      },
+      "docs": "docs/message.html",
+      "description": "Presents an ordered conversation as authored rows with metadata and optional expansion."
+    },
+    {
+      "name": "Message Scroller",
+      "slug": "message-scroller",
+      "category": "AI",
+      "purpose": "Follows streamed conversation output at the live edge until the reader scrolls away.",
+      "useWhen": "Use Message Scroller when a growing conversation should remain pinned only while the reader stays at its end.",
+      "avoidWhen": "Do not use Message Scroller for static content or to force a reader away from earlier content.",
+      "fallback": "Use Scroll Area when live-edge following is unnecessary.",
+      "stability": "stable",
+      "nativeBasis": "A labelled log region remains scrollable while the optional module coordinates live-edge following and return controls.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "library/components/message-scroller/message-scroller.md",
+        "css": "library/components/message-scroller/message-scroller.css",
+        "js": "library/components/message-scroller/message-scroller.js"
+      },
+      "docs": "docs/message-scroller.html",
+      "description": "Follows streamed conversation output at the live edge until the reader scrolls away."
+    },
+    {
+      "name": "Reasoning",
+      "slug": "reasoning",
+      "category": "AI",
+      "purpose": "Presents an optional assistant reasoning trace with explicit streaming and complete states.",
+      "useWhen": "Use Reasoning when a response may expose a concise reasoning or work trace.",
+      "avoidWhen": "Do not place required answer content only inside Reasoning.",
+      "fallback": "Use Collapsible for ordinary supplementary detail.",
+      "stability": "stable",
+      "nativeBasis": "Native details and summary preserve disclosure while the optional module coordinates streaming open state.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "library/components/reasoning/reasoning.md",
+        "css": "library/components/reasoning/reasoning.css",
+        "js": "library/components/reasoning/reasoning.js"
+      },
+      "docs": "docs/reasoning.html",
+      "description": "Presents an optional assistant reasoning trace with explicit streaming and complete states."
+    },
+    {
+      "name": "Sources",
+      "slug": "sources",
+      "category": "AI",
+      "purpose": "Connects inline citations with a readable list of external references.",
+      "useWhen": "Use Sources for grounded answers and research summaries that cite navigable material.",
+      "avoidWhen": "Do not use Sources to present unrelated bookmarks or actions.",
+      "fallback": "Use a normal link list when numbered inline citations are unnecessary.",
+      "stability": "stable",
+      "nativeBasis": "A labelled section, ordered list, and real links preserve citation navigation without JavaScript.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "library/components/sources/sources.md",
+        "css": "library/components/sources/sources.css"
+      },
+      "docs": "docs/sources.html",
+      "description": "Connects inline citations with a readable list of external references."
+    },
+    {
+      "name": "Suggestion",
+      "slug": "suggestion",
+      "category": "AI",
+      "purpose": "Presents short prompt choices that can seed the next composer value.",
+      "useWhen": "Use Suggestion near an empty composer when useful starts improve discovery.",
+      "avoidWhen": "Do not use Suggestion for route navigation or a long command catalog.",
+      "fallback": "Use normal Buttons when the actions do not insert prompt text.",
+      "stability": "stable",
+      "nativeBasis": "An unordered list of native buttons preserves activation without component JavaScript.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "library/components/suggestion/suggestion.md",
+        "css": "library/components/suggestion/suggestion.css"
+      },
+      "docs": "docs/suggestion.html",
+      "description": "Presents short prompt choices that can seed the next composer value."
+    },
+    {
+      "name": "Thinking Indicator",
+      "slug": "thinking-indicator",
+      "category": "AI",
+      "purpose": "Communicates that an assistant is actively preparing a response.",
+      "useWhen": "Use Thinking Indicator for a short indeterminate assistant state with a visible label.",
+      "avoidWhen": "Do not leave Thinking Indicator visible after work stops.",
+      "fallback": "Use Spinner for compact control-level work or Progress for known completion.",
+      "stability": "stable",
+      "nativeBasis": "A polite status region with visible text communicates work without component JavaScript.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "library/components/thinking-indicator/thinking-indicator.md",
+        "css": "library/components/thinking-indicator/thinking-indicator.css"
+      },
+      "docs": "docs/thinking-indicator.html",
+      "description": "Communicates that an assistant is actively preparing a response."
+    },
+    {
+      "name": "Todo List",
+      "slug": "todo-list",
+      "category": "AI",
+      "purpose": "Presents an ordered task plan with visible item status and completion context.",
+      "useWhen": "Use Todo List when a user benefits from following an agent or process plan in execution order.",
+      "avoidWhen": "Do not use Todo List as a general checklist input.",
+      "fallback": "Use a normal ordered list when task status does not change.",
+      "stability": "stable",
+      "nativeBasis": "Native details and an ordered list remain usable while the optional module derives completion from direct task items.",
+      "requiresJs": false,
+      "enhancementJs": true,
+      "jsMode": "optional",
+      "files": {
+        "skill": "library/components/todo-list/todo-list.md",
+        "css": "library/components/todo-list/todo-list.css",
+        "js": "library/components/todo-list/todo-list.js"
+      },
+      "docs": "docs/todo-list.html",
+      "description": "Presents an ordered task plan with visible item status and completion context."
+    },
+    {
+      "name": "Tool Call",
+      "slug": "tool-call",
+      "category": "AI",
+      "purpose": "Presents an assistant tool operation with visible status and optional result content.",
+      "useWhen": "Use Tool Call for searches, file reads, code runs, and other discrete assistant operations.",
+      "avoidWhen": "Do not use Tool Call for an application action performed directly by the user.",
+      "fallback": "Use Thinking Indicator for a general response state without a named operation.",
+      "stability": "stable",
+      "nativeBasis": "Native details and summary expose optional results while a status-only row remains plain semantic content.",
+      "requiresJs": false,
+      "enhancementJs": false,
+      "jsMode": "none",
+      "files": {
+        "skill": "library/components/tool-call/tool-call.md",
+        "css": "library/components/tool-call/tool-call.css"
+      },
+      "docs": "docs/tool-call.html",
+      "description": "Presents an assistant tool operation with visible status and optional result content."
     }
   ]
 }

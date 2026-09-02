@@ -116,7 +116,7 @@ Use palette primitives only inside foundation files.
 
 Use semantic color roles inside components and consumers.
 
-Use neutral as the CSS name for the Penpot grayscale family.
+Use neutral as the CSS name for the grayscale family.
 
 Use `000` for white and `050` through `950` for the neutral scale.
 

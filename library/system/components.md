@@ -90,6 +90,14 @@ Use Field to compose labels, descriptions, errors, and related control groups.
 
 Use Form for one complete native submission task.
 
+Use Color Picker when a user needs a visible color control and editable color value.
+
+Use File Upload when drag and drop, file feedback, or image preview improves native file selection.
+
+Use Input OTP for a fixed-length verification code that benefits from segmented entry.
+
+Use Tag Input when free text must become discrete removable values.
+
 ## Data display
 
 Use Badge for concise non-interactive metadata.
@@ -150,6 +158,10 @@ Use Navigation Menu for grouped site routes.
 
 Use Command Palette for a large searchable command set.
 
+Use Context Menu for a compact action menu opened from the pointer context action or a keyboard trigger.
+
+Use Hover Card for a rich supplementary preview that appears from pointer hover or keyboard focus.
+
 Do not place essential instructions only in Tooltip.
 
 Do not use Dropdown Menu for form option selection.
@@ -172,9 +184,43 @@ Use Layout for local Grid and Flexbox composition.
 
 Use Resizable when adjustable split panes improve repeated work.
 
+Use Header for a reusable banner landmark with brand, navigation, or global actions.
+
+Use Nav for a small flat set of semantic route links.
+
+Use Footer for reusable content information and secondary route links.
+
 Do not use Tabs for routes.
 
 Do not use Sidebar for a small flat route set.
+
+## AI responses
+
+Use Composer for a message-entry form with optional leading and trailing actions.
+
+Use Message for ordered authored conversation rows.
+
+Use Message Scroller when streamed conversation output must follow the live edge until the reader scrolls away.
+
+Use Suggestion for short prompt choices that seed a Composer.
+
+Use Thinking Indicator for a visible polite status while an assistant prepares a response.
+
+Use Reasoning for an optional or streaming reasoning trace on native disclosure markup.
+
+Use Agent Activity for one ordered stream of reasoning, searches, tool calls, and related steps.
+
+Use Tool Call for one named agent operation with status and optional results.
+
+Use Todo List for an ordered execution plan with explicit task status.
+
+Use Sources for inline citations connected to a reference list.
+
+Use Code Block for code that needs a copy action, line numbers, or stable streaming updates.
+
+Use File Diff for additions and removals that need file metadata and tabular line relationships.
+
+Do not use an AI response component when a simpler semantic list, disclosure, status, or code block completes the task.
 
 ## Implementation
 

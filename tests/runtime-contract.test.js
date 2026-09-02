@@ -613,6 +613,30 @@ test("canonical enhancement modules are present and parse as browser scripts", (
   });
 });
 
+test("todo lists derive completion from direct task items and inserted work", () => {
+  const root = node("details", { class: "todo-list" });
+  const summary = node("summary", { class: "todo-list-summary" });
+  const progress = node("span", { class: "todo-list-progress", "data-todo-progress": "" }, "Authored progress");
+  const content = node("div", { class: "todo-list-content" });
+  const list = node("ol", { class: "todo-list-items" });
+  const complete = node("li", { class: "todo-item", "data-todo-item": "", "data-status": "done" }, "Read the test");
+  const active = node("li", { class: "todo-item", "data-todo-item": "", "data-status": "active" }, "Trace the failure");
+  summary.append(progress);
+  list.append(complete, active);
+  content.append(list);
+  root.append(summary, content);
+
+  loadModule("todo-list", root);
+  assert.equal(progress.textContent, "1 of 2 complete");
+
+  let detail;
+  root.addEventListener("todo-list:progress", (event) => { detail = event.detail; });
+  list.append(node("li", { class: "todo-item", "data-todo-item": "", "data-status": "done" }, "Run the checks"));
+  assert.equal(progress.textContent, "2 of 3 complete");
+  assert.equal(detail.completed, 2);
+  assert.equal(detail.total, 3);
+});
+
 test("checkbox groups coordinate select-all state and disabled items", () => {
   const group = node("fieldset", { class: "checkbox-group", "data-checkbox-group": "" });
   const selectAll = node("input", { class: "checkbox", type: "checkbox", "data-checkbox-all": "" });

@@ -81,7 +81,7 @@ Keep the documented native fallback.
 
 ## Selection
 
-Use `library/system/components.md` to choose among all 59 components.
+Use `library/system/components.md` to choose among all 80 components.
 
 Use `Table` for structural tabular data.
 

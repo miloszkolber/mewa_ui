@@ -55,7 +55,7 @@ test("registry v2 defines the canonical source roots", () => {
 });
 
 test("registry selection metadata covers every component", () => {
-  assert.equal(registry.components.length, 59);
+  assert.equal(registry.components.length, 80);
   const slugs = registry.components.map((component) => component.slug).sort();
   assert.deepEqual(slugs, directories(componentsDir));
 
@@ -92,6 +92,16 @@ test("docs have exact parity with the registry", () => {
   const docs = files(docsDir, ".html").map((name) => name.slice(0, -5)).sort();
   const slugs = registry.components.map((component) => component.slug).sort();
   assert.deepEqual(docs, slugs);
+});
+
+test("every documentation page preloads every component stylesheet for SPA navigation", () => {
+  const expected = registry.components.map((component) => `../${component.files.css}`);
+  for (const component of registry.components) {
+    const source = read(component.docs);
+    for (const stylesheet of expected) {
+      assert(source.includes(`href="${stylesheet}"`), `${component.docs}: missing ${stylesheet}`);
+    }
+  }
 });
 
 test("human documentation stays free of internal and unrelated-library language", () => {

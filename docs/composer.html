@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Composer component — a message field with related actions and native submission.">
+  <meta property="og:title" content="Composer — mewa_ui">
+  <meta property="og:description" content="A message field with related actions and native submission.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mewa.local/composer.html">
+  <meta property="og:site_name" content="mewa_ui">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Composer — mewa_ui">
+  <meta name="twitter:description" content="A message field with related actions and native submission.">
+  <title>Composer — mewa_ui</title>
+  <script src="js/layout.js"></script>
+  <link rel="stylesheet" href="../library/src/base.css">
+  <link rel="stylesheet" href="../library/src/tokens.css">
+  <link rel="stylesheet" href="css/docs-theme.css">
+  <link rel="stylesheet" href="css/docs-utilities.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="../library/components/accordion/accordion.css">
+  <link rel="stylesheet" href="../library/components/alert-dialog/alert-dialog.css">
+  <link rel="stylesheet" href="../library/components/app-shell/app-shell.css">
+  <link rel="stylesheet" href="../library/components/avatar/avatar.css">
+  <link rel="stylesheet" href="../library/components/badge/badge.css">
+  <link rel="stylesheet" href="../library/components/breadcrumbs/breadcrumbs.css">
+  <link rel="stylesheet" href="../library/components/button-group/button-group.css">
+  <link rel="stylesheet" href="../library/components/button/button.css">
+  <link rel="stylesheet" href="../library/components/callout/callout.css">
+  <link rel="stylesheet" href="../library/components/card/card.css">
+  <link rel="stylesheet" href="../library/components/carousel/carousel.css">
+  <link rel="stylesheet" href="../library/components/checkbox/checkbox.css">
+  <link rel="stylesheet" href="../library/components/collapsible/collapsible.css">
+  <link rel="stylesheet" href="../library/components/combobox/combobox.css">
+  <link rel="stylesheet" href="../library/components/command-palette/command-palette.css">
+  <link rel="stylesheet" href="../library/components/date-field/date-field.css">
+  <link rel="stylesheet" href="../library/components/date-picker/date-picker.css">
+  <link rel="stylesheet" href="../library/components/date-range-picker/date-range-picker.css">
+  <link rel="stylesheet" href="../library/components/data-table/data-table.css">
+  <link rel="stylesheet" href="../library/components/dialog/dialog.css">
+  <link rel="stylesheet" href="../library/components/dropdown-menu/dropdown-menu.css">
+  <link rel="stylesheet" href="../library/components/field/field.css">
+  <link rel="stylesheet" href="../library/components/file-input/file-input.css">
+  <link rel="stylesheet" href="../library/components/form/form.css">
+  <link rel="stylesheet" href="../library/components/icon/icon.css">
+  <link rel="stylesheet" href="../library/components/image/image.css">
+  <link rel="stylesheet" href="../library/components/label/label.css">
+  <link rel="stylesheet" href="../library/components/layout/layout.css">
+  <link rel="stylesheet" href="../library/components/navigation-menu/navigation-menu.css">
+  <link rel="stylesheet" href="../library/components/number-field/number-field.css">
+  <link rel="stylesheet" href="../library/components/pagination/pagination.css">
+  <link rel="stylesheet" href="../library/components/popover/popover.css">
+  <link rel="stylesheet" href="../library/components/progress/progress.css">
+  <link rel="stylesheet" href="../library/components/radio-group/radio-group.css">
+  <link rel="stylesheet" href="../library/components/resizable/resizable.css">
+  <link rel="stylesheet" href="../library/components/scroll-area/scroll-area.css">
+  <link rel="stylesheet" href="../library/components/select/select.css">
+  <link rel="stylesheet" href="../library/components/separator/separator.css">
+  <link rel="stylesheet" href="../library/components/sheet/sheet.css">
+  <link rel="stylesheet" href="../library/components/sidebar/sidebar.css">
+  <link rel="stylesheet" href="../library/components/skeleton/skeleton.css">
+  <link rel="stylesheet" href="../library/components/slider/slider.css">
+  <link rel="stylesheet" href="../library/components/sortable/sortable.css">
+  <link rel="stylesheet" href="../library/components/spinner/spinner.css">
+  <link rel="stylesheet" href="../library/components/statistic/statistic.css">
+  <link rel="stylesheet" href="../library/components/switch/switch.css">
+  <link rel="stylesheet" href="../library/components/table/table.css">
+  <link rel="stylesheet" href="../library/components/tabs/tabs.css">
+  <link rel="stylesheet" href="../library/components/text-field/text-field.css">
+  <link rel="stylesheet" href="../library/components/textarea/textarea.css">
+  <link rel="stylesheet" href="../library/components/time-field/time-field.css">
+  <link rel="stylesheet" href="../library/components/timeline/timeline.css">
+  <link rel="stylesheet" href="../library/components/toast/toast.css">
+  <link rel="stylesheet" href="../library/components/toggle-group/toggle-group.css">
+  <link rel="stylesheet" href="../library/components/toggle/toggle.css">
+  <link rel="stylesheet" href="../library/components/toolbar/toolbar.css">
+  <link rel="stylesheet" href="../library/components/tooltip/tooltip.css">
+  <link rel="stylesheet" href="../library/components/tree-view/tree-view.css">
+  <link rel="stylesheet" href="../library/components/typography/typography.css">
+  <link rel="stylesheet" href="../library/components/color-picker/color-picker.css">
+  <link rel="stylesheet" href="../library/components/file-upload/file-upload.css">
+  <link rel="stylesheet" href="../library/components/input-otp/input-otp.css">
+  <link rel="stylesheet" href="../library/components/tag-input/tag-input.css">
+  <link rel="stylesheet" href="../library/components/header/header.css">
+  <link rel="stylesheet" href="../library/components/nav/nav.css">
+  <link rel="stylesheet" href="../library/components/footer/footer.css">
+  <link rel="stylesheet" href="../library/components/context-menu/context-menu.css">
+  <link rel="stylesheet" href="../library/components/hover-card/hover-card.css">
+  <link rel="stylesheet" href="../library/components/agent-activity/agent-activity.css">
+  <link rel="stylesheet" href="../library/components/code-block/code-block.css">
+  <link rel="stylesheet" href="../library/components/composer/composer.css">
+  <link rel="stylesheet" href="../library/components/file-diff/file-diff.css">
+  <link rel="stylesheet" href="../library/components/message/message.css">
+  <link rel="stylesheet" href="../library/components/message-scroller/message-scroller.css">
+  <link rel="stylesheet" href="../library/components/reasoning/reasoning.css">
+  <link rel="stylesheet" href="../library/components/sources/sources.css">
+  <link rel="stylesheet" href="../library/components/suggestion/suggestion.css">
+  <link rel="stylesheet" href="../library/components/thinking-indicator/thinking-indicator.css">
+  <link rel="stylesheet" href="../library/components/todo-list/todo-list.css">
+  <link rel="stylesheet" href="../library/components/tool-call/tool-call.css">
+</head>
+<body>
+  <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
+  <site-header></site-header>
+  <div class="flex" style="margin-top: var(--space-1400); min-height: calc(100vh - 3.5rem)">
+    <site-nav></site-nav>
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
+      <div class="page-header">
+        <h1>Composer</h1>
+        <p class="text-muted leading-relaxed mb-6">Collects a conversational message and keeps related actions close to it. Native form behavior remains available, while the optional module adds a predictable keyboard shortcut.</p>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-6">Message with actions</p>
+      <p class="text-xs text-muted mb-3">Command or Control plus Enter submits. The submit button keeps a normal native path.</p>
+      <div class="preview">
+        <form class="composer" action="composer.html" method="get" data-submit-on="mod-enter">
+          <label class="composer-label" for="docs-composer-message">Message</label>
+          <textarea class="composer-input" id="docs-composer-message" name="message" rows="2" placeholder="Ask a follow-up question" aria-describedby="docs-composer-submit-hint" required></textarea>
+          <div class="composer-actions">
+            <div class="composer-actions-leading">
+              <button class="btn" type="button" data-variant="ghost" data-size="icon-sm" aria-label="Attach file">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"></path></svg>
+              </button>
+            </div>
+            <div class="composer-actions-trailing">
+              <span class="composer-hint" id="docs-composer-submit-hint">⌘ or Ctrl + Enter</span>
+              <button class="btn composer-submit" type="submit" data-variant="default">Send</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div style="position: relative; margin-top: var(--space-200)">
+        <button type="button" class="copy-btn">Copy</button>
+        <pre><code class="language-markup">&lt;form class="composer" action="/messages" method="post" data-submit-on="mod-enter"&gt;
+  &lt;label class="composer-label" for="message"&gt;Message&lt;/label&gt;
+  &lt;textarea class="composer-input" id="message" name="message" rows="2" required&gt;&lt;/textarea&gt;
+  &lt;div class="composer-actions"&gt;
+    &lt;div class="composer-actions-trailing"&gt;
+      &lt;button class="btn composer-submit" type="submit" data-variant="default"&gt;Send&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</code></pre>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-8">Response in progress</p>
+      <p class="text-xs text-muted mb-3">The state uses visible text and a static border. It adds no continuous animation.</p>
+      <div class="preview">
+        <form class="composer" action="composer.html" method="get" data-state="thinking" aria-busy="true">
+          <label class="composer-label" for="docs-composer-thinking-message">Message</label>
+          <textarea class="composer-input" id="docs-composer-thinking-message" name="message" rows="2" readonly>Summarize the deployment check.</textarea>
+          <div class="composer-actions">
+            <span class="composer-status" role="status">Generating response</span>
+            <div class="composer-actions-trailing">
+              <button class="btn composer-submit" type="submit" data-variant="default" disabled>Send</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+  <script src="js/site.js" defer></script>
+  <script type="module" src="../library/components/composer/composer.js"></script>
+</body>
+</html>

@@ -4,13 +4,12 @@
   "private": true,
   "description": "Vanilla, accessible, monochrome component library for personal services.",
   "scripts": {
+    "canvas:check": "node scripts/component-canvas.mjs --check",
+    "canvas:write": "node scripts/component-canvas.mjs --write",
     "catalog:check": "node scripts/catalog.mjs --check",
     "catalog:write": "node scripts/catalog.mjs --write",
-    "penpot:extract": "node penpot/extract-contracts.mjs && node penpot/extract-foundations.mjs && node penpot/compile-plan.mjs",
-    "penpot:check": "node penpot/extract-contracts.mjs && node penpot/extract-foundations.mjs && node penpot/compile-plan.mjs && git diff --exit-code -- penpot/source-contracts.generated.json penpot/foundations.generated.json penpot/sync-manifest.generated.json",
-    "pretest": "npm run catalog:check && node tests/system-contract.test.js",
-    "test": "node tests/catalog-contract.test.js && npm run test:penpot && node tests/runtime-contract.test.js",
-    "test:penpot": "node tests/penpot-sync.test.js",
+    "pretest": "npm run catalog:check && npm run canvas:check && node tests/system-contract.test.js",
+    "test": "node tests/catalog-contract.test.js && node tests/component-canvas.test.js && node tests/runtime-contract.test.js",
     "test:browser": "node tests/browser-smoke.mjs"
   },
   "devDependencies": {

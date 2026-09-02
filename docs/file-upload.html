@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="description" content="File Upload component — native file selection with drag-and-drop, validation feedback, previews, and removal.">
+  <meta property="og:title" content="File upload — mewa_ui">
+  <meta property="og:description" content="File Upload component — native file selection with drag-and-drop, validation feedback, previews, and removal.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mewa.local/file-upload.html">
+  <meta property="og:site_name" content="mewa_ui">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="File upload — mewa_ui">
+  <meta name="twitter:description" content="File Upload component — native file selection with drag-and-drop, validation feedback, previews, and removal.">
+  <title>File upload — mewa_ui</title>
+  <script src="js/layout.js"></script>
+  <link rel="stylesheet" href="../library/src/base.css">
+  <link rel="stylesheet" href="../library/src/tokens.css">
+  <link rel="stylesheet" href="css/docs-theme.css">
+  <link rel="stylesheet" href="css/docs-utilities.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="../library/components/accordion/accordion.css">
+  <link rel="stylesheet" href="../library/components/alert-dialog/alert-dialog.css">
+  <link rel="stylesheet" href="../library/components/app-shell/app-shell.css">
+  <link rel="stylesheet" href="../library/components/avatar/avatar.css">
+  <link rel="stylesheet" href="../library/components/badge/badge.css">
+  <link rel="stylesheet" href="../library/components/breadcrumbs/breadcrumbs.css">
+  <link rel="stylesheet" href="../library/components/button-group/button-group.css">
+  <link rel="stylesheet" href="../library/components/button/button.css">
+  <link rel="stylesheet" href="../library/components/callout/callout.css">
+  <link rel="stylesheet" href="../library/components/card/card.css">
+  <link rel="stylesheet" href="../library/components/carousel/carousel.css">
+  <link rel="stylesheet" href="../library/components/checkbox/checkbox.css">
+  <link rel="stylesheet" href="../library/components/collapsible/collapsible.css">
+  <link rel="stylesheet" href="../library/components/combobox/combobox.css">
+  <link rel="stylesheet" href="../library/components/command-palette/command-palette.css">
+  <link rel="stylesheet" href="../library/components/date-field/date-field.css">
+  <link rel="stylesheet" href="../library/components/date-picker/date-picker.css">
+  <link rel="stylesheet" href="../library/components/date-range-picker/date-range-picker.css">
+  <link rel="stylesheet" href="../library/components/data-table/data-table.css">
+  <link rel="stylesheet" href="../library/components/dialog/dialog.css">
+  <link rel="stylesheet" href="../library/components/dropdown-menu/dropdown-menu.css">
+  <link rel="stylesheet" href="../library/components/field/field.css">
+  <link rel="stylesheet" href="../library/components/file-input/file-input.css">
+  <link rel="stylesheet" href="../library/components/form/form.css">
+  <link rel="stylesheet" href="../library/components/icon/icon.css">
+  <link rel="stylesheet" href="../library/components/image/image.css">
+  <link rel="stylesheet" href="../library/components/label/label.css">
+  <link rel="stylesheet" href="../library/components/layout/layout.css">
+  <link rel="stylesheet" href="../library/components/navigation-menu/navigation-menu.css">
+  <link rel="stylesheet" href="../library/components/number-field/number-field.css">
+  <link rel="stylesheet" href="../library/components/pagination/pagination.css">
+  <link rel="stylesheet" href="../library/components/popover/popover.css">
+  <link rel="stylesheet" href="../library/components/progress/progress.css">
+  <link rel="stylesheet" href="../library/components/radio-group/radio-group.css">
+  <link rel="stylesheet" href="../library/components/resizable/resizable.css">
+  <link rel="stylesheet" href="../library/components/scroll-area/scroll-area.css">
+  <link rel="stylesheet" href="../library/components/select/select.css">
+  <link rel="stylesheet" href="../library/components/separator/separator.css">
+  <link rel="stylesheet" href="../library/components/sheet/sheet.css">
+  <link rel="stylesheet" href="../library/components/sidebar/sidebar.css">
+  <link rel="stylesheet" href="../library/components/skeleton/skeleton.css">
+  <link rel="stylesheet" href="../library/components/slider/slider.css">
+  <link rel="stylesheet" href="../library/components/sortable/sortable.css">
+  <link rel="stylesheet" href="../library/components/spinner/spinner.css">
+  <link rel="stylesheet" href="../library/components/statistic/statistic.css">
+  <link rel="stylesheet" href="../library/components/switch/switch.css">
+  <link rel="stylesheet" href="../library/components/table/table.css">
+  <link rel="stylesheet" href="../library/components/tabs/tabs.css">
+  <link rel="stylesheet" href="../library/components/text-field/text-field.css">
+  <link rel="stylesheet" href="../library/components/textarea/textarea.css">
+  <link rel="stylesheet" href="../library/components/time-field/time-field.css">
+  <link rel="stylesheet" href="../library/components/timeline/timeline.css">
+  <link rel="stylesheet" href="../library/components/toast/toast.css">
+  <link rel="stylesheet" href="../library/components/toggle-group/toggle-group.css">
+  <link rel="stylesheet" href="../library/components/toggle/toggle.css">
+  <link rel="stylesheet" href="../library/components/toolbar/toolbar.css">
+  <link rel="stylesheet" href="../library/components/tooltip/tooltip.css">
+  <link rel="stylesheet" href="../library/components/tree-view/tree-view.css">
+  <link rel="stylesheet" href="../library/components/typography/typography.css">
+  <link rel="stylesheet" href="../library/components/color-picker/color-picker.css">
+  <link rel="stylesheet" href="../library/components/file-upload/file-upload.css">
+  <link rel="stylesheet" href="../library/components/input-otp/input-otp.css">
+  <link rel="stylesheet" href="../library/components/tag-input/tag-input.css">
+  <link rel="stylesheet" href="../library/components/header/header.css">
+  <link rel="stylesheet" href="../library/components/nav/nav.css">
+  <link rel="stylesheet" href="../library/components/footer/footer.css">
+  <link rel="stylesheet" href="../library/components/context-menu/context-menu.css">
+  <link rel="stylesheet" href="../library/components/hover-card/hover-card.css">
+  <link rel="stylesheet" href="../library/components/agent-activity/agent-activity.css">
+  <link rel="stylesheet" href="../library/components/code-block/code-block.css">
+  <link rel="stylesheet" href="../library/components/composer/composer.css">
+  <link rel="stylesheet" href="../library/components/file-diff/file-diff.css">
+  <link rel="stylesheet" href="../library/components/message/message.css">
+  <link rel="stylesheet" href="../library/components/message-scroller/message-scroller.css">
+  <link rel="stylesheet" href="../library/components/reasoning/reasoning.css">
+  <link rel="stylesheet" href="../library/components/sources/sources.css">
+  <link rel="stylesheet" href="../library/components/suggestion/suggestion.css">
+  <link rel="stylesheet" href="../library/components/thinking-indicator/thinking-indicator.css">
+  <link rel="stylesheet" href="../library/components/todo-list/todo-list.css">
+  <link rel="stylesheet" href="../library/components/tool-call/tool-call.css">
+</head>
+<body>
+  <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
+  <site-header></site-header>
+
+  <div class="flex" style="margin-top: var(--space-1400); min-height: calc(100vh - 3.5rem)">
+    <site-nav></site-nav>
+
+    <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
+      <div class="page-header">
+        <h1>File upload</h1>
+        <p class="text-muted leading-relaxed mb-6">Adds a clear drop target, file feedback, optional image previews, and removal controls to a native file input. Selecting files does not upload them until application code submits or transfers them.</p>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-6">Images with previews</p>
+      <p class="text-xs text-muted mb-3">The picker works on its own. Drag-and-drop and the editable list appear when the enhancement module is available.</p>
+      <div class="preview">
+        <div class="file-upload" data-file-upload data-max-files="4" data-max-size="5242880" data-preview>
+          <label class="file-upload-dropzone" for="demo-project-images">
+            <span class="file-upload-title" id="demo-project-images-label">Project images</span>
+            <span class="file-upload-prompt">Choose files or drop them here</span>
+            <span class="file-upload-hint" id="demo-project-images-description">PNG or JPEG. Maximum 5 MB per file.</span>
+            <input class="file-upload-input" id="demo-project-images" name="project_images" type="file" accept="image/png,image/jpeg" multiple aria-labelledby="demo-project-images-label" aria-describedby="demo-project-images-description demo-project-images-status demo-project-images-error">
+          </label>
+          <ul class="file-upload-list" data-file-upload-list></ul>
+          <p class="file-upload-status" id="demo-project-images-status" data-file-upload-status role="status"></p>
+          <p class="file-upload-error" id="demo-project-images-error" data-file-upload-error role="alert" hidden></p>
+        </div>
+      </div>
+      <div style="position: relative; margin-top: var(--space-200)">
+        <button class="copy-btn" type="button">Copy</button>
+        <pre><code class="language-markup">&lt;div class="file-upload"
+     data-file-upload
+     data-max-files="4"
+     data-max-size="5242880"
+     data-preview&gt;
+  &lt;label class="file-upload-dropzone" for="project-images"&gt;
+    &lt;span class="file-upload-title" id="project-images-label"&gt;
+      Project images
+    &lt;/span&gt;
+    &lt;span class="file-upload-prompt"&gt;Choose files or drop them here&lt;/span&gt;
+    &lt;span class="file-upload-hint" id="project-images-description"&gt;
+      PNG or JPEG. Maximum 5 MB per file.
+    &lt;/span&gt;
+    &lt;input class="file-upload-input" id="project-images"
+           name="project_images" type="file"
+           accept="image/png,image/jpeg" multiple
+           aria-labelledby="project-images-label"
+           aria-describedby="project-images-description project-images-status project-images-error"&gt;
+  &lt;/label&gt;
+  &lt;ul class="file-upload-list" data-file-upload-list&gt;&lt;/ul&gt;
+  &lt;p class="file-upload-status" id="project-images-status"
+     data-file-upload-status role="status"&gt;&lt;/p&gt;
+  &lt;p class="file-upload-error" id="project-images-error"
+     data-file-upload-error role="alert" hidden&gt;&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+
+      <p class="text-sm font-medium mb-2 mt-8">Selection rules</p>
+      <p class="text-xs text-muted mb-3">State accepted types, maximum size, and maximum count before selection. Validate the files again before storage or processing.</p>
+
+      <p class="text-sm font-medium mb-2 mt-8">Without JavaScript</p>
+      <p class="text-xs text-muted mb-3">The native file input stays visible and submits normally. The browser displays the selected filename even when drag-and-drop, previews, and individual removal are unavailable.</p>
+    </main>
+  </div>
+
+  <script src="js/site.js" defer></script>
+  <script type="module" src="../library/components/file-upload/file-upload.js"></script>
+</body>
+</html>
