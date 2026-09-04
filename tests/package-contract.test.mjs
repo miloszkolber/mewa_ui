@@ -8,6 +8,7 @@ import { gzipSync } from "node:zlib";
 const root = path.resolve(import.meta.dirname, "..");
 const coreRoot = path.join(root, "dist", "mewa-ui");
 const iconsRoot = path.join(root, "dist", "mewa-icons");
+const svelteRoot = path.join(root, "dist", "mewa-svelte");
 const registry = JSON.parse(fs.readFileSync(path.join(root, "registry.json"), "utf8"));
 const workspacePackage = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
 const enhanced = registry.components.filter((component) => component.jsMode !== "none");
@@ -83,6 +84,25 @@ await test("the core package is private, versioned, dependency-free, and export-
   Object.entries(packaged.exports).forEach(([exportName, target]) => {
     const targets = typeof target === "string" ? [target] : Object.values(target);
     targets.forEach((relativePath) => assertLocalPath(coreRoot, `export ${exportName}`, relativePath));
+    if (typeof target === "object" && target.import?.endsWith(".js")) {
+      assert(target.types?.endsWith(".d.ts"), `${exportName}: JavaScript export is missing declarations`);
+    }
+  });
+});
+
+await test("the Svelte adapter is private, versioned, optional, and export-mapped", () => {
+  const packaged = readJson(svelteRoot, "package.json");
+  assert.equal(packaged.name, "mewa-svelte");
+  assert.equal(packaged.version, workspacePackage.version);
+  assert.equal(packaged.private, true, "GitHub-only adapters must stay blocked from registry publication");
+  assert.equal(packaged.type, "module");
+  assert.equal(packaged.dependencies, undefined);
+  assert.deepEqual(packaged.peerDependencies, { svelte: ">=5.29.0 <6" });
+  assert.equal(packaged.sideEffects, false);
+
+  Object.entries(packaged.exports).forEach(([exportName, target]) => {
+    const targets = typeof target === "string" ? [target] : Object.values(target);
+    targets.forEach((relativePath) => assertLocalPath(svelteRoot, `Svelte export ${exportName}`, relativePath));
     if (typeof target === "object" && target.import?.endsWith(".js")) {
       assert(target.types?.endsWith(".d.ts"), `${exportName}: JavaScript export is missing declarations`);
     }
@@ -354,7 +374,7 @@ await test("packaged SVG icons contain no executable or remote content", () => {
 });
 
 await test("generated packages contain no development or documentation trees", () => {
-  for (const base of [coreRoot, iconsRoot]) {
+  for (const base of [coreRoot, iconsRoot, svelteRoot]) {
     const topLevel = fs.readdirSync(base);
     for (const name of ["docs", "tests", "scripts", "node_modules", ".github"]) {
       assert(!topLevel.includes(name), `${path.basename(base)}: unexpected ${name}`);
@@ -367,14 +387,19 @@ await test("complete optional bundles stay within compressed size budgets", () =
   const controllers = Buffer.concat(enhanced.map((component) => fs.readFileSync(path.join(coreRoot, `controllers/${component.slug}.js`))));
   const allControllers = gzipSync(controllers).byteLength;
   const enhancer = gzipSync(fs.readFileSync(path.join(coreRoot, "runtime/enhancer.js"))).byteLength;
+  const svelteAttachment = gzipSync(fs.readFileSync(path.join(svelteRoot, "index.js"))).byteLength;
+  const sveltePlugin = gzipSync(fs.readFileSync(path.join(svelteRoot, "bun-plugin.js"))).byteLength;
   assert(allCss <= 50 * 1024, `css/all.css is ${allCss} compressed bytes`);
   assert(allControllers <= 50 * 1024, `all controllers are ${allControllers} compressed bytes`);
   assert(enhancer <= 3 * 1024, `shared enhancer is ${enhancer} compressed bytes`);
+  assert(svelteAttachment <= 1024, `Svelte attachment is ${svelteAttachment} compressed bytes`);
+  assert(sveltePlugin <= 1024, `Svelte Bun plugin is ${sveltePlugin} compressed bytes`);
 });
 
-await test("both generated packages have complete SHA-256 manifests", () => {
+await test("all generated packages have complete SHA-256 manifests", () => {
   verifyChecksums(coreRoot);
   verifyChecksums(iconsRoot);
+  verifyChecksums(svelteRoot);
 });
 
 if (failures) process.exitCode = 1;

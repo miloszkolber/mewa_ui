@@ -50,9 +50,9 @@ Keep one recipe hue per chromatic family and tune HCT chroma by step.
 
 Treat neutral as the CSS name for the grayscale family.
 
-Run `node --run palette:write` after changing the recipe.
+Run `bun run palette:write` after changing the recipe.
 
-Run `node --run palette:check` before handoff.
+Run `bun run palette:check` before handoff.
 
 Do not hand-edit the generated palette block in `library/src/base.css`.
 

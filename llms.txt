@@ -29,6 +29,8 @@ Use this file as a routing index.
 
 `library/components/{slug}/{slug}.js` defines required or optional component enhancement.
 
+`library/adapters/svelte/` defines the optional Svelte 5 lifecycle attachment and Bun compiler plugin.
+
 `docs/{slug}.html` demonstrates the component.
 
 `library/system/` defines selection, patterns, shells, and accessibility rules.
@@ -125,7 +127,13 @@ Use packaged controllers with an application lifecycle.
 
 Use packaged automatic enhancers for plain HTML.
 
+Use `mewa-svelte` attachments for Svelte-owned elements.
+
+Use the optional Bun plugin to compile client-side `.svelte` files.
+
 Do not add a core runtime dependency.
+
+Do not add Vite or SvelteKit to the Mewa UI toolchain.
 
 ## Shells
 
@@ -149,13 +157,13 @@ Use `37.5rem` for compact single-column changes.
 
 ## Validation
 
-Run `node --run test`.
+Run `bun run test`.
 
-Run `node --run catalog:check`.
+Run `bun run catalog:check`.
 
-Run `node --run package:check`.
+Run `bun run package:check`.
 
-Run `node --run test:browser` after installing the locked browser-test dependency when Chromium is available.
+Run `bun run test:browser` when Chromium is available.
 
 Check changed markup with the keyboard.
 

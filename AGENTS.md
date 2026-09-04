@@ -34,6 +34,8 @@ Edit `library/components/{slug}/{slug}.js` for component enhancement behavior.
 
 Edit `library/runtime/` for the shared controller and automatic enhancement lifecycle.
 
+Edit `library/adapters/` for optional framework integration.
+
 Edit `docs/{slug}.html` for the rendered component reference.
 
 Edit `registry.json` for component selection metadata and token purposes.
@@ -42,13 +44,11 @@ Edit `library/system/` for selection and composition rules.
 
 Edit `README.md` for the human repository overview.
 
-Edit `PROMPT.md` for the reusable consumer-compliance workflow.
-
 Edit `llms.txt` for machine routing.
 
 Keep `library/` as the only authored implementation tree.
 
-Keep optional framework adapters outside the core package.
+Keep optional framework adapters in separate generated packages.
 
 Generate distribution copies only under ignored `dist/`.
 
@@ -64,9 +64,9 @@ Treat the marked color-palette block in `library/src/base.css` as generated outp
 
 Keep Material Color Utilities build-only and ship every authored CSS color as modern space-separated `rgb()`.
 
-Run `node --run palette:write` after palette recipe changes.
+Run `bun run palette:write` after palette recipe changes.
 
-Run `node --run palette:check` before handoff.
+Run `bun run palette:check` before handoff.
 
 Do not hand-edit the generated palette block.
 
@@ -78,9 +78,9 @@ Treat `library/system/components.md` as generated output.
 
 Treat the semantic token reference in `library/system/foundations.md` as generated output.
 
-Run `node --run catalog:write` after registry selection metadata changes.
+Run `bun run catalog:write` after registry selection metadata changes.
 
-Run `node --run catalog:check` before handoff.
+Run `bun run catalog:check` before handoff.
 
 Do not hand-edit generated sections.
 
@@ -90,15 +90,21 @@ Treat `registry.json` as the distribution manifest source.
 
 Keep component dependencies explicit in the registry.
 
-Run `node --run docs:write` after component stylesheet changes.
+Run `bun run docs:write` after component stylesheet changes.
 
-Run `node --run build` to generate `dist/mewa-ui` and `dist/mewa-icons`.
+Run `bun run build` to generate `dist/mewa-ui`, `dist/mewa-icons`, and `dist/mewa-svelte`.
 
 Keep fonts and icons optional in the core package.
 
 Keep the core package free of runtime dependencies.
 
 Keep framework packages as optional adapters with peer dependencies.
+
+Keep Bun as the only repository JavaScript toolchain.
+
+Compile the Svelte adapter directly with `svelte/compiler`.
+
+Do not add Vite, SvelteKit, or another JavaScript build tool.
 
 Keep release packages usable without npm.
 
@@ -114,7 +120,7 @@ Keep `docs/` descriptive and example-focused.
 
 Keep `library/DESIGN.md`, `library/system/`, and component Markdown instructional.
 
-Keep `AGENTS.md`, `PROMPT.md`, and `llms.txt` concise and action-oriented.
+Keep `AGENTS.md` and `llms.txt` concise and action-oriented.
 
 Keep machine-readable descriptions in `registry.json`.
 
@@ -193,7 +199,7 @@ Add the registry entry.
 
 Add the static documentation page.
 
-Run `node --run catalog:write`.
+Run `bun run catalog:write`.
 
 Add the page to the documentation router.
 
@@ -327,15 +333,15 @@ Do not copy the complete design contract into another file.
 
 ## Required validation
 
-Run `node --run test`.
+Run `bun run test`.
 
-Run `node --run package:check`.
+Run `bun run package:check`.
 
-Run `node --run palette:check`.
+Run `bun run palette:check`.
 
-Run `node --run catalog:check`.
+Run `bun run catalog:check`.
 
-Run `node --run test:browser` after installing the locked browser-test dependency when Chromium is available.
+Run `bun run test:browser` when Chromium is available.
 
 Check changed HTML with the keyboard.
 

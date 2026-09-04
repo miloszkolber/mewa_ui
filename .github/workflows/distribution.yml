@@ -21,16 +21,15 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
-      - run: node --run test
-      - run: node --run test:browser
+          bun-version: 1.4.0
+      - run: bun install --frozen-lockfile
+      - run: bun run test
+      - run: bun run test:browser
       - name: Verify release version
         if: startsWith(github.ref, 'refs/tags/')
-        run: test "$GITHUB_REF_NAME" = "v$(node -p "require('./package.json').version")"
+        run: test "$GITHUB_REF_NAME" = "v$(bun -e 'console.log(require("./package.json").version)')"
       - name: Verify release commit belongs to master
         if: startsWith(github.ref, 'refs/tags/')
         run: |
@@ -38,10 +37,11 @@ jobs:
           git merge-base --is-ancestor "$GITHUB_SHA" origin/master
       - name: Create GitHub release archives
         run: |
-          version=$(node -p "require('./package.json').version")
+          version=$(bun -e 'console.log(require("./package.json").version)')
           mkdir -p release
           tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner -czf "release/mewa-ui-${version}.tar.gz" -C dist mewa-ui
           tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner -czf "release/mewa-icons-${version}.tar.gz" -C dist mewa-icons
+          tar --sort=name --mtime=@0 --owner=0 --group=0 --numeric-owner -czf "release/mewa-svelte-${version}.tar.gz" -C dist mewa-svelte
           cd release
           sha256sum mewa-*.tar.gz > SHA256SUMS
           sha256sum --check SHA256SUMS
@@ -50,8 +50,10 @@ jobs:
           trap 'rm -rf "$verify_dir"' EXIT
           tar -xzf "release/mewa-ui-${version}.tar.gz" -C "$verify_dir"
           tar -xzf "release/mewa-icons-${version}.tar.gz" -C "$verify_dir"
+          tar -xzf "release/mewa-svelte-${version}.tar.gz" -C "$verify_dir"
           diff -qr dist/mewa-ui "$verify_dir/mewa-ui"
           diff -qr dist/mewa-icons "$verify_dir/mewa-icons"
+          diff -qr dist/mewa-svelte "$verify_dir/mewa-svelte"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: mewa-ui-${{ github.sha }}

@@ -268,6 +268,30 @@ Use packaged automatic enhancers for plain HTML.
 
 Do not replace native submission, navigation, validation, or disclosure.
 
+## Framework integration
+
+Keep the core package framework-neutral.
+
+Keep every framework adapter optional.
+
+Ship each framework adapter outside `mewa-ui`.
+
+Import dependency-aware behavior from `mewa-ui/components/*.js` in an adapter.
+
+Use the `mewa-svelte` attachment for Svelte-owned elements.
+
+Run behavior cleanup when Svelte removes an attached element.
+
+Keep Svelte as a peer dependency of `mewa-svelte`.
+
+Use Bun as the repository JavaScript toolchain.
+
+Compile client-side `.svelte` files with `svelte/compiler` through the Bun plugin.
+
+Do not add Vite or SvelteKit to the Mewa UI toolchain.
+
+Do not make the Svelte adapter a server-rendering contract.
+
 ## State and data attributes
 
 Use native attributes and pseudo-classes first.
@@ -444,6 +468,8 @@ Do not create a new component only for one shell.
 
 `library/components/{slug}/{slug}.js` owns component enhancement behavior.
 
+`library/adapters/` owns optional framework integration.
+
 `registry.json` owns machine-readable component and token metadata.
 
 `docs/{slug}.html` owns the rendered reference example.
@@ -451,8 +477,6 @@ Do not create a new component only for one shell.
 `library/system/` owns design selection and composition rules.
 
 `README.md` owns the human repository overview.
-
-`PROMPT.md` owns the reusable consumer-compliance prompt.
 
 `llms.txt` owns the short machine routing guide.
 
@@ -484,11 +508,11 @@ Avoid long examples.
 
 ## Validation
 
-Run `node --run test`.
+Run `bun run test`.
 
-Run `node --run test:browser` after installing the locked browser-test dependency when Chromium is available.
+Run `bun run test:browser` when Chromium is available.
 
-Run `node --run catalog:check` after registry changes.
+Run `bun run catalog:check` after registry changes.
 
 Check the changed page with a keyboard.
 

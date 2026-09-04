@@ -71,18 +71,6 @@ test("DESIGN routes agents through the complete contract", () => {
   assert.match(design, /Spinner rotation is the only continuous animation exception\./);
 });
 
-test("the compliance prompt is compact, exploratory, and application-focused", () => {
-  const prompt = read("PROMPT.md");
-  assert(prompt.split(/\r?\n/).length <= 50, "PROMPT.md must stay short enough to invite repository exploration");
-  assert.match(prompt, /Explore the application and the current mewa_ui repository/);
-  assert.match(prompt, /Follow repository instructions you discover/);
-  assert.match(prompt, /\.opencode\//);
-  assert.match(prompt, /Remove cards inside cards/);
-  assert.match(prompt, /undocumented library APIs/);
-  assert.match(prompt, /what you verified/);
-  assert.match(prompt, /Preserve names, facts, numbers, terminology, quotations, constraints/);
-});
-
 test("descriptive and instructional Markdown have explicit owners", () => {
   const readme = read("README.md");
   const agents = read("AGENTS.md");
@@ -95,7 +83,7 @@ test("descriptive and instructional Markdown have explicit owners", () => {
 });
 
 test("agent-facing prose stays shallow and compact", () => {
-  for (const file of ["library/DESIGN.md", "AGENTS.md", "llms.txt", "PROMPT.md", ...systemFiles]) {
+  for (const file of ["library/DESIGN.md", "AGENTS.md", "llms.txt", ...systemFiles]) {
     checkCompactProse(file);
   }
 });

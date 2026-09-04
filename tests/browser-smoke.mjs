@@ -121,7 +121,8 @@ function executablePath() {
     "/usr/bin/chromium",
     "/usr/bin/chromium-browser",
     "/usr/bin/google-chrome",
-    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
   ].filter(Boolean);
 
   return candidates.find((candidate) => fs.existsSync(candidate));
@@ -208,6 +209,39 @@ async function inspectPackage(page, baseUrl) {
   assert.deepEqual(errors, [], `package smoke: ${errors.join(" | ")}`);
 }
 
+async function inspectSveltePackage(page, baseUrl) {
+  const errors = [];
+  const onConsole = (message) => {
+    if (message.type() === "error") errors.push(`console: ${message.text()}`);
+  };
+  const onPageError = (error) => errors.push(`page: ${error.message}`);
+
+  page.on("console", onConsole);
+  page.on("pageerror", onPageError);
+
+  const response = await page.goto(`${baseUrl}/dist/svelte-smoke/index.html`, { waitUntil: "networkidle0" });
+  assert(response?.ok(), `Svelte package smoke: HTTP ${response?.status()}`);
+  await page.waitForSelector("[data-svelte-smoke]");
+
+  await page.click("[data-counter]");
+  assert.equal(
+    await page.$eval("[data-counter]", (button) => button.textContent.trim()),
+    "Count: 1",
+    "the compiled Svelte state did not update"
+  );
+
+  await page.click("[data-mewa-toggle]");
+  assert.equal(
+    await page.$eval("[data-mewa-toggle]", (button) => button.getAttribute("aria-pressed")),
+    "true",
+    "the Svelte attachment did not initialize Mewa behavior"
+  );
+
+  assert.deepEqual(errors, [], `Svelte package smoke: ${errors.join(" | ")}`);
+  page.off("console", onConsole);
+  page.off("pageerror", onPageError);
+}
+
 let server;
 let baseUrl = configuredBaseUrl;
 
@@ -247,10 +281,12 @@ try {
     }
 
     await inspectPackage(page, baseUrl);
+    await inspectSveltePackage(page, baseUrl);
 
     console.log(`PASS browser smoke for ${registry.components.length} component pages`);
     console.log(`PASS responsive matrix for ${representativeSlugs.length} representative pages`);
     console.log("PASS generated GitHub package auto, observer, and controller entries in a browser");
+    console.log("PASS Svelte 5 attachment and Bun-compiled fixture in a browser");
   } finally {
     await browser.close();
   }

@@ -23,10 +23,11 @@ Browse the examples in [`docs/`](docs/). The complete machine-readable inventory
 
 ## Get a release from GitHub
 
-Each tagged [GitHub release](https://github.com/miloszkolber/mewa_ui/releases) provides two ready-to-host archives:
+Each tagged [GitHub release](https://github.com/miloszkolber/mewa_ui/releases) provides three ready-to-host archives:
 
 - `mewa-ui-<version>.tar.gz` contains foundations, per-component CSS, native controllers, automatic enhancers, types, and the package manifest.
 - `mewa-icons-<version>.tar.gz` contains the complete SVG icon set as a separate, optional download.
+- `mewa-svelte-<version>.tar.gz` contains the optional Svelte 5 lifecycle attachment and Bun compiler plugin.
 
 Download and extract only the archive that the application needs. The release files are ordinary web assets; an application does not need npm or a framework to use them.
 
@@ -62,6 +63,44 @@ Document-level adapters are installed once and remain shared for the document li
 
 Use `css/all.css` and `auto.js` for a quick prototype that needs the complete library. Production applications should load only their component entries.
 
+## Use Mewa UI with Svelte
+
+Complex applications can keep Mewa UI's HTML and CSS contracts while Svelte owns application state and rendering. Extract `mewa-ui` and `mewa-svelte` from the same GitHub release, then attach a dependency-aware Mewa behavior to the element that Svelte owns:
+
+```svelte
+<script>
+  import { mewa } from "./vendor/mewa-svelte/index.js";
+  import { behavior as toggleBehavior } from "./vendor/mewa-ui/components/toggle.js";
+</script>
+
+<button class="toggle"
+        type="button"
+        aria-pressed="false"
+        {@attach mewa(toggleBehavior)}>
+  Pin result
+</button>
+```
+
+The attachment follows Svelte's mount and unmount lifecycle. The adapter has no runtime dependency of its own; the application owns its Svelte version. Mewa UI supports Svelte 5.29 or later within Svelte 5.
+
+The archive also includes a small client compiler plugin for Bun:
+
+```js
+import { sveltePlugin } from "./vendor/mewa-svelte/bun-plugin.js";
+
+const result = await Bun.build({
+  entrypoints: ["src/index.html"],
+  outdir: "public",
+  minify: true,
+  plugins: [sveltePlugin()],
+  target: "browser"
+});
+
+if (!result.success) throw new AggregateError(result.logs, "Svelte build failed");
+```
+
+This path uses the Svelte compiler directly. It does not add Vite, SvelteKit, or another bundler. The adapter targets client-side applications served by an existing backend; it is not a server-rendering framework.
+
 ## Repository guide
 
 The repository keeps description separate from instruction.
@@ -78,7 +117,6 @@ The repository keeps description separate from instruction.
 - [`library/DESIGN.md`](library/DESIGN.md) is the canonical design contract.
 - [`library/system/`](library/system/) covers foundations, selection, patterns, shells, and accessibility.
 - `library/components/{slug}/{slug}.md` gives exact implementation instructions for one component.
-- [`PROMPT.md`](PROMPT.md) starts an application compliance review.
 - [`llms.txt`](llms.txt) is the compact machine router.
 
 ### Sources and generated output
@@ -87,6 +125,7 @@ The repository keeps description separate from instruction.
 mewa_ui/
 ├── library/
 │   ├── DESIGN.md               canonical design instructions
+│   ├── adapters/               optional framework integration sources
 │   ├── components/             authored component contracts and implementations
 │   ├── runtime/                shared controller and enhancement lifecycle
 │   ├── src/                    foundations, fonts, and local icons
@@ -97,7 +136,6 @@ mewa_ui/
 ├── registry.json               component, dependency, asset, and token metadata
 ├── README.md                   human overview
 ├── AGENTS.md                   maintainer instructions
-├── PROMPT.md                   application review prompt
 └── llms.txt                    machine routing index
 ```
 
@@ -113,23 +151,23 @@ Accessibility is part of the component contract. Keyboard behavior, focus, contr
 
 ## Development
 
-Node.js 24 or later is the only required build runtime. Build and verify the release packages without installing dependencies:
+Bun 1.4 is the repository's only JavaScript toolchain. Install the locked development dependencies, then build and verify all three release packages:
 
 ```sh
-node --run build
-node --run test
+bun install --frozen-lockfile
+bun run build
+bun run test
 ```
 
-The generated archives are published only through GitHub Releases. The workspace and both generated packages are marked private so an accidental npm publication is rejected.
+The generated archives are published only through GitHub Releases. The workspace and all generated packages are marked private so an accidental package-registry publication is rejected.
 
-The browser smoke suite is the one development check that needs an installed tool. Install the locked Puppeteer dependency and run it when Chromium is available:
+Run the browser smoke suite when Chromium is available:
 
 ```sh
-npm ci
-node --run test:browser
+bun run test:browser
 ```
 
-npm is therefore a development convenience for the browser test, not a distribution channel or a runtime requirement.
+The source repository uses no Node, npm, Vite, or SvelteKit tooling. Consumers of `mewa-ui` need no package manager. Consumers of `mewa-svelte` can use the GitHub archive with their existing Svelte 5 application.
 
 ## License
 

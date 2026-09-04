@@ -325,7 +325,6 @@ test("agent-facing source does not reference the retired layouts directory", () 
     "README.md",
     "AGENTS.md",
     "llms.txt",
-    "PROMPT.md",
     "library/system/foundations.md",
     "library/system/components.md",
     "library/system/patterns.md",

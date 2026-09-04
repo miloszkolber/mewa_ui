@@ -45,7 +45,7 @@ Keep badge text understandable without color.
 ```html
 <span class="badge" data-variant="default">New</span>
 <span class="badge" data-variant="secondary">Draft</span>
-<span class="badge" data-variant="outline">v0.1.0</span>
+<span class="badge" data-variant="outline">v0.1.1</span>
 <span class="badge" data-variant="count">3</span>
 ```
 

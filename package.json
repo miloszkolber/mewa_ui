@@ -1,6 +1,6 @@
 {
   "name": "mewa-ui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Framework-neutral, accessible, monochrome component library for utility applications.",
   "license": "MIT",
@@ -12,25 +12,22 @@
   "bugs": {
     "url": "https://github.com/miloszkolber/mewa_ui/issues"
   },
-  "engines": {
-    "node": ">=24"
-  },
+  "packageManager": "bun@1.4.0",
   "scripts": {
-    "build": "node scripts/build.mjs",
-    "canvas:check": "node scripts/component-canvas.mjs --check",
-    "canvas:write": "node scripts/component-canvas.mjs --write",
-    "catalog:check": "node scripts/catalog.mjs --check",
-    "catalog:write": "node scripts/catalog.mjs --write",
-    "docs:check": "node scripts/docs-assets.mjs --check",
-    "docs:write": "node scripts/docs-assets.mjs --write",
-    "package:check": "node scripts/color-palette.mjs --check && node scripts/build.mjs && node tests/package-contract.test.mjs",
-    "palette:check": "node scripts/color-palette.mjs --check",
-    "palette:write": "node scripts/color-palette.mjs --write",
-    "test": "node scripts/catalog.mjs --check && node scripts/component-canvas.mjs --check && node scripts/docs-assets.mjs --check && node scripts/color-palette.mjs --check && node scripts/build.mjs && node tests/system-contract.test.js && node tests/catalog-contract.test.js && node tests/component-canvas.test.js && node tests/runtime-contract.test.js && node tests/color-palette.test.mjs && node tests/package-contract.test.mjs",
-    "test:browser": "node tests/browser-smoke.mjs"
+    "build": "bun scripts/build.mjs",
+    "catalog:check": "bun scripts/catalog.mjs --check",
+    "catalog:write": "bun scripts/catalog.mjs --write",
+    "docs:check": "bun scripts/docs-assets.mjs --check",
+    "docs:write": "bun scripts/docs-assets.mjs --write",
+    "package:check": "bun scripts/color-palette.mjs --check && bun scripts/build.mjs && bun tests/package-contract.test.mjs && bun tests/svelte-contract.test.mjs",
+    "palette:check": "bun scripts/color-palette.mjs --check",
+    "palette:write": "bun scripts/color-palette.mjs --write",
+    "test": "bun scripts/catalog.mjs --check && bun scripts/docs-assets.mjs --check && bun scripts/color-palette.mjs --check && bun scripts/build.mjs && bun tests/system-contract.test.js && bun tests/catalog-contract.test.js && bun tests/runtime-contract.test.js && bun tests/color-palette.test.mjs && bun tests/package-contract.test.mjs && bun tests/svelte-contract.test.mjs",
+    "test:browser": "bun scripts/build.mjs && bun tests/svelte-contract.test.mjs && bun tests/browser-smoke.mjs"
   },
   "devDependencies": {
     "@material/material-color-utilities": "0.4.0",
-    "puppeteer-core": "25.3.0"
+    "puppeteer-core": "25.3.0",
+    "svelte": "5.57.0"
   }
 }

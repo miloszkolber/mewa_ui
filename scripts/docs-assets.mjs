@@ -12,7 +12,7 @@ function render() {
     const source = fs.readFileSync(path.join(root, component.files.css), "utf8").trim();
     return `/* ${component.name} — ${component.files.css} */\n${source}`;
   });
-  return `/* Generated from registry.json. Run node --run docs:write after component CSS changes. */\n\n${sections.join("\n\n")}\n`;
+  return `/* Generated from registry.json. Run bun run docs:write after component CSS changes. */\n\n${sections.join("\n\n")}\n`;
 }
 
 const expected = render();
