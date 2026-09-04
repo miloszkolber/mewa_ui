@@ -2168,6 +2168,9 @@
 
     /* -- Sizes ----------------------------------------------- */
   }
+  @media (forced-colors: active) {
+    .select { appearance: auto; background-image: none; }
+  }
 }
 
 /* Number Field — library/components/number-field/number-field.css */
@@ -5345,7 +5348,7 @@
     font-size: var(--font-size-300);
     line-height: var(--font-height-regular);
 
-    pointer-events: none;
+    pointer-events: auto;
     max-width: 16rem;
     width: max-content;
 
@@ -5552,7 +5555,7 @@
       backdrop-filter: none;
     }
 
-    &[open]::backdrop {
+    dialog.dialog[open]::backdrop {
       backdrop-filter: none;
     }
   }

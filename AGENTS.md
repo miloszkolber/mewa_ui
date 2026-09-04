@@ -223,7 +223,7 @@ Use square geometry.
 
 Use borders instead of shadows.
 
-Use blur only on approved sticky shell chrome.
+Use blur only on approved sticky shell chrome and documented modal backdrops.
 
 Use the fast motion primitives for subtle visual state feedback.
 
@@ -358,3 +358,21 @@ Check forced colors.
 Check the no-JavaScript path.
 
 Check the browser console.
+
+## Runtime maintenance
+
+Use behavior-specific initialization markers. Never use the shared `data-init` flag to exclude other behaviors on the same element.
+
+Give every listener, observer, timer, object URL, and generated DOM region an explicit owner and cleanup path.
+
+Use `createLifecycle` for component listeners, including listeners on external forms. Keep cleanup idempotent and preserve application-owned values.
+
+Handle native form reset after its default action. Honor canceled resets and composition events.
+
+Use `registry.schema.json` and catalog checks to preserve machine-readable compatibility. Do not remove duplicated public registry fields without a compatibility decision.
+
+Run `bun run lint`, `bun run format:check`, and `bun run typecheck` in addition to the existing contract checks.
+
+Run `bun run measure` after building to inspect separately compressed controller and runtime responses.
+
+Use `tests/agent-evaluation.md` to evaluate consumer guidance in a fresh workspace. Record which tasks were actually run.

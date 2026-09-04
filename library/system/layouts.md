@@ -273,7 +273,7 @@ Do not create page-level horizontal scrolling.
 
 ## Shell blur
 
-Use blur only on a sticky shell header or toolbar.
+Use blur on a sticky shell header, toolbar, or documented modal backdrop.
 
 Use `--background-glass` with `--blur-100`.
 

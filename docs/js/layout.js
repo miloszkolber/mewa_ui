@@ -14,7 +14,7 @@
     try {
       return localStorage.getItem(THEME_KEY) || localStorage.getItem(LEGACY_THEME_KEY);
     }
-    catch (e) { return null; } /* storage unavailable (privacy mode) */
+    catch { return null; } /* storage unavailable (privacy mode) */
   }
 
   var saved = storedTheme();
@@ -54,132 +54,10 @@
   };
 
   /* -- Navigation data ---------------------------------------- */
-  var NAV = [
-    { heading: 'Primitives', items: [
-      { label: 'Typography', href: 'typography.html' },
-      { label: 'Layout', href: 'layout.html' },
-      { label: 'Separator', href: 'separator.html' },
-      { label: 'Icon', href: 'icon.html' },
-    ]},
-    { heading: 'Actions', items: [
-      { label: 'Button', href: 'button.html' },
-      { label: 'Toggle', href: 'toggle.html' },
-      { label: 'Toggle group', href: 'toggle-group.html' },
-      { label: 'Button group', href: 'button-group.html' },
-      { label: 'Toolbar', href: 'toolbar.html' },
-    ]},
-    { heading: 'Forms and inputs', items: [
-      { label: 'Label', href: 'label.html' },
-      { label: 'Field', href: 'field.html' },
-      { label: 'Color picker', href: 'color-picker.html' },
-      { label: 'Text field', href: 'text-field.html' },
-      { label: 'Textarea', href: 'textarea.html' },
-      { label: 'Input OTP', href: 'input-otp.html' },
-      { label: 'Tag input', href: 'tag-input.html' },
-      { label: 'Checkbox', href: 'checkbox.html' },
-      { label: 'Radio group', href: 'radio-group.html' },
-      { label: 'Switch', href: 'switch.html' },
-      { label: 'Slider', href: 'slider.html' },
-      { label: 'Select', href: 'select.html' },
-      { label: 'Number field', href: 'number-field.html' },
-      { label: 'File input', href: 'file-input.html' },
-      { label: 'File upload', href: 'file-upload.html' },
-      { label: 'Date field', href: 'date-field.html' },
-      { label: 'Date picker', href: 'date-picker.html' },
-      { label: 'Date range picker', href: 'date-range-picker.html' },
-      { label: 'Combobox', href: 'combobox.html' },
-      { label: 'Time field', href: 'time-field.html' },
-      { label: 'Form', href: 'form.html' },
-    ]},
-    { heading: 'Data display', items: [
-      { label: 'Badge', href: 'badge.html' },
-      { label: 'Avatar', href: 'avatar.html' },
-      { label: 'Card', href: 'card.html' },
-      { label: 'Image', href: 'image.html' },
-      { label: 'Statistic', href: 'statistic.html' },
-      { label: 'Table', href: 'table.html' },
-      { label: 'Data table', href: 'data-table.html' },
-      { label: 'Collapsible', href: 'collapsible.html' },
-      { label: 'Timeline', href: 'timeline.html' },
-      { label: 'Tree view', href: 'tree-view.html' },
-      { label: 'Carousel', href: 'carousel.html' },
-      { label: 'Scroll area', href: 'scroll-area.html' },
-      { label: 'Sortable', href: 'sortable.html' },
-    ]},
-    { heading: 'Feedback and status', items: [
-      { label: 'Spinner', href: 'spinner.html' },
-      { label: 'Skeleton', href: 'skeleton.html' },
-      { label: 'Progress', href: 'progress.html' },
-      { label: 'Callout', href: 'callout.html' },
-      { label: 'Alert dialog', href: 'alert-dialog.html' },
-      { label: 'Toast', href: 'toast.html' },
-    ]},
-    { heading: 'Overlays', items: [
-      { label: 'Popover', href: 'popover.html' },
-      { label: 'Tooltip', href: 'tooltip.html' },
-      { label: 'Hover card', href: 'hover-card.html' },
-      { label: 'Dialog', href: 'dialog.html' },
-      { label: 'Sheet', href: 'sheet.html' },
-      { label: 'Accordion', href: 'accordion.html' },
-      { label: 'Command palette', href: 'command-palette.html' },
-      { label: 'Context menu', href: 'context-menu.html' },
-    ]},
-    { heading: 'Navigation', items: [
-      { label: 'Breadcrumbs', href: 'breadcrumbs.html' },
-      { label: 'Pagination', href: 'pagination.html' },
-      { label: 'Tabs', href: 'tabs.html' },
-      { label: 'Dropdown menu', href: 'dropdown-menu.html' },
-      { label: 'Navigation menu', href: 'navigation-menu.html' },
-    ]},
-    { heading: 'Application', items: [
-      { label: 'Header', href: 'header.html' },
-      { label: 'Nav', href: 'nav.html' },
-      { label: 'Footer', href: 'footer.html' },
-      { label: 'App shell', href: 'app-shell.html' },
-      { label: 'Sidebar', href: 'sidebar.html' },
-      { label: 'Resizable', href: 'resizable.html' },
-    ]},
-    { heading: 'AI', items: [
-      { label: 'Agent activity', href: 'agent-activity.html' },
-      { label: 'Code block', href: 'code-block.html' },
-      { label: 'Composer', href: 'composer.html' },
-      { label: 'File diff', href: 'file-diff.html' },
-      { label: 'Message', href: 'message.html' },
-      { label: 'Message scroller', href: 'message-scroller.html' },
-      { label: 'Reasoning', href: 'reasoning.html' },
-      { label: 'Sources', href: 'sources.html' },
-      { label: 'Suggestion', href: 'suggestion.html' },
-      { label: 'Thinking indicator', href: 'thinking-indicator.html' },
-      { label: 'Todo list', href: 'todo-list.html' },
-      { label: 'Tool call', href: 'tool-call.html' },
-    ]},
-  ];
-
-  /* Pages that have been built (have a real doc page) */
-  var BUILT = new Set([
-    'typography.html', 'layout.html', 'separator.html', 'icon.html', 'label.html',
-    'button.html', 'toggle.html', 'toggle-group.html', 'button-group.html', 'toolbar.html',
-    'field.html', 'text-field.html', 'textarea.html', 'checkbox.html', 'radio-group.html', 'switch.html',
-    'slider.html', 'select.html', 'number-field.html', 'file-input.html',
-    'date-field.html', 'date-picker.html', 'date-range-picker.html', 'combobox.html',
-    'time-field.html', 'form.html',
-    'badge.html', 'avatar.html', 'card.html', 'image.html',
-    'statistic.html', 'table.html', 'data-table.html',
-    'collapsible.html', 'timeline.html', 'tree-view.html',
-    'spinner.html', 'skeleton.html', 'progress.html', 'callout.html', 'alert-dialog.html',
-    'toast.html',
-    'popover.html', 'tooltip.html',
-    'dialog.html', 'sheet.html', 'accordion.html', 'command-palette.html',
-    'breadcrumbs.html', 'pagination.html',
-    'tabs.html', 'dropdown-menu.html', 'navigation-menu.html',
-    'scroll-area.html',
-    'carousel.html', 'app-shell.html', 'sidebar.html', 'resizable.html', 'sortable.html',
-    'color-picker.html', 'file-upload.html', 'input-otp.html', 'tag-input.html',
-    'footer.html', 'header.html', 'nav.html', 'context-menu.html', 'hover-card.html',
-    'agent-activity.html', 'code-block.html', 'composer.html', 'file-diff.html',
-    'message.html', 'message-scroller.html', 'reasoning.html', 'sources.html',
-    'suggestion.html', 'thinking-indicator.html', 'todo-list.html', 'tool-call.html',
-  ]);
+  /* CATALOG-NAV:START */
+  var NAV = [{"heading":"Primitives","items":[{"label":"Typography","href":"typography.html"},{"label":"Layout","href":"layout.html"},{"label":"Separator","href":"separator.html"},{"label":"Icon","href":"icon.html"}]},{"heading":"Actions","items":[{"label":"Button","href":"button.html"},{"label":"Toggle","href":"toggle.html"},{"label":"Toggle Group","href":"toggle-group.html"},{"label":"Button Group","href":"button-group.html"},{"label":"Toolbar","href":"toolbar.html"}]},{"heading":"Forms and inputs","items":[{"label":"Label","href":"label.html"},{"label":"Field","href":"field.html"},{"label":"Text Field","href":"text-field.html"},{"label":"Textarea","href":"textarea.html"},{"label":"Checkbox","href":"checkbox.html"},{"label":"Radio Group","href":"radio-group.html"},{"label":"Switch","href":"switch.html"},{"label":"Slider","href":"slider.html"},{"label":"Select","href":"select.html"},{"label":"Number Field","href":"number-field.html"},{"label":"File Input","href":"file-input.html"},{"label":"Date Field","href":"date-field.html"},{"label":"Date Picker","href":"date-picker.html"},{"label":"Date Range Picker","href":"date-range-picker.html"},{"label":"Combobox","href":"combobox.html"},{"label":"Time Field","href":"time-field.html"},{"label":"Form","href":"form.html"},{"label":"Color Picker","href":"color-picker.html"},{"label":"File Upload","href":"file-upload.html"},{"label":"Input OTP","href":"input-otp.html"},{"label":"Tag Input","href":"tag-input.html"}]},{"heading":"Data display","items":[{"label":"Badge","href":"badge.html"},{"label":"Avatar","href":"avatar.html"},{"label":"Card","href":"card.html"},{"label":"Image","href":"image.html"},{"label":"Statistic","href":"statistic.html"},{"label":"Table","href":"table.html"},{"label":"Data Table","href":"data-table.html"},{"label":"Collapsible","href":"collapsible.html"},{"label":"Timeline","href":"timeline.html"},{"label":"Tree View","href":"tree-view.html"},{"label":"Carousel","href":"carousel.html"},{"label":"Scroll Area","href":"scroll-area.html"},{"label":"Sortable","href":"sortable.html"}]},{"heading":"Feedback and status","items":[{"label":"Spinner","href":"spinner.html"},{"label":"Skeleton","href":"skeleton.html"},{"label":"Progress","href":"progress.html"},{"label":"Callout","href":"callout.html"},{"label":"Alert Dialog","href":"alert-dialog.html"},{"label":"Toast","href":"toast.html"}]},{"heading":"Overlays","items":[{"label":"Popover","href":"popover.html"},{"label":"Tooltip","href":"tooltip.html"},{"label":"Dialog","href":"dialog.html"},{"label":"Sheet","href":"sheet.html"},{"label":"Accordion","href":"accordion.html"},{"label":"Command Palette","href":"command-palette.html"},{"label":"Context Menu","href":"context-menu.html"},{"label":"Hover Card","href":"hover-card.html"}]},{"heading":"Navigation","items":[{"label":"Breadcrumbs","href":"breadcrumbs.html"},{"label":"Pagination","href":"pagination.html"},{"label":"Tabs","href":"tabs.html"},{"label":"Dropdown Menu","href":"dropdown-menu.html"},{"label":"Navigation Menu","href":"navigation-menu.html"}]},{"heading":"Application","items":[{"label":"App Shell","href":"app-shell.html"},{"label":"Sidebar","href":"sidebar.html"},{"label":"Resizable","href":"resizable.html"},{"label":"Header","href":"header.html"},{"label":"Nav","href":"nav.html"},{"label":"Footer","href":"footer.html"}]},{"heading":"AI","items":[{"label":"Agent Activity","href":"agent-activity.html"},{"label":"Code Block","href":"code-block.html"},{"label":"Composer","href":"composer.html"},{"label":"File Diff","href":"file-diff.html"},{"label":"Message","href":"message.html"},{"label":"Message Scroller","href":"message-scroller.html"},{"label":"Reasoning","href":"reasoning.html"},{"label":"Sources","href":"sources.html"},{"label":"Suggestion","href":"suggestion.html"},{"label":"Thinking Indicator","href":"thinking-indicator.html"},{"label":"Todo List","href":"todo-list.html"},{"label":"Tool Call","href":"tool-call.html"}]}];
+  var BUILT = new Set(NAV.flatMap(section => section.items.map(item => item.href)));
+  /* CATALOG-NAV:END */
 
   /* Detect current filename */
   var currentPage = location.pathname.split('/').pop() || 'typography.html';
@@ -252,7 +130,7 @@
             var cls = 'nav-link';
             if (item.href === currentPage) cls += ' active';
             else if (!BUILT.has(item.href)) cls += ' disabled';
-            html += '<a class="' + cls + '" href="' + item.href + '" style="display:flex;align-items:center;gap:0.375rem;">' + item.label + '</a>';
+            html += '<a class="' + cls + '" href="' + item.href + '"' + (item.href === currentPage ? ' aria-current="page"' : '') + ' style="display:flex;align-items:center;gap:0.375rem;">' + item.label + '</a>';
           });
           html += '</div>';
         });
@@ -320,7 +198,7 @@
     function openSidebar(focusFilter) {
       if (!dialog.open) dialog.showModal();
       syncTrigger(true);
-      var target = focusFilter ? mobileInput : mobileInput || dialog.querySelector('.sidebar-mobile-close');
+      var target = focusFilter ? mobileInput : mobileInput;
       if (target) target.focus();
     }
 
@@ -379,15 +257,15 @@
 
   function readScroll() {
     try { return sessionStorage.getItem(SCROLL_KEY); }
-    catch (e) { return null; }
+    catch { return null; }
   }
 
   function writeScroll(value) {
-    try { sessionStorage.setItem(SCROLL_KEY, value); } catch (e) { /* ignore */ }
+    try { sessionStorage.setItem(SCROLL_KEY, value); } catch { /* ignore */ }
   }
 
   function dropScroll() {
-    try { sessionStorage.removeItem(SCROLL_KEY); } catch (e) { /* ignore */ }
+    try { sessionStorage.removeItem(SCROLL_KEY); } catch { /* ignore */ }
   }
 
   document.addEventListener('click', function (e) {
@@ -431,7 +309,8 @@
   /* Intercepts nav link clicks and swaps <main> content         */
   /* without full-page reloads. Sidebar & header persist.        */
 
-  var navigating = false;
+  var navigationId = 0;
+  var navigationRequest = null;
 
   function announceNavigation(title) {
     var status = document.getElementById('spa-route-status');
@@ -460,16 +339,18 @@
   }
 
   function navigateTo(href, pushState) {
-    if (navigating) return;
+    var requestId = ++navigationId;
+    navigationRequest?.abort();
     if (href === currentPage && pushState !== false) return;
-    navigating = true;
+    navigationRequest = new AbortController();
 
-    fetch(href)
+    fetch(href, { signal: navigationRequest.signal })
       .then(function (r) {
         if (!r.ok) throw new Error(r.status);
         return r.text();
       })
       .then(async function (html) {
+        if (requestId !== navigationId) return;
         var parser = new DOMParser();
         var doc = parser.parseFromString(html, 'text/html');
         var newMain = doc.querySelector('main');
@@ -481,6 +362,7 @@
         }
 
         var swap = function () {
+          if (requestId !== navigationId) return;
           /* Swap main content */
           oldMain.innerHTML = newMain.innerHTML;
 
@@ -500,7 +382,10 @@
 
           /* Update active nav link */
           document.querySelectorAll('.nav-link').forEach(function (link) {
-            link.classList.toggle('active', link.getAttribute('href') === currentPage);
+            var active = link.getAttribute('href') === currentPage;
+            link.classList.toggle('active', active);
+            if (active) link.setAttribute('aria-current', 'page');
+            else link.removeAttribute('aria-current');
           });
 
           /* Push browser history */
@@ -524,7 +409,7 @@
           /* Component ES modules auto-reinitialize via MutationObserver */
           /* when the DOM changes — no script re-import needed.         */
 
-          navigating = false;
+
         };
 
         await loadPageModules(doc, href);
@@ -532,9 +417,10 @@
         /* Instant page swap — no transition */
         swap();
       })
-      .catch(function () {
+      .catch(function (error) {
+        if (error.name === 'AbortError' || requestId !== navigationId) return;
         location.href = href;
-        navigating = false;
+
       });
   }
 
@@ -656,7 +542,6 @@
         '<aside class="site-toc"><div class="site-toc-content"></div></aside>'
       );
     }
-    buildToc();
   });
 
   /* Per-page init (runs on initial load + after each SPA navigation) */

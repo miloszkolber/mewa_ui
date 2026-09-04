@@ -1,26 +1,44 @@
 // -- Navigation Menu -----------------------------------------
 
-import { queryAll } from '../../runtime/core.js';
+import { queryAll, createLifecycle } from '../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../runtime/enhancer.js';
 /* mewa:auto:end */
 
-export function enhance(root) {
-  queryAll(root, '.nav-menu:not([data-init])').forEach((nav) => {
-  nav.dataset.init = '';
-  nav.querySelectorAll('.nav-menu-trigger[popovertarget]').forEach((trigger) => {
-    const id = trigger.getAttribute('popovertarget');
-    const content = nav.ownerDocument.getElementById(id);
-    if (!content) return;
+const lifecycle = createLifecycle('navigation-menu');
+const targets = new WeakMap();
 
-    const anchorId = `--nav-menu-${id}`;
-    trigger.style.anchorName = anchorId;
-    content.style.positionAnchor = anchorId;
+export function enhance(root) {
+  queryAll(root, '.nav-menu').forEach((nav) => {
+    nav.dataset.init = '';
+    nav.dataset.mewaNavigationMenuInit = '';
+    nav.querySelectorAll('.nav-menu-trigger[popovertarget]').forEach((trigger) => {
+      const id = trigger.getAttribute('popovertarget');
+      const content = nav.ownerDocument.getElementById(id);
+      if (targets.get(trigger) === content && content) return;
+      lifecycle.destroy(trigger);
+      if (!content) return;
+      const previousTriggerAnchor = trigger.style.anchorName;
+      const previousTargetAnchor = content.style.positionAnchor;
+      targets.set(trigger, content);
+      lifecycle.add(trigger, () => {
+        trigger.style.anchorName = previousTriggerAnchor;
+        content.style.positionAnchor = previousTargetAnchor;
+        targets.delete(trigger);
+      });
+
+      const anchorId = `--nav-menu-${id}`;
+      trigger.style.anchorName = anchorId;
+      content.style.positionAnchor = anchorId;
+    });
   });
-});
 }
 
-export const behavior = { name: 'navigation-menu', enhance };
+export function destroy(root) {
+  lifecycle.destroy(root);
+}
+
+export const behavior = { name: 'navigation-menu', enhance, destroy };
 
 /* mewa:auto:start */
 registerBehavior(behavior);

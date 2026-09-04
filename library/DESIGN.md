@@ -86,7 +86,7 @@ Do not use visual shadows.
 
 Do not use decorative color gradients.
 
-Use soft blur only on top-level sticky chrome.
+Use soft blur on top-level sticky chrome and documented modal backdrops.
 
 Keep the main canvas continuous.
 

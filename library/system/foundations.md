@@ -311,7 +311,7 @@ Do not mix icon families in one interface.
 
 ## Blur
 
-Use blur only on sticky shell chrome.
+Use blur on sticky shell chrome and documented modal backdrops.
 
 Use `--background-glass` or a matching glass surface with blur.
 

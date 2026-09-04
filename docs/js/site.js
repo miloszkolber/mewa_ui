@@ -1,7 +1,7 @@
 // -- site.js -------------------------------------------------
 // Doc-site-only script for the mewa_ui documentation site.
 // Component behavior lives in library/components/*.js.
-// No ES modules — works with file:// protocol.
+// Serve the documentation over HTTP so local assets can be fetched.
 // Include via <script src="js/site.js" defer></script>
 
 (function () {
@@ -11,14 +11,16 @@
     try {
       if (value === undefined) return localStorage.getItem(key);
       localStorage.setItem(key, value);
-    } catch (e) { /* storage unavailable (privacy mode) — theme still toggles */ }
+    } catch {
+      /* storage unavailable (privacy mode) — theme still toggles */
+    }
     return null;
   }
 
   function syncThemeIcons(isDark) {
     var sun = document.getElementById('icon-sun');
     var moon = document.getElementById('icon-moon');
-    if (sun) sun.style.display  = isDark ? 'none'  : 'block';
+    if (sun) sun.style.display = isDark ? 'none' : 'block';
     if (moon) moon.style.display = isDark ? 'block' : 'none';
   }
 
@@ -52,26 +54,30 @@
         }
         el.replaceWith(svg);
       };
-      /* Known-missing icons (null) are skipped so failed fetches
-         are not repeated on every SPA navigation. */
-      if (iconCache[name] !== undefined) {
-        if (iconCache[name]) apply(iconCache[name]);
-        return;
+      if (!iconCache[name]) {
+        iconCache[name] = fetch('../library/src/icons/' + encodeURIComponent(name) + '.svg')
+          .then(function (response) {
+            if (!response.ok) {
+              delete iconCache[name];
+              return null;
+            }
+            return response.text();
+          })
+          .catch(function () {
+            delete iconCache[name];
+            return null;
+          });
       }
-      fetch('../library/src/icons/' + name + '.svg')
-        .then(function (r) {
-          if (!r.ok) throw new Error(r.status);
-          return r.text();
-        })
-        .then(function (text) { iconCache[name] = text; apply(text); })
-        .catch(function () { iconCache[name] = null; });
+      iconCache[name].then(function (text) {
+        if (text && el.isConnected) apply(text);
+        else if (!text) delete el.dataset.iconLoaded;
+      });
     });
   }
 
   // -- Reusable page content initializer -------------------
   // Called on initial load AND after each SPA navigation.
   function initPageContent() {
-
     // Keep horizontally scrollable code blocks keyboard reachable.
     document.querySelectorAll('pre:not([tabindex])').forEach(function (pre) {
       pre.setAttribute('tabindex', '0');
@@ -100,11 +106,16 @@
           showStatus('Copy unavailable');
           return;
         }
-        navigator.clipboard.writeText(pre.innerText).then(function () {
-          showStatus('<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Copied');
-        }).catch(function () {
-          showStatus('Copy failed');
-        });
+        navigator.clipboard
+          .writeText(pre.innerText)
+          .then(function () {
+            showStatus(
+              '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Copied'
+            );
+          })
+          .catch(function () {
+            showStatus('Copy failed');
+          });
       });
     });
 
@@ -114,7 +125,12 @@
 
   // Register content initializer with SPA router
   // (runs on initial load AND after each SPA navigation)
-  (window.onPageReady || function (fn) { document.addEventListener('DOMContentLoaded', fn); })(initPageContent);
+  (
+    window.onPageReady ||
+    function (fn) {
+      document.addEventListener('DOMContentLoaded', fn);
+    }
+  )(initPageContent);
 
   // -- On DOM ready (one-time setup + initial content init) -
   document.addEventListener('DOMContentLoaded', function () {

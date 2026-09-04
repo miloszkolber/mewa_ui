@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
-const assert = require("node:assert/strict");
-const fs = require("node:fs");
-const path = require("node:path");
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 
-const root = path.resolve(__dirname, "..");
-const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
+const root = path.resolve(__dirname, '..');
+const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
 const exists = (file) => fs.existsSync(path.join(root, file));
 
 let failures = 0;
@@ -21,18 +21,20 @@ function test(name, callback) {
 }
 
 const systemFiles = [
-  "library/system/foundations.md",
-  "library/system/components.md",
-  "library/system/patterns.md",
-  "library/system/layouts.md",
-  "library/system/accessibility.md"
+  'library/system/foundations.md',
+  'library/system/components.md',
+  'library/system/patterns.md',
+  'library/system/layouts.md',
+  'library/system/accessibility.md'
 ];
 
 function sentenceWordCount(sentence) {
-  return (sentence
-    .replace(/`[^`]+`/g, "term")
-    .replace(/\[[^\]]+\]\([^)]+\)/g, "link")
-    .match(/\b[\w'-]+\b/g) || []).length;
+  return (
+    sentence
+      .replace(/`[^`]+`/g, 'term')
+      .replace(/\[[^\]]+\]\([^)]+\)/g, 'link')
+      .match(/\b[\w'-]+\b/g) || []
+  ).length;
 }
 
 function checkCompactProse(filename) {
@@ -41,11 +43,11 @@ function checkCompactProse(filename) {
 
   let fenced = false;
   source.split(/\r?\n/).forEach((line, index) => {
-    if (line.startsWith("```")) {
+    if (line.startsWith('```')) {
       fenced = !fenced;
       return;
     }
-    if (fenced || !line.trim() || /^#{1,3}\s/.test(line) || line.startsWith("|")) return;
+    if (fenced || !line.trim() || /^#{1,3}\s/.test(line) || line.startsWith('|')) return;
     if (/^\s*(?:[-*]|\d+\.)\s/.test(line)) return;
 
     line.split(/(?<=[.!?])\s+/).forEach((sentence) => {
@@ -55,69 +57,99 @@ function checkCompactProse(filename) {
   });
 }
 
-test("the system stays limited to five connected specification files", () => {
+test('the system stays limited to five connected specification files', () => {
   systemFiles.forEach((file) => assert(exists(file), `missing ${file}`));
-  const actual = fs.readdirSync(path.join(root, "library", "system"))
-    .filter((name) => name.endsWith(".md"))
+  const actual = fs
+    .readdirSync(path.join(root, 'library', 'system'))
+    .filter((name) => name.endsWith('.md'))
     .sort();
   assert.deepEqual(actual, systemFiles.map((file) => path.basename(file)).sort());
 });
 
-test("DESIGN routes agents through the complete contract", () => {
-  const design = read("library/DESIGN.md");
-  systemFiles.forEach((file) => assert(design.includes(`\`${file}\``), `library/DESIGN.md does not reference ${file}`));
+test('DESIGN routes agents through the complete contract', () => {
+  const design = read('library/DESIGN.md');
+  systemFiles.forEach((file) =>
+    assert(design.includes(`\`${file}\``), `library/DESIGN.md does not reference ${file}`)
+  );
   assert.match(design, /mewa_ui does not ship complete layout templates\./);
   assert.match(design, /The registry owns component selection metadata\./);
   assert.match(design, /Spinner rotation is the only continuous animation exception\./);
 });
 
-test("descriptive and instructional Markdown have explicit owners", () => {
-  const readme = read("README.md");
-  const agents = read("AGENTS.md");
+test('descriptive and instructional Markdown have explicit owners', () => {
+  const readme = read('README.md');
+  const agents = read('AGENTS.md');
   assert.match(readme, /The repository keeps description separate from instruction\./);
   assert.match(readme, /### For people/);
   assert.match(readme, /### For agents and maintainers/);
-  assert(!/COMPONENT-INVENTORY/.test(readme), "README.md must not contain the generated agent catalog");
+  assert(
+    !/COMPONENT-INVENTORY/.test(readme),
+    'README.md must not contain the generated agent catalog'
+  );
   assert.match(agents, /Keep `README\.md` descriptive and written for people\./);
-  assert.match(agents, /Keep `library\/DESIGN\.md`, `library\/system\/`, and component Markdown instructional\./);
+  assert.match(
+    agents,
+    /Keep `library\/DESIGN\.md`, `library\/system\/`, and component Markdown instructional\./
+  );
 });
 
-test("agent-facing prose stays shallow and compact", () => {
-  for (const file of ["library/DESIGN.md", "AGENTS.md", "llms.txt", ...systemFiles]) {
+test('agent-facing prose stays shallow and compact', () => {
+  for (const file of ['library/DESIGN.md', 'AGENTS.md', 'llms.txt', ...systemFiles]) {
     checkCompactProse(file);
   }
 });
 
-test("shell documentation contains all three shell recipes", () => {
-  const layouts = read("library/system/layouts.md");
+test('shell documentation contains all three shell recipes', () => {
+  const layouts = read('library/system/layouts.md');
   assert.match(layouts, /## Sidebar shell/);
   assert.match(layouts, /## Top-navigation shell/);
   assert.match(layouts, /## Focused-tool shell/);
   assert(!/\blayouts\//.test(layouts));
 });
 
-test("component selection documentation routes agents through registry metadata", () => {
-  const guide = read("library/system/components.md");
+test('component selection documentation routes agents through registry metadata', () => {
+  const guide = read('library/system/components.md');
   assert.match(guide, /Read `registry\.json` for the complete component inventory\./);
   assert.match(guide, /<!-- REGISTRY-FIELDS:START -->/);
   assert.match(guide, /<!-- REGISTRY-FIELDS:END -->/);
-  for (const field of ["purpose", "useWhen", "avoidWhen", "fallback", "jsMode", "files", "styleDependencies", "behaviorDependencies", "assets", "stability"]) {
-    assert(guide.includes(`Use ` + "`" + `${field}` + "`"), `library/system/components.md is missing ${field}`);
+  for (const field of [
+    'purpose',
+    'useWhen',
+    'avoidWhen',
+    'fallback',
+    'jsMode',
+    'files',
+    'styleDependencies',
+    'behaviorDependencies',
+    'assets',
+    'stability'
+  ]) {
+    assert(
+      guide.includes(`Use ` + '`' + `${field}` + '`'),
+      `library/system/components.md is missing ${field}`
+    );
   }
 });
 
-test("dense row guidance names the shared semantic hooks", () => {
-  const patterns = read("library/system/patterns.md");
-  const shell = read("library/components/app-shell/app-shell.md");
-  for (const hook of ["app-dense-list", "app-dense-row", "app-dense-leading", "app-dense-copy", "app-dense-heading", "app-dense-actions"]) {
+test('dense row guidance names the shared semantic hooks', () => {
+  const patterns = read('library/system/patterns.md');
+  const shell = read('library/components/app-shell/app-shell.md');
+  for (const hook of [
+    'app-dense-list',
+    'app-dense-row',
+    'app-dense-leading',
+    'app-dense-copy',
+    'app-dense-heading',
+    'app-dense-actions'
+  ]) {
     assert(patterns.includes(`.${hook}`), `patterns.md is missing .${hook}`);
     assert(shell.includes(`.${hook}`), `app-shell.md is missing .${hook}`);
   }
   assert.match(shell, /<ul class="app-dense-list"[\s\S]*<li class="app-dense-row">/);
 });
 
-test("foundation token documentation is generated from registry metadata", () => {
-  const foundations = read("library/system/foundations.md");
+test('foundation token documentation is generated from registry metadata', () => {
+  const foundations = read('library/system/foundations.md');
   assert.match(foundations, /<!-- TOKEN-REFERENCE:START -->/);
   assert.match(foundations, /<!-- TOKEN-REFERENCE:END -->/);
   assert.match(foundations, /\| `--background` \| Page canvas background\. \|/);

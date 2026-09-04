@@ -76,7 +76,7 @@
       backdrop-filter: none;
     }
 
-    &[open]::backdrop {
+    dialog.dialog[open]::backdrop {
       backdrop-filter: none;
     }
   }

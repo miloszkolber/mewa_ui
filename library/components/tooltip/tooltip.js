@@ -1,9 +1,11 @@
 // -- Tooltip --------------------------------------------------
 
-import { queryAll } from '../../runtime/core.js';
+import { queryAll, createLifecycle } from '../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../runtime/enhancer.js';
 /* mewa:auto:end */
+
+const lifecycle = createLifecycle('tooltip');
 
 const DELAY_DEFAULT = 500;
 const GROUP_TIMEOUT = 400;
@@ -29,7 +31,9 @@ function markGroupOpen() {
 
 function scheduleGroupReset() {
   clearTimeout(groupTimer);
-  groupTimer = setTimeout(() => { groupOpen = false; }, GROUP_TIMEOUT);
+  groupTimer = setTimeout(() => {
+    groupOpen = false;
+  }, GROUP_TIMEOUT);
 }
 
 function positionFallback(tip, trigger) {
@@ -53,16 +57,12 @@ function positionFallback(tip, trigger) {
   let left;
 
   if (side === 'top' || side === 'bottom') {
-    top = side === 'top'
-      ? triggerRect.top - tipRect.height - gap
-      : triggerRect.bottom + gap;
+    top = side === 'top' ? triggerRect.top - tipRect.height - gap : triggerRect.bottom + gap;
     if (align === 'start') left = triggerRect.left;
     else if (align === 'end') left = triggerRect.right - tipRect.width;
     else left = triggerRect.left + (triggerRect.width - tipRect.width) / 2;
   } else {
-    left = side === 'left'
-      ? triggerRect.left - tipRect.width - gap
-      : triggerRect.right + gap;
+    left = side === 'left' ? triggerRect.left - tipRect.width - gap : triggerRect.right + gap;
     if (align === 'start') top = triggerRect.top;
     else if (align === 'end') top = triggerRect.bottom - tipRect.height;
     else top = triggerRect.top + (triggerRect.height - tipRect.height) / 2;
@@ -99,16 +99,26 @@ function syncArrowSide(tip, trigger) {
 function installScrollListener(doc) {
   if (doc.__tooltipScrollInit) return;
   doc.__tooltipScrollInit = true;
-  doc.addEventListener('scroll', () => {
-    doc.querySelectorAll('.tooltip:popover-open').forEach((tip) => {
-      try {
-        tip.hidePopover();
-      } catch {
-        // The native popover can already be closed.
-      }
-    });
-    scheduleGroupReset();
-  }, { passive: true, capture: true });
+  lifecycle.add(doc, () => {
+    delete doc.__tooltipScrollInit;
+    clearTimeout(groupTimer);
+  });
+  lifecycle.listen(
+    doc,
+    doc,
+    'scroll',
+    () => {
+      doc.querySelectorAll('.tooltip:popover-open').forEach((tip) => {
+        try {
+          tip.hidePopover();
+        } catch {
+          // The native popover can already be closed.
+        }
+      });
+      scheduleGroupReset();
+    },
+    { passive: true, capture: true }
+  );
 }
 
 function resolveTooltip(trigger) {
@@ -125,6 +135,13 @@ function unbindTooltip(state) {
   state.closeTimer = null;
   if (state.tip && state.onToggle) {
     state.tip.removeEventListener('toggle', state.onToggle);
+    state.tip.removeEventListener('mouseenter', state.show);
+    state.tip.removeEventListener('mouseleave', state.hide);
+    try {
+      state.tip.hidePopover();
+    } catch {
+      /* Already closed. */
+    }
     state.tip.style.positionAnchor = '';
   }
   if (state.describedBy.size) {
@@ -142,18 +159,26 @@ function bindTooltip(state, tip) {
   const anchorId = `--tooltip-${tip.id.replace(/[^a-zA-Z0-9_-]/g, '-')}`;
   trigger.style.anchorName = anchorId;
   tip.style.positionAnchor = anchorId;
-  trigger.setAttribute('aria-describedby', Array.from(new Set([...state.describedBy, tip.id])).join(' '));
+  trigger.setAttribute(
+    'aria-describedby',
+    Array.from(new Set([...state.describedBy, tip.id])).join(' ')
+  );
 
   state.tip = tip;
   state.onToggle = () => {
     if (state.tip !== tip || !tip.matches(':popover-open')) return;
     const view = documentView(tip.ownerDocument);
-    const frame = view?.requestAnimationFrame?.bind(view) || ((callback) => setTimeout(callback, 0));
-    frame(() => frame(() => {
-      if (state.tip === tip) syncArrowSide(tip, trigger);
-    }));
+    const frame =
+      view?.requestAnimationFrame?.bind(view) || ((callback) => setTimeout(callback, 0));
+    frame(() =>
+      frame(() => {
+        if (state.tip === tip) syncArrowSide(tip, trigger);
+      })
+    );
   };
   tip.addEventListener('toggle', state.onToggle);
+  tip.addEventListener('mouseenter', state.show);
+  tip.addEventListener('mouseleave', state.hide);
 }
 
 function cleanupTooltipTrigger(trigger) {
@@ -164,7 +189,7 @@ function cleanupTooltipTrigger(trigger) {
   trigger.removeEventListener('mouseleave', state.hide);
   trigger.removeEventListener('focus', state.show);
   trigger.removeEventListener('blur', state.hide);
-  delete trigger.dataset.init;
+  delete trigger.dataset.mewaTooltipInit;
   triggerStates.delete(trigger);
   initializedTriggers.delete(trigger);
 }
@@ -185,12 +210,15 @@ function rebindTooltipTargets() {
 }
 
 function initTooltipTrigger(trigger) {
+  if (triggerStates.has(trigger)) return;
   const tip = resolveTooltip(trigger);
   if (!tip) return;
 
   const state = {
     trigger,
-    describedBy: new Set((trigger.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean)),
+    describedBy: new Set(
+      (trigger.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean)
+    ),
     tip: null,
     onToggle: null,
     openTimer: null,
@@ -229,10 +257,11 @@ function initTooltipTrigger(trigger) {
         // The native popover can already be closed.
       }
       scheduleGroupReset();
-    }, 0);
+    }, 120);
   };
 
   trigger.dataset.init = '';
+  trigger.dataset.mewaTooltipInit = '';
   trigger.addEventListener('mouseenter', state.show);
   trigger.addEventListener('mouseleave', state.hide);
   trigger.addEventListener('focus', state.show);
@@ -250,11 +279,12 @@ export function enhance(root) {
 
   const tips = queryAll(scope, '.tooltip[id]');
   const triggerScope = tips.length ? doc : scope;
-  queryAll(triggerScope, '[data-tooltip-trigger]:not([data-init])').forEach(initTooltipTrigger);
+  queryAll(triggerScope, '[data-tooltip-trigger]').forEach(initTooltipTrigger);
   rebindTooltipTargets();
 }
 
 export function destroy(root) {
+  lifecycle.destroy(root);
   queryAll(root, '[data-tooltip-trigger]').forEach(cleanupTooltipTrigger);
   rebindTooltipTargets();
 }

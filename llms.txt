@@ -1,176 +1,38 @@
 # mewa_ui
 
-mewa_ui is a framework-free UI library for semantic HTML, tokenized CSS, local SVG icons, and small native-first ES modules.
-
-Use this file as a routing index.
-
-## Read order
-
-1. Read `library/DESIGN.md`.
-2. Read `library/system/foundations.md`.
-3. Read `library/system/components.md`.
-4. Read the matching `library/components/{slug}/{slug}.md`.
-5. Read `library/system/patterns.md` for page composition.
-6. Read `library/system/layouts.md` for shell composition.
-7. Read `library/system/accessibility.md` for interaction acceptance.
-8. Read `registry.json` for asset and selection metadata.
-
-## Source of truth
-
-`library/src/base.css` defines fonts, palette primitives, typography, spacing, sizes, borders, reset rules, and browser foundations.
-
-`library/src/tokens.css` defines semantic light and dark theme roles.
-
-`registry.json` defines component selection, dependency, asset, and token metadata.
-
-`library/components/{slug}/{slug}.md` defines component-specific markup and behavior.
-
-`library/components/{slug}/{slug}.css` defines component presentation.
-
-`library/components/{slug}/{slug}.js` defines required or optional component enhancement.
-
-`library/adapters/svelte/` defines the optional Svelte 5 lifecycle attachment and Bun compiler plugin.
-
-`docs/{slug}.html` demonstrates the component.
-
-`library/system/` defines selection, patterns, shells, and accessibility rules.
-
-## Absolute rules
-
-Use semantic HTML first.
-
-Use links for navigation.
-
-Use buttons for actions.
-
-Use native form controls when they meet the task.
-
-Load `library/src/base.css` before `library/src/tokens.css`.
-
-Load only the component assets listed in `registry.json`.
-
-Use only documented classes and `data-*` attributes.
-
-Use semantic color roles.
-
-Use square geometry.
-
-Use borders instead of shadows.
-
-Use blur only on top-level sticky shell chrome.
-
-Keep the main canvas continuous.
-
-Do not place a card inside another card.
-
-Do not wrap a table in a card.
-
-Keep state changes immediate.
-
-Spinner rotation is the only animation exception.
-
-Use local icons from `library/src/icons/`.
-
-Inline the SVG for the no-JavaScript path.
-
-Keep every control named and keyboard operable.
-
-Keep every status understandable without color.
-
-Support increased contrast and forced colors.
-
-Keep the documented native fallback.
-
-## Selection
-
-Use `library/system/components.md` to choose among all 80 components.
-
-Use `Table` for structural tabular data.
-
-Use `Data Table` for documented filtering, sorting, result status, and pagination around Table.
-
-Use `Date Field` for a native browser date control.
-
-Use `Date Picker` for a custom month grid.
-
-Use `Select` for a short fixed option list.
-
-Use `Combobox` for a searchable option list.
-
-Use `Checkbox` for a submitted independent choice.
-
-Use `Switch` for an immediate binary system state.
-
-Use `Card` only for one independent object or small content group.
-
-Use App Shell for reusable application chrome and page regions.
-
-Use Sidebar for collapsible application navigation.
-
-Use a pattern before you create a new component.
-
-## JavaScript modes
-
-`requiresJs: true` means the documented interactive component requires its module.
-
-`enhancementJs: true` means native markup works without the module.
-
-`jsMode: "none"` means the component has no component runtime.
-
-Keep modules idempotent.
-
-Keep modules safe for markup inserted after navigation.
-
-Keep modules safe to import without a browser DOM.
-
-Use packaged controllers with an application lifecycle.
-
-Use packaged automatic enhancers for plain HTML.
-
-Use `mewa-svelte` attachments for Svelte-owned elements.
-
-Use the optional Bun plugin to compile client-side `.svelte` files.
-
-Do not add a core runtime dependency.
-
-Do not add Vite or SvelteKit to the Mewa UI toolchain.
-
-## Shells
-
-mewa_ui does not ship complete shell templates.
-
-Use the sidebar shell for persistent application navigation.
-
-Use the top-navigation shell for a small flat route set.
-
-Use the focused-tool shell for one primary task.
-
-Use a 90rem canvas for dense application pages.
-
-Use a 64rem canvas for focused tools.
-
-Use `60rem` for wide content-and-rail collapse.
-
-Use `48rem` for shell navigation changes.
-
-Use `37.5rem` for compact single-column changes.
-
-## Validation
-
-Run `bun run test`.
-
-Run `bun run catalog:check`.
-
-Run `bun run package:check`.
-
-Run `bun run test:browser` when Chromium is available.
-
-Check changed markup with the keyboard.
-
-Check changed markup at 200 percent zoom.
-
-Check changed markup at 320px width.
-
-Check the no-JavaScript path.
-
-Reject undocumented APIs.
+Semantic HTML, tokenized CSS, local SVG icons, and optional native JavaScript behaviors.
+
+## Routes
+
+- `registry.schema.json`: machine-readable registry v3 shape.
+- `registry.json`: versioned component selection, file paths, dependencies, and token purposes.
+- `library/DESIGN.md`: design rules and system references.
+- `library/system/foundations.md`: tokens and responsive foundations.
+- `library/system/components.md`: generated selection guide.
+- `library/components/{slug}/{slug}.md`: exact markup, state, events, fallback, and accessibility contract.
+- `library/system/patterns.md`: component composition.
+- `library/system/layouts.md`: sidebar, top-navigation, and focused-tool shells.
+- `library/system/accessibility.md`: interaction acceptance criteria.
+- `library/runtime/README.md`: vanilla integration, lifecycle ownership, and browser capabilities.
+- `library/adapters/svelte/README.md`: Svelte attachment and Bun compilation.
+- `docs/{slug}.html`: rendered reference.
+- `AGENTS.md`: repository maintenance and validation.
+
+## Consumer task protocol
+
+1. Identify the consumer framework, lifecycle owner, native fallback, and supported browsers.
+2. Select components from the registry and read their contracts plus relevant system guidance.
+3. Load base, tokens, and selected component CSS. Resolve behavior dependencies through packaged `components/` entries.
+4. Use automatic entries for plain HTML or explicit controllers/attachments for application-owned regions.
+5. Inline local SVG for icons that must work without JavaScript. `data-lucide` requires a host loader; the core does not provide one.
+6. Preserve every documented feature and public hook. Ask the operator before removing a feature or changing a public contract.
+7. Verify keyboard, focus, native forms, theme, narrow width, zoom, reduced motion, forced colors, and the documented fallback.
+8. Report modified files, checks run, failures, and unverified browser or assistive-technology coverage.
+
+## Source ownership
+
+`library/` is the authored implementation. `dist/` is generated release output. Keep human explanation in README and docs; keep implementation instructions in library contracts.
+
+Follow the current motion tokens and reduced-motion rules in `library/system/foundations.md`. Preserve native semantics, square geometry, structural borders, and status meaning without color.
+
+Never invent classes, events, or framework bindings. Use documented APIs and preserve the consumer's application state ownership.

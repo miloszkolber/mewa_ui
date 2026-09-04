@@ -22,12 +22,25 @@
     "package:check": "bun scripts/color-palette.mjs --check && bun scripts/build.mjs && bun tests/package-contract.test.mjs && bun tests/svelte-contract.test.mjs",
     "palette:check": "bun scripts/color-palette.mjs --check",
     "palette:write": "bun scripts/color-palette.mjs --write",
-    "test": "bun scripts/catalog.mjs --check && bun scripts/docs-assets.mjs --check && bun scripts/color-palette.mjs --check && bun scripts/build.mjs && bun tests/system-contract.test.js && bun tests/catalog-contract.test.js && bun tests/runtime-contract.test.js && bun tests/color-palette.test.mjs && bun tests/package-contract.test.mjs && bun tests/svelte-contract.test.mjs",
-    "test:browser": "bun scripts/build.mjs && bun tests/svelte-contract.test.mjs && bun tests/browser-smoke.mjs"
+    "test": "bun tests/registry-schema.test.mjs && bun scripts/catalog.mjs --check && bun scripts/docs-assets.mjs --check && bun scripts/color-palette.mjs --check && bun scripts/build.mjs && bun tests/system-contract.test.js && bun tests/catalog-contract.test.js && bun tests/color-palette.test.mjs && bun tests/package-contract.test.mjs && bun tests/svelte-contract.test.mjs",
+    "test:browser": "bun scripts/build.mjs && bun tests/svelte-contract.test.mjs && bun tests/runtime-contract.test.js && bun tests/browser-smoke.mjs && bun tests/browser-regressions.mjs",
+    "format": "prettier --write \"library/**/*.js\" \"scripts/*.mjs\" \"tests/*.{js,mjs,ts}\" \"docs/js/site.js\"",
+    "format:check": "prettier --check \"library/**/*.js\" \"scripts/*.mjs\" \"tests/*.{js,mjs,ts}\" \"docs/js/site.js\"",
+    "lint": "oxlint library scripts docs/js tests --deny correctness",
+    "typecheck": "tsc -p tsconfig.json",
+    "measure": "bun scripts/measure.mjs",
+    "test:consumer": "bun tests/consumer-contract.test.mjs",
+    "check": "bun run test && bun run lint && bun run format:check && bun run typecheck",
+    "test:performance": "bun tests/browser-performance.mjs"
   },
   "devDependencies": {
     "@material/material-color-utilities": "0.4.0",
+    "@types/bun": "1.4.1",
+    "ajv": "8.20.0",
+    "oxlint": "1.81.0",
+    "prettier": "3.9.6",
     "puppeteer-core": "25.3.0",
-    "svelte": "5.57.0"
+    "svelte": "5.57.0",
+    "typescript": "7.0.2"
   }
 }

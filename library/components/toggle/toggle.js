@@ -1,21 +1,29 @@
 // -- Toggle ---------------------------------------------------
 
-import { queryAll } from '../../runtime/core.js';
+import { queryAll, createLifecycle } from '../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../runtime/enhancer.js';
 /* mewa:auto:end */
 
+const lifecycle = createLifecycle('toggle');
+
 export function enhance(root) {
-  queryAll(root, '.toggle:not([data-init]):not(.toggle-group .toggle)').forEach((toggle) => {
-  toggle.dataset.init = '';
-  toggle.addEventListener('click', () => {
-    const pressed = toggle.getAttribute('aria-pressed') === 'true';
-    toggle.setAttribute('aria-pressed', !pressed);
+  queryAll(root, '.toggle:not(.toggle-group .toggle)').forEach((toggle) => {
+    toggle.dataset.init = '';
+    if (lifecycle.has(toggle)) return;
+    toggle.dataset.mewaToggleInit = '';
+    lifecycle.listen(toggle, toggle, 'click', () => {
+      const pressed = toggle.getAttribute('aria-pressed') === 'true';
+      toggle.setAttribute('aria-pressed', !pressed);
+    });
   });
-});
 }
 
-export const behavior = { name: 'toggle', enhance };
+export function destroy(root) {
+  lifecycle.destroy(root);
+}
+
+export const behavior = { name: 'toggle', enhance, destroy };
 
 /* mewa:auto:start */
 registerBehavior(behavior);

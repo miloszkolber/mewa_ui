@@ -2,8 +2,6 @@
 
 mewa_ui is a small, framework-neutral interface library for utility applications. It combines semantic HTML, tokenized CSS, local SVG icons, and focused native JavaScript controllers.
 
-The library grew out of a practical need: several compact tools should feel like parts of the same product without requiring the same framework or copying whole pages between repositories.
-
 ## Character
 
 mewa_ui is technical, quiet, and dense. Square geometry, monochrome surfaces, structural borders, and restrained type keep attention on the work. Color is reserved for status and destructive meaning. Subtle, fast motion clarifies control states, modal surfaces, shell changes, and ongoing activity.
@@ -57,49 +55,13 @@ dialogController.destroy();
 
 This controller API works with plain JavaScript and can sit behind a framework adapter. The `components/` entries compose the behavior dependencies declared in the manifest; the lower-level `controllers/` entries expose only one component's own behavior.
 
-Call `destroy()` before a framework unmounts the region. It runs every cleanup hook the composed behaviors provide. Behaviors without a cleanup hook use element-owned listeners that become collectible only after the application releases all references to those elements.
-
-Document-level adapters are installed once and remain shared for the document lifetime. The core package has no runtime dependency and does not impose a framework lifecycle.
+Call `destroy()` before unmounting the region. Choose one lifecycle owner per region. See the [runtime guide](library/runtime/README.md) for ownership, dynamic markup, native forms, and browser capabilities.
 
 Use `css/all.css` and `auto.js` for a quick prototype that needs the complete library. Production applications should load only their component entries.
 
 ## Use Mewa UI with Svelte
 
-Complex applications can keep Mewa UI's HTML and CSS contracts while Svelte owns application state and rendering. Extract `mewa-ui` and `mewa-svelte` from the same GitHub release, then attach a dependency-aware Mewa behavior to the element that Svelte owns:
-
-```svelte
-<script>
-  import { mewa } from "./vendor/mewa-svelte/index.js";
-  import { behavior as toggleBehavior } from "./vendor/mewa-ui/components/toggle.js";
-</script>
-
-<button class="toggle"
-        type="button"
-        aria-pressed="false"
-        {@attach mewa(toggleBehavior)}>
-  Pin result
-</button>
-```
-
-The attachment follows Svelte's mount and unmount lifecycle. The adapter has no runtime dependency of its own; the application owns its Svelte version. Mewa UI supports Svelte 5.29 or later within Svelte 5.
-
-The archive also includes a small client compiler plugin for Bun:
-
-```js
-import { sveltePlugin } from "./vendor/mewa-svelte/bun-plugin.js";
-
-const result = await Bun.build({
-  entrypoints: ["src/index.html"],
-  outdir: "public",
-  minify: true,
-  plugins: [sveltePlugin()],
-  target: "browser"
-});
-
-if (!result.success) throw new AggregateError(result.logs, "Svelte build failed");
-```
-
-This path uses the Svelte compiler directly. It does not add Vite, SvelteKit, or another bundler. The adapter targets client-side applications served by an existing backend; it is not a server-rendering framework.
+The optional `mewa-svelte` package provides a Svelte 5.29+ attachment and a Bun compiler plugin for components and rune modules. The [Svelte guide](library/adapters/svelte/README.md) includes a complete component example, build setup, and state ownership rules.
 
 ## Repository guide
 
@@ -156,15 +118,18 @@ Bun 1.4 is the repository's only JavaScript toolchain. Install the locked develo
 ```sh
 bun install --frozen-lockfile
 bun run build
-bun run test
+bun run check
 ```
 
 The generated archives are published only through GitHub Releases. The workspace and all generated packages are marked private so an accidental package-registry publication is rejected.
 
-Run the browser smoke suite when Chromium is available:
+Run the browser and isolated consumer suites when Chromium is available. Set `PUPPETEER_EXECUTABLE_PATH` for a custom installation. The consumer suite installs pinned Svelte versions in temporary directories:
 
 ```sh
 bun run test:browser
+bun run test:consumer
+bun run test:performance
+bun run measure
 ```
 
 The source repository uses no Node, npm, Vite, or SvelteKit tooling. Consumers of `mewa-ui` need no package manager. Consumers of `mewa-svelte` can use the GitHub archive with their existing Svelte 5 application.

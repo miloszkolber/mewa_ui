@@ -6,12 +6,13 @@ import { registerBehavior } from '../../runtime/enhancer.js';
 const composerInstances = new WeakMap();
 
 function initComposer(root) {
-  if (root.hasAttribute('data-init')) return;
+  if (composerInstances.has(root)) return;
   root.dataset.init = '';
+  root.dataset.mewaComposerInit = '';
 
   const input = root.querySelector('.composer-input');
   if (!input || input.tagName !== 'TEXTAREA') {
-    root.removeAttribute('data-init');
+    root.removeAttribute('data-mewa-composer-init');
     return;
   }
 
@@ -27,9 +28,7 @@ function initComposer(root) {
     if (event.defaultPrevented || event.isComposing || event.key !== 'Enter') return;
     const submitOn = root.dataset.submitOn === 'enter' ? 'enter' : 'mod-enter';
     const modifier = event.metaKey || event.ctrlKey;
-    const shouldSubmit = submitOn === 'enter'
-      ? !event.shiftKey
-      : modifier && !event.shiftKey;
+    const shouldSubmit = submitOn === 'enter' ? !event.shiftKey : modifier && !event.shiftKey;
     if (!shouldSubmit) return;
     event.preventDefault();
     requestSubmit();
@@ -40,7 +39,7 @@ function initComposer(root) {
   composerInstances.set(root, {
     destroy() {
       input.removeEventListener('keydown', onKeyDown);
-      root.removeAttribute('data-init');
+      root.removeAttribute('data-mewa-composer-init');
       composerInstances.delete(root);
     }
   });
