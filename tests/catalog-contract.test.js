@@ -40,14 +40,19 @@ function stripMarkdownFences(source) {
   return source.replace(/```[\s\S]*?```/g, "");
 }
 
-test("registry v2 defines the canonical source roots", () => {
-  assert.equal(registry.schemaVersion, 2);
+test("registry v3 defines the canonical source roots", () => {
+  assert.equal(registry.schemaVersion, 3);
   assert.equal(registry.name, "mewa_ui");
   assert.deepEqual(registry.canonicalAssets, {
     foundations: ["library/src/base.css", "library/src/tokens.css"],
     fonts: ["library/src/geist.woff2", "library/src/geistmono.woff2"],
+    licenses: {
+      geist: "library/src/licenses/GEIST-OFL.txt",
+      lucide: "library/src/licenses/LUCIDE-LICENSE.txt"
+    },
     icons: "library/src/icons/",
     components: "library/components/",
+    runtime: "library/runtime/",
     documentation: "docs/",
     system: "library/system/"
   });
@@ -68,6 +73,12 @@ test("registry selection metadata covers every component", () => {
     assert(["none", "optional", "required"].includes(component.jsMode), `${component.slug}: invalid jsMode`);
     assert.equal(component.requiresJs, component.jsMode === "required", `${component.slug}: requiresJs drift`);
     assert.equal(component.enhancementJs, component.jsMode === "optional", `${component.slug}: enhancementJs drift`);
+    for (const field of ["styleDependencies", "behaviorDependencies", "assets"]) {
+      assert(Array.isArray(component[field]), `${component.slug}: ${field} must be an array`);
+      assert.equal(new Set(component[field]).size, component[field].length, `${component.slug}: duplicate ${field}`);
+      component[field].forEach((entry) => assert.equal(typeof entry, "string", `${component.slug}: non-string ${field} entry`));
+    }
+    if (component.jsMode === "none") assert.deepEqual(component.behaviorDependencies, [], `${component.slug}: behavior dependencies require an auto entry`);
     assert.equal(component.files.skill, `library/components/${component.slug}/${component.slug}.md`);
     assert.equal(component.files.css, `library/components/${component.slug}/${component.slug}.css`);
     assert.equal(component.docs, `docs/${component.slug}.html`);
@@ -76,6 +87,31 @@ test("registry selection metadata covers every component", () => {
     for (const file of [component.files.skill, component.files.css, component.files.js, component.docs].filter(Boolean)) {
       assert(exists(file), `${component.slug}: missing ${file}`);
     }
+  }
+});
+
+test("component dependency metadata references the catalog without cycles", () => {
+  const bySlug = new Map(registry.components.map((component) => [component.slug, component]));
+
+  for (const field of ["styleDependencies", "behaviorDependencies"]) {
+    const visit = (component, active = new Set(), complete = new Set()) => {
+      if (active.has(component.slug)) throw new Error(`${field}: cycle includes ${Array.from(active).join(" -> ")} -> ${component.slug}`);
+      if (complete.has(component.slug)) return;
+      active.add(component.slug);
+      for (const slug of component[field]) {
+        assert.notEqual(slug, component.slug, `${component.slug}: ${field} cannot reference itself`);
+        assert(bySlug.has(slug), `${component.slug}: unknown ${field} entry ${slug}`);
+        if (field === "behaviorDependencies") {
+          assert.notEqual(bySlug.get(slug).jsMode, "none", `${component.slug}: ${slug} has no behavior module`);
+        }
+        visit(bySlug.get(slug), active, complete);
+      }
+      active.delete(component.slug);
+      complete.add(component.slug);
+    };
+
+    const complete = new Set();
+    registry.components.forEach((component) => visit(component, new Set(), complete));
   }
 });
 
@@ -94,13 +130,12 @@ test("docs have exact parity with the registry", () => {
   assert.deepEqual(docs, slugs);
 });
 
-test("every documentation page preloads every component stylesheet for SPA navigation", () => {
-  const expected = registry.components.map((component) => `../${component.files.css}`);
+test("every documentation page loads the generated component stylesheet once", () => {
   for (const component of registry.components) {
     const source = read(component.docs);
-    for (const stylesheet of expected) {
-      assert(source.includes(`href="${stylesheet}"`), `${component.docs}: missing ${stylesheet}`);
-    }
+    assert(source.includes('href="css/components.generated.css"'), `${component.docs}: missing generated component styles`);
+    assert.equal((source.match(/href="css\/components\.generated\.css"/g) || []).length, 1, `${component.docs}: duplicate generated component styles`);
+    assert(!/href="\.\.\/library\/components\//.test(source), `${component.docs}: raw component stylesheet remains`);
   }
 });
 

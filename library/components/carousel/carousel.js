@@ -1,7 +1,12 @@
 // -- Carousel -------------------------------------------------
 
-function init() {
-document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
+export function enhance(root) {
+queryAll(root, '.carousel:not([data-init])').forEach((carousel) => {
   carousel.dataset.init = '';
 
   const viewport = carousel.querySelector('.carousel-viewport');
@@ -99,7 +104,7 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
     const allSlides = slides();
     if (!dotsContainer.children.length && allSlides.length) {
       allSlides.forEach((_, i) => {
-        const dot = document.createElement('button');
+        const dot = carousel.ownerDocument.createElement('button');
         dot.type = 'button';
         dot.className = 'carousel-dot';
         dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
@@ -147,5 +152,8 @@ document.querySelectorAll('.carousel:not([data-init])').forEach((carousel) => {
 });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'carousel', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

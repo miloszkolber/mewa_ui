@@ -1,5 +1,14 @@
 // -- Sidebar --------------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
+function documentView(doc) {
+  return doc.defaultView || (typeof window === 'undefined' ? null : window);
+}
+
 function triggerMatchesSidebar(trigger, sidebar) {
   const targetId = trigger.dataset.sidebarTrigger;
   return targetId ? targetId === sidebar.id : !sidebar.id;
@@ -8,7 +17,7 @@ function triggerMatchesSidebar(trigger, sidebar) {
 function syncTriggers(sidebar) {
   const collapsed = sidebar.dataset.state === 'collapsed';
   const label = collapsed ? 'Show menu' : 'Hide menu';
-  document.querySelectorAll('.sidebar-trigger').forEach((trigger) => {
+  sidebar.ownerDocument.querySelectorAll('.sidebar-trigger').forEach((trigger) => {
     if (!triggerMatchesSidebar(trigger, sidebar)) return;
     trigger.setAttribute('aria-expanded', String(!collapsed));
     trigger.setAttribute('aria-label', label);
@@ -23,7 +32,7 @@ function toggleSidebar(sidebar) {
 }
 
 function mobileTriggerFor(dialog) {
-  return Array.from(document.querySelectorAll('[data-sidebar-mobile]')).find(
+  return Array.from(dialog.ownerDocument.querySelectorAll('[data-sidebar-mobile]')).find(
     (trigger) => trigger.dataset.sidebarMobile === dialog.id,
   );
 }
@@ -33,8 +42,10 @@ function closeMobileDialog(dialog) {
   const trigger = mobileTriggerFor(dialog);
   dialog.close();
   trigger?.setAttribute('aria-expanded', 'false');
-  const desktopTrigger = document.querySelector('.app-sidebar .sidebar-trigger');
-  const focusTarget = window.matchMedia('(width > 48rem)').matches ? desktopTrigger : trigger;
+  const doc = dialog.ownerDocument;
+  const desktopTrigger = doc.querySelector('.app-sidebar .sidebar-trigger');
+  const desktop = documentView(doc)?.matchMedia?.('(width > 48rem)').matches;
+  const focusTarget = desktop ? desktopTrigger : trigger;
   focusTarget?.focus({ preventScroll: true });
 }
 
@@ -49,15 +60,46 @@ function openMobileDialog(dialog, trigger) {
 }
 
 function sidebarForTrigger(trigger) {
-  return Array.from(document.querySelectorAll('.app-sidebar')).find((sidebar) => triggerMatchesSidebar(trigger, sidebar));
+  return Array.from(trigger.ownerDocument.querySelectorAll('.app-sidebar')).find(
+    (sidebar) => triggerMatchesSidebar(trigger, sidebar),
+  );
 }
 
-function init() {
-  document.querySelectorAll('.app-sidebar:not([data-init])').forEach((sidebar) => {
+function installGlobalListeners(doc) {
+  if (!doc.__sidebarKbInit) {
+    doc.__sidebarKbInit = true;
+    doc.addEventListener('keydown', (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'b') {
+        event.preventDefault();
+        const sidebar = doc.querySelector('.app-sidebar');
+        if (sidebar) toggleSidebar(sidebar);
+      }
+    });
+  }
+
+  if (!doc.__sidebarViewportInit) {
+    const view = documentView(doc);
+    if (!view?.matchMedia) return;
+    doc.__sidebarViewportInit = true;
+    const desktopViewport = view.matchMedia('(width > 48rem)');
+    desktopViewport.addEventListener('change', (event) => {
+      if (!event.matches) return;
+      doc.querySelectorAll('.sidebar-mobile[open]').forEach((dialog) => closeMobileDialog(dialog));
+    });
+  }
+}
+
+export function enhance(root) {
+  const doc = root?.nodeType === 9
+    ? root
+    : root?.ownerDocument || (typeof document === 'undefined' ? null : document);
+  if (doc) installGlobalListeners(doc);
+
+  queryAll(root, '.app-sidebar:not([data-init])').forEach((sidebar) => {
     sidebar.dataset.init = '';
   });
 
-  document.querySelectorAll('.sidebar-trigger:not([data-init])').forEach((trigger) => {
+  queryAll(root, '.sidebar-trigger:not([data-init])').forEach((trigger) => {
     trigger.dataset.init = '';
     const sidebar = sidebarForTrigger(trigger);
     if (!sidebar) {
@@ -65,13 +107,14 @@ function init() {
       return;
     }
     trigger.addEventListener('click', () => toggleSidebar(sidebar));
+    syncTriggers(sidebar);
   });
 
-  document.querySelectorAll('.app-sidebar').forEach((sidebar) => syncTriggers(sidebar));
+  queryAll(root, '.app-sidebar').forEach((sidebar) => syncTriggers(sidebar));
 
-  document.querySelectorAll('[data-sidebar-mobile]:not([data-init])').forEach((trigger) => {
+  queryAll(root, '[data-sidebar-mobile]:not([data-init])').forEach((trigger) => {
     trigger.dataset.init = '';
-    const dialog = document.getElementById(trigger.dataset.sidebarMobile);
+    const dialog = trigger.ownerDocument.getElementById(trigger.dataset.sidebarMobile);
     if (!dialog) {
       delete trigger.dataset.init;
       return;
@@ -79,11 +122,11 @@ function init() {
 
     if (!trigger.hasAttribute('aria-expanded')) trigger.setAttribute('aria-expanded', 'false');
     trigger.addEventListener('click', () => {
-      openMobileDialog(document.getElementById(trigger.dataset.sidebarMobile), trigger);
+      openMobileDialog(trigger.ownerDocument.getElementById(trigger.dataset.sidebarMobile), trigger);
     });
   });
 
-  document.querySelectorAll('.sidebar-mobile:not([data-init])').forEach((dialog) => {
+  queryAll(root, '.sidebar-mobile:not([data-init])').forEach((dialog) => {
     dialog.dataset.init = '';
 
     dialog.querySelectorAll('.sidebar-mobile-close:not([data-init])').forEach((button) => {
@@ -99,32 +142,16 @@ function init() {
     dialog.addEventListener('close', () => {
       const trigger = mobileTriggerFor(dialog);
       trigger?.setAttribute('aria-expanded', 'false');
-      if (dialog.contains(document.activeElement) || document.activeElement === document.body) {
+      const doc = dialog.ownerDocument;
+      if (dialog.contains(doc.activeElement) || doc.activeElement === doc.body) {
         trigger?.focus({ preventScroll: true });
       }
     });
   });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'sidebar', enhance };
 
-if (!document.__sidebarKbInit) {
-  document.__sidebarKbInit = true;
-  document.addEventListener('keydown', (event) => {
-    if ((event.metaKey || event.ctrlKey) && event.key === 'b') {
-      event.preventDefault();
-      const sidebar = document.querySelector('.app-sidebar');
-      if (sidebar) toggleSidebar(sidebar);
-    }
-  });
-}
-
-if (!document.__sidebarViewportInit) {
-  document.__sidebarViewportInit = true;
-  const desktopViewport = window.matchMedia('(width > 48rem)');
-  desktopViewport.addEventListener('change', (event) => {
-    if (!event.matches) return;
-    document.querySelectorAll('.sidebar-mobile[open]').forEach((dialog) => closeMobileDialog(dialog));
-  });
-}
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

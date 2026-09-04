@@ -1,5 +1,10 @@
 // -- Todo List -------------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const rootSelector = '.todo-list:not([data-init])';
 
 function directItems(root) {
@@ -19,23 +24,35 @@ function updateProgress(root) {
   }));
 }
 
-function init() {
-  document.querySelectorAll(rootSelector).forEach((root) => {
-    root.dataset.init = '';
-    updateProgress(root);
+export function enhance(root) {
+  queryAll(root, rootSelector).forEach((todoList) => {
+    todoList.dataset.init = '';
+    updateProgress(todoList);
 
-    const list = root.querySelector('.todo-list-items');
+    const list = todoList.querySelector('.todo-list-items');
     if (!list || typeof MutationObserver !== 'function') return;
 
-    const observer = new MutationObserver(() => updateProgress(root));
+    const observer = new MutationObserver(() => updateProgress(todoList));
     observer.observe(list, {
       childList: true,
       subtree: true,
       attributes: true,
       attributeFilter: ['data-status']
     });
+    todoList._todoListObserver = observer;
   });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export function destroy(root) {
+  queryAll(root, '.todo-list[data-init]').forEach((todoList) => {
+    todoList._todoListObserver?.disconnect();
+    delete todoList._todoListObserver;
+    todoList.removeAttribute('data-init');
+  });
+}
+
+export const behavior = { name: 'todo-list', enhance, destroy };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

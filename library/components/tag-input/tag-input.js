@@ -1,18 +1,24 @@
 // -- Tag Input --------------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 function escapeCharacterClass(value) {
   return value.replace(/[\\\]\-^]/g, '\\$&');
 }
 
-function init() {
-  document.querySelectorAll('[data-tag-input]:not([data-init])').forEach((root) => {
-    root.dataset.init = '';
+export function enhance(root) {
+  queryAll(root, '[data-tag-input]:not([data-init])').forEach((tagInput) => {
+    tagInput.dataset.init = '';
+    const doc = tagInput.ownerDocument;
 
-    const field = root.querySelector('[data-tag-input-field]');
-    const valueInput = root.querySelector('.tag-input-fallback[type="text"]');
-    const status = root.querySelector('[data-tag-input-status]');
+    const field = tagInput.querySelector('[data-tag-input-field]');
+    const valueInput = tagInput.querySelector('.tag-input-fallback[type="text"]');
+    const status = tagInput.querySelector('[data-tag-input-status]');
     if (!field || !valueInput || !status || !valueInput.id) {
-      root.removeAttribute('data-init');
+      tagInput.removeAttribute('data-init');
       return;
     }
 
@@ -21,12 +27,12 @@ function init() {
     const invalid = valueInput.getAttribute('aria-invalid');
     const placeholder = valueInput.getAttribute('placeholder') || '';
     const autocomplete = valueInput.getAttribute('autocomplete') || 'off';
-    const delimiters = Array.from(root.dataset.delimiters || ',');
+    const delimiters = Array.from(tagInput.dataset.delimiters || ',');
     const delimiterPattern = `[${escapeCharacterClass(delimiters.join(''))}]`;
     const delimiterRegex = new RegExp(delimiterPattern);
     const splitRegex = new RegExp(`${delimiterPattern}|\\r?\\n`, 'g');
-    const maxTags = Number.parseInt(root.dataset.maxTags || '', 10);
-    const allowDuplicates = root.hasAttribute('data-allow-duplicates');
+    const maxTags = Number.parseInt(tagInput.dataset.maxTags || '', 10);
+    const allowDuplicates = tagInput.hasAttribute('data-allow-duplicates');
 
     let tags = valueInput.value
       .split(splitRegex)
@@ -39,15 +45,15 @@ function init() {
     valueInput.removeAttribute('aria-invalid');
     valueInput.removeAttribute('placeholder');
 
-    const list = document.createElement('div');
+    const list = doc.createElement('div');
     list.className = 'tag-input-list';
     list.setAttribute('role', 'list');
 
-    const entry = document.createElement('span');
+    const entry = doc.createElement('span');
     entry.className = 'tag-input-entry';
     entry.setAttribute('role', 'listitem');
 
-    const draft = document.createElement('input');
+    const draft = doc.createElement('input');
     draft.className = 'tag-input-control';
     draft.id = inputId;
     draft.type = 'text';
@@ -64,8 +70,8 @@ function init() {
 
     const announce = (message, isError = false) => {
       status.textContent = message;
-      if (isError) root.dataset.state = 'error';
-      else if (root.dataset.state === 'error') delete root.dataset.state;
+      if (isError) tagInput.dataset.state = 'error';
+      else if (tagInput.dataset.state === 'error') delete tagInput.dataset.state;
     };
 
     const writeValue = (source, emit = true) => {
@@ -74,7 +80,7 @@ function init() {
 
       valueInput.dispatchEvent(new Event('input', { bubbles: true }));
       valueInput.dispatchEvent(new Event('change', { bubbles: true }));
-      root.dispatchEvent(new CustomEvent('tag-input:change', {
+      tagInput.dispatchEvent(new CustomEvent('tag-input:change', {
         bubbles: true,
         detail: { tags: tags.slice(), source }
       }));
@@ -94,30 +100,30 @@ function init() {
       list.querySelectorAll('.tag-input-tag').forEach((tag) => tag.remove());
 
       tags.forEach((tag, index) => {
-        const item = document.createElement('span');
+        const item = doc.createElement('span');
         item.className = 'tag-input-tag';
         item.setAttribute('role', 'listitem');
 
-        const label = document.createElement('span');
+        const label = doc.createElement('span');
         label.className = 'tag-input-tag-label';
         label.textContent = tag;
         label.title = tag;
 
-        const remove = document.createElement('button');
+        const remove = doc.createElement('button');
         remove.type = 'button';
         remove.className = 'tag-input-remove';
         remove.setAttribute('aria-label', `Remove ${tag}`);
         remove.disabled = valueInput.disabled;
         remove.dataset.tagIndex = String(index);
 
-        const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        const icon = doc.createElementNS('http://www.w3.org/2000/svg', 'svg');
         icon.setAttribute('viewBox', '0 0 16 16');
         icon.setAttribute('width', '12');
         icon.setAttribute('height', '12');
         icon.setAttribute('fill', 'none');
         icon.setAttribute('aria-hidden', 'true');
 
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        const path = doc.createElementNS('http://www.w3.org/2000/svg', 'path');
         path.setAttribute('d', 'M4 4l8 8m0-8-8 8');
         path.setAttribute('stroke', 'currentColor');
         path.setAttribute('stroke-width', '1.5');
@@ -223,9 +229,12 @@ function init() {
 
     render();
     writeValue('initial', false);
-    root.dataset.enhanced = '';
+    tagInput.dataset.enhanced = '';
   });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'tag-input', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

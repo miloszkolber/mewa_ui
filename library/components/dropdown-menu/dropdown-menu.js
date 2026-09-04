@@ -1,5 +1,10 @@
 // -- Dropdown Menu --------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const triggerStates = new WeakMap();
 const initializedTriggers = new Set();
 
@@ -38,7 +43,7 @@ function bindMenu(trigger, state, menu) {
       if (first) highlight(first);
     } else {
       getItems().forEach((i) => { i.removeAttribute('data-highlighted'); });
-      if (menu.contains(document.activeElement)) trigger.focus();
+      if (menu.contains(menu.ownerDocument.activeElement)) trigger.focus();
     }
   };
   const onMousemove = (e) => {
@@ -59,7 +64,7 @@ function bindMenu(trigger, state, menu) {
     if (state.menu !== menu || !trigger.isConnected) return;
     const items = getItems();
     const targetItem = e.target?.closest?.(itemSelector);
-    const current = items.indexOf(targetItem || document.activeElement);
+    const current = items.indexOf(targetItem || menu.ownerDocument.activeElement);
     switch (e.key) {
       case 'ArrowDown': e.preventDefault(); highlight(items[(current + 1) % items.length]); break;
       case 'ArrowUp': e.preventDefault(); highlight(items[(current - 1 + items.length) % items.length]); break;
@@ -113,7 +118,7 @@ function rebindTargets() {
       initializedTriggers.delete(trigger);
       return;
     }
-    const menu = document.getElementById(trigger.dataset.dropdownMenuTrigger);
+    const menu = trigger.ownerDocument.getElementById(trigger.dataset.dropdownMenuTrigger);
     if (!menu) {
       state.unbindMenu?.();
       state.unbindMenu = null;
@@ -127,25 +132,38 @@ function rebindTargets() {
   });
 }
 
-function init() {
-  document.querySelectorAll('[data-dropdown-menu-trigger]:not([data-init])').forEach((trigger) => {
+export function enhance(root) {
+  queryAll(root, '[data-dropdown-menu-trigger]:not([data-init])').forEach((trigger) => {
     trigger.dataset.init = '';
     const state = { menu: null, unbindMenu: null, onTriggerClick: null };
     triggerStates.set(trigger, state);
     initializedTriggers.add(trigger);
     state.onTriggerClick = () => {
-      const currentMenu = document.getElementById(trigger.dataset.dropdownMenuTrigger);
+      const currentMenu = trigger.ownerDocument.getElementById(trigger.dataset.dropdownMenuTrigger);
       if (!currentMenu || !currentMenu.isConnected || typeof currentMenu.togglePopover !== 'function') return;
       trigger.focus();
       currentMenu.togglePopover();
     };
     trigger.addEventListener('click', state.onTriggerClick);
   });
+  rebindTargets();
 }
 
-init();
-rebindTargets();
-new MutationObserver(() => {
-  init();
+export function destroy(root) {
+  queryAll(root, '[data-dropdown-menu-trigger]').forEach((trigger) => {
+    const state = triggerStates.get(trigger);
+    if (!state) return;
+    state.unbindMenu?.();
+    trigger.removeEventListener('click', state.onTriggerClick);
+    delete trigger.dataset.init;
+    triggerStates.delete(trigger);
+    initializedTriggers.delete(trigger);
+  });
   rebindTargets();
-}).observe(document, { childList: true, subtree: true });
+}
+
+export const behavior = { name: 'dropdown-menu', enhance, destroy };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

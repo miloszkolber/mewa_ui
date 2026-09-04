@@ -1,5 +1,10 @@
 // -- Dialog ---------------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 function openDialog(dialog, trigger) {
   if (!dialog || !dialog.isConnected || typeof dialog.showModal !== 'function') return;
   if (dialog.open) return;
@@ -26,20 +31,24 @@ function focusableElements(dialog) {
     .filter((element) => !element.matches(':disabled') && !element.closest('[hidden], [inert]'));
 }
 
-function init() {
-  document.querySelectorAll('[data-dialog-trigger]:not([data-init])').forEach((trigger) => {
-    trigger.dataset.init = '';
-    const dialogId = trigger.dataset.dialogTrigger;
-    if (!document.getElementById(dialogId)) {
-      delete trigger.dataset.init;
-      return;
-    }
-    trigger.addEventListener('click', () => {
-      openDialog(document.getElementById(dialogId), trigger);
-    });
+function initDialogTrigger(trigger) {
+  trigger.dataset.init = '';
+  const dialogId = trigger.dataset.dialogTrigger;
+  const ownerDocument = trigger.ownerDocument;
+  if (!ownerDocument.getElementById(dialogId)) {
+    delete trigger.dataset.init;
+    return;
+  }
+  trigger.addEventListener('click', () => {
+    openDialog(ownerDocument.getElementById(dialogId), trigger);
   });
+}
 
-  document.querySelectorAll('dialog:not(.alert-dialog):not(.sheet):not([data-init])').forEach((dialog) => {
+export function enhance(root) {
+  const dialogs = queryAll(root, 'dialog:not(.alert-dialog):not(.sheet):not([data-init])');
+  queryAll(root, '[data-dialog-trigger]:not([data-init])').forEach(initDialogTrigger);
+
+  dialogs.forEach((dialog) => {
     dialog.dataset.init = '';
 
     dialog.addEventListener('keydown', (event) => {
@@ -48,10 +57,10 @@ function init() {
       if (!focusable.length) return;
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
+      if (event.shiftKey && dialog.ownerDocument.activeElement === first) {
         event.preventDefault();
         last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
+      } else if (!event.shiftKey && dialog.ownerDocument.activeElement === last) {
         event.preventDefault();
         first.focus();
       }
@@ -69,7 +78,15 @@ function init() {
       if (dialog._trigger?.isConnected) dialog._trigger.focus();
     });
   });
+
+  if (dialogs.length) {
+    queryAll(dialogs[0].ownerDocument, '[data-dialog-trigger]:not([data-init])')
+      .forEach(initDialogTrigger);
+  }
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'dialog', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

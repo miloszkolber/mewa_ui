@@ -1,5 +1,10 @@
 // -- Tree View ------------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 function isBranchOpen(details) {
   return typeof details.open === 'boolean' ? details.open : details.hasAttribute('open');
 }
@@ -80,8 +85,8 @@ function normalizeTreeItems(tree) {
   });
 }
 
-function init() {
-  document.querySelectorAll('.tree[role="tree"]:not([data-init])').forEach((tree) => {
+export function enhance(root) {
+  queryAll(root, '.tree[role="tree"]:not([data-init])').forEach((tree) => {
     tree.dataset.init = '';
     normalizeTreeItems(tree);
     const items = getItems(tree);
@@ -189,5 +194,8 @@ function init() {
   });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'tree-view', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

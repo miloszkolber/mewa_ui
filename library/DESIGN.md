@@ -25,6 +25,10 @@ The static documentation page demonstrates the contract.
 
 The static documentation page does not define a second API.
 
+The registry defines packaged style, behavior, and asset dependencies.
+
+The generated manifest exposes those dependencies to consumers.
+
 ## System boundaries
 
 A component is a reusable control or content region.
@@ -237,6 +241,16 @@ Keep component modules as modern ES modules.
 Keep component modules safe after repeated initialization.
 
 Keep component modules safe for markup inserted after navigation.
+
+Keep component modules safe to import without a browser DOM.
+
+Export `enhance` and `behavior` from each component module.
+
+Use the shared enhancer for document-wide insertion handling.
+
+Use side-effect-free packaged controllers with application lifecycles.
+
+Use packaged automatic enhancers for plain HTML.
 
 Do not replace native submission, navigation, validation, or disclosure.
 
@@ -454,11 +468,11 @@ Avoid long examples.
 
 ## Validation
 
-Run `npm test`.
+Run `node --run test`.
 
-Run `npm run test:browser` when Chromium is available.
+Run `node --run test:browser` after installing the locked browser-test dependency when Chromium is available.
 
-Run `npm run catalog:check` after registry changes.
+Run `node --run catalog:check` after registry changes.
 
 Check the changed page with a keyboard.
 

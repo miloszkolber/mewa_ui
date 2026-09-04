@@ -1,15 +1,20 @@
 // -- Tabs -----------------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const selectTab = (tab, triggers) => {
   triggers.forEach((t) => {
     t.setAttribute('aria-selected', 'false');
     t.setAttribute('tabindex', '-1');
-    const panel = document.getElementById(t.getAttribute('aria-controls'));
+    const panel = t.ownerDocument.getElementById(t.getAttribute('aria-controls'));
     if (panel) panel.hidden = true;
   });
   tab.setAttribute('aria-selected', 'true');
   tab.removeAttribute('tabindex');
-  const panel = document.getElementById(tab.getAttribute('aria-controls'));
+  const panel = tab.ownerDocument.getElementById(tab.getAttribute('aria-controls'));
   if (panel) panel.hidden = false;
 };
 
@@ -29,8 +34,8 @@ const activateInTablist = (tablist, target) => {
   return true;
 };
 
-function init() {
-document.querySelectorAll('[role="tablist"]:not([data-init])').forEach((tablist) => {
+export function enhance(root) {
+queryAll(root, '[role="tablist"]:not([data-init])').forEach((tablist) => {
     tablist.dataset.init = '';
     if (!tablist.querySelector('.tab-trigger')) return;
     const triggers = Array.from(tablist.querySelectorAll('[role="tab"]'));
@@ -81,5 +86,8 @@ document.querySelectorAll('[role="tablist"]:not([data-init])').forEach((tablist)
     });
 });}
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'tabs', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

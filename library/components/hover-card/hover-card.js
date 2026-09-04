@@ -1,12 +1,23 @@
 // -- Hover Card ----------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const HOVER_CARD_OPEN_DELAY = 150;
 const HOVER_CARD_CLOSE_DELAY = 100;
-const HOVER_CARD_ANCHOR_SUPPORTED = typeof CSS !== 'undefined'
-  && typeof CSS.supports === 'function'
-  && CSS.supports('position-area', 'bottom');
+const initializedDocuments = new WeakSet();
+const triggerStates = new WeakMap();
+const initializedTriggers = new Set();
 
 let activeHoverCard = null;
+
+function hoverCardAnchorSupported(element) {
+  const css = element.ownerDocument.defaultView?.CSS
+    || (typeof CSS === 'undefined' ? null : CSS);
+  return typeof css?.supports === 'function' && css.supports('position-area', 'bottom');
+}
 
 function positionHoverCardFallback(card, trigger) {
   card.style.positionArea = 'unset';
@@ -43,25 +54,32 @@ function positionHoverCardFallback(card, trigger) {
     else top = triggerRect.top + (triggerRect.height - cardRect.height) / 2;
   }
 
-  card.style.top = `${Math.max(edge, Math.min(top, window.innerHeight - cardRect.height - edge))}px`;
-  card.style.left = `${Math.max(edge, Math.min(left, window.innerWidth - cardRect.width - edge))}px`;
+  const view = card.ownerDocument.defaultView
+    || (typeof window === 'undefined' ? null : window);
+  if (!view) return;
+  card.style.top = `${Math.max(edge, Math.min(top, view.innerHeight - cardRect.height - edge))}px`;
+  card.style.left = `${Math.max(edge, Math.min(left, view.innerWidth - cardRect.width - edge))}px`;
 }
 
 function closeHoverCard(state, { restoreFocus = false, immediate = false } = {}) {
   clearTimeout(state.openTimer);
   clearTimeout(state.closeTimer);
+  const card = state.card;
+  if (!card) return;
 
   const close = () => {
-    const focusWasInside = state.card.contains(document.activeElement);
+    if (state.card !== card) return;
+    const activeElement = card.ownerDocument.activeElement;
+    const focusWasInside = card.contains(activeElement);
     try {
-      if (state.card.matches(':popover-open')) state.card.hidePopover();
+      if (card.matches(':popover-open')) card.hidePopover();
     } catch {
       // The native popover can already be closed or unsupported.
     }
     if (activeHoverCard === state) activeHoverCard = null;
     if ((restoreFocus || focusWasInside)
       && state.trigger.isConnected
-      && document.activeElement !== state.trigger) {
+      && card.ownerDocument.activeElement !== state.trigger) {
       state.suppressFocusOpen = true;
       state.trigger.focus();
     }
@@ -72,135 +90,250 @@ function closeHoverCard(state, { restoreFocus = false, immediate = false } = {})
 }
 
 function scheduleHoverCardClose(state) {
-  if (state.pointerOnTrigger || state.pointerOnCard || state.focusWithin) return;
+  if (!state.card || state.pointerOnTrigger || state.pointerOnCard || state.focusWithin) return;
   closeHoverCard(state);
 }
 
 function openHoverCard(state, immediate = false) {
   clearTimeout(state.closeTimer);
   clearTimeout(state.openTimer);
+  const card = state.card;
+  if (!card) return;
 
   const open = () => {
-    if (!state.trigger.isConnected || !state.card.isConnected) return;
+    if (state.card !== card || !state.trigger.isConnected || !card.isConnected) return;
     if (activeHoverCard && activeHoverCard !== state) {
       closeHoverCard(activeHoverCard, { immediate: true });
     }
     try {
-      if (!state.card.matches(':popover-open')) state.card.showPopover();
+      if (!card.matches(':popover-open')) card.showPopover();
     } catch {
       return;
     }
     activeHoverCard = state;
-    if (!HOVER_CARD_ANCHOR_SUPPORTED) positionHoverCardFallback(state.card, state.trigger);
+    if (!hoverCardAnchorSupported(card)) positionHoverCardFallback(card, state.trigger);
   };
 
   if (immediate) open();
   else state.openTimer = setTimeout(open, HOVER_CARD_OPEN_DELAY);
 }
 
-function initHoverCards() {
-  document.querySelectorAll('[data-hover-card-trigger]:not([data-hover-card-init])').forEach((trigger) => {
-    const id = trigger.dataset.hoverCardTrigger;
-    const card = document.getElementById(id);
-    if (!card || !card.classList.contains('hover-card') || typeof card.showPopover !== 'function') return;
+function resolveHoverCard(trigger) {
+  const id = trigger.dataset.hoverCardTrigger;
+  const card = trigger.ownerDocument.getElementById(id);
+  return card?.classList?.contains('hover-card') && typeof card.showPopover === 'function'
+    ? card
+    : null;
+}
 
-    trigger.dataset.hoverCardInit = '';
-    const describedBy = new Set((trigger.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean));
-    describedBy.add(card.id);
-    trigger.setAttribute('aria-describedby', Array.from(describedBy).join(' '));
+function unbindHoverCard(state) {
+  clearTimeout(state.openTimer);
+  clearTimeout(state.closeTimer);
+  state.openTimer = null;
+  state.closeTimer = null;
+  if (activeHoverCard === state) closeHoverCard(state, { immediate: true });
 
-    const anchorId = `--hover-card-${card.id.replace(/[^a-zA-Z0-9_-]/g, '-')}`;
-    trigger.style.anchorName = anchorId;
-    card.style.positionAnchor = anchorId;
+  const { card, cardListeners } = state;
+  if (card && cardListeners) {
+    card.removeEventListener('mouseenter', cardListeners.mouseenter);
+    card.removeEventListener('mouseleave', cardListeners.mouseleave);
+    card.removeEventListener('focusin', cardListeners.focusin);
+    card.removeEventListener('focusout', cardListeners.focusout);
+    card.removeEventListener('keydown', state.onEscape);
+    card.style.positionAnchor = '';
+  }
+  if (state.describedBy.size) {
+    state.trigger.setAttribute('aria-describedby', Array.from(state.describedBy).join(' '));
+  } else {
+    state.trigger.removeAttribute('aria-describedby');
+  }
+  state.trigger.style.anchorName = '';
+  state.card = null;
+  state.cardListeners = null;
+  state.pointerOnCard = false;
+  state.focusWithin = false;
+}
 
-    const state = {
-      trigger,
-      card,
-      openTimer: null,
-      closeTimer: null,
-      pointerOnTrigger: false,
-      pointerOnCard: false,
-      focusWithin: false,
-      suppressFocusOpen: false
-    };
+function bindHoverCard(state, card) {
+  const { trigger } = state;
+  const anchorId = `--hover-card-${card.id.replace(/[^a-zA-Z0-9_-]/g, '-')}`;
+  trigger.style.anchorName = anchorId;
+  card.style.positionAnchor = anchorId;
+  trigger.setAttribute('aria-describedby', Array.from(new Set([...state.describedBy, card.id])).join(' '));
+  state.card = card;
+  state.focusWithin = trigger.ownerDocument.activeElement === trigger
+    || card.contains(trigger.ownerDocument.activeElement);
 
-    trigger.addEventListener('mouseenter', () => {
+  state.cardListeners = {
+    mouseenter: () => {
+      state.pointerOnCard = true;
+      clearTimeout(state.closeTimer);
+      clearTimeout(state.openTimer);
+    },
+    mouseleave: (event) => {
+      state.pointerOnCard = false;
+      if (event.relatedTarget && trigger.contains(event.relatedTarget)) return;
+      scheduleHoverCardClose(state);
+    },
+    focusin: () => {
+      state.focusWithin = true;
+      clearTimeout(state.closeTimer);
+    },
+    focusout: (event) => {
+      if (event.relatedTarget && (card.contains(event.relatedTarget) || trigger.contains(event.relatedTarget))) return;
+      state.focusWithin = false;
+      scheduleHoverCardClose(state);
+    }
+  };
+
+  card.addEventListener('mouseenter', state.cardListeners.mouseenter);
+  card.addEventListener('mouseleave', state.cardListeners.mouseleave);
+  card.addEventListener('focusin', state.cardListeners.focusin);
+  card.addEventListener('focusout', state.cardListeners.focusout);
+  card.addEventListener('keydown', state.onEscape);
+}
+
+function cleanupHoverCardTrigger(trigger) {
+  const state = triggerStates.get(trigger);
+  if (!state) return;
+  unbindHoverCard(state);
+  trigger.removeEventListener('mouseenter', state.triggerListeners.mouseenter);
+  trigger.removeEventListener('mouseleave', state.triggerListeners.mouseleave);
+  trigger.removeEventListener('focus', state.triggerListeners.focus);
+  trigger.removeEventListener('blur', state.triggerListeners.blur);
+  trigger.removeEventListener('keydown', state.onEscape);
+  delete trigger.dataset.hoverCardInit;
+  triggerStates.delete(trigger);
+  initializedTriggers.delete(trigger);
+}
+
+function rebindHoverCardTargets() {
+  initializedTriggers.forEach((trigger) => {
+    const state = triggerStates.get(trigger);
+    if (!state || !trigger.isConnected) {
+      cleanupHoverCardTrigger(trigger);
+      return;
+    }
+
+    const card = resolveHoverCard(trigger);
+    if (state.card === card) return;
+    unbindHoverCard(state);
+    if (card) bindHoverCard(state, card);
+  });
+}
+
+function initHoverCard(trigger) {
+  const card = resolveHoverCard(trigger);
+  if (!card) return;
+
+  trigger.dataset.hoverCardInit = '';
+
+  const state = {
+    trigger,
+    describedBy: new Set((trigger.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean)),
+    card: null,
+    cardListeners: null,
+    triggerListeners: null,
+    onEscape: null,
+    openTimer: null,
+    closeTimer: null,
+    pointerOnTrigger: false,
+    pointerOnCard: false,
+    focusWithin: false,
+    suppressFocusOpen: false
+  };
+
+  state.triggerListeners = {
+    mouseenter: () => {
       state.pointerOnTrigger = true;
       openHoverCard(state);
-    });
-    trigger.addEventListener('mouseleave', (event) => {
+    },
+    mouseleave: (event) => {
       state.pointerOnTrigger = false;
-      if (event.relatedTarget && card.contains(event.relatedTarget)) return;
+      if (event.relatedTarget && state.card?.contains(event.relatedTarget)) return;
       scheduleHoverCardClose(state);
-    });
-    trigger.addEventListener('focus', () => {
+    },
+    focus: () => {
       state.focusWithin = true;
       if (state.suppressFocusOpen) {
         state.suppressFocusOpen = false;
         return;
       }
       openHoverCard(state, true);
-    });
-    trigger.addEventListener('blur', (event) => {
-      if (event.relatedTarget && card.contains(event.relatedTarget)) return;
+    },
+    blur: (event) => {
+      if (event.relatedTarget && state.card?.contains(event.relatedTarget)) return;
       state.focusWithin = false;
       scheduleHoverCardClose(state);
-    });
+    }
+  };
 
-    card.addEventListener('mouseenter', () => {
-      state.pointerOnCard = true;
-      clearTimeout(state.closeTimer);
-      clearTimeout(state.openTimer);
-    });
-    card.addEventListener('mouseleave', (event) => {
-      state.pointerOnCard = false;
-      if (event.relatedTarget && trigger.contains(event.relatedTarget)) return;
-      scheduleHoverCardClose(state);
-    });
-    card.addEventListener('focusin', () => {
-      state.focusWithin = true;
-      clearTimeout(state.closeTimer);
-    });
-    card.addEventListener('focusout', (event) => {
-      if (event.relatedTarget && (card.contains(event.relatedTarget) || trigger.contains(event.relatedTarget))) return;
-      state.focusWithin = false;
-      scheduleHoverCardClose(state);
-    });
+  state.onEscape = (event) => {
+    if (event.key !== 'Escape') return;
+    event.preventDefault();
+    closeHoverCard(state, { restoreFocus: true, immediate: true });
+  };
 
-    const onEscape = (event) => {
-      if (event.key !== 'Escape') return;
-      event.preventDefault();
-      closeHoverCard(state, { restoreFocus: true, immediate: true });
-    };
-    trigger.addEventListener('keydown', onEscape);
-    card.addEventListener('keydown', onEscape);
-  });
-
-  if (activeHoverCard && (!activeHoverCard.trigger.isConnected || !activeHoverCard.card.isConnected)) {
-    activeHoverCard = null;
-  }
+  trigger.addEventListener('mouseenter', state.triggerListeners.mouseenter);
+  trigger.addEventListener('mouseleave', state.triggerListeners.mouseleave);
+  trigger.addEventListener('focus', state.triggerListeners.focus);
+  trigger.addEventListener('blur', state.triggerListeners.blur);
+  trigger.addEventListener('keydown', state.onEscape);
+  triggerStates.set(trigger, state);
+  initializedTriggers.add(trigger);
+  bindHoverCard(state, card);
 }
 
-if (!document.__mewaHoverCardInit) {
-  document.__mewaHoverCardInit = true;
+function initHoverCards(root) {
+  const triggers = queryAll(root, '[data-hover-card-trigger]:not([data-hover-card-init])');
+  const cards = queryAll(root, '.hover-card[id]');
+  if (cards.length) {
+    triggers.push(...queryAll(cards[0].ownerDocument, '[data-hover-card-trigger]:not([data-hover-card-init])'));
+  }
+  new Set(triggers).forEach(initHoverCard);
+  rebindHoverCardTargets();
+}
 
-  document.addEventListener('pointerdown', (event) => {
+function installGlobalListeners(ownerDocument) {
+  if (initializedDocuments.has(ownerDocument)) return;
+  initializedDocuments.add(ownerDocument);
+
+  ownerDocument.addEventListener('pointerdown', (event) => {
     if (!activeHoverCard) return;
     const { trigger, card } = activeHoverCard;
     if (trigger.contains(event.target) || card.contains(event.target)) return;
     closeHoverCard(activeHoverCard, { immediate: true });
   });
 
-  document.addEventListener('scroll', () => {
+  ownerDocument.addEventListener('scroll', () => {
     if (activeHoverCard) closeHoverCard(activeHoverCard, { immediate: true });
   }, { passive: true, capture: true });
 
-  window.addEventListener('resize', () => {
+  const view = ownerDocument.defaultView
+    || (typeof window === 'undefined' ? null : window);
+  view?.addEventListener('resize', () => {
     if (!activeHoverCard) return;
-    if (HOVER_CARD_ANCHOR_SUPPORTED) return;
+    if (hoverCardAnchorSupported(activeHoverCard.card)) return;
     positionHoverCardFallback(activeHoverCard.card, activeHoverCard.trigger);
   });
-
-  initHoverCards();
-  new MutationObserver(initHoverCards).observe(document, { childList: true, subtree: true });
 }
+
+export function enhance(root) {
+  const ownerDocument = root?.nodeType === 9
+    ? root
+    : root?.ownerDocument || (typeof document === 'undefined' ? null : document);
+  if (!ownerDocument) return;
+  installGlobalListeners(ownerDocument);
+  initHoverCards(root);
+}
+
+export function destroy(root) {
+  queryAll(root, '[data-hover-card-trigger]').forEach(cleanupHoverCardTrigger);
+  rebindHoverCardTargets();
+}
+
+export const behavior = { name: 'hover-card', enhance, destroy };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

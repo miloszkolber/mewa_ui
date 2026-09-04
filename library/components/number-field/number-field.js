@@ -1,7 +1,12 @@
 // -- Number Field ---------------------------------------------
 
-function init() {
-  document.querySelectorAll('.number-field:not([data-init])').forEach((wrapper) => {
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
+export function enhance(root) {
+  queryAll(root, '.number-field:not([data-init])').forEach((wrapper) => {
   wrapper.dataset.init = '';
   const input = wrapper.querySelector('input[type="number"]');
   const decBtn = wrapper.querySelector('[data-action="decrement"]');
@@ -22,5 +27,8 @@ function init() {
 });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'number-field', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

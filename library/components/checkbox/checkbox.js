@@ -1,17 +1,22 @@
 // -- Checkbox group enhancement ---------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const CHECKBOX_GROUP_SELECTOR = '.checkbox-group:not([data-init]), [data-checkbox-group]:not([data-init])';
 
-function init() {
-  document.querySelectorAll(CHECKBOX_GROUP_SELECTOR).forEach((root) => {
-    root.dataset.init = '';
+export function enhance(root) {
+  queryAll(root, CHECKBOX_GROUP_SELECTOR).forEach((group) => {
+    group.dataset.init = '';
 
-    const selectAll = root.querySelector('[data-checkbox-all], .checkbox-group-select-all input[type="checkbox"]');
-    const items = Array.from(root.querySelectorAll('[data-checkbox-item], .checkbox-group-items input[type="checkbox"]'))
+    const selectAll = group.querySelector('[data-checkbox-all], .checkbox-group-select-all input[type="checkbox"]');
+    const items = Array.from(group.querySelectorAll('[data-checkbox-item], .checkbox-group-items input[type="checkbox"]'))
       .filter((item) => item !== selectAll);
-    const status = root.querySelector('[data-checkbox-status], .checkbox-group-status');
+    const status = group.querySelector('[data-checkbox-status], .checkbox-group-status');
     if (!selectAll || items.length === 0) {
-      root.removeAttribute('data-init');
+      group.removeAttribute('data-init');
       return;
     }
 
@@ -23,7 +28,7 @@ function init() {
 
       selectAll.checked = allChecked;
       selectAll.indeterminate = partiallyChecked;
-      root.dataset.state = partiallyChecked ? 'partial' : allChecked ? 'complete' : 'empty';
+      group.dataset.state = partiallyChecked ? 'partial' : allChecked ? 'complete' : 'empty';
 
       if (status) {
         status.textContent = enabledItems.length === 0
@@ -32,7 +37,7 @@ function init() {
       }
 
       if (emit) {
-        root.dispatchEvent(new CustomEvent('checkbox-group:change', {
+        group.dispatchEvent(new CustomEvent('checkbox-group:change', {
           bubbles: true,
           detail: {
             values: checkedItems.map((item) => item.value),
@@ -59,5 +64,8 @@ function init() {
   });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'checkbox', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

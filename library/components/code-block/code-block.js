@@ -1,3 +1,8 @@
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const codeBlockInstances = new WeakMap();
 
 function codeBlockAtBottom(viewport) {
@@ -107,26 +112,18 @@ function initCodeBlock(root) {
   });
 }
 
-function initCodeBlocks(scope = document) {
-  if (scope.matches?.('.code-block')) initCodeBlock(scope);
-  scope.querySelectorAll?.('.code-block').forEach(initCodeBlock);
+export function enhance(root) {
+  queryAll(root, '.code-block').forEach(initCodeBlock);
 }
 
-function destroyCodeBlocks(scope) {
-  if (scope.nodeType !== 1) return;
-  if (scope.matches?.('.code-block')) codeBlockInstances.get(scope)?.destroy();
-  scope.querySelectorAll?.('.code-block').forEach((root) => {
-    codeBlockInstances.get(root)?.destroy();
+export function destroy(root) {
+  queryAll(root, '.code-block').forEach((codeBlock) => {
+    codeBlockInstances.get(codeBlock)?.destroy();
   });
 }
 
-initCodeBlocks();
+export const behavior = { name: 'code-block', enhance, destroy };
 
-new MutationObserver((records) => {
-  records.forEach((record) => {
-    record.removedNodes.forEach(destroyCodeBlocks);
-    record.addedNodes.forEach((node) => {
-      if (node.nodeType === 1) initCodeBlocks(node);
-    });
-  });
-}).observe(document, { childList: true, subtree: true });
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

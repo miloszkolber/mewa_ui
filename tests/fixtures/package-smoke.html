@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>mewa_ui package smoke</title>
+  <link rel="stylesheet" href="../../dist/mewa-ui/css/base.css">
+  <link rel="stylesheet" href="../../dist/mewa-ui/css/tokens.css">
+  <link rel="stylesheet" href="../../dist/mewa-ui/css/dialog.css">
+</head>
+<body>
+  <main>
+    <button class="btn" type="button" data-dialog-trigger="package-dialog" aria-haspopup="dialog">Open package dialog</button>
+    <dialog class="dialog" id="package-dialog" aria-labelledby="package-dialog-title">
+      <div class="dialog-content">
+        <div class="dialog-header">
+          <h1 class="dialog-title" id="package-dialog-title">Packaged dialog</h1>
+        </div>
+        <div class="dialog-footer">
+          <button class="btn" type="button" data-dialog-close>Close</button>
+        </div>
+      </div>
+    </dialog>
+    <section data-controller-smoke hidden>
+      <div class="toolbar" role="toolbar" aria-label="Controller toolbar">
+        <button class="toggle" type="button" aria-pressed="false">Bold</button>
+        <button class="btn" type="button">Clear</button>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="../../dist/mewa-ui/auto/dialog.js"></script>
+  <script type="module">
+    import { behavior } from "../../dist/mewa-ui/components/toolbar.js";
+    import { createController } from "../../dist/mewa-ui/index.js";
+
+    const region = document.querySelector("[data-controller-smoke]");
+    const controller = createController(behavior, region);
+    const toggle = region.querySelector(".toggle");
+    toggle.click();
+    document.documentElement.dataset.controllerSmoke = toggle.getAttribute("aria-pressed") === "true"
+      ? "passed"
+      : "failed";
+    controller.destroy();
+
+    const dynamicRegion = document.createElement("section");
+    dynamicRegion.innerHTML = `
+      <button class="btn" type="button" data-dialog-trigger="dynamic-package-dialog">Open dynamic dialog</button>
+      <dialog class="dialog" id="dynamic-package-dialog" aria-label="Dynamic packaged dialog">
+        <button class="btn" type="button" data-dialog-close>Close</button>
+      </dialog>`;
+    document.body.append(dynamicRegion);
+    await new Promise((resolve) => setTimeout(resolve, 25));
+    const dynamicTrigger = dynamicRegion.querySelector("[data-dialog-trigger]");
+    const dynamicDialog = dynamicRegion.querySelector("dialog");
+    dynamicTrigger.click();
+    document.documentElement.dataset.observerSmoke = dynamicTrigger.hasAttribute("data-init") && dynamicDialog.open
+      ? "passed"
+      : "failed";
+    dynamicDialog.close();
+    dynamicRegion.remove();
+  </script>
+</body>
+</html>

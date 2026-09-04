@@ -1,7 +1,12 @@
 // -- Toolbar --------------------------------------------------
 
-function init() {
-  document.querySelectorAll('.toolbar[role="toolbar"]:not([data-init])').forEach((toolbar) => {
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
+export function enhance(root) {
+  queryAll(root, '.toolbar[role="toolbar"]:not([data-init])').forEach((toolbar) => {
   toolbar.dataset.init = '';
   const items = Array.from(
     toolbar.querySelectorAll('button:not(:disabled), a[href], [tabindex]:not([tabindex="-1"])')
@@ -13,7 +18,7 @@ function init() {
   });
 
   toolbar.addEventListener('keydown', (e) => {
-    const current = items.indexOf(document.activeElement);
+    const current = items.indexOf(toolbar.ownerDocument.activeElement);
     if (current === -1) return;
 
     const vertical = toolbar.getAttribute('aria-orientation') === 'vertical';
@@ -44,5 +49,8 @@ function init() {
 });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'toolbar', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

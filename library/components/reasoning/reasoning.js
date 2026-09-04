@@ -1,3 +1,8 @@
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const reasoningInstances = new WeakMap();
 
 function initReasoning(root) {
@@ -46,26 +51,21 @@ function initReasoning(root) {
   });
 }
 
-function initReasoningDisclosures(scope = document) {
-  if (scope.matches?.('.reasoning')) initReasoning(scope);
-  scope.querySelectorAll?.('.reasoning').forEach(initReasoning);
+export function enhance(root) {
+  const disclosures = queryAll(root, '.reasoning');
+  const ancestor = root?.nodeType === 1 ? root.closest?.('.reasoning') : null;
+  if (ancestor) disclosures.push(ancestor);
+  new Set(disclosures).forEach(initReasoning);
 }
 
-function destroyReasoningDisclosures(scope) {
-  if (scope.nodeType !== 1) return;
-  if (scope.matches?.('.reasoning')) reasoningInstances.get(scope)?.destroy();
-  scope.querySelectorAll?.('.reasoning').forEach((root) => {
-    reasoningInstances.get(root)?.destroy();
+export function destroy(root) {
+  queryAll(root, '.reasoning').forEach((disclosure) => {
+    reasoningInstances.get(disclosure)?.destroy();
   });
 }
 
-initReasoningDisclosures();
+export const behavior = { name: 'reasoning', enhance, destroy };
 
-new MutationObserver((records) => {
-  records.forEach((record) => {
-    record.removedNodes.forEach(destroyReasoningDisclosures);
-    record.addedNodes.forEach((node) => {
-      if (node.nodeType === 1) initReasoningDisclosures(node);
-    });
-  });
-}).observe(document, { childList: true, subtree: true });
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

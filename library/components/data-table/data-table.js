@@ -1,5 +1,10 @@
 // -- Data Table ------------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const rootSelector = '.data-table:not([data-init])';
 
 function getMatchingElements(root, selector) {
@@ -14,8 +19,8 @@ function getNumber(value, fallback = 0) {
   return Number.isFinite(number) ? number : fallback;
 }
 
-function init() {
-  document.querySelectorAll(rootSelector).forEach((root) => {
+export function enhance(scope) {
+  queryAll(scope, rootSelector).forEach((root) => {
     root.dataset.init = '';
 
     const table = root.matches('table') ? root : root.querySelector('table');
@@ -327,5 +332,8 @@ function init() {
   });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'data-table', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

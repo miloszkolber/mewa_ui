@@ -1,7 +1,12 @@
 // -- Toggle Group ---------------------------------------------
 
-function init() {
-  document.querySelectorAll('.toggle-group:not([data-init])').forEach((group) => {
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
+export function enhance(root) {
+  queryAll(root, '.toggle-group:not([data-init])').forEach((group) => {
   group.dataset.init = '';
   const type = group.getAttribute('data-type') || 'single';
 
@@ -76,5 +81,8 @@ function init() {
 });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'toggle-group', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

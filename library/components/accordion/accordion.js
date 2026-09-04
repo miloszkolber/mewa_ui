@@ -1,7 +1,12 @@
 // -- Accordion -----------------------------------------------
 
-function init() {
-  document.querySelectorAll('.accordion[data-type="single"]:not([data-init])').forEach((accordion) => {
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
+export function enhance(root) {
+  queryAll(root, '.accordion[data-type="single"]:not([data-init])').forEach((accordion) => {
   accordion.dataset.init = '';
   const items = accordion.querySelectorAll('.accordion-item');
   const collapsible = accordion.hasAttribute('data-collapsible');
@@ -20,5 +25,8 @@ function init() {
 });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'accordion', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

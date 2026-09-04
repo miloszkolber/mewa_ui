@@ -1,3 +1,8 @@
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const messageScrollerInstances = new WeakMap();
 
 function messageScrollerThreshold(root) {
@@ -92,26 +97,21 @@ function initMessageScroller(root) {
   });
 }
 
-function initMessageScrollers(scope = document) {
-  if (scope.matches?.('.message-scroller')) initMessageScroller(scope);
-  scope.querySelectorAll?.('.message-scroller').forEach(initMessageScroller);
+export function enhance(root) {
+  const scrollers = queryAll(root, '.message-scroller');
+  const ancestor = root?.nodeType === 1 ? root.closest?.('.message-scroller') : null;
+  if (ancestor) scrollers.push(ancestor);
+  new Set(scrollers).forEach(initMessageScroller);
 }
 
-function destroyMessageScrollers(scope) {
-  if (scope.nodeType !== 1) return;
-  if (scope.matches?.('.message-scroller')) messageScrollerInstances.get(scope)?.destroy();
-  scope.querySelectorAll?.('.message-scroller').forEach((root) => {
-    messageScrollerInstances.get(root)?.destroy();
+export function destroy(root) {
+  queryAll(root, '.message-scroller').forEach((scroller) => {
+    messageScrollerInstances.get(scroller)?.destroy();
   });
 }
 
-initMessageScrollers();
+export const behavior = { name: 'message-scroller', enhance, destroy };
 
-new MutationObserver((records) => {
-  records.forEach((record) => {
-    record.removedNodes.forEach(destroyMessageScrollers);
-    record.addedNodes.forEach((node) => {
-      if (node.nodeType === 1) initMessageScrollers(node);
-    });
-  });
-}).observe(document, { childList: true, subtree: true });
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

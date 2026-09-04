@@ -1,13 +1,26 @@
 // -- Tooltip --------------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const DELAY_DEFAULT = 500;
 const GROUP_TIMEOUT = 400;
-const ANCHOR_SUPPORTED = typeof CSS !== 'undefined'
-  && !!CSS.supports
-  && CSS.supports('position-area', 'top');
 
 let groupOpen = false;
 let groupTimer = null;
+const triggerStates = new WeakMap();
+const initializedTriggers = new Set();
+
+function documentView(doc) {
+  return doc.defaultView || (typeof window === 'undefined' ? null : window);
+}
+
+function supportsAnchorPosition(element) {
+  const css = documentView(element.ownerDocument)?.CSS;
+  return Boolean(css?.supports && css.supports('position-area', 'top'));
+}
 
 function markGroupOpen() {
   groupOpen = true;
@@ -30,6 +43,8 @@ function positionFallback(tip, trigger) {
   const triggerRect = trigger.getBoundingClientRect();
   const tipRect = tip.getBoundingClientRect();
   if (!tipRect.width || !tipRect.height) return;
+  const view = documentView(trigger.ownerDocument);
+  if (!view) return;
 
   const side = tip.dataset.side || 'top';
   const align = tip.dataset.align || 'center';
@@ -53,8 +68,8 @@ function positionFallback(tip, trigger) {
     else top = triggerRect.top + (triggerRect.height - tipRect.height) / 2;
   }
 
-  top = Math.max(4, Math.min(top, window.innerHeight - tipRect.height - 4));
-  left = Math.max(4, Math.min(left, window.innerWidth - tipRect.width - 4));
+  top = Math.max(4, Math.min(top, view.innerHeight - tipRect.height - 4));
+  left = Math.max(4, Math.min(left, view.innerWidth - tipRect.width - 4));
   tip.style.top = `${top}px`;
   tip.style.left = `${left}px`;
 }
@@ -81,71 +96,11 @@ function syncArrowSide(tip, trigger) {
   tip.style.setProperty('--tooltip-arrow-side', arrowSide);
 }
 
-function init() {
-  document.querySelectorAll('[data-tooltip-trigger]:not([data-init])').forEach((trigger) => {
-    trigger.dataset.init = '';
-    const tip = document.getElementById(trigger.dataset.tooltipTrigger);
-    if (!tip || !tip.classList.contains('tooltip')) {
-      delete trigger.dataset.init;
-      return;
-    }
-
-    const anchorId = `--tooltip-${tip.id.replace(/[^a-zA-Z0-9_-]/g, '-')}`;
-    trigger.style.anchorName = anchorId;
-    tip.style.positionAnchor = anchorId;
-    trigger.setAttribute('aria-describedby', tip.id);
-
-    tip.addEventListener('toggle', () => {
-      if (!tip.matches(':popover-open')) return;
-      requestAnimationFrame(() => requestAnimationFrame(() => syncArrowSide(tip, trigger)));
-    });
-
-    const delayDisabled = trigger.dataset.delay === '0';
-    let openTimer = null;
-    let closeTimer = null;
-
-    function show() {
-      clearTimeout(closeTimer);
-      clearTimeout(openTimer);
-      const wait = groupOpen || delayDisabled ? 0 : DELAY_DEFAULT;
-      openTimer = setTimeout(() => {
-        try {
-          if (!tip.matches(':popover-open')) tip.showPopover();
-        } catch {
-          return;
-        }
-        if (!ANCHOR_SUPPORTED) positionFallback(tip, trigger);
-        markGroupOpen();
-      }, wait);
-    }
-
-    function hide() {
-      clearTimeout(openTimer);
-      clearTimeout(closeTimer);
-      closeTimer = setTimeout(() => {
-        try {
-          tip.hidePopover();
-        } catch {
-          // The native popover can already be closed.
-        }
-        scheduleGroupReset();
-      }, 0);
-    }
-
-    trigger.addEventListener('mouseenter', show);
-    trigger.addEventListener('mouseleave', hide);
-    trigger.addEventListener('focus', show);
-    trigger.addEventListener('blur', hide);
-  });
-}
-
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
-
-if (!document.__tooltipScrollInit) {
-  document.__tooltipScrollInit = true;
-  document.addEventListener('scroll', () => {
-    document.querySelectorAll('.tooltip:popover-open').forEach((tip) => {
+function installScrollListener(doc) {
+  if (doc.__tooltipScrollInit) return;
+  doc.__tooltipScrollInit = true;
+  doc.addEventListener('scroll', () => {
+    doc.querySelectorAll('.tooltip:popover-open').forEach((tip) => {
       try {
         tip.hidePopover();
       } catch {
@@ -155,3 +110,157 @@ if (!document.__tooltipScrollInit) {
     scheduleGroupReset();
   }, { passive: true, capture: true });
 }
+
+function resolveTooltip(trigger) {
+  const id = trigger?.dataset?.tooltipTrigger;
+  if (!id) return null;
+  const tip = trigger.ownerDocument?.getElementById(id);
+  return tip?.classList?.contains('tooltip') ? tip : null;
+}
+
+function unbindTooltip(state) {
+  clearTimeout(state.openTimer);
+  clearTimeout(state.closeTimer);
+  state.openTimer = null;
+  state.closeTimer = null;
+  if (state.tip && state.onToggle) {
+    state.tip.removeEventListener('toggle', state.onToggle);
+    state.tip.style.positionAnchor = '';
+  }
+  if (state.describedBy.size) {
+    state.trigger.setAttribute('aria-describedby', Array.from(state.describedBy).join(' '));
+  } else {
+    state.trigger.removeAttribute('aria-describedby');
+  }
+  state.trigger.style.anchorName = '';
+  state.tip = null;
+  state.onToggle = null;
+}
+
+function bindTooltip(state, tip) {
+  const { trigger } = state;
+  const anchorId = `--tooltip-${tip.id.replace(/[^a-zA-Z0-9_-]/g, '-')}`;
+  trigger.style.anchorName = anchorId;
+  tip.style.positionAnchor = anchorId;
+  trigger.setAttribute('aria-describedby', Array.from(new Set([...state.describedBy, tip.id])).join(' '));
+
+  state.tip = tip;
+  state.onToggle = () => {
+    if (state.tip !== tip || !tip.matches(':popover-open')) return;
+    const view = documentView(tip.ownerDocument);
+    const frame = view?.requestAnimationFrame?.bind(view) || ((callback) => setTimeout(callback, 0));
+    frame(() => frame(() => {
+      if (state.tip === tip) syncArrowSide(tip, trigger);
+    }));
+  };
+  tip.addEventListener('toggle', state.onToggle);
+}
+
+function cleanupTooltipTrigger(trigger) {
+  const state = triggerStates.get(trigger);
+  if (!state) return;
+  unbindTooltip(state);
+  trigger.removeEventListener('mouseenter', state.show);
+  trigger.removeEventListener('mouseleave', state.hide);
+  trigger.removeEventListener('focus', state.show);
+  trigger.removeEventListener('blur', state.hide);
+  delete trigger.dataset.init;
+  triggerStates.delete(trigger);
+  initializedTriggers.delete(trigger);
+}
+
+function rebindTooltipTargets() {
+  initializedTriggers.forEach((trigger) => {
+    const state = triggerStates.get(trigger);
+    if (!state || !trigger.isConnected) {
+      cleanupTooltipTrigger(trigger);
+      return;
+    }
+
+    const tip = resolveTooltip(trigger);
+    if (state.tip === tip) return;
+    unbindTooltip(state);
+    if (tip) bindTooltip(state, tip);
+  });
+}
+
+function initTooltipTrigger(trigger) {
+  const tip = resolveTooltip(trigger);
+  if (!tip) return;
+
+  const state = {
+    trigger,
+    describedBy: new Set((trigger.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean)),
+    tip: null,
+    onToggle: null,
+    openTimer: null,
+    closeTimer: null,
+    show: null,
+    hide: null
+  };
+  const delayDisabled = trigger.dataset.delay === '0';
+
+  state.show = () => {
+    clearTimeout(state.closeTimer);
+    clearTimeout(state.openTimer);
+    const wait = groupOpen || delayDisabled ? 0 : DELAY_DEFAULT;
+    state.openTimer = setTimeout(() => {
+      const currentTip = state.tip;
+      if (!currentTip?.isConnected) return;
+      try {
+        if (!currentTip.matches(':popover-open')) currentTip.showPopover();
+      } catch {
+        return;
+      }
+      if (!supportsAnchorPosition(trigger)) positionFallback(currentTip, trigger);
+      markGroupOpen();
+    }, wait);
+  };
+
+  state.hide = () => {
+    clearTimeout(state.openTimer);
+    clearTimeout(state.closeTimer);
+    state.closeTimer = setTimeout(() => {
+      const currentTip = state.tip;
+      if (!currentTip) return;
+      try {
+        currentTip.hidePopover();
+      } catch {
+        // The native popover can already be closed.
+      }
+      scheduleGroupReset();
+    }, 0);
+  };
+
+  trigger.dataset.init = '';
+  trigger.addEventListener('mouseenter', state.show);
+  trigger.addEventListener('mouseleave', state.hide);
+  trigger.addEventListener('focus', state.show);
+  trigger.addEventListener('blur', state.hide);
+  triggerStates.set(trigger, state);
+  initializedTriggers.add(trigger);
+  bindTooltip(state, tip);
+}
+
+export function enhance(root) {
+  const scope = root || (typeof document === 'undefined' ? null : document);
+  const doc = scope?.nodeType === 9 ? scope : scope?.ownerDocument;
+  if (doc) installScrollListener(doc);
+  if (!scope || !doc) return;
+
+  const tips = queryAll(scope, '.tooltip[id]');
+  const triggerScope = tips.length ? doc : scope;
+  queryAll(triggerScope, '[data-tooltip-trigger]:not([data-init])').forEach(initTooltipTrigger);
+  rebindTooltipTargets();
+}
+
+export function destroy(root) {
+  queryAll(root, '[data-tooltip-trigger]').forEach(cleanupTooltipTrigger);
+  rebindTooltipTargets();
+}
+
+export const behavior = { name: 'tooltip', enhance, destroy };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

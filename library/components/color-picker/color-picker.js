@@ -1,5 +1,10 @@
 // -- Color Picker -----------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const HEX_PATTERN = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i;
 
 function normalizeHex(raw) {
@@ -14,8 +19,8 @@ function normalizeHex(raw) {
   return `#${expanded.toLowerCase()}`;
 }
 
-function init() {
-  document.querySelectorAll('.color-picker:not([data-init])').forEach((root) => {
+export function enhance(scope) {
+  queryAll(scope, '.color-picker:not([data-init])').forEach((root) => {
     root.dataset.init = '';
 
     const colorInput = root.querySelector('.color-picker-input[type="color"]');
@@ -88,5 +93,8 @@ function init() {
   });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'color-picker', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

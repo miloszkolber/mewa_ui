@@ -1,5 +1,10 @@
 // -- Date Picker ------------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const weekdayFormatter = new Intl.DateTimeFormat(undefined, { weekday: 'short' });
 const longWeekdayFormatter = new Intl.DateTimeFormat(undefined, { weekday: 'long' });
 const monthFormatter = new Intl.DateTimeFormat(undefined, { month: 'long' });
@@ -53,6 +58,7 @@ const focusDate = (datePicker, value) => {
 };
 
 const renderDatePicker = (el, year, month, selectedDay) => {
+  const documentRoot = el.ownerDocument;
   const heading = el.querySelector('.date-picker-heading');
   const grid = el.querySelector('.date-picker-grid');
   if (!grid) return;
@@ -66,11 +72,11 @@ const renderDatePicker = (el, year, month, selectedDay) => {
   grid.setAttribute('role', 'grid');
   grid.setAttribute('aria-label', headingText);
 
-  const thead = document.createElement('thead');
-  const headerRow = document.createElement('tr');
+  const thead = documentRoot.createElement('thead');
+  const headerRow = documentRoot.createElement('tr');
   headerRow.setAttribute('role', 'row');
   DAYS.forEach((day, index) => {
-    const label = document.createElement('th');
+    const label = documentRoot.createElement('th');
     label.className = 'date-picker-day-label';
     label.setAttribute('role', 'columnheader');
     label.scope = 'col';
@@ -80,22 +86,22 @@ const renderDatePicker = (el, year, month, selectedDay) => {
   });
   thead.append(headerRow);
 
-  const tbody = document.createElement('tbody');
+  const tbody = documentRoot.createElement('tbody');
   const total = daysInMonth(year, month);
   const startDay = new Date(year, month, 1).getDay();
   const rows = Math.ceil((startDay + total) / 7);
   let hasTabStop = false;
 
   for (let row = 0; row < rows; row++) {
-    const tableRow = document.createElement('tr');
+    const tableRow = documentRoot.createElement('tr');
     tableRow.setAttribute('role', 'row');
     for (let column = 0; column < 7; column++) {
       const cellIndex = row * 7 + column;
       const date = new Date(year, month, cellIndex - startDay + 1);
       const outside = date.getMonth() !== month;
       const selected = !outside && date.getDate() === selectedDay;
-      const cell = document.createElement('td');
-      const button = document.createElement('button');
+      const cell = documentRoot.createElement('td');
+      const button = documentRoot.createElement('button');
 
       cell.className = 'date-picker-day';
       cell.setAttribute('role', 'gridcell');
@@ -131,8 +137,8 @@ const renderDatePicker = (el, year, month, selectedDay) => {
   grid.replaceChildren(thead, tbody);
 };
 
-function init() {
-  document.querySelectorAll('.date-picker:not([data-init])').forEach((datePicker) => {
+export function enhance(root) {
+  queryAll(root, '.date-picker:not([data-init])').forEach((datePicker) => {
     datePicker.dataset.init = '';
     const now = new Date();
     const state = {
@@ -207,5 +213,8 @@ function init() {
   });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'date-picker', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

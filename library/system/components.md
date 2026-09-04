@@ -8,6 +8,7 @@ Read `registry.json` for the complete component inventory.
 
 Read the matching component skill before you write markup.
 
+<!-- REGISTRY-FIELDS:START -->
 ## Registry fields
 
 Use `purpose` to identify the component responsibility.
@@ -20,11 +21,19 @@ Use `fallback` to select the simpler alternative.
 
 Use `jsMode` to decide whether a module is required.
 
-Use `files` to load the exact assets.
+Use `files` to load the exact source assets.
+
+Use `styleDependencies` to load component presentation dependencies.
+
+Use `behaviorDependencies` to load required controller dependencies.
+
+Use `assets` to load optional fonts, icons, or other files.
 
 Use `stability` before you depend on a component contract.
 
 Do not infer these values from the component name.
+
+<!-- REGISTRY-FIELDS:END -->
 
 ## Selection order
 

@@ -18,7 +18,7 @@ A text fallback remains available when the image is missing or fails to load.
 
 - [`<img>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img) provides image loading and alternative text.
 - [`error`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/error_event) reports a failed image load.
-- [`MutationObserver`](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) initializes avatar images inserted after navigation.
+- The shared enhancer uses [`MutationObserver`](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) to initialize avatar images inserted after navigation.
 
 ## Structure
 

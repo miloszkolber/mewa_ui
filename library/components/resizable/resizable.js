@@ -1,5 +1,10 @@
 /* -- Resizable component ----------------------------------------- */
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const DEFAULT_MIN = 0;
 const DEFAULT_MAX = 100;
 const DEFAULT_VALUE = 35;
@@ -16,6 +21,30 @@ const ENHANCED_ATTRIBUTES = [
   'aria-valuetext'
 ];
 const instances = new WeakMap();
+const resizeFallbacks = new WeakMap();
+
+function registerResizeFallback(ownerDocument, callback) {
+  const view = ownerDocument.defaultView
+    || (typeof window === 'undefined' ? null : window);
+  if (!view) return () => {};
+
+  let fallback = resizeFallbacks.get(ownerDocument);
+  if (!fallback) {
+    const callbacks = new Set();
+    const onResize = () => callbacks.forEach((entry) => entry());
+    view.addEventListener('resize', onResize);
+    fallback = { callbacks, onResize, view };
+    resizeFallbacks.set(ownerDocument, fallback);
+  }
+
+  fallback.callbacks.add(callback);
+  return () => {
+    fallback.callbacks.delete(callback);
+    if (fallback.callbacks.size) return;
+    fallback.view.removeEventListener('resize', fallback.onResize);
+    resizeFallbacks.delete(ownerDocument);
+  };
+}
 
 function readNumber(element, attribute, fallback) {
   if (!element) return fallback;
@@ -73,7 +102,7 @@ function getOutput(root) {
 }
 
 function createOutput(root) {
-  const output = document.createElement('output');
+  const output = root.ownerDocument.createElement('output');
   output.className = 'resizable-output';
   output.setAttribute('aria-live', 'polite');
   output.setAttribute('aria-atomic', 'true');
@@ -82,19 +111,19 @@ function createOutput(root) {
 }
 
 function createPointerControls(root, output, valueLabel) {
-  const controls = document.createElement('div');
+  const controls = root.ownerDocument.createElement('div');
   controls.className = 'resizable-controls';
   controls.setAttribute('data-resizable-controls', '');
   controls.setAttribute('aria-label', `Resize ${valueLabel}`);
 
-  const decrease = document.createElement('button');
+  const decrease = root.ownerDocument.createElement('button');
   decrease.className = 'resizable-step';
   decrease.setAttribute('type', 'button');
   decrease.setAttribute('data-resizable-decrease', '');
   decrease.setAttribute('aria-label', `Decrease ${valueLabel}`);
   decrease.textContent = '−';
 
-  const increase = document.createElement('button');
+  const increase = root.ownerDocument.createElement('button');
   increase.className = 'resizable-step';
   increase.setAttribute('type', 'button');
   increase.setAttribute('data-resizable-increase', '');
@@ -106,8 +135,14 @@ function createPointerControls(root, output, valueLabel) {
   return { controls, decrease, increase };
 }
 
-function init() {
-  document.querySelectorAll('.resizable:not([data-init])').forEach((root) => {
+export function enhance(scope) {
+  const roots = queryAll(scope, '.resizable:not([data-init])');
+  const ancestor = scope?.nodeType === 1
+    ? scope.closest?.('.resizable:not([data-init])')
+    : null;
+  if (ancestor) roots.push(ancestor);
+
+  new Set(roots).forEach((root) => {
     root.dataset.init = '';
 
     const group = root.querySelector('.resizable-group');
@@ -354,11 +389,14 @@ function init() {
       if (active) setPanelBasis(value);
     };
     let resizeObserver = null;
-    if (typeof ResizeObserver === 'function') {
-      resizeObserver = new ResizeObserver(updateLayout);
+    let removeResizeFallback = null;
+    const ResizeObserverConstructor = root.ownerDocument.defaultView?.ResizeObserver
+      || (typeof ResizeObserver === 'function' ? ResizeObserver : null);
+    if (ResizeObserverConstructor) {
+      resizeObserver = new ResizeObserverConstructor(updateLayout);
       resizeObserver.observe(group);
     } else {
-      window.addEventListener('resize', updateLayout);
+      removeResizeFallback = registerResizeFallback(root.ownerDocument, updateLayout);
     }
 
     function cleanup() {
@@ -370,7 +408,7 @@ function init() {
       pointerControls.increase.removeEventListener('click', onIncrease);
       pointerControls.controls.remove();
       if (resizeObserver) resizeObserver.disconnect();
-      else window.removeEventListener('resize', updateLayout);
+      else removeResizeFallback?.();
       restoreAttributes(handle, handleAttributes);
       if (groupOrientation === null) group.removeAttribute('data-orientation');
       else group.setAttribute('data-orientation', groupOrientation);
@@ -393,18 +431,14 @@ function init() {
   });
 }
 
-function cleanupRemovedNode(node) {
-  if (node.nodeType !== Node.ELEMENT_NODE) return;
-  const roots = node.matches('.resizable')
-    ? [node, ...node.querySelectorAll('.resizable')]
-    : [...node.querySelectorAll('.resizable')];
-  roots.forEach((root) => {
-    if (!root.isConnected) instances.get(root)?.();
+export function destroy(root) {
+  queryAll(root, '.resizable').forEach((resizable) => {
+    instances.get(resizable)?.();
   });
 }
 
-init();
-new MutationObserver((records) => {
-  records.forEach((record) => record.removedNodes.forEach(cleanupRemovedNode));
-  init();
-}).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'resizable', enhance, destroy };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

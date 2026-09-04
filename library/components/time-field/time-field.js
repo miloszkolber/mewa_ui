@@ -1,5 +1,10 @@
 // -- Time Field -------------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const TIME_PARTS = {
   hour: { minimum: 1, maximum: 12, fallback: 12, label: 'Hour' },
   minute: { minimum: 0, maximum: 59, fallback: 0, label: 'Minute' }
@@ -64,17 +69,17 @@ function setSegmentValidity(field, state, settings) {
   );
 }
 
-function init() {
-  document.querySelectorAll('.time-field:not([data-init])').forEach((root) => {
-    root.dataset.init = '';
+export function enhance(root) {
+  queryAll(root, '.time-field:not([data-init])').forEach((timeField) => {
+    timeField.dataset.init = '';
 
-    const hour = findPart(root, 'hour');
-    const minute = findPart(root, 'minute');
-    const period = findPart(root, 'period');
-    const submitted = findPart(root, 'value');
-    const status = findPart(root, 'status');
+    const hour = findPart(timeField, 'hour');
+    const minute = findPart(timeField, 'minute');
+    const period = findPart(timeField, 'period');
+    const submitted = findPart(timeField, 'value');
+    const status = findPart(timeField, 'status');
     if (!hour || !minute || !period) {
-      root.removeAttribute('data-init');
+      timeField.removeAttribute('data-init');
       return;
     }
 
@@ -108,7 +113,7 @@ function init() {
       }
 
       if (emit) {
-        root.dispatchEvent(new CustomEvent('time-field:change', {
+        timeField.dispatchEvent(new CustomEvent('time-field:change', {
           bubbles: true,
           detail: {
             value: serialized,
@@ -167,7 +172,7 @@ function init() {
     period.addEventListener('input', () => handleChange(period, ''));
     period.addEventListener('change', () => handleChange(period, ''));
 
-    const form = root.closest('form');
+    const form = timeField.closest('form');
     if (form) {
       form.addEventListener('reset', () => {
         queueMicrotask(() => {
@@ -184,5 +189,8 @@ function init() {
   });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'time-field', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

@@ -1,8 +1,8 @@
 # mewa_ui
 
-mewa_ui is a small, framework-free interface library for utility applications. It combines semantic HTML, tokenized CSS, local SVG icons, and focused JavaScript modules without adding a production build step.
+mewa_ui is a small, framework-neutral interface library for utility applications. It combines semantic HTML, tokenized CSS, local SVG icons, and focused native JavaScript controllers.
 
-The library grew out of a practical need: several compact tools should feel like parts of the same product without sharing a framework or copying whole pages between repositories.
+The library grew out of a practical need: several compact tools should feel like parts of the same product without requiring the same framework or copying whole pages between repositories.
 
 ## Character
 
@@ -21,23 +21,46 @@ The repository contains 80 components, from basic controls and form fields to da
 
 Browse the examples in [`docs/`](docs/). The complete machine-readable inventory lives in [`registry.json`](registry.json).
 
-## Using the library
+## Get a release from GitHub
 
-Load the foundations before component styles:
+Each tagged [GitHub release](https://github.com/miloszkolber/mewa_ui/releases) provides two ready-to-host archives:
+
+- `mewa-ui-<version>.tar.gz` contains foundations, per-component CSS, native controllers, automatic enhancers, types, and the package manifest.
+- `mewa-icons-<version>.tar.gz` contains the complete SVG icon set as a separate, optional download.
+
+Download and extract only the archive that the application needs. The release files are ordinary web assets; an application does not need npm or a framework to use them.
+
+For plain HTML, load the foundations and one dependency-aware component stylesheet:
 
 ```html
-<link rel="stylesheet" href="/ui/library/src/base.css">
-<link rel="stylesheet" href="/ui/library/src/tokens.css">
-<link rel="stylesheet" href="/ui/library/components/button/button.css">
+<link rel="stylesheet" href="/vendor/mewa-ui/css/base.css">
+<link rel="stylesheet" href="/vendor/mewa-ui/css/tokens.css">
+<link rel="stylesheet" href="/vendor/mewa-ui/css/dialog.css">
+<script type="module" src="/vendor/mewa-ui/auto/dialog.js"></script>
 ```
 
-Add a component module only when its registry entry marks JavaScript as required or optional:
+Fonts are opt-in. Load `fonts/geist-sans.css` or `fonts/geist-mono.css` when the application does not already provide suitable typefaces.
 
-```html
-<script type="module" src="/ui/library/components/dialog/dialog.js"></script>
+For an application with its own lifecycle, import a side-effect-free controller and enhance only the mounted region:
+
+```js
+import { behavior } from "/vendor/mewa-ui/components/dialog.js";
+import { createController } from "/vendor/mewa-ui/index.js";
+
+const dialogRegion = document.querySelector("[data-settings-region]");
+const dialogController = createController(behavior, dialogRegion);
+
+// Call this when the application unmounts the region.
+dialogController.destroy();
 ```
 
-The CSS and JavaScript are shipped directly. There is no compilation step and no runtime dependency.
+This controller API works with plain JavaScript and can sit behind a framework adapter. The `components/` entries compose the behavior dependencies declared in the manifest; the lower-level `controllers/` entries expose only one component's own behavior.
+
+Call `destroy()` before a framework unmounts the region. It runs every cleanup hook the composed behaviors provide. Behaviors without a cleanup hook use element-owned listeners that become collectible only after the application releases all references to those elements.
+
+Document-level adapters are installed once and remain shared for the document lifetime. The core package has no runtime dependency and does not impose a framework lifecycle.
+
+Use `css/all.css` and `auto.js` for a quick prototype that needs the complete library. Production applications should load only their component entries.
 
 ## Repository guide
 
@@ -58,26 +81,31 @@ The repository keeps description separate from instruction.
 - [`PROMPT.md`](PROMPT.md) starts an application compliance review.
 - [`llms.txt`](llms.txt) is the compact machine router.
 
-### Sources and metadata
+### Sources and generated output
 
 ```text
 mewa_ui/
 ├── library/
 │   ├── DESIGN.md               canonical design instructions
-│   ├── components/             component contracts and implementations
+│   ├── components/             authored component contracts and implementations
+│   ├── runtime/                shared controller and enhancement lifecycle
 │   ├── src/                    foundations, fonts, and local icons
 │   └── system/                 selection and composition instructions
 ├── docs/                       static reference pages
-├── registry.json               component, asset, and token metadata
+├── scripts/                    reproducible catalog and distribution builders
+├── dist/                       ignored, generated release packages
+├── registry.json               component, dependency, asset, and token metadata
 ├── README.md                   human overview
 ├── AGENTS.md                   maintainer instructions
 ├── PROMPT.md                   application review prompt
 └── llms.txt                    machine routing index
 ```
 
+`library/` is the only authored implementation tree. The build generates `dist/` from that source and never modifies the source files.
+
 ## Design approach
 
-mewa_ui starts with the browser. Links navigate, buttons act, native controls keep their semantics, and ARIA fills real gaps instead of replacing HTML. JavaScript enhances that base and stays local to the component that needs it.
+mewa_ui starts with the browser. Links navigate, buttons act, native controls keep their semantics, and ARIA fills real gaps instead of replacing HTML. JavaScript enhances that base and stays scoped to the component that needs it.
 
 Application shells are compositions rather than templates. App Shell, Sidebar, Layout, navigation components, and native landmarks provide the pieces; each product keeps ownership of its routes and page-specific composition.
 
@@ -85,25 +113,26 @@ Accessibility is part of the component contract. Keyboard behavior, focus, contr
 
 ## Development
 
-Install the single development dependency and run the contract suites:
+Node.js 24 or later is the only required build runtime. Build and verify the release packages without installing dependencies:
 
 ```sh
-npm install
-npm test
+node --run build
+node --run test
 ```
 
-When Chromium is available, run the documentation smoke test as well:
+The generated archives are published only through GitHub Releases. The workspace and both generated packages are marked private so an accidental npm publication is rejected.
+
+The browser smoke suite is the one development check that needs an installed tool. Install the locked Puppeteer dependency and run it when Chromium is available:
 
 ```sh
-npm run test:browser
+npm ci
+node --run test:browser
 ```
 
-The catalog check verifies that generated references still match [`registry.json`](registry.json):
-
-```sh
-npm run catalog:check
-```
+npm is therefore a development convenience for the browser test, not a distribution channel or a runtime requirement.
 
 ## License
 
-mewa_ui is available under the [MIT License](LICENSE).
+mewa_ui's authored code and documentation are available under the [MIT License](LICENSE).
+
+Bundled Geist font files use the [SIL Open Font License 1.1](library/src/licenses/GEIST-OFL.txt). Lucide icons and derived Feather icons retain their [upstream ISC and MIT notices](library/src/licenses/LUCIDE-LICENSE.txt). The generated GitHub archives include the applicable notices.

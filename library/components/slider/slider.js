@@ -1,5 +1,10 @@
 /* -- Slider component ------------------------------------------- */
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 function updateSliderValue(el) {
   const min = parseFloat(el.min || 0);
   const max = parseFloat(el.max || 100);
@@ -8,13 +13,16 @@ function updateSliderValue(el) {
   el.style.setProperty('--slider-value', `${percent}%`);
 }
 
-function init() {
-  document.querySelectorAll('.slider:not([data-init])').forEach((el) => {
+export function enhance(root) {
+  queryAll(root, '.slider:not([data-init])').forEach((el) => {
     el.dataset.init = '';
     updateSliderValue(el);
     el.addEventListener('input', () => updateSliderValue(el));
   });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'slider', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

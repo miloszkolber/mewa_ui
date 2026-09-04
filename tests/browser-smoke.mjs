@@ -62,7 +62,7 @@ function safeTarget(requestUrl) {
   if (target !== root && !target.startsWith(`${root}${path.sep}`)) return null;
 
   const relative = path.relative(root, target);
-  const allowed = ["library", "docs", "registry.json"];
+  const allowed = ["library", "docs", "dist", "tests/fixtures", "registry.json"];
   if (!allowed.some((name) => relative === name || relative.startsWith(`${name}${path.sep}`))) return null;
   return target;
 }
@@ -180,6 +180,34 @@ async function inspect(page, baseUrl, slug, viewport, theme = "light") {
   page.off("pageerror", onPageError);
 }
 
+async function inspectPackage(page, baseUrl) {
+  const errors = [];
+  page.on("console", (message) => {
+    if (message.type() === "error") errors.push(`console: ${message.text()}`);
+  });
+  page.on("pageerror", (error) => errors.push(`page: ${error.message}`));
+
+  const response = await page.goto(`${baseUrl}/tests/fixtures/package-smoke.html`, { waitUntil: "networkidle0" });
+  assert(response?.ok(), `package smoke: HTTP ${response?.status()}`);
+  await page.click('[data-dialog-trigger="package-dialog"]');
+  assert.equal(await page.$eval("#package-dialog", (dialog) => dialog.open), true, "packaged auto enhancer did not open the dialog");
+  await page.keyboard.press("Escape");
+  assert.equal(await page.$eval("#package-dialog", (dialog) => dialog.open), false, "packaged dialog did not close with Escape");
+
+  await page.waitForFunction(() => document.documentElement.dataset.controllerSmoke && document.documentElement.dataset.observerSmoke);
+  assert.equal(
+    await page.evaluate(() => document.documentElement.dataset.controllerSmoke),
+    "passed",
+    "packaged dependency-aware controller did not enhance its region"
+  );
+  assert.equal(
+    await page.evaluate(() => document.documentElement.dataset.observerSmoke),
+    "passed",
+    "shared observer did not enhance inserted package markup"
+  );
+  assert.deepEqual(errors, [], `package smoke: ${errors.join(" | ")}`);
+}
+
 let server;
 let baseUrl = configuredBaseUrl;
 
@@ -218,8 +246,11 @@ try {
       await inspect(page, baseUrl, slug, coreViewports[1], "dark");
     }
 
+    await inspectPackage(page, baseUrl);
+
     console.log(`PASS browser smoke for ${registry.components.length} component pages`);
     console.log(`PASS responsive matrix for ${representativeSlugs.length} representative pages`);
+    console.log("PASS generated GitHub package auto, observer, and controller entries in a browser");
   } finally {
     await browser.close();
   }

@@ -1,5 +1,10 @@
 // -- Date Range Picker ------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const DATE_VALUE = /^\d{4}-\d{2}-\d{2}$/;
 const ORDER_MESSAGE = 'End date must be on or after the start date.';
 const dateFormatter = new Intl.DateTimeFormat(undefined, {
@@ -74,8 +79,8 @@ const restoreAttribute = (element, name, state) => {
 
 const hasCustomError = (input) => Boolean(input.validity && input.validity.customError);
 
-function init() {
-  document.querySelectorAll('.date-range-picker:not([data-init])').forEach((picker) => {
+export function enhance(root) {
+  queryAll(root, '.date-range-picker:not([data-init])').forEach((picker) => {
     picker.dataset.init = '';
 
     const start = picker.querySelector('[data-range-start]');
@@ -296,5 +301,8 @@ function init() {
   });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'date-range-picker', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

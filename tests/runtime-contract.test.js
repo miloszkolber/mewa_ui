@@ -1,8 +1,8 @@
 "use strict";
 
 // This is a dependency-free runtime contract for the current component modules.
-// It uses a deliberately small DOM implementation so the optional enhancements
-// can be exercised in Node without a browser binary or a package dependency.
+// It adapts authored ES modules to a deliberately small DOM so enhancement
+// behavior can be exercised in Node without a browser binary.
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -514,6 +514,26 @@ function createRuntime() {
   const document = new Document();
   const window = new WindowLike();
   window.document = document;
+  const timers = new Map();
+  let nextTimerId = 0;
+
+  function setTimeoutLike(callback) {
+    const id = ++nextTimerId;
+    timers.set(id, callback);
+    return id;
+  }
+
+  function clearTimeoutLike(id) {
+    timers.delete(id);
+  }
+
+  function flushTimers() {
+    while (timers.size) {
+      const pending = Array.from(timers.entries());
+      timers.clear();
+      pending.forEach(([, callback]) => callback());
+    }
+  }
 
   class MutationObserverLike {
     constructor(callback) {
@@ -543,6 +563,36 @@ function createRuntime() {
     disconnect() {}
   }
 
+  const behaviors = new Map();
+  let sharedObserver = null;
+
+  function queryAll(root, selector) {
+    if (!root) return [];
+    const matches = [];
+    if (root.nodeType === 1 && root.matches?.(selector)) matches.push(root);
+    if (typeof root.querySelectorAll === "function") matches.push(...root.querySelectorAll(selector));
+    return matches;
+  }
+
+  function registerBehavior(behavior) {
+    behaviors.set(behavior.name, behavior);
+    behavior.enhance(document);
+    if (!sharedObserver) {
+      sharedObserver = new MutationObserverLike((records) => {
+        records.forEach((record) => {
+          record.removedNodes.forEach((removed) => behaviors.forEach((entry) => entry.destroy?.(removed)));
+          record.addedNodes.forEach((added) => {
+            if (added.nodeType === 1 || added.nodeType === 11) {
+              behaviors.forEach((entry) => entry.enhance(added));
+            }
+          });
+        });
+      });
+      sharedObserver.observe(document, { childList: true, subtree: true });
+    }
+    return () => behaviors.delete(behavior.name);
+  }
+
   const context = {
     document,
     window,
@@ -551,10 +601,14 @@ function createRuntime() {
     Node: { ELEMENT_NODE: 1 },
     MutationObserver: MutationObserverLike,
     ResizeObserver: ResizeObserverLike,
+    setTimeout: setTimeoutLike,
+    clearTimeout: clearTimeoutLike,
+    queryAll,
+    registerBehavior,
     queueMicrotask: (callback) => callback(),
     console
   };
-  return { document, window, context };
+  return { document, window, context, behaviors, flushTimers };
 }
 
 function node(tag, attributes = {}, text) {
@@ -577,12 +631,19 @@ function listeners(target, type) {
   return (target.listeners[type] || []).length;
 }
 
+function moduleAsHarnessScript(source) {
+  return source
+    .replace(/^\s*import\s+[^;]+;\s*$/gm, "")
+    .replace(/^\s*export\s+(?=(?:async\s+)?function|const|let|class)/gm, "")
+    .replace(/^\s*export\s*\{[^}]*\};?\s*$/gm, "");
+}
+
 function loadModule(slug, componentRoot) {
   const runtime = createRuntime();
   runtime.document.body.append(componentRoot);
   const filename = path.join(componentsDir, slug, `${slug}.js`);
   const source = fs.readFileSync(filename, "utf8");
-  new vm.Script(source, { filename }).runInNewContext(runtime.context);
+  new vm.Script(moduleAsHarnessScript(source), { filename }).runInNewContext(runtime.context);
   return { ...runtime, root: componentRoot };
 }
 
@@ -598,7 +659,7 @@ function test(name, callback) {
   }
 }
 
-test("canonical enhancement modules are present and parse as browser scripts", () => {
+test("canonical enhancement modules expose the shared ES module contract", () => {
   const files = fs.readdirSync(componentsDir, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => path.join(componentsDir, entry.name, `${entry.name}.js`))
@@ -606,8 +667,12 @@ test("canonical enhancement modules are present and parse as browser scripts", (
 
   assert(files.length > 0, "expected current component modules");
   files.forEach((filename) => {
+    const source = fs.readFileSync(filename, "utf8");
+    assert.match(source, /export\s+function\s+enhance\b/, `${filename}: missing enhance export`);
+    assert.match(source, /export\s+const\s+behavior\b/, `${filename}: missing behavior export`);
+    assert.equal((source.match(/\/\* mewa:auto:start \*\//g) || []).length, 2, `${filename}: auto marker drift`);
     assert.doesNotThrow(
-      () => new vm.Script(fs.readFileSync(filename, "utf8"), { filename }),
+      () => new vm.Script(moduleAsHarnessScript(source), { filename }),
       filename
     );
   });
@@ -1130,6 +1195,109 @@ test("dropdown menus restore keyboard focus without stealing external focus and 
   root.append(trigger);
   assert.equal(listeners(trigger, "click"), 1, "reinserted trigger is initialized exactly once");
   assert.equal(listeners(firstMenu, "keydown"), 1, "reinserted trigger restores one menu listener set");
+});
+
+test("tooltips rebind a persistent trigger when its target is replaced", () => {
+  const root = node("section");
+  const trigger = node("button", {
+    type: "button",
+    "data-tooltip-trigger": "format-help",
+    "data-delay": "0",
+    "aria-describedby": "persistent-help"
+  }, "Format");
+  const first = node("div", { class: "tooltip", id: "format-help", popover: "manual" }, "First help");
+  let firstOpens = 0;
+  first.showPopover = () => { firstOpens += 1; };
+  first.hidePopover = () => {};
+  root.append(trigger, first);
+
+  const runtime = loadModule("tooltip", root);
+  assert.equal(trigger.getAttribute("aria-describedby"), "persistent-help format-help");
+  assert.equal(listeners(trigger, "focus"), 1);
+  assert.equal(listeners(first, "toggle"), 1);
+  fire(trigger, "focus");
+  runtime.flushTimers();
+  assert.equal(firstOpens, 1);
+
+  first.remove();
+  assert.equal(listeners(first, "toggle"), 0, "the detached tooltip releases its target listener");
+  const replacement = node("div", { class: "tooltip", id: "format-help", popover: "manual" }, "Replacement help");
+  let replacementOpens = 0;
+  replacement.showPopover = () => { replacementOpens += 1; };
+  replacement.hidePopover = () => {};
+  root.append(replacement);
+
+  assert.equal(listeners(trigger, "focus"), 1, "the persistent trigger keeps one listener set");
+  assert.equal(listeners(replacement, "toggle"), 1, "the replacement tooltip receives its target listener");
+  assert.equal(trigger.getAttribute("aria-describedby"), "persistent-help format-help");
+  fire(trigger, "focus");
+  runtime.flushTimers();
+  assert.equal(firstOpens, 1, "the detached tooltip is never reopened");
+  assert.equal(replacementOpens, 1, "the persistent trigger opens the replacement tooltip");
+
+  replacement.remove();
+  root.append(first);
+  assert.equal(listeners(first, "toggle"), 1, "A to B to A replacement remains idempotent");
+  fire(trigger, "focus");
+  runtime.flushTimers();
+  assert.equal(firstOpens, 2);
+
+  trigger.remove();
+  assert.equal(trigger.hasAttribute("data-init"), false, "a disconnected trigger releases its marker");
+  assert.equal(listeners(trigger, "focus"), 0);
+  assert.equal(listeners(first, "toggle"), 0);
+  assert.equal(trigger.getAttribute("aria-describedby"), "persistent-help");
+});
+
+test("hover cards rebind a persistent trigger when a portal target is replaced", () => {
+  const root = node("section");
+  const trigger = node("button", {
+    type: "button",
+    "data-hover-card-trigger": "person-card",
+    "aria-describedby": "persistent-profile-help"
+  }, "Profile");
+  const first = node("div", { class: "hover-card", id: "person-card", popover: "manual" }, "First profile");
+  let firstOpens = 0;
+  first.showPopover = () => { firstOpens += 1; };
+  first.hidePopover = () => {};
+  root.append(trigger, first);
+
+  const runtime = loadModule("hover-card", root);
+  assert.equal(trigger.getAttribute("aria-describedby"), "persistent-profile-help person-card");
+  assert.equal(listeners(trigger, "focus"), 1);
+  assert.equal(listeners(first, "focusin"), 1);
+  trigger.focus();
+  fire(trigger, "focus");
+  assert.equal(firstOpens, 1);
+
+  first.remove();
+  assert.equal(listeners(first, "focusin"), 0, "the detached card releases its target listeners");
+  assert.equal(listeners(first, "keydown"), 0);
+  const replacement = node("div", { class: "hover-card", id: "person-card", popover: "manual" }, "Replacement profile");
+  let replacementOpens = 0;
+  replacement.showPopover = () => { replacementOpens += 1; };
+  replacement.hidePopover = () => {};
+  root.append(replacement);
+
+  assert.equal(listeners(trigger, "focus"), 1, "the persistent trigger keeps one listener set");
+  assert.equal(listeners(replacement, "focusin"), 1, "the replacement card receives its target listeners");
+  assert.equal(listeners(replacement, "keydown"), 1);
+  assert.equal(trigger.getAttribute("aria-describedby"), "persistent-profile-help person-card");
+  fire(trigger, "focus");
+  assert.equal(firstOpens, 1, "the detached card is never reopened");
+  assert.equal(replacementOpens, 1, "the persistent trigger opens the replacement card");
+
+  replacement.remove();
+  root.append(first);
+  assert.equal(listeners(first, "focusin"), 1, "A to B to A replacement remains idempotent");
+  fire(trigger, "focus");
+  assert.equal(firstOpens, 2);
+
+  trigger.remove();
+  assert.equal(trigger.hasAttribute("data-hover-card-init"), false, "a disconnected trigger releases its marker");
+  assert.equal(listeners(trigger, "focus"), 0);
+  assert.equal(listeners(first, "focusin"), 0);
+  assert.equal(trigger.getAttribute("aria-describedby"), "persistent-profile-help");
 });
 
 test("dialogs wrap keyboard focus without including hidden or disabled controls", () => {

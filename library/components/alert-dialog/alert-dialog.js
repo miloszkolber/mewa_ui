@@ -1,5 +1,10 @@
 // -- Alert Dialog ----------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 function openAlertDialog(dialog, trigger) {
   if (!dialog || !dialog.isConnected || typeof dialog.showModal !== 'function') return;
   if (dialog.open) return;
@@ -11,20 +16,26 @@ function openAlertDialog(dialog, trigger) {
   }
 }
 
-function init() {
-  document.querySelectorAll('[data-alert-dialog-trigger]:not([data-init])').forEach((trigger) => {
+export function enhance(root) {
+  const scope = root || (typeof document === 'undefined' ? null : document);
+  const documentRoot = scope?.nodeType === 9 ? scope : scope?.ownerDocument;
+  const dialogs = queryAll(scope, 'dialog.alert-dialog:not([data-init])');
+  const triggerScope = dialogs.length && documentRoot ? documentRoot : scope;
+
+  queryAll(triggerScope, '[data-alert-dialog-trigger]:not([data-init])').forEach((trigger) => {
     trigger.dataset.init = '';
     const dialogId = trigger.dataset.alertDialogTrigger;
-    if (!document.getElementById(dialogId)) {
+    const triggerDocument = trigger.ownerDocument;
+    if (!triggerDocument.getElementById(dialogId)) {
       delete trigger.dataset.init;
       return;
     }
     trigger.addEventListener('click', () => {
-      openAlertDialog(document.getElementById(dialogId), trigger);
+      openAlertDialog(triggerDocument.getElementById(dialogId), trigger);
     });
   });
 
-  document.querySelectorAll('dialog.alert-dialog:not([data-init])').forEach((dialog) => {
+  dialogs.forEach((dialog) => {
     dialog.dataset.init = '';
 
     dialog.querySelectorAll('[data-alert-dialog-close]').forEach((button) => {
@@ -39,5 +50,8 @@ function init() {
   });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'alert-dialog', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

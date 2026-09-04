@@ -21,7 +21,7 @@ Use this file as a routing index.
 
 `library/src/tokens.css` defines semantic light and dark theme roles.
 
-`registry.json` defines component selection metadata and semantic token purposes.
+`registry.json` defines component selection, dependency, asset, and token metadata.
 
 `library/components/{slug}/{slug}.md` defines component-specific markup and behavior.
 
@@ -119,7 +119,13 @@ Keep modules idempotent.
 
 Keep modules safe for markup inserted after navigation.
 
-Do not add a production dependency.
+Keep modules safe to import without a browser DOM.
+
+Use packaged controllers with an application lifecycle.
+
+Use packaged automatic enhancers for plain HTML.
+
+Do not add a core runtime dependency.
 
 ## Shells
 
@@ -143,11 +149,13 @@ Use `37.5rem` for compact single-column changes.
 
 ## Validation
 
-Run `npm test`.
+Run `node --run test`.
 
-Run `npm run catalog:check`.
+Run `node --run catalog:check`.
 
-Run `npm run test:browser` when Chromium is available.
+Run `node --run package:check`.
+
+Run `node --run test:browser` after installing the locked browser-test dependency when Chromium is available.
 
 Check changed markup with the keyboard.
 

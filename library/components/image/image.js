@@ -1,8 +1,20 @@
 /* -- Image component ----------------------------------------- */
 
-function init() {
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
+const initializedDocuments = new WeakSet();
+
+export function enhance(root) {
+const ownerDocument = root?.nodeType === 9
+  ? root
+  : root?.ownerDocument || (typeof document === 'undefined' ? null : document);
+if (!ownerDocument) return;
+installPreviewListener(ownerDocument);
 /* -- Fallback: mark images that fail to load ----------------- */
-document.querySelectorAll('.image:not([data-init]) > img').forEach((img) => {
+queryAll(root, '.image:not([data-init]) > img').forEach((img) => {
   img.closest('.image').dataset.init = '';
   const figure = img.closest('.image');
 
@@ -30,13 +42,10 @@ document.querySelectorAll('.image:not([data-init]) > img').forEach((img) => {
     if (event.key !== 'Enter' && event.key !== ' ') return;
     if (img.dataset.error !== undefined) return;
     event.preventDefault();
-    openLightbox(img.src, img.alt);
+    openLightbox(img.ownerDocument, img.src, img.alt);
   });
 });
 }
-
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
 
 /* -- Lightbox ------------------------------------------------ */
 let lightbox = null;
@@ -44,15 +53,15 @@ let lightboxImg = null;
 let zoom = 1;
 let rotation = 0;
 
-function getLightbox() {
-  if (lightbox && lightbox.isConnected && lightbox.ownerDocument === document) return lightbox;
+function getLightbox(ownerDocument) {
+  if (lightbox && lightbox.isConnected && lightbox.ownerDocument === ownerDocument) return lightbox;
 
   // SPA navigation can remove the shared dialog from the document. Do not
   // retain the detached node or its image reference when recreating it.
   lightbox = null;
   lightboxImg = null;
 
-  lightbox = document.createElement('dialog');
+  lightbox = ownerDocument.createElement('dialog');
   lightbox.className = 'image-lightbox';
   lightbox.setAttribute('aria-label', 'Image preview');
 
@@ -102,7 +111,7 @@ function getLightbox() {
     if (e.target === lightbox) lightbox.close();
   });
 
-  document.body.appendChild(lightbox);
+  ownerDocument.body.appendChild(lightbox);
   return lightbox;
 }
 
@@ -112,8 +121,8 @@ function applyTransform() {
   }
 }
 
-function openLightbox(src, alt) {
-  const lb = getLightbox();
+function openLightbox(ownerDocument, src, alt) {
+  const lb = getLightbox(ownerDocument);
   zoom = 1;
   rotation = 0;
   lightboxImg.src = src;
@@ -123,16 +132,23 @@ function openLightbox(src, alt) {
 }
 
 /* -- Attach preview click handlers --------------------------- */
-if (!document.__imagePreviewInit) {
-  document.__imagePreviewInit = true;
+function installPreviewListener(ownerDocument) {
+  if (initializedDocuments.has(ownerDocument)) return;
+  initializedDocuments.add(ownerDocument);
 
-  document.addEventListener('click', (e) => {
+  ownerDocument.addEventListener('click', (e) => {
     const figure = e.target.closest('.image[data-preview]');
     if (!figure) return;
 
     const img = figure.querySelector('img');
     if (!img || img.dataset.error !== undefined) return;
 
-    openLightbox(img.src, img.alt);
+    openLightbox(ownerDocument, img.src, img.alt);
   });
 }
+
+export const behavior = { name: 'image', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

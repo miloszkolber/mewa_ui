@@ -1,7 +1,12 @@
 // -- Combobox -------------------------------------------------
 
-function init() {
-  document.querySelectorAll('.combobox:not([data-init])').forEach((wrapper) => {
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
+export function enhance(root) {
+  queryAll(root, '.combobox:not([data-init])').forEach((wrapper) => {
     wrapper.dataset.init = '';
 
     const trigger = wrapper.querySelector('.combobox-trigger');
@@ -212,5 +217,8 @@ function init() {
   });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'combobox', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

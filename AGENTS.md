@@ -30,6 +30,8 @@ Edit `library/components/{slug}/{slug}.css` for component presentation.
 
 Edit `library/components/{slug}/{slug}.js` for component enhancement behavior.
 
+Edit `library/runtime/` for the shared controller and automatic enhancement lifecycle.
+
 Edit `docs/{slug}.html` for the rendered component reference.
 
 Edit `registry.json` for component selection metadata and token purposes.
@@ -42,11 +44,13 @@ Edit `PROMPT.md` for the reusable consumer-compliance workflow.
 
 Edit `llms.txt` for machine routing.
 
-Do not create a second source tree.
+Keep `library/` as the only authored implementation tree.
 
-Do not add framework wrappers.
+Keep optional framework adapters outside the core package.
 
-Do not add generated component copies.
+Generate distribution copies only under ignored `dist/`.
+
+Do not hand-edit generated distribution files.
 
 Do not add complete shell templates.
 
@@ -58,11 +62,33 @@ Treat `library/system/components.md` as generated output.
 
 Treat the semantic token reference in `library/system/foundations.md` as generated output.
 
-Run `npm run catalog:write` after registry selection metadata changes.
+Run `node --run catalog:write` after registry selection metadata changes.
 
-Run `npm run catalog:check` before handoff.
+Run `node --run catalog:check` before handoff.
 
 Do not hand-edit generated sections.
+
+## Distribution workflow
+
+Treat `registry.json` as the distribution manifest source.
+
+Keep component dependencies explicit in the registry.
+
+Run `node --run docs:write` after component stylesheet changes.
+
+Run `node --run build` to generate `dist/mewa-ui` and `dist/mewa-icons`.
+
+Keep fonts and icons optional in the core package.
+
+Keep the core package free of runtime dependencies.
+
+Keep framework packages as optional adapters with peer dependencies.
+
+Keep release packages usable without npm.
+
+Publish release archives from a version tag through GitHub Actions.
+
+Do not publish this repository to the npm registry.
 
 ## Document roles
 
@@ -151,7 +177,7 @@ Add the registry entry.
 
 Add the static documentation page.
 
-Run `npm run catalog:write`.
+Run `node --run catalog:write`.
 
 Add the page to the documentation router.
 
@@ -217,6 +243,14 @@ Keep initialization idempotent.
 
 Support markup inserted after navigation.
 
+Export `enhance` and `behavior` from every component module.
+
+Use `library/runtime/enhancer.js` for document-wide insertion handling.
+
+Keep component observers scoped to their own changing content.
+
+Keep component imports safe when no DOM exists.
+
 Synchronize ARIA state with visual state.
 
 Restore focus when the component contract requires it.
@@ -225,11 +259,11 @@ Dispatch only documented events.
 
 Keep native form and navigation behavior.
 
-Do not add a runtime dependency.
+Do not add a core runtime dependency.
 
 Do not add a polling loop.
 
-Do not add a framework lifecycle.
+Do not couple core controllers to a framework lifecycle.
 
 ## Shell changes
 
@@ -277,11 +311,13 @@ Do not copy the complete design contract into another file.
 
 ## Required validation
 
-Run `npm test`.
+Run `node --run test`.
 
-Run `npm run catalog:check`.
+Run `node --run package:check`.
 
-Run `npm run test:browser` when Chromium is available.
+Run `node --run catalog:check`.
+
+Run `node --run test:browser` after installing the locked browser-test dependency when Chromium is available.
 
 Check changed HTML with the keyboard.
 

@@ -1,8 +1,14 @@
 // -- Sortable -------------------------------------------------
 
-function init() {
-  document.querySelectorAll('.sortable:not([data-init])').forEach((list) => {
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
+export function enhance(root) {
+  queryAll(root, '.sortable:not([data-init])').forEach((list) => {
     list.dataset.init = '';
+    const doc = list.ownerDocument;
 
     const isHorizontal = list.dataset.orientation === 'horizontal';
     const NEXT_KEY = isHorizontal ? 'ArrowRight' : 'ArrowDown';
@@ -10,7 +16,7 @@ function init() {
 
     let liveRegion = list.parentElement?.querySelector('.sortable-live');
     if (!liveRegion) {
-      liveRegion = document.createElement('span');
+      liveRegion = doc.createElement('span');
       liveRegion.className = 'sortable-live';
       liveRegion.setAttribute('aria-live', 'polite');
       liveRegion.setAttribute('role', 'status');
@@ -86,16 +92,16 @@ function init() {
       if (item.getAttribute('aria-disabled') === 'true') return;
       if (item.querySelector(':scope > .sortable-actions')) return;
 
-      const actions = document.createElement('span');
+      const actions = doc.createElement('span');
       actions.className = 'sortable-actions';
 
-      const previous = document.createElement('button');
+      const previous = doc.createElement('button');
       previous.type = 'button';
       previous.className = 'sortable-step';
       previous.setAttribute('data-sortable-decrease', '');
       previous.textContent = isHorizontal ? '←' : '↑';
 
-      const next = document.createElement('button');
+      const next = doc.createElement('button');
       next.type = 'button';
       next.className = 'sortable-step';
       next.setAttribute('data-sortable-increase', '');
@@ -230,5 +236,8 @@ function init() {
   });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'sortable', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

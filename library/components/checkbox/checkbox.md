@@ -30,7 +30,7 @@ The optional module coordinates Select all state.
 - [`HTMLInputElement.indeterminate`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/indeterminate) sets a mixed Select all state.
 - [`:user-invalid`](https://developer.mozilla.org/en-US/docs/Web/CSS/:user-invalid) exposes native validation after interaction.
 - [`forced-colors`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) restores native high-contrast rendering.
-- [`MutationObserver`](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) initializes added checkbox groups.
+- The shared enhancer uses [`MutationObserver`](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) to initialize added checkbox groups.
 - [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) reports enhanced group changes.
 
 ## Structure

@@ -1,11 +1,16 @@
 // -- Navigation Menu -----------------------------------------
 
-function init() {
-  document.querySelectorAll('.nav-menu:not([data-init])').forEach((nav) => {
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
+export function enhance(root) {
+  queryAll(root, '.nav-menu:not([data-init])').forEach((nav) => {
   nav.dataset.init = '';
   nav.querySelectorAll('.nav-menu-trigger[popovertarget]').forEach((trigger) => {
     const id = trigger.getAttribute('popovertarget');
-    const content = document.getElementById(id);
+    const content = nav.ownerDocument.getElementById(id);
     if (!content) return;
 
     const anchorId = `--nav-menu-${id}`;
@@ -15,5 +20,8 @@ function init() {
 });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'navigation-menu', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

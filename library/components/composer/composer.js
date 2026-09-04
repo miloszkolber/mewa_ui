@@ -1,3 +1,8 @@
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const composerInstances = new WeakMap();
 
 function initComposer(root) {
@@ -41,26 +46,18 @@ function initComposer(root) {
   });
 }
 
-function initComposers(scope = document) {
-  if (scope.matches?.('.composer')) initComposer(scope);
-  scope.querySelectorAll?.('.composer').forEach(initComposer);
+export function enhance(root) {
+  queryAll(root, '.composer').forEach(initComposer);
 }
 
-function destroyComposers(scope) {
-  if (scope.nodeType !== 1) return;
-  if (scope.matches?.('.composer')) composerInstances.get(scope)?.destroy();
-  scope.querySelectorAll?.('.composer').forEach((root) => {
-    composerInstances.get(root)?.destroy();
+export function destroy(root) {
+  queryAll(root, '.composer').forEach((composer) => {
+    composerInstances.get(composer)?.destroy();
   });
 }
 
-initComposers();
+export const behavior = { name: 'composer', enhance, destroy };
 
-new MutationObserver((records) => {
-  records.forEach((record) => {
-    record.removedNodes.forEach(destroyComposers);
-    record.addedNodes.forEach((node) => {
-      if (node.nodeType === 1) initComposers(node);
-    });
-  });
-}).observe(document, { childList: true, subtree: true });
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

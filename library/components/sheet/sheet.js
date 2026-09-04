@@ -1,5 +1,10 @@
 // -- Sheet ----------------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 function openSheet(sheet, trigger) {
   if (!sheet || !sheet.isConnected || typeof sheet.showModal !== 'function') return;
   if (sheet.open) return;
@@ -15,31 +20,44 @@ function openSheet(sheet, trigger) {
   }
 }
 
-function init() {
-document.querySelectorAll('[data-sheet-trigger]:not([data-init])').forEach((trigger) => {
+function initSheetTrigger(trigger) {
   trigger.dataset.init = '';
   const sheetId = trigger.dataset.sheetTrigger;
-  if (!document.getElementById(sheetId)) {
+  const ownerDocument = trigger.ownerDocument;
+  if (!ownerDocument.getElementById(sheetId)) {
     delete trigger.dataset.init;
     return;
   }
   trigger.addEventListener('click', () => {
-    openSheet(document.getElementById(sheetId), trigger);
+    openSheet(ownerDocument.getElementById(sheetId), trigger);
   });
-});
-document.querySelectorAll('dialog.sheet:not([data-init])').forEach((sheet) => {
-  sheet.dataset.init = '';
-  sheet.addEventListener('click', (e) => {
-    if (e.target === sheet) sheet.close();
-  });
-  sheet.querySelectorAll('[data-sheet-close]').forEach((btn) => {
-    btn.addEventListener('click', () => { sheet.close(); });
-  });
-  sheet.addEventListener('close', () => {
-    if (sheet._trigger?.isConnected) sheet._trigger.focus();
-  });
-});
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export function enhance(root) {
+  const sheets = queryAll(root, 'dialog.sheet:not([data-init])');
+  queryAll(root, '[data-sheet-trigger]:not([data-init])').forEach(initSheetTrigger);
+
+  sheets.forEach((sheet) => {
+    sheet.dataset.init = '';
+    sheet.addEventListener('click', (e) => {
+      if (e.target === sheet) sheet.close();
+    });
+    sheet.querySelectorAll('[data-sheet-close]').forEach((btn) => {
+      btn.addEventListener('click', () => { sheet.close(); });
+    });
+    sheet.addEventListener('close', () => {
+      if (sheet._trigger?.isConnected) sheet._trigger.focus();
+    });
+  });
+
+  if (sheets.length) {
+    queryAll(sheets[0].ownerDocument, '[data-sheet-trigger]:not([data-init])')
+      .forEach(initSheetTrigger);
+  }
+}
+
+export const behavior = { name: 'sheet', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

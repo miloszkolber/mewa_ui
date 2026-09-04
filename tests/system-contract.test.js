@@ -111,7 +111,9 @@ test("shell documentation contains all three shell recipes", () => {
 test("component selection documentation routes agents through registry metadata", () => {
   const guide = read("library/system/components.md");
   assert.match(guide, /Read `registry\.json` for the complete component inventory\./);
-  for (const field of ["purpose", "useWhen", "avoidWhen", "fallback", "jsMode", "files", "stability"]) {
+  assert.match(guide, /<!-- REGISTRY-FIELDS:START -->/);
+  assert.match(guide, /<!-- REGISTRY-FIELDS:END -->/);
+  for (const field of ["purpose", "useWhen", "avoidWhen", "fallback", "jsMode", "files", "styleDependencies", "behaviorDependencies", "assets", "stability"]) {
     assert(guide.includes(`Use ` + "`" + `${field}` + "`"), `library/system/components.md is missing ${field}`);
   }
 });

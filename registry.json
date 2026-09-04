@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "name": "mewa_ui",
   "library": "mewa_ui",
   "canonicalAssets": {
@@ -11,8 +11,13 @@
       "library/src/geist.woff2",
       "library/src/geistmono.woff2"
     ],
+    "licenses": {
+      "geist": "library/src/licenses/GEIST-OFL.txt",
+      "lucide": "library/src/licenses/LUCIDE-LICENSE.txt"
+    },
     "icons": "library/src/icons/",
     "components": "library/components/",
+    "runtime": "library/runtime/",
     "documentation": "docs/",
     "system": "library/system/"
   },
@@ -342,7 +347,10 @@
         "css": "library/components/typography/typography.css"
       },
       "docs": "docs/typography.html",
-      "description": "Formats document text, code, quotations, keyboard notation, and lists."
+      "description": "Formats document text, code, quotations, keyboard notation, and lists.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Layout",
@@ -362,7 +370,10 @@
         "css": "library/components/layout/layout.css"
       },
       "docs": "docs/layout.html",
-      "description": "Creates intrinsic containers, stacks, grids, sidebar splits, centering, and opposite-end groups."
+      "description": "Creates intrinsic containers, stacks, grids, sidebar splits, centering, and opposite-end groups.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Separator",
@@ -382,7 +393,10 @@
         "css": "library/components/separator/separator.css"
       },
       "docs": "docs/separator.html",
-      "description": "Marks a real visual or semantic division."
+      "description": "Marks a real visual or semantic division.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Icon",
@@ -402,7 +416,10 @@
         "css": "library/components/icon/icon.css"
       },
       "docs": "docs/icon.html",
-      "description": "Presents a local Lucide glyph inside text or a control."
+      "description": "Presents a local Lucide glyph inside text or a control.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Button",
@@ -422,7 +439,10 @@
         "css": "library/components/button/button.css"
       },
       "docs": "docs/button.html",
-      "description": "Starts an action, submits a form, or styles a navigation link as a button."
+      "description": "Starts an action, submits a form, or styles a navigation link as a button.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Toggle",
@@ -443,7 +463,10 @@
         "js": "library/components/toggle/toggle.js"
       },
       "docs": "docs/toggle.html",
-      "description": "Changes one independent pressed state."
+      "description": "Changes one independent pressed state.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Toggle Group",
@@ -464,7 +487,12 @@
         "js": "library/components/toggle-group/toggle-group.js"
       },
       "docs": "docs/toggle-group.html",
-      "description": "Coordinates a set of related pressed buttons."
+      "description": "Coordinates a set of related pressed buttons.",
+      "styleDependencies": [
+        "toggle"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Button Group",
@@ -484,7 +512,12 @@
         "css": "library/components/button-group/button-group.css"
       },
       "docs": "docs/button-group.html",
-      "description": "Connects related buttons into one visual control group."
+      "description": "Connects related buttons into one visual control group.",
+      "styleDependencies": [
+        "button"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Toolbar",
@@ -505,7 +538,16 @@
         "js": "library/components/toolbar/toolbar.js"
       },
       "docs": "docs/toolbar.html",
-      "description": "Groups frequently used controls with managed arrow-key navigation."
+      "description": "Groups frequently used controls with managed arrow-key navigation.",
+      "styleDependencies": [
+        "separator",
+        "button",
+        "toggle"
+      ],
+      "behaviorDependencies": [
+        "toggle"
+      ],
+      "assets": []
     },
     {
       "name": "Label",
@@ -525,7 +567,10 @@
         "css": "library/components/label/label.css"
       },
       "docs": "docs/label.html",
-      "description": "Names one native form control."
+      "description": "Names one native form control.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Field",
@@ -545,7 +590,10 @@
         "css": "library/components/field/field.css"
       },
       "docs": "docs/field.html",
-      "description": "Composes a label, native control, help text, error text, and related fieldsets."
+      "description": "Composes a label, native control, help text, error text, and related fieldsets.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Text Field",
@@ -565,7 +613,10 @@
         "css": "library/components/text-field/text-field.css"
       },
       "docs": "docs/text-field.html",
-      "description": "Collects one line of text with labels, descriptions, icons, and validation."
+      "description": "Collects one line of text with labels, descriptions, icons, and validation.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Textarea",
@@ -585,7 +636,12 @@
         "css": "library/components/textarea/textarea.css"
       },
       "docs": "docs/textarea.html",
-      "description": "Collects multi-line text."
+      "description": "Collects multi-line text.",
+      "styleDependencies": [
+        "field"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Checkbox",
@@ -606,7 +662,10 @@
         "js": "library/components/checkbox/checkbox.js"
       },
       "docs": "docs/checkbox.html",
-      "description": "Selects one independent option or several independent options."
+      "description": "Selects one independent option or several independent options.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Radio Group",
@@ -626,7 +685,10 @@
         "css": "library/components/radio-group/radio-group.css"
       },
       "docs": "docs/radio-group.html",
-      "description": "Selects one value from a visible set."
+      "description": "Selects one value from a visible set.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Switch",
@@ -646,7 +708,10 @@
         "css": "library/components/switch/switch.css"
       },
       "docs": "docs/switch.html",
-      "description": "Changes an immediate binary system state."
+      "description": "Changes an immediate binary system state.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Slider",
@@ -667,7 +732,13 @@
         "js": "library/components/slider/slider.js"
       },
       "docs": "docs/slider.html",
-      "description": "Selects a value from a continuous or stepped numeric range."
+      "description": "Selects a value from a continuous or stepped numeric range.",
+      "styleDependencies": [
+        "field",
+        "label"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Select",
@@ -687,7 +758,12 @@
         "css": "library/components/select/select.css"
       },
       "docs": "docs/select.html",
-      "description": "Selects one or several values from a fixed native option list."
+      "description": "Selects one or several values from a fixed native option list.",
+      "styleDependencies": [
+        "field"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Number Field",
@@ -708,7 +784,12 @@
         "js": "library/components/number-field/number-field.js"
       },
       "docs": "docs/number-field.html",
-      "description": "Collects a numeric value with explicit increment and decrement controls."
+      "description": "Collects a numeric value with explicit increment and decrement controls.",
+      "styleDependencies": [
+        "field"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "File Input",
@@ -728,7 +809,13 @@
         "css": "library/components/file-input/file-input.css"
       },
       "docs": "docs/file-input.html",
-      "description": "Opens the native file picker."
+      "description": "Opens the native file picker.",
+      "styleDependencies": [
+        "field",
+        "label"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Date Field",
@@ -748,7 +835,13 @@
         "css": "library/components/date-field/date-field.css"
       },
       "docs": "docs/date-field.html",
-      "description": "Collects a date or local date and time with the browser control."
+      "description": "Collects a date or local date and time with the browser control.",
+      "styleDependencies": [
+        "field",
+        "label"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Date Picker",
@@ -769,7 +862,12 @@
         "js": "library/components/date-picker/date-picker.js"
       },
       "docs": "docs/date-picker.html",
-      "description": "Selects a date from a custom accessible month grid."
+      "description": "Selects a date from a custom accessible month grid.",
+      "styleDependencies": [
+        "button"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Date Range Picker",
@@ -790,7 +888,10 @@
         "js": "library/components/date-range-picker/date-range-picker.js"
       },
       "docs": "docs/date-range-picker.html",
-      "description": "Collects a start date and an end date with native inputs."
+      "description": "Collects a start date and an end date with native inputs.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Combobox",
@@ -811,7 +912,13 @@
         "js": "library/components/combobox/combobox.js"
       },
       "docs": "docs/combobox.html",
-      "description": "Selects one option from a searchable list."
+      "description": "Selects one option from a searchable list.",
+      "styleDependencies": [
+        "label",
+        "button"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Time Field",
@@ -832,7 +939,10 @@
         "js": "library/components/time-field/time-field.js"
       },
       "docs": "docs/time-field.html",
-      "description": "Collects a structured time from native numeric fields and a period selector."
+      "description": "Collects a structured time from native numeric fields and a period selector.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Form",
@@ -852,7 +962,17 @@
         "css": "library/components/form/form.css"
       },
       "docs": "docs/form.html",
-      "description": "Composes a complete native submission task."
+      "description": "Composes a complete native submission task.",
+      "styleDependencies": [
+        "field",
+        "label",
+        "text-field",
+        "checkbox",
+        "switch",
+        "button"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Badge",
@@ -872,7 +992,10 @@
         "css": "library/components/badge/badge.css"
       },
       "docs": "docs/badge.html",
-      "description": "Shows short non-interactive status or metadata."
+      "description": "Shows short non-interactive status or metadata.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Avatar",
@@ -893,7 +1016,10 @@
         "js": "library/components/avatar/avatar.js"
       },
       "docs": "docs/avatar.html",
-      "description": "Shows a person or entity image with a fallback and optional status."
+      "description": "Shows a person or entity image with a fallback and optional status.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Card",
@@ -913,7 +1039,10 @@
         "css": "library/components/card/card.css"
       },
       "docs": "docs/card.html",
-      "description": "Groups one standalone object or a small related content set."
+      "description": "Groups one standalone object or a small related content set.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Image",
@@ -934,7 +1063,10 @@
         "js": "library/components/image/image.js"
       },
       "docs": "docs/image.html",
-      "description": "Presents an image, caption, fallback, and optional larger preview."
+      "description": "Presents an image, caption, fallback, and optional larger preview.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Statistic",
@@ -954,7 +1086,10 @@
         "css": "library/components/statistic/statistic.css"
       },
       "docs": "docs/statistic.html",
-      "description": "Shows one value with a label, description, and optional trend."
+      "description": "Shows one value with a label, description, and optional trend.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Table",
@@ -974,7 +1109,10 @@
         "css": "library/components/table/table.css"
       },
       "docs": "docs/table.html",
-      "description": "Presents data with stable row and column relationships."
+      "description": "Presents data with stable row and column relationships.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Data Table",
@@ -995,7 +1133,15 @@
         "js": "library/components/data-table/data-table.js"
       },
       "docs": "docs/data-table.html",
-      "description": "Adds filtering, sorting, status, and pagination around Table."
+      "description": "Adds filtering, sorting, status, and pagination around Table.",
+      "styleDependencies": [
+        "table",
+        "text-field",
+        "pagination",
+        "button"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Collapsible",
@@ -1015,7 +1161,10 @@
         "css": "library/components/collapsible/collapsible.css"
       },
       "docs": "docs/collapsible.html",
-      "description": "Reveals and hides supplementary content."
+      "description": "Reveals and hides supplementary content.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Timeline",
@@ -1035,7 +1184,10 @@
         "css": "library/components/timeline/timeline.css"
       },
       "docs": "docs/timeline.html",
-      "description": "Presents events or steps in chronological or procedural order."
+      "description": "Presents events or steps in chronological or procedural order.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Tree View",
@@ -1056,7 +1208,10 @@
         "js": "library/components/tree-view/tree-view.js"
       },
       "docs": "docs/tree-view.html",
-      "description": "Presents hierarchical items with expandable branches."
+      "description": "Presents hierarchical items with expandable branches.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Carousel",
@@ -1077,7 +1232,10 @@
         "js": "library/components/carousel/carousel.js"
       },
       "docs": "docs/carousel.html",
-      "description": "Presents a sequence of slides in a bounded scroll region."
+      "description": "Presents a sequence of slides in a bounded scroll region.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Scroll Area",
@@ -1097,7 +1255,10 @@
         "css": "library/components/scroll-area/scroll-area.css"
       },
       "docs": "docs/scroll-area.html",
-      "description": "Contains overflow inside a bounded region."
+      "description": "Contains overflow inside a bounded region.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Sortable",
@@ -1118,7 +1279,10 @@
         "js": "library/components/sortable/sortable.js"
       },
       "docs": "docs/sortable.html",
-      "description": "Reorders a user-owned list."
+      "description": "Reorders a user-owned list.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Spinner",
@@ -1138,7 +1302,10 @@
         "css": "library/components/spinner/spinner.css"
       },
       "docs": "docs/spinner.html",
-      "description": "Shows that an indeterminate task is active."
+      "description": "Shows that an indeterminate task is active.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Skeleton",
@@ -1158,7 +1325,10 @@
         "css": "library/components/skeleton/skeleton.css"
       },
       "docs": "docs/skeleton.html",
-      "description": "Reserves the shape of content that is loading."
+      "description": "Reserves the shape of content that is loading.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Progress",
@@ -1178,7 +1348,10 @@
         "css": "library/components/progress/progress.css"
       },
       "docs": "docs/progress.html",
-      "description": "Shows known task completion."
+      "description": "Shows known task completion.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Callout",
@@ -1198,7 +1371,10 @@
         "css": "library/components/callout/callout.css"
       },
       "docs": "docs/callout.html",
-      "description": "Presents persistent important information in the page flow."
+      "description": "Presents persistent important information in the page flow.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Alert Dialog",
@@ -1219,7 +1395,12 @@
         "js": "library/components/alert-dialog/alert-dialog.js"
       },
       "docs": "docs/alert-dialog.html",
-      "description": "Requires an explicit response to a high-impact decision."
+      "description": "Requires an explicit response to a high-impact decision.",
+      "styleDependencies": [
+        "button"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Toast",
@@ -1240,7 +1421,10 @@
         "js": "library/components/toast/toast.js"
       },
       "docs": "docs/toast.html",
-      "description": "Announces a brief non-blocking result."
+      "description": "Announces a brief non-blocking result.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Popover",
@@ -1261,7 +1445,12 @@
         "js": "library/components/popover/popover.js"
       },
       "docs": "docs/popover.html",
-      "description": "Shows non-modal contextual content in the top layer."
+      "description": "Shows non-modal contextual content in the top layer.",
+      "styleDependencies": [
+        "button"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Tooltip",
@@ -1282,7 +1471,12 @@
         "js": "library/components/tooltip/tooltip.js"
       },
       "docs": "docs/tooltip.html",
-      "description": "Shows a short supplementary hint on hover and focus."
+      "description": "Shows a short supplementary hint on hover and focus.",
+      "styleDependencies": [
+        "button"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Dialog",
@@ -1303,7 +1497,13 @@
         "js": "library/components/dialog/dialog.js"
       },
       "docs": "docs/dialog.html",
-      "description": "Contains a focused modal task."
+      "description": "Contains a focused modal task.",
+      "styleDependencies": [
+        "button",
+        "text-field"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Sheet",
@@ -1324,7 +1524,12 @@
         "js": "library/components/sheet/sheet.js"
       },
       "docs": "docs/sheet.html",
-      "description": "Presents an edge-aligned modal task."
+      "description": "Presents an edge-aligned modal task.",
+      "styleDependencies": [
+        "button"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Accordion",
@@ -1345,7 +1550,10 @@
         "js": "library/components/accordion/accordion.js"
       },
       "docs": "docs/accordion.html",
-      "description": "Groups several disclosure sections."
+      "description": "Groups several disclosure sections.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Command Palette",
@@ -1366,7 +1574,12 @@
         "js": "library/components/command-palette/command-palette.js"
       },
       "docs": "docs/command-palette.html",
-      "description": "Finds and activates global application commands."
+      "description": "Finds and activates global application commands.",
+      "styleDependencies": [
+        "button"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Breadcrumbs",
@@ -1386,7 +1599,10 @@
         "css": "library/components/breadcrumbs/breadcrumbs.css"
       },
       "docs": "docs/breadcrumbs.html",
-      "description": "Shows the current route within a hierarchy."
+      "description": "Shows the current route within a hierarchy.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Pagination",
@@ -1406,7 +1622,10 @@
         "css": "library/components/pagination/pagination.css"
       },
       "docs": "docs/pagination.html",
-      "description": "Moves between result pages."
+      "description": "Moves between result pages.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Tabs",
@@ -1427,7 +1646,10 @@
         "js": "library/components/tabs/tabs.js"
       },
       "docs": "docs/tabs.html",
-      "description": "Switches among related panels within one route."
+      "description": "Switches among related panels within one route.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Dropdown Menu",
@@ -1448,7 +1670,12 @@
         "js": "library/components/dropdown-menu/dropdown-menu.js"
       },
       "docs": "docs/dropdown-menu.html",
-      "description": "Shows a compact set of actions from one trigger."
+      "description": "Shows a compact set of actions from one trigger.",
+      "styleDependencies": [
+        "button"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Navigation Menu",
@@ -1469,7 +1696,10 @@
         "js": "library/components/navigation-menu/navigation-menu.js"
       },
       "docs": "docs/navigation-menu.html",
-      "description": "Groups related site routes in top-level navigation popovers."
+      "description": "Groups related site routes in top-level navigation popovers.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "App Shell",
@@ -1490,7 +1720,12 @@
         "js": "library/components/app-shell/app-shell.js"
       },
       "docs": "docs/app-shell.html",
-      "description": "Provides reusable application header, toolbar, page overview, content, status, and empty-state primitives."
+      "description": "Provides reusable application header, toolbar, page overview, content, status, and empty-state primitives.",
+      "styleDependencies": [
+        "button"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Sidebar",
@@ -1511,7 +1746,12 @@
         "js": "library/components/sidebar/sidebar.js"
       },
       "docs": "docs/sidebar.html",
-      "description": "Provides collapsible desktop navigation and a mobile navigation dialog."
+      "description": "Provides collapsible desktop navigation and a mobile navigation dialog.",
+      "styleDependencies": [
+        "button"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Resizable",
@@ -1532,7 +1772,10 @@
         "js": "library/components/resizable/resizable.js"
       },
       "docs": "docs/resizable.html",
-      "description": "Presents two panels with an optional adjustable separator."
+      "description": "Presents two panels with an optional adjustable separator.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Color Picker",
@@ -1553,7 +1796,12 @@
         "js": "library/components/color-picker/color-picker.js"
       },
       "docs": "docs/color-picker.html",
-      "description": "Selects a color through a native picker with optional editable hexadecimal synchronization."
+      "description": "Selects a color through a native picker with optional editable hexadecimal synchronization.",
+      "styleDependencies": [
+        "field"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "File Upload",
@@ -1574,7 +1822,10 @@
         "js": "library/components/file-upload/file-upload.js"
       },
       "docs": "docs/file-upload.html",
-      "description": "Selects files with optional drag-and-drop feedback, file details, and image previews."
+      "description": "Selects files with optional drag-and-drop feedback, file details, and image previews.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Input OTP",
@@ -1595,7 +1846,10 @@
         "js": "library/components/input-otp/input-otp.js"
       },
       "docs": "docs/input-otp.html",
-      "description": "Captures a fixed-length one-time code through segmented native inputs."
+      "description": "Captures a fixed-length one-time code through segmented native inputs.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Tag Input",
@@ -1616,7 +1870,12 @@
         "js": "library/components/tag-input/tag-input.js"
       },
       "docs": "docs/tag-input.html",
-      "description": "Commits free text into discrete removable values."
+      "description": "Commits free text into discrete removable values.",
+      "styleDependencies": [
+        "field"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Header",
@@ -1636,7 +1895,12 @@
         "css": "library/components/header/header.css"
       },
       "docs": "docs/header.html",
-      "description": "Provides a reusable banner landmark for brand, primary navigation, and global actions."
+      "description": "Provides a reusable banner landmark for brand, primary navigation, and global actions.",
+      "styleDependencies": [
+        "nav"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Nav",
@@ -1656,7 +1920,10 @@
         "css": "library/components/nav/nav.css"
       },
       "docs": "docs/nav.html",
-      "description": "Presents a small flat route set with explicit current-page state."
+      "description": "Presents a small flat route set with explicit current-page state.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Footer",
@@ -1676,7 +1943,10 @@
         "css": "library/components/footer/footer.css"
       },
       "docs": "docs/footer.html",
-      "description": "Provides a reusable content-information landmark for secondary routes and service metadata."
+      "description": "Provides a reusable content-information landmark for secondary routes and service metadata.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Context Menu",
@@ -1697,7 +1967,10 @@
         "js": "library/components/context-menu/context-menu.js"
       },
       "docs": "docs/context-menu.html",
-      "description": "Shows a compact action menu at a pointer context position or from a keyboard trigger."
+      "description": "Shows a compact action menu at a pointer context position or from a keyboard trigger.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Hover Card",
@@ -1718,7 +1991,10 @@
         "js": "library/components/hover-card/hover-card.js"
       },
       "docs": "docs/hover-card.html",
-      "description": "Shows a rich supplementary preview from pointer hover or keyboard focus."
+      "description": "Shows a rich supplementary preview from pointer hover or keyboard focus.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Agent Activity",
@@ -1738,7 +2014,10 @@
         "css": "library/components/agent-activity/agent-activity.css"
       },
       "docs": "docs/agent-activity.html",
-      "description": "Presents one chronological stream of assistant reasoning, searches, tool calls, and related steps."
+      "description": "Presents one chronological stream of assistant reasoning, searches, tool calls, and related steps.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Code Block",
@@ -1759,7 +2038,10 @@
         "js": "library/components/code-block/code-block.js"
       },
       "docs": "docs/code-block.html",
-      "description": "Presents code with an optional copy action, line numbers, and stable streamed updates."
+      "description": "Presents code with an optional copy action, line numbers, and stable streamed updates.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Composer",
@@ -1780,7 +2062,12 @@
         "js": "library/components/composer/composer.js"
       },
       "docs": "docs/composer.html",
-      "description": "Provides a message-entry form with an expanding textarea and optional leading and trailing actions."
+      "description": "Provides a message-entry form with an expanding textarea and optional leading and trailing actions.",
+      "styleDependencies": [
+        "button"
+      ],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "File Diff",
@@ -1800,7 +2087,10 @@
         "css": "library/components/file-diff/file-diff.css"
       },
       "docs": "docs/file-diff.html",
-      "description": "Presents file changes with metadata and semantic added, removed, and context lines."
+      "description": "Presents file changes with metadata and semantic added, removed, and context lines.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Message",
@@ -1820,7 +2110,10 @@
         "css": "library/components/message/message.css"
       },
       "docs": "docs/message.html",
-      "description": "Presents an ordered conversation as authored rows with metadata and optional expansion."
+      "description": "Presents an ordered conversation as authored rows with metadata and optional expansion.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Message Scroller",
@@ -1841,7 +2134,10 @@
         "js": "library/components/message-scroller/message-scroller.js"
       },
       "docs": "docs/message-scroller.html",
-      "description": "Follows streamed conversation output at the live edge until the reader scrolls away."
+      "description": "Follows streamed conversation output at the live edge until the reader scrolls away.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Reasoning",
@@ -1862,7 +2158,10 @@
         "js": "library/components/reasoning/reasoning.js"
       },
       "docs": "docs/reasoning.html",
-      "description": "Presents an optional assistant reasoning trace with explicit streaming and complete states."
+      "description": "Presents an optional assistant reasoning trace with explicit streaming and complete states.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Sources",
@@ -1882,7 +2181,10 @@
         "css": "library/components/sources/sources.css"
       },
       "docs": "docs/sources.html",
-      "description": "Connects inline citations with a readable list of external references."
+      "description": "Connects inline citations with a readable list of external references.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Suggestion",
@@ -1902,7 +2204,10 @@
         "css": "library/components/suggestion/suggestion.css"
       },
       "docs": "docs/suggestion.html",
-      "description": "Presents short prompt choices that can seed the next composer value."
+      "description": "Presents short prompt choices that can seed the next composer value.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Thinking Indicator",
@@ -1922,7 +2227,10 @@
         "css": "library/components/thinking-indicator/thinking-indicator.css"
       },
       "docs": "docs/thinking-indicator.html",
-      "description": "Communicates that an assistant is actively preparing a response."
+      "description": "Communicates that an assistant is actively preparing a response.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Todo List",
@@ -1943,7 +2251,10 @@
         "js": "library/components/todo-list/todo-list.js"
       },
       "docs": "docs/todo-list.html",
-      "description": "Presents an ordered task plan with visible item status and completion context."
+      "description": "Presents an ordered task plan with visible item status and completion context.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     },
     {
       "name": "Tool Call",
@@ -1963,7 +2274,10 @@
         "css": "library/components/tool-call/tool-call.css"
       },
       "docs": "docs/tool-call.html",
-      "description": "Presents an assistant tool operation with visible status and optional result content."
+      "description": "Presents an assistant tool operation with visible status and optional result content.",
+      "styleDependencies": [],
+      "behaviorDependencies": [],
+      "assets": []
     }
   ]
 }

@@ -1,5 +1,10 @@
 // -- File Upload -----------------------------------------------
 
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
+
 const cleanupByUpload = new WeakMap();
 
 function formatBytes(bytes) {
@@ -37,18 +42,24 @@ function droppedDirectory(dataTransfer) {
   });
 }
 
-function init() {
-  document.querySelectorAll('[data-file-upload]:not([data-init])').forEach((root) => {
-    root.dataset.init = '';
+export function enhance(root) {
+  const uploads = queryAll(root, '[data-file-upload]:not([data-init])');
+  const ancestor = root?.nodeType === 1
+    ? root.closest?.('[data-file-upload]:not([data-init])')
+    : null;
+  if (ancestor) uploads.push(ancestor);
 
-    const dropzone = root.querySelector('.file-upload-dropzone');
-    const input = root.querySelector('.file-upload-input[type="file"]');
-    const list = root.querySelector('[data-file-upload-list]');
-    const status = root.querySelector('[data-file-upload-status]');
-    const error = root.querySelector('[data-file-upload-error]');
+  new Set(uploads).forEach((upload) => {
+    upload.dataset.init = '';
+
+    const dropzone = upload.querySelector('.file-upload-dropzone');
+    const input = upload.querySelector('.file-upload-input[type="file"]');
+    const list = upload.querySelector('[data-file-upload-list]');
+    const status = upload.querySelector('[data-file-upload-status]');
+    const error = upload.querySelector('[data-file-upload-error]');
 
     if (!dropzone || !input || !list || !status || !error) {
-      root.removeAttribute('data-init');
+      upload.removeAttribute('data-init');
       return;
     }
 
@@ -57,8 +68,8 @@ function init() {
     let dragDepth = 0;
     let synchronizing = false;
 
-    const maxFiles = Number.parseInt(root.dataset.maxFiles || '', 10);
-    const maxSize = Number.parseInt(root.dataset.maxSize || '', 10);
+    const maxFiles = Number.parseInt(upload.dataset.maxFiles || '', 10);
+    const maxSize = Number.parseInt(upload.dataset.maxSize || '', 10);
 
     const clearPreviews = () => {
       previewUrls.forEach((url) => URL.revokeObjectURL(url));
@@ -68,13 +79,13 @@ function init() {
     const setError = (message) => {
       error.textContent = message;
       error.hidden = false;
-      root.dataset.state = 'error';
+      upload.dataset.state = 'error';
     };
 
     const clearError = () => {
       error.textContent = '';
       error.hidden = true;
-      if (root.dataset.state === 'error') delete root.dataset.state;
+      if (upload.dataset.state === 'error') delete upload.dataset.state;
     };
 
     const validate = (incoming, existingCount = 0) => {
@@ -98,11 +109,11 @@ function init() {
       list.replaceChildren();
 
       files.forEach((file, index) => {
-        const item = document.createElement('li');
+        const item = upload.ownerDocument.createElement('li');
         item.className = 'file-upload-item';
 
-        if (root.hasAttribute('data-preview') && file.type.startsWith('image/')) {
-          const image = document.createElement('img');
+        if (upload.hasAttribute('data-preview') && file.type.startsWith('image/')) {
+          const image = upload.ownerDocument.createElement('img');
           const url = URL.createObjectURL(file);
           previewUrls.push(url);
           image.className = 'file-upload-preview';
@@ -110,28 +121,28 @@ function init() {
           image.alt = '';
           item.append(image);
         } else {
-          const marker = document.createElement('span');
+          const marker = upload.ownerDocument.createElement('span');
           marker.className = 'file-upload-preview';
           marker.setAttribute('aria-hidden', 'true');
           marker.textContent = 'FILE';
           item.append(marker);
         }
 
-        const details = document.createElement('span');
+        const details = upload.ownerDocument.createElement('span');
         details.className = 'file-upload-file';
 
-        const name = document.createElement('span');
+        const name = upload.ownerDocument.createElement('span');
         name.className = 'file-upload-name';
         name.textContent = file.name;
         name.title = file.name;
 
-        const meta = document.createElement('span');
+        const meta = upload.ownerDocument.createElement('span');
         meta.className = 'file-upload-meta';
         meta.textContent = `${file.type || 'File'} · ${formatBytes(file.size)}`;
 
         details.append(name, meta);
 
-        const remove = document.createElement('button');
+        const remove = upload.ownerDocument.createElement('button');
         remove.type = 'button';
         remove.className = 'file-upload-remove';
         remove.textContent = 'Remove';
@@ -161,7 +172,7 @@ function init() {
     };
 
     const emitChange = (source) => {
-      root.dispatchEvent(new CustomEvent('file-upload:change', {
+      upload.dispatchEvent(new CustomEvent('file-upload:change', {
         bubbles: true,
         detail: { files: files.slice(), source }
       }));
@@ -211,26 +222,26 @@ function init() {
       if (input.disabled || !Array.from(event.dataTransfer?.types || []).includes('Files')) return;
       event.preventDefault();
       dragDepth += 1;
-      root.dataset.dragging = '';
+      upload.dataset.dragging = '';
     });
 
     dropzone.addEventListener('dragover', (event) => {
       if (input.disabled || !event.dataTransfer) return;
       event.preventDefault();
       event.dataTransfer.dropEffect = 'copy';
-      root.dataset.dragging = '';
+      upload.dataset.dragging = '';
     });
 
     dropzone.addEventListener('dragleave', () => {
       dragDepth = Math.max(0, dragDepth - 1);
-      if (dragDepth === 0) delete root.dataset.dragging;
+      if (dragDepth === 0) delete upload.dataset.dragging;
     });
 
     dropzone.addEventListener('drop', (event) => {
       if (input.disabled || !event.dataTransfer) return;
       event.preventDefault();
       dragDepth = 0;
-      delete root.dataset.dragging;
+      delete upload.dataset.dragging;
 
       if (droppedDirectory(event.dataTransfer)) {
         setError('Choose files instead of a folder.');
@@ -260,22 +271,19 @@ function init() {
     });
 
     render();
-    root.dataset.enhanced = '';
-    cleanupByUpload.set(root, clearPreviews);
+    upload.dataset.enhanced = '';
+    cleanupByUpload.set(upload, clearPreviews);
   });
 }
 
-function cleanupRemoved(node) {
-  if (!(node instanceof Element)) return;
-  const uploads = [
-    ...(node.matches('[data-file-upload]') ? [node] : []),
-    ...node.querySelectorAll('[data-file-upload]')
-  ];
-  uploads.forEach((upload) => cleanupByUpload.get(upload)?.());
+export function destroy(root) {
+  queryAll(root, '[data-file-upload]').forEach((upload) => {
+    cleanupByUpload.get(upload)?.();
+  });
 }
 
-init();
-new MutationObserver((records) => {
-  records.forEach((record) => record.removedNodes.forEach(cleanupRemoved));
-  init();
-}).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'file-upload', enhance, destroy };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */

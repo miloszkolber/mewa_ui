@@ -7,6 +7,7 @@ const registryPath = path.join(root, "registry.json");
 const registry = JSON.parse(fs.readFileSync(registryPath, "utf8"));
 const mode = process.argv[2] || "--check";
 const foundationsPath = path.join(root, "library", "system", "foundations.md");
+const componentsPath = path.join(root, "library", "system", "components.md");
 
 function renderTokenReference() {
   const lines = [
@@ -27,6 +28,37 @@ function renderTokenReference() {
   return lines.join("\n");
 }
 
+function renderRegistryFields() {
+  return [
+    "<!-- REGISTRY-FIELDS:START -->",
+    "## Registry fields",
+    "",
+    "Use `purpose` to identify the component responsibility.",
+    "",
+    "Use `useWhen` to confirm the selection condition.",
+    "",
+    "Use `avoidWhen` to reject the nearest misuse.",
+    "",
+    "Use `fallback` to select the simpler alternative.",
+    "",
+    "Use `jsMode` to decide whether a module is required.",
+    "",
+    "Use `files` to load the exact source assets.",
+    "",
+    "Use `styleDependencies` to load component presentation dependencies.",
+    "",
+    "Use `behaviorDependencies` to load required controller dependencies.",
+    "",
+    "Use `assets` to load optional fonts, icons, or other files.",
+    "",
+    "Use `stability` before you depend on a component contract.",
+    "",
+    "Do not infer these values from the component name.",
+    "",
+    "<!-- REGISTRY-FIELDS:END -->"
+  ].join("\n");
+}
+
 function replaceSection(source, start, end, replacement) {
   const startIndex = source.indexOf(start);
   const endIndex = source.indexOf(end);
@@ -39,8 +71,10 @@ function replaceSection(source, start, end, replacement) {
 
 function expectedFiles() {
   const foundations = fs.readFileSync(foundationsPath, "utf8");
+  const components = fs.readFileSync(componentsPath, "utf8");
   return new Map([
-    [foundationsPath, replaceSection(foundations, "<!-- TOKEN-REFERENCE:START -->", "<!-- TOKEN-REFERENCE:END -->", renderTokenReference())]
+    [foundationsPath, replaceSection(foundations, "<!-- TOKEN-REFERENCE:START -->", "<!-- TOKEN-REFERENCE:END -->", renderTokenReference())],
+    [componentsPath, replaceSection(components, "<!-- REGISTRY-FIELDS:START -->", "<!-- REGISTRY-FIELDS:END -->", renderRegistryFields())]
   ]);
 }
 

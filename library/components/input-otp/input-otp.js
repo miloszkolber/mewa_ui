@@ -1,12 +1,23 @@
 // -- Input OTP --------------------------------------------------
 
-function init() {
-  document.querySelectorAll('[data-input-otp]:not([data-init])').forEach((root) => {
-    root.dataset.init = '';
+import { queryAll } from '../../runtime/core.js';
+/* mewa:auto:start */
+import { registerBehavior } from '../../runtime/enhancer.js';
+/* mewa:auto:end */
 
-    const cells = Array.from(root.querySelectorAll('.input-otp-cell'));
+export function enhance(root) {
+  const inputs = queryAll(root, '[data-input-otp]:not([data-init])');
+  const ancestor = root?.nodeType === 1
+    ? root.closest?.('[data-input-otp]:not([data-init])')
+    : null;
+  if (ancestor) inputs.push(ancestor);
+
+  new Set(inputs).forEach((otp) => {
+    otp.dataset.init = '';
+
+    const cells = Array.from(otp.querySelectorAll('.input-otp-cell'));
     if (cells.length === 0) {
-      root.removeAttribute('data-init');
+      otp.removeAttribute('data-init');
       return;
     }
 
@@ -22,13 +33,13 @@ function init() {
       const value = cells.map((cell) => cell.value).join('');
       const complete = cells.every((cell) => cell.value !== '');
 
-      root.dispatchEvent(new CustomEvent('input-otp:change', {
+      otp.dispatchEvent(new CustomEvent('input-otp:change', {
         bubbles: true,
         detail: { value, source }
       }));
 
       if (complete && !wasComplete) {
-        root.dispatchEvent(new CustomEvent('input-otp:complete', {
+        otp.dispatchEvent(new CustomEvent('input-otp:complete', {
           bubbles: true,
           detail: { value }
         }));
@@ -102,5 +113,8 @@ function init() {
   });
 }
 
-init();
-new MutationObserver(init).observe(document, { childList: true, subtree: true });
+export const behavior = { name: 'input-otp', enhance };
+
+/* mewa:auto:start */
+registerBehavior(behavior);
+/* mewa:auto:end */
