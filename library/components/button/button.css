@@ -50,7 +50,7 @@
       color: var(--text-inverted);
 
       &:hover {
-        background-color: color-mix(in oklch, var(--surface-inverted) 88%, var(--background));
+        background-color: color-mix(in srgb, var(--surface-inverted) 88%, var(--background));
       }
     }
 
@@ -61,7 +61,7 @@
       color: var(--text-primary);
 
       &:hover {
-        background-color: color-mix(in oklch, var(--border-primary) 88%, var(--text-primary));
+        background-color: color-mix(in srgb, var(--border-primary) 88%, var(--text-primary));
       }
     }
 
@@ -95,7 +95,7 @@
       color: var(--text-inverted);
 
       &:hover {
-        background-color: color-mix(in oklch, var(--surface-destructive) 88%, var(--background));
+        background-color: color-mix(in srgb, var(--surface-destructive) 88%, var(--background));
       }
     }
 

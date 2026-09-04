@@ -20,7 +20,9 @@ Do not divide every content group into a separate card.
 
 ## Token ownership
 
-Use `library/src/base.css` for static primitives.
+Use `library/src/base.css` for static primitives and generated palette output.
+
+Use `scripts/color-palette.mjs` for the build-time HCT palette recipe.
 
 Use `library/src/tokens.css` for semantic theme roles.
 
@@ -34,25 +36,41 @@ Do not invent a semantic token for one component.
 
 Use neutral, red, amber, and green solid palettes.
 
-Use `000` for white in the neutral family.
+Use 13 neutral solid steps: `000`, `050`, `100` through `900`, `950`, and `1000`.
 
-Use the symmetric `050` through `950` scale for every palette.
+Anchor neutral `000` at `#ffffff` and neutral `1000` at `#0a0a0a`.
 
-Use each palette's own `050` and `950` as its symmetry endpoints.
+Use 11 chromatic solid steps from `050` through `950`.
 
-Keep neutral `000` as white outside the symmetric range.
+Use one eased HCT tone curve across every solid family.
 
-Pair each palette's `600` on its own `050` with its `400` on its own `950`.
+Keep the curve denser near `000` and `1000` and align mirrored steps by HCT tone.
 
-Do not define a pure-black primitive.
+Keep one recipe hue per chromatic family and tune HCT chroma by step.
 
 Treat neutral as the CSS name for the grayscale family.
 
-Keep one OKLCH hue across each chromatic palette.
+Run `node --run palette:write` after changing the recipe.
 
-Use the tuned alpha primitives only through semantic roles.
+Run `node --run palette:check` before handoff.
+
+Do not hand-edit the generated palette block in `library/src/base.css`.
+
+Use modern space-separated `rgb()` for every authored CSS color, including alpha colors.
+
+Do not mix color notations in CSS.
+
+Use `alpha-light` for white over neutral `1000` from `050` through `1000`; `000` is unavailable and `1000` has zero alpha.
+
+Use `alpha-dark` for neutral `1000` over white from `000` through `950`; `1000` is unavailable and `000` has zero alpha.
+
+Use chromatic alpha steps `000`, `050`, `100`, `200`, `800`, `900`, `950`, and `1000`, with both endpoints holding the adjacent tuned source color at zero alpha.
+
+Use generated alpha primitives only through semantic roles.
 
 Do not recreate an alpha primitive with opacity on its matching solid token.
+
+Validate WCAG contrast independently; matching HCT tone does not guarantee matching contrast.
 
 Use red, amber, and green only for status and destructive meaning.
 

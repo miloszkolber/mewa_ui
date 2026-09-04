@@ -122,19 +122,33 @@ Use semantic color roles inside components and consumers.
 
 Use neutral as the CSS name for the grayscale family.
 
-Use `000` for white and `050` through `950` for the neutral scale.
+Use 13 neutral solid steps: `000`, `050`, `100` through `900`, `950`, and `1000`.
 
-Do not define a pure-black primitive.
+Anchor neutral `000` at `#ffffff` and neutral `1000` at `#0a0a0a`.
 
-Keep palette symmetry across each palette's own `050` and `950` endpoints.
+Use 11 chromatic solid steps from `050` through `950`.
 
-Test chromatic `600` primarily on the same palette's `050`.
+Generate palette values at build time from `scripts/color-palette.mjs`.
 
-Test chromatic `400` primarily on the same palette's `950`.
+Serialize every authored CSS color as modern space-separated `rgb()`, including alpha colors.
 
-Keep chromatic palette hues constant in OKLCH.
+Do not mix HEX, RGB, HSL, or OKLCH notation in CSS.
 
-Use tuned alpha primitives through semantic roles.
+Use HCT tone, which is CIELAB L*, as the shared perceived-lightness coordinate.
+
+Use one eased HCT tone curve across every family, with denser intervals at both ends.
+
+Keep one recipe hue per chromatic family and tune HCT chroma by step.
+
+Treat matching HCT tone as perceptual alignment, not proof of WCAG contrast.
+
+Use `alpha-light` for white over neutral `1000` from `050` through `1000`; omit `000` and make `1000` transparent.
+
+Use `alpha-dark` for neutral `1000` over white from `000` through `950`; omit `1000` and make `000` transparent.
+
+Use chromatic alpha steps `000`, `050`, `100`, `200`, `800`, `900`, `950`, and `1000`, with both endpoints holding the adjacent tuned source color at zero alpha.
+
+Use generated alpha primitives only through semantic roles.
 
 Use the token purposes in `registry.json`.
 
@@ -418,7 +432,9 @@ Do not create a new component only for one shell.
 
 ## Source ownership
 
-`library/src/base.css` owns static foundations.
+`scripts/color-palette.mjs` owns the build-time HCT palette recipe.
+
+`library/src/base.css` owns static foundations and contains the generated palette output.
 
 `library/src/tokens.css` owns semantic theme roles.
 

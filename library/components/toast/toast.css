@@ -33,8 +33,8 @@
     max-width: min(26rem, calc(100vw - var(--space-1000)));
     pointer-events: auto;
 
-    /* -- Variants: 050 fill with 950 text in light mode, 950 fill
-           with colored 500 text in dark mode. The colored title and
+    /* -- Variants: translucent status surfaces pair with 600 text in
+           light mode and 400 text in dark mode. The colored title and
            description inherit the variant text color. ----------------- */
     &[data-variant="destructive"] {
       background-color: var(--surface-negative);

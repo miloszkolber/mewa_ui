@@ -29,7 +29,7 @@
       margin-inline-end: var(--space-300);
       cursor: pointer;
       pointer-events: auto;
-      &:hover { background: color-mix(in oklch, var(--surface-secondary) 80%, var(--text-primary)); }
+      &:hover { background: color-mix(in srgb, var(--surface-secondary) 80%, var(--text-primary)); }
     }
 
     /* Only the picker button is interactive; the field frame never

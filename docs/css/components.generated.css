@@ -400,7 +400,7 @@
       color: var(--text-inverted);
 
       &:hover {
-        background-color: color-mix(in oklch, var(--surface-inverted) 88%, var(--background));
+        background-color: color-mix(in srgb, var(--surface-inverted) 88%, var(--background));
       }
     }
 
@@ -411,7 +411,7 @@
       color: var(--text-primary);
 
       &:hover {
-        background-color: color-mix(in oklch, var(--border-primary) 88%, var(--text-primary));
+        background-color: color-mix(in srgb, var(--border-primary) 88%, var(--text-primary));
       }
     }
 
@@ -445,7 +445,7 @@
       color: var(--text-inverted);
 
       &:hover {
-        background-color: color-mix(in oklch, var(--surface-destructive) 88%, var(--background));
+        background-color: color-mix(in srgb, var(--surface-destructive) 88%, var(--background));
       }
     }
 
@@ -2344,7 +2344,7 @@
       margin-inline-end: var(--space-300);
       cursor: pointer;
       pointer-events: auto;
-      &:hover { background: color-mix(in oklch, var(--surface-secondary) 80%, var(--text-primary)); }
+      &:hover { background: color-mix(in srgb, var(--surface-secondary) 80%, var(--text-primary)); }
     }
 
     /* Only the picker button is interactive; the field frame never
@@ -5130,8 +5130,8 @@
     max-width: min(26rem, calc(100vw - var(--space-1000)));
     pointer-events: auto;
 
-    /* -- Variants: 050 fill with 950 text in light mode, 950 fill
-           with colored 500 text in dark mode. The colored title and
+    /* -- Variants: translucent status surfaces pair with 600 text in
+           light mode and 400 text in dark mode. The colored title and
            description inherit the variant text color. ----------------- */
     &[data-variant="destructive"] {
       background-color: var(--surface-negative);

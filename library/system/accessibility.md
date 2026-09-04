@@ -210,7 +210,7 @@ Do not use green or red as decoration.
 
 ## Contrast
 
-Use WCAG 2 contrast as the shipped palette contract.
+Validate WCAG 2 contrast independently from the palette's HCT tone alignment.
 
 Keep normal text at 4.5:1 or higher against its actual background.
 
@@ -222,21 +222,15 @@ Use chromatic `600` roles for readable status text on light surfaces.
 
 Use chromatic `400` roles for readable status text on dark surfaces.
 
-Test each palette primarily against its own endpoints.
+Test every semantic pairing against its actual background.
 
-Pair each palette's `600` on its own `050` with its `400` on its own `950`.
+Treat matching and mirrored HCT tones as perceptual alignment only.
 
-Keep the paired WCAG contrast values approximately equal.
-
-Do not use `400` on `050` or `600` on `950` for required 3:1 contrast in the current palette.
-
-Treat neutral `000` as the white endpoint outside this symmetry.
+Do not infer equal WCAG ratios from matching or mirrored numeric steps.
 
 Check alpha colors after they composite with the actual surface.
 
 Do not use an alpha primitive for readable text.
-
-Do not assume that matching numeric steps have equal contrast in both polarities.
 
 Keep disabled content understandable even when WCAG exempts it from minimum text contrast.
 

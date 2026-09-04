@@ -23,11 +23,14 @@
     "catalog:write": "node scripts/catalog.mjs --write",
     "docs:check": "node scripts/docs-assets.mjs --check",
     "docs:write": "node scripts/docs-assets.mjs --write",
-    "package:check": "node scripts/build.mjs && node tests/package-contract.test.mjs",
-    "test": "node scripts/catalog.mjs --check && node scripts/component-canvas.mjs --check && node scripts/docs-assets.mjs --check && node scripts/build.mjs && node tests/system-contract.test.js && node tests/catalog-contract.test.js && node tests/component-canvas.test.js && node tests/runtime-contract.test.js && node tests/package-contract.test.mjs",
+    "package:check": "node scripts/color-palette.mjs --check && node scripts/build.mjs && node tests/package-contract.test.mjs",
+    "palette:check": "node scripts/color-palette.mjs --check",
+    "palette:write": "node scripts/color-palette.mjs --write",
+    "test": "node scripts/catalog.mjs --check && node scripts/component-canvas.mjs --check && node scripts/docs-assets.mjs --check && node scripts/color-palette.mjs --check && node scripts/build.mjs && node tests/system-contract.test.js && node tests/catalog-contract.test.js && node tests/component-canvas.test.js && node tests/runtime-contract.test.js && node tests/color-palette.test.mjs && node tests/package-contract.test.mjs",
     "test:browser": "node tests/browser-smoke.mjs"
   },
   "devDependencies": {
+    "@material/material-color-utilities": "0.4.0",
     "puppeteer-core": "25.3.0"
   }
 }

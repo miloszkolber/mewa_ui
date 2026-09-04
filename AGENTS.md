@@ -22,6 +22,8 @@ Do not edit deployment files from this repository.
 
 Edit `library/src/base.css` for static foundation primitives.
 
+Edit `scripts/color-palette.mjs` for solid and alpha palette primitives.
+
 Edit `library/src/tokens.css` for semantic light and dark roles.
 
 Edit `library/components/{slug}/{slug}.md` for component implementation guidance.
@@ -53,6 +55,20 @@ Generate distribution copies only under ignored `dist/`.
 Do not hand-edit generated distribution files.
 
 Do not add complete shell templates.
+
+## Palette workflow
+
+Treat `scripts/color-palette.mjs` as the source of the build-time HCT palette recipe.
+
+Treat the marked color-palette block in `library/src/base.css` as generated output.
+
+Keep Material Color Utilities build-only and ship every authored CSS color as modern space-separated `rgb()`.
+
+Run `node --run palette:write` after palette recipe changes.
+
+Run `node --run palette:check` before handoff.
+
+Do not hand-edit the generated palette block.
 
 ## Catalog workflow
 
@@ -195,7 +211,7 @@ Use current spacing and size tokens.
 
 Use the canonical scale where `100` equals 4px.
 
-Use three-digit color steps such as `050`.
+Use zero-padded color step labels from `000` through `950` and the four-digit endpoint `1000`.
 
 Use square geometry.
 
@@ -314,6 +330,8 @@ Do not copy the complete design contract into another file.
 Run `node --run test`.
 
 Run `node --run package:check`.
+
+Run `node --run palette:check`.
 
 Run `node --run catalog:check`.
 
