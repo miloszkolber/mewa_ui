@@ -142,6 +142,16 @@ async function inspect(page, baseUrl, slug, viewport, theme = 'light') {
     theme === 'dark'
   );
 
+  // Theme switches transition colors. Measure the settled palette, not an intermediate frame.
+  await page.evaluate(async () => {
+    await Promise.all(
+      document
+        .getAnimations()
+        .filter((animation) => animation.effect?.getTiming().iterations !== Infinity)
+        .map((animation) => animation.finished.catch(() => {}))
+    );
+  });
+
   const result = await page.evaluate(() => {
     const html = document.documentElement;
     const main = document.querySelector('main');
