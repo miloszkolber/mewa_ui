@@ -2,9 +2,13 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import puppeteer from 'puppeteer-core';
-import { executablePath } from './browser-support.mjs';
+import { launchOptions } from './browser-support.mjs';
 const root = path.resolve(import.meta.dirname, '..');
-const directory = path.join(root, 'dist/mewa-ui');
+const directory = path.resolve(
+  process.env.MEWA_PERFORMANCE_DIST || path.join(root, 'dist/mewa-ui')
+);
+const reportPath =
+  process.env.MEWA_PERFORMANCE_REPORT || path.join(root, 'dist/performance-report.json');
 const server = Bun.serve({
   hostname: '127.0.0.1',
   port: 0,
@@ -20,11 +24,7 @@ const server = Bun.serve({
     return new Response(Bun.file(filename));
   }
 });
-const browser = await puppeteer.launch({
-  executablePath: executablePath(),
-  headless: true,
-  args: ['--no-sandbox']
-});
+const browser = await puppeteer.launch(launchOptions());
 try {
   const page = await browser.newPage();
   await page.goto(`http://127.0.0.1:${server.port}/`);
@@ -124,14 +124,15 @@ try {
   });
   const report = {
     browser: await browser.version(),
+    bun: Bun.version,
+    platform: process.platform,
+    architecture: process.arch,
+    distribution: directory,
     note: 'Diagnostic timings, not portable pass/fail budgets. Compare on the same machine and browser.',
     workloads,
     runs
   };
-  fs.writeFileSync(
-    path.join(root, 'dist/performance-report.json'),
-    JSON.stringify(report, null, 2) + '\n'
-  );
+  fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify(report));
 } finally {
   await browser.close();

@@ -124,6 +124,8 @@ Explain an unavailable option when the reason is not obvious.
 
 ## Accessibility
 
+Use the control border role to keep the unselected control visible against the canvas.
+
 Keep a visible legend for the group.
 
 Keep each visible option label associated with its radio.

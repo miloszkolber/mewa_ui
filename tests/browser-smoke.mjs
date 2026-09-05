@@ -1,4 +1,4 @@
-import { executablePath } from './browser-support.mjs';
+import { launchOptions, browserName } from './browser-support.mjs';
 import assert from 'node:assert/strict';
 import { checkReactiveAttachments } from './svelte-browser-support.mjs';
 import fs from 'node:fs';
@@ -119,7 +119,8 @@ function startServer() {
 
 async function inspect(page, baseUrl, slug, viewport, theme = 'light') {
   await page.setViewport({ width: viewport.width, height: viewport.height });
-  await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: theme }]);
+  if (browserName === 'chrome')
+    await page.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: theme }]);
 
   const errors = [];
   const onConsole = (message) => {
@@ -136,6 +137,10 @@ async function inspect(page, baseUrl, slug, viewport, theme = 'light') {
 
   await page.waitForFunction(() => document.readyState === 'complete');
   await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(
+    (dark) => document.documentElement.classList.toggle('dark', dark),
+    theme === 'dark'
+  );
 
   const result = await page.evaluate(() => {
     const html = document.documentElement;
@@ -150,6 +155,41 @@ async function inspect(page, baseUrl, slug, viewport, theme = 'light') {
       ).length
     };
   });
+
+  if (['checkbox', 'radio-group'].includes(slug)) {
+    const contrasts = await page.evaluate(() => {
+      const luminance = (color) => {
+        const channels = color
+          .match(/[\d.]+/g)
+          .slice(0, 3)
+          .map(Number)
+          .map((value) => {
+            const v = value / 255;
+            return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+          });
+        return channels.reduce((sum, value, i) => sum + value * [0.2126, 0.7152, 0.0722][i], 0);
+      };
+      return [...document.querySelectorAll('input.checkbox,input.radio')]
+        .filter(
+          (input) =>
+            !input.checked &&
+            !input.disabled &&
+            !input.indeterminate &&
+            input.getAttribute('aria-invalid') !== 'true'
+        )
+        .map((input) => {
+          const style = getComputedStyle(input);
+          const a = luminance(style.borderColor),
+            b = luminance(style.backgroundColor);
+          return { id: input.id, contrast: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05) };
+        });
+    });
+    assert(contrasts.length, `${slug}: missing unchecked control fixture`);
+    assert(
+      contrasts.every((item) => item.contrast >= 3),
+      JSON.stringify({ slug, theme, contrasts })
+    );
+  }
 
   assert(result.lang, `${slug} ${viewport.name}: document language is missing`);
   assert(result.main, `${slug} ${viewport.name}: main landmark is missing`);
@@ -200,6 +240,34 @@ async function inspectPackage(page, baseUrl) {
     true,
     'packaged auto enhancer did not open the dialog'
   );
+  await page.setViewport({ width: 320, height: 844 });
+  await page.$eval('#package-dialog .dialog-footer', (footer) => {
+    footer.replaceChildren(
+      ...['Cancel', 'Reset', 'Save changes'].map((label) => {
+        const button = document.createElement('button');
+        button.className = 'btn';
+        button.type = 'button';
+        button.textContent = label;
+        return button;
+      })
+    );
+  });
+  await page.waitForFunction(() =>
+    document
+      .querySelector('#package-dialog')
+      .getAnimations()
+      .every((animation) => animation.playState === 'finished')
+  );
+  const clippedActions = await page.$eval('#package-dialog', (dialog) => {
+    const bounds = dialog.getBoundingClientRect();
+    return [...dialog.querySelectorAll('.dialog-footer button')]
+      .filter((button) => {
+        const rect = button.getBoundingClientRect();
+        return rect.left < bounds.left || rect.right > bounds.right;
+      })
+      .map((button) => button.textContent);
+  });
+  assert.deepEqual(clippedActions, [], 'Dialog footer actions must fit at 320px');
   await page.keyboard.press('Escape');
   assert.equal(
     await page.$eval('#package-dialog', (dialog) => dialog.open),
@@ -291,17 +359,7 @@ try {
     baseUrl = started.baseUrl;
   }
 
-  const chrome = executablePath();
-  assert(
-    chrome,
-    'Chromium or Chrome is required. Set PUPPETEER_EXECUTABLE_PATH when it is not on a standard path.'
-  );
-
-  const browser = await puppeteer.launch({
-    executablePath: chrome,
-    headless: true,
-    args: ['--no-sandbox', '--disable-dev-shm-usage']
-  });
+  const browser = await puppeteer.launch(launchOptions());
 
   try {
     const page = await browser.newPage();
@@ -322,6 +380,8 @@ try {
       await inspect(page, baseUrl, slug, coreViewports[1], 'dark');
     }
 
+    for (const slug of ['checkbox', 'radio-group'])
+      await inspect(page, baseUrl, slug, coreViewports[0], 'dark');
     await inspectPackage(page, baseUrl);
     await inspectSveltePackage(page, baseUrl);
 

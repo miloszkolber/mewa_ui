@@ -1,6 +1,6 @@
 {
   "name": "mewa-ui",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "Framework-neutral, accessible, monochrome component library for utility applications.",
   "license": "MIT",
@@ -31,6 +31,7 @@
     "measure": "bun scripts/measure.mjs",
     "test:consumer": "bun tests/consumer-contract.test.mjs",
     "check": "bun run test && bun run lint && bun run format:check && bun run typecheck",
+    "test:safari": "bun scripts/build.mjs && bun tests/safari-acceptance.mjs",
     "test:performance": "bun tests/browser-performance.mjs"
   },
   "devDependencies": {

@@ -203,6 +203,8 @@ Typing filters options with case-insensitive substring matching.
 
 Filtering highlights the first enabled result.
 
+Filtering announces the enabled result count through one generated status region.
+
 Selecting an option updates the visible value.
 
 Selecting an option updates the optional hidden input.
@@ -236,6 +238,10 @@ The search input keeps DOM focus while option focus uses `aria-activedescendant`
 ## Form behavior
 
 The hidden input submits the selected `data-value`.
+
+Native form reset restores the initial value and visible label, clears the query, and closes the popover.
+
+A canceled reset preserves the current selection.
 
 The hidden input does not provide native required-field validation.
 

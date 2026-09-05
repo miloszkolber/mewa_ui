@@ -120,6 +120,10 @@ Do not author `data-init`.
 
 ## Behavior
 
+The module leaves readonly and disabled segments unchanged during interaction.
+
+The module waits for committed input before filtering composition text.
+
 The module enables the hidden canonical input when it exists.
 
 The module filters hour and minute entry to at most two ASCII digits.

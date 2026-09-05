@@ -159,6 +159,11 @@
         "stability": "stable"
       },
       {
+        "name": "--border-control",
+        "purpose": "Required visible boundary of an unselected native choice control.",
+        "stability": "stable"
+      },
+      {
         "name": "--border-muted",
         "purpose": "Low-emphasis or dashed boundary.",
         "stability": "stable"

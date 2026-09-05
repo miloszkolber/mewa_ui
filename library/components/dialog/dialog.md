@@ -99,6 +99,8 @@ The module keeps Tab movement inside the open dialog.
 
 ## Behavior
 
+Footer actions wrap onto another line when the available width cannot fit the actions.
+
 Activating a documented trigger calls `showModal()`.
 
 Clicking a documented close control closes the dialog.

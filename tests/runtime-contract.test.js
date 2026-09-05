@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import puppeteer from 'puppeteer-core';
-import { executablePath } from './browser-support.mjs';
+import { launchOptions } from './browser-support.mjs';
 const root = path.resolve(import.meta.dirname, '..');
 const distribution = path.join(root, 'dist');
 const build = await Bun.build({
@@ -27,11 +27,7 @@ const server = Bun.serve({
     return new Response(Bun.file(filename));
   }
 });
-const browser = await puppeteer.launch({
-  executablePath: executablePath(),
-  headless: true,
-  args: ['--no-sandbox']
-});
+const browser = await puppeteer.launch(launchOptions());
 try {
   const page = await browser.newPage();
   await page.goto(`http://127.0.0.1:${server.port}/`);

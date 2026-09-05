@@ -1,4 +1,4 @@
-import { executablePath } from './browser-support.mjs';
+import { launchOptions, browserName } from './browser-support.mjs';
 // Real-browser regressions for lifecycle, composition and native forms.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -31,11 +31,7 @@ const server = Bun.serve({
     return new Response(Bun.file(file));
   }
 });
-const browser = await puppeteer.launch({
-  executablePath: executablePath(),
-  headless: true,
-  args: ['--no-sandbox']
-});
+const browser = await puppeteer.launch(launchOptions());
 const page = await browser.newPage();
 const results = { browser: await browser.version(), cases: [] };
 async function test(name, fn, fixture = 'blank') {
@@ -365,22 +361,38 @@ try {
   await assertRoute('checkbox');
   console.log('PASS route races, cancellation, history, title, focus and current links');
   await page.goto(`http://127.0.0.1:${server.port}/docs/select.html`);
-  const cdp = await page.createCDPSession();
-  await cdp.send('Emulation.setEmulatedMedia', {
-    features: [{ name: 'forced-colors', value: 'active' }]
-  });
-  assert.equal(
-    await page.$eval('select.select', (select) => getComputedStyle(select).appearance),
-    'auto'
-  );
-  await cdp.send('Emulation.setEmulatedMedia', { features: [] });
-  await cdp.detach();
-  await page.setJavaScriptEnabled(false);
-  await page.goto(`http://127.0.0.1:${server.port}/docs/index.html`);
-  assert.equal(await page.$$eval('main a', (links) => links.length), 80);
-  await page.goto(`http://127.0.0.1:${server.port}/docs/toggle.html`);
-  assert.equal(await page.$eval('site-nav a', (link) => link.getAttribute('href')), 'index.html');
-  await page.setJavaScriptEnabled(true);
+  if (browserName === 'chrome') {
+    const cdp = await page.createCDPSession();
+    await cdp.send('Emulation.setEmulatedMedia', {
+      features: [{ name: 'forced-colors', value: 'active' }]
+    });
+    assert.equal(
+      await page.$eval('select.select', (select) => getComputedStyle(select).appearance),
+      'auto'
+    );
+    await cdp.send('Emulation.setEmulatedMedia', { features: [] });
+    await cdp.detach();
+  } else {
+    console.log('SKIP forced-colors emulation: Firefox BiDi does not expose CDP media emulation');
+  }
+  if (browserName === 'chrome') {
+    await page.setJavaScriptEnabled(false);
+    try {
+      await page.goto(`http://127.0.0.1:${server.port}/docs/index.html`);
+      assert.equal(await page.$$eval('main a', (links) => links.length), 80);
+      await page.goto(`http://127.0.0.1:${server.port}/docs/toggle.html`);
+      assert.equal(
+        await page.$eval('site-nav a', (link) => link.getAttribute('href')),
+        'index.html'
+      );
+    } finally {
+      await page.setJavaScriptEnabled(true);
+    }
+  } else {
+    console.log(
+      'SKIP JavaScript-disabled navigation: tested Firefox BiDi lacks emulation.setScriptingEnabled'
+    );
+  }
   const scratch = fs.mkdtempSync(path.join(root, 'dist/runes-test-'));
   try {
     const filename = path.join(scratch, 'state.svelte.js');

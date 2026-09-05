@@ -132,6 +132,10 @@ bun run test:performance
 bun run measure
 ```
 
+Set `MEWA_BROWSER=firefox` and `PUPPETEER_EXECUTABLE_PATH` to run the browser suite in Firefox. Firefox's tested automation protocol does not support forced-colors emulation or disabling JavaScript; those cases run in Chromium.
+
+For Safari, enable remote automation in Safari Settings, start `safaridriver -p 4447`, and run `bun run test:safari`. The Safari report records the actual viewport widths. Set `SAFARI_WEBDRIVER_URL` to use another local driver port. Screen-reader acceptance remains a separate manual check.
+
 The source repository uses no Node, npm, Vite, or SvelteKit tooling. Consumers of `mewa-ui` need no package manager. Consumers of `mewa-svelte` can use the GitHub archive with their existing Svelte 5 application.
 
 ## License

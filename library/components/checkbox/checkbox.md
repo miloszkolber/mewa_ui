@@ -158,6 +158,8 @@ The event detail contains `values`, `selected`, `total`, and `source`.
 
 ## Accessibility
 
+Use the control border role to keep the unselected control visible against the canvas.
+
 Keep a visible label for every checkbox.
 
 Associate each label with `for` and `id`.

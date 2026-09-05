@@ -12,6 +12,7 @@ function escapeCharacterClass(value) {
 }
 
 export function enhance(root) {
+  lifecycle.refresh(root);
   queryAll(root, '[data-tag-input]').forEach((tagInput) => {
     tagInput.dataset.init = '';
     if (lifecycle.has(tagInput)) return;
@@ -198,7 +199,7 @@ export function enhance(root) {
     });
 
     lifecycle.listen(tagInput, draft, 'input', (event) => {
-      if (event.isComposing) return;
+      if (event.isComposing || draft.matches(':disabled') || draft.readOnly) return;
       if (!delimiterRegex.test(draft.value)) return;
       const parts = draft.value.split(splitRegex);
       const trailing = parts.pop() || '';
@@ -207,6 +208,7 @@ export function enhance(root) {
     });
 
     lifecycle.listen(tagInput, draft, 'paste', (event) => {
+      if (draft.matches(':disabled') || draft.readOnly) return;
       const text = event.clipboardData?.getData('text') || '';
       if (!delimiterRegex.test(text) && !/[\r\n]/.test(text)) return;
 
@@ -256,6 +258,14 @@ export function enhance(root) {
       delete tagInput.dataset.enhanced;
     });
 
+    lifecycle.onUpdate(tagInput, () => {
+      draft.disabled = valueInput.disabled;
+      draft.readOnly = valueInput.readOnly;
+      draft.required = valueInput.required && tags.length === 0;
+      list.querySelectorAll('.tag-input-remove').forEach((button) => {
+        button.disabled = valueInput.matches(':disabled') || valueInput.readOnly;
+      });
+    });
     render();
     writeValue('initial', false);
     tagInput.dataset.enhanced = '';

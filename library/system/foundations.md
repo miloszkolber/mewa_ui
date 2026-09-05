@@ -108,6 +108,7 @@ This section is generated from `registry.json`.
 | `--text-caution` | Caution status text and icon color. |
 | `--border-primary` | Default structural boundary. |
 | `--border-secondary` | Stronger internal structural boundary. |
+| `--border-control` | Required visible boundary of an unselected native choice control. |
 | `--border-muted` | Low-emphasis or dashed boundary. |
 | `--border-subtle` | Quiet boundary for low-separation regions. |
 | `--border-hover` | Boundary color for an interactive element under hover. |

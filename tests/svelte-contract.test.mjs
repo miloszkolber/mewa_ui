@@ -161,6 +161,58 @@ await test('Bun forwards located Svelte warnings and fails invalid source', asyn
       plugins: [sveltePlugin({ dev: true, onwarn: (warning) => warnings.push(warning) })]
     });
     assert.equal(result.success, true, result.logs.map(String).join('\n'));
+    const mapOutput = result.outputs.find((output) => output.path.endsWith('.map'));
+    assert(mapOutput, 'Bun must emit a bundle map when requested');
+    const map = await mapOutput.json();
+    assert(
+      map.sources.length && map.mappings.length,
+      'The bundle map must contain source locations'
+    );
+    const originalSource = map.sourcesContent?.includes(source) || false;
+    const { compile } = await import('svelte/compiler');
+    const inlineProbe = await Bun.build({
+      entrypoints: [component],
+      target: 'browser',
+      sourcemap: 'external',
+      plugins: [
+        {
+          name: 'compiler-map-probe',
+          setup(build) {
+            build.onLoad({ filter: /Probe\.svelte$/ }, () => {
+              const compiled = compile(source, { filename: component, generate: 'client' });
+              const inlineMap = Buffer.from(compiled.js.map.toString()).toString('base64');
+              return {
+                contents:
+                  compiled.js.code +
+                  '\n//# sourceMappingURL=data:application/json;base64,' +
+                  inlineMap,
+                loader: 'js'
+              };
+            });
+          }
+        }
+      ]
+    });
+    assert(inlineProbe.success);
+    const inlineProbeMap = await inlineProbe.outputs
+      .find((output) => output.path.endsWith('.map'))
+      .json();
+    const inlineCompilerMapChained = inlineProbeMap.sourcesContent?.includes(source) || false;
+    fs.writeFileSync(
+      path.join(root, 'dist/sourcemap-capability.json'),
+      JSON.stringify(
+        {
+          bun: Bun.version,
+          originalSource,
+          inlineCompilerMapChained,
+          note: originalSource
+            ? 'Original source content is present; verify position chaining before expanding the public contract.'
+            : 'Bundle maps contain compiled JavaScript; original Svelte mapping is not available.'
+        },
+        null,
+        2
+      ) + '\n'
+    );
     assert(
       warnings.some(
         (warning) => warning.code === 'a11y_missing_attribute' && warning.start?.line === 3

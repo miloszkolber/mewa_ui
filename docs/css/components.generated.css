@@ -1391,7 +1391,7 @@
     appearance: none;
     width: 1.125rem;
     height: 1.125rem;
-    border: var(--border-width-025) solid var(--border-primary);
+    border: var(--border-width-025) solid var(--border-control);
 
     background: var(--background);
     cursor: pointer;
@@ -1692,7 +1692,7 @@
     appearance: none;
     width: var(--size-400);
     height: var(--size-400);
-    border: var(--border-width-025) solid var(--border-primary);
+    border: var(--border-width-025) solid var(--border-control);
     border-radius: 50%;
     background: var(--background);
     cursor: pointer;
@@ -2991,6 +2991,15 @@
       pointer-events: none;
       opacity: var(--opacity-05);
     }
+  }
+
+  .combobox-status {
+    position: absolute;
+    width: var(--size-025);
+    height: var(--size-025);
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .combobox-empty {
@@ -5538,7 +5547,7 @@
   .dialog-title   { font-size: var(--font-size-400); font-weight: var(--font-weight-550); margin: 0 0 var(--space-200); letter-spacing: -0.01em; }
   .dialog-description { font-size: var(--font-size-350); color: var(--text-muted); margin: 0; line-height: var(--font-height-regular); }
   .dialog-body    { margin-top: var(--space-400); }
-  .dialog-footer  { display: flex; justify-content: flex-end; gap: var(--space-200); margin-top: var(--space-600); }
+  .dialog-footer  { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-200); margin-top: var(--space-600); }
 
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {

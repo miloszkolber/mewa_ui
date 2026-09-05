@@ -27,6 +27,15 @@ export function enhance(root) {
       return;
     }
 
+    // Cloned enhanced markup contains DOM, but does not own the original instance.
+    popover.querySelectorAll('.combobox-status').forEach((status) => status.remove());
+    const status = wrapper.ownerDocument.createElement('p');
+    status.className = 'combobox-status';
+    status.setAttribute('role', 'status');
+    status.setAttribute('aria-atomic', 'true');
+    popover.append(status);
+    lifecycle.add(wrapper, () => status.remove());
+
     const initialValue = hiddenInput?.defaultValue;
     const initialLabel = valueElement?.textContent || '';
     const initialPlaceholder = valueElement?.hasAttribute('data-placeholder');
@@ -97,7 +106,7 @@ export function enhance(root) {
       });
     };
 
-    const filter = (query) => {
+    const filter = (query, announce = false) => {
       const normalizedQuery = query.trim().toLocaleLowerCase();
       let hasVisibleItem = false;
 
@@ -110,6 +119,10 @@ export function enhance(root) {
 
       updateGroupVisibility();
       if (emptyState) emptyState.hidden = hasVisibleItem;
+      const count = getVisibleItems().length;
+      status.textContent = announce
+        ? `${count} ${count === 1 ? 'option' : 'options'} available.`
+        : '';
     };
 
     const writeSelection = (item, { announce = true } = {}) => {
@@ -183,7 +196,7 @@ export function enhance(root) {
     });
 
     lifecycle.listen(wrapper, searchInput, 'input', () => {
-      filter(searchInput.value);
+      filter(searchInput.value, true);
       highlight(0);
     });
 

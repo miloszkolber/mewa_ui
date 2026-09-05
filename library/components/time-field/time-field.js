@@ -171,6 +171,7 @@ export function enhance(root) {
     };
 
     const handleKeydown = (event, field, name) => {
+      if (event.isComposing || field.matches(':disabled') || field.readOnly) return;
       if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
       event.preventDefault();
       step(field, name, event.key === 'ArrowUp' ? 1 : -1);
@@ -180,9 +181,16 @@ export function enhance(root) {
       [hour, 'hour'],
       [minute, 'minute']
     ].forEach(([field, name]) => {
-      lifecycle.listen(timeField, field, 'input', () => handleInput(field, name));
-      lifecycle.listen(timeField, field, 'change', () => handleChange(field, name));
-      lifecycle.listen(timeField, field, 'blur', () => handleBlur(field, name));
+      lifecycle.listen(timeField, field, 'input', (event) => {
+        if (event.isComposing || field.matches(':disabled') || field.readOnly) return;
+        handleInput(field, name);
+      });
+      lifecycle.listen(timeField, field, 'change', () => {
+        if (!field.matches(':disabled') && !field.readOnly) handleChange(field, name);
+      });
+      lifecycle.listen(timeField, field, 'blur', () => {
+        if (!field.matches(':disabled') && !field.readOnly) handleBlur(field, name);
+      });
       lifecycle.listen(timeField, field, 'keydown', (event) => handleKeydown(event, field, name));
     });
 

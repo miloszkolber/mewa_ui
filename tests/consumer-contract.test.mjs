@@ -1,4 +1,4 @@
-import { executablePath } from './browser-support.mjs';
+import { launchOptions } from './browser-support.mjs';
 import puppeteer from 'puppeteer-core';
 import assert from 'node:assert/strict';
 import { checkReactiveAttachments } from './svelte-browser-support.mjs';
@@ -74,11 +74,7 @@ for (const version of new Set(['5.29.0', current])) {
         return new Response(Bun.file(filename));
       }
     });
-    const browser = await puppeteer.launch({
-      executablePath: executablePath(),
-      headless: true,
-      args: ['--no-sandbox']
-    });
+    const browser = await puppeteer.launch(launchOptions());
     try {
       const page = await browser.newPage();
       await page.goto(`http://127.0.0.1:${server.port}/`);

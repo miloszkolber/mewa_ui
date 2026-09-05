@@ -53,4 +53,4 @@ Native `input` and `change` events carry form changes. Custom events are documen
 
 Use browsers with native dialog, Popover API, CSS nesting, and modern color syntax for full interactive behavior. Tooltip and Hover Card include positioning fallbacks where CSS anchor positioning is unavailable. Other anchored surfaces require testing in the consumer's supported browsers. Reduced motion and forced colors have dedicated CSS rules.
 
-The automated browser suite runs against an installed Chromium binary. It does not establish Safari, Firefox, or screen-reader conformance. Check the native fallback and the component's accessibility contract before shipping a consumer.
+The automated browser suite supports installed Chromium and Firefox binaries. The separate Safari WebDriver suite covers native runtime behavior and documentation rendering. Browser automation does not establish screen-reader conformance. Check the native fallback and the component's accessibility contract before shipping a consumer.

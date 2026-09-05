@@ -147,7 +147,7 @@ export function enhance(root) {
         remove.className = 'file-upload-remove';
         remove.textContent = 'Remove';
         remove.setAttribute('aria-label', `Remove ${file.name}`);
-        remove.disabled = input.disabled;
+        remove.disabled = input.matches(':disabled');
         remove.dataset.fileIndex = String(index);
 
         item.append(details, remove);
@@ -222,14 +222,18 @@ export function enhance(root) {
     });
 
     lifecycle.listen(upload, dropzone, 'dragenter', (event) => {
-      if (input.disabled || !Array.from(event.dataTransfer?.types || []).includes('Files')) return;
+      if (
+        input.matches(':disabled') ||
+        !Array.from(event.dataTransfer?.types || []).includes('Files')
+      )
+        return;
       event.preventDefault();
       dragDepth += 1;
       upload.dataset.dragging = '';
     });
 
     lifecycle.listen(upload, dropzone, 'dragover', (event) => {
-      if (input.disabled || !event.dataTransfer) return;
+      if (input.matches(':disabled') || !event.dataTransfer) return;
       event.preventDefault();
       event.dataTransfer.dropEffect = 'copy';
       upload.dataset.dragging = '';
@@ -241,7 +245,7 @@ export function enhance(root) {
     });
 
     lifecycle.listen(upload, dropzone, 'drop', (event) => {
-      if (input.disabled || !event.dataTransfer) return;
+      if (input.matches(':disabled') || !event.dataTransfer) return;
       event.preventDefault();
       dragDepth = 0;
       delete upload.dataset.dragging;
@@ -266,7 +270,7 @@ export function enhance(root) {
 
     lifecycle.listen(upload, list, 'click', (event) => {
       const button = event.target.closest('.file-upload-remove');
-      if (!button || button.disabled) return;
+      if (!button || button.matches(':disabled') || input.matches(':disabled')) return;
 
       const index = Number.parseInt(button.dataset.fileIndex || '', 10);
       if (!Number.isInteger(index) || !files[index]) return;
@@ -280,6 +284,8 @@ export function enhance(root) {
     lifecycle.reset(upload, input.form, () => {
       files = Array.from(input.files || []);
       dragDepth = 0;
+      delete upload.dataset.dragging;
+      clearError();
       render();
     });
     lifecycle.add(upload, () => {

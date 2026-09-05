@@ -80,6 +80,10 @@ Validate file type, size, and contents again in application and server code.
 
 ## Behavior
 
+A disabled input or fieldset blocks drops and removal.
+
+Native form reset clears the selected files and enhancement errors.
+
 Picker selection replaces the current native selection.
 
 Dropped files accumulate when the input has `multiple`.

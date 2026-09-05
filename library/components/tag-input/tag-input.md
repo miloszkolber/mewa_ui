@@ -73,6 +73,10 @@ Use `data-allow-duplicates` only when repeated values have distinct meaning.
 
 ## Behavior
 
+Call the controller update method after changing required, disabled, or readonly on the authoritative input.
+
+The update keeps the current draft and synchronizes the visible control and removal buttons.
+
 The module parses the initial text value into trimmed tags.
 
 The module serializes tags back to the original submitted input as a comma-separated string.

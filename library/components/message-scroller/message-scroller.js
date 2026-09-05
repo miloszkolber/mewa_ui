@@ -55,7 +55,10 @@ function initMessageScroller(root) {
   };
 
   const onScroll = () => setPinned(atBottom());
-  const onJump = () => scrollToBottom();
+  const onJump = () => {
+    if (root.ownerDocument.activeElement === jump) viewport.focus({ preventScroll: true });
+    scrollToBottom();
+  };
 
   viewport.addEventListener('scroll', onScroll, { passive: true });
   jump?.addEventListener('click', onJump);

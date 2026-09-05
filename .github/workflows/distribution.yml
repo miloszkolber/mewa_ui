@@ -25,8 +25,17 @@ jobs:
         with:
           bun-version: 1.4.0
       - run: bun install --frozen-lockfile
-      - run: bun run test
+      - run: bun run check
       - run: bun run test:browser
+      - run: bun run test:consumer
+      - name: Install pinned Firefox test browser
+        run: |
+          bun -e 'import {install, Browser} from "@puppeteer/browsers"; await install({browser: Browser.FIREFOX, buildId: "stable_155.0.1", cacheDir: "/tmp/mewa-ui-browsers"});'
+      - name: Verify Firefox
+        run: |
+          export MEWA_BROWSER=firefox
+          export PUPPETEER_EXECUTABLE_PATH=$(bun -e 'import {getInstalledBrowsers} from "@puppeteer/browsers"; console.log((await getInstalledBrowsers({cacheDir: "/tmp/mewa-ui-browsers"}))[0].executablePath);')
+          bun run test:browser
       - name: Verify release version
         if: startsWith(github.ref, 'refs/tags/')
         run: test "$GITHUB_REF_NAME" = "v$(bun -e 'console.log(require("./package.json").version)')"

@@ -72,11 +72,12 @@ const results = [];
 async function test(name, callback) {
   localStorage.clear();
   document.documentElement.classList.remove('dark');
+  window.runtimeProgress = name;
   try {
     await callback();
     results.push({ name });
   } catch (error) {
-    results.push({ name, error: error.stack || error.message });
+    results.push({ name, error: `${error.message}\n${error.stack || ''}` });
   } finally {
     integration?.disconnect();
     integration?.destroy(document);
@@ -1186,4 +1187,134 @@ await test('dialogs wrap keyboard focus without including hidden or disabled con
 
 EventTarget.prototype.addEventListener = add;
 EventTarget.prototype.removeEventListener = remove;
+await test('time fields preserve readonly, disabled, composition, and application validity', async () => {
+  const field = node('fieldset', { class: 'time-field' });
+  field.innerHTML =
+    '<input data-time-part="hour" value="09"><input data-time-part="minute" value="30"><select data-time-part="period"><option>AM</option><option>PM</option></select><input type="hidden" data-time-part="value" disabled>';
+  const hour = field.querySelector('[data-time-part="hour"]');
+  const minute = field.querySelector('[data-time-part="minute"]');
+  await loadModule('time-field', field);
+  hour.readOnly = true;
+  const readonlyKey = key(hour, 'ArrowUp');
+  assert.equal(hour.value, '09', 'readonly hour');
+  assert.equal(readonlyKey.defaultPrevented, false);
+  hour.readOnly = false;
+  field.disabled = true;
+  key(minute, 'ArrowUp');
+  assert.equal(minute.value, '30', 'disabled fieldset');
+  field.disabled = false;
+  hour.focus();
+  hour.value = '1あ';
+  fire(hour, 'input', { isComposing: true });
+  assert.equal(hour.value, '1あ', 'composition text');
+  assert.equal(document.activeElement, hour);
+  hour.value = '10';
+  fire(hour, 'input');
+  assert.equal(document.activeElement, minute);
+  minute.setCustomValidity('Application rejection');
+  fire(minute, 'input');
+  assert.equal(minute.validationMessage, 'Application rejection');
+});
+
+await test('file uploads respect disabled fieldsets and clear reset errors', async () => {
+  const form = node('form');
+  form.innerHTML =
+    '<fieldset disabled><div data-file-upload data-max-size="1"><div class="file-upload-dropzone"><input type="file" class="file-upload-input" name="files" multiple></div><ul data-file-upload-list></ul><p data-file-upload-status></p><p data-file-upload-error hidden></p></div></fieldset>';
+  const fieldset = form.querySelector('fieldset');
+  const input = form.querySelector('input');
+  const dropzone = form.querySelector('.file-upload-dropzone');
+  const upload = form.querySelector('[data-file-upload]');
+  await loadModule('file-upload', form);
+  const transfer = new DataTransfer();
+  transfer.items.add(new File(['x'], 'tiny.txt'));
+  fire(dropzone, 'drop', { dataTransfer: transfer });
+  assert.equal(input.files.length, 0, 'disabled drop');
+  fieldset.disabled = false;
+  fire(dropzone, 'drop', { dataTransfer: transfer });
+  assert.equal(input.files.length, 1, 'enabled drop');
+  fieldset.disabled = true;
+  fire(upload.querySelector('button'), 'click');
+  assert.equal(input.files.length, 1, 'disabled removal');
+  fieldset.disabled = false;
+  const oversized = new DataTransfer();
+  oversized.items.add(new File(['large'], 'large.txt'));
+  fire(dropzone, 'drop', { dataTransfer: oversized });
+  assert.equal(upload.dataset.state, 'error');
+  form.reset();
+  await settle();
+  assert.equal(input.files.length, 0);
+  assert.equal(upload.querySelector('[data-file-upload-error]').hidden, true);
+  assert.equal(upload.hasAttribute('data-state'), false);
+});
+
+await test('tag input refresh honors external forms, dynamic readonly and canceled reset', async () => {
+  const form = node('form', { id: 'external-tags' });
+  const region = node('div');
+  region.innerHTML =
+    '<div data-tag-input><div data-tag-input-field><input class="tag-input-fallback" type="text" id="tags" form="external-tags" name="tags" value="Initial"></div><p data-tag-input-status></p></div>';
+  document.body.append(form);
+  const input = region.querySelector('input');
+  await loadModule('tag-input', region);
+  const draft = region.querySelector('.tag-input-control');
+  draft.value = 'Second';
+  key(draft, 'Enter');
+  assert.equal(new FormData(form).get('tags'), 'Initial, Second');
+  const cancel = (event) => event.preventDefault();
+  form.addEventListener('reset', cancel);
+  form.reset();
+  await settle();
+  assert.equal(input.value, 'Initial, Second');
+  form.removeEventListener('reset', cancel);
+  input.readOnly = true;
+  integration.enhance(region);
+  assert.equal(draft.readOnly, true, 'refreshed readonly');
+  draft.value = 'Uncommitted';
+  key(draft, 'Enter');
+  assert.equal(input.value, 'Initial, Second');
+  input.readOnly = false;
+  integration.enhance(region);
+  assert.equal(draft.readOnly, false);
+  form.reset();
+  await settle();
+  assert.equal(input.value, 'Initial');
+  assert.equal(draft.value, '');
+});
+
+await test('combobox filters announce enabled counts and release the status region', async () => {
+  const root = node('div', { class: 'combobox' });
+  root.innerHTML =
+    '<button type="button" class="combobox-trigger">Choose</button><div class="combobox-content" id="options" popover><input class="combobox-search-input" aria-label="Search" role="combobox" aria-controls="list"><div id="list" role="listbox"><div role="option" id="first">Paris</div><div role="option" id="second" aria-disabled="true">Prague</div></div><div class="combobox-empty" hidden>No results</div></div>';
+  await loadModule('combobox', root);
+  root.querySelector('button').click();
+  const search = root.querySelector('input');
+  const status = root.querySelector('[role="status"]');
+  search.value = 'P';
+  fire(search, 'input');
+  assert.equal(status.textContent, '1 option available.');
+  search.value = 'zzzz';
+  fire(search, 'input');
+  assert.equal(status.textContent, '0 options available.');
+  const clone = root.cloneNode(true);
+  document.body.append(clone);
+  integration.enhance(clone);
+  assert.equal(clone.querySelectorAll('[role="status"]').length, 1);
+  integration.destroy(root);
+  assert.equal(clone.querySelectorAll('[role="status"]').length, 1);
+  assert.equal(root.querySelector('[role="status"]'), null);
+});
+
+await test('jump to latest retains keyboard focus in the reading viewport', async () => {
+  const root = node('div', { class: 'message-scroller', 'data-default-pinned': 'false' });
+  root.innerHTML =
+    '<div class="message-scroller-viewport" tabindex="0" style="height:100px;overflow:auto"><div class="message-scroller-content" style="height:1000px">Messages</div></div><button type="button" data-message-scroller-jump>Jump to latest</button>';
+  await loadModule('message-scroller', root);
+  const button = root.querySelector('button');
+  const viewport = root.querySelector('.message-scroller-viewport');
+  button.focus();
+  button.click();
+  assert.equal(document.activeElement, viewport);
+  assert.equal(button.hidden, true);
+  assert.equal(viewport.scrollHeight - viewport.clientHeight - viewport.scrollTop, 0);
+});
+
 window.runtimeResults = results;

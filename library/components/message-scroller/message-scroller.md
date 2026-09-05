@@ -34,7 +34,7 @@ The optional module derives pinned state from scroll position and reveals a nati
   <div class="message-scroller-viewport"
        id="message-scroller-log"
        role="log"
-       aria-live="polite"
+       aria-live="off"
        aria-relevant="additions text"
        aria-labelledby="message-scroller-heading"
        tabindex="0">
@@ -67,6 +67,10 @@ Keep appended messages inside `.message-scroller-content`.
 
 Compose the Message component inside the content when authored message presentation is required.
 
+Keep transcript announcements off during streaming.
+
+Use a separate application-owned status region for concise new-message announcements.
+
 Set `data-default-pinned="false"` only when the initial reading position must stay unchanged.
 
 Set `data-threshold` to a positive pixel number only when the default 24-pixel live-edge tolerance is unsuitable.
@@ -83,6 +87,8 @@ Scrolling back to the live edge updates `data-pinned="true"` and hides the jump 
 
 The jump button moves immediately to the live edge.
 
+Activating a focused jump button moves focus to the viewport before hiding the button.
+
 The module dispatches `message-scroller:pinned-change` with `detail.pinned` when pinned state changes.
 
 Changing `data-conversation-key` re-arms live-edge following for the new conversation.
@@ -91,9 +97,7 @@ The module adds no wheel, touch, or keyboard interception.
 
 ## Accessibility
 
-Use `aria-live="polite"` when this log is the one announcement source for appended messages.
-
-Use `aria-live="off"` when application code announces the same messages elsewhere.
+Keep `aria-live="off"` on the log so streaming updates do not repeatedly announce the transcript.
 
 Keep the constrained viewport keyboard focusable when keyboard scrolling is required.
 
