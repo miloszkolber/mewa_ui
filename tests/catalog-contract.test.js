@@ -188,11 +188,96 @@ test('component folders contain only the contract, stylesheet, and optional modu
 
 test('docs have exact parity with the registry', () => {
   const docs = files(docsDir, '.html')
-    .filter((name) => name !== 'index.html')
+    .filter((name) => name !== 'index.html' && name !== 'preview.html')
     .map((name) => name.slice(0, -5))
     .sort();
   const slugs = registry.components.map((component) => component.slug).sort();
   assert.deepEqual(docs, slugs);
+});
+
+test('the hidden preview stacks every component without frames or chrome', () => {
+  const preview = read('docs/preview.html');
+  assert(
+    preview.includes('<meta name="robots" content="noindex, nofollow">'),
+    'docs/preview.html: hidden preview must opt out of search indexing'
+  );
+  assert(!preview.includes('<iframe'), 'docs/preview.html: frames break Figma export');
+  assert(
+    !preview.includes('site-header') &&
+      !preview.includes('site-nav') &&
+      !preview.includes('js/layout.js'),
+    'docs/preview.html: preview must use a plain container without docs chrome'
+  );
+  assert.equal(
+    (preview.match(/href="css\/components\.generated\.css"/g) || []).length,
+    1,
+    'docs/preview.html: duplicate generated component styles'
+  );
+  assert(
+    !/href="\.\.\/library\/components\//.test(preview),
+    'docs/preview.html: raw component stylesheet remains'
+  );
+  const ids = Array.from(preview.matchAll(/\sid="([^"]+)"/g), (match) => match[1]);
+  assert.equal(
+    new Set(ids).size,
+    ids.length,
+    'docs/preview.html: duplicate ids break stacked examples'
+  );
+  let expectedBlocks = 0;
+  let expectedDialogs = 0;
+  for (const component of registry.components) {
+    assert(
+      preview.includes(`id="preview-${component.slug}"`),
+      `docs/preview.html: missing ${component.slug} section`
+    );
+    // Count rendered elements only: <head> metadata names elements
+    // such as <dialog> inside attribute values without rendering them.
+    const bodySource = read(component.docs).split('</head>')[1];
+    expectedBlocks += (bodySource.match(/<div\s[^>]*class="preview"/g) || []).length;
+    expectedDialogs += (bodySource.match(/<dialog\b/g) || []).length;
+  }
+  assert.equal(
+    (preview.match(/<div\s[^>]*class="preview"/g) || []).length,
+    expectedBlocks,
+    'docs/preview.html: preview block count drifts from the component pages'
+  );
+  assert.equal(
+    (preview.match(/<dialog\b/g) || []).length,
+    expectedDialogs,
+    'docs/preview.html: dialog count drifts from the component pages'
+  );
+  assert(
+    !/<dialog\b(?![^>]*\bopen\b)[^>]*>/.test(preview),
+    'docs/preview.html: every showcased dialog must render open without interaction'
+  );
+  assert(
+    preview.includes('.preview-page dialog[open]') &&
+      preview.includes('.preview-page [popover]') &&
+      preview.includes('.preview-page nav [popover]'),
+    'docs/preview.html: hidden overlay states must render without interaction'
+  );
+  assert(
+    preview.includes("closest('a[href], [formaction]')") &&
+      preview.includes("addEventListener('submit'"),
+    'docs/preview.html: showcase links and forms must not navigate away'
+  );
+  assert(
+    preview.includes('window.toast?.show') && preview.includes('duration: Infinity'),
+    'docs/preview.html: a persistent demo toast must render on load'
+  );
+  for (const id of ['dialog--demo-dialog', 'sheet--sheet-right']) {
+    assert(
+      preview.includes(`id="${id}"`),
+      `docs/preview.html: body-level overlay ${id} is missing from the stacked page`
+    );
+  }
+  const index = read('docs/index.html');
+  assert(!index.includes('preview.html'), 'docs/index.html: hidden preview must stay unlinked');
+  const layout = read('docs/js/layout.js');
+  assert(
+    !layout.includes('preview.html'),
+    'docs/js/layout.js: hidden preview must stay out of the documentation navigation'
+  );
 });
 
 test('every documentation page loads the generated component stylesheet once', () => {

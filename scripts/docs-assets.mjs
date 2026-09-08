@@ -7,6 +7,14 @@ const registry = JSON.parse(fs.readFileSync(path.join(root, 'registry.json'), 'u
 const outputPath = path.join(root, 'docs', 'css', 'components.generated.css');
 const mode = process.argv[2] || '--check';
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
 function render() {
   const sections = registry.components.map((component) => {
     const source = fs.readFileSync(path.join(root, component.files.css), 'utf8').trim();
@@ -61,6 +69,216 @@ ${navigation.map((section) => `<section><h2>${section.heading}</h2><ul>${section
 if (mode === '--write') fs.writeFileSync(indexPath, index);
 else if (!fs.existsSync(indexPath) || fs.readFileSync(indexPath, 'utf8') !== index) {
   console.error('FAIL docs/index.html is not generated from registry.json');
+  process.exitCode = 1;
+}
+
+const previewPath = path.join(root, 'docs', 'preview.html');
+
+function extractBalanced(source, start, tag) {
+  const tagPattern = new RegExp(`</?${tag}(?=[\\s>])`, 'gi');
+  tagPattern.lastIndex = start;
+  let depth = 0;
+  let tagMatch;
+  while ((tagMatch = tagPattern.exec(source))) {
+    depth += tagMatch[0][1] === '/' ? -1 : 1;
+    if (depth === 0) {
+      let end = tagMatch.index + tagMatch[0].length;
+      if (source[end] === '>') end += 1;
+      return { html: source.slice(start, end), start, end };
+    }
+  }
+  throw new Error(`${previewPath}: unbalanced <${tag}> block`);
+}
+
+function extractPreviewBlocks(source) {
+  const blocks = [];
+  const openPattern = /<div\s[^>]*class="preview"[^>]*>/g;
+  let open;
+  while ((open = openPattern.exec(source))) {
+    const block = extractBalanced(source, open.index, 'div');
+    blocks.push(block);
+    openPattern.lastIndex = block.end;
+  }
+  return blocks;
+}
+
+function extractOuterDialogs(source, excludeRanges) {
+  const dialogs = [];
+  const openPattern = /<dialog\b[^>]*>/g;
+  let open;
+  while ((open = openPattern.exec(source))) {
+    if (excludeRanges.some((range) => open.index >= range.start && open.index < range.end))
+      continue;
+    const block = extractBalanced(source, open.index, 'dialog');
+    dialogs.push(block);
+    openPattern.lastIndex = block.end;
+  }
+  return dialogs;
+}
+
+function forceDialogOpen(fragment) {
+  return fragment.replace(/<dialog\b([^>]*)>/g, (whole, attrs) =>
+    /\bopen\b/.test(attrs) ? whole : `<dialog${attrs} open>`
+  );
+}
+
+function namespacePreviewNames(slug, fragment) {
+  return fragment.replace(/<input\b[^>]*>/gi, (tag) =>
+    /type="(radio|checkbox)"/i.test(tag)
+      ? tag.replace(/\sname="([^"]*)"/i, (whole, name) => ` name="${slug}--${name}"`)
+      : tag
+  );
+}
+
+function namespacePreviewIds(slug, fragment) {
+  const ids = new Set(Array.from(fragment.matchAll(/\sid="([^"]+)"/g), (match) => match[1]));
+  if (ids.size === 0) return namespacePreviewNames(slug, fragment);
+  const prefix = `${slug}--`;
+  let output = fragment;
+  for (const id of ids) output = output.split(`id="${id}"`).join(`id="${prefix}${id}"`);
+  output = output.replace(
+    /\s(for|aria-labelledby|aria-describedby|aria-controls|aria-owns|aria-details|aria-activedescendant|aria-errormessage|form)="([^"]*)"/g,
+    (whole, name, value) =>
+      ` ${name}="${value
+        .split(/\s+/)
+        .map((token) => (ids.has(token) ? `${prefix}${token}` : token))
+        .join(' ')}"`
+  );
+  output = output.replace(/\s(href="#)([^"]*)"/g, (whole, head, id) =>
+    ids.has(id) ? ` ${head}${prefix}${id}"` : whole
+  );
+  output = output.replace(
+    /\s(popovertarget|anchor|data-[a-z0-9_-]*trigger)="([^"]*)"/gi,
+    (whole, name, value) => (ids.has(value) ? ` ${name}="${prefix}${value}"` : whole)
+  );
+  output = output.replace(
+    /(getElementById\(\s*['"])([^'"]+)(['"]\s*\))/g,
+    (whole, head, id, tail) => (ids.has(id) ? `${head}${prefix}${id}${tail}` : whole)
+  );
+  output = output.replace(
+    /(querySelector(All)?\(\s*['"]#)([^'"]+)(['"]\s*\))/g,
+    (whole, head, all, id, tail) =>
+      ids.has(id) && !/[.\s[#:>+~]/.test(id) ? `${head}${prefix}${id}${tail}` : whole
+  );
+  return namespacePreviewNames(slug, output);
+}
+
+const previewSections = [];
+const previewModules = [];
+for (const component of registry.components) {
+  const source = fs.readFileSync(path.join(root, component.docs), 'utf8');
+  // Work from the body only: <head> metadata names elements such as
+  // <dialog> inside attribute values without rendering them.
+  const bodySource = source.slice(source.indexOf('</head>') + '</head>'.length);
+  const blocks = extractPreviewBlocks(bodySource);
+  if (blocks.length === 0)
+    throw new Error(`${component.docs}: no div.preview block found for the preview page`);
+  const dialogs = extractOuterDialogs(bodySource, blocks);
+  const shown = [...blocks.map((block) => block.html), ...dialogs.map((block) => block.html)]
+    .map((html) => forceDialogOpen(html))
+    .map((html) => namespacePreviewIds(component.slug, html));
+  previewSections.push(
+    `<section aria-labelledby="preview-${component.slug}"><h2 id="preview-${component.slug}">${escapeHtml(component.name)}</h2>\n${shown.join('\n')}\n</section>`
+  );
+  for (const match of source.matchAll(/<script\s+type="module"\s+src="([^"]+)"\s*><\/script>/g)) {
+    if (!previewModules.includes(match[1])) previewModules.push(match[1]);
+  }
+}
+const preview = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Hidden preview that presents every mewa_ui component on one plain page for Figma export.">
+  <title>Component preview — mewa_ui</title>
+  <link rel="stylesheet" href="../library/src/base.css">
+  <link rel="stylesheet" href="../library/src/tokens.css">
+  <link rel="stylesheet" href="css/docs-theme.css">
+  <link rel="stylesheet" href="css/docs-utilities.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.generated.css">
+  <style>
+    .preview-page {
+      max-width: 72rem;
+      margin-inline: auto;
+      padding: var(--space-800) var(--space-600) var(--space-3200);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1200);
+    }
+    .preview-page > section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-400);
+      min-width: 0;
+    }
+    .preview-page .preview {
+      min-width: 0;
+    }
+    /* Let in-flow overlay states wrap with their triggers on narrow
+       screens. This is a no-op wherever content already fits. */
+    .preview-page div.preview > div {
+      flex-wrap: wrap;
+    }
+    /* Showcase hidden dialog states statically: dialogs render as
+       in-flow panels so every state stays visible without interaction
+       and remains exportable. Popovers render as in-flow blocks, except
+       inside navigation menus where in-flow panels would stretch the
+       horizontal bar: those render at their static position overlaying
+       the content below, like an open menu. */
+    .preview-page dialog[open] {
+      position: static;
+      inset: auto;
+    }
+    .preview-page [popover] {
+      position: static;
+      display: block;
+    }
+    .preview-page nav [popover] {
+      position: absolute;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
+  <main class="preview-page" id="main-content" tabindex="-1">
+    <div>
+      <h1>Component preview</h1>
+      <p>Hidden quality-assurance page. Every component renders below the previous one. This page is not linked from the documentation navigation.</p>
+    </div>
+
+${previewSections.join('\n')}
+  </main>
+
+  <script src="js/site.js" defer></script>
+${previewModules.map((src) => `  <script type="module" src="${src}"></script>`).join('\n')}
+  <script>
+    // Keep the showcase in place: example links, buttons, and forms
+    // must not navigate away from the preview page.
+    document.addEventListener('click', (event) => {
+      const target = event.target.closest('a[href], [formaction]');
+      if (target && !target.closest('.skip-link')) event.preventDefault();
+    });
+    document.addEventListener('submit', (event) => event.preventDefault());
+    // Show one toast on load so the toast state is visible without interaction.
+    window.addEventListener('DOMContentLoaded', () => {
+      window.toast?.show({
+        title: 'Event created',
+        description: 'Monday, January 3rd at 6:00pm',
+        duration: Infinity
+      });
+    });
+  </script>
+</body>
+</html>
+`;
+if (mode === '--write') fs.writeFileSync(previewPath, preview);
+else if (!fs.existsSync(previewPath) || fs.readFileSync(previewPath, 'utf8') !== preview) {
+  console.error('FAIL docs/preview.html is not generated from registry.json');
   process.exitCode = 1;
 }
 const fallback =
