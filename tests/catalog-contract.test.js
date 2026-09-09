@@ -217,6 +217,11 @@ test('component styles reference declared foundation or documented consumer vari
 test('the preview is the only rendered documentation surface', () => {
   const preview = read('docs/preview.html');
   assert.deepEqual(files(docsDir, '.html'), ['preview.html']);
+  assert.deepEqual(
+    directories(docsDir),
+    [],
+    'docs/: support assets must stay flat beside the preview'
+  );
   assert(
     preview.includes('<meta name="robots" content="noindex, nofollow">'),
     'docs/preview.html: hidden preview must opt out of search indexing'
@@ -229,7 +234,7 @@ test('the preview is the only rendered documentation surface', () => {
     'docs/preview.html: preview must use the compact anchor navigation'
   );
   assert.equal(
-    (preview.match(/href="css\/components\.generated\.css"/g) || []).length,
+    (preview.match(/href="components\.generated\.css"/g) || []).length,
     1,
     'docs/preview.html: duplicate generated component styles'
   );
@@ -245,11 +250,22 @@ test('the preview is the only rendered documentation surface', () => {
     'docs/preview.html: themes must use one active panel instead of columns'
   );
   assert(
-    preview.includes('data-preview-theme-option="light"') &&
-      preview.includes('data-preview-theme-option="dark"') &&
-      preview.includes('class="preview-theme-switch"') &&
+    preview.includes('data-preview-theme-toggle') &&
+      preview.includes('class="toggle preview-theme-toggle"') &&
+      preview.includes('class="preview-header"') &&
       preview.includes('class="preview-sidebar"'),
-    'docs/preview.html: theme switch must live in the left navigation'
+    'docs/preview.html: theme toggle must sit in the left-navigation header'
+  );
+  assert(
+    preview.includes('.preview-content > section > h2') &&
+      preview.includes('color: var(--text-secondary);') &&
+      preview.includes('text-transform: uppercase;') &&
+      preview.includes('<h4 class="preview-nav-heading">'),
+    'docs/preview.html: section headings must use the H4 treatment'
+  );
+  assert(
+    !preview.includes('assets/demo-') && preview.includes('images.unsplash.com/'),
+    'docs/preview.html: demo imagery must use curated remote resources'
   );
   const ids = Array.from(preview.matchAll(/\sid="([^"]+)"/g), (match) => match[1]);
   assert.equal(

@@ -10,15 +10,15 @@
   <title>mewa_ui components</title>
   <link rel="stylesheet" href="../library/src/base.css">
   <link rel="stylesheet" href="../library/src/tokens.css">
-  <link rel="stylesheet" href="css/docs-theme.css">
-  <link rel="stylesheet" href="css/docs-utilities.css">
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/components.generated.css">
+  <link rel="stylesheet" href="docs-theme.css">
+  <link rel="stylesheet" href="docs-utilities.css">
+  <link rel="stylesheet" href="layout.css">
+  <link rel="stylesheet" href="components.generated.css">
   <style>
     .preview-page {
       min-height: 100vh;
       display: grid;
-      grid-template-columns: 14rem minmax(0, 1fr);
+      grid-template-columns: 16rem minmax(0, 1fr);
       background: var(--background);
       box-sizing: border-box;
     }
@@ -27,29 +27,54 @@
       top: 0;
       height: 100vh;
       overflow-y: auto;
-      padding: var(--space-600) var(--space-400);
+      padding: var(--space-600) var(--space-500);
       border-right: var(--border-width-025) solid var(--border-primary);
       background: var(--surface-primary);
       box-sizing: border-box;
     }
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-300);
+      margin-bottom: var(--space-700);
+      padding: 0 var(--space-200) var(--space-500);
+      border-bottom: var(--border-width-025) solid var(--border-primary);
+    }
     .preview-brand {
-      display: block;
-      margin-bottom: var(--space-800);
+      min-width: 0;
       color: var(--text-primary);
       font-size: var(--font-size-450);
       font-weight: var(--font-weight-525);
       text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+    .preview-theme-toggle {
+      flex-shrink: 0;
+      width: var(--size-900);
+      min-width: var(--size-900);
+      padding: 0;
+    }
+    .preview-theme-toggle .preview-theme-icon {
+      width: var(--size-400);
+      height: var(--size-400);
+    }
+    .preview-theme-toggle .preview-theme-icon--sun { display: none; }
+    .preview-page[data-preview-theme="dark"] .preview-theme-icon--moon { display: none; }
+    .preview-page[data-preview-theme="dark"] .preview-theme-icon--sun { display: inline-flex; }
     }
     .preview-nav {
       display: flex;
       flex-direction: column;
-      gap: var(--space-100);
+      gap: var(--space-050);
     }
     .preview-nav a {
       display: block;
-      padding: var(--space-150) var(--space-200);
+      min-height: var(--size-600);
+      padding: var(--space-100) var(--space-200);
       color: var(--text-secondary);
       font-size: var(--font-size-300);
+      line-height: var(--font-height-regular);
       text-decoration: none;
       overflow-wrap: anywhere;
     }
@@ -59,50 +84,18 @@
       background: var(--surface-control-hover);
     }
     .preview-nav-group {
-      margin: 0 0 var(--space-500);
+      margin: 0 0 var(--space-600);
       min-width: 0;
     }
     .preview-nav-heading {
-      margin: 0 0 var(--space-150);
-      color: var(--text-primary);
-      font-size: var(--font-size-250);
+      margin: 0 0 var(--space-200);
+      padding: 0 var(--space-200);
+      color: var(--text-secondary);
+      font-size: var(--font-size-350);
       font-weight: var(--font-weight-525);
+      line-height: var(--font-height-tight);
       text-transform: uppercase;
       letter-spacing: var(--text-tracking-default);
-    }
-    .preview-theme-switch {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-100);
-      margin-bottom: var(--space-800);
-      padding-bottom: var(--space-600);
-      border-bottom: var(--border-width-025) solid var(--border-primary);
-    }
-    .preview-theme-switch span {
-      color: var(--text-secondary);
-      font-size: var(--font-size-250);
-      font-weight: var(--font-weight-525);
-      text-transform: uppercase;
-      letter-spacing: var(--text-tracking-default);
-    }
-    .preview-theme-switch button {
-      min-height: var(--size-400);
-      padding: var(--space-150) var(--space-200);
-      color: var(--text-secondary);
-      background: transparent;
-      border: var(--border-width-025) solid transparent;
-      font: inherit;
-      text-align: left;
-      cursor: pointer;
-    }
-    .preview-theme-switch button:hover,
-    .preview-theme-switch button:focus-visible {
-      background: var(--surface-control-hover);
-    }
-    .preview-theme-switch button[aria-pressed="true"] {
-      color: var(--text-primary);
-      background: var(--surface-control);
-      border-color: var(--border-primary);
     }
     .preview-content {
       min-width: 0;
@@ -114,15 +107,19 @@
     .preview-content > section {
       display: flex;
       flex-direction: column;
-      gap: var(--space-600);
+      gap: var(--space-700);
       min-width: 0;
-      margin: 0 0 var(--space-1600);
+      margin: 0 0 var(--space-2000);
       scroll-margin-top: var(--space-800);
     }
     .preview-content > section > h2 {
       margin: 0;
-      padding-bottom: var(--space-300);
-      border-bottom: var(--border-width-025) solid var(--border-primary);
+      color: var(--text-secondary);
+      font-size: var(--font-size-350);
+      font-weight: var(--font-weight-525);
+      line-height: var(--font-height-tight);
+      text-transform: uppercase;
+      letter-spacing: var(--text-tracking-default);
     }
     .preview-theme-grid {
       display: block;
@@ -234,8 +231,8 @@
         border-right: none;
         border-bottom: var(--border-width-025) solid var(--border-primary);
       }
-      .preview-brand {
-        margin-bottom: var(--space-500);
+      .preview-header {
+        margin-bottom: var(--space-600);
       }
       .preview-nav {
         display: grid;
@@ -255,22 +252,23 @@
   <a class="skip-link docs-skip-link" href="#preview-content">Skip to content</a>
   <main class="preview-page" data-export-surface="figma" data-preview-theme="light">
     <aside class="preview-sidebar" aria-label="Preview navigation">
-      <a class="preview-brand" href="#preview-content">mewa_ui</a>
-      <div class="preview-theme-switch" role="group" aria-label="Preview theme">
-      <span>Theme</span>
-      <button type="button" data-preview-theme-option="light" aria-pressed="true">Light</button>
-      <button type="button" data-preview-theme-option="dark" aria-pressed="false">Dark</button>
+      <div class="preview-header">
+        <a class="preview-brand" href="#preview-content">mewa_ui</a>
+        <button class="toggle preview-theme-toggle" type="button" data-preview-theme-toggle aria-pressed="false" aria-label="Switch to dark theme">
+          <svg class="preview-theme-icon preview-theme-icon--moon" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M10 7C10 10.866 13.134 14 17 14C18.9584 14 20.7293 13.1957 21.9995 11.8995C22 11.933 22 11.9665 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C12.0335 2 12.067 2 12.1005 2.00049C10.804 3.27098 10 5.04157 10 7ZM4 12C4 16.4183 7.58172 20 12 20C15.0583 20 17.7158 18.2839 19.062 15.7621C18.3945 15.9187 17.7035 16 17 16C12.0294 16 8 11.9706 8 7C8 6.29648 8.08133 5.60547 8.2379 4.938C5.71611 6.28423 4 8.9417 4 12Z"/></svg>
+          <svg class="preview-theme-icon preview-theme-icon--sun" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16ZM11 1H13V4H11V1ZM11 20H13V23H11V20ZM3.51472 4.92893L4.92893 3.51472L7.05025 5.63604L5.63604 7.05025L3.51472 4.92893ZM16.9497 18.364L18.364 16.9497L20.4853 19.0711L19.0711 20.4853L16.9497 18.364ZM19.0711 3.51472L20.4853 4.92893L18.364 7.05025L16.9497 5.63604L19.0711 3.51472ZM5.63604 16.9497L7.05025 18.364L4.92893 20.4853L3.51472 19.0711ZM23 11V13H20V11ZM4 11V13H1V11Z"/></svg>
+        </button>
       </div>
       <nav class="preview-nav" aria-label="Components">
-        <div class="preview-nav-group"><p class="preview-nav-heading">Primitives</p><a href="#preview-typography">Typography</a><a href="#preview-layout">Layout</a><a href="#preview-separator">Separator</a><a href="#preview-icon">Icon</a></div>
-        <div class="preview-nav-group"><p class="preview-nav-heading">Actions</p><a href="#preview-button">Button</a><a href="#preview-toggle">Toggle</a><a href="#preview-toggle-group">Toggle Group</a><a href="#preview-button-group">Button Group</a><a href="#preview-toolbar">Toolbar</a></div>
-        <div class="preview-nav-group"><p class="preview-nav-heading">Forms and inputs</p><a href="#preview-label">Label</a><a href="#preview-field">Field</a><a href="#preview-text-field">Text Field</a><a href="#preview-textarea">Textarea</a><a href="#preview-checkbox">Checkbox</a><a href="#preview-radio-group">Radio Group</a><a href="#preview-switch">Switch</a><a href="#preview-slider">Slider</a><a href="#preview-select">Select</a><a href="#preview-number-field">Number Field</a><a href="#preview-file-input">File Input</a><a href="#preview-date-field">Date Field</a><a href="#preview-date-picker">Date Picker</a><a href="#preview-date-range-picker">Date Range Picker</a><a href="#preview-combobox">Combobox</a><a href="#preview-time-field">Time Field</a><a href="#preview-form">Form</a><a href="#preview-color-picker">Color Picker</a><a href="#preview-file-upload">File Upload</a><a href="#preview-input-otp">Input OTP</a><a href="#preview-tag-input">Tag Input</a></div>
-        <div class="preview-nav-group"><p class="preview-nav-heading">Data display</p><a href="#preview-badge">Badge</a><a href="#preview-avatar">Avatar</a><a href="#preview-card">Card</a><a href="#preview-image">Image</a><a href="#preview-statistic">Statistic</a><a href="#preview-table">Table</a><a href="#preview-data-table">Data Table</a><a href="#preview-collapsible">Collapsible</a><a href="#preview-timeline">Timeline</a><a href="#preview-tree-view">Tree View</a><a href="#preview-carousel">Carousel</a><a href="#preview-scroll-area">Scroll Area</a><a href="#preview-sortable">Sortable</a></div>
-        <div class="preview-nav-group"><p class="preview-nav-heading">Feedback and status</p><a href="#preview-spinner">Spinner</a><a href="#preview-skeleton">Skeleton</a><a href="#preview-progress">Progress</a><a href="#preview-callout">Callout</a><a href="#preview-alert-dialog">Alert Dialog</a><a href="#preview-toast">Toast</a></div>
-        <div class="preview-nav-group"><p class="preview-nav-heading">Overlays</p><a href="#preview-popover">Popover</a><a href="#preview-tooltip">Tooltip</a><a href="#preview-dialog">Dialog</a><a href="#preview-sheet">Sheet</a><a href="#preview-accordion">Accordion</a><a href="#preview-command-palette">Command Palette</a><a href="#preview-context-menu">Context Menu</a><a href="#preview-hover-card">Hover Card</a></div>
-        <div class="preview-nav-group"><p class="preview-nav-heading">Navigation</p><a href="#preview-breadcrumbs">Breadcrumbs</a><a href="#preview-pagination">Pagination</a><a href="#preview-tabs">Tabs</a><a href="#preview-dropdown-menu">Dropdown Menu</a><a href="#preview-navigation-menu">Navigation Menu</a></div>
-        <div class="preview-nav-group"><p class="preview-nav-heading">Application</p><a href="#preview-app-shell">App Shell</a><a href="#preview-sidebar">Sidebar</a><a href="#preview-resizable">Resizable</a><a href="#preview-header">Header</a><a href="#preview-nav">Nav</a><a href="#preview-footer">Footer</a></div>
-        <div class="preview-nav-group"><p class="preview-nav-heading">AI</p><a href="#preview-agent-activity">Agent Activity</a><a href="#preview-code-block">Code Block</a><a href="#preview-composer">Composer</a><a href="#preview-file-diff">File Diff</a><a href="#preview-message">Message</a><a href="#preview-message-scroller">Message Scroller</a><a href="#preview-reasoning">Reasoning</a><a href="#preview-sources">Sources</a><a href="#preview-suggestion">Suggestion</a><a href="#preview-thinking-indicator">Thinking Indicator</a><a href="#preview-todo-list">Todo List</a><a href="#preview-tool-call">Tool Call</a></div>
+        <div class="preview-nav-group"><h4 class="preview-nav-heading">Primitives</h4><a href="#preview-typography">Typography</a><a href="#preview-layout">Layout</a><a href="#preview-separator">Separator</a><a href="#preview-icon">Icon</a></div>
+        <div class="preview-nav-group"><h4 class="preview-nav-heading">Actions</h4><a href="#preview-button">Button</a><a href="#preview-toggle">Toggle</a><a href="#preview-toggle-group">Toggle Group</a><a href="#preview-button-group">Button Group</a><a href="#preview-toolbar">Toolbar</a></div>
+        <div class="preview-nav-group"><h4 class="preview-nav-heading">Forms and inputs</h4><a href="#preview-label">Label</a><a href="#preview-field">Field</a><a href="#preview-text-field">Text Field</a><a href="#preview-textarea">Textarea</a><a href="#preview-checkbox">Checkbox</a><a href="#preview-radio-group">Radio Group</a><a href="#preview-switch">Switch</a><a href="#preview-slider">Slider</a><a href="#preview-select">Select</a><a href="#preview-number-field">Number Field</a><a href="#preview-file-input">File Input</a><a href="#preview-date-field">Date Field</a><a href="#preview-date-picker">Date Picker</a><a href="#preview-date-range-picker">Date Range Picker</a><a href="#preview-combobox">Combobox</a><a href="#preview-time-field">Time Field</a><a href="#preview-form">Form</a><a href="#preview-color-picker">Color Picker</a><a href="#preview-file-upload">File Upload</a><a href="#preview-input-otp">Input OTP</a><a href="#preview-tag-input">Tag Input</a></div>
+        <div class="preview-nav-group"><h4 class="preview-nav-heading">Data display</h4><a href="#preview-badge">Badge</a><a href="#preview-avatar">Avatar</a><a href="#preview-card">Card</a><a href="#preview-image">Image</a><a href="#preview-statistic">Statistic</a><a href="#preview-table">Table</a><a href="#preview-data-table">Data Table</a><a href="#preview-collapsible">Collapsible</a><a href="#preview-timeline">Timeline</a><a href="#preview-tree-view">Tree View</a><a href="#preview-carousel">Carousel</a><a href="#preview-scroll-area">Scroll Area</a><a href="#preview-sortable">Sortable</a></div>
+        <div class="preview-nav-group"><h4 class="preview-nav-heading">Feedback and status</h4><a href="#preview-spinner">Spinner</a><a href="#preview-skeleton">Skeleton</a><a href="#preview-progress">Progress</a><a href="#preview-callout">Callout</a><a href="#preview-alert-dialog">Alert Dialog</a><a href="#preview-toast">Toast</a></div>
+        <div class="preview-nav-group"><h4 class="preview-nav-heading">Overlays</h4><a href="#preview-popover">Popover</a><a href="#preview-tooltip">Tooltip</a><a href="#preview-dialog">Dialog</a><a href="#preview-sheet">Sheet</a><a href="#preview-accordion">Accordion</a><a href="#preview-command-palette">Command Palette</a><a href="#preview-context-menu">Context Menu</a><a href="#preview-hover-card">Hover Card</a></div>
+        <div class="preview-nav-group"><h4 class="preview-nav-heading">Navigation</h4><a href="#preview-breadcrumbs">Breadcrumbs</a><a href="#preview-pagination">Pagination</a><a href="#preview-tabs">Tabs</a><a href="#preview-dropdown-menu">Dropdown Menu</a><a href="#preview-navigation-menu">Navigation Menu</a></div>
+        <div class="preview-nav-group"><h4 class="preview-nav-heading">Application</h4><a href="#preview-app-shell">App Shell</a><a href="#preview-sidebar">Sidebar</a><a href="#preview-resizable">Resizable</a><a href="#preview-header">Header</a><a href="#preview-nav">Nav</a><a href="#preview-footer">Footer</a></div>
+        <div class="preview-nav-group"><h4 class="preview-nav-heading">AI</h4><a href="#preview-agent-activity">Agent Activity</a><a href="#preview-code-block">Code Block</a><a href="#preview-composer">Composer</a><a href="#preview-file-diff">File Diff</a><a href="#preview-message">Message</a><a href="#preview-message-scroller">Message Scroller</a><a href="#preview-reasoning">Reasoning</a><a href="#preview-sources">Sources</a><a href="#preview-suggestion">Suggestion</a><a href="#preview-thinking-indicator">Thinking Indicator</a><a href="#preview-todo-list">Todo List</a><a href="#preview-tool-call">Tool Call</a></div>
       </nav>
     </aside>
     <div class="preview-content" id="preview-content" tabindex="-1">
@@ -3393,7 +3391,7 @@
 <div class="preview">
           <div style="display: flex; gap: var(--space-400); align-items: center">
             <span class="avatar">
-               <img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar" />
+               <img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait" />
               <span class="avatar-fallback">CN</span>
             </span>
             <span class="avatar">
@@ -3404,15 +3402,15 @@
 <div class="preview">
           <div style="display: flex; gap: var(--space-400); align-items: center">
             <span class="avatar" data-size="sm">
-               <img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar" />
+               <img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait" />
               <span class="avatar-fallback">CN</span>
             </span>
             <span class="avatar">
-               <img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar" />
+               <img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait" />
               <span class="avatar-fallback">CN</span>
             </span>
             <span class="avatar" data-size="lg">
-               <img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar" />
+               <img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait" />
               <span class="avatar-fallback">CN</span>
             </span>
           </div>
@@ -3420,7 +3418,7 @@
 <div class="preview">
           <div style="display: flex; gap: var(--space-400); align-items: center">
             <span class="avatar">
-               <img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar" />
+               <img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait" />
               <span class="avatar-fallback">CN</span>
               <span class="avatar-badge"></span>
             </span>
@@ -3434,7 +3432,7 @@
           <article class="card" style="width: 18rem">
             <div class="card-header" style="display: flex; flex-direction: row; align-items: center; gap: var(--space-300)">
               <span class="avatar">
-                 <img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar" />
+               <img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait" />
                 <span class="avatar-fallback">CN</span>
                 <span class="avatar-badge"></span>
               </span>
@@ -3454,7 +3452,7 @@
 <div class="preview">
           <div style="display: flex; gap: var(--space-400); align-items: center">
             <span class="avatar">
-               <img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar" />
+               <img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait" />
               <span class="avatar-fallback">CN</span>
             </span>
             <span class="avatar">
@@ -3465,15 +3463,15 @@
 <div class="preview">
           <div style="display: flex; gap: var(--space-400); align-items: center">
             <span class="avatar" data-size="sm">
-               <img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar" />
+               <img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait" />
               <span class="avatar-fallback">CN</span>
             </span>
             <span class="avatar">
-               <img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar" />
+               <img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait" />
               <span class="avatar-fallback">CN</span>
             </span>
             <span class="avatar" data-size="lg">
-               <img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar" />
+               <img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait" />
               <span class="avatar-fallback">CN</span>
             </span>
           </div>
@@ -3481,7 +3479,7 @@
 <div class="preview">
           <div style="display: flex; gap: var(--space-400); align-items: center">
             <span class="avatar">
-               <img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar" />
+               <img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait" />
               <span class="avatar-fallback">CN</span>
               <span class="avatar-badge"></span>
             </span>
@@ -3495,7 +3493,7 @@
           <article class="card" style="width: 18rem">
             <div class="card-header" style="display: flex; flex-direction: row; align-items: center; gap: var(--space-300)">
               <span class="avatar">
-                 <img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar" />
+               <img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait" />
                 <span class="avatar-fallback">CN</span>
                 <span class="avatar-badge"></span>
               </span>
@@ -3554,7 +3552,7 @@
         </div>
 <div class="preview" style="justify-content: center">
           <article class="card" style="max-width: 20rem; width: 100%">
-            <img src="assets/demo-landscape.svg" alt="Abstract shapes" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block">
+            <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block">
             <div class="card-header">
               <h3 class="card-title">Modern Design</h3>
               <p class="card-description">Exploring minimal aesthetics through form and color.</p>
@@ -3637,7 +3635,7 @@
         </div>
 <div class="preview" style="justify-content: center">
           <article class="card" style="max-width: 20rem; width: 100%">
-            <img src="assets/demo-landscape.svg" alt="Abstract shapes" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block">
+            <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block">
             <div class="card-header">
               <h3 class="card-title">Modern Design</h3>
               <p class="card-description">Exploring minimal aesthetics through form and color.</p>
@@ -3688,13 +3686,13 @@
 <div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <figure class="image" style="max-width: 400px">
-             <img src="assets/demo-landscape.svg" alt="Abstract gradient" />
+             <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
           </figure>
         </div>
 <div class="preview">
           <figure class="image" style="max-width: 400px">
-             <img src="assets/demo-landscape.svg" alt="Abstract gradient" />
-            <figcaption class="image-caption">Photo by Unsplash — Abstract gradient composition</figcaption>
+             <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
+            <figcaption class="image-caption">Photo by Unsplash — Mountain landscape</figcaption>
           </figure>
         </div>
 <div class="preview">
@@ -3707,26 +3705,26 @@
         </div>
 <div class="preview">
           <figure class="image" data-preview style="max-width: 400px">
-             <img src="assets/demo-landscape.svg" alt="Mountain landscape" />
+             <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
             <figcaption class="image-caption">Click to preview — Mountain landscape</figcaption>
           </figure>
         </div>
 <div class="preview">
           <div style="display: flex; gap: var(--space-400); flex-wrap: wrap; align-items: flex-start">
             <figure class="image" data-ratio="1/1" style="width: 120px">
-               <img src="assets/demo-landscape.svg" alt="Square" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">1:1</figcaption>
             </figure>
             <figure class="image" data-ratio="4/3" style="width: 160px">
-               <img src="assets/demo-landscape.svg" alt="Standard" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">4:3</figcaption>
             </figure>
             <figure class="image" data-ratio="16/9" style="width: 200px">
-               <img src="assets/demo-landscape.svg" alt="Widescreen" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">16:9</figcaption>
             </figure>
             <figure class="image" data-ratio="3/4" style="width: 120px">
-               <img src="assets/demo-landscape.svg" alt="Portrait" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">3:4</figcaption>
             </figure>
           </div>
@@ -3734,15 +3732,15 @@
 <div class="preview">
           <div style="display: flex; gap: var(--space-400); flex-wrap: wrap; align-items: flex-start">
             <figure class="image" data-ratio="4/3" style="width: 180px; background: var(--surface-secondary)">
-               <img src="assets/demo-landscape.svg" alt="Cover (default)" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">cover (default)</figcaption>
             </figure>
             <figure class="image" data-ratio="4/3" data-fit="contain" style="width: 180px; background: var(--surface-secondary)">
-               <img src="assets/demo-landscape.svg" alt="Contain" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">contain</figcaption>
             </figure>
             <figure class="image" data-ratio="4/3" data-fit="none" style="width: 180px; background: var(--surface-secondary)">
-               <img src="assets/demo-landscape.svg" alt="None" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">none</figcaption>
             </figure>
           </div>
@@ -3750,11 +3748,11 @@
 <div class="preview">
           <div style="display: flex; gap: var(--space-400); flex-wrap: wrap; align-items: flex-start">
             <figure class="image" data-ratio="1/1" style="width: 100px">
-               <img src="assets/demo-landscape.svg" alt="Square image" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">default (square)</figcaption>
             </figure>
             <figure class="image" data-radius="full" data-ratio="1/1" style="width: 100px">
-               <img src="assets/demo-landscape.svg" alt="Circular image" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">full</figcaption>
             </figure>
           </div>
@@ -3763,13 +3761,13 @@
 <div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <figure class="image" style="max-width: 400px">
-             <img src="assets/demo-landscape.svg" alt="Abstract gradient" />
+             <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
           </figure>
         </div>
 <div class="preview">
           <figure class="image" style="max-width: 400px">
-             <img src="assets/demo-landscape.svg" alt="Abstract gradient" />
-            <figcaption class="image-caption">Photo by Unsplash — Abstract gradient composition</figcaption>
+             <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
+            <figcaption class="image-caption">Photo by Unsplash — Mountain landscape</figcaption>
           </figure>
         </div>
 <div class="preview">
@@ -3782,26 +3780,26 @@
         </div>
 <div class="preview">
           <figure class="image" data-preview style="max-width: 400px">
-             <img src="assets/demo-landscape.svg" alt="Mountain landscape" />
+             <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
             <figcaption class="image-caption">Click to preview — Mountain landscape</figcaption>
           </figure>
         </div>
 <div class="preview">
           <div style="display: flex; gap: var(--space-400); flex-wrap: wrap; align-items: flex-start">
             <figure class="image" data-ratio="1/1" style="width: 120px">
-               <img src="assets/demo-landscape.svg" alt="Square" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">1:1</figcaption>
             </figure>
             <figure class="image" data-ratio="4/3" style="width: 160px">
-               <img src="assets/demo-landscape.svg" alt="Standard" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">4:3</figcaption>
             </figure>
             <figure class="image" data-ratio="16/9" style="width: 200px">
-               <img src="assets/demo-landscape.svg" alt="Widescreen" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">16:9</figcaption>
             </figure>
             <figure class="image" data-ratio="3/4" style="width: 120px">
-               <img src="assets/demo-landscape.svg" alt="Portrait" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">3:4</figcaption>
             </figure>
           </div>
@@ -3809,15 +3807,15 @@
 <div class="preview">
           <div style="display: flex; gap: var(--space-400); flex-wrap: wrap; align-items: flex-start">
             <figure class="image" data-ratio="4/3" style="width: 180px; background: var(--surface-secondary)">
-               <img src="assets/demo-landscape.svg" alt="Cover (default)" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">cover (default)</figcaption>
             </figure>
             <figure class="image" data-ratio="4/3" data-fit="contain" style="width: 180px; background: var(--surface-secondary)">
-               <img src="assets/demo-landscape.svg" alt="Contain" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">contain</figcaption>
             </figure>
             <figure class="image" data-ratio="4/3" data-fit="none" style="width: 180px; background: var(--surface-secondary)">
-               <img src="assets/demo-landscape.svg" alt="None" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">none</figcaption>
             </figure>
           </div>
@@ -3825,11 +3823,11 @@
 <div class="preview">
           <div style="display: flex; gap: var(--space-400); flex-wrap: wrap; align-items: flex-start">
             <figure class="image" data-ratio="1/1" style="width: 100px">
-               <img src="assets/demo-landscape.svg" alt="Square image" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">default (square)</figcaption>
             </figure>
             <figure class="image" data-radius="full" data-ratio="1/1" style="width: 100px">
-               <img src="assets/demo-landscape.svg" alt="Circular image" />
+               <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Mountain landscape" />
               <figcaption class="image-caption">full</figcaption>
             </figure>
           </div>
@@ -4034,7 +4032,7 @@
               </thead>
               <tbody>
                 <tr class="table-row">
-                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-525)"><div><span class="avatar" data-size="sm"><img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar"/><span class="avatar-fallback">CN</span></span><span>Ada Lovelace</span></div></th>
+                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-525)"><div><span class="avatar" data-size="sm"><img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait"/><span class="avatar-fallback">CN</span></span><span>Ada Lovelace</span></div></th>
                   <td class="table-cell"><span class="badge" data-variant="default">Paid</span></td>
                   <td class="table-cell">Admin</td>
                   <td class="table-cell" style="text-align: right">$250.00</td>
@@ -4108,7 +4106,7 @@
               </thead>
               <tbody>
                 <tr class="table-row">
-                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-525)"><div><span class="avatar" data-size="sm"><img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar"/><span class="avatar-fallback">CN</span></span><span>Ada Lovelace</span></div></th>
+                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-525)"><div><span class="avatar" data-size="sm"><img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait"/><span class="avatar-fallback">CN</span></span><span>Ada Lovelace</span></div></th>
                   <td class="table-cell"><span class="badge" data-variant="default">Paid</span></td>
                   <td class="table-cell">Admin</td>
                   <td class="table-cell" style="text-align: right">$250.00</td>
@@ -4486,7 +4484,7 @@
               <div class="timeline-dot" data-variant="active" aria-hidden="true"></div>
               <div class="timeline-content">
                 <div style="display: flex; align-items: center; gap: var(--space-200); margin-bottom: var(--space-100)">
-                  <span class="avatar" data-size="sm"><img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar"/><span class="avatar-fallback">CN</span></span>
+                  <span class="avatar" data-size="sm"><img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait"/><span class="avatar-fallback">CN</span></span>
                   <span style="font-weight: var(--font-weight-525); font-size: var(--font-size-300)">Cody Lindley</span>
                   <span class="badge" data-variant="default" style="margin-left: auto">Merged</span>
                 </div>
@@ -4564,7 +4562,7 @@
               <div class="timeline-dot" data-variant="active" aria-hidden="true"></div>
               <div class="timeline-content">
                 <div style="display: flex; align-items: center; gap: var(--space-200); margin-bottom: var(--space-100)">
-                  <span class="avatar" data-size="sm"><img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar"/><span class="avatar-fallback">CN</span></span>
+                  <span class="avatar" data-size="sm"><img class="avatar-image" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=256&q=80" alt="Portrait"/><span class="avatar-fallback">CN</span></span>
                   <span style="font-weight: var(--font-weight-525); font-size: var(--font-size-300)">Cody Lindley</span>
                   <span class="badge" data-variant="default" style="margin-left: auto">Merged</span>
                 </div>
@@ -8755,7 +8753,7 @@ Waiting for results…</code></pre>
     </div>
   </div>
 
-  <script src="js/site.js" defer></script>
+  <script src="site.js" defer></script>
   <script type="module" src="../library/components/toggle/toggle.js"></script>
   <script type="module" src="../library/components/toggle-group/toggle-group.js"></script>
   <script type="module" src="../library/components/toolbar/toolbar.js"></script>
@@ -8802,22 +8800,26 @@ Waiting for results…</code></pre>
     // must not navigate away from the preview page.
     document.addEventListener('click', (event) => {
       const target = event.target.closest('a[href], [formaction]');
-      if (target && !target.closest('.skip-link')) event.preventDefault();
+      if (
+        target &&
+        !target.closest('.skip-link') &&
+        !(target.matches('a[href^="#"]') && document.getElementById(target.hash.slice(1)))
+      ) {
+        event.preventDefault();
+      }
     });
     document.addEventListener('submit', (event) => event.preventDefault());
     document.addEventListener('click', (event) => {
-      const button = event.target.closest('[data-preview-theme-option]');
+      const button = event.target.closest('[data-preview-theme-toggle]');
       const page = document.querySelector('.preview-page');
       if (!button || !page) return;
-      const theme = button.dataset.previewThemeOption;
-      if (theme !== 'light' && theme !== 'dark') return;
+      const theme = page.dataset.previewTheme === 'dark' ? 'light' : 'dark';
       page.dataset.previewTheme = theme;
       document.documentElement.classList.toggle('dark', theme === 'dark');
       document.documentElement.dataset.theme = theme;
       document.documentElement.style.colorScheme = theme;
-      document.querySelectorAll('[data-preview-theme-option]').forEach((option) => {
-        option.setAttribute('aria-pressed', String(option.dataset.previewThemeOption === theme));
-      });
+      button.setAttribute('aria-pressed', String(theme === 'dark'));
+      button.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`);
     });
     // Keep a runtime fallback for importers that remove the static toast.
     window.addEventListener('DOMContentLoaded', () => {

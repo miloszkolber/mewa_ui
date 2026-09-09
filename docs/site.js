@@ -1,33 +1,11 @@
 // -- site.js -------------------------------------------------
 // Doc-site-only script for the mewa_ui documentation site.
 // Component behavior lives in library/components/*.js.
-// Serve the documentation over HTTP so local assets can be fetched.
-// Include via <script src="js/site.js" defer></script>
+// Serve the preview over HTTP so local icons can be fetched.
+// Include via <script src="site.js" defer></script>
 
 (function () {
   'use strict';
-
-  function store(key, value) {
-    try {
-      if (value === undefined) return localStorage.getItem(key);
-      localStorage.setItem(key, value);
-    } catch {
-      /* storage unavailable (privacy mode) — theme still toggles */
-    }
-    return null;
-  }
-
-  function syncThemeIcons(isDark) {
-    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
-  }
-
-  function toggleDark() {
-    var isDark = document.documentElement.classList.contains('dark');
-    document.documentElement.classList.toggle('dark', !isDark);
-    document.documentElement.style.colorScheme = isDark ? 'light' : 'dark';
-    syncThemeIcons(!isDark);
-    store('mewa-ui-theme', !isDark ? 'dark' : 'light');
-  }
 
   // -- Local icons ------------------------------------------
   // Replaces <i class="ri-name-line|fill"> with the matching inline SVG
@@ -76,8 +54,7 @@
     });
   }
 
-  // -- Reusable page content initializer -------------------
-  // Called on initial load AND after each SPA navigation.
+  // -- Preview initializer ---------------------------------
   function initPageContent() {
     // Keep horizontally scrollable code blocks keyboard reachable.
     document.querySelectorAll('pre:not([tabindex])').forEach(function (pre) {
@@ -124,37 +101,5 @@
     initLocalIcons();
   }
 
-  // Register content initializer with SPA router
-  // (runs on initial load AND after each SPA navigation)
-  (
-    window.onPageReady ||
-    function (fn) {
-      document.addEventListener('DOMContentLoaded', fn);
-    }
-  )(initPageContent);
-
-  // -- On DOM ready (one-time setup + initial content init) -
-  document.addEventListener('DOMContentLoaded', function () {
-    // Sync dark mode icon state
-    syncThemeIcons(document.documentElement.classList.contains('dark'));
-
-    // Bind theme toggle (once — header persists across SPA navs)
-    var themeBtn = document.getElementById('theme-toggle');
-    if (themeBtn) themeBtn.addEventListener('click', toggleDark);
-
-    // Handle hash-link clicks (TOC links, etc.)
-    // Default anchor scroll doesn't always work after SPA navigation
-    document.addEventListener('click', function (e) {
-      var link = e.target.closest('a[href^="#"]');
-      if (!link) return;
-      var id = link.getAttribute('href').slice(1);
-      var target = document.getElementById(id);
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'auto', block: 'start' });
-        if (link.matches('.skip-link')) target.focus({ preventScroll: true });
-        history.replaceState(null, '', '#' + id);
-      }
-    });
-  });
+  document.addEventListener('DOMContentLoaded', initPageContent);
 })();

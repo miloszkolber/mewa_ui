@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const registry = JSON.parse(fs.readFileSync(path.join(root, 'registry.json'), 'utf8'));
-const outputPath = path.join(root, 'docs', 'css', 'components.generated.css');
+const outputPath = path.join(root, 'docs', 'components.generated.css');
 const previewPath = path.join(root, 'docs', 'preview.html');
 const mode = process.argv[2] || '--check';
 

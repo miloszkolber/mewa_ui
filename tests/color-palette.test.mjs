@@ -204,9 +204,9 @@ await test('authored CSS uses RGB as its only color notation', () => {
       .filter((file) => file.endsWith('.css'))
       .map((file) => path.join(root, 'library', file)),
     ...fs
-      .readdirSync(path.join(root, 'docs/css'), { recursive: true })
+      .readdirSync(path.join(root, 'docs'), { recursive: true })
       .filter((file) => file.endsWith('.css'))
-      .map((file) => path.join(root, 'docs/css', file))
+      .map((file) => path.join(root, 'docs', file))
   ];
 
   for (const file of cssFiles) {

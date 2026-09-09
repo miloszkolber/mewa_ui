@@ -317,10 +317,10 @@ try {
   await page.waitForSelector('.preview-nav a[href="#preview-tabs"]');
   await page.click('.preview-nav a[href="#preview-tabs"]');
   assert.equal(await page.evaluate(() => location.hash), '#preview-tabs');
-  await page.click('.preview-theme-switch button[data-preview-theme-option="dark"]');
+  await page.click('.preview-theme-toggle');
   assert.equal(await page.$eval('main', (main) => main.dataset.previewTheme), 'dark');
   assert.equal(await page.$eval('html', (html) => html.dataset.theme), 'dark');
-  await page.click('.preview-theme-switch button[data-preview-theme-option="light"]');
+  await page.click('.preview-theme-toggle');
   assert.equal(await page.$eval('main', (main) => main.dataset.previewTheme), 'light');
   console.log('PASS preview anchor navigation and focus');
   if (browserName === 'chrome') {
@@ -343,11 +343,8 @@ try {
       await page.goto(`http://127.0.0.1:${server.port}/docs/preview.html`);
       assert.equal(await page.$$eval('.preview-nav a', (links) => links.length), 80);
       assert.equal(
-        await page.$eval(
-          '.preview-theme-switch button[data-preview-theme-option="light"]',
-          (button) => button.getAttribute('aria-pressed')
-        ),
-        'true'
+        await page.$eval('.preview-theme-toggle', (button) => button.getAttribute('aria-pressed')),
+        'false'
       );
     } finally {
       await page.setJavaScriptEnabled(true);
