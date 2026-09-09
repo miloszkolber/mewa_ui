@@ -12,9 +12,9 @@
   .text-field-label {
     display: block;
     color: var(--text-primary);
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     line-height: var(--font-height-regular);
     cursor: default;
   }
@@ -45,7 +45,7 @@
     background: var(--background);
     padding-inline: var(--space-300);
     color: var(--text-primary);
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     font-size: var(--font-size-350);
     outline: none;
   }
@@ -66,56 +66,54 @@
   .text-field > :where(input, textarea, select):focus-visible,
   .text-field-input:focus-visible {
     border-color: var(--border-focus);
-    outline: var(--border-width-025) solid var(--border-focus);
-    outline-offset: 0;
+    box-shadow: var(--ring-default);
   }
 
   .text-field > :where(input, textarea, select)::placeholder,
   .text-field-input::placeholder {
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
 
   .text-field > :where(input, textarea, select):disabled,
   .text-field-input:disabled {
     cursor: not-allowed;
-    background: var(--surface-secondary);
+    background: var(--surface-control-disabled);
     color: var(--text-disabled);
-    border-color: var(--border-muted);
-    opacity: 1;
+    border-color: var(--border-disabled);
   }
 
   .text-field > :where(input, textarea, select):read-only:not(:disabled),
   .text-field-input:read-only:not(:disabled) {
     background: var(--surface-secondary);
+    color: var(--text-secondary);
+    border-color: var(--border-muted);
     cursor: default;
-    opacity: var(--opacity-07);
   }
 
   .text-field > :where(input, textarea, select):is([aria-invalid="true"], :user-invalid),
   .text-field-input:is([aria-invalid="true"], :user-invalid),
   .text-field[data-invalid] > :where(input, textarea, select),
   .text-field[data-invalid] > .text-field-input {
-    border-color: var(--text-negative);
+    border-color: var(--border-invalid);
   }
 
   .text-field > :where(input, textarea, select):is([aria-invalid="true"], :user-invalid):focus-visible,
   .text-field-input:is([aria-invalid="true"], :user-invalid):focus-visible,
   .text-field[data-invalid] > :where(input, textarea, select):focus-visible,
   .text-field[data-invalid] > .text-field-input:focus-visible {
-    border-color: var(--text-negative);
-    outline: var(--border-width-025) solid var(--text-negative);
-    outline-offset: 0;
+    border-color: var(--border-invalid);
+    box-shadow: var(--ring-invalid);
   }
 
   .text-field-description,
   .text-field-error {
     margin: 0;
-    font-size: var(--font-size-300);
+    font-size: var(--font-size-350);
     line-height: var(--font-height-regular);
   }
 
   .text-field-description {
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
 
   .text-field-error {
@@ -131,7 +129,6 @@
   .text-field[data-disabled] > :is(label, .text-field-label, .text-field-description) {
     color: var(--text-disabled);
     cursor: not-allowed;
-    opacity: var(--opacity-07);
   }
 
   .text-field[data-orientation="horizontal"] {
@@ -152,7 +149,7 @@
 
     .text-field > :disabled,
     .text-field-input:disabled {
-      opacity: var(--opacity-07);
+      color: var(--text-disabled);
     }
   }
 
@@ -180,7 +177,6 @@
     .text-field:has(> :disabled) > :is(label, .text-field-label, .text-field-description),
     .text-field[data-disabled] > :is(label, .text-field-label, .text-field-description) {
       color: GrayText;
-      opacity: 1;
     }
 
     .text-field > :where(input, textarea, select):is([aria-invalid="true"], :user-invalid),

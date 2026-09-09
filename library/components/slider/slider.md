@@ -18,6 +18,8 @@ The browser owns keyboard, pointer, touch, form submission, and range semantics.
 
 The module updates the visual filled-track percentage for browsers that need it.
 
+The ready Slider uses a 4px track and 16px thumb. Disabled thumbs use the shared `blur-400` effect in addition to explicit disabled surface and border roles.
+
 ## Native Web APIs
 
 - [`<input type="range">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range) provides native range interaction.

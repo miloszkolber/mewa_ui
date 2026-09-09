@@ -22,6 +22,8 @@ CSS changes the visual presentation.
 
 The optional module coordinates Select all state.
 
+The ready checkbox is 16px square. Invalid checked and indeterminate states keep the control-inverted fill and use inverted marks.
+
 ## Native Web APIs
 
 - [`<input type="checkbox">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) provides native binary form state.
@@ -158,7 +160,7 @@ The event detail contains `values`, `selected`, `total`, and `source`.
 
 ## Accessibility
 
-Use the control border role to keep the unselected control visible against the canvas.
+Use the interactive-default border role to keep the unselected control visible against the canvas.
 
 Keep a visible label for every checkbox.
 

@@ -115,6 +115,12 @@ Use `<kbd class="kbd">` for a key or key combination that the user can press.
 Press <kbd class="kbd">Ctrl+B</kbd> to toggle the sidebar.
 ```
 
+Kbd uses a 20px square minimum, 14px tight `MONO:1` text, and general-alpha surfaces. Use `data-variant="inverted"` when the key sits on an inverted surface.
+
+```html
+<kbd class="kbd" data-variant="inverted">Enter</kbd>
+```
+
 Do not use Kbd for application labels or arbitrary monospace text.
 
 ## Lists
@@ -157,9 +163,9 @@ Use Table for data with stable row and column relationships.
 
 `.blockquote` uses the shared quotation border and spacing.
 
-`.code` uses Geist Mono with a quiet surface treatment.
+`.code` uses Google Sans Code with a quiet surface treatment.
 
-`.kbd` uses Geist Mono with a compact key treatment.
+`.kbd` uses Google Sans Code with a compact key treatment.
 
 Use the semantic element first and the class second.
 

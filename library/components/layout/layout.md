@@ -119,7 +119,7 @@ Use `.layout-split` for two local groups that belong at opposite inline ends.
     <h2>Workers</h2>
     <p>Current execution state.</p>
   </div>
-  <button class="btn" type="button" data-variant="outline">Refresh</button>
+  <button class="btn" type="button" data-variant="secondary">Refresh</button>
 </div>
 ```
 

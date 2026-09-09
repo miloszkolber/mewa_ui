@@ -20,6 +20,12 @@ The browser provides focus and button activation.
 
 The module synchronizes the pressed state after activation.
 
+## Visual contract
+
+Ready Toggle uses a 36px height, 10px horizontal padding, a 4px icon gap, and 14px bold relaxed text with `MONO:0`.
+
+The outline variant remains a Toggle-specific bordered treatment; it is not a Button variant.
+
 ## Native Web APIs
 
 - [`<button>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) provides native action behavior.
@@ -33,7 +39,7 @@ The module synchronizes the pressed state after activation.
         type="button"
         aria-pressed="false"
         aria-label="Pin job">
-  <i data-lucide="pin" aria-hidden="true"></i>
+  <i class="ri-pushpin-line" aria-hidden="true"></i>
 </button>
 ```
 
@@ -41,7 +47,7 @@ Use visible text when the action is not clear from the icon.
 
 ```html
 <button class="toggle" type="button" aria-pressed="false">
-  <i data-lucide="eye" aria-hidden="true"></i>
+  <i class="ri-eye-line" aria-hidden="true"></i>
   Show details
 </button>
 ```

@@ -18,6 +18,8 @@ The native checkbox owns focus, checked state, and form behavior.
 
 CSS changes the visual presentation.
 
+The ready Switch is 36px wide by 20px high. Its track and thumb use the pointer/control semantic roles; invalid focus uses `border-invalid` and `ring-invalid`.
+
 ## Native Web APIs
 
 - [`<input type="checkbox">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox) provides native binary state.

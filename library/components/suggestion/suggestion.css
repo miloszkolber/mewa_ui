@@ -21,7 +21,7 @@
     border: var(--border-width-025) solid var(--border-primary);
     background-color: var(--surface-primary);
     color: var(--text-primary);
-    font: inherit;
+    font: inherit; font-variation-settings: var(--font-text-axis);
     font-size: var(--font-size-350);
     text-align: start;
     overflow-wrap: anywhere;
@@ -30,17 +30,16 @@
 
   .suggestion-button:hover:not(:disabled) {
     border-color: var(--border-hover);
-    background-color: var(--surface-hover);
+    background-color: var(--surface-control-hover);
   }
 
   .suggestion-button:focus-visible {
-    outline: var(--focus-ring-width) solid var(--border-focus);
-    outline-offset: var(--border-width-025);
+    box-shadow: var(--ring-default);
   }
 
   .suggestion-button:disabled {
     border-color: var(--border-disabled);
-    background-color: var(--surface-disabled);
+    background-color: var(--surface-control-disabled);
     color: var(--text-disabled);
     cursor: not-allowed;
   }

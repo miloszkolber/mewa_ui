@@ -36,7 +36,7 @@ The module renders the current month, manages grid focus, and dispatches the sel
             data-variant="ghost"
             data-action="prev-month"
             aria-label="Previous month">
-      <i data-lucide="chevron-left" aria-hidden="true"></i>
+      <i class="ri-arrow-left-s-line" aria-hidden="true"></i>
     </button>
 
     <span class="date-picker-heading" aria-live="polite"></span>
@@ -46,7 +46,7 @@ The module renders the current month, manages grid focus, and dispatches the sel
             data-variant="ghost"
             data-action="next-month"
             aria-label="Next month">
-      <i data-lucide="chevron-right" aria-hidden="true"></i>
+      <i class="ri-arrow-right-s-line" aria-hidden="true"></i>
     </button>
   </div>
 

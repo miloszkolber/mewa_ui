@@ -8,12 +8,11 @@
       "library/src/tokens.css"
     ],
     "fonts": [
-      "library/src/geist.woff2",
-      "library/src/geistmono.woff2"
+      "library/src/google-sans-code.woff2"
     ],
     "licenses": {
-      "geist": "library/src/licenses/GEIST-OFL.txt",
-      "lucide": "library/src/licenses/LUCIDE-LICENSE.txt"
+      "googleSansCode": "library/src/licenses/GOOGLE-SANS-CODE-OFL.txt",
+      "remixIcon": "library/src/licenses/REMIX-ICON-LICENSE.txt"
     },
     "icons": "library/src/icons/",
     "components": "library/components/",
@@ -54,6 +53,111 @@
         "stability": "stable"
       },
       {
+        "name": "--surface-alpha",
+        "purpose": "General translucent surface independent of control semantics.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-alpha-inverted",
+        "purpose": "Inverted general translucent surface for contextual content.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-control",
+        "purpose": "Default translucent surface for an interactive control.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-control-hover",
+        "purpose": "Translucent surface for a hovered interactive control.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-control-disabled",
+        "purpose": "Translucent surface for a disabled interactive control.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-control-invalid",
+        "purpose": "Invalid surface for an interactive control.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-control-inverted",
+        "purpose": "Inverted surface for a selected or active control.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-control-transparent",
+        "purpose": "Transparent surface for an unfilled interactive control.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-pointer",
+        "purpose": "High-contrast surface for a draggable or range pointer.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-pointer-disabled",
+        "purpose": "Disabled surface for a draggable or range pointer.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-pointer-inverted",
+        "purpose": "Inverted surface for a pointer on an active track.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-button-primary",
+        "purpose": "Default filled surface for a primary button.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-button-primary-hover",
+        "purpose": "Hovered filled surface for a primary button.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-button-secondary",
+        "purpose": "Default transparent surface for a secondary button.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-button-secondary-hover",
+        "purpose": "Hovered surface for a secondary or quiet button.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-button-disabled",
+        "purpose": "Explicit disabled surface for a button action.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-button-destructive",
+        "purpose": "Default destructive surface for a button action.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-button-destructive-hover",
+        "purpose": "Hovered destructive surface for a button action.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-menu-hover",
+        "purpose": "Hover surface for menu items and highlighted menu choices.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-content-hover",
+        "purpose": "Hover surface for content rows and content triggers.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-shell-hover",
+        "purpose": "Hover surface for application shell links and actions.",
+        "stability": "stable"
+      },
+      {
         "name": "--surface-hover",
         "purpose": "Theme-aware translucent surface for pointer and keyboard hover feedback.",
         "stability": "stable"
@@ -76,6 +180,11 @@
       {
         "name": "--surface-negative",
         "purpose": "Supporting surface for negative status.",
+        "stability": "stable"
+      },
+      {
+        "name": "--surface-destructive-hover",
+        "purpose": "Hover surface for destructive menu and outline interactions.",
         "stability": "stable"
       },
       {
@@ -119,11 +228,6 @@
         "stability": "stable"
       },
       {
-        "name": "--text-muted",
-        "purpose": "Metadata and low-emphasis text color.",
-        "stability": "stable"
-      },
-      {
         "name": "--text-disabled",
         "purpose": "Disabled text and icon color.",
         "stability": "stable"
@@ -159,6 +263,21 @@
         "stability": "stable"
       },
       {
+        "name": "--border-interactive-default",
+        "purpose": "Default boundary for an interactive control.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-interactive-inverted",
+        "purpose": "Inverted or selected boundary for an interactive control.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-transparent",
+        "purpose": "Transparent boundary reserved for structural alignment and state.",
+        "stability": "stable"
+      },
+      {
         "name": "--border-control",
         "purpose": "Required visible boundary of an unselected native choice control.",
         "stability": "stable"
@@ -191,6 +310,21 @@
       {
         "name": "--border-focus",
         "purpose": "Theme-aware neutral boundary for authored focus indicators.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-invalid",
+        "purpose": "Boundary color for an invalid interactive control.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-focus-area",
+        "purpose": "Translucent perimeter color for the focus ring effect.",
+        "stability": "stable"
+      },
+      {
+        "name": "--border-invalid-area",
+        "purpose": "Translucent perimeter color for the invalid ring effect.",
         "stability": "stable"
       },
       {
@@ -292,6 +426,10 @@
         "purpose": "Shared dimensions and interactive-size primitives."
       },
       {
+        "prefix": "--value-",
+        "purpose": "Shared numeric values used by foundation effect and geometry mappings."
+      },
+      {
         "prefix": "--border-width-",
         "purpose": "Structural border-width primitives."
       },
@@ -309,7 +447,7 @@
       },
       {
         "prefix": "--opacity-",
-        "purpose": "Opacity primitives for authored component states."
+        "purpose": "Opacity primitives for transitions and structural visibility mechanics, using 000 through 100 steps; semantic states use explicit color roles."
       },
       {
         "prefix": "--z-",
@@ -317,7 +455,11 @@
       },
       {
         "prefix": "--blur-",
-        "purpose": "Blur primitives reserved for approved sticky shell chrome."
+        "purpose": "Blur primitives corresponding to the approved Figma blur effect styles."
+      },
+      {
+        "prefix": "--ring-",
+        "purpose": "Composite focus and invalid perimeter effects corresponding to the Figma ring styles."
       },
       {
         "prefix": "--motion-",
@@ -407,7 +549,7 @@
       "name": "Icon",
       "slug": "icon",
       "category": "Primitives",
-      "purpose": "Presents a local Lucide glyph inside text or a control.",
+      "purpose": "Presents a local Remix Icon glyph inside text or a control.",
       "useWhen": "Use Icon to support a visible label or a familiar icon-only action.",
       "avoidWhen": "Do not use an icon as the only status explanation.",
       "fallback": "Use text without an icon when the glyph adds no value.",
@@ -421,7 +563,7 @@
         "css": "library/components/icon/icon.css"
       },
       "docs": "docs/icon.html",
-      "description": "Presents a local Lucide glyph inside text or a control.",
+      "description": "Presents a local Remix Icon glyph inside text or a control.",
       "styleDependencies": [],
       "behaviorDependencies": [],
       "assets": []

@@ -27,8 +27,7 @@
     &:active { cursor: grabbing; }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
 
     &[data-active] {
@@ -38,29 +37,33 @@
 
     &[data-dragging] {
       border-style: dashed;
-      opacity: var(--opacity-05);
+      background: var(--surface-control-disabled);
+      color: var(--text-secondary);
+      border-color: var(--border-disabled);
     }
 
     &[data-over="before"] {
-      border-block-start: var(--border-width-050) solid var(--surface-inverted);
+      border-block-start: var(--border-width-050) solid var(--border-interactive-inverted);
     }
 
     &[data-over="after"] {
-      border-block-end: var(--border-width-050) solid var(--surface-inverted);
+      border-block-end: var(--border-width-050) solid var(--border-interactive-inverted);
     }
 
     .sortable[data-orientation="horizontal"] &[data-over="before"] {
       border-block-start: var(--border-width-025) solid var(--border-primary);
-      border-inline-start: var(--border-width-050) solid var(--surface-inverted);
+      border-inline-start: var(--border-width-050) solid var(--border-interactive-inverted);
     }
 
     .sortable[data-orientation="horizontal"] &[data-over="after"] {
       border-block-end: var(--border-width-025) solid var(--border-primary);
-      border-inline-end: var(--border-width-050) solid var(--surface-inverted);
+      border-inline-end: var(--border-width-050) solid var(--border-interactive-inverted);
     }
 
     &[aria-disabled="true"] {
-      opacity: var(--opacity-05);
+      background: var(--surface-control-disabled);
+      border-color: var(--border-disabled);
+      color: var(--text-disabled);
       cursor: not-allowed;
     }
   }
@@ -69,7 +72,7 @@
     display: inline-flex;
     flex-shrink: 0;
     align-items: center;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: var(--font-size-400);
     line-height: var(--font-height-flat);
     cursor: grab;
@@ -99,7 +102,7 @@
     border-radius: 0;
     background: var(--surface-primary);
     color: var(--text-primary);
-    font: inherit;
+    font: inherit; font-variation-settings: var(--font-text-axis);
     line-height: var(--font-height-flat);
     cursor: pointer;
 
@@ -108,13 +111,13 @@
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
 
     &:disabled {
-      background: var(--surface-secondary);
+      background: var(--surface-control-disabled);
       color: var(--text-disabled);
+      border-color: var(--border-disabled);
       cursor: not-allowed;
     }
   }

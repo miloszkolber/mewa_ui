@@ -28,8 +28,8 @@
   /* -- Headings ---------------------------------------------- */
   .h1 {
     scroll-margin-top: var(--space-2000);
-    font-size: var(--font-size-1000);
-    font-weight: var(--font-weight-550);
+    font-size: var(--font-size-900);
+    font-weight: var(--font-weight-525);
     line-height: var(--font-height-tight);
     text-wrap: balance;
     color: var(--text-primary);
@@ -37,8 +37,8 @@
 
   .h2 {
     scroll-margin-top: var(--space-2000);
-    font-size: var(--font-size-800);
-    font-weight: var(--font-weight-550);
+    font-size: var(--font-size-600);
+    font-weight: var(--font-weight-525);
     line-height: var(--font-height-tight);
     text-wrap: balance;
     color: var(--text-primary);
@@ -48,8 +48,8 @@
 
   .h3 {
     scroll-margin-top: var(--space-2000);
-    font-size: var(--font-size-600);
-    font-weight: var(--font-weight-550);
+    font-size: var(--font-size-400);
+    font-weight: var(--font-weight-525);
     line-height: var(--font-height-tight);
     text-wrap: balance;
     color: var(--text-primary);
@@ -59,8 +59,8 @@
 
   .h4 {
     scroll-margin-top: var(--space-2000);
-    font-size: var(--font-size-400);
-    font-weight: var(--font-weight-550);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-525);
     line-height: var(--font-height-tight);
     text-wrap: balance;
     color: var(--text-primary);
@@ -82,28 +82,28 @@
   .lead {
     font-size: var(--font-size-400);
     line-height: var(--font-height-regular);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     text-wrap: pretty;
   }
 
   /* -- Large -------------------------------------------------- */
   .large {
     font-size: var(--font-size-400);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     color: var(--text-primary);
   }
 
   /* -- Small -------------------------------------------------- */
   .small {
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     line-height: var(--font-height-tight);
     color: var(--text-primary);
   }
 
   /* -- Muted -------------------------------------------------- */
   .muted {
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
 
   /* -- Blockquote --------------------------------------------- */
@@ -124,21 +124,32 @@
     background: var(--surface-secondary);
     padding: var(--space-100);
     font-family: var(--font-mono);
+    font-variation-settings: var(--font-mono-axis);
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     color: var(--text-primary);
   }
 
   /* -- Keyboard input ----------------------------------------- */
   .kbd {
-    display: inline-block;
-    padding: var(--space-100) var(--space-200);
-    background: var(--surface-secondary);
-    border: var(--border-width-025) solid var(--border-primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--size-500);
+    block-size: var(--size-500);
+    padding: 0;
+    background: var(--surface-alpha);
+    border: var(--border-width-000) solid var(--border-transparent);
     color: var(--text-primary);
     font-family: var(--font-mono);
-    font-size: var(--font-size-300);
+    font-variation-settings: var(--font-mono-axis);
+    font-size: var(--font-size-350);
     line-height: var(--font-height-tight);
+
+    &[data-variant="inverted"] {
+      background: var(--surface-alpha-inverted);
+      color: var(--text-inverted);
+    }
   }
 
   /* -- Accessibility ------------------------------------------ */
@@ -176,6 +187,11 @@
       background: ButtonFace;
       border-color: ButtonText;
       color: ButtonText;
+
+      &[data-variant="inverted"] {
+        background: Highlight;
+        color: HighlightText;
+      }
     }
   }
 }

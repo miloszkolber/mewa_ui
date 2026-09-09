@@ -8,15 +8,15 @@
   .statistic-title {
     margin: 0;
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
-    color: var(--text-muted);
+    font-weight: var(--font-weight-525);
+    color: var(--text-secondary);
     letter-spacing: 0.01em;
   }
 
   .statistic-value {
     margin: 0;
-    font-size: var(--font-size-800);
-    font-weight: var(--font-weight-550);
+    font-size: var(--font-size-900);
+    font-weight: var(--font-weight-525);
     letter-spacing: -0.025em;
     line-height: var(--font-height-tight);
     color: var(--text-primary);
@@ -25,7 +25,7 @@
   .statistic-description {
     margin: 0;
     font-size: var(--font-size-300);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     display: flex;
     align-items: center;
     gap: var(--space-100);
@@ -35,7 +35,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-100);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
 
     & svg {
       width: var(--size-300);

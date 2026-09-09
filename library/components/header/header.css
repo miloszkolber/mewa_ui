@@ -13,7 +13,7 @@
     inset-block-start: 0;
     z-index: var(--z-raised);
     background-color: var(--background-glass);
-    backdrop-filter: blur(var(--blur-100));
+    backdrop-filter: blur(var(--blur-400));
   }
 
   .header-inner {
@@ -31,7 +31,7 @@
     gap: var(--space-200);
     min-block-size: var(--size-1000);
     color: var(--text-primary);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     text-decoration: none;
     outline: none;
 
@@ -40,8 +40,7 @@
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
   }
 
@@ -55,7 +54,7 @@
     color: var(--text-inverted);
     font-family: var(--font-mono);
     font-size: var(--font-size-300);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
   }
 
   .header-actions {
@@ -75,13 +74,12 @@
       outline: none;
 
       &:hover {
-        background-color: var(--surface-hover);
+        background-color: var(--surface-shell-hover);
         color: var(--text-primary);
       }
 
       &:focus-visible {
-        outline: var(--focus-ring-width) solid var(--border-focus);
-        outline-offset: var(--border-width-025);
+        box-shadow: var(--ring-default);
       }
     }
   }

@@ -38,11 +38,10 @@
       cursor: pointer;
       translate: 0 -50%;
 
-      &:hover { background-color: var(--surface-secondary); }
+      &:hover { background-color: var(--surface-control-hover); }
 
       &:focus-visible {
-        outline: var(--focus-ring-width) solid var(--border-focus);
-        outline-offset: var(--border-width-025);
+        box-shadow: var(--ring-default);
       }
 
       &:disabled {
@@ -97,18 +96,17 @@
       }
 
       &:hover:not([aria-current="true"]) {
-        color: var(--text-muted);
+        color: var(--text-secondary);
       }
 
       &:focus-visible {
-        outline: var(--focus-ring-width) solid var(--border-focus);
-        outline-offset: var(--border-width-025);
+        box-shadow: var(--ring-default);
       }
     }
 
     & .carousel-counter {
       padding-block-start: var(--space-200);
-      color: var(--text-muted);
+      color: var(--text-secondary);
       font-size: var(--font-size-350);
       text-align: center;
     }

@@ -19,7 +19,7 @@
 
   .footer-meta {
     margin: 0;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: var(--font-size-350);
   }
 
@@ -48,19 +48,18 @@
     outline: none;
 
     &:hover {
-      background-color: var(--surface-hover);
+      background-color: var(--surface-shell-hover);
       color: var(--text-primary);
     }
 
     &[aria-current="page"] {
       background-color: var(--surface-selected);
       color: var(--text-primary);
-      font-weight: var(--font-weight-550);
+      font-weight: var(--font-weight-525);
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
   }
 

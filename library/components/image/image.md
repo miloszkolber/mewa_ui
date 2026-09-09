@@ -59,7 +59,7 @@ Add `.image-fallback` when a failed image needs an explicit visual replacement.
 <figure class="image">
   <img src="/images/preview.png" alt="Generated preview">
   <div class="image-fallback" aria-hidden="true">
-    <i data-lucide="image-off"></i>
+    <i class="ri-image-line"></i>
   </div>
 </figure>
 ```

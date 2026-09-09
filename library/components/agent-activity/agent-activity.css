@@ -64,12 +64,12 @@
     color: var(--text-secondary);
     font-family: var(--font-mono);
     font-size: var(--font-size-300);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     text-transform: uppercase;
   }
 
   .agent-activity-status {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: var(--font-size-300);
   }
 
@@ -105,7 +105,7 @@
 
   .agent-activity-body {
     padding-block-start: var(--space-200);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: var(--font-size-350);
     line-height: var(--font-height-regular);
   }

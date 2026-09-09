@@ -29,7 +29,7 @@ The browser owns expanded state, focus, keyboard activation, and disclosure sema
 <details class="collapsible">
   <summary class="collapsible-trigger">
     <span>Advanced options</span>
-    <i data-lucide="chevron-down" aria-hidden="true"></i>
+    <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
   </summary>
   <div class="collapsible-content">
     <p>Configure optional processing behavior.</p>

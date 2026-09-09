@@ -1,16 +1,9 @@
 /* mewa_ui — base */
  @font-face {
-     font-family: "geist";
-     src: url("geist.woff2") format("woff2");
+     font-family: "google-sans-code";
+    src: url("google-sans-code.woff2") format("woff2");
      font-style: normal;
-     font-weight: 400 550;
-     font-display: swap;
-}
- @font-face {
-     font-family: "geist-mono";
-     src: url("geistmono.woff2") format("woff2");
-     font-style: normal;
-     font-weight: 400 550;
+     font-weight: 300 800;
      font-display: swap;
 }
  :root {
@@ -120,19 +113,19 @@
 
     /* COLOR-PALETTE:END */
     /* Typography */
-     --font-sans: geist, sans-serif;
-     --font-mono: geist-mono, monospace;
+     --font-mono: google-sans-code, monospace;
      --font-size-300: 0.75rem;
      --font-size-350: 0.875rem;
      --font-size-400: 1rem;
      --font-size-600: 1.5rem;
-     --font-size-800: 2rem;
-     --font-size-1000: 2.5rem;
-     --font-height-regular: 1.61;
-     --font-height-tight: 1.25;
+     --font-size-900: 2.25rem;
+     --font-height-regular: 1.6;
+     --font-height-tight: 1.2;
      --font-height-flat: 1;
      --font-weight-400: 400;
-     --font-weight-550: 550;
+     --font-weight-525: 525;
+     --font-text-axis: "MONO" 0;
+     --font-mono-axis: "MONO" 1;
      --text-tracking-default: 0;
      --text-case-none: none;
      --text-case-uppercase: uppercase;
@@ -142,33 +135,47 @@
 
     /* Numeric dimensions use 100 for 4px. */
      --space-000: 0;
+     --space-050: 0.125rem;
      --space-100: 0.25rem;
+     --space-150: 0.375rem;
      --space-200: 0.5rem;
+     --space-250: 0.625rem;
      --space-300: 0.75rem;
      --space-400: 1rem;
      --space-500: 1.25rem;
      --space-600: 1.5rem;
+     --space-700: 1.75rem;
      --space-800: 2rem;
+     --space-900: 2.25rem;
      --space-1000: 2.5rem;
+     --space-1100: 2.75rem;
      --space-1200: 3rem;
      --space-1400: 3.5rem;
      --space-1600: 4rem;
+     --space-1800: 4.5rem;
      --space-2000: 5rem;
      --space-2400: 6rem;
      --space-2800: 7rem;
      --space-3200: 8rem;
      --size-000: 0;
+     --size-050: 0.125rem;
      --size-100: 0.25rem;
+     --size-150: 0.375rem;
      --size-200: 0.5rem;
+     --size-250: 0.625rem;
      --size-300: 0.75rem;
      --size-400: 1rem;
      --size-500: 1.25rem;
      --size-600: 1.5rem;
+     --size-700: 1.75rem;
      --size-800: 2rem;
+     --size-900: 2.25rem;
      --size-1000: 2.5rem;
+     --size-1100: 2.75rem;
      --size-1200: 3rem;
      --size-1400: 3.5rem;
      --size-1600: 4rem;
+     --size-1800: 4.5rem;
      --size-2000: 5rem;
      --size-2400: 6rem;
      --size-2800: 7rem;
@@ -179,8 +186,16 @@
      --border-width-100: 4px;
      --border-radius-000: 0;
      --border-radius-6400: 16rem;
-     --blur-100: 0.25rem;
-     --blur-200: 0.5rem;
+     --value-000: 0;
+     --value-050: 0.125rem;
+     --value-100: 0.25rem;
+     --value-150: 0.375rem;
+     --value-200: 0.5rem;
+     --value-300: 0.75rem;
+     --value-400: 1rem;
+     --blur-100: var(--value-100);
+     --blur-200: var(--value-200);
+     --blur-400: var(--value-400);
      --motion-duration-fast: 100ms;
      --motion-duration-spatial: 160ms;
      --motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
@@ -190,17 +205,17 @@
      --breakpoint-max-dense: 90rem;
 
     /* Opacity */
-     --opacity-00: 0;
-     --opacity-01: 0.1;
-     --opacity-02: 0.2;
-     --opacity-03: 0.3;
-     --opacity-04: 0.4;
-     --opacity-05: 0.5;
-     --opacity-06: 0.6;
-     --opacity-07: 0.7;
-     --opacity-08: 0.8;
-     --opacity-09: 0.9;
-     --opacity-10: 1;
+     --opacity-000: 0;
+     --opacity-010: 0.1;
+     --opacity-020: 0.2;
+     --opacity-030: 0.3;
+     --opacity-040: 0.4;
+     --opacity-050: 0.5;
+     --opacity-060: 0.6;
+     --opacity-070: 0.7;
+     --opacity-080: 0.8;
+     --opacity-090: 0.9;
+     --opacity-100: 1;
 
     /* Stacking */
      --index-025: 1;
@@ -213,21 +228,21 @@
      --z-toast: var(--index-800);
 
     /* Authored focus roles. */
-     --focus-ring-width: var(--border-width-050);
-     --focus-ring-outer-width: var(--border-width-100);
+     --ring-spread: var(--size-050);
   }
 
 /* Foundation defaults stay in the base layer so component layers can override them. */
 @layer base {
   :where(*, *::before, *::after) {
     box-sizing: border-box;
+    font-variation-settings: var(--font-text-axis);
   }
 
   :where(html) {
     min-inline-size: 0;
     background: var(--background);
     color: var(--text-primary);
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     text-rendering: optimizeLegibility;
   }
 
@@ -248,21 +263,21 @@
   }
 
   :where(h1, h2, h3, h4) {
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     line-height: var(--font-height-tight);
   }
 
-  :where(h1) { font-size: var(--font-size-1000); }
-  :where(h2) { font-size: var(--font-size-800); }
-  :where(h3) { font-size: var(--font-size-600); }
-  :where(h4) { font-size: var(--font-size-400); }
+  :where(h1) { font-size: var(--font-size-900); }
+  :where(h2) { font-size: var(--font-size-600); }
+  :where(h3) { font-size: var(--font-size-400); }
+  :where(h4) { font-size: var(--font-size-350); }
 
   :where(strong, b) {
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
   }
 
   :where(button, input, select, textarea) {
-    font: inherit;
+    font: inherit; font-variation-settings: var(--font-text-axis);
   }
 
   :where(
@@ -295,6 +310,7 @@
 
   :where(code, kbd, pre, samp) {
     font-family: var(--font-mono);
+    font-variation-settings: var(--font-mono-axis);
   }
 
   :where(button, [role="button"]) {
@@ -329,8 +345,8 @@
   }
 
   :focus-visible {
-    outline: var(--focus-ring-width) solid var(--border-focus);
-    outline-offset: var(--border-width-025);
+    outline: none;
+    box-shadow: var(--ring-default);
   }
 
   [hidden] {
@@ -339,7 +355,9 @@
 
   @media (forced-colors: active) {
     :focus-visible {
-      outline-color: Highlight !important;
+      outline: var(--border-width-050) solid Highlight !important;
+      outline-offset: var(--border-width-025);
+      box-shadow: none !important;
     }
   }
 

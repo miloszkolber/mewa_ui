@@ -33,7 +33,7 @@ The component does not animate between states.
 ```html
 <button class="btn"
         type="button"
-        data-variant="outline"
+        data-variant="secondary"
         data-sheet-trigger="settings-sheet"
         aria-haspopup="dialog">
   Open settings
@@ -56,7 +56,7 @@ The component does not animate between states.
     <div class="sheet-footer">
       <button class="btn"
               type="button"
-              data-variant="outline"
+              data-variant="secondary"
               data-sheet-close>
         Cancel
       </button>
@@ -70,7 +70,7 @@ The component does not animate between states.
           type="button"
           data-sheet-close
           aria-label="Close settings">
-    <i data-lucide="x" aria-hidden="true"></i>
+    <i class="ri-close-line" aria-hidden="true"></i>
   </button>
 </dialog>
 ```

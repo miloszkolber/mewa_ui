@@ -74,7 +74,7 @@
     }
 
     &[data-state="collapsed"] {
-      width: var(--sidebar-width-collapsed, calc(var(--size-1400) + var(--size-300)));
+      width: var(--sidebar-width-collapsed, var(--size-1200));
 
       & .sidebar-link > span,
       & .sidebar-trigger-label,
@@ -94,7 +94,7 @@
       & .sidebar-header,
       & .sidebar-footer {
         justify-content: center;
-        padding: var(--space-300);
+        padding: var(--space-200);
       }
 
       & .sidebar-nav {
@@ -104,7 +104,7 @@
       & .sidebar-link,
       & .sidebar-trigger {
         justify-content: center;
-        inline-size: var(--size-1000);
+        inline-size: var(--size-900);
         padding-inline: 0;
       }
     }
@@ -129,12 +129,11 @@
     gap: var(--space-200);
     color: var(--text-primary);
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     text-decoration: none;
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
   }
 
@@ -183,7 +182,11 @@
     font-size: var(--font-size-350);
     text-decoration: none;
 
-    &:hover,
+    &:hover {
+      background: var(--surface-control-hover);
+      color: var(--text-primary);
+    }
+
     &[data-active="true"],
     &[aria-current="page"] {
       background: var(--surface-secondary);
@@ -192,12 +195,11 @@
 
     &[data-active="true"],
     &[aria-current="page"] {
-      font-weight: var(--font-weight-550);
+      font-weight: var(--font-weight-525);
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
 
     & svg {
@@ -229,18 +231,17 @@
     border: 0;
     background: transparent;
     color: var(--text-primary);
-    font: inherit;
+    font: inherit; font-variation-settings: var(--font-text-axis);
     line-height: var(--font-height-flat);
     text-align: start;
     cursor: pointer;
 
     &:hover {
-      background: var(--surface-secondary);
+      background: var(--surface-control-hover);
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
 
     & svg {
@@ -287,7 +288,7 @@
 
     &::backdrop {
       background: var(--overlay-strong);
-      opacity: 0;
+      opacity: var(--opacity-000);
       transition-property: opacity, overlay, display;
       transition-duration: var(--motion-duration-spatial);
       transition-timing-function: var(--motion-easing-standard);
@@ -295,7 +296,7 @@
     }
 
     &[open]::backdrop {
-      opacity: 1;
+      opacity: var(--opacity-100);
     }
 
     & .sidebar-mobile-close {
@@ -314,12 +315,11 @@
       cursor: pointer;
 
       &:hover {
-        background: var(--surface-secondary);
+        background: var(--surface-control-hover);
       }
 
       &:focus-visible {
-        outline: var(--focus-ring-width) solid var(--border-focus);
-        outline-offset: var(--border-width-025);
+        box-shadow: var(--ring-default);
       }
 
       & svg {
@@ -343,7 +343,7 @@
     }
 
     .sidebar-mobile[open]::backdrop {
-      opacity: 0;
+      opacity: var(--opacity-000);
     }
   }
 

@@ -32,12 +32,12 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Card</h1>
-        <p class="text-muted leading-relaxed mb-6">Groups one independent object or a small, closely related set of information. Avoid using cards as a default wrapper for sections, tables, or connected rows.</p>
+        <p class="text-secondary leading-relaxed mb-6">Groups one independent object or a small, closely related set of information. Avoid using cards as a default wrapper for sections, tables, or connected rows.</p>
       </div>
 
         <!-- Standard card -->
         <p class="text-sm font-medium mb-2 mt-6">Standard</p>
-        <p class="text-xs text-muted mb-3">Header, content with form fields, and footer with actions.</p>
+        <p class="text-xs text-secondary mb-3">Header, content with form fields, and footer with actions.</p>
         <div class="preview" style="justify-content: center">
           <div class="card" style="max-width: 22rem; width: 100%">
             <div class="card-header">
@@ -57,14 +57,14 @@
               </div>
             </div>
             <div class="card-footer" style="justify-content: space-between">
-              <button type="button" class="btn" data-variant="outline">Cancel</button>
+              <button type="button" class="btn" data-variant="secondary">Cancel</button>
               <button type="button" class="btn" data-variant="default">Deploy</button>
             </div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="card"&gt;
@@ -85,7 +85,7 @@
     &lt;/div&gt;
   &lt;/div&gt;
   &lt;div class="card-footer" style="justify-content: space-between"&gt;
-    &lt;button type="button" class="btn" data-variant="outline"&gt;Cancel&lt;/button&gt;
+    &lt;button type="button" class="btn" data-variant="secondary"&gt;Cancel&lt;/button&gt;
     &lt;button type="button" class="btn" data-variant="default"&gt;Deploy&lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>
@@ -93,33 +93,33 @@
 
         <!-- Metric card -->
         <p class="text-sm font-medium mb-2 mt-8">Metric</p>
-        <p class="text-xs text-muted mb-3">Compact card for dashboard stats. Header row with icon.</p>
+        <p class="text-xs text-secondary mb-3">Compact card for dashboard stats. Header row with icon.</p>
         <div class="preview" style="justify-content: center">
           <div class="card" style="max-width: 16rem; width: 100%">
             <div class="card-header" style="flex-direction: row; align-items: center; justify-content: space-between; padding-bottom: var(--space-200)">
-              <p class="card-description" style="font-weight: var(--font-weight-550); color: var(--text-primary); font-size: var(--font-size-300)">Total Revenue</p>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-muted)"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <p class="card-description" style="font-weight: var(--font-weight-525); color: var(--text-primary); font-size: var(--font-size-300)">Total Revenue</p>
+              <svg width="14" height="14" style="color: var(--text-secondary)" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12.0049 22.0027C6.48204 22.0027 2.00488 17.5256 2.00488 12.0027C2.00488 6.4799 6.48204 2.00275 12.0049 2.00275C17.5277 2.00275 22.0049 6.4799 22.0049 12.0027C22.0049 17.5256 17.5277 22.0027 12.0049 22.0027ZM12.0049 20.0027C16.4232 20.0027 20.0049 16.421 20.0049 12.0027C20.0049 7.58447 16.4232 4.00275 12.0049 4.00275C7.5866 4.00275 4.00488 7.58447 4.00488 12.0027C4.00488 16.421 7.5866 20.0027 12.0049 20.0027ZM8.50488 14.0027H14.0049C14.281 14.0027 14.5049 13.7789 14.5049 13.5027C14.5049 13.2266 14.281 13.0027 14.0049 13.0027H10.0049C8.62417 13.0027 7.50488 11.8835 7.50488 10.5027C7.50488 9.12203 8.62417 8.00275 10.0049 8.00275H11.0049V6.00275H13.0049V8.00275H15.5049V10.0027H10.0049C9.72874 10.0027 9.50488 10.2266 9.50488 10.5027C9.50488 10.7789 9.72874 11.0027 10.0049 11.0027H14.0049C15.3856 11.0027 16.5049 12.122 16.5049 13.5027C16.5049 14.8835 15.3856 16.0027 14.0049 16.0027H13.0049V18.0027H11.0049V16.0027H8.50488V14.0027Z"/></svg>
             </div>
             <div class="card-content" style="padding-top: var(--space-100)">
-              <p style="font-size: var(--font-size-800); font-weight: var(--font-weight-550); margin: 0; letter-spacing: var(--text-tracking-default)">$45,231</p>
+              <p style="font-size: var(--font-size-900); font-weight: var(--font-weight-525); margin: 0; letter-spacing: var(--text-tracking-default)">$45,231</p>
               <p class="card-description" style="font-size: var(--font-size-300); margin-top: var(--space-100)">+20.1% from last month</p>
             </div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="card"&gt;
   &lt;div class="card-header"
        style="flex-direction: row; align-items: center; justify-content: space-between; padding-bottom: var(--space-200)"&gt;
     &lt;p class="card-description"
-       style="font-weight: var(--font-weight-550); color: var(--text-primary); font-size: var(--font-size-350)"&gt;Total Revenue&lt;/p&gt;
-    &lt;svg width="14" height="14" ...&gt;...&lt;/svg&gt;
+       style="font-weight: var(--font-weight-525); color: var(--text-primary); font-size: var(--font-size-350)"&gt;Total Revenue&lt;/p&gt;
+    &lt;svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"&gt;...&lt;/svg&gt;
   &lt;/div&gt;
   &lt;div class="card-content" style="padding-top: var(--space-100)"&gt;
-    &lt;p style="font-size: 1.625rem; font-weight: 700; margin: 0; letter-spacing: -0.025em"&gt;$45,231&lt;/p&gt;
+    &lt;p style="font-size: var(--font-size-900); font-weight: var(--font-weight-525); margin: 0; letter-spacing: var(--text-tracking-default)"&gt;$45,231&lt;/p&gt;
     &lt;p class="card-description"
        style="font-size: var(--font-size-300); margin-top: var(--space-100)"&gt;+20.1% from last month&lt;/p&gt;
   &lt;/div&gt;
@@ -128,7 +128,7 @@
 
         <!-- Image card -->
         <p class="text-sm font-medium mb-2 mt-8">With image</p>
-        <p class="text-xs text-muted mb-3">Use <code>&lt;article&gt;</code> for standalone content. Image as first child.</p>
+        <p class="text-xs text-secondary mb-3">Use <code>&lt;article&gt;</code> for standalone content. Image as first child.</p>
         <div class="preview" style="justify-content: center">
           <article class="card" style="max-width: 20rem; width: 100%">
             <img src="assets/demo-landscape.svg" alt="Abstract shapes" style="width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block">
@@ -137,7 +137,7 @@
               <p class="card-description">Exploring minimal aesthetics through form and color.</p>
             </div>
             <div class="card-content" style="padding-top: 0">
-              <p style="margin: 0; font-size: var(--font-size-350); color: var(--text-muted); line-height: var(--font-height-regular)">A deep dive into the principles that guide contemporary visual design.</p>
+              <p style="margin: 0; font-size: var(--font-size-350); color: var(--text-secondary); line-height: var(--font-height-regular)">A deep dive into the principles that guide contemporary visual design.</p>
             </div>
             <div class="card-footer">
               <button type="button" class="btn" data-variant="default" data-size="sm">Read more</button>
@@ -147,7 +147,7 @@
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;article class="card"&gt;
@@ -158,7 +158,7 @@
     &lt;p class="card-description"&gt;Exploring minimal aesthetics.&lt;/p&gt;
   &lt;/div&gt;
   &lt;div class="card-content" style="padding-top: 0"&gt;
-    &lt;p style="margin: 0; font-size: var(--font-size-350); color: var(--text-muted)"&gt;Body text...&lt;/p&gt;
+    &lt;p style="margin: 0; font-size: var(--font-size-350); color: var(--text-secondary)"&gt;Body text...&lt;/p&gt;
   &lt;/div&gt;
   &lt;div class="card-footer"&gt;
     &lt;button type="button" class="btn" data-variant="default" data-size="sm"&gt;Read more&lt;/button&gt;
@@ -169,7 +169,7 @@
 
         <!-- Header action card -->
         <p class="text-sm font-medium mb-2 mt-8">Header action</p>
-        <p class="text-xs text-muted mb-3">Action button in the header for settings or overflow menus.</p>
+        <p class="text-xs text-secondary mb-3">Action button in the header for settings or overflow menus.</p>
         <div class="preview" style="justify-content: center">
           <div class="card" style="max-width: 20rem; width: 100%">
             <div class="card-header" style="flex-direction: row; align-items: center; justify-content: space-between">
@@ -178,22 +178,22 @@
                 <p class="card-description">Manage who has access.</p>
               </div>
               <button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="More options">
-                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 3C11.175 3 10.5 3.675 10.5 4.5C10.5 5.325 11.175 6 12 6C12.825 6 13.5 5.325 13.5 4.5C13.5 3.675 12.825 3 12 3ZM12 18C11.175 18 10.5 18.675 10.5 19.5C10.5 20.325 11.175 21 12 21C12.825 21 13.5 20.325 13.5 19.5C13.5 18.675 12.825 18 12 18ZM12 10.5C11.175 10.5 10.5 11.175 10.5 12C10.5 12.825 11.175 13.5 12 13.5C12.825 13.5 13.5 12.825 13.5 12C13.5 11.175 12.825 10.5 12 10.5Z"/></svg>
               </button>
             </div>
             <div class="card-content" style="display: flex; flex-direction: column; gap: var(--space-300)">
               <div style="display: flex; align-items: center; gap: var(--space-300)">
                 <span class="avatar" data-size="sm"><span class="avatar-fallback">CL</span></span>
-                <div style="margin: 0; font-size: var(--font-size-350); font-weight: var(--font-weight-550); margin: 0; font-size: var(--font-size-300); color: var(--text-muted)" ><p>Cody Lindley</p><p>Owner</p></div>
+                <div style="margin: 0; font-size: var(--font-size-350); font-weight: var(--font-weight-525); margin: 0; font-size: var(--font-size-300); color: var(--text-secondary)" ><p>Cody Lindley</p><p>Owner</p></div>
               </div>
               <div style="display: flex; align-items: center; gap: var(--space-300)">
                 <span class="avatar" data-size="sm"><span class="avatar-fallback">JD</span></span>
-                <div style="margin: 0; font-size: var(--font-size-350); font-weight: var(--font-weight-550); margin: 0; font-size: var(--font-size-300); color: var(--text-muted)" ><p>Jane Doe</p><p>Editor</p></div>
+                <div style="margin: 0; font-size: var(--font-size-350); font-weight: var(--font-weight-525); margin: 0; font-size: var(--font-size-300); color: var(--text-secondary)" ><p>Jane Doe</p><p>Editor</p></div>
               </div>
             </div>
             <div class="card-footer" style="padding-top: var(--space-400); border-top: var(--border-width-025) solid var(--border-primary)">
-              <button type="button" class="btn" data-variant="outline" data-size="sm" style="width: 100%">
-                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+              <button type="button" class="btn" data-variant="secondary" data-size="sm" style="width: 100%">
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M14 14.252V16.3414C13.3744 16.1203 12.7013 16 12 16C8.68629 16 6 18.6863 6 22H4C4 17.5817 7.58172 14 12 14C12.6906 14 13.3608 14.0875 14 14.252ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11ZM18 17V14H20V17H23V19H20V22H18V19H15V17H18Z"/></svg>
                 Invite member
               </button>
             </div>
@@ -201,7 +201,7 @@
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="card"&gt;
@@ -213,7 +213,7 @@
     &lt;/div&gt;
     &lt;button type="button" class="btn" data-variant="ghost" data-size="icon"
             aria-label="More options"&gt;
-      &lt;svg aria-hidden="true" ...&gt;...&lt;/svg&gt;
+      &lt;svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"&gt;...&lt;/svg&gt;
     &lt;/button&gt;
   &lt;/div&gt;
   &lt;div class="card-content"&gt;
@@ -221,9 +221,9 @@
   &lt;/div&gt;
   &lt;div class="card-footer"
        style="padding-top: var(--space-400); border-top: var(--border-width-025) solid var(--border-primary)"&gt;
-    &lt;button type="button" class="btn" data-variant="outline" data-size="sm"
+    &lt;button type="button" class="btn" data-variant="secondary" data-size="sm"
             style="width: 100%"&gt;
-      &lt;svg aria-hidden="true" ...&gt;...&lt;/svg&gt;
+      &lt;svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"&gt;...&lt;/svg&gt;
       Invite member
     &lt;/button&gt;
   &lt;/div&gt;

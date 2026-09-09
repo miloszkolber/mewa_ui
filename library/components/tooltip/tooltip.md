@@ -20,6 +20,8 @@ CSS Anchor Positioning places the hint beside the trigger.
 
 The module supplies explicit coordinate fallback when anchor positioning is unavailable.
 
+The ready Tooltip is 24px high with 6px horizontal padding. Its placement and accessibility behavior remain repository-owned enhancements.
+
 ## Native Web APIs
 
 - [`popover="hint"`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/popover) provides hint top-layer behavior.
@@ -39,7 +41,7 @@ Use Tooltip only as supplementary description.
         data-size="icon"
         data-tooltip-trigger="settings-tip"
         aria-label="Open settings">
-  <i data-lucide="settings" aria-hidden="true"></i>
+  <i class="ri-settings-3-line" aria-hidden="true"></i>
 </button>
 
 <div class="tooltip"

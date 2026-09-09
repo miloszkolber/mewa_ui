@@ -38,7 +38,7 @@ Use `autofocus` on the least destructive action when accidental confirmation wou
 ```html
 <button class="btn"
         type="button"
-        data-variant="outline"
+        data-variant="secondary"
         data-alert-dialog-trigger="delete-account"
         aria-haspopup="dialog">
   Delete account
@@ -59,7 +59,7 @@ Use `autofocus` on the least destructive action when accidental confirmation wou
     <div class="alert-dialog-footer">
       <button class="btn"
               type="button"
-              data-variant="outline"
+              data-variant="secondary"
               data-alert-dialog-close
               autofocus>
         Cancel

@@ -30,11 +30,11 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Progress</h1>
-        <p class="text-muted leading-relaxed mb-6">Shows how much of a known task has completed. When progress cannot be measured, use the indeterminate state and pair it with a clear description of the work.</p>
+        <p class="text-secondary leading-relaxed mb-6">Shows how much of a known task has completed. When progress cannot be measured, use the indeterminate state and pair it with a clear description of the work.</p>
       </div>
         <!-- Determinate -->
         <p class="text-sm font-medium mb-2 mt-6">Determinate</p>
-        <p class="text-xs text-muted mb-3">Shows a specific completion percentage.</p>
+        <p class="text-xs text-secondary mb-3">Shows a specific completion percentage.</p>
         <div class="preview">
           <div style="inline-size: min(24rem, 100%)">
             <progress class="progress" value="66" max="100">66%</progress>
@@ -42,7 +42,7 @@
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;progress class="progress" value="66" max="100"&gt;66%&lt;/progress&gt;</code></pre>
@@ -50,7 +50,7 @@
 
         <!-- Multiple values -->
         <p class="text-sm font-medium mb-2 mt-8">Values</p>
-        <p class="text-xs text-muted mb-3">Different completion amounts.</p>
+        <p class="text-xs text-secondary mb-3">Different completion amounts.</p>
         <div class="preview">
           <div style="display: flex; flex-direction: column; gap: var(--space-400); inline-size: min(24rem, 100%)">
             <progress class="progress" value="10" max="100">10%</progress>
@@ -61,7 +61,7 @@
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;progress class="progress" value="10" max="100"&gt;10%&lt;/progress&gt;
@@ -71,7 +71,7 @@
 
         <!-- Indeterminate -->
         <p class="text-sm font-medium mb-2 mt-8">Indeterminate</p>
-        <p class="text-xs text-muted mb-3">Animated state when completion amount is unknown. Omit the <code>value</code> attribute.</p>
+        <p class="text-xs text-secondary mb-3">Animated state when completion amount is unknown. Omit the <code>value</code> attribute.</p>
         <div class="preview">
           <div style="inline-size: min(24rem, 100%)">
             <progress class="progress" max="100">Loading...</progress>
@@ -79,7 +79,7 @@
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;progress class="progress" max="100"&gt;Loading...&lt;/progress&gt;</code></pre>
@@ -87,7 +87,7 @@
 
         <!-- Dashboard Cards -->
         <p class="text-sm font-medium mb-2 mt-8">In cards</p>
-        <p class="text-xs text-muted mb-3">Progress bars composed with <code>.card</code> and <code>.statistic</code> for a dashboard layout.</p>
+        <p class="text-xs text-secondary mb-3">Progress bars composed with <code>.card</code> and <code>.statistic</code> for a dashboard layout.</p>
         <div class="preview" style="flex-direction: column; align-items: stretch">
           <div style="display: grid; inline-size: 100%; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: var(--space-400); max-width: 42rem">
             <article class="card">

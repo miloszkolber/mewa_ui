@@ -8,8 +8,7 @@
   }
 
   .table-container:focus-visible {
-    outline: var(--focus-ring-width) solid var(--border-focus);
-    outline-offset: calc(-1 * var(--focus-ring-width));
+    box-shadow: var(--ring-default);
   }
 
   .table {
@@ -23,29 +22,33 @@
   .table-caption {
     padding: var(--space-300) var(--space-400);
     font-size: var(--font-size-350);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     text-align: center;
   }
 
   .table-head {
-    padding: var(--space-200) var(--space-400);
-    height: var(--size-1000);
+    padding: 0 var(--space-200);
+    height: var(--size-900);
     font-family: var(--font-mono);
-    font-size: var(--font-size-300);
-    font-weight: var(--font-weight-550);
-    color: var(--text-muted);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-400);
+    line-height: var(--font-height-regular);
+    font-variation-settings: var(--font-text-axis);
+    color: var(--text-secondary);
     background-color: transparent;
-    text-transform: uppercase;
+    text-transform: none;
     white-space: nowrap;
-    border-block: 0;
+    border-block-end: var(--border-width-025) solid var(--border-primary);
+
+    &:hover { background-color: var(--surface-control-hover); }
   }
 
   .table-cell {
-    padding: var(--space-200) var(--space-400);
-    height: var(--size-1000);
+    padding: 0 var(--space-200);
+    height: var(--size-900);
     vertical-align: middle;
     color: var(--text-primary);
-    border-block: 0;
+    border-block-end: var(--border-width-025) solid var(--border-primary);
 
     &:has(.avatar) {
       & > :where(div, span):has(.avatar) {
@@ -66,22 +69,26 @@
     }
   }
 
+  .table-row:hover {
+    background-color: var(--surface-control-hover);
+  }
+
   tfoot .table-row {
     background-color: var(--surface-secondary);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
   }
 
   /* -- Dense terminal variant: compact rows separated by a subtle hairline.
      Add `table--dense` to the `<table>` and keep the default
      `.table-container` outer border as the single section canvas. */
   .table--dense .table-head {
-    padding: var(--space-200) var(--space-400);
+    padding: var(--space-200);
     height: auto;
     border-block-end: var(--border-width-025) solid var(--border-primary);
   }
 
   .table--dense .table-cell {
-    padding: var(--space-300) var(--space-400);
+    padding: var(--space-300) var(--space-200);
     height: auto;
   }
 
@@ -108,7 +115,7 @@
   /* -- Container query: compact table in narrow containers -- */
   @container (max-width: 480px){
     .table-head,
-    .table-cell { padding: var(--space-200) var(--space-300); font-size: var(--font-size-350); }
+    .table-cell { padding: 0 var(--space-200); font-size: var(--font-size-350); }
   }
 
   @media (prefers-contrast: more) {

@@ -39,9 +39,11 @@ Use the fallback alone when no image is available.
 </span>
 ```
 
+The default Avatar is 36px and uses the general surface with secondary fallback text.
+
 Use `data-size="sm"` for 32px avatars.
 
-Omit `data-size` for the 40px default.
+Omit `data-size` for the 36px default.
 
 Use `data-size="lg"` for 48px avatars.
 
@@ -50,6 +52,8 @@ Use `data-size="lg"` for 48px avatars.
 Use `.avatar-badge` only when the badge communicates a real state.
 
 Pair a visual badge with visible nearby status text or an accessible label.
+
+The ready badge is 8px and uses the positive text role.
 
 ```html
 <span class="avatar">

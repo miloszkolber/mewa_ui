@@ -20,7 +20,7 @@
 
   .card-title {
     font-size: var(--font-size-400);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     line-height: var(--font-height-tight);
     letter-spacing: -0.01em;
     margin: 0;
@@ -28,7 +28,7 @@
 
   .card-description {
     font-size: var(--font-size-350);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     margin: 0;
     line-height: var(--font-height-regular);
   }

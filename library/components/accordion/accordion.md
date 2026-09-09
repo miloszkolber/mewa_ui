@@ -20,6 +20,8 @@ Use the `name` attribute for an exclusive accordion that allows all items to clo
 
 Use the optional module only when one item must always remain open.
 
+Ready Accordion triggers use a 44px minimum height, 12px horizontal padding, an 8px icon gap, and 14px bold-relaxed text with `MONO:0`. Focus and disabled states are explicit; hover does not add an underline.
+
 ## Native Web APIs
 
 - [`<details>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details) provides native disclosure state.
@@ -37,7 +39,7 @@ Omit `name` when several items can remain open.
   <details class="accordion-item" open>
     <summary class="accordion-trigger">
       <span>Connection status</span>
-      <i class="accordion-chevron" data-lucide="chevron-down" aria-hidden="true"></i>
+      <i class="accordion-chevron ri-arrow-down-s-line" aria-hidden="true"></i>
     </summary>
     <div class="accordion-content">
       <p>The service is connected.</p>
@@ -47,7 +49,7 @@ Omit `name` when several items can remain open.
   <details class="accordion-item">
     <summary class="accordion-trigger">
       <span>Storage status</span>
-      <i class="accordion-chevron" data-lucide="chevron-down" aria-hidden="true"></i>
+      <i class="accordion-chevron ri-arrow-down-s-line" aria-hidden="true"></i>
     </summary>
     <div class="accordion-content">
       <p>The service has 48 GB available.</p>

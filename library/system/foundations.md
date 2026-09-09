@@ -28,6 +28,10 @@ Use `library/src/tokens.css` for semantic theme roles.
 
 Use `registry.json` to read the purpose of each semantic token.
 
+Keep each semantic role as a separate named token even when its current mapping
+matches another role. Semantic names encode intent and future theme/state
+ownership; do not deduplicate roles solely because their values are equal.
+
 Do not consume a palette primitive in a component.
 
 Do not invent a semantic token for one component.
@@ -87,11 +91,33 @@ This section is generated from `registry.json`.
 | `--surface-primary-glass` | Translucent primary surface for approved sticky chrome. |
 | `--surface-secondary` | Quiet structural surface for secondary grouping. |
 | `--surface-secondary-glass` | Translucent secondary surface for approved sticky chrome. |
+| `--surface-alpha` | General translucent surface independent of control semantics. |
+| `--surface-alpha-inverted` | Inverted general translucent surface for contextual content. |
+| `--surface-control` | Default translucent surface for an interactive control. |
+| `--surface-control-hover` | Translucent surface for a hovered interactive control. |
+| `--surface-control-disabled` | Translucent surface for a disabled interactive control. |
+| `--surface-control-invalid` | Invalid surface for an interactive control. |
+| `--surface-control-inverted` | Inverted surface for a selected or active control. |
+| `--surface-control-transparent` | Transparent surface for an unfilled interactive control. |
+| `--surface-pointer` | High-contrast surface for a draggable or range pointer. |
+| `--surface-pointer-disabled` | Disabled surface for a draggable or range pointer. |
+| `--surface-pointer-inverted` | Inverted surface for a pointer on an active track. |
+| `--surface-button-primary` | Default filled surface for a primary button. |
+| `--surface-button-primary-hover` | Hovered filled surface for a primary button. |
+| `--surface-button-secondary` | Default transparent surface for a secondary button. |
+| `--surface-button-secondary-hover` | Hovered surface for a secondary or quiet button. |
+| `--surface-button-disabled` | Explicit disabled surface for a button action. |
+| `--surface-button-destructive` | Default destructive surface for a button action. |
+| `--surface-button-destructive-hover` | Hovered destructive surface for a button action. |
+| `--surface-menu-hover` | Hover surface for menu items and highlighted menu choices. |
+| `--surface-content-hover` | Hover surface for content rows and content triggers. |
+| `--surface-shell-hover` | Hover surface for application shell links and actions. |
 | `--surface-hover` | Theme-aware translucent surface for pointer and keyboard hover feedback. |
 | `--surface-selected` | Theme-aware translucent surface for a selected or current item. |
 | `--surface-disabled` | Theme-aware translucent surface for a disabled control or region. |
 | `--surface-positive` | Supporting surface for positive status. |
 | `--surface-negative` | Supporting surface for negative status. |
+| `--surface-destructive-hover` | Hover surface for destructive menu and outline interactions. |
 | `--surface-caution` | Supporting surface for caution status. |
 | `--surface-inverted` | Highest-contrast normal surface for primary actions and signets. |
 | `--surface-destructive` | Filled destructive action surface. |
@@ -100,7 +126,6 @@ This section is generated from `registry.json`.
 | `--overlay-strong` | Strong backdrop overlay behind modal top-layer content. |
 | `--text-primary` | Primary readable text and icon color. |
 | `--text-secondary` | Supporting readable text and icon color. |
-| `--text-muted` | Metadata and low-emphasis text color. |
 | `--text-disabled` | Disabled text and icon color. |
 | `--text-inverted` | Text and icon color on inverted surfaces. |
 | `--text-positive` | Positive status text and icon color. |
@@ -108,6 +133,9 @@ This section is generated from `registry.json`.
 | `--text-caution` | Caution status text and icon color. |
 | `--border-primary` | Default structural boundary. |
 | `--border-secondary` | Stronger internal structural boundary. |
+| `--border-interactive-default` | Default boundary for an interactive control. |
+| `--border-interactive-inverted` | Inverted or selected boundary for an interactive control. |
+| `--border-transparent` | Transparent boundary reserved for structural alignment and state. |
 | `--border-control` | Required visible boundary of an unselected native choice control. |
 | `--border-muted` | Low-emphasis or dashed boundary. |
 | `--border-subtle` | Quiet boundary for low-separation regions. |
@@ -115,6 +143,9 @@ This section is generated from `registry.json`.
 | `--border-selected` | Boundary color for a selected or current interactive element. |
 | `--border-disabled` | Boundary color for a disabled control or region. |
 | `--border-focus` | Theme-aware neutral boundary for authored focus indicators. |
+| `--border-invalid` | Boundary color for an invalid interactive control. |
+| `--border-focus-area` | Translucent perimeter color for the focus ring effect. |
+| `--border-invalid-area` | Translucent perimeter color for the invalid ring effect. |
 | `--border-positive` | Boundary color for positive status and validation. |
 | `--border-negative` | Boundary color for negative status and validation. |
 | `--border-caution` | Boundary color for caution status and validation. |
@@ -150,6 +181,12 @@ Use `--surface-selected` for a selected or current item.
 
 Use `--surface-disabled` for a disabled surface.
 
+Use `--border-invalid` for the solid boundary of an invalid interactive control.
+
+Use the component-specific state roles when they exist: `--surface-control-*` for controls, `--surface-button-*` for buttons, and `--surface-pointer-*` for range pointers.
+
+Do not dim an entire disabled control with opacity. Set its surface, border, text, and icon roles explicitly so each part remains readable.
+
 Use a dialog, popover, tooltip, toast, or sheet as a top-layer surface.
 
 Give a top-layer surface one border.
@@ -173,6 +210,8 @@ Use `--border-width-050` for a strong divider or focus indicator.
 Use `--border-width-100` only when the component skill specifies it.
 
 Use `--border-focus` for an authored focus perimeter.
+
+Use `--ring-default` for the shared focus-area effect and `--ring-invalid` for the shared invalid-area effect.
 
 Use the matching status border for status validation.
 
@@ -204,9 +243,9 @@ Do not round a container to make it look softer.
 
 ## Typography
 
-Use `var(--font-sans)` for interface text.
+Use `var(--font-mono)` for interface text, code, terminal output, keyboard keys, IDs, and technical labels.
 
-Use `var(--font-mono)` for code, terminal output, keyboard keys, IDs, and technical labels.
+Set the Google Sans Code `MONO` variation axis to `0` for interface text and headings, and to `1` for code, terminal output, keyboard keys, and other code-like content.
 
 Use `var(--font-size-400)` for normal body text.
 
@@ -230,9 +269,11 @@ Use normal font weight for body text.
 
 Use strong weight for labels, headings, selected routes, and primary values.
 
-Use `--font-weight-550` as the variable-font strong weight in CSS.
+Use `--font-weight-525` as the variable-font strong weight in CSS.
 
 Compose repository typography from the font primitives.
+
+Keep line-height, text-case, and text-decoration as CSS-only primitives.
 
 Use the text-case and text-decoration primitives for explicit authored variants.
 
@@ -290,6 +331,14 @@ Add spacing when a permitted target is smaller than 24px.
 
 Do not reduce a target because the icon is small.
 
+## Values
+
+Use `--value-*` for shared numeric dimensions that do not need semantic meaning.
+
+The value scale is `000`, `050`, `100`, `150`, `200`, `300`, and `400`.
+
+Blur effect styles reference the matching value steps.
+
 ## Icons
 
 Use an SVG from `library/src/icons/`.
@@ -298,7 +347,11 @@ Inline the SVG for the no-JavaScript path.
 
 Use the local loader only when the host already provides it.
 
-Use `currentColor` for icon stroke.
+Use `currentColor` for icon fill.
+
+Use `-line` for default or outlined presentation.
+
+Use `-fill` for selected or active presentation.
 
 Use a 16px icon in a normal control.
 
@@ -316,9 +369,29 @@ Use blur on sticky shell chrome and documented modal backdrops.
 
 Use `--background-glass` or a matching glass surface with blur.
 
-Use `--blur-100` for normal sticky chrome.
+Use `--blur-400` for headers and high-blur sticky chrome.
 
-Use `--blur-200` only when the component contract permits it.
+Use `--blur-100` for other normal sticky chrome.
+
+Use `--blur-200` for documented modal backdrops when the component contract permits it.
+
+The opacity scale remains a repository-only CSS foundation; Figma omits it.
+
+The Figma effect styles are `blur.100`, `blur.200`, `blur.400`, `ring.default`, and `ring.invalid`.
+
+`ring.default` is a zero-blur, 2px-spread perimeter bound to the focus-area role.
+
+`ring.invalid` is a zero-blur, 2px-spread perimeter bound to the invalid-area role.
+
+In the repository, Figma's `ring.default` is exposed as `--ring-default`; both ring effects stay composite tokens so components do not reconstruct shadow geometry.
+
+Bind ring colors through semantic roles when the semantic token mapping is updated.
+
+The destructive button intentionally uses `ring.invalid`, matching the Figma component.
+
+In forced-colors mode, the repository uses the operating system's `Highlight` outline instead of
+the authored ring color. Forced colors is the high-contrast mode provided by the operating system,
+not another Figma token.
 
 Keep an opaque semantic background as the fallback.
 
@@ -337,6 +410,8 @@ Do not blur body content.
 Do not use blur as elevation.
 
 ## Motion
+
+Keep motion, breakpoint, and stacking primitives in CSS rather than Figma variables.
 
 Use `--motion-duration-fast` for subtle visual state changes.
 
@@ -397,6 +472,8 @@ Do not add a third global maximum.
 Use the light theme as the base token block.
 
 Use the `.dark` class for the dark token block.
+
+Keep the light block in the repository even while the Figma semantic collection is dark-only. Treat it as a repository-owned contract and validate its mappings and component legibility independently in light mode.
 
 Follow the operating system until the user makes a manual choice.
 

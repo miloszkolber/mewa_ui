@@ -174,11 +174,27 @@ for (const component of registry.components) {
   if (blocks.length === 0)
     throw new Error(`${component.docs}: no div.preview block found for the preview page`);
   const dialogs = extractOuterDialogs(bodySource, blocks);
-  const shown = [...blocks.map((block) => block.html), ...dialogs.map((block) => block.html)]
-    .map((html) => forceDialogOpen(html))
-    .map((html) => namespacePreviewIds(component.slug, html));
+  const sourceFragments = [
+    ...blocks.map((block) => block.html),
+    ...dialogs.map((block) => block.html)
+  ];
+  const themes = ['light', 'dark'].map((theme) => {
+    const shown = sourceFragments
+      .map((html) => forceDialogOpen(html))
+      .map((html) => namespacePreviewIds(`${component.slug}--${theme}`, html));
+    const className = theme === 'dark' ? 'preview-theme-panel dark' : 'preview-theme-panel';
+    const label = theme[0].toUpperCase() + theme.slice(1);
+    return `<div class="${className}" data-preview-theme="${theme}" role="group" aria-label="${label} theme">
+      <div class="preview-theme-name" aria-hidden="true">${label}</div>
+${shown.join('\n')}
+    </div>`;
+  });
   previewSections.push(
-    `<section aria-labelledby="preview-${component.slug}"><h2 id="preview-${component.slug}">${escapeHtml(component.name)}</h2>\n${shown.join('\n')}\n</section>`
+    `<section aria-labelledby="preview-${component.slug}"><h2 id="preview-${component.slug}">${escapeHtml(component.name)}</h2>
+      <div class="preview-theme-grid">
+${themes.join('\n')}
+      </div>
+    </section>`
   );
   for (const match of source.matchAll(/<script\s+type="module"\s+src="([^"]+)"\s*><\/script>/g)) {
     if (!previewModules.includes(match[1])) previewModules.push(match[1]);
@@ -202,7 +218,7 @@ const preview = `<!DOCTYPE html>
   <link rel="stylesheet" href="css/components.generated.css">
   <style>
     .preview-page {
-      max-width: 72rem;
+      max-width: var(--breakpoint-max-dense);
       margin-inline: auto;
       padding: var(--space-800) var(--space-600) var(--space-3200);
       display: flex;
@@ -214,6 +230,45 @@ const preview = `<!DOCTYPE html>
       flex-direction: column;
       gap: var(--space-400);
       min-width: 0;
+    }
+    .preview-theme-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+      gap: var(--space-600);
+    }
+    .preview-theme-panel {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-400);
+      padding: var(--space-400);
+      color: var(--text-primary);
+      background: var(--background);
+      border: var(--border-width-025) solid var(--border-primary);
+    }
+    .preview-theme-name {
+      font-size: var(--font-size-350);
+      font-weight: var(--font-weight-525);
+      line-height: var(--font-height-tight);
+      color: var(--text-secondary);
+    }
+    .preview-theme-switch {
+      display: none;
+    }
+    .preview-theme-switch button {
+      min-height: var(--size-400);
+      padding-inline: var(--space-300);
+      border: var(--border-width-025) solid var(--border-primary);
+      color: var(--text-secondary);
+      background: var(--surface-control-transparent);
+      font: inherit;
+      cursor: pointer;
+    }
+    .preview-theme-switch button[aria-pressed="true"] {
+      color: var(--text-inverted);
+      background: var(--surface-control-inverted);
+      border-color: var(--border-interactive-inverted);
     }
     .preview-page .preview {
       min-width: 0;
@@ -241,6 +296,40 @@ const preview = `<!DOCTYPE html>
       position: absolute;
       display: block;
     }
+    @media (max-width: 48rem) {
+      .preview-page {
+        padding-inline: var(--space-400);
+      }
+      .preview-theme-switch {
+        position: sticky;
+        top: var(--space-400);
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: var(--space-200);
+        width: fit-content;
+        padding: var(--space-200);
+        color: var(--text-secondary);
+        background: var(--background);
+        border: var(--border-width-025) solid var(--border-primary);
+      }
+      .preview-theme-switch span {
+        padding-inline: var(--space-200);
+        font-size: var(--font-size-300);
+      }
+      .preview-theme-grid {
+        grid-template-columns: 1fr;
+      }
+      .preview-theme-panel[data-preview-theme="dark"] {
+        display: none;
+      }
+      .preview-page[data-preview-theme="dark"] .preview-theme-panel[data-preview-theme="light"] {
+        display: none;
+      }
+      .preview-page[data-preview-theme="dark"] .preview-theme-panel[data-preview-theme="dark"] {
+        display: flex;
+      }
+    }
   </style>
 </head>
 <body>
@@ -248,7 +337,12 @@ const preview = `<!DOCTYPE html>
   <main class="preview-page" id="main-content" tabindex="-1">
     <div>
       <h1>Component preview</h1>
-      <p>Hidden quality-assurance page. Every component renders below the previous one. This page is not linked from the documentation navigation.</p>
+      <p>Hidden quality-assurance page. Every component renders in forced light and dark themes for comparison. This page is not linked from the documentation navigation.</p>
+    </div>
+    <div class="preview-theme-switch" role="group" aria-label="Mobile preview theme">
+      <span>Theme</span>
+      <button type="button" data-preview-theme-option="light" aria-pressed="true">Light</button>
+      <button type="button" data-preview-theme-option="dark" aria-pressed="false">Dark</button>
     </div>
 
 ${previewSections.join('\n')}
@@ -264,6 +358,17 @@ ${previewModules.map((src) => `  <script type="module" src="${src}"></script>`).
       if (target && !target.closest('.skip-link')) event.preventDefault();
     });
     document.addEventListener('submit', (event) => event.preventDefault());
+    document.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-preview-theme-option]');
+      const page = document.querySelector('.preview-page');
+      if (!button || !page) return;
+      const theme = button.dataset.previewThemeOption;
+      if (theme !== 'light' && theme !== 'dark') return;
+      page.dataset.previewTheme = theme;
+      document.querySelectorAll('[data-preview-theme-option]').forEach((option) => {
+        option.setAttribute('aria-pressed', String(option.dataset.previewThemeOption === theme));
+      });
+    });
     // Show one toast on load so the toast state is visible without interaction.
     window.addEventListener('DOMContentLoaded', () => {
       window.toast?.show({

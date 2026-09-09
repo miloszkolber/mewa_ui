@@ -30,28 +30,28 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Popover</h1>
-        <p class="text-muted leading-relaxed mb-6">Shows contextual information or controls in a non-modal floating panel. It stays connected to its trigger and closes without interrupting the rest of the page.</p>
+        <p class="text-secondary leading-relaxed mb-6">Shows contextual information or controls in a non-modal floating panel. It stays connected to its trigger and closes without interrupting the rest of the page.</p>
       </div>
         <p class="text-sm font-medium mb-2 mt-6">Default</p>
-        <p class="text-xs text-muted mb-4">Click the trigger to open a popover below (default side). Uses native Popover API — no JS for open/close.</p>
+        <p class="text-xs text-secondary mb-4">Click the trigger to open a popover below (default side). Uses native Popover API — no JS for open/close.</p>
         <div class="preview">
-           <button class="btn" type="button" data-variant="outline" popovertarget="demo-popover">Open popover</button>
+           <button class="btn" type="button" data-variant="secondary" popovertarget="demo-popover">Open popover</button>
           <div class="popover" id="demo-popover" popover>
             <div class="popover-header">
               <p class="popover-title">Dimensions</p>
               <p class="popover-description">Set the dimensions for the layer.</p>
             </div>
             <div class="popover-content">
-              <p style="margin: 0; font-size: var(--font-size-300); color: var(--text-muted)">Width: 100% &bull; Height: auto</p>
+              <p style="margin: 0; font-size: var(--font-size-300); color: var(--text-secondary)">Width: 100% &bull; Height: auto</p>
             </div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
-           <pre><code class="language-markup">&lt;button class="btn" type="button" data-variant="outline" popovertarget="my-popover"&gt;Open popover&lt;/button&gt;
+           <pre><code class="language-markup">&lt;button class="btn" type="button" data-variant="secondary" popovertarget="my-popover"&gt;Open popover&lt;/button&gt;
 
 &lt;div class="popover" id="my-popover" popover&gt;
   &lt;div class="popover-header"&gt;
@@ -64,9 +64,9 @@
 
         <!-- ═══ With Form ═════════════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">With form</p>
-        <p class="text-xs text-muted mb-4">A form can sit inside a popover when the task is short and closely tied to the trigger.</p>
+        <p class="text-xs text-secondary mb-4">A form can sit inside a popover when the task is short and closely tied to the trigger.</p>
         <div class="preview">
-           <button class="btn" type="button" data-variant="outline" popovertarget="demo-popover-form">Open popover</button>
+           <button class="btn" type="button" data-variant="secondary" popovertarget="demo-popover-form">Open popover</button>
           <div class="popover" id="demo-popover-form" popover style="width: 20rem">
             <div class="popover-header">
               <p class="popover-title">Dimensions</p>
@@ -97,9 +97,9 @@
 
         <!-- ═══ Align ═════════════════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">Align</p>
-        <p class="text-xs text-muted mb-4">Use <code>data-align</code> on the popover to control horizontal alignment: <code>start</code>, <code>center</code> (default), or <code>end</code>.</p>
+        <p class="text-xs text-secondary mb-4">Use <code>data-align</code> on the popover to control horizontal alignment: <code>start</code>, <code>center</code> (default), or <code>end</code>.</p>
         <div class="preview" style="display: flex; gap: var(--space-200); justify-content: center">
-           <button class="btn" type="button" data-variant="outline" popovertarget="demo-pop-start">Start</button>
+           <button class="btn" type="button" data-variant="secondary" popovertarget="demo-pop-start">Start</button>
           <div class="popover" id="demo-pop-start" popover data-align="start">
             <div class="popover-header">
               <p class="popover-title">Start aligned</p>
@@ -107,7 +107,7 @@
             </div>
           </div>
 
-           <button class="btn" type="button" data-variant="outline" popovertarget="demo-pop-center">Center</button>
+           <button class="btn" type="button" data-variant="secondary" popovertarget="demo-pop-center">Center</button>
           <div class="popover" id="demo-pop-center" popover>
             <div class="popover-header">
               <p class="popover-title">Center aligned</p>
@@ -115,7 +115,7 @@
             </div>
           </div>
 
-           <button class="btn" type="button" data-variant="outline" popovertarget="demo-pop-end">End</button>
+           <button class="btn" type="button" data-variant="secondary" popovertarget="demo-pop-end">End</button>
           <div class="popover" id="demo-pop-end" popover data-align="end">
             <div class="popover-header">
               <p class="popover-title">End aligned</p>
@@ -126,9 +126,9 @@
 
         <!-- ═══ Side ══════════════════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">Side</p>
-        <p class="text-xs text-muted mb-4">Use <code>data-side</code> to position the popover on a specific side of the trigger: <code>top</code>, <code>right</code>, <code>bottom</code> (default), or <code>left</code>.</p>
+        <p class="text-xs text-secondary mb-4">Use <code>data-side</code> to position the popover on a specific side of the trigger: <code>top</code>, <code>right</code>, <code>bottom</code> (default), or <code>left</code>.</p>
         <div class="preview" style="display: flex; gap: var(--space-200); flex-wrap: wrap; justify-content: center">
-           <button class="btn" type="button" data-variant="outline" popovertarget="demo-pop-top">Top</button>
+           <button class="btn" type="button" data-variant="secondary" popovertarget="demo-pop-top">Top</button>
           <div class="popover" id="demo-pop-top" popover data-side="top">
             <div class="popover-header">
               <p class="popover-title">Top side</p>
@@ -136,7 +136,7 @@
             </div>
           </div>
 
-           <button class="btn" type="button" data-variant="outline" popovertarget="demo-pop-right">Right</button>
+           <button class="btn" type="button" data-variant="secondary" popovertarget="demo-pop-right">Right</button>
           <div class="popover" id="demo-pop-right" popover data-side="right">
             <div class="popover-header">
               <p class="popover-title">Right side</p>
@@ -144,7 +144,7 @@
             </div>
           </div>
 
-           <button class="btn" type="button" data-variant="outline" popovertarget="demo-pop-bottom">Bottom</button>
+           <button class="btn" type="button" data-variant="secondary" popovertarget="demo-pop-bottom">Bottom</button>
           <div class="popover" id="demo-pop-bottom" popover>
             <div class="popover-header">
               <p class="popover-title">Bottom side</p>
@@ -152,7 +152,7 @@
             </div>
           </div>
 
-           <button class="btn" type="button" data-variant="outline" popovertarget="demo-pop-left">Left</button>
+           <button class="btn" type="button" data-variant="secondary" popovertarget="demo-pop-left">Left</button>
           <div class="popover" id="demo-pop-left" popover data-side="left">
             <div class="popover-header">
               <p class="popover-title">Left side</p>

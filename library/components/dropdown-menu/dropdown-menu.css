@@ -37,20 +37,21 @@
     text-align: left;
 
     &:hover, &[data-highlighted] {
-      background-color: var(--surface-secondary);
+      background-color: var(--surface-menu-hover);
       color: var(--text-primary);
     }
 
     &[data-variant="destructive"] {
       &:hover, &[data-highlighted] {
-        background-color: var(--surface-negative);
+        background-color: var(--surface-destructive-hover);
         color: var(--text-negative);
       }
     }
 
     &:disabled {
       pointer-events: none;
-      opacity: var(--opacity-05);
+      background-color: var(--surface-control-disabled);
+      color: var(--text-disabled);
     }
   }
 
@@ -85,14 +86,14 @@
   }
 
   .dropdown-menu-check[aria-checked="true"]::before {
-    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
-    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23000%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M9.9997%2015.1709L19.1921%205.97852L20.6063%207.39273L9.9997%2017.9993L3.63574%2011.6354L5.04996%2010.2212L9.9997%2015.1709Z%22%2F%3E%3C%2Fsvg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23000%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M9.9997%2015.1709L19.1921%205.97852L20.6063%207.39273L9.9997%2017.9993L3.63574%2011.6354L5.04996%2010.2212L9.9997%2015.1709Z%22%2F%3E%3C%2Fsvg%3E");
     background-color: currentColor;
   }
 
   .dropdown-menu-radio[aria-checked="true"]::before {
-    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='5'/%3E%3C/svg%3E");
-    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='5'/%3E%3C/svg%3E");
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23000%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12%2022C6.47715%2022%202%2017.5228%202%2012C2%206.47715%206.47715%202%2012%202C17.5228%202%2022%206.47715%2022%2012C22%2017.5228%2017.5228%2022%2012%2022ZM12%2020C16.4183%2020%2020%2016.4183%2020%2012C20%207.58172%2016.4183%204%2012%204C7.58172%204%204%207.58172%204%2012C4%2016.4183%207.58172%2020%2012%2020ZM12%2017C9.23858%2017%207%2014.7614%207%2012C7%209.23858%209.23858%207%2012%207C14.7614%207%2017%209.23858%2017%2012C17%2014.7614%2014.7614%2017%2012%2017Z%22%2F%3E%3C%2Fsvg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23000%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12%2022C6.47715%2022%202%2017.5228%202%2012C2%206.47715%206.47715%202%2012%202C17.5228%202%2022%206.47715%2022%2012C22%2017.5228%2017.5228%2022%2012%2022ZM12%2020C16.4183%2020%2020%2016.4183%2020%2012C20%207.58172%2016.4183%204%2012%204C7.58172%204%204%207.58172%204%2012C4%2016.4183%207.58172%2020%2012%2020ZM12%2017C9.23858%2017%207%2014.7614%207%2012C7%209.23858%209.23858%207%2012%207C14.7614%207%2017%209.23858%2017%2012C17%2014.7614%2014.7614%2017%2012%2017Z%22%2F%3E%3C%2Fsvg%3E");
     background-color: currentColor;
   }
 
@@ -105,14 +106,14 @@
   .dropdown-menu-label {
     padding: var(--space-100) var(--space-200);
     font-size: var(--font-size-300);
-    font-weight: var(--font-weight-550);
-    color: var(--text-muted);
+    font-weight: var(--font-weight-525);
+    color: var(--text-secondary);
   }
 
   .dropdown-menu-shortcut {
     margin-inline-start: auto;
     font-size: var(--font-size-300);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     letter-spacing: 0.05em;
   }
 

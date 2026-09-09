@@ -43,8 +43,7 @@
   .color-picker-input:focus-visible,
   .color-picker-hex:focus-visible {
     border-color: var(--border-focus);
-    outline: var(--border-width-025) solid var(--border-focus);
-    outline-offset: 0;
+    box-shadow: var(--ring-default);
   }
 
   .color-picker-hex {
@@ -64,21 +63,20 @@
 
   .color-picker-input:is([aria-invalid="true"], :user-invalid),
   .color-picker-hex[aria-invalid="true"] {
-    border-color: var(--border-negative);
+    border-color: var(--border-invalid);
   }
 
   .color-picker-input:is([aria-invalid="true"], :user-invalid):focus-visible,
   .color-picker-hex[aria-invalid="true"]:focus-visible {
-    outline-color: var(--border-negative);
+    box-shadow: var(--ring-invalid);
   }
 
   .color-picker-input:disabled,
   .color-picker-hex:disabled {
     border-color: var(--border-disabled);
-    background: var(--surface-disabled);
+    background: var(--surface-control-disabled);
     color: var(--text-disabled);
     cursor: not-allowed;
-    opacity: 1;
   }
 
   @media (prefers-contrast: more) {

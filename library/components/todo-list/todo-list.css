@@ -21,26 +21,25 @@
   }
 
   .todo-list-summary:focus-visible {
-    outline: var(--focus-ring-width) solid var(--border-focus);
-    outline-offset: calc(-1 * var(--border-width-050));
+    box-shadow: var(--ring-default);
   }
 
   .todo-list-label {
     min-width: 0;
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     overflow-wrap: anywhere;
   }
 
   .todo-list-metadata {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-family: var(--font-mono);
     font-size: var(--font-size-300);
   }
 
   .todo-list-progress {
     grid-column: 1 / -1;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: var(--font-size-300);
     font-variant-numeric: tabular-nums;
   }
@@ -71,7 +70,7 @@
   }
 
   .todo-item[data-status="pending"] {
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
 
   .todo-item[data-status="active"] .todo-item-mark {
@@ -79,7 +78,7 @@
   }
 
   .todo-item[data-status="done"] {
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
 
   .todo-item[data-status="done"] .todo-item-mark {
@@ -101,7 +100,7 @@
     width: var(--size-400);
     height: var(--size-400);
     font-family: var(--font-mono);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
   }
 
   .todo-item-copy {
@@ -123,7 +122,7 @@
   }
 
   .todo-item-metadata {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-family: var(--font-mono);
     font-size: var(--font-size-300);
     font-variant-numeric: tabular-nums;

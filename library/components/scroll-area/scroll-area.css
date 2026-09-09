@@ -10,7 +10,7 @@
     &::-webkit-scrollbar-thumb {
       background-color: var(--border-primary);
 
-      &:hover { background-color: var(--text-muted); }
+      &:hover { background-color: var(--text-secondary); }
     }
 
     scrollbar-width: thin;

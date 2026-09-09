@@ -52,7 +52,7 @@ Form composes Field and the selected input components.
 
   <div class="form-actions">
     <button class="btn" type="submit" data-variant="default">Save changes</button>
-    <button class="btn" type="reset" data-variant="outline">Reset</button>
+    <button class="btn" type="reset" data-variant="secondary">Reset</button>
   </div>
 </form>
 ```

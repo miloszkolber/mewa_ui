@@ -20,14 +20,14 @@
     background: var(--background);
     padding-inline: var(--space-300);
     color: var(--text-primary);
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     font-size: var(--font-size-350);
     outline: none;
   }
 
   .tag-input-fallback::placeholder,
   .tag-input-control::placeholder {
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
 
   .tag-input-fallback:hover:not(:disabled),
@@ -37,8 +37,7 @@
 
   .tag-input-fallback:focus-visible {
     border-color: var(--border-focus);
-    outline: var(--border-width-025) solid var(--border-focus);
-    outline-offset: 0;
+    box-shadow: var(--ring-default);
   }
 
   .tag-input[data-enhanced] .tag-input-field {
@@ -55,8 +54,7 @@
 
   .tag-input[data-enhanced] .tag-input-field:has(.tag-input-control:focus-visible) {
     border-color: var(--border-focus);
-    outline: var(--border-width-025) solid var(--border-focus);
-    outline-offset: 0;
+    box-shadow: var(--ring-default);
   }
 
   .tag-input-list {
@@ -106,7 +104,7 @@
   }
 
   .tag-input-remove:hover:not(:disabled) {
-    background: var(--surface-hover);
+    background: var(--surface-control-hover);
     color: var(--text-primary);
   }
 
@@ -118,23 +116,23 @@
     background: transparent;
     padding: 0 var(--space-100);
     color: var(--text-primary);
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     font-size: var(--font-size-350);
     outline: none;
   }
 
   .tag-input[data-invalid] .tag-input-field,
   .tag-input:has(.tag-input-fallback:is([aria-invalid="true"], :user-invalid)) .tag-input-field {
-    border-color: var(--border-negative);
+    border-color: var(--border-invalid);
   }
 
   .tag-input[data-invalid] .tag-input-field:has(.tag-input-control:focus-visible) {
-    outline-color: var(--border-negative);
+    box-shadow: var(--ring-invalid);
   }
 
   .tag-input:has(.tag-input-fallback:disabled) .tag-input-field {
     border-color: var(--border-disabled);
-    background: var(--surface-disabled);
+    background: var(--surface-control-disabled);
     color: var(--text-disabled);
     cursor: not-allowed;
   }
@@ -146,7 +144,7 @@
 
   .tag-input-status {
     margin: 0;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: var(--font-size-300);
     line-height: var(--font-height-regular);
   }

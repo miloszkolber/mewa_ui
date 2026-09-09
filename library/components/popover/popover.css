@@ -54,8 +54,8 @@
   }
 
   .popover-header { margin-bottom: var(--space-300); }
-  .popover-title { margin: 0; font-size: var(--font-size-350); font-weight: var(--font-weight-550); color: var(--text-primary); }
-  .popover-description { margin: var(--space-100) 0 0; font-size: var(--font-size-350); color: var(--text-muted); }
+  .popover-title { margin: 0; font-size: var(--font-size-350); font-weight: var(--font-weight-525); color: var(--text-primary); }
+  .popover-description { margin: var(--space-100) 0 0; font-size: var(--font-size-350); color: var(--text-secondary); }
   .popover-content { font-size: var(--font-size-350); }
 
   /* -- Accessibility ---------------------------------------- */

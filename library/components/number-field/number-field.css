@@ -13,7 +13,7 @@
     overflow: visible;
 
     &:has(input:is([aria-invalid="true"], :user-invalid)) {
-      border-color: var(--text-negative);
+      border-color: var(--border-invalid);
     }
 
     & input {
@@ -28,7 +28,7 @@
       padding: 0 var(--space-300);
       text-align: start;
       font-size: var(--font-size-350);
-      font-family: var(--font-sans);
+      font-family: var(--font-mono);
       color: var(--text-primary);
       -moz-appearance: textfield;
 
@@ -39,17 +39,15 @@
       }
 
       &:focus {
-        outline: var(--focus-ring-width) solid var(--border-focus);
-        outline-offset: var(--border-width-025);
+        box-shadow: var(--ring-default);
       }
 
       &:focus-visible {
-        outline: var(--focus-ring-width) solid var(--border-focus);
-        outline-offset: var(--border-width-025);
+        box-shadow: var(--ring-default);
       }
 
       &:is([aria-invalid="true"], :user-invalid) {
-        outline-color: var(--text-negative);
+        box-shadow: var(--ring-invalid);
       }
     }
 
@@ -63,10 +61,10 @@
       height: 100%;
       border: none;
       background: transparent;
-      color: var(--text-muted);
+      color: var(--text-secondary);
       cursor: pointer;
       font-size: var(--font-size-350);
-      font-family: var(--font-sans);
+      font-family: var(--font-mono);
       line-height: var(--font-height-flat);
       flex-shrink: 0;
       padding: 0;
@@ -78,12 +76,11 @@
       }
 
       &:focus-visible {
-        outline: var(--focus-ring-width) solid var(--border-focus);
-        outline-offset: calc(-1 * var(--focus-ring-width));
+        box-shadow: var(--ring-default);
       }
 
       &:hover {
-        background: var(--surface-secondary);
+        background: var(--surface-control-hover);
         color: var(--text-primary);
       }
 

@@ -27,7 +27,6 @@
   .combobox-chevron {
     flex-shrink: 0;
     color: var(--text-secondary);
-    opacity: var(--opacity-05);
   }
 
   .combobox-content {
@@ -58,11 +57,10 @@
 
     &:focus-within {
       background-color: var(--surface-secondary);
-      outline: var(--border-width-025) solid var(--border-focus);
-      outline-offset: calc(-1 * var(--border-width-025));
+      box-shadow: var(--ring-default);
     }
 
-    &:focus-within :is(.combobox-search-icon, svg, [data-lucide]) {
+    &:focus-within :is(.combobox-search-icon, svg, [class^="ri-"], [class*=" ri-"]) {
       color: var(--text-primary);
     }
   }
@@ -78,7 +76,7 @@
     outline: none;
     background: transparent;
     color: var(--text-primary);
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     font-size: var(--font-size-350);
 
     &::placeholder {
@@ -105,7 +103,7 @@
 
     &:hover,
     &[data-highlighted] {
-      background-color: var(--surface-secondary);
+      background-color: var(--surface-menu-hover);
       color: var(--text-primary);
     }
 
@@ -121,13 +119,14 @@
       flex-shrink: 0;
       margin-inline-start: auto;
       background-color: currentColor;
-      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat;
-      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat;
+      -webkit-mask: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23000%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M9.9997%2015.1709L19.1921%205.97852L20.6063%207.39273L9.9997%2017.9993L3.63574%2011.6354L5.04996%2010.2212L9.9997%2015.1709Z%22%2F%3E%3C%2Fsvg%3E") center / contain no-repeat;
+      mask: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23000%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M9.9997%2015.1709L19.1921%205.97852L20.6063%207.39273L9.9997%2017.9993L3.63574%2011.6354L5.04996%2010.2212L9.9997%2015.1709Z%22%2F%3E%3C%2Fsvg%3E") center / contain no-repeat;
     }
 
     &[aria-disabled="true"] {
       pointer-events: none;
-      opacity: var(--opacity-05);
+      background-color: var(--surface-control-disabled);
+      color: var(--text-disabled);
     }
   }
 
@@ -149,9 +148,9 @@
 
   .combobox-group-label {
     padding: var(--space-200);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: var(--font-size-300);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
   }
 
   .combobox-separator {

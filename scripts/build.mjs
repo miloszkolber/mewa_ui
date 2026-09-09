@@ -111,12 +111,10 @@ function packageExports() {
     './css/base.css': './css/base.css',
     './css/tokens.css': './css/tokens.css',
     './css/all.css': './css/all.css',
-    './fonts/geist-sans.css': './fonts/geist-sans.css',
-    './fonts/geist-mono.css': './fonts/geist-mono.css',
-    './fonts/geist.woff2': './fonts/geist.woff2',
-    './fonts/geistmono.woff2': './fonts/geistmono.woff2',
-    './licenses/GEIST-OFL.txt': './licenses/GEIST-OFL.txt',
-    './licenses/LUCIDE-LICENSE.txt': './licenses/LUCIDE-LICENSE.txt',
+    './fonts/google-sans-code.css': './fonts/google-sans-code.css',
+    './fonts/google-sans-code.woff2': './fonts/google-sans-code.woff2',
+    './licenses/GOOGLE-SANS-CODE-OFL.txt': './licenses/GOOGLE-SANS-CODE-OFL.txt',
+    './licenses/REMIX-ICON-LICENSE.txt': './licenses/REMIX-ICON-LICENSE.txt',
     './LICENSE': './LICENSE',
     './manifest.json': './manifest.json',
     './checksums.json': './checksums.json'
@@ -144,12 +142,11 @@ function packageExports() {
 
 function stripFontFaces(source) {
   const faces = Array.from(source.matchAll(/@font-face\s*\{[\s\S]*?\}/g), (match) => match[0]);
-  if (faces.length !== 2)
-    throw new Error(`Expected two font faces in library/src/base.css, found ${faces.length}`);
+  if (faces.length !== 1)
+    throw new Error(`Expected one font face in library/src/base.css, found ${faces.length}`);
   return {
     base: source.replace(/\s*@font-face\s*\{[\s\S]*?\}\s*/g, '\n').trimStart(),
-    sans: faces[0].replace('url("geist.woff2")', 'url("./geist.woff2")'),
-    mono: faces[1].replace('url("geistmono.woff2")', 'url("./geistmono.woff2")')
+    mono: faces[0].replace('url("google-sans-code.woff2")', 'url("./google-sans-code.woff2")')
   };
 }
 
@@ -266,12 +263,14 @@ const tokenSource = fs.readFileSync(
 const fonts = stripFontFaces(baseSource);
 write(coreRoot, 'css/base.css', fonts.base);
 write(coreRoot, 'css/tokens.css', tokenSource);
-write(coreRoot, 'fonts/geist-sans.css', `${fonts.sans}\n`);
-write(coreRoot, 'fonts/geist-mono.css', `${fonts.mono}\n`);
-copy(coreRoot, 'fonts/geist.woff2', 'library/src/geist.woff2');
-copy(coreRoot, 'fonts/geistmono.woff2', 'library/src/geistmono.woff2');
-copy(coreRoot, 'licenses/GEIST-OFL.txt', registry.canonicalAssets.licenses.geist);
-copy(coreRoot, 'licenses/LUCIDE-LICENSE.txt', registry.canonicalAssets.licenses.lucide);
+write(coreRoot, 'fonts/google-sans-code.css', `${fonts.mono}\n`);
+copy(coreRoot, 'fonts/google-sans-code.woff2', 'library/src/google-sans-code.woff2');
+copy(
+  coreRoot,
+  'licenses/GOOGLE-SANS-CODE-OFL.txt',
+  registry.canonicalAssets.licenses.googleSansCode
+);
+copy(coreRoot, 'licenses/REMIX-ICON-LICENSE.txt', registry.canonicalAssets.licenses.remixIcon);
 
 const allCss = [
   '/* mewa_ui generated complete stylesheet. Fonts remain opt-in. */',
@@ -407,12 +406,12 @@ const manifest = {
   foundations: {
     base: 'css/base.css',
     tokens: 'css/tokens.css',
-    fonts: ['fonts/geist-sans.css', 'fonts/geist-mono.css']
+    fonts: ['fonts/google-sans-code.css']
   },
   licenses: {
     mewaUi: 'LICENSE',
-    geist: 'licenses/GEIST-OFL.txt',
-    lucide: 'licenses/LUCIDE-LICENSE.txt'
+    googleSansCode: 'licenses/GOOGLE-SANS-CODE-OFL.txt',
+    remixIcon: 'licenses/REMIX-ICON-LICENSE.txt'
   },
   components: registry.components.map((component) => ({
     name: component.name,
@@ -480,13 +479,13 @@ Read \`integration.md\` for a complete vanilla example, lifecycle ownership, and
 
 ## Optional assets
 
-Fonts remain opt-in under \`fonts/\`. SVG icons ship in the separate \`mewa-icons\` release archive. Upstream Geist and Lucide notices are preserved under \`licenses/\`.
+Fonts remain opt-in under \`fonts/\`. SVG icons ship in the separate \`mewa-icons\` release archive. The Google Sans Code and Remix Icon notices are preserved under \`licenses/\`.
 
 Read \`manifest.json\` for component files and dependencies. Use \`checksums.json\` to verify every packaged file.
 
 Clean Git builds include immutable component contract links in the manifest. A modified checkout or a source archive without Git metadata leaves those links empty; use the matching source checkout for its contracts. Do not substitute documentation from a different revision.
 
-The mewa_ui code is MIT licensed. Bundled Geist fonts remain under the SIL Open Font License 1.1, and bundled Lucide-derived glyphs retain their upstream ISC and MIT notices. See \`licenses/\` and \`LICENSE\`.
+The mewa_ui code is MIT licensed. Bundled Google Sans Code remains under the SIL Open Font License 1.1, and bundled Remix Icon glyphs retain the upstream Remix Icon license. See \`licenses/\` and \`LICENSE\`.
 `.trim()
 );
 copy(coreRoot, 'integration.md', 'library/runtime/README.md');
@@ -499,7 +498,7 @@ const iconFiles = fs
   .sort();
 for (const filename of iconFiles)
   copy(iconsRoot, `icons/${filename}`, path.join(registry.canonicalAssets.icons, filename));
-copy(iconsRoot, 'licenses/LUCIDE-LICENSE.txt', registry.canonicalAssets.licenses.lucide);
+copy(iconsRoot, 'licenses/REMIX-ICON-LICENSE.txt', registry.canonicalAssets.licenses.remixIcon);
 write(
   iconsRoot,
   'manifest.json',
@@ -510,7 +509,7 @@ write(
       version: workspacePackage.version,
       licenses: {
         mewaUi: 'LICENSE',
-        lucide: 'licenses/LUCIDE-LICENSE.txt'
+        remixIcon: 'licenses/REMIX-ICON-LICENSE.txt'
       },
       icons: iconFiles.map((filename) => filename.replace(/\.svg$/, ''))
     },
@@ -527,11 +526,11 @@ write(
       version: workspacePackage.version,
       private: true,
       description: 'SVG icon assets for mewa_ui.',
-      license: 'SEE LICENSE IN licenses/LUCIDE-LICENSE.txt',
+      license: 'SEE LICENSE IN licenses/REMIX-ICON-LICENSE.txt',
       files: ['icons', 'licenses', 'manifest.json', 'checksums.json'],
       exports: {
         './*.svg': './icons/*.svg',
-        './licenses/LUCIDE-LICENSE.txt': './licenses/LUCIDE-LICENSE.txt',
+        './licenses/REMIX-ICON-LICENSE.txt': './licenses/REMIX-ICON-LICENSE.txt',
         './LICENSE': './LICENSE',
         './manifest.json': './manifest.json',
         './checksums.json': './checksums.json'
@@ -550,9 +549,9 @@ write(
   `
 # mewa-icons ${workspacePackage.version}
 
-This optional GitHub release package contains the complete mewa_ui SVG icon set.
+This optional GitHub release package contains Remix Icon assets for mewa_ui integrations.
 
-Use \`manifest.json\` to enumerate icon names. Use \`checksums.json\` to verify every packaged file. The upstream Lucide and Feather notices are preserved in \`licenses/LUCIDE-LICENSE.txt\`.
+Use \`manifest.json\` to enumerate icon names. Use \`checksums.json\` to verify every packaged file. The upstream Remix Icon license is preserved in \`licenses/REMIX-ICON-LICENSE.txt\`. Names ending in \`-line\` are outlined icons; names ending in \`-fill\` are filled icons.
 
 Load only the icons an application uses. The mewa_ui core package does not request this archive.
 `.trim()

@@ -21,16 +21,18 @@
   .separator-label {
     display: flex;
     align-items: center;
-    gap: var(--space-300);
+    gap: var(--space-200);
 
     & .separator { flex: 1; }
 
     & span {
-      font-size: var(--font-size-300);
-      font-weight: var(--font-weight-550);
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      font-size: var(--font-size-350);
+      font-weight: var(--font-weight-400);
+      line-height: var(--font-height-tight);
+      font-variation-settings: var(--font-text-axis);
+      color: var(--text-secondary);
+      text-transform: none;
+      letter-spacing: var(--text-tracking-default);
       white-space: nowrap;
       flex-shrink: 0;
     }

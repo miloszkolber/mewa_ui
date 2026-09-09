@@ -9,15 +9,15 @@
     /* -- Outline variant: propagate border to children ---------- */
     &[data-variant="outline"] > .toggle {
       border: var(--border-width-025) solid var(--border-secondary);
-      background: transparent;
+      background: var(--surface-control-transparent);
 
       &:not([aria-pressed="true"]):hover {
-        background-color: var(--surface-secondary);
+        background-color: var(--surface-control-hover);
         color: var(--text-primary);
       }
 
       &[aria-pressed="true"] {
-        background-color: var(--surface-secondary);
+        background-color: var(--surface-control-hover);
         color: var(--text-primary);
       }
     }
@@ -48,7 +48,17 @@
 
       & > .toggle {
         pointer-events: none;
-        opacity: var(--opacity-05);
+        background-color: var(--surface-control-disabled);
+        color: var(--text-disabled);
+
+        &[data-variant="outline"] {
+          border-color: var(--border-disabled);
+        }
+
+        &:not([data-variant="outline"]) {
+          background-color: var(--surface-control-transparent);
+          border-color: var(--border-transparent);
+        }
       }
     }
   }

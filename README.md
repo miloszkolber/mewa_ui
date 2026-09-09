@@ -24,7 +24,7 @@ Browse the examples in [`docs/`](docs/). The complete machine-readable inventory
 Each tagged [GitHub release](https://github.com/miloszkolber/mewa_ui/releases) provides three ready-to-host archives:
 
 - `mewa-ui-<version>.tar.gz` contains foundations, per-component CSS, native controllers, automatic enhancers, types, and the package manifest.
-- `mewa-icons-<version>.tar.gz` contains the complete SVG icon set as a separate, optional download.
+- `mewa-icons-<version>.tar.gz` contains optional Remix Icon line and fill assets for mewa_ui integrations.
 - `mewa-svelte-<version>.tar.gz` contains the optional Svelte 5 lifecycle attachment and Bun compiler plugin.
 
 Download and extract only the archive that the application needs. The release files are ordinary web assets; an application does not need npm or a framework to use them.
@@ -38,7 +38,7 @@ For plain HTML, load the foundations and one dependency-aware component styleshe
 <script type="module" src="/vendor/mewa-ui/auto/dialog.js"></script>
 ```
 
-Fonts are opt-in. Load `fonts/geist-sans.css` or `fonts/geist-mono.css` when the application does not already provide suitable typefaces.
+Fonts are opt-in. Load `fonts/google-sans-code.css` when the application does not already provide Google Sans Code.
 
 For an application with its own lifecycle, import a side-effect-free controller and enhance only the mounted region:
 
@@ -142,4 +142,4 @@ The source repository uses no Node, npm, Vite, or SvelteKit tooling. Consumers o
 
 mewa_ui's authored code and documentation are available under the [MIT License](LICENSE).
 
-Bundled Geist font files use the [SIL Open Font License 1.1](library/src/licenses/GEIST-OFL.txt). Lucide icons and derived Feather icons retain their [upstream ISC and MIT notices](library/src/licenses/LUCIDE-LICENSE.txt). The generated GitHub archives include the applicable notices.
+Bundled Google Sans Code uses the [SIL Open Font License 1.1](library/src/licenses/GOOGLE-SANS-CODE-OFL.txt). Optional Remix Icon assets use the [upstream Remix Icon license](library/src/licenses/REMIX-ICON-LICENSE.txt). The generated GitHub archives include the applicable notices.

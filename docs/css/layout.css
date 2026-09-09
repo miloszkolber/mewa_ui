@@ -33,9 +33,9 @@ main {
   text-decoration: none;
 }
 .header-brand-name {
-  font-family: var(--font-sans);
+  font-family: var(--font-mono);
   font-size: var(--font-size-400);
-  font-weight: var(--font-weight-550);
+  font-weight: var(--font-weight-525);
   letter-spacing: var(--text-tracking-default);
   color: var(--text-primary);
   white-space: nowrap;
@@ -58,7 +58,7 @@ main {
 }
 /* -- Nav section heading ----------------------------------- */
 .nav-heading {
-  font-size: var(--font-size-300); font-weight: var(--font-weight-550);
+  font-size: var(--font-size-300); font-weight: var(--font-weight-525);
   text-transform: uppercase;
   letter-spacing: var(--text-tracking-default);
   color: var(--text-primary);
@@ -75,9 +75,9 @@ main {
   color: var(--text-secondary);
   text-decoration: none;
   background: transparent;
-  border: 1px solid transparent;
+  border: 1px solid var(--border-transparent);
   cursor: pointer;
-  font-family: var(--font-sans);
+  font-family: var(--font-mono);
 }
 .header-action:hover {
   color: var(--text-primary);
@@ -104,13 +104,13 @@ main {
   background: none;
   width: 100%;
   text-align: left;
-  font-family: var(--font-sans);
+  font-family: var(--font-mono);
   line-height: var(--font-height-regular);
 }
 .nav-link:hover { color: var(--text-primary); background: var(--surface-secondary); }
-.nav-link.active { color: var(--text-primary); font-weight: var(--font-weight-550); background: var(--surface-secondary); }
+.nav-link.active { color: var(--text-primary); font-weight: var(--font-weight-525); background: var(--surface-secondary); }
 .nav-link.disabled {
-  opacity: 0.4;
+  color: var(--text-disabled);
   pointer-events: none;
   cursor: default;
 }
@@ -127,8 +127,7 @@ main {
   border-color: var(--border-primary);
 }
 .nav-filter-input::placeholder {
-  color: var(--text-muted);
-  opacity: 0.65;
+  color: var(--text-disabled);
 }
 
 /* -- Spec modal -------------------------------------------- */
@@ -159,11 +158,13 @@ pre {
   overflow-x: auto;
   margin: 0;
   font-family: var(--font-mono);
+  font-variation-settings: var(--font-mono-axis);
   font-size: var(--font-size-300);
   line-height: var(--font-height-regular);
 }
 code {
   font-family: var(--font-mono);
+  font-variation-settings: var(--font-mono-axis);
   font-size: 0.8125em;
   color: var(--text-primary);
   background: var(--surface-secondary);
@@ -173,8 +174,7 @@ code {
 }
 pre code { background: none; padding: 0; border: none; font-size: inherit; }
 pre:focus-visible {
-  outline: var(--focus-ring-width) solid var(--border-focus);
-  outline-offset: var(--border-width-025);
+  box-shadow: var(--ring-default);
 }
 
 /* -- Copy button -------------------------------------------- */
@@ -187,7 +187,7 @@ pre:focus-visible {
   font-size: var(--font-size-300);
   font-family: var(--font-mono);
   background: var(--background);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   border: 1px solid var(--border-primary);
 
   cursor: pointer;
@@ -208,8 +208,8 @@ pre:focus-visible {
   margin-bottom: 1rem;
 }
 .page-header h1 {
-  font-family: var(--font-sans);
-  font-size: var(--font-size-1000);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-900);
   font-weight: var(--font-weight-400);
   letter-spacing: var(--text-tracking-default);
   line-height: var(--font-height-tight);
@@ -231,7 +231,7 @@ pre:focus-visible {
 }
 .toc-title {
   font-size: var(--font-size-300);
-  font-weight: var(--font-weight-550);
+  font-weight: var(--font-weight-525);
   text-transform: uppercase;
   letter-spacing: var(--text-tracking-default);
   color: var(--text-primary);
@@ -242,9 +242,9 @@ pre:focus-visible {
   display: block;
   padding: 0.1875rem var(--space-200);
   font-size: var(--font-size-300);
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-decoration: none;
-  border-left: var(--border-width-050) solid transparent;
+  border-left: var(--border-width-050) solid var(--border-transparent);
   line-height: var(--font-height-regular);
 }
 .toc-link:hover { color: var(--text-primary); }

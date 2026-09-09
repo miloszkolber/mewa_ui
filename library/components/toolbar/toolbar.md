@@ -35,14 +35,14 @@ Child components keep ownership of their own pressed, selected, or action state.
           type="button"
           aria-pressed="false"
           aria-label="Bold">
-    <i data-lucide="bold" aria-hidden="true"></i>
+    <i class="ri-bold" aria-hidden="true"></i>
   </button>
 
   <button class="toggle"
           type="button"
           aria-pressed="false"
           aria-label="Italic">
-    <i data-lucide="italic" aria-hidden="true"></i>
+    <i class="ri-italic" aria-hidden="true"></i>
   </button>
 
   <div class="separator" data-orientation="vertical" role="separator"></div>

@@ -56,10 +56,10 @@ The module uses `IntersectionObserver` to track the active slide.
   </div>
 
   <button class="carousel-prev" type="button" aria-label="Previous slide">
-    <i data-lucide="chevron-left" aria-hidden="true"></i>
+    <i class="ri-arrow-left-s-line" aria-hidden="true"></i>
   </button>
   <button class="carousel-next" type="button" aria-label="Next slide">
-    <i data-lucide="chevron-right" aria-hidden="true"></i>
+    <i class="ri-arrow-right-s-line" aria-hidden="true"></i>
   </button>
 </div>
 ```

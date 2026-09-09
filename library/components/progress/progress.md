@@ -18,6 +18,8 @@ The browser exposes determinate and indeterminate states.
 
 Progress requires no JavaScript.
 
+The ready Progress is 6px high. Its track uses the control surface, its value uses the inverted control surface, and disabled progress explicitly maps both track and value to the disabled control surface.
+
 ## Native Web APIs
 
 - [`<progress>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress) provides native progress semantics.

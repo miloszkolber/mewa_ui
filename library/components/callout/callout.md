@@ -30,7 +30,7 @@ Hide decorative icons from assistive technology.
 
 ```html
 <div class="callout">
-  <i class="callout-icon" data-lucide="info" aria-hidden="true"></i>
+  <i class="callout-icon ri-information-line" aria-hidden="true"></i>
   <div class="callout-content">
     <p class="callout-title">Connection required</p>
     <p class="callout-description">Connect the service before starting a sync.</p>
@@ -42,7 +42,7 @@ Use the destructive variant for negative or failure content.
 
 ```html
 <div class="callout" data-variant="destructive">
-  <i class="callout-icon" data-lucide="circle-alert" aria-hidden="true"></i>
+  <i class="callout-icon ri-error-warning-line" aria-hidden="true"></i>
   <div class="callout-content">
     <p class="callout-title">Sync failed</p>
     <p class="callout-description">The remote service rejected the request.</p>
@@ -59,7 +59,7 @@ Put one compact recovery action at the inline end when the action directly resol
     <p class="callout-description">Reconnect the account to continue.</p>
   </div>
   <div class="callout-action">
-    <button class="btn" type="button" data-variant="outline" data-size="sm">Reconnect</button>
+    <button class="btn" type="button" data-variant="secondary" data-size="sm">Reconnect</button>
   </div>
 </div>
 ```

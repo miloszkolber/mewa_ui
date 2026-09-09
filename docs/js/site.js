@@ -33,15 +33,19 @@
   }
 
   // -- Local icons ------------------------------------------
-  // Replaces <i data-lucide="name"> with the matching inline SVG
-  // from ../library/src/icons/{name}.svg (relative to the page at docs/).
+  // Replaces <i class="ri-name-line|fill"> with the matching inline SVG
+  // from ../library/src/icons/{name}-{line|fill}.svg.
   var iconCache = {};
 
   function initLocalIcons() {
-    document.querySelectorAll('[data-lucide]:not([data-icon-loaded])').forEach(function (el) {
-      var name = el.getAttribute('data-lucide');
-      if (!name) return;
-      el.dataset.iconLoaded = '';
+    document.querySelectorAll('i[class^="ri-"], i[class*=" ri-"]').forEach(function (el) {
+      if (el.dataset.remixIconLoaded !== undefined) return;
+      var className = Array.from(el.classList).find(function (name) {
+        return /^ri-[a-z0-9-]+$/.test(name) && name !== 'ri-fw';
+      });
+      if (!className) return;
+      var name = className.slice(3);
+      el.dataset.remixIconLoaded = '';
       var apply = function (svgText) {
         var wrapper = document.createElement('div');
         wrapper.innerHTML = svgText.trim();
@@ -49,7 +53,7 @@
         if (!svg || svg.tagName.toLowerCase() !== 'svg') return;
         for (var i = 0; i < el.attributes.length; i++) {
           var attr = el.attributes[i];
-          if (attr.name === 'data-icon-loaded') continue;
+          if (attr.name === 'data-remix-icon-loaded') continue;
           svg.setAttribute(attr.name, attr.value);
         }
         el.replaceWith(svg);
@@ -70,7 +74,7 @@
       }
       iconCache[name].then(function (text) {
         if (text && el.isConnected) apply(text);
-        else if (!text) delete el.dataset.iconLoaded;
+        else if (!text) delete el.dataset.remixIconLoaded;
       });
     });
   }
@@ -110,7 +114,7 @@
           .writeText(pre.innerText)
           .then(function () {
             showStatus(
-              '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg> Copied'
+              '<svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"/></svg> Copied'
             );
           })
           .catch(function () {
@@ -119,7 +123,7 @@
       });
     });
 
-    // Local icons (<i data-lucide="name"> → inline SVG from library/src/icons)
+    // Local icons (<i class="ri-name-line|fill"> → inline SVG from library/src/icons)
     initLocalIcons();
   }
 

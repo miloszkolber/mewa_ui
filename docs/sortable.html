@@ -30,36 +30,36 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Sortable</h1>
-        <p class="text-muted leading-relaxed mb-6">Lets someone reorder a personal list by dragging, keyboard commands, or visible move controls. Announcements keep the new position understandable without relying on sight.</p>
+        <p class="text-secondary leading-relaxed mb-6">Lets someone reorder a personal list by dragging, keyboard commands, or visible move controls. Announcements keep the new position understandable without relying on sight.</p>
       </div>
 
         <!-- ═══ EXAMPLES ═══ -->
 
         <!-- Default -->
         <p class="text-sm font-medium mb-2 mt-6">Default</p>
-        <p class="text-xs text-muted mb-4">Drag items to reorder, or use keyboard: Tab to focus, Arrow keys to navigate, Alt+Arrow to move items.</p>
+        <p class="text-xs text-secondary mb-4">Drag items to reorder, or use keyboard: Tab to focus, Arrow keys to navigate, Alt+Arrow to move items.</p>
         <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-1000) 0" >
             <ul class="sortable" role="listbox" aria-label="Task priority" style="width: 20rem">
-              <li class="sortable-item" draggable="true" role="option" tabindex="0"><span class="sortable-handle"><i data-lucide="grip-vertical"></i></span><span>Build components</span></li>
-              <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i data-lucide="grip-vertical"></i></span><span>Write documentation</span></li>
-              <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i data-lucide="grip-vertical"></i></span><span>Deploy to production</span></li>
-              <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i data-lucide="grip-vertical"></i></span><span>Run tests</span></li>
+              <li class="sortable-item" draggable="true" role="option" tabindex="0"><span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span><span>Build components</span></li>
+              <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span><span>Write documentation</span></li>
+              <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span><span>Deploy to production</span></li>
+              <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span><span>Run tests</span></li>
             </ul>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;ul class="sortable" role="listbox" aria-label="Task priority"&gt;
   &lt;li class="sortable-item" draggable="true" role="option" tabindex="0"&gt;
-    &lt;span class="sortable-handle"&gt;&lt;i data-lucide="grip-vertical"&gt;&lt;/i&gt;&lt;/span&gt;
+    &lt;span class="sortable-handle"&gt;&lt;i class="ri-drag-move-2-line"&gt;&lt;/i&gt;&lt;/span&gt;
     &lt;span&gt;Item 1&lt;/span&gt;
   &lt;/li&gt;
   &lt;li class="sortable-item" draggable="true" role="option" tabindex="-1"&gt;
-    &lt;span class="sortable-handle"&gt;&lt;i data-lucide="grip-vertical"&gt;&lt;/i&gt;&lt;/span&gt;
+    &lt;span class="sortable-handle"&gt;&lt;i class="ri-drag-move-2-line"&gt;&lt;/i&gt;&lt;/span&gt;
     &lt;span&gt;Item 2&lt;/span&gt;
   &lt;/li&gt;
 &lt;/ul&gt;</code></pre>
@@ -67,7 +67,7 @@
 
         <!-- Horizontal -->
         <p class="text-sm font-medium mb-2 mt-8">Horizontal</p>
-        <p class="text-xs text-muted mb-4">Set <code>data-orientation="horizontal"</code> for a row layout. Arrow keys switch to Left/Right.</p>
+        <p class="text-xs text-secondary mb-4">Set <code>data-orientation="horizontal"</code> for a row layout. Arrow keys switch to Left/Right.</p>
         <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-1000) 0" >
             <ul class="sortable" role="listbox" aria-label="Reorder tags" data-orientation="horizontal" style="max-width: 28rem">
@@ -80,7 +80,7 @@
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;ul class="sortable" role="listbox" aria-label="Reorder tags" data-orientation="horizontal"&gt;
@@ -95,28 +95,28 @@
 
         <!-- With Icons & Descriptions -->
         <p class="text-sm font-medium mb-2 mt-8">With icons</p>
-        <p class="text-xs text-muted mb-4">Rich content with icons alongside labels. The handle provides a clear drag affordance.</p>
+        <p class="text-xs text-secondary mb-4">Rich content with icons alongside labels. The handle provides a clear drag affordance.</p>
         <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-1000) 0" >
             <ul class="sortable" role="listbox" aria-label="Prioritize features" style="width: 22rem">
               <li class="sortable-item" draggable="true" role="option" tabindex="0">
-                <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
-                <i data-lucide="layout-dashboard" style="width: var(--size-400); height: var(--size-400); flex-shrink: 0; color: var(--text-muted)"></i>
+                <span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span>
+                <i class="ri-dashboard-line" style="width: var(--size-400); height: var(--size-400); flex-shrink: 0; color: var(--text-secondary)"></i>
                 <span>Dashboard</span>
               </li>
               <li class="sortable-item" draggable="true" role="option" tabindex="-1">
-                <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
-                <i data-lucide="settings" style="width: var(--size-400); height: var(--size-400); flex-shrink: 0; color: var(--text-muted)"></i>
+                <span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span>
+                <i class="ri-settings-3-line" style="width: var(--size-400); height: var(--size-400); flex-shrink: 0; color: var(--text-secondary)"></i>
                 <span>Settings</span>
               </li>
               <li class="sortable-item" draggable="true" role="option" tabindex="-1">
-                <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
-                <i data-lucide="users" style="width: var(--size-400); height: var(--size-400); flex-shrink: 0; color: var(--text-muted)"></i>
+                <span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span>
+                <i class="ri-group-line" style="width: var(--size-400); height: var(--size-400); flex-shrink: 0; color: var(--text-secondary)"></i>
                 <span>Team</span>
               </li>
               <li class="sortable-item" draggable="true" role="option" tabindex="-1">
-                <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
-                <i data-lucide="chart-column" style="width: var(--size-400); height: var(--size-400); flex-shrink: 0; color: var(--text-muted)"></i>
+                <span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span>
+                <i class="ri-bar-chart-2-line" style="width: var(--size-400); height: var(--size-400); flex-shrink: 0; color: var(--text-secondary)"></i>
                 <span>Analytics</span>
               </li>
             </ul>
@@ -124,13 +124,13 @@
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;ul class="sortable" role="listbox" aria-label="Prioritize features"&gt;
   &lt;li class="sortable-item" draggable="true" role="option" tabindex="0"&gt;
-    &lt;span class="sortable-handle"&gt;&lt;i data-lucide="grip-vertical"&gt;&lt;/i&gt;&lt;/span&gt;
-    &lt;i data-lucide="layout-dashboard"&gt;&lt;/i&gt;
+    &lt;span class="sortable-handle"&gt;&lt;i class="ri-drag-move-2-line"&gt;&lt;/i&gt;&lt;/span&gt;
+    &lt;i class="ri-dashboard-line"&gt;&lt;/i&gt;
     &lt;span&gt;Dashboard&lt;/span&gt;
   &lt;/li&gt;
 &lt;/ul&gt;</code></pre>
@@ -138,25 +138,25 @@
 
         <!-- With Disabled Items -->
         <p class="text-sm font-medium mb-2 mt-8">Disabled items</p>
-        <p class="text-xs text-muted mb-4">Set <code>aria-disabled="true"</code> to lock items in place. Disabled items are skipped by keyboard and cannot be dragged.</p>
+        <p class="text-xs text-secondary mb-4">Set <code>aria-disabled="true"</code> to lock items in place. Disabled items are skipped by keyboard and cannot be dragged.</p>
         <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-1000) 0" >
             <ul class="sortable" role="listbox" aria-label="Reorder steps" style="width: 20rem">
               <li class="sortable-item" aria-disabled="true" tabindex="-1">
-                <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
-                <i data-lucide="lock" style="width: 0.875rem; height: 0.875rem; flex-shrink: 0; color: var(--text-muted)"></i>
+                <span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span>
+                <i class="ri-lock-line" style="width: 0.875rem; height: 0.875rem; flex-shrink: 0; color: var(--text-secondary)"></i>
                 <span>Authentication (locked)</span>
               </li>
               <li class="sortable-item" draggable="true" role="option" tabindex="0">
-                <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
+                <span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span>
                 <span>Configure database</span>
               </li>
               <li class="sortable-item" draggable="true" role="option" tabindex="-1">
-                <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
+                <span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span>
                 <span>Set up CI/CD</span>
               </li>
               <li class="sortable-item" draggable="true" role="option" tabindex="-1">
-                <span class="sortable-handle"><i data-lucide="grip-vertical"></i></span>
+                <span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span>
                 <span>Deploy application</span>
               </li>
             </ul>
@@ -164,40 +164,40 @@
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;!-- Disabled: no draggable, aria-disabled="true" --&gt;
 &lt;li class="sortable-item" aria-disabled="true" tabindex="-1"&gt;
-  &lt;span class="sortable-handle"&gt;&lt;i data-lucide="grip-vertical"&gt;&lt;/i&gt;&lt;/span&gt;
+  &lt;span class="sortable-handle"&gt;&lt;i class="ri-drag-move-2-line"&gt;&lt;/i&gt;&lt;/span&gt;
   &lt;span&gt;Locked item&lt;/span&gt;
 &lt;/li&gt;</code></pre>
         </div>
 
         <!-- Keyboard Reordering -->
         <p class="text-sm font-medium mb-2 mt-8">Keyboard reordering</p>
-        <p class="text-xs text-muted mb-4">Focus the list with <kbd class="kbd">Tab</kbd>, navigate with <kbd class="kbd">↑</kbd>/<kbd class="kbd">↓</kbd>, reorder with <kbd class="kbd">Alt+↑</kbd>/<kbd class="kbd">Alt+↓</kbd>. A screen reader live region announces each move.</p>
+        <p class="text-xs text-secondary mb-4">Focus the list with <kbd class="kbd">Tab</kbd>, navigate with <kbd class="kbd">↑</kbd>/<kbd class="kbd">↓</kbd>, reorder with <kbd class="kbd">Alt+↑</kbd>/<kbd class="kbd">Alt+↓</kbd>. A screen reader live region announces each move.</p>
         <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-1000) 0" >
             <ul class="sortable" role="listbox" aria-label="Rank languages" style="width: 20rem">
-              <li class="sortable-item" draggable="true" role="option" tabindex="0"><span class="sortable-handle"><i data-lucide="grip-vertical"></i></span><span>JavaScript</span></li>
-              <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i data-lucide="grip-vertical"></i></span><span>Python</span></li>
-              <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i data-lucide="grip-vertical"></i></span><span>Rust</span></li>
-              <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i data-lucide="grip-vertical"></i></span><span>Go</span></li>
-              <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i data-lucide="grip-vertical"></i></span><span>TypeScript</span></li>
+              <li class="sortable-item" draggable="true" role="option" tabindex="0"><span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span><span>JavaScript</span></li>
+              <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span><span>Python</span></li>
+              <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span><span>Rust</span></li>
+              <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span><span>Go</span></li>
+              <li class="sortable-item" draggable="true" role="option" tabindex="-1"><span class="sortable-handle"><i class="ri-drag-move-2-line"></i></span><span>TypeScript</span></li>
             </ul>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;!-- Keyboard: Tab to focus, ↑/↓ to navigate, Alt+↑/↓ to reorder --&gt;
 &lt;!-- Screen readers hear: "JavaScript, moved to position 2 of 5" --&gt;
 &lt;ul class="sortable" role="listbox" aria-label="Rank languages"&gt;
   &lt;li class="sortable-item" draggable="true" role="option" tabindex="0"&gt;
-    &lt;span class="sortable-handle"&gt;&lt;i data-lucide="grip-vertical"&gt;&lt;/i&gt;&lt;/span&gt;
+    &lt;span class="sortable-handle"&gt;&lt;i class="ri-drag-move-2-line"&gt;&lt;/i&gt;&lt;/span&gt;
     &lt;span&gt;JavaScript&lt;/span&gt;
   &lt;/li&gt;
   &lt;!-- more items... --&gt;

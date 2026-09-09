@@ -20,6 +20,26 @@ CSS provides horizontal and vertical layouts.
 
 Nav requires no JavaScript.
 
+## Visual states
+
+Nav links use a 36px minimum height, 10px horizontal padding, and a 4px icon gap. The state matrix accepts `aria-current="page"`, `aria-expanded`, `aria-disabled`, and `data-state="selected|expanded|hover|focus|disabled"` hooks.
+
+Figma's `nav_search` and `nav_brand` are represented as Nav subprimitives:
+
+```html
+<div class="nav-search" data-state="focus">
+  <i class="nav-search-icon ri-search-line" aria-hidden="true"></i>
+  <input class="nav-search-input" type="search" aria-label="Search navigation">
+</div>
+
+<a class="nav-brand" data-state="collapsed" href="/">
+  <span class="nav-brand-mark" aria-hidden="true"><i class="ri-command-line"></i></span>
+  <span data-nav-brand-label>Workspace</span>
+</a>
+```
+
+These subprimitives remain composition points inside Nav or Sidebar; they do not add registry entries.
+
 ## Native Web APIs
 
 - [`<nav>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav) provides the navigation landmark.

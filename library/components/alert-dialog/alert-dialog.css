@@ -11,7 +11,7 @@
     margin: auto;
     position: fixed;
     inset: 0;
-    opacity: 0;
+    opacity: var(--opacity-000);
     transform: translateY(var(--space-100)) scale(0.99);
     transition-property: opacity, transform, overlay, display;
     transition-duration: var(--motion-duration-spatial);
@@ -19,7 +19,7 @@
     transition-behavior: normal, normal, allow-discrete, allow-discrete;
 
     &[open] {
-      opacity: 1;
+      opacity: var(--opacity-100);
       transform: translateY(0) scale(1);
     }
 
@@ -29,7 +29,7 @@
         linear-gradient(var(--overlay-strong), var(--overlay-strong)),
         var(--overlay-strong);
       backdrop-filter: blur(var(--blur-200));
-      opacity: 0;
+      opacity: var(--opacity-000);
       pointer-events: auto;
       transition-property: opacity, overlay, display;
       transition-duration: var(--motion-duration-spatial);
@@ -38,18 +38,18 @@
     }
 
     &[open]::backdrop {
-      opacity: 1;
+      opacity: var(--opacity-100);
     }
   }
 
   @starting-style {
     dialog.alert-dialog[open] {
-      opacity: 0;
+      opacity: var(--opacity-000);
       transform: translateY(var(--space-100)) scale(0.99);
     }
 
     dialog.alert-dialog[open]::backdrop {
-      opacity: 0;
+      opacity: var(--opacity-000);
     }
   }
 
@@ -64,7 +64,7 @@
   .alert-dialog-title {
     margin: 0;
     font-size: var(--font-size-400);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     letter-spacing: -0.01em;
     line-height: var(--font-height-tight);
   }
@@ -72,7 +72,7 @@
   .alert-dialog-description {
     margin: var(--space-200) 0 0;
     font-size: var(--font-size-350);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     line-height: var(--font-height-regular);
   }
 

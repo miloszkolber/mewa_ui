@@ -30,13 +30,13 @@ The module provides drag behavior, non-drag pointer controls, roving item focus,
 <ul class="sortable" aria-label="Job priority">
   <li class="sortable-item" draggable="true" tabindex="0">
     <span class="sortable-handle" aria-hidden="true">
-      <i data-lucide="grip-vertical"></i>
+      <i class="ri-drag-move-2-line"></i>
     </span>
     <span>Nightly sync</span>
   </li>
   <li class="sortable-item" draggable="true" tabindex="-1">
     <span class="sortable-handle" aria-hidden="true">
-      <i data-lucide="grip-vertical"></i>
+      <i class="ri-drag-move-2-line"></i>
     </span>
     <span>Index refresh</span>
   </li>

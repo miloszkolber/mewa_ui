@@ -18,6 +18,8 @@ Badge adds presentation only.
 
 Badge requires no JavaScript.
 
+Ready badges use a 24px minimum height and 8px horizontal padding. The default uses inverted general surface/text, the outline uses secondary border/text with a general-alpha surface, and status states use the semantic alpha surfaces.
+
 ## Native Web APIs
 
 - [`<span>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/span) provides an inline phrasing container.
@@ -40,7 +42,7 @@ Keep badge text understandable without color.
 | `default` | Use for the strongest neutral metadata label. |
 | `secondary` | Use for normal metadata. |
 | `outline` | Use for low-emphasis metadata. |
-| `count` | Use for a compact static numeric counter. |
+| `count` | Use for a compact static numeric counter. Repository-only extension. |
 
 ```html
 <span class="badge" data-variant="default">New</span>
@@ -73,6 +75,8 @@ Use `caution` for delayed, degraded, or attention-needed status.
 Use `negative` for failed or unavailable status.
 
 Use `running` for active work.
+
+The `count` and `running` forms are repository extensions retained alongside the Figma-aligned default, outline, and status treatments.
 
 Do not combine `data-state` with `data-variant`.
 

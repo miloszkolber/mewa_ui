@@ -22,11 +22,11 @@
   }
 
   .thinking-dot:nth-child(2) {
-    opacity: var(--opacity-07);
+    background-color: var(--text-secondary);
   }
 
   .thinking-dot:nth-child(3) {
-    opacity: var(--opacity-04);
+    background-color: var(--text-disabled);
   }
 
   .thinking-label {

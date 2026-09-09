@@ -57,7 +57,7 @@
   .timeline-title {
     margin: 0;
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     color: var(--text-primary);
     line-height: var(--font-height-regular);
   }
@@ -65,13 +65,13 @@
   .timeline-description {
     margin: 0;
     font-size: var(--font-size-350);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     line-height: var(--font-height-regular);
   }
 
   .timeline-time {
     font-size: var(--font-size-300);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     margin-top: var(--space-100);
   }
 

@@ -32,11 +32,11 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Table</h1>
-        <p class="text-muted leading-relaxed mb-6">Presents data with stable row and column relationships. Captions and scoped headers keep the structure understandable, while an overflow container protects narrow screens.</p>
+        <p class="text-secondary leading-relaxed mb-6">Presents data with stable row and column relationships. Captions and scoped headers keep the structure understandable, while an overflow container protects narrow screens.</p>
       </div>
         <!-- Basic -->
         <p class="text-sm font-medium mb-2 mt-6">Basic table</p>
-          <p class="text-xs text-muted mb-3">Standard table with a caption, scoped column headers, and body rows. Uses <code>.badge</code> for status and <code>.avatar</code> for user display. The semantic table remains usable at narrow widths inside its overflow container.</p>
+          <p class="text-xs text-secondary mb-3">Standard table with a caption, scoped column headers, and body rows. Uses <code>.badge</code> for status and <code>.avatar</code> for user display. The semantic table remains usable at narrow widths inside its overflow container.</p>
         <div class="preview">
            <div class="table-container" role="region" aria-label="Recent payments" tabindex="0" style="max-width: 42rem">
              <table class="table">
@@ -51,19 +51,19 @@
               </thead>
               <tbody>
                 <tr class="table-row">
-                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-550)"><div><span class="avatar" data-size="sm"><img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar"/><span class="avatar-fallback">CN</span></span><span>Ada Lovelace</span></div></th>
+                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-525)"><div><span class="avatar" data-size="sm"><img class="avatar-image" src="assets/demo-avatar.svg" alt="Avatar"/><span class="avatar-fallback">CN</span></span><span>Ada Lovelace</span></div></th>
                   <td class="table-cell"><span class="badge" data-variant="default">Paid</span></td>
                   <td class="table-cell">Admin</td>
                   <td class="table-cell" style="text-align: right">$250.00</td>
                 </tr>
                 <tr class="table-row">
-                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-550)"><div><span class="avatar" data-size="sm"><span class="avatar-fallback">JD</span></span><span>Jordan Davis</span></div></th>
+                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-525)"><div><span class="avatar" data-size="sm"><span class="avatar-fallback">JD</span></span><span>Jordan Davis</span></div></th>
                   <td class="table-cell"><span class="badge" data-variant="outline">Pending</span></td>
                   <td class="table-cell">Editor</td>
                   <td class="table-cell" style="text-align: right">$150.00</td>
                 </tr>
                 <tr class="table-row">
-                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-550)"><div><span class="avatar" data-size="sm"><span class="avatar-fallback">AS</span></span><span>Alex Smith</span></div></th>
+                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-525)"><div><span class="avatar" data-size="sm"><span class="avatar-fallback">AS</span></span><span>Alex Smith</span></div></th>
                   <td class="table-cell"><span class="badge" data-variant="secondary">Unpaid</span></td>
                   <td class="table-cell">Viewer</td>
                   <td class="table-cell" style="text-align: right">$350.00</td>
@@ -74,7 +74,7 @@
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
            <button class="copy-btn" type="button">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
            <pre><code class="language-markup">&lt;table class="table"&gt;
@@ -103,7 +103,7 @@
 
         <!-- With Footer -->
         <p class="text-sm font-medium mb-2 mt-8">With footer</p>
-         <p class="text-xs text-muted mb-3">Table with a summary footer row. Keep the total in a scoped row header and use native table semantics before adding enhancement behavior.</p>
+         <p class="text-xs text-secondary mb-3">Table with a summary footer row. Keep the total in a scoped row header and use native table semantics before adding enhancement behavior.</p>
         <div class="preview">
           <div class="table-container" role="region" aria-label="Recent invoices" tabindex="0" style="max-width: 36rem">
             <table class="table">
@@ -117,17 +117,17 @@
               </thead>
               <tbody>
                 <tr class="table-row">
-                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-550)">INV001</th>
+                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-525)">INV001</th>
                   <td class="table-cell">Paid</td>
                   <td class="table-cell" style="text-align: right">$250.00</td>
                 </tr>
                 <tr class="table-row">
-                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-550)">INV002</th>
+                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-525)">INV002</th>
                   <td class="table-cell">Pending</td>
                   <td class="table-cell" style="text-align: right">$150.00</td>
                 </tr>
                 <tr class="table-row">
-                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-550)">INV003</th>
+                   <th class="table-cell" scope="row" style="font-weight: var(--font-weight-525)">INV003</th>
                   <td class="table-cell">Unpaid</td>
                   <td class="table-cell" style="text-align: right">$350.00</td>
                 </tr>
@@ -135,7 +135,7 @@
               <tfoot>
                 <tr class="table-row">
                    <th class="table-cell" scope="row" colspan="2">Total</th>
-                  <td class="table-cell" style="text-align: right; font-weight: var(--font-weight-550)">$750.00</td>
+                  <td class="table-cell" style="text-align: right; font-weight: var(--font-weight-525)">$750.00</td>
                 </tr>
               </tfoot>
             </table>
@@ -143,7 +143,7 @@
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
            <button class="copy-btn" type="button">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;table class="table"&gt;

@@ -3,15 +3,14 @@
   .nav-menu-link, .nav-menu-trigger {
     display: inline-flex; align-items: center; gap: var(--space-100);
     padding: var(--space-200); border: none;
-    background: transparent; color: var(--text-primary); font-size: var(--font-size-350); font-weight: var(--font-weight-550);
+    background: transparent; color: var(--text-primary); font-size: var(--font-size-350); font-weight: var(--font-weight-525);
     font-family: inherit; text-decoration: none; cursor: pointer;
     outline: none;
-    &:hover { background-color: var(--surface-secondary); color: var(--text-primary); }
+    &:hover { background-color: var(--surface-menu-hover); color: var(--text-primary); }
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
-    & svg { width: 0.875rem; height: 0.875rem; color: var(--text-muted); }
+    & svg { width: 0.875rem; height: 0.875rem; color: var(--text-secondary); }
   }
 
   .nav-menu-trigger:has(+ .nav-menu-content:popover-open) svg {
@@ -32,12 +31,11 @@
   .nav-menu-content-link {
     display: block; padding: var(--space-200);
     text-decoration: none; color: var(--text-primary); font-size: var(--font-size-350);
-    &:hover { background-color: var(--surface-secondary); }
+    &:hover { background-color: var(--surface-menu-hover); }
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
-    & p { margin: 0; font-size: var(--font-size-300); color: var(--text-muted); font-weight: var(--font-weight-400); }
+    & p { margin: 0; font-size: var(--font-size-300); color: var(--text-secondary); font-weight: var(--font-weight-400); }
   }
 
   @media (forced-colors: active) {

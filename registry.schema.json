@@ -36,18 +36,18 @@
         "licenses": {
           "type": "object",
           "properties": {
-            "geist": {
+            "googleSansCode": {
               "type": "string",
               "minLength": 1
             },
-            "lucide": {
+            "remixIcon": {
               "type": "string",
               "minLength": 1
             }
           },
           "required": [
-            "geist",
-            "lucide"
+            "googleSansCode",
+            "remixIcon"
           ],
           "additionalProperties": false
         },

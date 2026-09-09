@@ -41,7 +41,7 @@ Use `.sidebar-workspace` for the region that contains the toolbar and main conte
     <div class="sidebar-header">
       <a class="sidebar-logo" href="/" aria-label="Workspace home">
         <span class="sidebar-logo-mark" aria-hidden="true">
-          <i data-lucide="command"></i>
+          <i class="ri-command-line"></i>
         </span>
         <span class="sidebar-logo-text">Workspace</span>
       </a>
@@ -50,11 +50,11 @@ Use `.sidebar-workspace` for the region that contains the toolbar and main conte
     <div class="sidebar-content">
       <nav class="sidebar-nav" aria-label="Workspace">
         <a class="sidebar-link" href="/overview" aria-current="page">
-          <i data-lucide="layout-dashboard" aria-hidden="true"></i>
+          <i class="ri-dashboard-line" aria-hidden="true"></i>
           <span>Overview</span>
         </a>
         <a class="sidebar-link" href="/jobs">
-          <i data-lucide="activity" aria-hidden="true"></i>
+          <i class="ri-pulse-line" aria-hidden="true"></i>
           <span>Jobs</span>
         </a>
       </nav>
@@ -67,7 +67,7 @@ Use `.sidebar-workspace` for the region that contains the toolbar and main conte
               aria-controls="workspace-sidebar"
               aria-expanded="true"
               aria-label="Hide menu">
-        <i data-lucide="panel-left" aria-hidden="true"></i>
+        <i class="ri-sidebar-fold-line" aria-hidden="true"></i>
         <span class="sidebar-trigger-label">Hide menu</span>
       </button>
     </div>
@@ -126,7 +126,7 @@ Use a native dialog below the `--breakpoint-compact` shell tier, 48rem.
         aria-haspopup="dialog"
         aria-expanded="false"
         aria-label="Open workspace navigation">
-  <i data-lucide="menu" aria-hidden="true"></i>
+  <i class="ri-menu-line" aria-hidden="true"></i>
 </button>
 
 <dialog class="sidebar-mobile"
@@ -135,7 +135,7 @@ Use a native dialog below the `--breakpoint-compact` shell tier, 48rem.
   <button class="sidebar-mobile-close"
           type="button"
           aria-label="Close workspace navigation">
-    <i data-lucide="x" aria-hidden="true"></i>
+    <i class="ri-close-line" aria-hidden="true"></i>
   </button>
 
   <nav class="sidebar-nav" aria-label="Mobile workspace">

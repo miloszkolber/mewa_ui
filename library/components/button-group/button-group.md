@@ -28,13 +28,13 @@ Button Group requires no JavaScript.
 
 ```html
 <div class="btn-group" role="group" aria-label="Document actions">
-  <button class="btn" type="button" data-variant="outline">Save</button>
-  <button class="btn" type="button" data-variant="outline">Duplicate</button>
-  <button class="btn" type="button" data-variant="outline">Archive</button>
+  <button class="btn" type="button" data-variant="secondary">Save</button>
+  <button class="btn" type="button" data-variant="secondary">Duplicate</button>
+  <button class="btn" type="button" data-variant="secondary">Archive</button>
 </div>
 ```
 
-Use Outline when the connected border treatment helps the group read as one unit.
+Use Secondary when the connected border treatment helps the group read as one unit.
 
 ## Vertical structure
 
@@ -43,9 +43,9 @@ Use Outline when the connected border treatment helps the group read as one unit
      data-orientation="vertical"
      role="group"
      aria-label="Document actions">
-  <button class="btn" type="button" data-variant="outline">Save</button>
-  <button class="btn" type="button" data-variant="outline">Duplicate</button>
-  <button class="btn" type="button" data-variant="outline">Archive</button>
+  <button class="btn" type="button" data-variant="secondary">Save</button>
+  <button class="btn" type="button" data-variant="secondary">Duplicate</button>
+  <button class="btn" type="button" data-variant="secondary">Archive</button>
 </div>
 ```
 
@@ -63,7 +63,7 @@ Use a separator only when filled adjacent buttons need a visible division.
 </div>
 ```
 
-Do not add separators between Outline buttons when their borders already provide the division.
+Do not add separators between Secondary buttons when their borders already provide the division.
 
 ## Behavior
 

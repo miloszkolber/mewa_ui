@@ -41,7 +41,7 @@ The module only assigns CSS anchor pairs for documented positioning.
               type="button"
               popovertarget="resource-routes">
         Resources
-        <i data-lucide="chevron-down" aria-hidden="true"></i>
+        <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
       </button>
       <div class="nav-menu-content" id="resource-routes" popover>
         <a class="nav-menu-content-link" href="/models">

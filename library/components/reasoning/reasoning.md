@@ -36,9 +36,7 @@ The optional module opens a streaming disclosure without replacing native intera
       <span class="reasoning-label">Reasoning</span>
       <span class="reasoning-status" role="status">In progress</span>
     </span>
-    <svg class="reasoning-chevron" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="m6 9 6 6 6-6"></path>
-    </svg>
+    <svg class="reasoning-chevron" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.9999 13.1714L16.9497 8.22168L18.3639 9.63589L11.9999 15.9999L5.63599 9.63589L7.0502 8.22168L11.9999 13.1714Z"/></svg>
   </summary>
   <div class="reasoning-content">
     <p>Checked the active configuration and compared it with the documented fallback.</p>

@@ -12,7 +12,7 @@
     background-color: var(--background);
 
     &[data-variant="destructive"] {
-      border-color: var(--text-negative);
+      border-color: var(--border-negative);
       background-color: var(--surface-negative);
       color: var(--text-negative);
 
@@ -22,7 +22,6 @@
 
       & .callout-description {
         color: var(--text-negative);
-        opacity: var(--opacity-09);
       }
 
       & .callout-icon {
@@ -47,7 +46,7 @@
   .callout-title {
     margin: 0;
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     line-height: var(--font-height-regular);
     letter-spacing: -0.01em;
     color: var(--text-primary);
@@ -57,7 +56,7 @@
     margin: 0;
     font-size: var(--font-size-350);
     line-height: var(--font-height-regular);
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
 
   .callout-action {

@@ -64,7 +64,7 @@ Do not add redundant `role="dialog"` or `aria-modal="true"` to native modal mark
     </div>
 
     <div class="dialog-footer">
-      <button class="btn" type="button" data-variant="outline" data-dialog-close>Cancel</button>
+      <button class="btn" type="button" data-variant="secondary" data-dialog-close>Cancel</button>
       <button class="btn" type="button" data-variant="default">Save changes</button>
     </div>
   </div>

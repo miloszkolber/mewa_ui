@@ -39,24 +39,23 @@
     &[data-variant="destructive"] {
       background-color: var(--surface-negative);
       color: var(--text-negative);
-      border-color: var(--text-negative);
+      border-color: var(--border-negative);
 
       & .toast-description {
         color: var(--text-negative);
-        opacity: var(--opacity-09);
       }
     }
 
     &[data-variant="success"] {
       background-color: var(--surface-positive);
       color: var(--text-positive);
-      border-color: var(--text-positive);
+      border-color: var(--border-positive);
     }
 
     &[data-variant="warning"] {
       background-color: var(--surface-caution);
       color: var(--text-caution);
-      border-color: var(--text-caution);
+      border-color: var(--border-caution);
     }
 
     &[data-variant="info"] {
@@ -86,14 +85,14 @@
 
   .toast-title {
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     margin: 0;
     line-height: var(--font-height-regular);
   }
 
   .toast-description {
     font-size: var(--font-size-350);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     margin: 0;
     line-height: var(--font-height-regular);
   }
@@ -106,13 +105,13 @@
     height: var(--size-500);
     border: none;
     background: transparent;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     cursor: pointer;
     flex-shrink: 0;
 
     &:hover {
       color: var(--text-primary);
-      background: var(--surface-secondary);
+      background: var(--surface-control-hover);
     }
   }
 

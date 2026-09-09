@@ -25,8 +25,7 @@
   }
 
   .tool-call-summary:focus-visible {
-    outline: var(--focus-ring-width) solid var(--border-focus);
-    outline-offset: calc(-1 * var(--border-width-050));
+    box-shadow: var(--ring-default);
   }
 
   .tool-call-mark {
@@ -35,20 +34,20 @@
     justify-content: center;
     width: var(--size-400);
     height: var(--size-400);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-family: var(--font-mono);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
   }
 
   .tool-call-label {
     min-width: 0;
     overflow-wrap: anywhere;
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
   }
 
   .tool-call-state {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-family: var(--font-mono);
     font-size: var(--font-size-300);
   }

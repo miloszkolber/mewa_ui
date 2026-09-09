@@ -10,7 +10,7 @@
     margin: 0;
     color: var(--text-primary);
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
   }
 
   .sources-list {
@@ -39,13 +39,12 @@
   }
 
   .source-link:hover {
-    background-color: var(--surface-hover);
+    background-color: var(--surface-content-hover);
   }
 
   .source-link:focus-visible,
   .citation:focus-visible {
-    outline: var(--focus-ring-width) solid var(--border-focus);
-    outline-offset: var(--border-width-025);
+    box-shadow: var(--ring-default);
   }
 
   .source-index,
@@ -81,12 +80,12 @@
   .source-title {
     overflow-wrap: anywhere;
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
   }
 
   .source-host {
     overflow-wrap: anywhere;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-family: var(--font-mono);
     font-size: var(--font-size-300);
   }

@@ -4,14 +4,18 @@
   .badge {
     display: inline-flex;
     align-items: center;
-    padding: var(--space-100) var(--space-200);
+    min-block-size: var(--size-600);
+    padding: 0 var(--space-200);
     font-size: var(--font-size-300);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     line-height: var(--font-height-tight);
+    border: var(--border-width-000) solid var(--border-transparent);
 
     &[data-variant="outline"] {
-      border: var(--border-width-025) solid var(--border-primary);
-      color: var(--text-muted);
+      border-width: var(--border-width-025);
+      border-color: var(--border-secondary);
+      background: var(--surface-alpha);
+      color: var(--text-secondary);
     }
 
     &[data-variant="secondary"] {

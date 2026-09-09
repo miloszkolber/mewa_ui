@@ -40,7 +40,7 @@
 
     & > label {
       font-size: var(--font-size-350);
-      font-weight: var(--font-weight-550);
+      font-weight: var(--font-weight-525);
       cursor: pointer;
       line-height: var(--font-height-regular);
     }
@@ -48,7 +48,7 @@
     & > .radio-description {
       grid-column: 2;
       font-size: var(--font-size-350);
-      color: var(--text-muted);
+      color: var(--text-secondary);
       line-height: var(--font-height-regular);
     }
   }
@@ -61,28 +61,37 @@
     gap: 0;
     padding: var(--space-400);
     border: var(--border-width-025) solid var(--border-primary);
-    transition-property: background-color, border-color, opacity;
+    transition-property: background-color, border-color, color;
     transition-duration: var(--motion-duration-fast);
     transition-timing-function: var(--motion-easing-standard);
 
     cursor: pointer;
     &:hover {
-      background: var(--surface-secondary);
+      background: var(--surface-control-hover);
     }
 
     &:has(.radio:checked) {
-      border-color: var(--surface-inverted);
+      background: var(--surface-control);
+      border-color: var(--border-interactive-inverted);
+      box-shadow: var(--ring-default);
     }
 
     &:has(.radio:focus-visible) {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
 
     &:has(.radio:disabled) {
-      opacity: var(--opacity-05);
+      background: var(--surface-control-disabled);
+      border-color: var(--border-disabled);
+      color: var(--text-disabled);
       cursor: not-allowed;
       pointer-events: none;
+      box-shadow: none;
+
+      & > label,
+      & > .radio-description {
+        color: var(--text-disabled);
+      }
     }
 
     & > .radio {
@@ -93,13 +102,13 @@
 
     & > label {
       font-size: var(--font-size-350);
-      font-weight: var(--font-weight-550);
+      font-weight: var(--font-weight-525);
       cursor: pointer;
     }
 
     & > .radio-description {
       font-size: var(--font-size-350);
-      color: var(--text-muted);
+      color: var(--text-secondary);
       line-height: var(--font-height-regular);
     }
   }
@@ -108,9 +117,9 @@
     appearance: none;
     width: var(--size-400);
     height: var(--size-400);
-    border: var(--border-width-025) solid var(--border-control);
+    border: var(--border-width-025) solid var(--border-interactive-default);
     border-radius: 50%;
-    background: var(--background);
+    background: var(--surface-control-transparent);
     cursor: pointer;
     flex-shrink: 0;
     position: relative;
@@ -123,8 +132,8 @@
       width: var(--size-200);
       height: var(--size-200);
       border-radius: 50%;
-      background: var(--surface-inverted);
-      opacity: 0;
+      background: var(--surface-control-inverted);
+      opacity: var(--opacity-000);
       transform: translate(-50%, -50%) scale(0.5);
       transition-property: background-color, opacity, transform;
       transition-duration: var(--motion-duration-fast);
@@ -132,26 +141,26 @@
     }
 
     &:checked {
-      border-color: var(--surface-inverted);
+      border-color: var(--border-interactive-inverted);
 
       &::after {
-        opacity: 1;
+        background: var(--surface-control-inverted);
+        opacity: var(--opacity-100);
         transform: translate(-50%, -50%) scale(1);
       }
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
 
     &:disabled {
-      background: var(--surface-secondary);
-      border-color: var(--border-muted);
+      background: var(--surface-control-disabled);
+      border-color: var(--border-disabled);
       cursor: not-allowed;
 
       &:checked {
-        border-color: var(--text-disabled);
+        border-color: var(--border-disabled);
 
         &::after {
           background: var(--text-disabled);
@@ -165,21 +174,25 @@
     }
 
     &:is([aria-invalid="true"], :user-invalid) {
-      border-color: var(--text-negative);
+      border-color: var(--border-invalid);
 
       &:checked {
-        border-color: var(--text-negative);
+        border-color: var(--border-invalid);
 
         &::after {
           background: var(--text-negative);
         }
+      }
+
+      &:focus-visible {
+        box-shadow: var(--ring-invalid);
       }
     }
   }
 
   .radio-group-description {
     font-size: var(--font-size-350);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     margin: -0.125rem 0 var(--space-100);
   }
 
@@ -190,7 +203,7 @@
     }
 
     .radio:disabled {
-      opacity: var(--opacity-07);
+      border-color: var(--border-disabled);
     }
   }
 

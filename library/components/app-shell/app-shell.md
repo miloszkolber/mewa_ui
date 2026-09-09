@@ -47,7 +47,7 @@ Use native buttons for actions.
     <div class="app-header-inner">
       <a class="brand" href="/" aria-label="Example service home">
         <span class="brand-mark" aria-hidden="true">
-          <i data-lucide="command"></i>
+          <i class="ri-command-line"></i>
         </span>
         <span>Example service</span>
       </a>
@@ -60,12 +60,12 @@ Use native buttons for actions.
       <div class="app-header-actions">
         <button class="btn"
                 type="button"
-                data-variant="outline"
+                data-variant="secondary"
                 data-size="icon"
                 data-theme-toggle
                 aria-label="Toggle theme">
-          <i data-lucide="moon" aria-hidden="true"></i>
-          <i data-lucide="sun" aria-hidden="true"></i>
+          <i class="ri-moon-line" aria-hidden="true"></i>
+          <i class="ri-sun-line" aria-hidden="true"></i>
         </button>
       </div>
     </div>
@@ -101,7 +101,7 @@ Do not stack `.app-toolbar` under `.app-header`.
       </ol>
     </nav>
     <div class="app-toolbar-actions">
-      <button class="btn" type="button" data-variant="outline">Refresh</button>
+      <button class="btn" type="button" data-variant="secondary">Refresh</button>
     </div>
   </div>
 </header>
@@ -138,7 +138,7 @@ Use `.eyebrow` only for a short technical label.
   </div>
 
   <div class="page-actions">
-    <button class="btn" type="button" data-variant="outline">Refresh</button>
+    <button class="btn" type="button" data-variant="secondary">Refresh</button>
   </div>
 </section>
 ```
@@ -201,7 +201,7 @@ Do not wrap each row in a card.
       <p class="app-status-description">Check compatible revisions.</p>
     </div>
     <div class="app-status-actions">
-      <button class="btn" type="button" data-variant="outline" data-size="sm">View run</button>
+      <button class="btn" type="button" data-variant="secondary" data-size="sm">View run</button>
     </div>
   </li>
 </ul>
@@ -222,9 +222,9 @@ Keep color on the `status-icon` via its own `data-state`.
 ```html
 <li class="app-status-row" data-state="positive" aria-labelledby="device-status">
   <span class="status-icon" data-state="positive" aria-hidden="true">
-    <svg class="status-glyph status-glyph-loading" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>
-    <svg class="status-glyph status-glyph-positive" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
-    <svg class="status-glyph status-glyph-caution" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+    <svg class="status-glyph status-glyph-loading" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M5 11V13H19V11H5Z"/></svg>
+    <svg class="status-glyph status-glyph-positive" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"/></svg>
+    <svg class="status-glyph status-glyph-caution" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 15H13V17H11V15ZM11 7H13V13H11V7Z"/></svg>
   </span>
   <div class="app-status-copy">
     <p id="device-status" class="app-status-title">Device connected</p>

@@ -34,7 +34,7 @@ Render an unavailable Previous or Next control without `href`.
   <ul class="pagination-list">
     <li>
       <span class="pagination-prev" aria-disabled="true" aria-label="Previous page">
-        <i data-lucide="chevron-left" aria-hidden="true"></i>
+        <i class="ri-arrow-left-s-line" aria-hidden="true"></i>
       </span>
     </li>
     <li><a class="pagination-link pagination-active" href="?page=1" aria-current="page">1</a></li>
@@ -43,7 +43,7 @@ Render an unavailable Previous or Next control without `href`.
     <li><span class="pagination-ellipsis" aria-hidden="true">…</span></li>
     <li>
       <a class="pagination-next" href="?page=2" aria-label="Next page">
-        <i data-lucide="chevron-right" aria-hidden="true"></i>
+        <i class="ri-arrow-right-s-line" aria-hidden="true"></i>
       </a>
     </li>
   </ul>

@@ -24,14 +24,15 @@
     overflow: hidden;
     color: var(--text-secondary);
     font-family: var(--font-mono);
+    font-variation-settings: var(--font-mono-axis);
     font-size: var(--font-size-300);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   .code-block-state {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: var(--font-size-300);
   }
 
@@ -50,12 +51,12 @@
     background: var(--surface-primary);
     color: var(--text-primary);
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
   }
 
   .code-block-copy:hover {
     border-color: var(--border-hover);
-    background: var(--surface-hover);
+    background: var(--surface-control-hover);
   }
 
   .code-block-status {
@@ -94,6 +95,7 @@
     margin: 0;
     padding-block: var(--space-300);
     font-family: var(--font-mono);
+    font-variation-settings: var(--font-mono-axis);
     font-size: var(--font-size-350);
     line-height: var(--font-height-regular);
     tab-size: 2;
@@ -101,7 +103,7 @@
 
   .code-block-code {
     display: block;
-    font: inherit;
+    font: inherit; font-variation-settings: var(--font-mono-axis);
   }
 
   .code-block-line {
@@ -122,7 +124,7 @@
 
   .code-block-line-number {
     padding-inline-end: var(--space-300);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-variant-numeric: tabular-nums;
     text-align: end;
     user-select: none;

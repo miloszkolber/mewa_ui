@@ -10,10 +10,34 @@
     list-style: none;
     margin: 0;
     padding: 0 0 0 var(--space-500);
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset-block: 0;
+      inset-inline-start: var(--space-200);
+      border-inline-start: var(--border-width-025) solid var(--border-primary);
+    }
   }
 
   .tree-item {
     padding: 0;
+    position: relative;
+
+    &:is([aria-selected="true"], [data-state="selected"]) > :is(.tree-leaf, .tree-branch > .tree-branch-trigger) {
+      background: var(--surface-control);
+      border-color: var(--border-interactive-inverted);
+      color: var(--text-primary);
+    }
+
+    &:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > :is(.tree-leaf, .tree-branch > .tree-branch-trigger) {
+      background: var(--surface-control-disabled);
+      border-color: var(--border-disabled);
+      color: var(--text-disabled);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
   }
 
   .tree-branch {
@@ -26,18 +50,18 @@
     align-items: center;
     gap: var(--space-200);
     padding: var(--space-100) var(--space-200);
+    border: var(--border-width-025) solid var(--border-transparent);
 
     cursor: pointer;
     color: var(--text-primary);
     list-style: none;
 
     &:hover {
-      background-color: var(--surface-secondary);
+      background-color: var(--surface-control-hover);
     }
 
-    &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+    &:is(:focus-visible, [data-state="focus"]) {
+      box-shadow: var(--ring-default);
     }
 
     &::-webkit-details-marker {
@@ -53,7 +77,7 @@
     & svg:first-child {
       width: 0.875rem;
       height: 0.875rem;
-      color: var(--text-muted);
+      color: var(--text-secondary);
     }
   }
 
@@ -67,19 +91,98 @@
     gap: var(--space-200);
     padding: var(--space-100) var(--space-200);
     padding-left: calc(var(--space-200) + 0.875rem + var(--space-200));
+    border: var(--border-width-025) solid var(--border-transparent);
 
     color: var(--text-primary);
     cursor: default;
 
     &:hover {
-      background-color: var(--surface-secondary);
+      background-color: var(--surface-control-hover);
+    }
+
+    &:is(:focus-visible, [data-state="focus"]) {
+      box-shadow: var(--ring-default);
     }
 
     & svg {
       width: var(--size-400);
       height: var(--size-400);
       flex-shrink: 0;
-      color: var(--text-muted);
+      color: var(--text-secondary);
+    }
+  }
+
+  /* Structural connector/overflow primitive used by nested tree layouts.
+     All five variants keep their stroke explicit so a connector can be
+     hidden without changing the item geometry. */
+  .tree-indicator {
+    --tree-indicator-border: var(--border-primary);
+    position: relative;
+    display: inline-block;
+    flex: 0 0 var(--size-400);
+    inline-size: var(--size-400);
+    block-size: var(--size-900);
+    color: var(--text-secondary);
+    border-inline-start: var(--border-width-025) solid var(--border-transparent);
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+    }
+
+    &[data-variant="line"] {
+      border-inline-start-color: var(--tree-indicator-border);
+    }
+
+    &[data-variant="branch"]::before {
+      inset-block-start: 50%;
+      inset-inline-start: 0;
+      inline-size: 100%;
+      border-block-start: var(--border-width-025) solid var(--tree-indicator-border);
+    }
+
+    &[data-variant="branch"]::after {
+      inset-block-start: 0;
+      inset-block-end: 50%;
+      inset-inline-start: 0;
+      border-inline-start: var(--border-width-025) solid var(--tree-indicator-border);
+    }
+
+    &[data-variant="first"]::before,
+    &[data-variant="last"]::before {
+      inset-block-start: 50%;
+      inset-inline-start: 0;
+      inline-size: 100%;
+      border-block-start: var(--border-width-025) solid var(--tree-indicator-border);
+    }
+
+    &[data-variant="first"]::after {
+      inset-block-start: 50%;
+      inset-block-end: 0;
+      inset-inline-start: 0;
+      border-inline-start: var(--border-width-025) solid var(--tree-indicator-border);
+    }
+
+    &[data-variant="last"]::after {
+      inset-block-start: 0;
+      inset-block-end: 50%;
+      inset-inline-start: 0;
+      border-inline-start: var(--border-width-025) solid var(--tree-indicator-border);
+    }
+
+    &[data-variant="overflow"] {
+      border-inline-start-color: var(--tree-indicator-border);
+
+      &::after {
+        inset-inline-start: 50%;
+        inset-block-start: 50%;
+        color: var(--text-secondary);
+        content: "…";
+        transform: translate(-50%, -58%);
+        line-height: var(--font-height-tight);
+      }
     }
   }
 

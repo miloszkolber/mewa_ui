@@ -20,7 +20,7 @@
 
   .date-picker-heading {
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     color: var(--text-primary);
   }
 
@@ -31,18 +31,17 @@
     width: var(--size-1000);
     height: var(--size-1000);
     padding: 0;
-    border: var(--border-width-025) solid transparent;
+    border: var(--border-width-025) solid var(--border-transparent);
 
     background-color: transparent;
     color: var(--text-primary);
     cursor: pointer;
     &:hover {
-      background-color: var(--surface-secondary);
+      background-color: var(--surface-control-hover);
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
 
     & svg {
@@ -61,7 +60,7 @@
     height: 2.25rem;
     font-size: var(--font-size-300);
     font-weight: var(--font-weight-400);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     text-align: center;
     vertical-align: middle;
   }
@@ -86,36 +85,35 @@
       color: var(--text-primary);
       cursor: pointer;
       &:hover {
-        background-color: var(--surface-secondary);
+        background-color: var(--surface-control-hover);
       }
 
       &:focus-visible {
-        outline: var(--focus-ring-width) solid var(--border-focus);
-        outline-offset: var(--border-width-025);
+        box-shadow: var(--ring-default);
       }
     }
 
     &[data-today] button {
       background-color: var(--surface-secondary);
-      font-weight: var(--font-weight-550);
+      font-weight: var(--font-weight-525);
     }
 
     &[data-selected] button {
-      background-color: var(--surface-inverted);
+      background-color: var(--surface-control-inverted);
       color: var(--text-inverted);
 
       &:hover {
-        opacity: var(--opacity-09);
+        background-color: var(--surface-button-primary-hover);
       }
     }
 
     &[data-outside] button {
-      color: var(--text-muted);
+      color: var(--text-secondary);
     }
 
     &[data-disabled] button {
-      color: var(--text-muted);
-      opacity: var(--opacity-04);
+      background-color: var(--surface-control-disabled);
+      color: var(--text-disabled);
       cursor: not-allowed;
     }
   }

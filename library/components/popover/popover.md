@@ -36,7 +36,7 @@ Keep the popover content semantically complete.
 ```html
 <button class="btn"
         type="button"
-        data-variant="outline"
+        data-variant="secondary"
         popovertarget="display-options">
   Display options
 </button>

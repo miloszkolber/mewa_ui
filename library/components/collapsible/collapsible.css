@@ -16,18 +16,17 @@
     padding-inline: var(--space-400);
     block-size: var(--size-1000);
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     cursor: pointer;
     color: var(--text-primary);
     list-style: none;
 
     &:hover {
-      background-color: var(--surface-secondary);
+      background-color: var(--surface-content-hover);
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
 
     &::-webkit-details-marker {
@@ -38,7 +37,7 @@
   .collapsible-chevron {
     width: var(--size-400);
     height: var(--size-400);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     flex-shrink: 0;
 
     details[open] > summary > & {
@@ -49,7 +48,7 @@
   .collapsible-content {
     padding: 0 var(--space-400) var(--space-300);
     font-size: var(--font-size-350);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     line-height: var(--font-height-regular);
   }
 

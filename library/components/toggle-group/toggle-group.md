@@ -35,11 +35,11 @@ Use `data-type="single"` when zero or one item can be pressed.
      data-type="single"
      data-variant="outline">
   <button class="toggle" type="button" value="list" aria-pressed="true">
-    <i data-lucide="list" aria-hidden="true"></i>
+    <i class="ri-list-unordered" aria-hidden="true"></i>
     List
   </button>
   <button class="toggle" type="button" value="grid" aria-pressed="false">
-    <i data-lucide="layout-grid" aria-hidden="true"></i>
+    <i class="ri-layout-grid-line" aria-hidden="true"></i>
     Grid
   </button>
 </div>

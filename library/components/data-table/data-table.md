@@ -18,6 +18,8 @@ The table, filter form, sort destinations, and pagination links can remain usabl
 
 The optional module adds client-side filtering, sorting, result counting, and pagination.
 
+Data Table inherits Table's ready 36px row rhythm, 8px cell padding, 14px regular typography, and control-hover row state.
+
 ## Native Web APIs
 
 - [`<table>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/table) provides semantic tabular data.
@@ -53,7 +55,7 @@ The optional module adds client-side filtering, sorting, result counting, and pa
       </div>
       <button class="btn"
               type="reset"
-              data-variant="outline"
+              data-variant="secondary"
               data-table-clear>
         Clear
       </button>

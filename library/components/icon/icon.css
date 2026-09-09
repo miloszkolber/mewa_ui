@@ -1,7 +1,7 @@
 /* -- Icon component ---------------------------------------- */
 
 @layer components {
-  [data-lucide] {
+  :where([class^="ri-"], [class*=" ri-"], [data-remix-icon]) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -10,22 +10,19 @@
     width: var(--size-400);
     height: var(--size-400);
     pointer-events: none;
+    font-style: normal;
+    line-height: 1;
 
     /* -- Sizes via data-size --------------------------------- */
+    &[data-size="xs"] { width: var(--size-300); height: var(--size-300); }
     &[data-size="md"] { width: var(--size-500); height: var(--size-500); }
     &[data-size="lg"] { width: var(--size-600); height: var(--size-600); }
     &[data-size="xl"] { width: var(--size-800); height: var(--size-800); }
 
   }
 
-  @media (prefers-contrast: more) {
-    [data-lucide] {
-      stroke-width: 2;
-    }
-  }
-
   @media (forced-colors: active) {
-    [data-lucide] {
+    :where([class^="ri-"], [class*=" ri-"], [data-remix-icon]) {
       color: CanvasText;
     }
   }

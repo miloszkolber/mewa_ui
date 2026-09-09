@@ -49,10 +49,10 @@ test('registry v3 defines the canonical source roots', () => {
   assert.equal(registry.name, 'mewa_ui');
   assert.deepEqual(registry.canonicalAssets, {
     foundations: ['library/src/base.css', 'library/src/tokens.css'],
-    fonts: ['library/src/geist.woff2', 'library/src/geistmono.woff2'],
+    fonts: ['library/src/google-sans-code.woff2'],
     licenses: {
-      geist: 'library/src/licenses/GEIST-OFL.txt',
-      lucide: 'library/src/licenses/LUCIDE-LICENSE.txt'
+      googleSansCode: 'library/src/licenses/GOOGLE-SANS-CODE-OFL.txt',
+      remixIcon: 'library/src/licenses/REMIX-ICON-LICENSE.txt'
     },
     icons: 'library/src/icons/',
     components: 'library/components/',
@@ -195,7 +195,7 @@ test('docs have exact parity with the registry', () => {
   assert.deepEqual(docs, slugs);
 });
 
-test('the hidden preview stacks every component without frames or chrome', () => {
+test('the hidden preview renders forced light and dark component columns', () => {
   const preview = read('docs/preview.html');
   assert(
     preview.includes('<meta name="robots" content="noindex, nofollow">'),
@@ -216,6 +216,19 @@ test('the hidden preview stacks every component without frames or chrome', () =>
   assert(
     !/href="\.\.\/library\/components\//.test(preview),
     'docs/preview.html: raw component stylesheet remains'
+  );
+  assert(
+    preview.includes('class="preview-theme-grid"') &&
+      preview.includes('data-preview-theme="light"') &&
+      preview.includes('data-preview-theme="dark"') &&
+      preview.includes('grid-template-columns: repeat(2, minmax(0, 1fr))'),
+    'docs/preview.html: forced light and dark columns are required'
+  );
+  assert(
+    preview.includes('data-preview-theme-option="light"') &&
+      preview.includes('data-preview-theme-option="dark"') &&
+      preview.includes('@media (max-width: 48rem)'),
+    'docs/preview.html: mobile theme switch is required'
   );
   const ids = Array.from(preview.matchAll(/\sid="([^"]+)"/g), (match) => match[1]);
   assert.equal(
@@ -238,13 +251,13 @@ test('the hidden preview stacks every component without frames or chrome', () =>
   }
   assert.equal(
     (preview.match(/<div\s[^>]*class="preview"/g) || []).length,
-    expectedBlocks,
-    'docs/preview.html: preview block count drifts from the component pages'
+    expectedBlocks * 2,
+    'docs/preview.html: forced theme preview block count drifts from the component pages'
   );
   assert.equal(
     (preview.match(/<dialog\b/g) || []).length,
-    expectedDialogs,
-    'docs/preview.html: dialog count drifts from the component pages'
+    expectedDialogs * 2,
+    'docs/preview.html: forced theme dialog count drifts from the component pages'
   );
   assert(
     !/<dialog\b(?![^>]*\bopen\b)[^>]*>/.test(preview),
@@ -265,11 +278,13 @@ test('the hidden preview stacks every component without frames or chrome', () =>
     preview.includes('window.toast?.show') && preview.includes('duration: Infinity'),
     'docs/preview.html: a persistent demo toast must render on load'
   );
-  for (const id of ['dialog--demo-dialog', 'sheet--sheet-right']) {
-    assert(
-      preview.includes(`id="${id}"`),
-      `docs/preview.html: body-level overlay ${id} is missing from the stacked page`
-    );
+  for (const theme of ['light', 'dark']) {
+    for (const id of [`dialog--${theme}--demo-dialog`, `sheet--${theme}--sheet-right`]) {
+      assert(
+        preview.includes(`id="${id}"`),
+        `docs/preview.html: body-level overlay ${id} is missing from the forced theme page`
+      );
+    }
   }
   const index = read('docs/index.html');
   assert(!index.includes('preview.html'), 'docs/index.html: hidden preview must stay unlinked');
@@ -378,12 +393,18 @@ test('semantic tokens have machine-readable purposes', () => {
   });
 });
 
-test('component CSS stays square, tokenized, shadow-free, and motion-controlled', () => {
+test('component CSS stays square, tokenized, ring-controlled, and motion-controlled', () => {
   for (const component of registry.components) {
     const filename = component.files.css;
     const source = stripCssComments(read(filename));
     assert.match(source, /@layer\s+components/, `${filename}: missing components layer`);
-    assert(!/\b(?:box-shadow|text-shadow)\s*:/i.test(source), `${filename}: shadows are forbidden`);
+    for (const match of source.matchAll(/\b(?:box-shadow|text-shadow)\s*:\s*([^;{}]+)/gi)) {
+      assert.match(
+        match[0],
+        /^box-shadow\s*:\s*(?:var\(--ring-(?:default|invalid)\)|none)$/i,
+        `${filename}: only shared ring shadows or explicit resets are allowed`
+      );
+    }
     if (component.slug !== 'spinner') {
       assert(
         !/\banimation(?:-[\w]+)?\s*:/i.test(source),
@@ -428,6 +449,133 @@ test('component CSS stays square, tokenized, shadow-free, and motion-controlled'
       );
     }
   }
+});
+
+test('selected Figma component contracts are encoded in source', () => {
+  const css = (slug) => stripCssComments(read(`library/components/${slug}/${slug}.css`));
+  const expectMatch = (source, pattern, message) => assert.match(source, pattern, message);
+
+  const button = css('button');
+  expectMatch(button, /height:\s*var\(--size-900\)/, 'button: 36px base height');
+  expectMatch(button, /padding:\s*0 var\(--space-250\)/, 'button: 10px horizontal padding');
+  expectMatch(button, /gap:\s*var\(--space-100\)/, 'button: 4px icon gap');
+  expectMatch(button, /line-height:\s*var\(--font-height-tight\)/, 'button: tight text');
+  assert.doesNotMatch(
+    button,
+    /data-variant="(?:outline|destructive-outline|link)"/,
+    'button: retired variants must not remain'
+  );
+
+  const toggle = css('toggle');
+  expectMatch(toggle, /height:\s*var\(--size-900\)/, 'toggle: 36px base height');
+  expectMatch(toggle, /padding:\s*0 var\(--space-250\)/, 'toggle: 10px horizontal padding');
+  expectMatch(toggle, /gap:\s*var\(--space-100\)/, 'toggle: 4px icon gap');
+
+  const tabs = css('tabs');
+  expectMatch(tabs, /block-size:\s*var\(--size-900\)/, 'tabs: 36px track');
+  expectMatch(tabs, /background:\s*var\(--surface-control-inverted\)/, 'tabs: inverted selection');
+  expectMatch(
+    tabs,
+    /border-color:\s*var\(--border-interactive-inverted\)/,
+    'tabs: selected border'
+  );
+
+  const table = css('table');
+  expectMatch(table, /padding:\s*0 var\(--space-200\)/, 'table: 8px horizontal padding');
+  expectMatch(table, /height:\s*var\(--size-900\)/, 'table: 36px row height');
+  expectMatch(table, /background-color:\s*var\(--surface-control-hover\)/, 'table: control hover');
+
+  expectMatch(css('icon'), /\[data-size="xs"\][\s\S]*var\(--size-300\)/, 'icon: 12px size');
+
+  const checkbox = css('checkbox');
+  expectMatch(checkbox, /width:\s*var\(--size-400\)/, 'checkbox: 16px width');
+  expectMatch(checkbox, /height:\s*var\(--size-400\)/, 'checkbox: 16px height');
+  expectMatch(
+    checkbox,
+    /background-color:\s*var\(--surface-control-inverted\)/,
+    'checkbox: invalid checked fill'
+  );
+
+  const radio = css('radio-group');
+  expectMatch(
+    radio,
+    /border:\s*var\(--border-width-025\) solid var\(--border-interactive-default\)/
+  );
+  expectMatch(radio, /background:\s*var\(--surface-control\)/, 'radio card: control fill');
+  expectMatch(radio, /box-shadow:\s*var\(--ring-default\)/, 'radio card: default ring');
+
+  const kbd = css('typography');
+  expectMatch(kbd, /min-inline-size:\s*var\(--size-500\)/, 'kbd: 20px width');
+  expectMatch(kbd, /block-size:\s*var\(--size-500\)/, 'kbd: 20px height');
+  expectMatch(kbd, /background:\s*var\(--surface-alpha\)/, 'kbd: alpha surface');
+  expectMatch(kbd, /background:\s*var\(--surface-alpha-inverted\)/, 'kbd: inverted surface');
+  expectMatch(kbd, /font-variation-settings:\s*var\(--font-mono-axis\)/, 'kbd: MONO:1');
+
+  const switchCss = css('switch');
+  expectMatch(switchCss, /width:\s*var\(--size-900\)/, 'switch: 36px width');
+  expectMatch(switchCss, /height:\s*var\(--size-500\)/, 'switch: 20px height');
+  expectMatch(switchCss, /box-shadow:\s*var\(--ring-invalid\)/, 'switch: invalid ring');
+
+  expectMatch(css('spinner'), /\[data-size="xs"\][\s\S]*var\(--size-300\)/, 'spinner: 12px size');
+  expectMatch(css('spinner'), /color:\s*var\(--text-primary\)/, 'spinner: primary stroke');
+
+  const avatar = css('avatar');
+  expectMatch(avatar, /height:\s*var\(--size-900\)/, 'avatar: 36px base size');
+  expectMatch(avatar, /height:\s*var\(--size-200\)/, 'avatar: 8px badge');
+  expectMatch(avatar, /color:\s*var\(--text-secondary\)/, 'avatar: secondary fallback');
+  expectMatch(avatar, /background-color:\s*var\(--text-positive\)/, 'avatar: positive badge');
+
+  expectMatch(css('tooltip'), /min-block-size:\s*var\(--size-600\)/, 'tooltip: 24px height');
+  expectMatch(css('tooltip'), /padding:\s*0 var\(--space-150\)/, 'tooltip: 6px horizontal padding');
+
+  const accordion = css('accordion');
+  expectMatch(accordion, /min-block-size:\s*var\(--size-1100\)/, 'accordion: 44px trigger');
+  expectMatch(accordion, /padding:\s*0 var\(--space-300\)/, 'accordion: 12px horizontal padding');
+  expectMatch(accordion, /gap:\s*var\(--space-200\)/, 'accordion: 8px icon gap');
+
+  expectMatch(css('badge'), /min-block-size:\s*var\(--size-600\)/, 'badge: 24px height');
+  expectMatch(css('badge'), /padding:\s*0 var\(--space-200\)/, 'badge: 8px horizontal padding');
+
+  const slider = css('slider');
+  expectMatch(slider, /height:\s*var\(--size-100\)/, 'slider: 4px track');
+  expectMatch(slider, /height:\s*var\(--size-400\)/, 'slider: 16px thumb');
+  expectMatch(slider, /filter:\s*blur\(var\(--blur-400\)\)/, 'slider: disabled thumb blur');
+
+  const progress = css('progress');
+  expectMatch(progress, /height:\s*var\(--size-150\)/, 'progress: 6px height');
+  expectMatch(progress, /background-color:\s*var\(--surface-control\)/, 'progress: control track');
+  expectMatch(
+    progress,
+    /background-color:\s*var\(--surface-control-inverted\)/,
+    'progress: inverted value'
+  );
+  expectMatch(
+    progress,
+    /background-color:\s*var\(--surface-control-disabled\)/,
+    'progress: explicit disabled value'
+  );
+
+  const tree = css('tree-view');
+  for (const variant of ['line', 'branch', 'first', 'last', 'overflow'])
+    expectMatch(tree, new RegExp(`data-variant="${variant}"`), `tree indicator: ${variant}`);
+
+  const nav = css('nav');
+  expectMatch(nav, /\.nav-search\b/, 'nav: search subprimitive');
+  expectMatch(nav, /\.nav-brand\b/, 'nav: brand subprimitive');
+  expectMatch(
+    nav,
+    /data-state="expanded"[\s\S]*var\(--surface-control-hover\)/,
+    'nav: expanded state'
+  );
+
+  const textarea = css('textarea');
+  expectMatch(textarea, /min-height:\s*var\(--size-2000\)/, 'textarea: repository minimum');
+  expectMatch(
+    textarea,
+    /padding:\s*var\(--space-200\) var\(--space-300\)/,
+    'textarea: repository padding'
+  );
+  assert.match(read('library/components/radio-group/radio-group.md'), /conceptual|abstraction/i);
 });
 
 test('App Shell provides the shared dense row composition', () => {

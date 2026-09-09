@@ -40,7 +40,7 @@ The module provides filtering, option navigation, selection, focus management, a
 
   <button class="btn combobox-trigger"
           type="button"
-          data-variant="outline"
+          data-variant="secondary"
           id="framework-trigger"
           aria-haspopup="listbox"
           aria-expanded="false"
@@ -49,32 +49,12 @@ The module provides filtering, option navigation, selection, focus management, a
     <span class="combobox-value"
           id="framework-value"
           data-placeholder="Select framework">Select framework</span>
-    <svg class="combobox-chevron"
-         aria-hidden="true"
-         width="16"
-         height="16"
-         viewBox="0 0 24 24"
-         fill="none"
-         stroke="currentColor"
-         stroke-width="2">
-      <path d="m7 15 5 5 5-5"></path>
-      <path d="m7 9 5-5 5 5"></path>
-    </svg>
+    <svg class="combobox-chevron" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.2072 9.0428 12.0001 2.83569 5.793 9.0428 7.20721 10.457 12.0001 5.66412 16.793 10.457 18.2072 9.0428ZM5.79285 14.9572 12 21.1643 18.2071 14.9572 16.7928 13.543 12 18.3359 7.20706 13.543 5.79285 14.9572Z"/></svg>
   </button>
 
   <div class="combobox-content" id="framework-popover" popover>
     <div class="combobox-search">
-      <svg class="combobox-search-icon"
-           aria-hidden="true"
-           width="16"
-           height="16"
-           viewBox="0 0 24 24"
-           fill="none"
-           stroke="currentColor"
-           stroke-width="2">
-        <circle cx="11" cy="11" r="8"></circle>
-        <path d="m21 21-4.3-4.3"></path>
-      </svg>
+      <svg class="combobox-search-icon" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z"/></svg>
       <input class="combobox-search-input"
              type="text"
              role="combobox"

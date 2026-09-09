@@ -48,7 +48,7 @@ Use `data-trend="up"` or `data-trend="down"` only when direction has clear produ
   <p class="statistic-value">3</p>
   <p class="statistic-description">
     <span class="statistic-trend" data-trend="down">
-      <i data-lucide="arrow-down" aria-hidden="true"></i>
+      <i class="ri-arrow-down-line" aria-hidden="true"></i>
       25 percent fewer
     </span>
     than yesterday

@@ -128,7 +128,9 @@ Use the default grouped track for a compact control-like tab set.
 
 Use `data-variant="line"` for an underline treatment.
 
-Both variants use the shared 40px control rhythm.
+Both variants use the shared 36px control rhythm.
+
+Tab labels use 14px regular tight text with `MONO:0`. Selected, hovered, focused, and disabled states use the explicit control and interactive roles.
 
 Both variants remain square and use fast selection feedback.
 

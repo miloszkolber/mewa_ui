@@ -18,6 +18,10 @@ Use `<fieldset class="fieldset">` with `<legend>` for related controls.
 
 The browser remains responsible for focus, validation, submission, and reset.
 
+## Visual contract
+
+Field descriptions and errors use 14px regular-relaxed text with `MONO:0`. Compact status outputs remain separate so a status counter does not change the supporting-text contract.
+
 ## Native Web APIs
 
 - [`<label>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/label) associates visible text with a control.

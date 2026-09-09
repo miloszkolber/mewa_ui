@@ -41,12 +41,12 @@
       align-items: center;
       justify-content: center;
       background-color: var(--surface-secondary);
-      color: var(--text-muted);
+      color: var(--text-secondary);
 
       & > svg {
         width: var(--size-1000);
         height: var(--size-1000);
-        opacity: var(--opacity-05);
+        color: var(--text-secondary);
       }
     }
 
@@ -60,7 +60,7 @@
     padding: var(--space-300) 0 var(--space-100);
     font-size: var(--font-size-350);
     line-height: var(--font-height-regular);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     text-wrap: pretty;
   }
 
@@ -77,9 +77,9 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    opacity: 0;
+    opacity: var(--opacity-000);
     &[open] {
-      opacity: 1;
+      opacity: var(--opacity-100);
     }
 
     &::backdrop {
@@ -125,12 +125,11 @@
     color: var(--text-primary);
     cursor: pointer;
     &:hover {
-      background: var(--surface-secondary);
+      background: var(--surface-control-hover);
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
 
     & > svg {

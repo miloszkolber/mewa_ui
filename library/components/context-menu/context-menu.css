@@ -14,18 +14,17 @@
     outline: none;
 
     & > span {
-      color: var(--text-muted);
+      color: var(--text-secondary);
       font-size: var(--font-size-300);
     }
 
     &:hover {
       border-color: var(--border-hover);
-      background-color: var(--surface-hover);
+      background-color: var(--surface-control-hover);
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
   }
 
@@ -59,13 +58,13 @@
 
     &:hover,
     &[data-highlighted] {
-      background-color: var(--surface-hover);
+      background-color: var(--surface-menu-hover);
       color: var(--text-primary);
     }
 
     &[data-variant="destructive"]:hover,
     &[data-variant="destructive"][data-highlighted] {
-      background-color: var(--surface-negative);
+      background-color: var(--surface-destructive-hover);
       color: var(--text-negative);
     }
 
@@ -102,9 +101,9 @@
   .context-menu-label {
     margin: 0;
     padding: var(--space-100) var(--space-200);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: var(--font-size-300);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
   }
 
   .context-menu-separator {
@@ -115,8 +114,9 @@
 
   .context-menu-shortcut {
     margin-inline-start: auto;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-family: var(--font-mono);
+    font-variation-settings: var(--font-mono-axis);
     font-size: var(--font-size-300);
   }
 

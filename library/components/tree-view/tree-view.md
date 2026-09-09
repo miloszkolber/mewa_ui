@@ -12,6 +12,12 @@ Use a normal nested list when managed tree keyboard behavior is unnecessary.
 
 Do not use Tree View for flat application routes.
 
+## Visual states
+
+Tree items expose selected, disabled, hover, and focus treatment through native ARIA state and the shared control, border, and ring roles.
+
+Tree View also includes the structural `.tree-indicator` subprimitive. Use `data-variant="line"`, `branch`, `first`, `last`, or `overflow` for connector and continuation geometry. It is not a separate registry component.
+
 ## Native basis
 
 Tree View uses nested lists with `role="tree"`, `role="treeitem"`, and `role="group"`.
@@ -34,14 +40,14 @@ The module normalizes ARIA state and manages tree focus movement.
   <li class="tree-item" role="treeitem" aria-expanded="true">
     <details class="tree-branch" open>
       <summary class="tree-branch-trigger">
-        <i data-lucide="chevron-down" aria-hidden="true"></i>
-        <i data-lucide="folder" aria-hidden="true"></i>
+        <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
+        <i class="ri-folder-line" aria-hidden="true"></i>
         <span>src</span>
       </summary>
       <ul class="tree-group" role="group">
         <li class="tree-item" role="treeitem">
           <span class="tree-leaf">
-            <i data-lucide="file" aria-hidden="true"></i>
+            <i class="ri-file-line" aria-hidden="true"></i>
             <span>index.js</span>
           </span>
         </li>
@@ -51,7 +57,7 @@ The module normalizes ARIA state and manages tree focus movement.
 
   <li class="tree-item" role="treeitem">
     <span class="tree-leaf">
-      <i data-lucide="file" aria-hidden="true"></i>
+      <i class="ri-file-line" aria-hidden="true"></i>
       <span>package.json</span>
     </span>
   </li>

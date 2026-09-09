@@ -38,7 +38,7 @@ The module provides global triggering, filtering, managed active state, command 
         aria-label="Command menu">
   <div class="command-palette-content">
     <div class="command-palette-input-wrapper">
-      <i data-lucide="search" aria-hidden="true"></i>
+      <i class="ri-search-line" aria-hidden="true"></i>
       <input class="command-palette-input"
              type="search"
              aria-label="Search commands"

@@ -82,6 +82,8 @@ Keep one associated label for the radio.
 
 Do not nest buttons, links, or other form controls inside a Radio Card.
 
+Selected Radio Cards use the control surface, interactive-inverted border, and default focus ring. Hover uses the control-hover surface.
+
 ```html
 <fieldset class="radio-group">
   <legend>Storage profile</legend>
@@ -124,7 +126,9 @@ Explain an unavailable option when the reason is not obvious.
 
 ## Accessibility
 
-Use the control border role to keep the unselected control visible against the canvas.
+Use the interactive-default border role to keep the unselected control visible against the canvas.
+
+Figma's combined Choice set is a visual abstraction. Keep Radio Group and Checkbox as separate native APIs in repository code.
 
 Keep a visible legend for the group.
 

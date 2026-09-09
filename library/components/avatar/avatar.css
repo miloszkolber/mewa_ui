@@ -4,14 +4,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--size-1000);
-    height: var(--size-1000);
+    width: var(--size-900);
+    height: var(--size-900);
     border-radius: var(--border-radius-000);
     overflow: visible;
     flex-shrink: 0;
     background-color: var(--surface-secondary);
 
-    /* Same shorthand as other primitives: sm 32, default 40, lg 48. */
+    /* Same shorthand as other primitives: sm 32, default 36, lg 48. */
     &[data-size="sm"] { width: var(--size-800); height: var(--size-800); }
     &[data-size="lg"] { width: var(--size-1200); height: var(--size-1200); }
 
@@ -32,8 +32,8 @@
     width: 100%;
     height: 100%;
     font-size: var(--font-size-300);
-    font-weight: var(--font-weight-550);
-    color: var(--text-primary);
+    font-weight: var(--font-weight-525);
+    color: var(--text-secondary);
     background-color: var(--surface-secondary);
     position: absolute;
     inset: 0;
@@ -49,10 +49,11 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    width: 0.625rem;
-    height: 0.625rem;
+    width: var(--size-200);
+    height: var(--size-200);
     border-radius: var(--border-radius-000);
-    background-color: var(--surface-positive);
+    background-color: var(--text-positive);
+    color: var(--text-positive);
   }
 
   /* -- Accessibility ---------------------------------------- */

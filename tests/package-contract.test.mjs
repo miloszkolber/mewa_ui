@@ -102,7 +102,7 @@ await test('the core package is private, versioned, dependency-free, and export-
   assert.equal(packaged.dependencies, undefined);
   assert.equal(packaged.peerDependencies, undefined);
   assert(packaged.exports['./css/base.css']);
-  assert(packaged.exports['./fonts/geist-sans.css']);
+  assert(packaged.exports['./fonts/google-sans-code.css']);
   assert(packaged.exports['./manifest.json']);
 
   Object.entries(packaged.exports).forEach(([exportName, target]) => {
@@ -396,12 +396,16 @@ await test('fonts and icons stay optional', () => {
   const base = fs.readFileSync(path.join(coreRoot, 'css/base.css'), 'utf8');
   assert(!/@font-face\b/.test(base), 'base.css must not request bundled fonts');
   assert.match(
-    fs.readFileSync(path.join(coreRoot, 'fonts/geist-sans.css'), 'utf8'),
+    fs.readFileSync(path.join(coreRoot, 'fonts/google-sans-code.css'), 'utf8'),
     /@font-face\b/
   );
   assert.match(
-    fs.readFileSync(path.join(coreRoot, 'fonts/geist-mono.css'), 'utf8'),
-    /@font-face\b/
+    fs.readFileSync(path.join(coreRoot, 'fonts/google-sans-code.css'), 'utf8'),
+    /font-family:\s*"google-sans-code"/
+  );
+  assert(
+    fs.statSync(path.join(coreRoot, 'fonts/google-sans-code.woff2')).isFile(),
+    'Google Sans Code font asset must be packaged'
   );
 
   const sourceIcons = fs
@@ -419,17 +423,17 @@ await test('fonts and icons stay optional', () => {
   assert.equal(iconsPackage.name, 'mewa-icons');
   assert.equal(manifest.name, iconsPackage.name);
   assert.equal(iconsPackage.private, true);
-  assert.equal(iconsPackage.license, 'SEE LICENSE IN licenses/LUCIDE-LICENSE.txt');
+  assert.equal(iconsPackage.license, 'SEE LICENSE IN licenses/REMIX-ICON-LICENSE.txt');
   Object.values(manifest.licenses).forEach((relativePath) => {
     assertLocalPath(iconsRoot, 'icon license manifest', relativePath);
   });
   assert.match(
-    fs.readFileSync(path.join(coreRoot, 'licenses/GEIST-OFL.txt'), 'utf8'),
+    fs.readFileSync(path.join(coreRoot, 'licenses/GOOGLE-SANS-CODE-OFL.txt'), 'utf8'),
     /SIL OPEN FONT LICENSE Version 1\.1/
   );
   assert.match(
-    fs.readFileSync(path.join(coreRoot, 'licenses/LUCIDE-LICENSE.txt'), 'utf8'),
-    /ISC License/
+    fs.readFileSync(path.join(coreRoot, 'licenses/REMIX-ICON-LICENSE.txt'), 'utf8'),
+    /Remix Icon License v1\.0/
   );
   const iconExport = iconsPackage.exports['./*.svg'];
   assert.equal(iconExport, './icons/*.svg');
@@ -441,7 +445,7 @@ await test('fonts and icons stay optional', () => {
     );
   });
   for (const exportName of [
-    './licenses/LUCIDE-LICENSE.txt',
+    './licenses/REMIX-ICON-LICENSE.txt',
     './LICENSE',
     './manifest.json',
     './checksums.json'
@@ -501,6 +505,15 @@ await test('packaged SVG icons contain no executable or remote content', () => {
     assert(
       !/(?:href|xlink:href)\s*=\s*['"](?:https?:|\/\/|javascript:|data:text\/html)/i.test(source),
       `${filename}: remote or executable reference is forbidden`
+    );
+    assert.match(
+      source,
+      /\bfill="currentColor"/,
+      `${filename}: Remix icons must use currentColor fill`
+    );
+    assert(
+      !/\bstroke(?:-width|-linecap|-linejoin)?\s*=/.test(source),
+      `${filename}: Remix icons must not carry stroke presentation attributes`
     );
   }
 });

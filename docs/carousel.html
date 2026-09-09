@@ -30,7 +30,7 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Carousel</h1>
-        <p class="text-muted leading-relaxed mb-6">Presents a bounded sequence of related slides with direct navigation and keyboard controls. Use it when the sequence matters and every item remains easy to reach.</p>
+        <p class="text-secondary leading-relaxed mb-6">Presents a bounded sequence of related slides with direct navigation and keyboard controls. Use it when the sequence matters and every item remains easy to reach.</p>
       </div>
 
         <!-- ═══ Default ═══════════════════════════════ -->
@@ -44,13 +44,13 @@
               <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-025) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-size-350); color: var(--text-primary)">4</div>
               <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-025) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-size-350); color: var(--text-primary)">5</div>
             </div>
-            <button type="button" class="carousel-prev" aria-label="Previous slide"><i data-lucide="chevron-left"></i></button>
-            <button type="button" class="carousel-next" aria-label="Next slide"><i data-lucide="chevron-right"></i></button>
+            <button type="button" class="carousel-prev" aria-label="Previous slide"><i class="ri-arrow-left-s-line"></i></button>
+            <button type="button" class="carousel-next" aria-label="Next slide"><i class="ri-arrow-right-s-line"></i></button>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-html">&lt;div class="carousel" role="region" aria-roledescription="carousel" aria-label="Featured slides"&gt;
@@ -59,14 +59,14 @@
     &lt;div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="2 of 5"&gt;2&lt;/div&gt;
     &lt;div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="3 of 5"&gt;3&lt;/div&gt;
   &lt;/div&gt;
-  &lt;button type="button" class="carousel-prev" aria-label="Previous slide"&gt;&lt;i data-lucide="chevron-left"&gt;&lt;/i&gt;&lt;/button&gt;
-  &lt;button type="button" class="carousel-next" aria-label="Next slide"&gt;&lt;i data-lucide="chevron-right"&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;button type="button" class="carousel-prev" aria-label="Previous slide"&gt;&lt;i class="ri-arrow-left-s-line"&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;button type="button" class="carousel-next" aria-label="Next slide"&gt;&lt;i class="ri-arrow-right-s-line"&gt;&lt;/i&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
         </div>
 
         <!-- ═══ Sizes (multi-slide) ════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">Sizes</p>
-        <p class="text-xs text-muted mb-4">Set <code>flex</code> on <code>.carousel-slide</code> to show multiple slides. Use <code>calc()</code> to account for the gap.</p>
+        <p class="text-xs text-secondary mb-4">Set <code>flex</code> on <code>.carousel-slide</code> to show multiple slides. Use <code>calc()</code> to account for the gap.</p>
         <div class="preview" style="padding: var(--space-1000) var(--space-1200)">
           <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Multi-slide demo" style="max-width: 30rem; margin: 0 auto">
             <div class="carousel-viewport" aria-live="polite">
@@ -80,12 +80,12 @@
               <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="8 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-025) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-size-350); color: var(--text-primary)">8</div>
               <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="9 of 9" style="flex: 0 0 calc(33.333% - 0.667rem); min-height: 10rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-025) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-size-350); color: var(--text-primary)">9</div>
             </div>
-            <button type="button" class="carousel-prev" aria-label="Previous slide"><i data-lucide="chevron-left"></i></button>
-            <button type="button" class="carousel-next" aria-label="Next slide"><i data-lucide="chevron-right"></i></button>
+            <button type="button" class="carousel-prev" aria-label="Previous slide"><i class="ri-arrow-left-s-line"></i></button>
+            <button type="button" class="carousel-next" aria-label="Next slide"><i class="ri-arrow-right-s-line"></i></button>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
-          <button type="button" class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
+          <button type="button" class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>Copy</button>
           <pre><code class="language-html">&lt;!-- 33% width per slide (3 visible) --&gt;
 &lt;div class="carousel-slide" style="flex: 0 0 calc(33.333% - 0.667rem)"&gt;…&lt;/div&gt;
 
@@ -95,7 +95,7 @@
 
         <!-- ═══ With Dots ══════════════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">With dot indicators</p>
-        <p class="text-xs text-muted mb-4">Add an empty <code>.carousel-dots</code> container — dots are auto-generated from the slide count.</p>
+        <p class="text-xs text-secondary mb-4">Add an empty <code>.carousel-dots</code> container — dots are auto-generated from the slide count.</p>
         <div class="preview" style="padding: var(--space-1000) var(--space-1200)">
           <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Dots demo" style="max-width: 24rem; margin: 0 auto">
             <div class="carousel-viewport" aria-live="polite">
@@ -105,13 +105,13 @@
               <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-025) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-size-350); color: var(--text-primary)">4</div>
               <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-025) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-size-350); color: var(--text-primary)">5</div>
             </div>
-            <button type="button" class="carousel-prev" aria-label="Previous slide"><i data-lucide="chevron-left"></i></button>
-            <button type="button" class="carousel-next" aria-label="Next slide"><i data-lucide="chevron-right"></i></button>
+            <button type="button" class="carousel-prev" aria-label="Previous slide"><i class="ri-arrow-left-s-line"></i></button>
+            <button type="button" class="carousel-next" aria-label="Next slide"><i class="ri-arrow-right-s-line"></i></button>
             <div class="carousel-dots" role="group" aria-label="Choose slide to display"></div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
-          <button type="button" class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
+          <button type="button" class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>Copy</button>
           <pre><code class="language-html">&lt;div class="carousel" role="region" aria-roledescription="carousel" aria-label="Gallery"&gt;
   &lt;div class="carousel-viewport" aria-live="polite"&gt;
     &lt;div class="carousel-slide" role="group" aria-roledescription="slide"&gt;…&lt;/div&gt;
@@ -127,7 +127,7 @@
 
         <!-- ═══ With Counter ═══════════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">With counter</p>
-        <p class="text-xs text-muted mb-4">Add a <code>.carousel-counter</code> element — JS updates it automatically.</p>
+        <p class="text-xs text-secondary mb-4">Add a <code>.carousel-counter</code> element — JS updates it automatically.</p>
         <div class="preview" style="padding: var(--space-1000) var(--space-1200)">
           <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Counter demo" style="max-width: 24rem; margin: 0 auto">
             <div class="carousel-viewport" aria-live="polite">
@@ -137,13 +137,13 @@
               <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-025) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-size-350); color: var(--text-primary)">4</div>
               <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-025) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-size-350); color: var(--text-primary)">5</div>
             </div>
-            <button type="button" class="carousel-prev" aria-label="Previous slide"><i data-lucide="chevron-left"></i></button>
-            <button type="button" class="carousel-next" aria-label="Next slide"><i data-lucide="chevron-right"></i></button>
+            <button type="button" class="carousel-prev" aria-label="Previous slide"><i class="ri-arrow-left-s-line"></i></button>
+            <button type="button" class="carousel-next" aria-label="Next slide"><i class="ri-arrow-right-s-line"></i></button>
             <div class="carousel-counter" aria-live="polite">Slide 1 of 5</div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
-          <button type="button" class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
+          <button type="button" class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>Copy</button>
           <pre><code class="language-html">&lt;div class="carousel" role="region" aria-roledescription="carousel" aria-label="Slides"&gt;
   &lt;div class="carousel-viewport" aria-live="polite"&gt;…&lt;/div&gt;
   &lt;button type="button" class="carousel-prev" aria-label="Previous slide"&gt;…&lt;/button&gt;
@@ -154,7 +154,7 @@
 
         <!-- ═══ Loop ═══════════════════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">Loop</p>
-        <p class="text-xs text-muted mb-4">Add <code>data-loop</code> for infinite circular navigation — buttons never disable.</p>
+        <p class="text-xs text-secondary mb-4">Add <code>data-loop</code> for infinite circular navigation — buttons never disable.</p>
         <div class="preview" style="padding: var(--space-1000) var(--space-1200)">
           <div class="carousel" data-loop role="region" aria-roledescription="carousel" aria-label="Loop demo" style="max-width: 24rem; margin: 0 auto">
             <div class="carousel-viewport" aria-live="polite">
@@ -164,13 +164,13 @@
               <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-025) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-size-350); color: var(--text-primary)">4</div>
               <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-025) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-size-350); color: var(--text-primary)">5</div>
             </div>
-            <button type="button" class="carousel-prev" aria-label="Previous slide"><i data-lucide="chevron-left"></i></button>
-            <button type="button" class="carousel-next" aria-label="Next slide"><i data-lucide="chevron-right"></i></button>
+            <button type="button" class="carousel-prev" aria-label="Previous slide"><i class="ri-arrow-left-s-line"></i></button>
+            <button type="button" class="carousel-next" aria-label="Next slide"><i class="ri-arrow-right-s-line"></i></button>
             <div class="carousel-dots" role="group" aria-label="Choose slide to display"></div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
-          <button type="button" class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
+          <button type="button" class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>Copy</button>
           <pre><code class="language-html">&lt;div class="carousel" data-loop role="region" aria-roledescription="carousel" aria-label="Looping slides"&gt;
   &lt;div class="carousel-viewport" aria-live="polite"&gt;…&lt;/div&gt;
   &lt;button type="button" class="carousel-prev" aria-label="Previous slide"&gt;…&lt;/button&gt;
@@ -181,7 +181,7 @@
 
         <!-- ═══ Autoplay ═══════════════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">Autoplay</p>
-        <p class="text-xs text-muted mb-4">Slides change only through the previous and next controls, dots, or keyboard navigation.</p>
+        <p class="text-xs text-secondary mb-4">Slides change only through the previous and next controls, dots, or keyboard navigation.</p>
         <div class="preview" style="padding: var(--space-1000) var(--space-1200)">
           <div class="carousel" data-loop role="region" aria-roledescription="carousel" aria-label="Looping demo" style="max-width: 24rem; margin: 0 auto">
             <div class="carousel-viewport" aria-live="off">
@@ -191,13 +191,13 @@
               <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="4 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-025) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-size-350); color: var(--text-primary)">4</div>
               <div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="5 of 5" style="flex: 0 0 100%; min-height: 12rem; display: flex; align-items: center; justify-content: center; border: var(--border-width-025) solid var(--border-primary); background: var(--surface-primary); font-size: var(--font-size-350); color: var(--text-primary)">5</div>
             </div>
-            <button type="button" class="carousel-prev" aria-label="Previous slide"><i data-lucide="chevron-left"></i></button>
-            <button type="button" class="carousel-next" aria-label="Next slide"><i data-lucide="chevron-right"></i></button>
+            <button type="button" class="carousel-prev" aria-label="Previous slide"><i class="ri-arrow-left-s-line"></i></button>
+            <button type="button" class="carousel-next" aria-label="Next slide"><i class="ri-arrow-right-s-line"></i></button>
             <div class="carousel-dots" role="group" aria-label="Choose slide to display"></div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
-          <button type="button" class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>Copy</button>
+          <button type="button" class="copy-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>Copy</button>
           <pre><code class="language-html">&lt;div class="carousel" data-loop role="region" aria-roledescription="carousel" aria-label="Looping slides"&gt;
   &lt;div class="carousel-viewport" aria-live="off"&gt;…&lt;/div&gt;
   &lt;button type="button" class="carousel-prev" aria-label="Previous slide"&gt;…&lt;/button&gt;
@@ -208,7 +208,7 @@
 
         <!-- ═══ With Cards ═════════════════════════════ -->
         <p class="text-sm font-medium mb-2 mt-8">With cards</p>
-        <p class="text-xs text-muted mb-4">Compose with the Card component for richer slide content.</p>
+        <p class="text-xs text-secondary mb-4">Compose with the Card component for richer slide content.</p>
         <div class="preview" style="padding: var(--space-1000) var(--space-1200)">
           <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Card carousel" style="max-width: 24rem; margin: 0 auto">
             <div class="carousel-viewport" aria-live="polite">
@@ -219,7 +219,7 @@
                     <p class="card-description">A new design system built from scratch</p>
                   </div>
                   <div class="card-content">
-                    <p class="text-muted" style="font-size: var(--font-size-350)">Built with modern CSS and native web APIs. No frameworks, no libraries — just the platform.</p>
+                    <p class="text-secondary" style="font-size: var(--font-size-350)">Built with modern CSS and native web APIs. No frameworks, no libraries — just the platform.</p>
                   </div>
                 </div>
               </div>
@@ -230,7 +230,7 @@
                     <p class="card-description">Performance-first component library</p>
                   </div>
                   <div class="card-content">
-                    <p class="text-muted" style="font-size: var(--font-size-350)">Static content needs no JavaScript. Interactive behavior is added only where the browser needs help.</p>
+                    <p class="text-secondary" style="font-size: var(--font-size-350)">Static content needs no JavaScript. Interactive behavior is added only where the browser needs help.</p>
                   </div>
                 </div>
               </div>
@@ -241,13 +241,13 @@
                     <p class="card-description">Accessible by default</p>
                   </div>
                   <div class="card-content">
-                    <p class="text-muted" style="font-size: var(--font-size-350)">WAI-ARIA patterns, keyboard navigation, reduced motion, high contrast — all built in.</p>
+                    <p class="text-secondary" style="font-size: var(--font-size-350)">WAI-ARIA patterns, keyboard navigation, reduced motion, high contrast — all built in.</p>
                   </div>
                 </div>
               </div>
             </div>
-            <button type="button" class="carousel-prev" aria-label="Previous slide"><i data-lucide="chevron-left"></i></button>
-            <button type="button" class="carousel-next" aria-label="Next slide"><i data-lucide="chevron-right"></i></button>
+            <button type="button" class="carousel-prev" aria-label="Previous slide"><i class="ri-arrow-left-s-line"></i></button>
+            <button type="button" class="carousel-next" aria-label="Next slide"><i class="ri-arrow-right-s-line"></i></button>
             <div class="carousel-dots" role="group" aria-label="Choose slide to display"></div>
           </div>
         </div>

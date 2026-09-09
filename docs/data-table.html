@@ -32,11 +32,11 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Data Table</h1>
-        <p class="text-muted leading-relaxed mb-6">Adds filtering, sorting, result feedback, and pagination around a semantic table. Use these controls only when the amount of data makes them useful.</p>
+        <p class="text-secondary leading-relaxed mb-6">Adds filtering, sorting, result feedback, and pagination around a semantic table. Use these controls only when the amount of data makes them useful.</p>
       </div>
 
       <p class="text-sm font-medium mb-2 mt-6">Default</p>
-      <p class="text-xs text-muted mb-3">Filtering, sortable headers, result announcements, and client-side pagination are optional enhancements to the native composition.</p>
+      <p class="text-xs text-secondary mb-3">Filtering, sortable headers, result announcements, and client-side pagination are optional enhancements to the native composition.</p>
       <div class="preview">
         <section class="data-table" data-page-size="3" aria-labelledby="projects-title">
           <h2 id="projects-title" class="text-base font-medium">Projects</h2>
@@ -46,7 +46,7 @@
                 <label class="text-field-label" for="projects-filter">Filter projects</label>
                 <input class="text-field-input data-table-filter" data-table-filter id="projects-filter" name="q" type="search" placeholder="Search project names" aria-controls="projects-table" aria-describedby="projects-status">
               </div>
-              <button class="btn" data-variant="outline" data-table-clear type="reset">Clear</button>
+              <button class="btn" data-variant="secondary" data-table-clear type="reset">Clear</button>
             </form>
             <p class="data-table-summary" data-table-status data-singular="project" data-plural="projects" id="projects-status" role="status" aria-live="polite">5 projects</p>
           </div>
@@ -130,7 +130,7 @@
       </div>
 
       <p class="text-sm font-medium mb-2 mt-8">Composition</p>
-      <p class="text-xs text-muted mb-3">Table owns the caption, scopes, rows, and cells. Text Field owns the labelled search input. Pagination owns native page links. The Data Table module coordinates these pieces without replacing their native behavior.</p>
+      <p class="text-xs text-secondary mb-3">Table owns the caption, scopes, rows, and cells. Text Field owns the labelled search input. Pagination owns native page links. The Data Table module coordinates these pieces without replacing their native behavior.</p>
     </main>
   </div>
 

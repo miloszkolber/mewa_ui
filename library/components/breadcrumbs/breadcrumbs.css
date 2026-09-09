@@ -6,21 +6,20 @@
   }
   .breadcrumb-item { display: inline-flex; align-items: center; gap: var(--space-200); }
   .breadcrumb-link {
-    color: var(--text-muted); text-decoration: none;
+    color: var(--text-secondary); text-decoration: none;
      outline: none;
     &:hover { color: var(--text-primary); }
      &:focus-visible {
-       outline: var(--focus-ring-width) solid var(--border-focus);
-       outline-offset: var(--border-width-025);
+       box-shadow: var(--ring-default);
      }
   }
   .breadcrumb-separator {
-    color: var(--text-muted); font-size: var(--font-size-300);
+    color: var(--text-secondary); font-size: var(--font-size-300);
   }
   .breadcrumb-page { color: var(--text-primary); font-weight: var(--font-weight-400); }
   .breadcrumb-ellipsis {
     display: flex; align-items: center; justify-content: center;
-    width: var(--size-600); height: var(--size-600); color: var(--text-muted);
+    width: var(--size-600); height: var(--size-600); color: var(--text-secondary);
     & span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
   }
 
@@ -28,7 +27,7 @@
 
   @media (prefers-contrast: more) {
     .breadcrumb-link { text-decoration: underline; }
-    .breadcrumb-page { font-weight: var(--font-weight-550); }
+    .breadcrumb-page { font-weight: var(--font-weight-525); }
   }
 
   @media (forced-colors: active) {

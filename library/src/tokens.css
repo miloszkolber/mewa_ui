@@ -3,20 +3,45 @@
   color-scheme: light;
 
   /* Page and container surfaces */
-  --background: var(--color-neutral-000);
-  --background-glass: color-mix(in srgb, var(--color-neutral-000) 85%, rgb(0 0 0 / 0%));
+  --background: var(--color-neutral-050);
+  --background-glass: color-mix(in srgb, var(--color-neutral-050) 85%, rgb(0 0 0 / 0%));
   --surface-primary: var(--color-neutral-000);
   --surface-primary-glass: color-mix(in srgb, var(--color-neutral-000) 85%, rgb(0 0 0 / 0%));
   --surface-secondary: var(--color-neutral-050);
   --surface-secondary-glass: color-mix(in srgb, var(--color-neutral-050) 85%, rgb(0 0 0 / 0%));
-  --surface-hover: var(--color-alpha-dark-050);
+  /* General translucent surfaces keep their own semantic roles. */
+  --surface-alpha: var(--color-alpha-dark-100);
+  --surface-alpha-inverted: var(--color-alpha-light-900);
+
+  /* Universal control and area surfaces mapped from the Figma roles. */
+  --surface-control: var(--color-alpha-dark-100);
+  --surface-control-hover: var(--color-alpha-dark-050);
+  --surface-control-disabled: var(--color-alpha-dark-050);
+  --surface-control-invalid: var(--color-alpha-red-100);
+  --surface-control-inverted: var(--color-neutral-950);
+  --surface-control-transparent: var(--color-alpha-dark-000);
+  --surface-pointer: var(--color-neutral-100);
+  --surface-pointer-disabled: var(--color-alpha-dark-200);
+  --surface-pointer-inverted: var(--color-neutral-950);
+  --surface-button-primary: var(--color-neutral-950);
+  --surface-button-primary-hover: var(--color-neutral-1000);
+  --surface-button-secondary: var(--surface-control-transparent);
+  --surface-button-secondary-hover: var(--color-alpha-dark-050);
+  --surface-button-disabled: var(--color-alpha-dark-200);
+  --surface-button-destructive: var(--color-red-600);
+  --surface-button-destructive-hover: var(--color-red-700);
+  --surface-menu-hover: var(--color-alpha-dark-050);
+  --surface-content-hover: var(--color-alpha-dark-050);
+  --surface-shell-hover: var(--color-alpha-dark-050);
+  --surface-hover: var(--surface-content-hover);
   --surface-selected: var(--color-alpha-dark-100);
-  --surface-disabled: var(--color-alpha-dark-200);
-  --surface-positive: var(--color-alpha-green-050);
-  --surface-negative: var(--color-alpha-red-050);
-  --surface-caution: var(--color-alpha-amber-050);
-  --surface-inverted: var(--color-neutral-1000);
-  --surface-destructive: var(--color-red-600);
+  --surface-disabled: var(--surface-button-disabled);
+  --surface-positive: var(--color-alpha-green-100);
+  --surface-negative: var(--color-alpha-red-100);
+  --surface-caution: var(--color-alpha-amber-100);
+  --surface-destructive-hover: var(--color-alpha-red-100);
+  --surface-inverted: var(--color-neutral-950);
+  --surface-destructive: var(--surface-button-destructive);
 
   /* Overlays */
   --overlay-subtle: var(--color-alpha-dark-050);
@@ -26,9 +51,8 @@
   /* Text roles */
   --text-primary: var(--color-neutral-950);
   --text-secondary: var(--color-neutral-700);
-  --text-muted: var(--color-neutral-600);
   --text-disabled: var(--color-neutral-400);
-  --text-inverted: var(--color-neutral-000);
+  --text-inverted: var(--color-neutral-050);
   --text-positive: var(--color-green-600);
   --text-negative: var(--color-red-600);
   --text-caution: var(--color-amber-600);
@@ -36,16 +60,22 @@
   /* Border roles */
   --border-primary: var(--color-neutral-200);
   --border-secondary: var(--color-neutral-300);
-  --border-control: var(--color-neutral-600);
+  --border-interactive-default: var(--color-neutral-300);
+  --border-interactive-inverted: var(--color-neutral-950);
+  --border-transparent: transparent;
+  --border-control: var(--border-interactive-default);
   --border-muted: var(--color-alpha-dark-200);
   --border-subtle: var(--color-alpha-dark-100);
   --border-hover: var(--color-neutral-300);
   --border-selected: var(--color-neutral-600);
-  --border-disabled: var(--color-alpha-dark-100);
+  --border-disabled: var(--color-neutral-200);
   --border-focus: var(--color-neutral-600);
-  --border-positive: var(--color-green-600);
-  --border-negative: var(--color-red-600);
-  --border-caution: var(--color-amber-600);
+  --border-invalid: var(--color-red-600);
+  --border-focus-area: var(--color-alpha-dark-200);
+  --border-invalid-area: var(--color-alpha-red-200);
+  --border-positive: var(--color-green-500);
+  --border-negative: var(--color-red-500);
+  --border-caution: var(--color-amber-500);
 
   /* Charts */
   --chart-1: var(--color-neutral-600);
@@ -73,26 +103,50 @@
   --surface-primary-glass: color-mix(in srgb, var(--color-neutral-1000) 85%, rgb(0 0 0 / 0%));
   --surface-secondary: var(--color-neutral-950);
   --surface-secondary-glass: color-mix(in srgb, var(--color-neutral-950) 85%, rgb(0 0 0 / 0%));
-  --surface-hover: var(--color-alpha-light-950);
+  /* General translucent surfaces keep their own semantic roles. */
+  --surface-alpha: var(--color-alpha-light-900);
+  --surface-alpha-inverted: var(--color-alpha-dark-100);
+
+  /* Universal control and area surfaces mapped from the Figma roles. */
+  --surface-control: var(--color-alpha-light-900);
+  --surface-control-hover: var(--color-alpha-light-950);
+  --surface-control-disabled: var(--color-alpha-light-950);
+  --surface-control-invalid: var(--color-alpha-red-900);
+  --surface-control-inverted: var(--color-neutral-050);
+  --surface-control-transparent: var(--color-alpha-light-1000);
+  --surface-pointer: var(--color-neutral-900);
+  --surface-pointer-disabled: var(--color-alpha-light-800);
+  --surface-pointer-inverted: var(--color-neutral-050);
+  --surface-button-primary: var(--color-neutral-050);
+  --surface-button-primary-hover: var(--color-neutral-000);
+  --surface-button-secondary: var(--surface-control-transparent);
+  --surface-button-secondary-hover: var(--color-alpha-light-950);
+  --surface-button-disabled: var(--color-alpha-light-800);
+  --surface-button-destructive: var(--color-red-400);
+  --surface-button-destructive-hover: var(--color-red-300);
+  --surface-menu-hover: var(--color-alpha-light-950);
+  --surface-content-hover: var(--color-alpha-light-950);
+  --surface-shell-hover: var(--color-alpha-light-950);
+  --surface-hover: var(--surface-content-hover);
   --surface-selected: var(--color-alpha-light-900);
-  --surface-disabled: var(--color-alpha-light-800);
-  --surface-positive: var(--color-alpha-green-950);
-  --surface-negative: var(--color-alpha-red-950);
-  --surface-caution: var(--color-alpha-amber-950);
-  --surface-inverted: var(--color-neutral-000);
-  --surface-destructive: var(--color-red-400);
+  --surface-disabled: var(--surface-button-disabled);
+  --surface-positive: var(--color-alpha-green-900);
+  --surface-negative: var(--color-alpha-red-900);
+  --surface-caution: var(--color-alpha-amber-900);
+  --surface-destructive-hover: var(--color-alpha-red-900);
+  --surface-inverted: var(--color-neutral-050);
+  --surface-destructive: var(--surface-button-destructive);
 
   /* Overlays */
   --overlay-subtle: var(--color-alpha-light-950);
   --overlay-moderate: var(--color-alpha-light-800);
-  --overlay-strong: var(--color-alpha-dark-400);
+  --overlay-strong: var(--color-alpha-dark-600);
 
   /* Text roles */
   --text-primary: var(--color-neutral-050);
   --text-secondary: var(--color-neutral-300);
-  --text-muted: var(--color-neutral-400);
-  --text-disabled: var(--color-neutral-500);
-  --text-inverted: var(--color-neutral-1000);
+  --text-disabled: var(--color-neutral-600);
+  --text-inverted: var(--color-neutral-950);
   --text-positive: var(--color-green-400);
   --text-negative: var(--color-red-400);
   --text-caution: var(--color-amber-400);
@@ -100,16 +154,22 @@
   /* Border roles */
   --border-primary: var(--color-neutral-800);
   --border-secondary: var(--color-neutral-700);
-  --border-control: var(--color-neutral-400);
+  --border-interactive-default: var(--color-neutral-700);
+  --border-interactive-inverted: var(--color-neutral-050);
+  --border-transparent: transparent;
+  --border-control: var(--border-interactive-default);
   --border-muted: var(--color-alpha-light-800);
   --border-subtle: var(--color-alpha-light-900);
   --border-hover: var(--color-neutral-700);
   --border-selected: var(--color-neutral-400);
-  --border-disabled: var(--color-alpha-light-900);
+  --border-disabled: var(--color-neutral-800);
   --border-focus: var(--color-neutral-400);
-  --border-positive: var(--color-green-400);
-  --border-negative: var(--color-red-400);
-  --border-caution: var(--color-amber-400);
+  --border-invalid: var(--color-red-400);
+  --border-focus-area: var(--color-alpha-light-800);
+  --border-invalid-area: var(--color-alpha-red-800);
+  --border-positive: var(--color-green-500);
+  --border-negative: var(--color-red-500);
+  --border-caution: var(--color-amber-500);
 
   /* Charts */
   --chart-1: var(--color-neutral-400);
@@ -125,4 +185,10 @@
   --chart-area-positive: var(--color-alpha-green-950);
   --chart-area-negative: var(--color-alpha-red-950);
   --chart-area-caution: var(--color-alpha-amber-950);
+}
+
+/* Figma's ring styles are zero-blur, zero-offset shadows with a 2px spread. */
+:root {
+  --ring-default: 0 0 0 var(--ring-spread) var(--border-focus-area);
+  --ring-invalid: 0 0 0 var(--ring-spread) var(--border-invalid-area);
 }

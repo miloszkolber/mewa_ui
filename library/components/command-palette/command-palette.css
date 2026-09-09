@@ -7,7 +7,7 @@
     padding: 0; max-width: 32rem; width: calc(100% - var(--size-800));
      margin: auto; position: fixed; inset: 0;
     top: 15%; bottom: auto; overflow: hidden;
-    opacity: 0;
+    opacity: var(--opacity-000);
     transform: translateY(var(--space-100)) scale(0.99);
     transition-property: opacity, transform, overlay, display;
     transition-duration: var(--motion-duration-spatial);
@@ -15,14 +15,14 @@
     transition-behavior: normal, normal, allow-discrete, allow-discrete;
 
     &[open] {
-      opacity: 1;
+      opacity: var(--opacity-100);
       transform: translateY(0) scale(1);
     }
 
     &::backdrop {
       background: var(--overlay-strong);
       backdrop-filter: blur(var(--blur-200));
-      opacity: 0;
+      opacity: var(--opacity-000);
       transition-property: opacity, overlay, display;
       transition-duration: var(--motion-duration-spatial);
       transition-timing-function: var(--motion-easing-standard);
@@ -30,18 +30,18 @@
     }
 
     &[open]::backdrop {
-      opacity: 1;
+      opacity: var(--opacity-100);
     }
   }
 
   @starting-style {
     dialog.command-palette[open] {
-      opacity: 0;
+      opacity: var(--opacity-000);
       transform: translateY(var(--space-100)) scale(0.99);
     }
 
     dialog.command-palette[open]::backdrop {
-      opacity: 0;
+      opacity: var(--opacity-000);
     }
   }
 
@@ -56,14 +56,13 @@
     &:focus-within {
       background-color: var(--surface-secondary);
       /* 1px ring flush with the search row hides its own border. */
-      outline: var(--border-width-025) solid var(--border-focus);
-      outline-offset: calc(-1 * var(--border-width-025));
+      box-shadow: var(--ring-default);
     }
 
-    &:focus-within :is(svg, [data-lucide]) { color: var(--text-primary); }
+    &:focus-within :is(svg, [class^="ri-"], [class*=" ri-"]) { color: var(--text-primary); }
 
-    & :is(svg, [data-lucide]) {
-      width: var(--size-400); height: var(--size-400); color: var(--text-muted); flex-shrink: 0;
+    & :is(svg, [class^="ri-"], [class*=" ri-"]) {
+      width: var(--size-400); height: var(--size-400); color: var(--text-secondary); flex-shrink: 0;
     }
   }
 
@@ -71,12 +70,12 @@
     flex: 1; border: none; background: transparent;
     min-width: 0;
     font-size: var(--font-size-350); color: var(--text-primary); outline: none; font-family: inherit;
-    &::placeholder { color: var(--text-muted); }
+    &::placeholder { color: var(--text-secondary); }
   }
 
   .command-palette-list { max-height: 18rem; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-100); }
   .command-palette-group { padding: var(--space-100) 0; }
-  .command-palette-group-heading { margin: 0; padding: var(--space-100) var(--space-200); font-size: var(--font-size-300); font-weight: var(--font-weight-550); color: var(--text-muted); }
+  .command-palette-group-heading { margin: 0; padding: var(--space-100) var(--space-200); font-size: var(--font-size-300); font-weight: var(--font-weight-525); color: var(--text-secondary); }
 
   .command-palette-item {
     display: flex; align-items: center; gap: var(--space-200); width: 100%;
@@ -84,18 +83,23 @@
     padding: var(--space-200) var(--space-200); border: none;
     background: transparent; color: var(--text-primary); font-size: var(--font-size-350);
     font-family: inherit; text-align: left; cursor: pointer; outline: none;
-    &:hover, &[data-highlighted] { background-color: var(--surface-secondary); }
+    &:hover, &[data-highlighted] { background-color: var(--surface-menu-hover); }
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
-    &[aria-disabled="true"] { pointer-events: none; opacity: var(--opacity-05); }
-    & svg { width: var(--size-400); height: var(--size-400); color: var(--text-muted); flex-shrink: 0; }
+    &[aria-disabled="true"] {
+      pointer-events: none;
+      background-color: var(--surface-control-disabled);
+      color: var(--text-disabled);
+
+      & svg { color: var(--text-disabled); }
+    }
+    & svg { width: var(--size-400); height: var(--size-400); color: var(--text-secondary); flex-shrink: 0; }
   }
 
   .command-palette-separator { height: 1px; background-color: var(--border-primary); margin: var(--space-100) -0.25rem; }
-  .command-palette-shortcut { margin-inline-start: auto; font-size: var(--font-size-300); color: var(--text-muted); font-family: var(--font-mono); }
-  .command-palette-empty { padding: var(--space-600); text-align: center; font-size: var(--font-size-350); color: var(--text-muted); }
+  .command-palette-shortcut { margin-inline-start: auto; font-size: var(--font-size-300); color: var(--text-secondary); font-family: var(--font-mono); font-variation-settings: var(--font-mono-axis); }
+  .command-palette-empty { padding: var(--space-600); text-align: center; font-size: var(--font-size-350); color: var(--text-secondary); }
 
   @media (prefers-contrast: more) {
     dialog.command-palette { border: var(--border-width-050) solid var(--border-primary); }

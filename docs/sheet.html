@@ -32,22 +32,22 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Sheet</h1>
-        <p class="text-muted leading-relaxed mb-6">Presents a modal task against one edge of the viewport. It suits supporting work that benefits from preserving some visual connection to the page behind it. The sheet opens from its chosen edge with a short transition.</p>
+        <p class="text-secondary leading-relaxed mb-6">Presents a modal task against one edge of the viewport. It suits supporting work that benefits from preserving some visual connection to the page behind it. The sheet opens from its chosen edge with a short transition.</p>
       </div>
 
         <!-- -- Example: Right ---------------------------------- -->
           <p class="text-sm font-medium mb-2 mt-6">Right</p>
-           <p class="text-xs text-muted mb-3">Default side. The sheet slides quickly from the right edge—commonly used for edit-profile or settings panels.</p>
+           <p class="text-xs text-secondary mb-3">Default side. The sheet slides quickly from the right edge—commonly used for edit-profile or settings panels.</p>
           <div class="preview">
-             <button class="btn" type="button" data-variant="outline" data-sheet-trigger="sheet-right" aria-haspopup="dialog">Open Right Sheet</button>
+             <button class="btn" type="button" data-variant="secondary" data-sheet-trigger="sheet-right" aria-haspopup="dialog">Open Right Sheet</button>
           </div>
           <div style="position: relative; margin-top: var(--space-200)">
              <button class="copy-btn" type="button">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
               Copy
             </button>
             <pre><code class="language-markup">&lt;!-- Trigger --&gt;
-&lt;button type="button" class="btn" data-variant="outline"
+&lt;button type="button" class="btn" data-variant="secondary"
         data-sheet-trigger="sheet-right"
         aria-haspopup="dialog"&gt;Open Right Sheet&lt;/button&gt;
 
@@ -73,32 +73,29 @@
       &lt;/div&gt;
     &lt;/div&gt;
     &lt;div class="sheet-footer"&gt;
-      &lt;button type="button" class="btn" data-variant="outline" data-sheet-close&gt;Cancel&lt;/button&gt;
+      &lt;button type="button" class="btn" data-variant="secondary" data-sheet-close&gt;Cancel&lt;/button&gt;
       &lt;button type="button" class="btn" data-variant="default" data-sheet-close&gt;Save changes&lt;/button&gt;
     &lt;/div&gt;
   &lt;/div&gt;
   &lt;button type="button" class="sheet-close-x" data-sheet-close aria-label="Close"&gt;
-    &lt;svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
-      &lt;path d="M18 6 6 18M6 6l12 12"/&gt;
-    &lt;/svg&gt;
+    &lt;svg width="15" height="15" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"&gt;&lt;path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"/&gt;&lt;/svg&gt;
   &lt;/button&gt;
 &lt;/dialog&gt;</code></pre>
           </div>
 
         <!-- -- Example: Left ----------------------------------- -->
           <p class="text-sm font-medium mb-2 mt-6">Left</p>
-           <p class="text-xs text-muted mb-3">Slides quickly from the left edge—ideal for navigation menus or sidebar-style panels.</p>
+           <p class="text-xs text-secondary mb-3">Slides quickly from the left edge—ideal for navigation menus or sidebar-style panels.</p>
           <div class="preview">
-             <button class="btn" type="button" data-variant="outline" data-sheet-trigger="sheet-left" aria-haspopup="dialog">Open Left Sheet</button>
+             <button class="btn" type="button" data-variant="secondary" data-sheet-trigger="sheet-left" aria-haspopup="dialog">Open Left Sheet</button>
           </div>
           <div style="position: relative; margin-top: var(--space-200)">
              <button class="copy-btn" type="button">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
               Copy
             </button>
             <pre><code class="language-markup">&lt;!-- Trigger --&gt;
-&lt;button type="button" class="btn" data-variant="outline"
+&lt;button type="button" class="btn" data-variant="secondary"
         data-sheet-trigger="sheet-left"
         aria-haspopup="dialog"&gt;Open Left Sheet&lt;/button&gt;
 
@@ -121,27 +118,24 @@
     &lt;/div&gt;
   &lt;/div&gt;
   &lt;button type="button" class="sheet-close-x" data-sheet-close aria-label="Close"&gt;
-    &lt;svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
-      &lt;path d="M18 6 6 18M6 6l12 12"/&gt;
-    &lt;/svg&gt;
+    &lt;svg width="15" height="15" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"&gt;&lt;path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"/&gt;&lt;/svg&gt;
   &lt;/button&gt;
 &lt;/dialog&gt;</code></pre>
           </div>
 
         <!-- -- Example: Bottom --------------------------------- -->
           <p class="text-sm font-medium mb-2 mt-6">Bottom</p>
-           <p class="text-xs text-muted mb-3">Slides quickly from the bottom edge—useful for cookie consent, action sheets, or preference panels.</p>
+           <p class="text-xs text-secondary mb-3">Slides quickly from the bottom edge—useful for cookie consent, action sheets, or preference panels.</p>
           <div class="preview">
-             <button class="btn" type="button" data-variant="outline" data-sheet-trigger="sheet-bottom" aria-haspopup="dialog">Open Bottom Sheet</button>
+             <button class="btn" type="button" data-variant="secondary" data-sheet-trigger="sheet-bottom" aria-haspopup="dialog">Open Bottom Sheet</button>
           </div>
           <div style="position: relative; margin-top: var(--space-200)">
              <button class="copy-btn" type="button">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
               Copy
             </button>
             <pre><code class="language-markup">&lt;!-- Trigger --&gt;
-&lt;button type="button" class="btn" data-variant="outline"
+&lt;button type="button" class="btn" data-variant="secondary"
         data-sheet-trigger="sheet-bottom"
         aria-haspopup="dialog"&gt;Open Bottom Sheet&lt;/button&gt;
 
@@ -157,29 +151,26 @@
     &lt;div class="sheet-body"&gt;
       &lt;div style="display: flex; flex-direction: column; gap: var(--space-400)"&gt;
         &lt;div style="display: flex; align-items: center; justify-content: space-between"&gt;
-          &lt;div&gt;&lt;p style="font-size: var(--font-size-350); font-weight: var(--font-weight-550)"&gt;Essential Cookies&lt;/p&gt;&lt;p style="font-size: var(--font-size-300); color: var(--text-muted); margin-top: var(--space-100)"&gt;Required for the website to function.&lt;/p&gt;&lt;/div&gt;
-          &lt;span style="font-size: var(--font-size-300); color: var(--text-muted)"&gt;Always on&lt;/span&gt;
+          &lt;div&gt;&lt;p style="font-size: var(--font-size-350); font-weight: var(--font-weight-525)"&gt;Essential Cookies&lt;/p&gt;&lt;p style="font-size: var(--font-size-300); color: var(--text-secondary); margin-top: var(--space-100)"&gt;Required for the website to function.&lt;/p&gt;&lt;/div&gt;
+          &lt;span style="font-size: var(--font-size-300); color: var(--text-secondary)"&gt;Always on&lt;/span&gt;
         &lt;/div&gt;
         &lt;div style="display: flex; align-items: center; justify-content: space-between"&gt;
-          &lt;div&gt;&lt;label for="sheet-analytics" style="font-size: var(--font-size-350); font-weight: var(--font-weight-550)"&gt;Analytics cookies&lt;/label&gt;&lt;p style="font-size: var(--font-size-300); color: var(--text-muted); margin-top: var(--space-100)"&gt;Help us improve our website.&lt;/p&gt;&lt;/div&gt;
+          &lt;div&gt;&lt;label for="sheet-analytics" style="font-size: var(--font-size-350); font-weight: var(--font-weight-525)"&gt;Analytics cookies&lt;/label&gt;&lt;p style="font-size: var(--font-size-300); color: var(--text-secondary); margin-top: var(--space-100)"&gt;Help us improve our website.&lt;/p&gt;&lt;/div&gt;
            &lt;input id="sheet-analytics" type="checkbox" checked&gt;
         &lt;/div&gt;
         &lt;div style="display: flex; align-items: center; justify-content: space-between"&gt;
-          &lt;div&gt;&lt;label for="sheet-marketing" style="font-size: var(--font-size-350); font-weight: var(--font-weight-550)"&gt;Marketing cookies&lt;/label&gt;&lt;p style="font-size: var(--font-size-300); color: var(--text-muted); margin-top: var(--space-100)"&gt;Used for targeted advertising.&lt;/p&gt;&lt;/div&gt;
+          &lt;div&gt;&lt;label for="sheet-marketing" style="font-size: var(--font-size-350); font-weight: var(--font-weight-525)"&gt;Marketing cookies&lt;/label&gt;&lt;p style="font-size: var(--font-size-300); color: var(--text-secondary); margin-top: var(--space-100)"&gt;Used for targeted advertising.&lt;/p&gt;&lt;/div&gt;
            &lt;input id="sheet-marketing" type="checkbox"&gt;
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
     &lt;div class="sheet-footer"&gt;
-      &lt;button type="button" class="btn" data-variant="outline" data-sheet-close&gt;Cancel&lt;/button&gt;
+      &lt;button type="button" class="btn" data-variant="secondary" data-sheet-close&gt;Cancel&lt;/button&gt;
       &lt;button type="button" class="btn" data-variant="default" data-sheet-close&gt;Save preferences&lt;/button&gt;
     &lt;/div&gt;
   &lt;/div&gt;
   &lt;button type="button" class="sheet-close-x" data-sheet-close aria-label="Close"&gt;
-    &lt;svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;
-      &lt;path d="M18 6 6 18M6 6l12 12"/&gt;
-    &lt;/svg&gt;
+    &lt;svg width="15" height="15" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"&gt;&lt;path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"/&gt;&lt;/svg&gt;
   &lt;/button&gt;
 &lt;/dialog&gt;</code></pre>
           </div>
@@ -212,12 +203,12 @@
         </div>
       </div>
       <div class="sheet-footer">
-       <button class="btn" type="button" data-variant="outline" data-sheet-close>Cancel</button>
+       <button class="btn" type="button" data-variant="secondary" data-sheet-close>Cancel</button>
        <button class="btn" type="button" data-variant="default" data-sheet-close>Save changes</button>
       </div>
     </div>
      <button class="sheet-close-x" type="button" data-sheet-close aria-label="Close">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      <svg width="15" height="15" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"/></svg>
     </button>
   </dialog>
 
@@ -238,7 +229,7 @@
       </div>
     </div>
      <button class="sheet-close-x" type="button" data-sheet-close aria-label="Close">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      <svg width="15" height="15" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"/></svg>
     </button>
   </dialog>
 
@@ -252,26 +243,26 @@
       <div class="sheet-body">
         <div style="display: flex; flex-direction: column; gap: var(--space-400)">
           <div style="display: flex; align-items: center; justify-content: space-between">
-            <div><p style="font-size: var(--font-size-350); font-weight: var(--font-weight-550)">Essential Cookies</p><p style="font-size: var(--font-size-300); color: var(--text-muted); margin-top: var(--space-100)">Required for the website to function.</p></div>
-            <span style="font-size: var(--font-size-300); color: var(--text-muted)">Always on</span>
+            <div><p style="font-size: var(--font-size-350); font-weight: var(--font-weight-525)">Essential Cookies</p><p style="font-size: var(--font-size-300); color: var(--text-secondary); margin-top: var(--space-100)">Required for the website to function.</p></div>
+            <span style="font-size: var(--font-size-300); color: var(--text-secondary)">Always on</span>
           </div>
           <div style="display: flex; align-items: center; justify-content: space-between">
-             <div><label for="sheet-analytics">Analytics Cookies</label><p style="font-size: var(--font-size-300); color: var(--text-muted); margin-top: var(--space-100)">Help us improve our website.</p></div>
+             <div><label for="sheet-analytics">Analytics Cookies</label><p style="font-size: var(--font-size-300); color: var(--text-secondary); margin-top: var(--space-100)">Help us improve our website.</p></div>
              <input id="sheet-analytics" type="checkbox" checked>
           </div>
           <div style="display: flex; align-items: center; justify-content: space-between">
-             <div><label for="sheet-marketing">Marketing Cookies</label><p style="font-size: var(--font-size-300); color: var(--text-muted); margin-top: var(--space-100)">Used for targeted advertising.</p></div>
+             <div><label for="sheet-marketing">Marketing Cookies</label><p style="font-size: var(--font-size-300); color: var(--text-secondary); margin-top: var(--space-100)">Used for targeted advertising.</p></div>
              <input id="sheet-marketing" type="checkbox">
           </div>
         </div>
       </div>
       <div class="sheet-footer">
-         <button class="btn" type="button" data-variant="outline" data-sheet-close>Cancel</button>
+         <button class="btn" type="button" data-variant="secondary" data-sheet-close>Cancel</button>
          <button class="btn" type="button" data-variant="default" data-sheet-close>Save preferences</button>
       </div>
     </div>
    <button class="sheet-close-x" type="button" data-sheet-close aria-label="Close">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      <svg width="15" height="15" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"/></svg>
     </button>
   </dialog>
 

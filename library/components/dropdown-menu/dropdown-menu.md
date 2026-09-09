@@ -32,13 +32,13 @@ The module provides the ARIA menu keyboard model, highlighted state, and checkab
 ```html
 <button class="btn"
         type="button"
-        data-variant="outline"
+        data-variant="secondary"
         data-dropdown-menu-trigger="job-actions"
         aria-haspopup="menu"
         aria-expanded="false"
         aria-controls="job-actions">
   Actions
-  <i data-lucide="chevron-down" aria-hidden="true"></i>
+  <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
 </button>
 
 <div id="job-actions"

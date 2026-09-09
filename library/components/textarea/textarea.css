@@ -9,7 +9,7 @@
     background: var(--background);
     padding: var(--space-200) var(--space-300);
     font-size: var(--font-size-350);
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     color: var(--text-primary);
     outline: none;
 
@@ -18,28 +18,25 @@
 
     &:focus {
       border-color: var(--border-focus);
-      outline: var(--border-width-025) solid var(--border-focus);
-      outline-offset: 0;
+      box-shadow: var(--ring-default);
     }
 
-    &::placeholder { color: var(--text-muted); }
+    &::placeholder { color: var(--text-secondary); }
 
     &:disabled {
-      background: var(--surface-secondary);
+      background: var(--surface-control-disabled);
       color: var(--text-disabled);
-      border-color: var(--border-muted);
-      opacity: 1;
+      border-color: var(--border-disabled);
       cursor: not-allowed;
       resize: none;
     }
 
     &:is([aria-invalid="true"], :user-invalid) {
-      border-color: var(--text-negative);
+      border-color: var(--border-invalid);
 
       &:focus {
-        border-color: var(--text-negative);
-        outline: var(--border-width-025) solid var(--text-negative);
-        outline-offset: 0;
+        border-color: var(--border-invalid);
+        box-shadow: var(--ring-invalid);
       }
     }
   }
@@ -51,7 +48,7 @@
     }
 
     .textarea:disabled {
-      opacity: var(--opacity-07);
+      color: var(--text-disabled);
     }
   }
 
@@ -68,7 +65,6 @@
     }
 
     .textarea:disabled {
-      opacity: 1;
       color: GrayText;
       border-color: GrayText;
     }

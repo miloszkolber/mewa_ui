@@ -222,9 +222,9 @@ await test('authored CSS uses RGB as its only color notation', () => {
     if (name.startsWith('--color-')) assert.match(color, /^rgb\(/, `${name} must use rgb()`);
   }
   assert.doesNotMatch(
-    tokenSource,
-    /\btransparent\b|color-mix\(in (?!srgb\b)/i,
-    'semantic colors must remain in the RGB system'
+    tokenSource.replace(/--border-transparent:\s*transparent;/g, ''),
+    /(?<![\w-])transparent(?![\w-])|color-mix\(in (?!srgb\b)/i,
+    'semantic colors must remain in the RGB system outside the explicit transparent border role'
   );
 });
 
@@ -403,20 +403,99 @@ await test('semantic color references resolve without using deprecated neutral a
   );
 });
 
+await test('light theme is a first-class semantic token block', () => {
+  assert.match(tokenSource, /:root\s*\{\s*color-scheme:\s*light;/);
+  assert.match(tokenSource, /\.dark\s*\{\s*color-scheme:\s*dark;/);
+  assert.deepEqual(
+    [...lightTokens.keys()].sort(),
+    [...darkTokens.keys()].sort(),
+    'light and dark themes must expose the same semantic token names'
+  );
+});
+
+await test('semantic roles remain named when mappings share a value', () => {
+  const roles = new Set([...lightTokens.keys(), ...darkTokens.keys()]);
+  const preservedRoles = [
+    '--surface-alpha',
+    '--surface-control',
+    '--surface-control-hover',
+    '--surface-control-disabled',
+    '--surface-control-transparent',
+    '--surface-button-secondary',
+    '--surface-menu-hover',
+    '--surface-content-hover',
+    '--surface-shell-hover'
+  ];
+
+  for (const name of preservedRoles) {
+    assert(roles.has(name), `${name} must remain a distinct semantic role`);
+  }
+});
+
 await test('light and dark semantic surfaces use the full reference endpoints', () => {
   const expectedLight = {
-    '--background': 'var(--color-neutral-000)',
+    '--background': 'var(--color-neutral-050)',
     '--surface-primary': 'var(--color-neutral-000)',
     '--surface-secondary': 'var(--color-neutral-050)',
-    '--surface-inverted': 'var(--color-neutral-1000)',
-    '--text-inverted': 'var(--color-neutral-000)'
+    '--surface-inverted': 'var(--color-neutral-950)',
+    '--text-inverted': 'var(--color-neutral-050)',
+    '--surface-positive': 'var(--color-alpha-green-100)',
+    '--surface-negative': 'var(--color-alpha-red-100)',
+    '--surface-caution': 'var(--color-alpha-amber-100)',
+    '--overlay-strong': 'var(--color-alpha-dark-400)',
+    '--border-interactive-default': 'var(--color-neutral-300)',
+    '--border-interactive-inverted': 'var(--color-neutral-950)',
+    '--border-positive': 'var(--color-green-500)',
+    '--border-negative': 'var(--color-red-500)',
+    '--border-caution': 'var(--color-amber-500)'
   };
   const expectedDark = {
     '--background': 'var(--color-neutral-1000)',
     '--surface-primary': 'var(--color-neutral-1000)',
     '--surface-secondary': 'var(--color-neutral-950)',
-    '--surface-inverted': 'var(--color-neutral-000)',
-    '--text-inverted': 'var(--color-neutral-1000)'
+    '--surface-inverted': 'var(--color-neutral-050)',
+    '--text-inverted': 'var(--color-neutral-950)',
+    '--surface-positive': 'var(--color-alpha-green-900)',
+    '--surface-negative': 'var(--color-alpha-red-900)',
+    '--surface-caution': 'var(--color-alpha-amber-900)',
+    '--overlay-strong': 'var(--color-alpha-dark-600)',
+    '--border-interactive-default': 'var(--color-neutral-700)',
+    '--border-interactive-inverted': 'var(--color-neutral-050)',
+    '--border-positive': 'var(--color-green-500)',
+    '--border-negative': 'var(--color-red-500)',
+    '--border-caution': 'var(--color-amber-500)'
+  };
+
+  for (const [name, expected] of Object.entries(expectedLight)) {
+    assert.equal(lightTokens.get(name), expected, `light ${name} mapping drifted`);
+  }
+  for (const [name, expected] of Object.entries(expectedDark)) {
+    assert.equal(darkTokens.get(name), expected, `dark ${name} mapping drifted`);
+  }
+});
+
+await test('universal semantic areas retain directional light and dark mappings', () => {
+  const expectedLight = {
+    '--surface-alpha': 'var(--color-alpha-dark-100)',
+    '--surface-alpha-inverted': 'var(--color-alpha-light-900)',
+    '--surface-control-invalid': 'var(--color-alpha-red-100)',
+    '--surface-destructive-hover': 'var(--color-alpha-red-100)',
+    '--surface-menu-hover': 'var(--color-alpha-dark-050)',
+    '--surface-content-hover': 'var(--color-alpha-dark-050)',
+    '--surface-shell-hover': 'var(--color-alpha-dark-050)',
+    '--border-invalid-area': 'var(--color-alpha-red-200)',
+    '--border-transparent': 'transparent'
+  };
+  const expectedDark = {
+    '--surface-alpha': 'var(--color-alpha-light-900)',
+    '--surface-alpha-inverted': 'var(--color-alpha-dark-100)',
+    '--surface-control-invalid': 'var(--color-alpha-red-900)',
+    '--surface-destructive-hover': 'var(--color-alpha-red-900)',
+    '--surface-menu-hover': 'var(--color-alpha-light-950)',
+    '--surface-content-hover': 'var(--color-alpha-light-950)',
+    '--surface-shell-hover': 'var(--color-alpha-light-950)',
+    '--border-invalid-area': 'var(--color-alpha-red-800)',
+    '--border-transparent': 'transparent'
   };
 
   for (const [name, expected] of Object.entries(expectedLight)) {

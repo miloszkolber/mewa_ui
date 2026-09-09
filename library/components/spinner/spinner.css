@@ -7,11 +7,13 @@
   .spinner {
     width: var(--size-400);
     height: var(--size-400);
-    color: var(--text-muted);
+    color: var(--text-primary);
     flex-shrink: 0;
     animation: spinner-rotate 0.8s linear infinite;
 
-    /* Same data-size scale as the Icon component. */
+    /* Figma exposes the complete 12/16/20/24/32px scale. */
+    &[data-size="xs"] { width: var(--size-300); height: var(--size-300); }
+    &[data-size="sm"] { width: var(--size-400); height: var(--size-400); }
     &[data-size="md"] { width: var(--size-500); height: var(--size-500); }
     &[data-size="lg"] { width: var(--size-600); height: var(--size-600); }
     &[data-size="xl"] { width: var(--size-800); height: var(--size-800); }

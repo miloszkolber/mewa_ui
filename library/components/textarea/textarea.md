@@ -20,6 +20,10 @@ CSS uses `field-sizing: content` for content-driven growth.
 
 Textarea requires no JavaScript.
 
+## Repository contract
+
+Textarea keeps the repository-owned spacious minimum: an 80px minimum height and 12px horizontal padding. The Figma text-area set is treated as an abstraction for this component and does not replace the native multiline editing geometry.
+
 ## Native Web APIs
 
 - [`<textarea>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/textarea) provides native multi-line text editing.

@@ -18,20 +18,31 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: var(--space-400) 0;
-    font-size: var(--font-size-400);
-    font-weight: var(--font-weight-550);
+    min-block-size: var(--size-1100);
+    padding: 0 var(--space-300);
+    gap: var(--space-200);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-525);
+    line-height: var(--font-height-regular);
+    font-variation-settings: var(--font-text-axis);
     text-align: left;
     cursor: pointer;
     list-style: none;
     color: var(--text-primary);
+    outline: none;
     &::-webkit-details-marker { display: none; }
     &::marker { content: ''; }
-    &:hover { text-decoration: underline; }
+    &:focus-visible { box-shadow: var(--ring-default); }
+
+    &:is([aria-disabled="true"], [data-disabled]) {
+      pointer-events: none;
+      color: var(--text-disabled);
+      cursor: not-allowed;
+    }
   }
 
   .accordion-chevron {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     flex-shrink: 0;
 
     details[open] > .accordion-trigger & {
@@ -43,7 +54,7 @@
     padding-bottom: var(--space-400);
     font-size: var(--font-size-350);
     line-height: var(--font-height-regular);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     overflow: hidden;
 
     & p { margin: 0; }

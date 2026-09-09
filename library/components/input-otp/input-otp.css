@@ -13,7 +13,7 @@
     padding: 0;
     color: var(--text-primary);
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     line-height: var(--font-height-regular);
   }
 
@@ -47,30 +47,28 @@
   }
 
   .input-otp-cell[data-filled] {
-    border-color: var(--border-selected);
+    border-color: var(--border-interactive-inverted);
     background: var(--surface-selected);
   }
 
   .input-otp-cell:focus-visible {
     border-color: var(--border-focus);
-    outline: var(--border-width-025) solid var(--border-focus);
-    outline-offset: 0;
+    box-shadow: var(--ring-default);
   }
 
   .input-otp-cell:is([aria-invalid="true"], :user-invalid) {
-    border-color: var(--border-negative);
+    border-color: var(--border-invalid);
   }
 
   .input-otp-cell:is([aria-invalid="true"], :user-invalid):focus-visible {
-    outline-color: var(--border-negative);
+    box-shadow: var(--ring-invalid);
   }
 
   .input-otp-cell:disabled {
     border-color: var(--border-disabled);
-    background: var(--surface-disabled);
+    background: var(--surface-control-disabled);
     color: var(--text-disabled);
     cursor: not-allowed;
-    opacity: 1;
   }
 
   .input-otp:disabled > legend {
@@ -80,12 +78,12 @@
   .input-otp-description,
   .input-otp-error {
     margin: var(--space-100) 0 0;
-    font-size: var(--font-size-300);
+    font-size: var(--font-size-350);
     line-height: var(--font-height-regular);
   }
 
   .input-otp-description {
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
 
   .input-otp-error {

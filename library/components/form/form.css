@@ -80,7 +80,13 @@
     }
 
     &[data-disabled] {
-      opacity: var(--opacity-06);
+      background: var(--surface-control-disabled);
+      border-color: var(--border-disabled);
+      color: var(--text-disabled);
+
+      & > div > :is(.label, .field-description) {
+        color: var(--text-disabled);
+      }
     }
   }
 
@@ -103,8 +109,8 @@
 
     & > legend {
       font-size: var(--font-size-350);
-      font-weight: var(--font-weight-550);
-      font-family: var(--font-sans);
+      font-weight: var(--font-weight-525);
+      font-family: var(--font-mono);
       color: var(--text-primary);
       padding: 0;
       margin-bottom: 0;

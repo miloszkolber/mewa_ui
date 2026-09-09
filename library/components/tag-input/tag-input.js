@@ -132,19 +132,10 @@ export function enhance(root) {
         remove.disabled = valueInput.matches(':disabled') || valueInput.readOnly;
         remove.dataset.tagIndex = String(index);
 
-        const icon = doc.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        icon.setAttribute('viewBox', '0 0 16 16');
-        icon.setAttribute('width', '12');
-        icon.setAttribute('height', '12');
-        icon.setAttribute('fill', 'none');
-        icon.setAttribute('aria-hidden', 'true');
-
-        const path = doc.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d', 'M4 4l8 8m0-8-8 8');
-        path.setAttribute('stroke', 'currentColor');
-        path.setAttribute('stroke-width', '1.5');
-        icon.append(path);
-        remove.append(icon);
+        const icon = doc.createElement('template');
+        icon.innerHTML =
+          '<svg width="12" height="12" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"/></svg>';
+        remove.append(icon.content.cloneNode(true));
 
         item.append(label, remove);
         list.insertBefore(item, entry);

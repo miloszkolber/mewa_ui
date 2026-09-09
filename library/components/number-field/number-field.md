@@ -49,10 +49,10 @@ Keep both step buttons `type="button"`.
            step="1"
            value="1">
     <button type="button" data-action="decrement" aria-label="Decrease quantity">
-      <i data-lucide="minus" aria-hidden="true"></i>
+      <i class="ri-subtract-line" aria-hidden="true"></i>
     </button>
     <button type="button" data-action="increment" aria-label="Increase quantity">
-      <i data-lucide="plus" aria-hidden="true"></i>
+      <i class="ri-add-line" aria-hidden="true"></i>
     </button>
   </div>
 </div>

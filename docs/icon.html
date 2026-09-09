@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <meta name="description" content="Icon component — Lucide icons sized and colored with CSS custom properties.">
+  <meta name="description" content="Icon component — Remix Icon line and fill variants sized and colored with CSS custom properties.">
   <meta property="og:title" content="Icon — mewa_ui">
-  <meta property="og:description" content="Icon component — Lucide icons sized and colored with CSS custom properties.">
+  <meta property="og:description" content="Icon component — Remix Icon line and fill variants sized and colored with CSS custom properties.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="mewa_ui">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Icon — mewa_ui">
-  <meta name="twitter:description" content="Icon component — Lucide icons sized and colored with CSS custom properties.">
+  <meta name="twitter:description" content="Icon component — Remix Icon line and fill variants sized and colored with CSS custom properties.">
   <title>Icon — mewa_ui</title>
       <script src="js/layout.js"></script>
   <link rel="stylesheet" href="../library/src/base.css">
@@ -32,203 +32,200 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Icon</h1>
-        <p class="text-muted leading-relaxed mb-6">Uses the locally shipped Lucide set for familiar visual cues. Pair icons with visible text when possible, and give standalone meaningful icons an accessible alternative.</p>
+        <p class="text-secondary leading-relaxed mb-6">Uses the locally shipped Remix Icon set for familiar visual cues. Pair icons with visible text when possible, and give standalone meaningful icons an accessible alternative.</p>
       </div>
 
         <!-- -- Example: Basic ------------------------------------ -->
           <p class="text-sm font-medium mb-2 mt-6">Inline SVG</p>
-          <p class="text-xs text-muted mb-3">Copy a local SVG from <code>library/src/icons/</code> and keep decorative state explicit with <code>aria-hidden="true"</code>.</p>
+          <p class="text-xs text-secondary mb-3">Copy a local SVG from <code>library/src/icons/</code> and keep decorative state explicit with <code>aria-hidden="true"</code>.</p>
           <div class="preview" style="gap: var(--space-600)">
-            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21 20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V9.48907C3 9.18048 3.14247 8.88917 3.38606 8.69972L11.3861 2.47749C11.7472 2.19663 12.2528 2.19663 12.6139 2.47749L20.6139 8.69972C20.8575 8.88917 21 9.18048 21 9.48907V20ZM19 19V9.97815L12 4.53371L5 9.97815V19H19Z"/></svg>
           </div>
           <div style="position: relative; margin-top: var(--space-200)">
             <button class="copy-btn" type="button">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
               Copy
             </button>
-            <pre><code class="language-markup">&lt;svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;
-  &lt;path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"&gt;&lt;/path&gt;
-  &lt;path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"&gt;&lt;/path&gt;
-&lt;/svg&gt;</code></pre>
+            <pre><code class="language-markup">&lt;svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"&gt;&lt;path d="M21 20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V9.48907C3 9.18048 3.14247 8.88917 3.38606 8.69972L11.3861 2.47749C11.7472 2.19663 12.2528 2.19663 12.6139 2.47749L20.6139 8.69972C20.8575 8.88917 21 9.18048 21 9.48907V20ZM19 19V9.97815L12 4.53371L5 9.97815V19H19Z"/&gt;&lt;/svg&gt;</code></pre>
           </div>
 
         <!-- -- Example: Sizes ------------------------------------ -->
           <p class="text-sm font-medium mb-2 mt-6">Optional local loader</p>
-          <p class="text-xs text-muted mb-3">Use <code>data-lucide</code> and <code>data-size</code> when a local loader such as <code>js/site.js</code> is available.</p>
+          <p class="text-xs text-secondary mb-3">Use an <code>ri-*</code> class and <code>data-size</code> when a local loader such as <code>js/site.js</code> is available.</p>
           <div class="preview" style="gap: var(--space-800); align-items: center">
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-200)">
-              <i data-lucide="star"></i>
-              <span style="font-size: var(--font-size-300); color: var(--text-muted); font-family: var(--font-mono)">default (16px)</span>
+              <i class="ri-star-line"></i>
+              <span style="font-size: var(--font-size-300); color: var(--text-secondary); font-family: var(--font-mono)">default (16px)</span>
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-200)">
-              <i data-lucide="star" data-size="md"></i>
-              <span style="font-size: var(--font-size-300); color: var(--text-muted); font-family: var(--font-mono)">md (20px)</span>
+              <i class="ri-star-line" data-size="md"></i>
+              <span style="font-size: var(--font-size-300); color: var(--text-secondary); font-family: var(--font-mono)">md (20px)</span>
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-200)">
-              <i data-lucide="star" data-size="lg"></i>
-              <span style="font-size: var(--font-size-300); color: var(--text-muted); font-family: var(--font-mono)">lg (24px)</span>
+              <i class="ri-star-line" data-size="lg"></i>
+              <span style="font-size: var(--font-size-300); color: var(--text-secondary); font-family: var(--font-mono)">lg (24px)</span>
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-200)">
-              <i data-lucide="star" data-size="xl"></i>
-              <span style="font-size: var(--font-size-300); color: var(--text-muted); font-family: var(--font-mono)">xl (32px)</span>
+              <i class="ri-star-line" data-size="xl"></i>
+              <span style="font-size: var(--font-size-300); color: var(--text-secondary); font-family: var(--font-mono)">xl (32px)</span>
             </div>
           </div>
           <div style="position: relative; margin-top: var(--space-200)">
             <button type="button" class="copy-btn">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
               Copy
             </button>
-            <pre><code class="language-markup">&lt;i data-lucide="star"&gt;&lt;/i&gt;
-&lt;i data-lucide="star" data-size="md"&gt;&lt;/i&gt;
-&lt;i data-lucide="star" data-size="lg"&gt;&lt;/i&gt;
-&lt;i data-lucide="star" data-size="xl"&gt;&lt;/i&gt;</code></pre>
+            <pre><code class="language-markup">&lt;i class="ri-star-line"&gt;&lt;/i&gt;
+&lt;i class="ri-star-line" data-size="md"&gt;&lt;/i&gt;
+&lt;i class="ri-star-line" data-size="lg"&gt;&lt;/i&gt;
+&lt;i class="ri-star-line" data-size="xl"&gt;&lt;/i&gt;</code></pre>
           </div>
 
         <!-- -- Example: With Button ------------------------------ -->
           <p class="text-sm font-medium mb-2 mt-6">With buttons</p>
-          <p class="text-xs text-muted mb-3">Icons inside buttons inherit the button's color.</p>
+          <p class="text-xs text-secondary mb-3">Icons inside buttons inherit the button's color.</p>
           <div class="preview">
             <button type="button" class="btn" data-variant="default">
-              <i data-lucide="save"></i>
+              <i class="ri-save-line"></i>
               Save
             </button>
-            <button type="button" class="btn" data-variant="outline">
-              <i data-lucide="download"></i>
+            <button type="button" class="btn" data-variant="secondary">
+              <i class="ri-download-2-line"></i>
               Download
             </button>
             <button type="button" class="btn" data-variant="destructive">
-              <i data-lucide="trash"></i>
+              <i class="ri-delete-bin-line"></i>
               Delete
             </button>
-            <button type="button" class="btn" data-variant="outline" data-size="icon" aria-label="Settings">
-              <i data-lucide="settings"></i>
+            <button type="button" class="btn" data-variant="secondary" data-size="icon" aria-label="Settings">
+              <i class="ri-settings-3-line"></i>
             </button>
           </div>
           <div style="position: relative; margin-top: var(--space-200)">
             <button type="button" class="copy-btn">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
               Copy
             </button>
             <pre><code class="language-markup">&lt;button type="button" class="btn" data-variant="default"&gt;
-  &lt;i data-lucide="save"&gt;&lt;/i&gt;
+  &lt;i class="ri-save-line"&gt;&lt;/i&gt;
   Save
 &lt;/button&gt;
 
-&lt;button type="button" class="btn" data-variant="outline" data-size="icon" aria-label="Settings"&gt;
-  &lt;i data-lucide="settings"&gt;&lt;/i&gt;
+&lt;button type="button" class="btn" data-variant="secondary" data-size="icon" aria-label="Settings"&gt;
+  &lt;i class="ri-settings-3-line"&gt;&lt;/i&gt;
 &lt;/button&gt;</code></pre>
           </div>
 
         <!-- -- Example: Color ------------------------------------ -->
           <p class="text-sm font-medium mb-2 mt-6">Color</p>
-          <p class="text-xs text-muted mb-3">Icons inherit <code>currentColor</code>. Change color with text color utilities.</p>
+          <p class="text-xs text-secondary mb-3">Icons inherit <code>currentColor</code>. Change color with text color utilities.</p>
           <div class="preview" style="gap: var(--space-600)">
-            <i data-lucide="circle-check" data-size="lg" style="color: oklch(0.72 0.19 142)"></i>
-            <i data-lucide="triangle-alert" data-size="lg" style="color: oklch(0.77 0.17 75)"></i>
-            <i data-lucide="circle-x" data-size="lg" style="color: var(--text-negative)"></i>
-            <i data-lucide="info" data-size="lg" style="color: var(--text-secondary)"></i>
+            <i class="ri-checkbox-circle-line" data-size="lg" style="color: oklch(0.72 0.19 142)"></i>
+            <i class="ri-error-warning-line" data-size="lg" style="color: oklch(0.77 0.17 75)"></i>
+            <i class="ri-close-circle-line" data-size="lg" style="color: var(--text-negative)"></i>
+            <i class="ri-information-line" data-size="lg" style="color: var(--text-secondary)"></i>
           </div>
           <div style="position: relative; margin-top: var(--space-200)">
             <button type="button" class="copy-btn">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
               Copy
             </button>
-            <pre><code class="language-markup">&lt;i data-lucide="circle-check" data-size="lg" style="color: oklch(0.72 0.19 142)"&gt;&lt;/i&gt;
-&lt;i data-lucide="triangle-alert" data-size="lg" style="color: oklch(0.77 0.17 75)"&gt;&lt;/i&gt;
-&lt;i data-lucide="circle-x" data-size="lg" style="color: var(--text-negative)"&gt;&lt;/i&gt;
-&lt;i data-lucide="info" data-size="lg" style="color: var(--text-secondary)"&gt;&lt;/i&gt;</code></pre>
+            <pre><code class="language-markup">&lt;i class="ri-checkbox-circle-line" data-size="lg" style="color: oklch(0.72 0.19 142)"&gt;&lt;/i&gt;
+&lt;i class="ri-error-warning-line" data-size="lg" style="color: oklch(0.77 0.17 75)"&gt;&lt;/i&gt;
+&lt;i class="ri-close-circle-line" data-size="lg" style="color: var(--text-negative)"&gt;&lt;/i&gt;
+&lt;i class="ri-information-line" data-size="lg" style="color: var(--text-secondary)"&gt;&lt;/i&gt;</code></pre>
           </div>
 
-        <!-- -- Example: Stroke Width ------------------------------ -->
-          <p class="text-sm font-medium mb-2 mt-6">Stroke width</p>
-          <p class="text-xs text-muted mb-3">Adjust line thickness with the <code>stroke-width</code> attribute. Default is <code>2</code>.</p>
+        <!-- -- Example: Line and fill variants -------------------- -->
+          <p class="text-sm font-medium mb-2 mt-6">Line and fill variants</p>
+          <p class="text-xs text-secondary mb-3">Use the <code>-line</code> asset for the default outlined state and the <code>-fill</code> asset for selected or active states.</p>
           <div class="preview" style="gap: var(--space-800); align-items: center">
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-200)">
-              <i data-lucide="heart" data-size="lg" stroke-width="1.5"></i>
-              <span style="font-size: var(--font-size-300); color: var(--text-muted); font-family: var(--font-mono)">1.5</span>
+              <i class="ri-heart-line" data-size="lg" aria-hidden="true"></i>
+              <span style="font-size: var(--font-size-300); color: var(--text-secondary); font-family: var(--font-mono)">line</span>
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-200)">
-              <i data-lucide="heart" data-size="lg" stroke-width="2"></i>
-              <span style="font-size: var(--font-size-300); color: var(--text-muted); font-family: var(--font-mono)">2</span>
+              <i class="ri-heart-fill" data-size="lg" aria-hidden="true"></i>
+              <span style="font-size: var(--font-size-300); color: var(--text-secondary); font-family: var(--font-mono)">fill</span>
             </div>
           </div>
           <div style="position: relative; margin-top: var(--space-200)">
             <button type="button" class="copy-btn">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
               Copy
             </button>
-            <pre><code class="language-markup">&lt;i data-lucide="heart" data-size="lg" stroke-width="1.5"&gt;&lt;/i&gt;
-&lt;i data-lucide="heart" data-size="lg" stroke-width="2"&gt;&lt;/i&gt;</code></pre>
+            <pre><code class="language-markup">&lt;i class="ri-heart-line" data-size="lg" aria-hidden="true"&gt;&lt;/i&gt;
+&lt;i class="ri-heart-fill" data-size="lg" aria-hidden="true"&gt;&lt;/i&gt;</code></pre>
           </div>
 
         <!-- -- Example: Accessible icon --------------------------- -->
           <p class="text-sm font-medium mb-2 mt-6">Accessible icon</p>
-          <p class="text-xs text-muted mb-3">For standalone icons that convey meaning, use visually-hidden text or <code>aria-label</code>.</p>
+          <p class="text-xs text-secondary mb-3">For standalone icons that convey meaning, use visually-hidden text or <code>aria-label</code>.</p>
           <div class="preview" style="gap: var(--space-800); align-items: center">
             <span style="display: inline-flex; align-items: center">
-              <i data-lucide="phone" data-size="md" aria-hidden="true"></i>
+              <i class="ri-phone-line" data-size="md" aria-hidden="true"></i>
               <span class="sr-only">Phone number</span>
             </span>
-            <i data-lucide="triangle-alert" data-size="md" aria-label="Warning" role="img"></i>
+            <i class="ri-error-warning-line" data-size="md" aria-label="Warning" role="img"></i>
           </div>
           <div style="position: relative; margin-top: var(--space-200)">
             <button type="button" class="copy-btn">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
               Copy
             </button>
             <pre><code class="language-markup">&lt;!-- Preferred: visually-hidden text --&gt;
 &lt;span style="display: inline-flex; align-items: center"&gt;
-  &lt;i data-lucide="phone" aria-hidden="true"&gt;&lt;/i&gt;
+  &lt;i class="ri-phone-line" aria-hidden="true"&gt;&lt;/i&gt;
   &lt;span class="sr-only"&gt;Phone number&lt;/span&gt;
 &lt;/span&gt;
 
 &lt;!-- Alternative: aria-label --&gt;
-&lt;i data-lucide="triangle-alert" aria-label="Warning" role="img"&gt;&lt;/i&gt;</code></pre>
+&lt;i class="ri-error-warning-line" aria-label="Warning" role="img"&gt;&lt;/i&gt;</code></pre>
           </div>
 
         <!-- -- Example: Loading status ---------------------------- -->
           <p class="text-sm font-medium mb-2 mt-6">Loading status</p>
-          <p class="text-xs text-muted mb-3">Use a static loader icon for loading indicators while animations are paused.</p>
+          <p class="text-xs text-secondary mb-3">Use a static loader icon for loading indicators while animations are paused.</p>
           <div class="preview" style="gap: var(--space-800); align-items: center">
-            <i data-lucide="loader-circle" data-size="md"></i>
-            <button type="button" class="btn" data-variant="outline" disabled>
-              <i data-lucide="loader-circle"></i>
+            <i class="ri-loader-4-line" data-size="md"></i>
+            <button type="button" class="btn" data-variant="secondary" disabled>
+              <i class="ri-loader-4-line"></i>
               Loading…
             </button>
           </div>
           <div style="position: relative; margin-top: var(--space-200)">
             <button type="button" class="copy-btn">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
               Copy
             </button>
-            <pre><code class="language-markup">&lt;i data-lucide="loader-circle" data-size="md"&gt;&lt;/i&gt;
+            <pre><code class="language-markup">&lt;i class="ri-loader-4-line" data-size="md"&gt;&lt;/i&gt;
 
-&lt;button type="button" class="btn" data-variant="outline" disabled&gt;
-  &lt;i data-lucide="loader-circle"&gt;&lt;/i&gt;
+&lt;button type="button" class="btn" data-variant="secondary" disabled&gt;
+  &lt;i class="ri-loader-4-line"&gt;&lt;/i&gt;
   Loading…
 &lt;/button&gt;</code></pre>
           </div>
 
         <!-- -- Browse all icons ---------------------------------- -->
-          <p class="text-sm font-medium mb-2 mt-6">Filled icons</p>
-          <p class="text-xs text-muted mb-3">Use the <code>fill</code> and <code>stroke-width</code> attributes for filled icon variants. Works well with simple shapes.</p>
+          <p class="text-sm font-medium mb-2 mt-6">Selection states</p>
+          <p class="text-xs text-secondary mb-3">Switch the icon class when a control changes state. Keep the semantic color on the containing component.</p>
           <div class="preview" style="gap: var(--space-600); align-items: center">
-            <i data-lucide="star" data-size="lg" fill="currentColor" stroke-width="0"></i>
-            <i data-lucide="heart" data-size="lg" fill="currentColor" stroke-width="0"></i>
-            <i data-lucide="circle" data-size="lg" fill="currentColor" stroke-width="0"></i>
-            <i data-lucide="bookmark" data-size="lg" fill="currentColor" stroke-width="0"></i>
-            <i data-lucide="star" data-size="lg" fill="currentColor" stroke-width="1.5" style="color: oklch(0.77 0.17 75)"></i>
+            <i class="ri-star-line" data-size="lg" aria-hidden="true"></i>
+            <i class="ri-star-fill" data-size="lg" aria-hidden="true" style="color: oklch(0.77 0.17 75)"></i>
+            <i class="ri-heart-line" data-size="lg" aria-hidden="true"></i>
+            <i class="ri-heart-fill" data-size="lg" aria-hidden="true"></i>
+            <i class="ri-bookmark-line" data-size="lg" aria-hidden="true"></i>
+            <i class="ri-bookmark-fill" data-size="lg" aria-hidden="true"></i>
           </div>
           <div style="position: relative; margin-top: var(--space-200)">
             <button type="button" class="copy-btn">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
               Copy
             </button>
-            <pre><code class="language-markup">&lt;i data-lucide="star" data-size="lg" fill="currentColor" stroke-width="0"&gt;&lt;/i&gt;
-&lt;i data-lucide="heart" data-size="lg" fill="currentColor" stroke-width="0"&gt;&lt;/i&gt;
-
-&lt;!-- Filled with stroke outline --&gt;
-&lt;i data-lucide="star" data-size="lg" fill="currentColor" stroke-width="1.5"&gt;&lt;/i&gt;</code></pre>
+            <pre><code class="language-markup">&lt;i class="ri-star-line" data-size="lg" aria-hidden="true"&gt;&lt;/i&gt;
+&lt;i class="ri-star-fill" data-size="lg" aria-hidden="true"&gt;&lt;/i&gt;
+&lt;i class="ri-heart-line" data-size="lg" aria-hidden="true"&gt;&lt;/i&gt;
+&lt;i class="ri-heart-fill" data-size="lg" aria-hidden="true"&gt;&lt;/i&gt;</code></pre>
           </div>
 
         <!-- -- CSS --------------------------------------- -->

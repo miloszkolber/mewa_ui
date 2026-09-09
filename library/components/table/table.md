@@ -10,6 +10,12 @@ Use Data Table when the page also needs documented filtering, sorting, result st
 
 Do not use Table for page layout.
 
+## Visual contract
+
+Default table heads and cells use a 36px row height, 8px padding, 14px regular text, and a bottom static border. Rows and headings use the control-hover surface on hover.
+
+Data Table inherits this default Table contract. The repository-only `table--dense` treatment may add vertical density where a terminal-style view needs it.
+
 ## Native basis
 
 Use native `<table>` markup.

@@ -3,7 +3,7 @@
 @layer components {
   .hover-card-trigger {
     color: var(--text-primary);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     text-decoration: underline;
     text-decoration-color: var(--border-secondary);
     text-underline-offset: var(--space-100);
@@ -15,8 +15,7 @@
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
   }
 
@@ -102,13 +101,13 @@
     margin: 0;
     color: var(--text-primary);
     font-size: var(--font-size-400);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     line-height: var(--font-height-tight);
   }
 
   .hover-card-description {
     margin: 0;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: var(--font-size-350);
   }
 
@@ -127,7 +126,7 @@
   .hover-card-link {
     align-self: flex-start;
     color: var(--text-primary);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     text-underline-offset: var(--space-100);
     outline: none;
 
@@ -136,8 +135,7 @@
     }
 
     &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
   }
 

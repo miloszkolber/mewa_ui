@@ -61,7 +61,7 @@
     background-color: var(--surface-secondary);
     color: var(--text-secondary);
     font-size: var(--font-size-300);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
   }
 
   .message-content {
@@ -78,17 +78,17 @@
     align-items: center;
     gap: var(--space-200);
     min-height: var(--size-500);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: var(--font-size-300);
   }
 
   .message-name {
     color: var(--text-primary);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
   }
 
   .message-metadata {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-variant-numeric: tabular-nums;
   }
 
@@ -147,7 +147,7 @@
     min-height: var(--size-1000);
     padding-inline: var(--space-400);
     cursor: pointer;
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     list-style: none;
   }
 
@@ -156,8 +156,7 @@
   }
 
   .message-expand-trigger:focus-visible {
-    outline: var(--focus-ring-width) solid var(--border-focus);
-    outline-offset: calc(-1 * var(--border-width-050));
+    box-shadow: var(--ring-default);
   }
 
   .message-expand-content {

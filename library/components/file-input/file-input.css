@@ -8,7 +8,7 @@
 
     background: var(--background);
     font-size: var(--font-size-350);
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     color: var(--text-secondary);
     outline: none;
 
@@ -23,13 +23,13 @@
       background: var(--surface-secondary);
       color: var(--text-primary);
       font-size: var(--font-size-350);
-      font-weight: var(--font-weight-550);
-      font-family: var(--font-sans);
+      font-weight: var(--font-weight-525);
+      font-family: var(--font-mono);
       padding: 0 var(--space-300);
       margin-inline-end: var(--space-300);
       cursor: pointer;
       pointer-events: auto;
-      &:hover { background: color-mix(in srgb, var(--surface-secondary) 80%, var(--text-primary)); }
+      &:hover { background: var(--surface-button-secondary-hover); }
     }
 
     /* Only the picker button is interactive; the field frame never
@@ -40,13 +40,13 @@
     }
 
     &:is([aria-invalid="true"], :user-invalid) {
-      border-color: var(--text-negative);
+      border-color: var(--border-invalid);
     }
 
     &:disabled {
-      background: var(--surface-secondary);
+      background: var(--surface-control-disabled);
       color: var(--text-disabled);
-      border-color: var(--border-muted);
+      border-color: var(--border-disabled);
       cursor: not-allowed;
     }
 
@@ -54,8 +54,7 @@
       outline: none;
 
       &::file-selector-button {
-        outline: var(--focus-ring-width) solid var(--border-focus);
-        outline-offset: calc(-1 * var(--focus-ring-width));
+        box-shadow: var(--ring-default);
         position: relative;
         z-index: var(--z-raised);
       }

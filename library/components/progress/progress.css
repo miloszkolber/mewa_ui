@@ -4,26 +4,39 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     width: 100%;
-    height: var(--size-200);
+    height: var(--size-150);
     border: none;
     border-radius: var(--border-radius-000);
     overflow: hidden;
-    background-color: var(--surface-secondary);
+    background-color: var(--surface-control);
   }
 
   .progress::-webkit-progress-bar {
-    background-color: var(--surface-secondary);
+    background-color: var(--surface-control);
     border-radius: var(--border-radius-000);
   }
 
   .progress::-webkit-progress-value {
-    background-color: var(--surface-inverted);
+    background-color: var(--surface-control-inverted);
     border-radius: var(--border-radius-000);
   }
 
   .progress::-moz-progress-bar {
-    background-color: var(--surface-inverted);
+    background-color: var(--surface-control-inverted);
     border-radius: var(--border-radius-000);
+  }
+
+  .progress:is(:disabled, [aria-disabled="true"]) {
+    background-color: var(--surface-control-disabled);
+  }
+
+  .progress:is(:disabled, [aria-disabled="true"])::-webkit-progress-bar {
+    background-color: var(--surface-control-disabled);
+  }
+
+  .progress:is(:disabled, [aria-disabled="true"])::-webkit-progress-value,
+  .progress:is(:disabled, [aria-disabled="true"])::-moz-progress-bar {
+    background-color: var(--surface-control-disabled);
   }
 
   /* -- Accessibility ---------------------------------------- */

@@ -62,7 +62,7 @@
       var(--border-primary) calc(50% + (var(--border-width-025) / 2)),
       transparent calc(50% + (var(--border-width-025) / 2))
     );
-    color: var(--text-muted);
+    color: var(--text-secondary);
 
     &::after {
       position: absolute;
@@ -91,7 +91,7 @@
         var(--border-secondary) calc(50% + (var(--border-width-025) / 2)),
         transparent calc(50% + (var(--border-width-025) / 2))
       );
-      color: var(--text-muted);
+      color: var(--text-secondary);
     }
 
     .resizable[data-init] &[data-resizing] {
@@ -106,14 +106,14 @@
     }
 
     .resizable[data-init] &:focus-visible {
-      outline: var(--focus-ring-width) solid var(--border-focus);
-      outline-offset: var(--border-width-025);
+      box-shadow: var(--ring-default);
     }
 
     .resizable[data-init] &:disabled,
     .resizable[data-init] &[aria-disabled="true"] {
+      background: var(--surface-control-disabled);
+      color: var(--text-disabled);
       cursor: not-allowed;
-      opacity: var(--opacity-05);
     }
   }
 
@@ -153,7 +153,7 @@
         var(--border-secondary) calc(50% + (var(--border-width-025) / 2)),
         transparent calc(50% + (var(--border-width-025) / 2))
       );
-      color: var(--text-muted);
+      color: var(--text-secondary);
     }
 
     .resizable[data-init] &[data-resizing] {
@@ -166,6 +166,11 @@
       );
       color: var(--text-primary);
     }
+  }
+
+  .resizable[data-init] .resizable-handle:is(:disabled, [aria-disabled="true"]) {
+    background: var(--surface-control-disabled);
+    color: var(--text-disabled);
   }
 
   .resizable-controls {
@@ -185,22 +190,22 @@
     border-radius: 0;
     background: var(--surface-primary);
     color: var(--text-primary);
-    font: inherit;
+    font: inherit; font-variation-settings: var(--font-text-axis);
     font-family: var(--font-mono);
     cursor: pointer;
   }
 
   .resizable-step:hover {
-    background: var(--surface-secondary);
+    background: var(--surface-control-hover);
   }
 
   .resizable-step:focus-visible {
-    outline: var(--focus-ring-width) solid var(--border-focus);
-    outline-offset: var(--border-width-025);
+    box-shadow: var(--ring-default);
   }
 
   .resizable-step:disabled {
-    background: var(--surface-secondary);
+    background: var(--surface-control-disabled);
+    border-color: var(--border-disabled);
     color: var(--text-disabled);
     cursor: not-allowed;
   }

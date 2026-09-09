@@ -69,10 +69,10 @@
     transform: translateX(-50%);
     padding-inline: var(--space-300);
     border: var(--border-width-025) solid var(--border-secondary);
-    background: var(--surface-inverted);
+    background: var(--surface-control-inverted);
     color: var(--text-inverted);
     font-size: var(--font-size-350);
-    font-weight: var(--font-weight-550);
+    font-weight: var(--font-weight-525);
     white-space: nowrap;
   }
 

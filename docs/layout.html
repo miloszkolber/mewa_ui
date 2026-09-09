@@ -32,12 +32,12 @@
     <main style="flex: 1; min-width: 0; max-width: 48rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" id="main-content" tabindex="-1">
       <div class="page-header">
         <h1>Layout</h1>
-        <p class="text-muted leading-relaxed mb-6">Provides flexible building blocks for containers, stacks, grids, sidebars, centering, and split alignment. They respond to available space without prescribing a complete page.</p>
+        <p class="text-secondary leading-relaxed mb-6">Provides flexible building blocks for containers, stacks, grids, sidebars, centering, and split alignment. They respond to available space without prescribing a complete page.</p>
       </div>
 
         <!-- Container -->
         <p class="text-sm font-medium mb-2 mt-6">Container</p>
-        <p class="text-xs text-muted mb-3">Constrains content to a centered max width (<code>--container-max</code>, default 64rem).</p>
+        <p class="text-xs text-secondary mb-3">Constrains content to a centered max width (<code>--container-max</code>, default 64rem).</p>
         <div class="preview">
           <div class="layout-container" style="border: var(--border-width-025) dashed var(--border-subtle); text-align: center">
             <p style="margin: var(--space-400) 0; font-size: var(--font-size-350)">Centered, constrained content.</p>
@@ -45,7 +45,7 @@
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="layout-container"&gt;
@@ -55,19 +55,19 @@
 
         <!-- Stack -->
         <p class="text-sm font-medium mb-2 mt-8">Stack</p>
-        <p class="text-xs text-muted mb-3">Vertical rhythm for arbitrary content — children separated by the gap.</p>
+        <p class="text-xs text-secondary mb-3">Vertical rhythm for arbitrary content — children separated by the gap.</p>
         <div class="preview">
           <div style="width: 100%; max-width: 24rem; text-align: left">
             <div class="layout-stack">
-              <p style="font-weight: var(--font-weight-550); margin: 0">Profile</p>
-              <p class="text-muted" style="font-size: var(--font-size-350); margin: 0">A short description of the account and its permissions.</p>
-              <button type="button" class="btn" data-variant="outline" style="align-self: flex-start">Edit profile</button>
+              <p style="font-weight: var(--font-weight-525); margin: 0">Profile</p>
+              <p class="text-secondary" style="font-size: var(--font-size-350); margin: 0">A short description of the account and its permissions.</p>
+              <button type="button" class="btn" data-variant="secondary" style="align-self: flex-start">Edit profile</button>
             </div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="layout-stack"&gt;
@@ -79,7 +79,7 @@
 
         <!-- Grid -->
         <p class="text-sm font-medium mb-2 mt-8">Grid</p>
-        <p class="text-xs text-muted mb-3">Intrinsically responsive columns (<code>--min</code>, default 15rem). Resize the window to watch them wrap.</p>
+        <p class="text-xs text-secondary mb-3">Intrinsically responsive columns (<code>--min</code>, default 15rem). Resize the window to watch them wrap.</p>
         <div class="preview">
           <div style="width: 100%; text-align: left">
             <div class="layout-grid">
@@ -92,7 +92,7 @@
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="layout-grid"&gt;
@@ -105,22 +105,22 @@
 
         <!-- Sidebar -->
         <p class="text-sm font-medium mb-2 mt-8">Sidebar</p>
-        <p class="text-xs text-muted mb-3">App-shell split. Content wraps below the sidebar when the container narrows — no media queries.</p>
+        <p class="text-xs text-secondary mb-3">App-shell split. Content wraps below the sidebar when the container narrows — no media queries.</p>
         <div class="preview">
           <div class="layout-sidebar" style="width: 100%; text-align: left">
             <nav style="border: var(--border-width-025) solid var(--border-primary); padding: var(--space-400); font-size: var(--font-size-350)">
-              <p style="font-weight: var(--font-weight-550); margin: 0 0 var(--space-200)">Navigation</p>
-              <p class="text-muted" style="margin: 0; font-size: var(--font-size-300)">Item 1<br>Item 2<br>Item 3</p>
+              <p style="font-weight: var(--font-weight-525); margin: 0 0 var(--space-200)">Navigation</p>
+              <p class="text-secondary" style="margin: 0; font-size: var(--font-size-300)">Item 1<br>Item 2<br>Item 3</p>
             </nav>
             <main style="border: var(--border-width-025) dashed var(--border-subtle); padding: var(--space-400); font-size: var(--font-size-350)">
-              <p style="font-weight: var(--font-weight-550); margin: 0 0 var(--space-200)">Main content</p>
-              <p class="text-muted" style="margin: 0; font-size: var(--font-size-300)">Takes the remaining space; wraps below the sidebar on narrow containers.</p>
+              <p style="font-weight: var(--font-weight-525); margin: 0 0 var(--space-200)">Main content</p>
+              <p class="text-secondary" style="margin: 0; font-size: var(--font-size-300)">Takes the remaining space; wraps below the sidebar on narrow containers.</p>
             </main>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="layout-sidebar"&gt;
@@ -131,7 +131,7 @@
 
         <!-- Center -->
         <p class="text-sm font-medium mb-2 mt-8">Center</p>
-        <p class="text-xs text-muted mb-3">Centers children on both axes. Give the element an explicit size.</p>
+        <p class="text-xs text-secondary mb-3">Centers children on both axes. Give the element an explicit size.</p>
         <div class="preview">
           <div class="layout-center" style="min-block-size: 10rem; border: var(--border-width-025) dashed var(--border-subtle)">
             <p style="font-size: var(--font-size-350)">Centered content</p>
@@ -139,7 +139,7 @@
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="layout-center" style="min-block-size: 16rem"&gt;
@@ -149,21 +149,21 @@
 
         <!-- Split -->
         <p class="text-sm font-medium mb-2 mt-8">Split</p>
-        <p class="text-xs text-muted mb-3">Opposite-end groups that wrap when space runs out. Useful for page headers.</p>
+        <p class="text-xs text-secondary mb-3">Opposite-end groups that wrap when space runs out. Useful for page headers.</p>
         <div class="preview">
           <div style="width: 100%; max-width: 32rem; text-align: left">
             <div class="layout-split" style="border: var(--border-width-025) solid var(--border-primary); padding: var(--space-400)">
               <div>
-                <p style="font-weight: var(--font-weight-550); margin: 0">Project settings</p>
-                <p class="text-muted" style="margin: var(--space-100) 0 0; font-size: var(--font-size-300)">Manage preferences and permissions.</p>
+                <p style="font-weight: var(--font-weight-525); margin: 0">Project settings</p>
+                <p class="text-secondary" style="margin: var(--space-100) 0 0; font-size: var(--font-size-300)">Manage preferences and permissions.</p>
               </div>
-              <button type="button" class="btn" data-variant="outline">Save changes</button>
+              <button type="button" class="btn" data-variant="secondary">Save changes</button>
             </div>
           </div>
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="layout-split"&gt;
@@ -177,7 +177,7 @@
 
         <!-- Gaps -->
         <p class="text-sm font-medium mb-2 mt-8">Gaps</p>
-        <p class="text-xs text-muted mb-3">Use <code>data-gap</code> to choose a named value from the shared spacing scale.</p>
+        <p class="text-xs text-secondary mb-3">Use <code>data-gap</code> to choose a named value from the shared spacing scale.</p>
         <div class="preview">
           <div style="width: 100%; text-align: left">
             <div class="layout-stack" data-gap="sm" style="border: var(--border-width-025) dashed var(--border-subtle); padding: var(--space-300)">
@@ -188,7 +188,7 @@
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
             Copy
           </button>
           <pre><code class="language-markup">&lt;div class="layout-stack" data-gap="sm"&gt;

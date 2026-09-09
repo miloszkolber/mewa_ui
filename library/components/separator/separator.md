@@ -45,6 +45,8 @@ Use vertical Separator only inside a parent layout that gives it a useful block 
 
 Use `.separator-label` when visible text sits between two horizontal rules.
 
+The labelled form uses an 8px gap and 14px regular-tight text with normal case and default tracking.
+
 ```html
 <div class="separator-label">
   <hr class="separator">

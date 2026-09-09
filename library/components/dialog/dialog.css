@@ -13,7 +13,7 @@
     max-width: 28rem;
     width: calc(100vw - var(--size-800));
     max-height: calc(100vh - var(--size-800));
-    opacity: 0;
+    opacity: var(--opacity-000);
     transform: translateY(var(--space-100)) scale(0.99);
     transition-property: opacity, transform, overlay, display;
     transition-duration: var(--motion-duration-spatial);
@@ -21,7 +21,7 @@
     transition-behavior: normal, normal, allow-discrete, allow-discrete;
 
     &[open] {
-      opacity: 1;
+      opacity: var(--opacity-100);
       transform: translateY(0) scale(1);
     }
 
@@ -30,7 +30,7 @@
     &::backdrop {
       background: var(--overlay-strong);
       backdrop-filter: blur(var(--blur-200));
-      opacity: 0;
+      opacity: var(--opacity-000);
       transition-property: opacity, overlay, display;
       transition-duration: var(--motion-duration-spatial);
       transition-timing-function: var(--motion-easing-standard);
@@ -38,26 +38,26 @@
     }
 
     &[open]::backdrop {
-      opacity: 1;
+      opacity: var(--opacity-100);
     }
   }
 
   @starting-style {
     dialog.dialog[open] {
-      opacity: 0;
+      opacity: var(--opacity-000);
       transform: translateY(var(--space-100)) scale(0.99);
     }
 
     dialog.dialog[open]::backdrop {
-      opacity: 0;
+      opacity: var(--opacity-000);
     }
   }
 
   /* -- Content sections ------------------------------------- */
   .dialog-content { padding: var(--space-600); }
   .dialog-header  { margin-bottom: var(--space-400); }
-  .dialog-title   { font-size: var(--font-size-400); font-weight: var(--font-weight-550); margin: 0 0 var(--space-200); letter-spacing: -0.01em; }
-  .dialog-description { font-size: var(--font-size-350); color: var(--text-muted); margin: 0; line-height: var(--font-height-regular); }
+  .dialog-title   { font-size: var(--font-size-400); font-weight: var(--font-weight-525); margin: 0 0 var(--space-200); letter-spacing: -0.01em; }
+  .dialog-description { font-size: var(--font-size-350); color: var(--text-secondary); margin: 0; line-height: var(--font-height-regular); }
   .dialog-body    { margin-top: var(--space-400); }
   .dialog-footer  { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-200); margin-top: var(--space-600); }
 

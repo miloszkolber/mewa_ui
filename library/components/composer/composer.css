@@ -12,8 +12,7 @@
 
   .composer:focus-within {
     border-color: var(--border-focus);
-    outline: var(--border-width-025) solid var(--border-focus);
-    outline-offset: 0;
+    box-shadow: var(--ring-default);
   }
 
   .composer[data-state="thinking"] {
@@ -40,7 +39,7 @@
     outline: 0;
     background: transparent;
     color: var(--text-primary);
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     font-size: var(--font-size-400);
     line-height: var(--font-height-regular);
   }
@@ -52,7 +51,7 @@
   }
 
   .composer-input::placeholder {
-    color: var(--text-muted);
+    color: var(--text-secondary);
   }
 
   .composer-input:disabled,
@@ -84,7 +83,7 @@
 
   .composer-hint,
   .composer-status {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: var(--font-size-300);
   }
 

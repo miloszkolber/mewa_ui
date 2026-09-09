@@ -112,9 +112,7 @@ Load `library/src/base.css` first.
 
 Load `library/src/tokens.css` second.
 
-Use Geist for interface text.
-
-Use Geist Mono for code, output, keys, IDs, and technical labels.
+Use Google Sans Code for all interface text, code, output, keys, IDs, and technical labels.
 
 Use palette primitives only inside foundation files.
 
@@ -166,7 +164,11 @@ Use `--border-width-050` for focus and strong emphasis.
 
 Use `--border-width-100` only when the component contract requires it.
 
-Use `--blur-100` for sticky shell chrome.
+Use `--border-invalid` for the solid boundary of an invalid interactive control.
+
+Use `--blur-400` for headers and high-blur sticky shell chrome.
+
+Use `--blur-100` for other sticky shell chrome.
 
 Do not use blur on controls, cards, rows, dialogs, or body content.
 

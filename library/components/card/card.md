@@ -43,7 +43,7 @@ Use the footer only when the object owns local actions.
   </div>
 
   <div class="card-footer">
-    <button class="btn" type="button" data-variant="outline">Edit policy</button>
+    <button class="btn" type="button" data-variant="secondary">Edit policy</button>
   </div>
 </article>
 ```

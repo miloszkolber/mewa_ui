@@ -32,16 +32,16 @@
     <main id="main-content" class="app-content" style="flex: 1; min-width: 0; max-width: 64rem; padding: var(--space-800) var(--space-1400) var(--space-3200)" tabindex="-1">
       <div class="page-header">
         <h1>App Shell</h1>
-        <p class="text-muted leading-relaxed mb-6">Provides the shared frame for an application: its header or toolbar, navigation, page introduction, status areas, and empty states. Combine these pieces to suit the product rather than copying a fixed page template.</p>
+        <p class="text-secondary leading-relaxed mb-6">Provides the shared frame for an application: its header or toolbar, navigation, page introduction, status areas, and empty states. Combine these pieces to suit the product rather than copying a fixed page template.</p>
       </div>
 
       <p class="text-sm font-medium mb-2 mt-6">Header and page overview</p>
-      <p class="text-xs text-muted mb-3">Use links for routes, buttons for actions, and one technical eyebrow above the sentence-case page heading.</p>
+      <p class="text-xs text-secondary mb-3">Use links for routes, buttons for actions, and one technical eyebrow above the sentence-case page heading.</p>
       <div class="preview" style="display: block; overflow: hidden; padding: 0; text-align: left; --app-shell-max: 64rem">
         <header class="app-header" style="position: static">
           <div class="app-header-inner">
             <a class="brand" href="#app-shell-preview" aria-label="Worker console preview home">
-              <span class="brand-mark" aria-hidden="true"><i data-lucide="command"></i></span>
+              <span class="brand-mark" aria-hidden="true"><i class="ri-command-line"></i></span>
               <span>Worker console</span>
             </a>
             <nav class="app-nav" aria-label="Preview navigation">
@@ -49,9 +49,9 @@
               <a href="#app-shell-preview-history">History</a>
             </nav>
             <div class="app-header-actions">
-              <button class="btn" type="button" data-variant="outline" data-size="icon" data-theme-toggle aria-label="Toggle theme">
-                <i data-lucide="moon" aria-hidden="true"></i>
-                <i data-lucide="sun" aria-hidden="true"></i>
+              <button class="btn" type="button" data-variant="secondary" data-size="icon" data-theme-toggle aria-label="Toggle theme">
+                <i class="ri-moon-line" aria-hidden="true"></i>
+                <i class="ri-sun-line" aria-hidden="true"></i>
               </button>
             </div>
           </div>
@@ -63,13 +63,13 @@
             <p class="page-description">Inspect current workers and retry failed jobs.</p>
           </div>
           <div class="page-actions">
-            <button class="btn" type="button" data-variant="outline">Refresh</button>
+            <button class="btn" type="button" data-variant="secondary">Refresh</button>
           </div>
         </section>
       </div>
       <div style="position: relative; margin-top: var(--space-200)">
         <button class="copy-btn" type="button">
-          <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
           Copy
         </button>
         <pre><code class="language-markup">&lt;body class="app-shell"&gt;
@@ -85,9 +85,9 @@
         &lt;a href="/history"&gt;History&lt;/a&gt;
       &lt;/nav&gt;
       &lt;div class="app-header-actions"&gt;
-        &lt;button class="btn" type="button" data-variant="outline" data-size="icon" data-theme-toggle aria-label="Toggle theme"&gt;
-          &lt;i data-lucide="moon" aria-hidden="true"&gt;&lt;/i&gt;
-          &lt;i data-lucide="sun" aria-hidden="true"&gt;&lt;/i&gt;
+        &lt;button class="btn" type="button" data-variant="secondary" data-size="icon" data-theme-toggle aria-label="Toggle theme"&gt;
+          &lt;i class="ri-moon-line" aria-hidden="true"&gt;&lt;/i&gt;
+          &lt;i class="ri-sun-line" aria-hidden="true"&gt;&lt;/i&gt;
         &lt;/button&gt;
       &lt;/div&gt;
     &lt;/div&gt;
@@ -105,7 +105,7 @@
       </div>
 
       <p class="text-sm font-medium mb-2 mt-8" id="app-shell-preview-history">Inline status</p>
-      <p class="text-xs text-muted mb-3">Pair every status marker with visible text. Running is an outlined marker so it remains distinct from a neutral idle state without motion.</p>
+      <p class="text-xs text-secondary mb-3">Pair every status marker with visible text. Running is an outlined marker so it remains distinct from a neutral idle state without motion.</p>
       <div class="preview">
         <div style="display: grid; gap: var(--space-400); text-align: left">
           <p class="stats">
@@ -124,16 +124,16 @@
       </div>
 
       <p class="text-sm font-medium mb-2 mt-8" id="app-shell-status-list">Status list</p>
-      <p class="text-xs text-muted mb-3">Use a compact border-separated list when each status has its own copy and optional action. The composition reuses the existing semantic status markers without adding nested cards.</p>
+      <p class="text-xs text-secondary mb-3">Use a compact border-separated list when each status has its own copy and optional action. The composition reuses the existing semantic status markers without adding nested cards.</p>
       <div class="preview" style="display: block; text-align: left">
         <ul class="app-status-list" aria-label="Worker status">
           <li class="app-status-row">
-            <span class="status-icon" data-state="running" aria-hidden="true"><i data-lucide="loader-circle"></i></span>
+            <span class="status-icon" data-state="running" aria-hidden="true"><i class="ri-loader-4-line"></i></span>
             <div class="app-status-copy">
               <p class="app-status-title">Resolve model manifest</p>
               <p class="app-status-description">Checking revisions and compatible quantizations.</p>
             </div>
-            <div class="app-status-actions"><button class="btn" type="button" data-variant="outline" data-size="sm">View run</button></div>
+            <div class="app-status-actions"><button class="btn" type="button" data-variant="secondary" data-size="sm">View run</button></div>
           </li>
           <li class="app-status-row">
             <span class="status-dot" data-state="positive" aria-hidden="true"></span>
@@ -147,7 +147,7 @@
       </div>
 
       <p class="text-sm font-medium mb-2 mt-8" id="app-shell-dense-row-list">Dense row list</p>
-      <p class="text-xs text-muted mb-3">Use one shared border-separated list for content rows with an optional marker, copy, and compact actions.</p>
+      <p class="text-xs text-secondary mb-3">Use one shared border-separated list for content rows with an optional marker, copy, and compact actions.</p>
       <div class="preview" style="display: block; padding: 0; text-align: left">
         <section class="app-section" style="border: 0">
           <ul class="app-dense-list" aria-label="Feeds">
@@ -180,23 +180,23 @@
       </div>
 
       <p class="text-sm font-medium mb-2 mt-8">Empty state</p>
-      <p class="text-xs text-muted mb-3">Use a concise recovery message. Add live status semantics only when asynchronous content replaces it.</p>
+      <p class="text-xs text-secondary mb-3">Use a concise recovery message. Add live status semantics only when asynchronous content replaces it.</p>
       <div class="preview">
         <p class="app-empty" role="status">No jobs match the current filter.</p>
       </div>
 
       <p class="text-sm font-medium mb-2 mt-8">Edge accent</p>
-      <p class="text-xs text-muted mb-3">Add the optional class beside <code>app-shell</code> on the body element to pin a flat diagonal hatch to both inline edges of the viewport. The accent is decorative, ignores pointer input, and stays omitted when the edges must stay clean.</p>
+      <p class="text-xs text-secondary mb-3">Add the optional class beside <code>app-shell</code> on the body element to pin a flat diagonal hatch to both inline edges of the viewport. The accent is decorative, ignores pointer input, and stays omitted when the edges must stay clean.</p>
       <div style="position: relative; margin-top: var(--space-200)">
         <button class="copy-btn" type="button">
-          <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"/></svg>
           Copy
         </button>
         <pre><code class="language-markup">&lt;body class="app-shell app-shell-edge"&gt;</code></pre>
       </div>
 
       <p class="text-sm font-medium mb-2 mt-8">Theme behavior</p>
-      <p class="text-xs text-muted mb-3">The theme follows the operating system until someone chooses a preference. The toggle stays hidden without JavaScript. Add the small pre-paint script before page content to prevent a flash of the wrong theme.</p>
+      <p class="text-xs text-secondary mb-3">The theme follows the operating system until someone chooses a preference. The toggle stays hidden without JavaScript. Add the small pre-paint script before page content to prevent a flash of the wrong theme.</p>
     </main>
   </div>
 
