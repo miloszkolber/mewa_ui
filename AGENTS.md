@@ -36,7 +36,7 @@ Edit `library/runtime/` for the shared controller and automatic enhancement life
 
 Edit `library/adapters/` for optional framework integration.
 
-Edit `docs/{slug}.html` for the rendered component reference.
+Edit `docs/preview.html` only for the rendered component reference.
 
 Edit `registry.json` for component selection metadata and token purposes.
 
@@ -118,7 +118,7 @@ Do not publish this repository to the npm registry.
 
 Keep `README.md` descriptive and written for people.
 
-Keep `docs/` descriptive and example-focused.
+Keep `docs/preview.html` descriptive and example-focused. Do not add one page per component.
 
 Keep `library/DESIGN.md`, `library/system/`, and component Markdown instructional.
 
@@ -135,7 +135,7 @@ Do not copy implementation instructions into descriptive documentation.
 1. Identify the authoritative file.
 2. Read the current component skill.
 3. Read the current stylesheet and module.
-4. Read the matching static documentation page.
+4. Read the matching anchored section in `docs/preview.html`.
 5. Read the relevant system specification.
 6. Inspect consumers when the change can break a current hook.
 7. Make the smallest complete change.
@@ -199,11 +199,7 @@ Add the component files.
 
 Add the registry entry.
 
-Add the static documentation page.
-
 Run `bun run catalog:write`.
-
-Add the page to the documentation router.
 
 Add tests for source parity and behavior.
 

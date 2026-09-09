@@ -15,9 +15,9 @@ The repository contains 80 components, from basic controls and form fields to da
 - a precise implementation contract;
 - its own stylesheet;
 - a small ES module when behavior needs JavaScript;
-- a static reference page that shows the component in context.
+   - an anchored section in the shared component preview.
 
-Browse the examples in [`docs/`](docs/). The complete machine-readable inventory lives in [`registry.json`](registry.json).
+Browse the single [component preview](docs/preview.html). It contains every component, provides scroll anchors in the left navigation, and switches between light and dark themes without duplicating documentation pages. The complete machine-readable inventory lives in [`registry.json`](registry.json).
 
 ## Get a release from GitHub
 
@@ -72,8 +72,8 @@ The repository keeps description separate from instruction.
 ### For people
 
 - [`README.md`](README.md) describes the library and its structure.
-- [`docs/`](docs/) contains browsable component examples.
-- Component pages show the supported result without defining a second API.
+- [`docs/preview.html`](docs/preview.html) contains the complete browsable component reference.
+- The preview shows supported results without defining a second API.
 
 ### For agents and maintainers
 
@@ -94,7 +94,7 @@ mewa_ui/
 │   ├── runtime/                shared controller and enhancement lifecycle
 │   ├── src/                    foundations, fonts, and local icons
 │   └── system/                 selection and composition instructions
-├── docs/                       static reference pages
+├── docs/                       single component preview and its assets
 ├── scripts/                    reproducible catalog and distribution builders
 ├── dist/                       ignored, generated release packages
 ├── registry.json               component, dependency, asset, and token metadata

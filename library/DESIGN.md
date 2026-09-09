@@ -21,9 +21,9 @@ The component skill owns implementation-specific markup and behavior.
 
 The component stylesheet and module define the executable contract.
 
-The static documentation page demonstrates the contract.
+The shared `docs/preview.html` page demonstrates every component contract.
 
-The static documentation page does not define a second API.
+The preview does not define a second API; component anchors are documentation links only.
 
 The registry defines packaged style, behavior, and asset dependencies.
 
@@ -476,7 +476,7 @@ Do not create a new component only for one shell.
 
 `registry.json` owns machine-readable component and token metadata.
 
-`docs/{slug}.html` owns the rendered reference example.
+`docs/preview.html` owns the rendered reference example; each component uses a `#preview-{slug}` anchor.
 
 `library/system/` owns design selection and composition rules.
 
@@ -522,16 +522,16 @@ Check the changed page with a keyboard.
 
 Check the changed page at 200% zoom.
 
-Check the changed page at a 320px viewport width.
+Check the changed preview section at a 320px viewport width.
 
-Check the changed page in light and dark themes.
+Check the changed preview section in light and dark themes.
 
-Check the changed page with increased contrast.
+Check the changed preview section with increased contrast.
 
-Check the changed page in forced colors.
+Check the changed preview section in forced colors.
 
-Check the changed page without JavaScript when a native path exists.
+Check the changed preview section without JavaScript when a native path exists.
 
 Check the browser console.
 
-Reject the change when documentation and implementation differ.
+Reject the change when the preview and implementation differ.

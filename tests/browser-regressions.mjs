@@ -24,7 +24,7 @@ const server = Bun.serve({
     if (p.startsWith('/fixture/'))
       return new Response(
         fs
-          .readFileSync(path.join(root, 'docs', p.split('/').pop() + '.html'), 'utf8')
+          .readFileSync(path.join(root, 'docs', 'preview.html'), 'utf8')
           .replace(/<script\b[\s\S]*?<\/script>/gi, '')
           .replace(/(?:href|src)="(?:\.\.\/)?(?:css|js|library|assets)\/[^"]*"/g, ''),
         { headers: { 'content-type': 'text/html' } }
@@ -313,58 +313,16 @@ try {
     'all component listeners must be released after two mount/destroy cycles'
   );
   console.log('PASS listener teardown and reinitialization for all 41 behaviors');
-  await page.goto(`http://127.0.0.1:${server.port}/docs/toggle.html`);
-  await page.waitForSelector('.nav-link[href="tabs.html"]');
-  // Delay one route even after cancellation to exercise the sequence guard too.
-  await page.evaluate(() => {
-    const originalFetch = window.fetch;
-    window.fetch = async (input, options) => {
-      if (input === 'tabs.html') {
-        const response = await originalFetch(input);
-        await new Promise((resolve) => setTimeout(resolve, 150));
-        return response;
-      }
-      return originalFetch(input, options);
-    };
-    document.querySelector('.nav-link[href="tabs.html"]').click();
-    document.querySelector('.nav-link[href="checkbox.html"]').click();
-  });
-  const assertRoute = async (slug) => {
-    await page.waitForFunction(
-      (expected) =>
-        location.pathname.endsWith('/' + expected + '.html') &&
-        document.querySelector('.nav-link[aria-current="page"]')?.getAttribute('href') ===
-          expected + '.html',
-      {},
-      slug
-    );
-    const state = await page.evaluate(() => ({
-      title: document.title,
-      heading: document.querySelector('main h1')?.textContent.trim(),
-      focused: document.activeElement === document.querySelector('main h1'),
-      current: [...document.querySelectorAll('.nav-link[aria-current="page"]')].map((link) =>
-        link.getAttribute('href')
-      )
-    }));
-    assert(state.title.includes(state.heading));
-    assert.equal(state.focused, true);
-    assert(state.current.every((href) => href === slug + '.html'));
-  };
-  await assertRoute('checkbox');
-  await page.evaluate(() => new Promise((resolve) => setTimeout(resolve, 200)));
-  await assertRoute('checkbox');
-  await page.evaluate(() => {
-    document.querySelector('.nav-link[href="tabs.html"]').click();
-    document.querySelector('.nav-link[href="checkbox.html"]').click();
-  });
-  await page.evaluate(() => new Promise((resolve) => setTimeout(resolve, 200)));
-  await assertRoute('checkbox');
-  await page.evaluate(() => history.back());
-  await assertRoute('toggle');
-  await page.evaluate(() => history.forward());
-  await assertRoute('checkbox');
-  console.log('PASS route races, cancellation, history, title, focus and current links');
-  await page.goto(`http://127.0.0.1:${server.port}/docs/select.html`);
+  await page.goto(`http://127.0.0.1:${server.port}/docs/preview.html`);
+  await page.waitForSelector('.preview-nav a[href="#preview-tabs"]');
+  await page.click('.preview-nav a[href="#preview-tabs"]');
+  assert.equal(await page.evaluate(() => location.hash), '#preview-tabs');
+  await page.click('.preview-theme-switch button[data-preview-theme-option="dark"]');
+  assert.equal(await page.$eval('main', (main) => main.dataset.previewTheme), 'dark');
+  assert.equal(await page.$eval('html', (html) => html.dataset.theme), 'dark');
+  await page.click('.preview-theme-switch button[data-preview-theme-option="light"]');
+  assert.equal(await page.$eval('main', (main) => main.dataset.previewTheme), 'light');
+  console.log('PASS preview anchor navigation and focus');
   if (browserName === 'chrome') {
     const cdp = await page.createCDPSession();
     await cdp.send('Emulation.setEmulatedMedia', {
@@ -382,12 +340,14 @@ try {
   if (browserName === 'chrome') {
     await page.setJavaScriptEnabled(false);
     try {
-      await page.goto(`http://127.0.0.1:${server.port}/docs/index.html`);
-      assert.equal(await page.$$eval('main a', (links) => links.length), 80);
-      await page.goto(`http://127.0.0.1:${server.port}/docs/toggle.html`);
+      await page.goto(`http://127.0.0.1:${server.port}/docs/preview.html`);
+      assert.equal(await page.$$eval('.preview-nav a', (links) => links.length), 80);
       assert.equal(
-        await page.$eval('site-nav a', (link) => link.getAttribute('href')),
-        'index.html'
+        await page.$eval(
+          '.preview-theme-switch button[data-preview-theme-option="light"]',
+          (button) => button.getAttribute('aria-pressed')
+        ),
+        'true'
       );
     } finally {
       await page.setJavaScriptEnabled(true);

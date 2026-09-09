@@ -27,21 +27,6 @@ const matrixViewports = [
   { name: '1440', width: 1440, height: 900 }
 ];
 
-const representativeSlugs = [
-  'app-shell',
-  'sidebar',
-  'form',
-  'file-upload',
-  'input-otp',
-  'data-table',
-  'combobox',
-  'dialog',
-  'context-menu',
-  'message-scroller',
-  'tabs',
-  'resizable'
-];
-
 const mimeTypes = {
   '.css': 'text/css; charset=utf-8',
   '.html': 'text/html; charset=utf-8',
@@ -59,7 +44,7 @@ function safeTarget(requestUrl) {
     return null;
   }
 
-  if (pathname === '/') pathname = '/docs/typography.html';
+  if (pathname === '/') pathname = '/docs/preview.html';
   const target = path.resolve(root, `.${pathname}`);
   if (target !== root && !target.startsWith(`${root}${path.sep}`)) return null;
 
@@ -131,7 +116,7 @@ async function inspect(page, baseUrl, slug, viewport, theme = 'light') {
   page.on('console', onConsole);
   page.on('pageerror', onPageError);
 
-  const url = `${baseUrl}/docs/${slug}.html`;
+  const url = `${baseUrl}/docs/preview.html`;
   const response = await page.goto(url, { waitUntil: 'domcontentloaded' });
   assert(response?.ok(), `${slug} ${viewport.name}: HTTP ${response?.status()}`);
 
@@ -235,7 +220,7 @@ async function inspect(page, baseUrl, slug, viewport, theme = 'light') {
     `${slug} ${viewport.name}: first Tab does not reach an interactive target`
   );
 
-  if (screenshotDir && representativeSlugs.includes(slug)) {
+  if (screenshotDir && slug === 'preview') {
     fs.mkdirSync(screenshotDir, { recursive: true });
     await page.screenshot({
       path: path.join(screenshotDir, `${slug}-${viewport.name}-${theme}.png`),
@@ -388,29 +373,18 @@ try {
   try {
     const page = await browser.newPage();
 
-    for (const component of registry.components) {
-      for (const viewport of coreViewports) {
-        await inspect(page, baseUrl, component.slug, viewport);
-      }
-    }
+    for (const viewport of coreViewports) await inspect(page, baseUrl, 'preview', viewport);
 
-    for (const slug of representativeSlugs) {
-      for (const viewport of matrixViewports) {
-        await inspect(page, baseUrl, slug, viewport);
-      }
-    }
+    for (const viewport of matrixViewports) await inspect(page, baseUrl, 'preview', viewport);
 
-    for (const slug of representativeSlugs) {
-      await inspect(page, baseUrl, slug, coreViewports[1], 'dark');
-    }
+    await inspect(page, baseUrl, 'preview', coreViewports[1], 'dark');
+    await inspect(page, baseUrl, 'preview', coreViewports[0], 'dark');
 
-    for (const slug of ['checkbox', 'radio-group'])
-      await inspect(page, baseUrl, slug, coreViewports[0], 'dark');
     await inspectPackage(page, baseUrl);
     await inspectSveltePackage(page, baseUrl);
 
-    console.log(`PASS browser smoke for ${registry.components.length} component pages`);
-    console.log(`PASS responsive matrix for ${representativeSlugs.length} representative pages`);
+    console.log(`PASS browser smoke for the ${registry.components.length}-component preview`);
+    console.log(`PASS responsive matrix for the preview`);
     console.log(
       'PASS generated GitHub package auto, observer, and controller entries in a browser'
     );

@@ -15,7 +15,7 @@ Semantic HTML, tokenized CSS, local SVG icons, and optional native JavaScript be
 - `library/system/accessibility.md`: interaction acceptance criteria.
 - `library/runtime/README.md`: vanilla integration, lifecycle ownership, and browser capabilities.
 - `library/adapters/svelte/README.md`: Svelte attachment and Bun compilation.
-- `docs/{slug}.html`: rendered reference.
+- `docs/preview.html#preview-{slug}`: anchored rendered reference for each component.
 - `AGENTS.md`: repository maintenance and validation.
 
 ## Consumer task protocol

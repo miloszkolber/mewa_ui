@@ -80,20 +80,14 @@ try {
   }
   assert(Array.isArray(runtime), 'Safari runtime timed out');
   report.runtime = runtime;
-  const registry = JSON.parse(fs.readFileSync(path.join(root, 'registry.json'), 'utf8'));
   for (const width of [390, 1440]) {
     await command(prefix + '/window/rect', { width, height: 900 });
-    for (const { slug } of registry.components) {
-      await command(prefix + '/url', { url: `http://127.0.0.1:${server.port}/docs/${slug}.html` });
-      const result = await execute(
-        `return {width:innerWidth,overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth,main:!!document.querySelector('main'),buttons:[...document.querySelectorAll('button')].filter(b=>!['button','reset','submit'].includes(b.getAttribute('type'))).length}`
-      );
-      report.pages.push({ slug, requestedWidth: width, ...result });
-      assert(
-        result.main && !result.buttons && result.overflow <= 2,
-        JSON.stringify({ slug, ...result })
-      );
-    }
+    await command(prefix + '/url', { url: `http://127.0.0.1:${server.port}/docs/preview.html` });
+    const result = await execute(
+      `return {width:innerWidth,overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth,main:!!document.querySelector('main'),buttons:[...document.querySelectorAll('button')].filter(b=>!['button','reset','submit'].includes(b.getAttribute('type'))).length}`
+    );
+    report.pages.push({ slug: 'preview', requestedWidth: width, ...result });
+    assert(result.main && !result.buttons && result.overflow <= 2, JSON.stringify(result));
   }
   assert.equal(
     runtime.filter((item) => item.error).length,

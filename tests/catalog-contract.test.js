@@ -57,7 +57,7 @@ test('registry v3 defines the canonical source roots', () => {
     icons: 'library/src/icons/',
     components: 'library/components/',
     runtime: 'library/runtime/',
-    documentation: 'docs/',
+    documentation: 'docs/preview.html',
     system: 'library/system/'
   });
   assert(!exists('layouts'), 'complete layout templates must not ship in this repository');
@@ -121,17 +121,14 @@ test('registry selection metadata covers every component', () => {
       `library/components/${component.slug}/${component.slug}.md`
     );
     assert.equal(component.files.css, `library/components/${component.slug}/${component.slug}.css`);
-    assert.equal(component.docs, `docs/${component.slug}.html`);
+    assert.equal(component.docs, `docs/preview.html#preview-${component.slug}`);
     if (component.jsMode === 'none')
       assert.equal(component.files.js, undefined, `${component.slug}: unexpected module`);
     else
       assert.equal(component.files.js, `library/components/${component.slug}/${component.slug}.js`);
-    for (const file of [
-      component.files.skill,
-      component.files.css,
-      component.files.js,
-      component.docs
-    ].filter(Boolean)) {
+    for (const file of [component.files.skill, component.files.css, component.files.js].filter(
+      Boolean
+    )) {
       assert(exists(file), `${component.slug}: missing ${file}`);
     }
   }
@@ -217,27 +214,19 @@ test('component styles reference declared foundation or documented consumer vari
   });
 });
 
-test('docs have exact parity with the registry', () => {
-  const docs = files(docsDir, '.html')
-    .filter((name) => name !== 'index.html' && name !== 'preview.html')
-    .map((name) => name.slice(0, -5))
-    .sort();
-  const slugs = registry.components.map((component) => component.slug).sort();
-  assert.deepEqual(docs, slugs);
-});
-
-test('the hidden preview renders forced light and dark component columns', () => {
+test('the preview is the only rendered documentation surface', () => {
   const preview = read('docs/preview.html');
+  assert.deepEqual(files(docsDir, '.html'), ['preview.html']);
   assert(
     preview.includes('<meta name="robots" content="noindex, nofollow">'),
     'docs/preview.html: hidden preview must opt out of search indexing'
   );
   assert(!preview.includes('<iframe'), 'docs/preview.html: frames break Figma export');
   assert(
-    !preview.includes('site-header') &&
-      !preview.includes('site-nav') &&
-      !preview.includes('js/layout.js'),
-    'docs/preview.html: preview must use a plain container without docs chrome'
+    preview.includes('class="preview-sidebar"') &&
+      preview.includes('class="preview-nav"') &&
+      !preview.includes('Component preview'),
+    'docs/preview.html: preview must use the compact anchor navigation'
   );
   assert.equal(
     (preview.match(/href="css\/components\.generated\.css"/g) || []).length,
@@ -252,14 +241,15 @@ test('the hidden preview renders forced light and dark component columns', () =>
     preview.includes('class="preview-theme-grid"') &&
       preview.includes('data-preview-theme="light"') &&
       preview.includes('data-preview-theme="dark"') &&
-      preview.includes('grid-template-columns: repeat(2, minmax(0, 1fr))'),
-    'docs/preview.html: forced light and dark columns are required'
+      preview.includes('.preview-theme-grid {\n      display: block;'),
+    'docs/preview.html: themes must use one active panel instead of columns'
   );
   assert(
     preview.includes('data-preview-theme-option="light"') &&
       preview.includes('data-preview-theme-option="dark"') &&
-      preview.includes('@media (max-width: 48rem)'),
-    'docs/preview.html: mobile theme switch is required'
+      preview.includes('class="preview-theme-switch"') &&
+      preview.includes('class="preview-sidebar"'),
+    'docs/preview.html: theme switch must live in the left navigation'
   );
   const ids = Array.from(preview.matchAll(/\sid="([^"]+)"/g), (match) => match[1]);
   assert.equal(
@@ -267,29 +257,12 @@ test('the hidden preview renders forced light and dark component columns', () =>
     ids.length,
     'docs/preview.html: duplicate ids break stacked examples'
   );
-  let expectedBlocks = 0;
-  let expectedDialogs = 0;
   for (const component of registry.components) {
     assert(
       preview.includes(`id="preview-${component.slug}"`),
       `docs/preview.html: missing ${component.slug} section`
     );
-    // Count rendered elements only: <head> metadata names elements
-    // such as <dialog> inside attribute values without rendering them.
-    const bodySource = read(component.docs).split('</head>')[1];
-    expectedBlocks += (bodySource.match(/<div\s[^>]*class="preview"/g) || []).length;
-    expectedDialogs += (bodySource.match(/<dialog\b/g) || []).length;
   }
-  assert.equal(
-    (preview.match(/<div\s[^>]*class="preview"/g) || []).length,
-    expectedBlocks * 2,
-    'docs/preview.html: forced theme preview block count drifts from the component pages'
-  );
-  assert.equal(
-    (preview.match(/<dialog\b/g) || []).length,
-    expectedDialogs * 2,
-    'docs/preview.html: forced theme dialog count drifts from the component pages'
-  );
   assert(
     !/<dialog\b(?![^>]*\bopen\b)[^>]*>/.test(preview),
     'docs/preview.html: every showcased dialog must render open without interaction'
@@ -348,31 +321,13 @@ test('the hidden preview renders forced light and dark component columns', () =>
       );
     }
   }
-  const index = read('docs/index.html');
-  assert(!index.includes('preview.html'), 'docs/index.html: hidden preview must stay unlinked');
-  const layout = read('docs/js/layout.js');
-  assert(
-    !layout.includes('preview.html'),
-    'docs/js/layout.js: hidden preview must stay out of the documentation navigation'
-  );
 });
 
-test('every documentation page loads the generated component stylesheet once', () => {
+test('component documentation anchors resolve in the preview', () => {
+  const preview = read('docs/preview.html');
   for (const component of registry.components) {
-    const source = read(component.docs);
-    assert(
-      source.includes('href="css/components.generated.css"'),
-      `${component.docs}: missing generated component styles`
-    );
-    assert.equal(
-      (source.match(/href="css\/components\.generated\.css"/g) || []).length,
-      1,
-      `${component.docs}: duplicate generated component styles`
-    );
-    assert(
-      !/href="\.\.\/library\/components\//.test(source),
-      `${component.docs}: raw component stylesheet remains`
-    );
+    assert(preview.includes(`id="preview-${component.slug}"`));
+    assert.equal(component.docs, `docs/preview.html#preview-${component.slug}`);
   }
 });
 
@@ -384,14 +339,12 @@ test('human documentation stays free of internal and unrelated-library language'
     'canonical popover pattern'
   ];
 
-  for (const component of registry.components) {
-    const source = read(component.docs);
-    for (const phrase of discouragedPhrases) {
-      assert(
-        !source.includes(phrase),
-        `${component.docs}: contains internal-facing phrase ${phrase}`
-      );
-    }
+  const source = read('docs/preview.html');
+  for (const phrase of discouragedPhrases) {
+    assert(
+      !source.includes(phrase),
+      `docs/preview.html: contains internal-facing phrase ${phrase}`
+    );
   }
 });
 

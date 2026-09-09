@@ -6,8 +6,8 @@
   <meta name="color-scheme" content="light dark">
   <meta name="robots" content="noindex, nofollow">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <meta name="description" content="Hidden preview that presents every mewa_ui component on one plain page for Figma export.">
-  <title>Component preview — mewa_ui</title>
+  <meta name="description" content="mewa_ui component reference with anchor navigation and switchable light and dark themes.">
+  <title>mewa_ui components</title>
   <link rel="stylesheet" href="../library/src/base.css">
   <link rel="stylesheet" href="../library/src/tokens.css">
   <link rel="stylesheet" href="css/docs-theme.css">
@@ -16,60 +16,138 @@
   <link rel="stylesheet" href="css/components.generated.css">
   <style>
     .preview-page {
-      max-width: var(--breakpoint-max-dense);
-      margin-inline: auto;
-      padding: var(--space-800) var(--space-600) var(--space-3200);
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-1200);
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 14rem minmax(0, 1fr);
+      background: var(--background);
+      box-sizing: border-box;
     }
-    .preview-page > section {
+    .preview-sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: var(--space-600) var(--space-400);
+      border-right: var(--border-width-025) solid var(--border-primary);
+      background: var(--surface-primary);
+      box-sizing: border-box;
+    }
+    .preview-brand {
+      display: block;
+      margin-bottom: var(--space-800);
+      color: var(--text-primary);
+      font-size: var(--font-size-450);
+      font-weight: var(--font-weight-525);
+      text-decoration: none;
+    }
+    .preview-nav {
       display: flex;
       flex-direction: column;
-      gap: var(--space-400);
+      gap: var(--space-100);
+    }
+    .preview-nav a {
+      display: block;
+      padding: var(--space-150) var(--space-200);
+      color: var(--text-secondary);
+      font-size: var(--font-size-300);
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+    .preview-nav a:hover,
+    .preview-nav a:focus-visible {
+      color: var(--text-primary);
+      background: var(--surface-control-hover);
+    }
+    .preview-nav-group {
+      margin: 0 0 var(--space-500);
       min-width: 0;
     }
-    .preview-theme-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      align-items: start;
+    .preview-nav-heading {
+      margin: 0 0 var(--space-150);
+      color: var(--text-primary);
+      font-size: var(--font-size-250);
+      font-weight: var(--font-weight-525);
+      text-transform: uppercase;
+      letter-spacing: var(--text-tracking-default);
+    }
+    .preview-theme-switch {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-100);
+      margin-bottom: var(--space-800);
+      padding-bottom: var(--space-600);
+      border-bottom: var(--border-width-025) solid var(--border-primary);
+    }
+    .preview-theme-switch span {
+      color: var(--text-secondary);
+      font-size: var(--font-size-250);
+      font-weight: var(--font-weight-525);
+      text-transform: uppercase;
+      letter-spacing: var(--text-tracking-default);
+    }
+    .preview-theme-switch button {
+      min-height: var(--size-400);
+      padding: var(--space-150) var(--space-200);
+      color: var(--text-secondary);
+      background: transparent;
+      border: var(--border-width-025) solid transparent;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+    .preview-theme-switch button:hover,
+    .preview-theme-switch button:focus-visible {
+      background: var(--surface-control-hover);
+    }
+    .preview-theme-switch button[aria-pressed="true"] {
+      color: var(--text-primary);
+      background: var(--surface-control);
+      border-color: var(--border-primary);
+    }
+    .preview-content {
+      min-width: 0;
+      max-width: var(--breakpoint-max-dense);
+      width: 100%;
+      padding: var(--space-1000) var(--space-800) var(--space-3200);
+      box-sizing: border-box;
+    }
+    .preview-content > section {
+      display: flex;
+      flex-direction: column;
       gap: var(--space-600);
+      min-width: 0;
+      margin: 0 0 var(--space-1600);
+      scroll-margin-top: var(--space-800);
+    }
+    .preview-content > section > h2 {
+      margin: 0;
+      padding-bottom: var(--space-300);
+      border-bottom: var(--border-width-025) solid var(--border-primary);
+    }
+    .preview-theme-grid {
+      display: block;
     }
     .preview-theme-panel {
       min-width: 0;
       display: flex;
       flex-direction: column;
       gap: var(--space-400);
-      padding: var(--space-400);
+      padding: 0;
       color: var(--text-primary);
       background: var(--background);
-      border: var(--border-width-025) solid var(--border-primary);
     }
     .preview-theme-name {
-      font-size: var(--font-size-350);
-      font-weight: var(--font-weight-525);
-      line-height: var(--font-height-tight);
-      color: var(--text-secondary);
-    }
-    .preview-theme-switch {
       display: none;
     }
-    .preview-theme-switch button {
-      min-height: var(--size-400);
-      padding-inline: var(--space-300);
-      border: var(--border-width-025) solid var(--border-primary);
-      color: var(--text-secondary);
-      background: var(--surface-control-transparent);
-      font: inherit;
-      cursor: pointer;
-    }
-    .preview-theme-switch button[aria-pressed="true"] {
-      color: var(--text-inverted);
-      background: var(--surface-control-inverted);
-      border-color: var(--border-interactive-inverted);
-    }
+    .preview-theme-panel[data-preview-theme="dark"] { display: none; }
+    .preview-page[data-preview-theme="dark"] .preview-theme-panel[data-preview-theme="light"] { display: none; }
+    .preview-page[data-preview-theme="dark"] .preview-theme-panel[data-preview-theme="dark"] { display: flex; }
     .preview-page .preview {
       min-width: 0;
+      overflow-x: clip;
+    }
+    .preview-page .carousel {
+      overflow: hidden;
     }
     /* Keep the captured surface deterministic. */
     .preview-page,
@@ -148,57 +226,58 @@
     }
     @media (max-width: 48rem) {
       .preview-page {
-        padding-inline: var(--space-400);
+        display: block;
       }
-      .preview-theme-switch {
-        position: sticky;
-        top: var(--space-400);
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        gap: var(--space-200);
-        width: fit-content;
-        padding: var(--space-200);
-        color: var(--text-secondary);
-        background: var(--background);
-        border: var(--border-width-025) solid var(--border-primary);
+      .preview-sidebar {
+        position: static;
+        height: auto;
+        border-right: none;
+        border-bottom: var(--border-width-025) solid var(--border-primary);
       }
-      .preview-theme-switch span {
-        padding-inline: var(--space-200);
-        font-size: var(--font-size-300);
+      .preview-brand {
+        margin-bottom: var(--space-500);
       }
-      .preview-theme-grid {
-        grid-template-columns: 1fr;
+      .preview-nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-100) var(--space-300);
       }
-      .preview-theme-panel[data-preview-theme="dark"] {
-        display: none;
+      .preview-nav-group {
+        margin-bottom: var(--space-400);
       }
-      .preview-page[data-preview-theme="dark"] .preview-theme-panel[data-preview-theme="light"] {
-        display: none;
-      }
-      .preview-page[data-preview-theme="dark"] .preview-theme-panel[data-preview-theme="dark"] {
-        display: flex;
+      .preview-content {
+        padding: var(--space-800) var(--space-400) var(--space-2400);
       }
     }
   </style>
 </head>
 <body class="preview-export">
-  <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
-  <main class="preview-page" id="main-content" data-export-surface="figma" tabindex="-1">
-    <div>
-      <h1>Component preview</h1>
-      <p>Hidden quality-assurance page. Every component renders in forced light and dark themes for comparison. This page is not linked from the documentation navigation.</p>
-    </div>
-    <div class="preview-theme-switch" role="group" aria-label="Mobile preview theme">
+  <a class="skip-link docs-skip-link" href="#preview-content">Skip to content</a>
+  <main class="preview-page" data-export-surface="figma" data-preview-theme="light">
+    <aside class="preview-sidebar" aria-label="Preview navigation">
+      <a class="preview-brand" href="#preview-content">mewa_ui</a>
+      <div class="preview-theme-switch" role="group" aria-label="Preview theme">
       <span>Theme</span>
       <button type="button" data-preview-theme-option="light" aria-pressed="true">Light</button>
       <button type="button" data-preview-theme-option="dark" aria-pressed="false">Dark</button>
-    </div>
+      </div>
+      <nav class="preview-nav" aria-label="Components">
+        <div class="preview-nav-group"><p class="preview-nav-heading">Primitives</p><a href="#preview-typography">Typography</a><a href="#preview-layout">Layout</a><a href="#preview-separator">Separator</a><a href="#preview-icon">Icon</a></div>
+        <div class="preview-nav-group"><p class="preview-nav-heading">Actions</p><a href="#preview-button">Button</a><a href="#preview-toggle">Toggle</a><a href="#preview-toggle-group">Toggle Group</a><a href="#preview-button-group">Button Group</a><a href="#preview-toolbar">Toolbar</a></div>
+        <div class="preview-nav-group"><p class="preview-nav-heading">Forms and inputs</p><a href="#preview-label">Label</a><a href="#preview-field">Field</a><a href="#preview-text-field">Text Field</a><a href="#preview-textarea">Textarea</a><a href="#preview-checkbox">Checkbox</a><a href="#preview-radio-group">Radio Group</a><a href="#preview-switch">Switch</a><a href="#preview-slider">Slider</a><a href="#preview-select">Select</a><a href="#preview-number-field">Number Field</a><a href="#preview-file-input">File Input</a><a href="#preview-date-field">Date Field</a><a href="#preview-date-picker">Date Picker</a><a href="#preview-date-range-picker">Date Range Picker</a><a href="#preview-combobox">Combobox</a><a href="#preview-time-field">Time Field</a><a href="#preview-form">Form</a><a href="#preview-color-picker">Color Picker</a><a href="#preview-file-upload">File Upload</a><a href="#preview-input-otp">Input OTP</a><a href="#preview-tag-input">Tag Input</a></div>
+        <div class="preview-nav-group"><p class="preview-nav-heading">Data display</p><a href="#preview-badge">Badge</a><a href="#preview-avatar">Avatar</a><a href="#preview-card">Card</a><a href="#preview-image">Image</a><a href="#preview-statistic">Statistic</a><a href="#preview-table">Table</a><a href="#preview-data-table">Data Table</a><a href="#preview-collapsible">Collapsible</a><a href="#preview-timeline">Timeline</a><a href="#preview-tree-view">Tree View</a><a href="#preview-carousel">Carousel</a><a href="#preview-scroll-area">Scroll Area</a><a href="#preview-sortable">Sortable</a></div>
+        <div class="preview-nav-group"><p class="preview-nav-heading">Feedback and status</p><a href="#preview-spinner">Spinner</a><a href="#preview-skeleton">Skeleton</a><a href="#preview-progress">Progress</a><a href="#preview-callout">Callout</a><a href="#preview-alert-dialog">Alert Dialog</a><a href="#preview-toast">Toast</a></div>
+        <div class="preview-nav-group"><p class="preview-nav-heading">Overlays</p><a href="#preview-popover">Popover</a><a href="#preview-tooltip">Tooltip</a><a href="#preview-dialog">Dialog</a><a href="#preview-sheet">Sheet</a><a href="#preview-accordion">Accordion</a><a href="#preview-command-palette">Command Palette</a><a href="#preview-context-menu">Context Menu</a><a href="#preview-hover-card">Hover Card</a></div>
+        <div class="preview-nav-group"><p class="preview-nav-heading">Navigation</p><a href="#preview-breadcrumbs">Breadcrumbs</a><a href="#preview-pagination">Pagination</a><a href="#preview-tabs">Tabs</a><a href="#preview-dropdown-menu">Dropdown Menu</a><a href="#preview-navigation-menu">Navigation Menu</a></div>
+        <div class="preview-nav-group"><p class="preview-nav-heading">Application</p><a href="#preview-app-shell">App Shell</a><a href="#preview-sidebar">Sidebar</a><a href="#preview-resizable">Resizable</a><a href="#preview-header">Header</a><a href="#preview-nav">Nav</a><a href="#preview-footer">Footer</a></div>
+        <div class="preview-nav-group"><p class="preview-nav-heading">AI</p><a href="#preview-agent-activity">Agent Activity</a><a href="#preview-code-block">Code Block</a><a href="#preview-composer">Composer</a><a href="#preview-file-diff">File Diff</a><a href="#preview-message">Message</a><a href="#preview-message-scroller">Message Scroller</a><a href="#preview-reasoning">Reasoning</a><a href="#preview-sources">Sources</a><a href="#preview-suggestion">Suggestion</a><a href="#preview-thinking-indicator">Thinking Indicator</a><a href="#preview-todo-list">Todo List</a><a href="#preview-tool-call">Tool Call</a></div>
+      </nav>
+    </aside>
+    <div class="preview-content" id="preview-content" tabindex="-1">
 
 <section aria-labelledby="preview-typography"><h2 id="preview-typography">Typography</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="text-align: left; padding: var(--space-1000)">
           <div style="max-width: 32rem; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-600)">
             <h1 class="h1">h1 — Taxing Laughter</h1>
@@ -263,9 +342,8 @@
             </blockquote>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="text-align: left; padding: var(--space-1000)">
           <div style="max-width: 32rem; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-600)">
             <h1 class="h1">h1 — Taxing Laughter</h1>
@@ -330,13 +408,12 @@
             </blockquote>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-layout"><h2 id="preview-layout">Layout</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div class="layout-container" style="border: var(--border-width-025) dashed var(--border-subtle); text-align: center">
             <p style="margin: var(--space-400) 0; font-size: var(--font-size-350)">Centered, constrained content.</p>
@@ -397,9 +474,8 @@
             </div>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div class="layout-container" style="border: var(--border-width-025) dashed var(--border-subtle); text-align: center">
             <p style="margin: var(--space-400) 0; font-size: var(--font-size-350)">Centered, constrained content.</p>
@@ -460,13 +536,12 @@
             </div>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-separator"><h2 id="preview-separator">Separator</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="width: 100%; max-width: 24rem; text-align: left">
             <div>
@@ -542,9 +617,8 @@
             <p style="font-size: var(--font-size-350); margin: 0" >Content below</p>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="width: 100%; max-width: 24rem; text-align: left">
             <div>
@@ -620,13 +694,12 @@
             <p style="font-size: var(--font-size-350); margin: 0" >Content below</p>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-icon"><h2 id="preview-icon">Icon</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="gap: var(--space-600)">
             <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21 20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V9.48907C3 9.18048 3.14247 8.88917 3.38606 8.69972L11.3861 2.47749C11.7472 2.19663 12.2528 2.19663 12.6139 2.47749L20.6139 8.69972C20.8575 8.88917 21 9.18048 21 9.48907V20ZM19 19V9.97815L12 4.53371L5 9.97815V19H19Z"/></svg>
           </div>
@@ -710,9 +783,8 @@
             <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="ri-bookmark-line" data-size="lg" aria-hidden="true" data-remix-icon-loaded=""><path d="M5 2H19C19.5523 2 20 2.44772 20 3V22.1433C20 22.4194 19.7761 22.6434 19.5 22.6434C19.4061 22.6434 19.314 22.6168 19.2344 22.5669L12 18.0313L4.76559 22.5669C4.53163 22.7136 4.22306 22.6429 4.07637 22.4089C4.02647 22.3293 4 22.2373 4 22.1433V3C4 2.44772 4.44772 2 5 2ZM18 4H6V19.4324L12 15.6707L18 19.4324V4Z"/></svg>
             <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="ri-bookmark-fill" data-size="lg" aria-hidden="true" data-remix-icon-loaded=""><path d="M5 2H19C19.5523 2 20 2.44772 20 3V22.1433C20 22.4194 19.7761 22.6434 19.5 22.6434C19.4061 22.6434 19.314 22.6168 19.2344 22.5669L12 18.0313L4.76559 22.5669C4.53163 22.7136 4.22306 22.6429 4.07637 22.4089C4.02647 22.3293 4 22.2373 4 22.1433V3C4 2.44772 4.44772 2 5 2Z"/></svg>
           </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="gap: var(--space-600)">
             <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M21 20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V9.48907C3 9.18048 3.14247 8.88917 3.38606 8.69972L11.3861 2.47749C11.7472 2.19663 12.2528 2.19663 12.6139 2.47749L20.6139 8.69972C20.8575 8.88917 21 9.18048 21 9.48907V20ZM19 19V9.97815L12 4.53371L5 9.97815V19H19Z"/></svg>
           </div>
@@ -796,13 +868,12 @@
             <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="ri-bookmark-line" data-size="lg" aria-hidden="true" data-remix-icon-loaded=""><path d="M5 2H19C19.5523 2 20 2.44772 20 3V22.1433C20 22.4194 19.7761 22.6434 19.5 22.6434C19.4061 22.6434 19.314 22.6168 19.2344 22.5669L12 18.0313L4.76559 22.5669C4.53163 22.7136 4.22306 22.6429 4.07637 22.4089C4.02647 22.3293 4 22.2373 4 22.1433V3C4 2.44772 4.44772 2 5 2ZM18 4H6V19.4324L12 15.6707L18 19.4324V4Z"/></svg>
             <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="ri-bookmark-fill" data-size="lg" aria-hidden="true" data-remix-icon-loaded=""><path d="M5 2H19C19.5523 2 20 2.44772 20 3V22.1433C20 22.4194 19.7761 22.6434 19.5 22.6434C19.4061 22.6434 19.314 22.6168 19.2344 22.5669L12 18.0313L4.76559 22.5669C4.53163 22.7136 4.22306 22.6429 4.07637 22.4089C4.02647 22.3293 4 22.2373 4 22.1433V3C4 2.44772 4.44772 2 5 2Z"/></svg>
           </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-button"><h2 id="preview-button">Button</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="display: flex; gap: var(--space-300); flex-wrap: wrap; justify-content: center">
             <button class="btn" type="button" data-variant="default">Default</button>
@@ -857,9 +928,8 @@
           <a href="#" class="btn" data-variant="default" onclick="event.preventDefault()">Navigate</a>
           <a href="#" class="btn" data-variant="secondary" onclick="event.preventDefault()">Learn more</a>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="display: flex; gap: var(--space-300); flex-wrap: wrap; justify-content: center">
             <button class="btn" type="button" data-variant="default">Default</button>
@@ -914,13 +984,12 @@
           <a href="#" class="btn" data-variant="default" onclick="event.preventDefault()">Navigate</a>
           <a href="#" class="btn" data-variant="secondary" onclick="event.preventDefault()">Learn more</a>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-toggle"><h2 id="preview-toggle">Toggle</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="display: flex; gap: var(--space-300); align-items: center">
             <button type="button" class="toggle" aria-pressed="false" aria-label="Bookmark (unpressed)">
@@ -959,9 +1028,8 @@
             <button type="button" class="toggle" data-variant="outline" aria-pressed="true" disabled>Disabled</button>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="display: flex; gap: var(--space-300); align-items: center">
             <button type="button" class="toggle" aria-pressed="false" aria-label="Bookmark (unpressed)">
@@ -1000,13 +1068,12 @@
             <button type="button" class="toggle" data-variant="outline" aria-pressed="true" disabled>Disabled</button>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-toggle-group"><h2 id="preview-toggle-group">Toggle Group</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-1000) 0" >
             <div class="toggle-group" role="group" aria-label="Text alignment" data-type="single">
@@ -1075,9 +1142,8 @@
             </div>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-1000) 0" >
             <div class="toggle-group" role="group" aria-label="Text alignment" data-type="single">
@@ -1146,13 +1212,12 @@
             </div>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-button-group"><h2 id="preview-button-group">Button Group</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div class="btn-group" role="group" aria-label="Actions">
             <button type="button" class="btn" data-variant="secondary">Save</button>
@@ -1202,9 +1267,8 @@
             <button type="button" class="btn" data-variant="secondary" data-size="icon" aria-label="More options"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="ri-arrow-down-s-line" data-remix-icon-loaded=""><path d="M11.9999 13.1714L16.9497 8.22168L18.3639 9.63589L11.9999 15.9999L5.63599 9.63589L7.0502 8.22168L11.9999 13.1714Z"/></svg></button>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div class="btn-group" role="group" aria-label="Actions">
             <button type="button" class="btn" data-variant="secondary">Save</button>
@@ -1254,13 +1318,12 @@
             <button type="button" class="btn" data-variant="secondary" data-size="icon" aria-label="More options"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="ri-arrow-down-s-line" data-remix-icon-loaded=""><path d="M11.9999 13.1714L16.9497 8.22168L18.3639 9.63589L11.9999 15.9999L5.63599 9.63589L7.0502 8.22168L11.9999 13.1714Z"/></svg></button>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-toolbar"><h2 id="preview-toolbar">Toolbar</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div class="toolbar" role="toolbar" aria-label="Formatting" aria-orientation="horizontal">
             <div class="toggle-group" role="group" aria-label="Text style" data-type="multiple">
@@ -1290,9 +1353,8 @@
             <button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="Paste"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="ri-clipboard-line" data-remix-icon-loaded=""><path d="M7 4V2H17V4H20.0066C20.5552 4 21 4.44495 21 4.9934V21.0066C21 21.5552 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5551 3 21.0066V4.9934C3 4.44476 3.44495 4 3.9934 4H7ZM7 6H5V20H19V6H17V8H7V6ZM9 4V6H15V4H9Z"/></svg></button>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div class="toolbar" role="toolbar" aria-label="Formatting" aria-orientation="horizontal">
             <div class="toggle-group" role="group" aria-label="Text style" data-type="multiple">
@@ -1322,13 +1384,12 @@
             <button type="button" class="btn" data-variant="ghost" data-size="icon" aria-label="Paste"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="ri-clipboard-line" data-remix-icon-loaded=""><path d="M7 4V2H17V4H20.0066C20.5552 4 21 4.44495 21 4.9934V21.0066C21 21.5552 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5551 3 21.0066V4.9934C3 4.44476 3.44495 4 3.9934 4H7ZM7 6H5V20H19V6H17V8H7V6ZM9 4V6H15V4H9Z"/></svg></button>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-label"><h2 id="preview-label">Label</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="width: 100%; max-width: 20rem">
             <label class="label" for="label--light--demo-email">Email</label>
@@ -1376,9 +1437,8 @@
             <p class="field-description">This is your public display name.</p>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="width: 100%; max-width: 20rem">
             <label class="label" for="label--dark--demo-email">Email</label>
@@ -1426,13 +1486,12 @@
             <p class="field-description">This is your public display name.</p>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-field"><h2 id="preview-field">Field</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <div class="field" style="width: 100%; max-width: 24rem">
           <label for="field--light--field-email">Email</label>
@@ -1472,9 +1531,8 @@
           </div>
         </fieldset>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <div class="field" style="width: 100%; max-width: 24rem">
           <label for="field--dark--field-email">Email</label>
@@ -1514,13 +1572,12 @@
           </div>
         </fieldset>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-text-field"><h2 id="preview-text-field">Text Field</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <div class="text-field" style="width: 100%; max-width: 24rem">
           <label class="text-field-label" for="text-field--light--text-field-email">Email</label>
@@ -1604,9 +1661,8 @@
           </div>
         </form>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <div class="text-field" style="width: 100%; max-width: 24rem">
           <label class="text-field-label" for="text-field--dark--text-field-email">Email</label>
@@ -1690,13 +1746,12 @@
           </div>
         </form>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-textarea"><h2 id="preview-textarea">Textarea</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="width: 100%; max-width: 24rem">
             <label class="label" for="textarea--light--d-msg">Message</label>
@@ -1715,9 +1770,8 @@
             <p class="field-description">You can use markdown in your bio.</p>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="width: 100%; max-width: 24rem">
             <label class="label" for="textarea--dark--d-msg">Message</label>
@@ -1736,13 +1790,12 @@
             <p class="field-description">You can use markdown in your bio.</p>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-checkbox"><h2 id="preview-checkbox">Checkbox</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div class="checkbox-item">
             <input class="checkbox" type="checkbox" id="checkbox--light--d-terms">
@@ -1818,9 +1871,8 @@
             <output class="checkbox-group-status" data-checkbox-status id="checkbox--light--d-group-status" role="status" aria-live="polite"></output>
           </fieldset>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div class="checkbox-item">
             <input class="checkbox" type="checkbox" id="checkbox--dark--d-terms">
@@ -1896,13 +1948,12 @@
             <output class="checkbox-group-status" data-checkbox-status id="checkbox--dark--d-group-status" role="status" aria-live="polite"></output>
           </fieldset>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-radio-group"><h2 id="preview-radio-group">Radio Group</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <fieldset class="radio-group">
             <legend class="label">Choose a plan</legend>
@@ -1991,9 +2042,8 @@
             </div>
           </fieldset>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <fieldset class="radio-group">
             <legend class="label">Choose a plan</legend>
@@ -2082,13 +2132,12 @@
             </div>
           </fieldset>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-switch"><h2 id="preview-switch">Switch</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div class="switch-item">
             <input class="switch" type="checkbox" role="switch" id="switch--light--d-airplane">
@@ -2121,9 +2170,8 @@
             <span class="switch-description" style="color: var(--text-negative)">You must accept the terms and conditions to continue.</span>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div class="switch-item">
             <input class="switch" type="checkbox" role="switch" id="switch--dark--d-airplane">
@@ -2156,13 +2204,12 @@
             <span class="switch-description" style="color: var(--text-negative)">You must accept the terms and conditions to continue.</span>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-slider"><h2 id="preview-slider">Slider</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="width: 100%; max-width: 20rem">
             <input class="slider" type="range" min="0" max="100" value="50">
@@ -2200,9 +2247,8 @@
             <input class="slider" type="range" min="0" max="100" value="30" disabled>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="width: 100%; max-width: 20rem">
             <input class="slider" type="range" min="0" max="100" value="50">
@@ -2240,13 +2286,12 @@
             <input class="slider" type="range" min="0" max="100" value="30" disabled>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-select"><h2 id="preview-select">Select</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="width: 100%; max-width: 16rem">
             <label class="label" for="select--light--d-fruit">Fruit</label>
@@ -2283,9 +2328,8 @@
             </select>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="width: 100%; max-width: 16rem">
             <label class="label" for="select--dark--d-fruit">Fruit</label>
@@ -2322,13 +2366,12 @@
             </select>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-number-field"><h2 id="preview-number-field">Number Field</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div>
             <label class="label" for="number-field--light--d-qty">Quantity</label>
@@ -2349,9 +2392,8 @@
             </div>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div>
             <label class="label" for="number-field--dark--d-qty">Quantity</label>
@@ -2372,13 +2414,12 @@
             </div>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-file-input"><h2 id="preview-file-input">File Input</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="width: 100%; max-width: 20rem">
             <label class="label" for="file-input--light--d-avatar">Picture</label>
@@ -2397,9 +2438,8 @@
             <input class="file-input" type="file" id="file-input--light--d-img" name="image" accept="image/*">
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="width: 100%; max-width: 20rem">
             <label class="label" for="file-input--dark--d-avatar">Picture</label>
@@ -2418,13 +2458,12 @@
             <input class="file-input" type="file" id="file-input--dark--d-img" name="image" accept="image/*">
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-date-field"><h2 id="preview-date-field">Date Field</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="width: 100%; max-width: 16rem">
             <label class="label" for="date-field--light--d-bday">Birthday</label>
@@ -2443,9 +2482,8 @@
             <input class="date-input" type="date" id="date-field--light--d-start" name="start" min="2024-01-01" max="2026-12-31">
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="width: 100%; max-width: 16rem">
             <label class="label" for="date-field--dark--d-bday">Birthday</label>
@@ -2464,13 +2502,12 @@
             <input class="date-input" type="date" id="date-field--dark--d-start" name="start" min="2024-01-01" max="2026-12-31">
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-date-picker"><h2 id="preview-date-picker">Date Picker</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
            <div class="date-picker">
              <div class="date-picker-header">
@@ -2513,9 +2550,8 @@
             </div>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
            <div class="date-picker">
              <div class="date-picker-header">
@@ -2558,13 +2594,12 @@
             </div>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-date-range-picker"><h2 id="preview-date-range-picker">Date Range Picker</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <form id="date-range-picker--light--demo-range-form" style="display: grid; gap: var(--space-300); width: 100%; max-width: 34rem">
           <fieldset class="date-range-picker">
@@ -2620,9 +2655,8 @@
           <p class="date-range-error" id="date-range-picker--light--demo-invalid-error" role="alert">End date must be on or after the start date.</p>
         </fieldset>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <form id="date-range-picker--dark--demo-range-form" style="display: grid; gap: var(--space-300); width: 100%; max-width: 34rem">
           <fieldset class="date-range-picker">
@@ -2678,13 +2712,12 @@
           <p class="date-range-error" id="date-range-picker--dark--demo-invalid-error" role="alert">End date must be on or after the start date.</p>
         </fieldset>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-combobox"><h2 id="preview-combobox">Combobox</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <div class="combobox">
           <span class="label" id="combobox--light--framework-label">Framework</span>
@@ -2707,9 +2740,8 @@
           </div>
         </div>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <div class="combobox">
           <span class="label" id="combobox--dark--framework-label">Framework</span>
@@ -2732,13 +2764,12 @@
           </div>
         </div>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-time-field"><h2 id="preview-time-field">Time Field</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="padding: var(--space-800)">
         <fieldset class="time-field" style="width: 100%; max-width: 28rem" aria-describedby="time-field--light--time-help time-field--light--time-status">
           <legend>Reminder time</legend>
@@ -2772,9 +2803,8 @@
           <p class="field-description">The browser owns the picker and locale formatting.</p>
         </div>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="padding: var(--space-800)">
         <fieldset class="time-field" style="width: 100%; max-width: 28rem" aria-describedby="time-field--dark--time-help time-field--dark--time-status">
           <legend>Reminder time</legend>
@@ -2808,13 +2838,12 @@
           <p class="field-description">The browser owns the picker and locale formatting.</p>
         </div>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-form"><h2 id="preview-form">Form</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="padding: var(--space-800)">
           <form class="form" style="width: 100%; max-width: 24rem" onsubmit="return false;">
             <div class="form-field">
@@ -3011,9 +3040,8 @@
             </div>
           </form>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="padding: var(--space-800)">
           <form class="form" style="width: 100%; max-width: 24rem" onsubmit="return false;">
             <div class="form-field">
@@ -3210,13 +3238,12 @@
             </div>
           </form>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-badge"><h2 id="preview-badge">Badge</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="display: flex; gap: var(--space-300); align-items: center">
             <span class="badge" data-variant="default">New</span>
@@ -3286,9 +3313,8 @@
             </div>
           </article>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="display: flex; gap: var(--space-300); align-items: center">
             <span class="badge" data-variant="default">New</span>
@@ -3358,13 +3384,12 @@
             </div>
           </article>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-avatar"><h2 id="preview-avatar">Avatar</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="display: flex; gap: var(--space-400); align-items: center">
             <span class="avatar">
@@ -3424,9 +3449,8 @@
             </div>
           </article>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="display: flex; gap: var(--space-400); align-items: center">
             <span class="avatar">
@@ -3486,13 +3510,12 @@
             </div>
           </article>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-card"><h2 id="preview-card">Card</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="justify-content: center">
           <div class="card" style="max-width: 22rem; width: 100%">
             <div class="card-header">
@@ -3574,9 +3597,8 @@
             </div>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="justify-content: center">
           <div class="card" style="max-width: 22rem; width: 100%">
             <div class="card-header">
@@ -3658,13 +3680,12 @@
             </div>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-image"><h2 id="preview-image">Image</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <figure class="image" style="max-width: 400px">
              <img src="assets/demo-landscape.svg" alt="Abstract gradient" />
@@ -3738,9 +3759,8 @@
             </figure>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <figure class="image" style="max-width: 400px">
              <img src="assets/demo-landscape.svg" alt="Abstract gradient" />
@@ -3814,13 +3834,12 @@
             </figure>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-statistic"><h2 id="preview-statistic">Statistic</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="display: flex; gap: var(--space-1200); flex-wrap: wrap">
             <div class="statistic">
@@ -3907,9 +3926,8 @@
             </article>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="display: flex; gap: var(--space-1200); flex-wrap: wrap">
             <div class="statistic">
@@ -3996,13 +4014,12 @@
             </article>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-table"><h2 id="preview-table">Table</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
            <div class="table-container" role="region" aria-label="Recent payments" tabindex="0" style="max-width: 42rem">
              <table class="table">
@@ -4075,9 +4092,8 @@
             </table>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
            <div class="table-container" role="region" aria-label="Recent payments" tabindex="0" style="max-width: 42rem">
              <table class="table">
@@ -4150,13 +4166,12 @@
             </table>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-data-table"><h2 id="preview-data-table">Data Table</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <section class="data-table" data-page-size="3" aria-labelledby="data-table--light--projects-title">
           <h2 id="data-table--light--projects-title" class="text-base font-medium">Projects</h2>
@@ -4227,9 +4242,8 @@
           </nav>
         </section>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <section class="data-table" data-page-size="3" aria-labelledby="data-table--dark--projects-title">
           <h2 id="data-table--dark--projects-title" class="text-base font-medium">Projects</h2>
@@ -4300,13 +4314,12 @@
           </nav>
         </section>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-collapsible"><h2 id="preview-collapsible">Collapsible</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="max-width: 24rem">
             <details class="collapsible">
@@ -4365,9 +4378,8 @@
             </details>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="max-width: 24rem">
             <details class="collapsible">
@@ -4426,13 +4438,12 @@
             </details>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-timeline"><h2 id="preview-timeline">Timeline</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <ol class="timeline" style="max-width: 24rem">
             <li class="timeline-item">
@@ -4509,9 +4520,8 @@
             </li>
           </ol>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <ol class="timeline" style="max-width: 24rem">
             <li class="timeline-item">
@@ -4588,13 +4598,12 @@
             </li>
           </ol>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-tree-view"><h2 id="preview-tree-view">Tree View</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="max-width: 18rem; border: var(--border-width-025) solid var(--border-primary); padding: var(--space-200)">
             <ul class="tree" role="tree" aria-label="File explorer">
@@ -4684,9 +4693,8 @@
             </div>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="max-width: 18rem; border: var(--border-width-025) solid var(--border-primary); padding: var(--space-200)">
             <ul class="tree" role="tree" aria-label="File explorer">
@@ -4776,13 +4784,12 @@
             </div>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-carousel"><h2 id="preview-carousel">Carousel</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="padding: var(--space-1000) var(--space-1200)">
           <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Default demo" style="max-width: 24rem; margin: 0 auto">
             <div class="carousel-viewport" aria-live="polite">
@@ -4911,9 +4918,8 @@
             <div class="carousel-dots" role="group" aria-label="Choose slide to display"></div>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="padding: var(--space-1000) var(--space-1200)">
           <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Default demo" style="max-width: 24rem; margin: 0 auto">
             <div class="carousel-viewport" aria-live="polite">
@@ -5042,13 +5048,12 @@
             <div class="carousel-dots" role="group" aria-label="Choose slide to display"></div>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-scroll-area"><h2 id="preview-scroll-area">Scroll Area</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div class="scroll-area" style="height: 10rem; width: 16rem; border: var(--border-width-025) solid var(--border-primary); padding: var(--space-400)">
             <div style="font-size: var(--font-size-300); color: var(--text-primary)">
@@ -5057,9 +5062,8 @@
             </div>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div class="scroll-area" style="height: 10rem; width: 16rem; border: var(--border-width-025) solid var(--border-primary); padding: var(--space-400)">
             <div style="font-size: var(--font-size-300); color: var(--text-primary)">
@@ -5068,13 +5072,12 @@
             </div>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-sortable"><h2 id="preview-sortable">Sortable</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-1000) 0" >
             <ul class="sortable" role="listbox" aria-label="Task priority" style="width: 20rem">
@@ -5155,9 +5158,8 @@
             </ul>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="display: flex; align-items: center; justify-content: center; padding: var(--space-1000) 0" >
             <ul class="sortable" role="listbox" aria-label="Task priority" style="width: 20rem">
@@ -5238,13 +5240,12 @@
             </ul>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-spinner"><h2 id="preview-spinner">Spinner</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <svg class="spinner" role="status" aria-label="Loading" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.364 5.63604L16.9497 7.05025C15.683 5.7835 13.933 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12H21C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C14.4853 3 16.7353 4.00736 18.364 5.63604Z"/></svg>
         </div>
@@ -5264,9 +5265,8 @@
             Loading...
           </button>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <svg class="spinner" role="status" aria-label="Loading" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.364 5.63604L16.9497 7.05025C15.683 5.7835 13.933 5 12 5C8.13401 5 5 8.13401 5 12C5 15.866 8.13401 19 12 19C15.866 19 19 15.866 19 12H21C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C14.4853 3 16.7353 4.00736 18.364 5.63604Z"/></svg>
         </div>
@@ -5286,13 +5286,12 @@
             Loading...
           </button>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-skeleton"><h2 id="preview-skeleton">Skeleton</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div aria-hidden="true" style="display: flex; align-items: center; gap: var(--space-400)">
             <div class="skeleton skeleton-round" style="width: var(--size-1000); height: var(--size-1000)"></div>
@@ -5324,9 +5323,8 @@
             <div class="skeleton" style="height: 0.875rem; width: 80%"></div>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div aria-hidden="true" style="display: flex; align-items: center; gap: var(--space-400)">
             <div class="skeleton skeleton-round" style="width: var(--size-1000); height: var(--size-1000)"></div>
@@ -5358,13 +5356,12 @@
             <div class="skeleton" style="height: 0.875rem; width: 80%"></div>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-progress"><h2 id="preview-progress">Progress</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div style="inline-size: min(24rem, 100%)">
             <progress class="progress" value="66" max="100">66%</progress>
@@ -5414,9 +5411,8 @@
             </article>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div style="inline-size: min(24rem, 100%)">
             <progress class="progress" value="66" max="100">66%</progress>
@@ -5466,13 +5462,12 @@
             </article>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-callout"><h2 id="preview-callout">Callout</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="flex-direction: column; align-items: stretch">
            <div class="callout" style="max-width: 32rem">
             <svg class="callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM17.4571 9.45711L16.0429 8.04289L11 13.0858L8.20711 10.2929L6.79289 11.7071L11 15.9142L17.4571 9.45711Z"/></svg>
@@ -5503,9 +5498,8 @@
             </div>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="flex-direction: column; align-items: stretch">
            <div class="callout" style="max-width: 32rem">
             <svg class="callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C7.58172 20 4 16.4183 4 12ZM12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM17.4571 9.45711L16.0429 8.04289L11 13.0858L8.20711 10.2929L6.79289 11.7071L11 15.9142L17.4571 9.45711Z"/></svg>
@@ -5536,13 +5530,12 @@
             </div>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-alert-dialog"><h2 id="preview-alert-dialog">Alert Dialog</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <button class="btn" type="button" data-variant="secondary" data-alert-dialog-trigger="alert-dialog--light--demo-alert-dialog" aria-haspopup="dialog">Delete account</button>
 
@@ -5559,9 +5552,8 @@
           </div>
         </dialog>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <button class="btn" type="button" data-variant="secondary" data-alert-dialog-trigger="alert-dialog--dark--demo-alert-dialog" aria-haspopup="dialog">Delete account</button>
 
@@ -5578,13 +5570,12 @@
           </div>
         </dialog>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-toast"><h2 id="preview-toast">Toast</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="gap: var(--space-300)">
             <button class="btn" type="button" data-variant="default"
                     onclick="toast.show({ title: 'Event created', description: 'Monday, January 3rd at 6:00pm' })">
@@ -5621,9 +5612,8 @@
               Show Toast
             </button>
           </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="gap: var(--space-300)">
             <button class="btn" type="button" data-variant="default"
                     onclick="toast.show({ title: 'Event created', description: 'Monday, January 3rd at 6:00pm' })">
@@ -5660,13 +5650,12 @@
               Show Toast
             </button>
           </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-popover"><h2 id="preview-popover">Popover</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
            <button class="btn" type="button" data-variant="secondary" popovertarget="popover--light--demo-popover">Open popover</button>
           <div class="popover" id="popover--light--demo-popover" popover>
@@ -5766,9 +5755,8 @@
             </div>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
            <button class="btn" type="button" data-variant="secondary" popovertarget="popover--dark--demo-popover">Open popover</button>
           <div class="popover" id="popover--dark--demo-popover" popover>
@@ -5868,13 +5856,12 @@
             </div>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-tooltip"><h2 id="preview-tooltip">Tooltip</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <div style="display: flex; align-items: center; justify-content: center; gap: var(--space-400); padding: var(--space-1000) 0" >
           <button type="button" class="btn" data-variant="secondary" data-tooltip-trigger="tooltip--light--tip-default">Hover me</button>
@@ -5996,9 +5983,8 @@
           <div class="tooltip" id="tooltip--light--tip-g4" popover="hint" role="tooltip">Strikethrough</div>
         </div>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <div style="display: flex; align-items: center; justify-content: center; gap: var(--space-400); padding: var(--space-1000) 0" >
           <button type="button" class="btn" data-variant="secondary" data-tooltip-trigger="tooltip--dark--tip-default">Hover me</button>
@@ -6120,13 +6106,12 @@
           <div class="tooltip" id="tooltip--dark--tip-g4" popover="hint" role="tooltip">Strikethrough</div>
         </div>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-dialog"><h2 id="preview-dialog">Dialog</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <button type="button" class="btn" data-variant="default" data-dialog-trigger="dialog--light--demo-dialog" aria-haspopup="dialog">Edit Profile</button>
         </div>
@@ -6167,9 +6152,8 @@
         </div>
       </div>
     </dialog>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <button type="button" class="btn" data-variant="default" data-dialog-trigger="dialog--dark--demo-dialog" aria-haspopup="dialog">Edit Profile</button>
         </div>
@@ -6210,13 +6194,12 @@
         </div>
       </div>
     </dialog>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-sheet"><h2 id="preview-sheet">Sheet</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
              <button class="btn" type="button" data-variant="secondary" data-sheet-trigger="sheet--light--sheet-right" aria-haspopup="dialog">Open Right Sheet</button>
           </div>
@@ -6303,9 +6286,8 @@
       <svg width="15" height="15" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"/></svg>
     </button>
   </dialog>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
              <button class="btn" type="button" data-variant="secondary" data-sheet-trigger="sheet--dark--sheet-right" aria-haspopup="dialog">Open Right Sheet</button>
           </div>
@@ -6392,13 +6374,12 @@
       <svg width="15" height="15" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"/></svg>
     </button>
   </dialog>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-accordion"><h2 id="preview-accordion">Accordion</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="flex-direction: column; align-items: stretch; padding: var(--space-800) var(--space-1000)">
             <div class="accordion" style="max-width: 28rem; width: 100%">
               <details class="accordion-item" open>
@@ -6461,9 +6442,8 @@
               </details>
             </div>
           </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="flex-direction: column; align-items: stretch; padding: var(--space-800) var(--space-1000)">
             <div class="accordion" style="max-width: 28rem; width: 100%">
               <details class="accordion-item" open>
@@ -6526,13 +6506,12 @@
               </details>
             </div>
           </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-command-palette"><h2 id="preview-command-palette">Command Palette</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <button class="btn" type="button" data-variant="secondary" data-command-palette-trigger="command-palette--light--demo-cmd">Open Command Menu</button>
           <dialog id="command-palette--light--demo-cmd" class="command-palette" role="dialog" aria-modal="true" aria-label="Command menu" open>
@@ -6560,9 +6539,8 @@
             </div>
           </dialog>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <button class="btn" type="button" data-variant="secondary" data-command-palette-trigger="command-palette--dark--demo-cmd">Open Command Menu</button>
           <dialog id="command-palette--dark--demo-cmd" class="command-palette" role="dialog" aria-modal="true" aria-label="Command menu" open>
@@ -6590,13 +6568,12 @@
             </div>
           </dialog>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-breadcrumbs"><h2 id="preview-breadcrumbs">Breadcrumbs</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <nav class="breadcrumb" aria-label="Breadcrumb">
             <ol class="breadcrumb-list">
@@ -6621,9 +6598,8 @@
             </ol>
           </nav>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <nav class="breadcrumb" aria-label="Breadcrumb">
             <ol class="breadcrumb-list">
@@ -6648,13 +6624,12 @@
             </ol>
           </nav>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-pagination"><h2 id="preview-pagination">Pagination</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <nav class="pagination" aria-label="Pagination">
             <ul class="pagination-list">
@@ -6731,9 +6706,8 @@
             </ul>
           </nav>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <nav class="pagination" aria-label="Pagination">
             <ul class="pagination-list">
@@ -6810,13 +6784,12 @@
             </ul>
           </nav>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-tabs"><h2 id="preview-tabs">Tabs</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="flex-direction: column; align-items: stretch">
         <div class="tabs">
           <div class="tab-list" role="tablist" aria-label="Job details">
@@ -6831,9 +6804,8 @@
           </div>
         </div>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="flex-direction: column; align-items: stretch">
         <div class="tabs">
           <div class="tab-list" role="tablist" aria-label="Job details">
@@ -6848,13 +6820,12 @@
           </div>
         </div>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-dropdown-menu"><h2 id="preview-dropdown-menu">Dropdown Menu</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="gap: var(--space-300); min-height: 14rem; align-items: flex-start; padding-top: var(--space-1000)">
           <button class="btn" type="button" data-variant="default"
                   aria-haspopup="menu" aria-expanded="false"
@@ -6957,9 +6928,8 @@
             <button type="button" role="menuitem" class="dropdown-menu-item" data-variant="destructive" tabindex="-1">Delete</button>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="gap: var(--space-300); min-height: 14rem; align-items: flex-start; padding-top: var(--space-1000)">
           <button class="btn" type="button" data-variant="default"
                   aria-haspopup="menu" aria-expanded="false"
@@ -7062,13 +7032,12 @@
             <button type="button" role="menuitem" class="dropdown-menu-item" data-variant="destructive" tabindex="-1">Delete</button>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-navigation-menu"><h2 id="preview-navigation-menu">Navigation Menu</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <nav class="nav-menu" aria-label="Main">
             <ul class="nav-menu-list">
@@ -7122,9 +7091,8 @@
             </ul>
           </nav>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <nav class="nav-menu" aria-label="Main">
             <ul class="nav-menu-list">
@@ -7178,13 +7146,12 @@
             </ul>
           </nav>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-app-shell"><h2 id="preview-app-shell">App Shell</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="display: block; overflow: hidden; padding: 0; text-align: left; --app-shell-max: 64rem">
         <header class="app-header" style="position: static">
           <div class="app-header-inner">
@@ -7284,9 +7251,8 @@
 <div class="preview">
         <p class="app-empty" role="status">No jobs match the current filter.</p>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="display: block; overflow: hidden; padding: 0; text-align: left; --app-shell-max: 64rem">
         <header class="app-header" style="position: static">
           <div class="app-header-inner">
@@ -7386,13 +7352,12 @@
 <div class="preview">
         <p class="app-empty" role="status">No jobs match the current filter.</p>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-sidebar"><h2 id="preview-sidebar">Sidebar</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="padding: 0; overflow: hidden; height: 24rem">
           <div style="display: flex; height: 100%; overflow: hidden">
             <aside class="app-sidebar" id="sidebar--light--demo-sidebar" data-state="expanded" aria-label="Primary navigation" style="position: relative; height: 100%">
@@ -7442,9 +7407,8 @@
             </div>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="padding: 0; overflow: hidden; height: 24rem">
           <div style="display: flex; height: 100%; overflow: hidden">
             <aside class="app-sidebar" id="sidebar--dark--demo-sidebar" data-state="expanded" aria-label="Primary navigation" style="position: relative; height: 100%">
@@ -7494,13 +7458,12 @@
             </div>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-resizable"><h2 id="preview-resizable">Resizable</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="flex-direction: column; align-items: stretch">
         <section class="resizable" aria-label="Project workspace">
           <div class="resizable-group" data-orientation="vertical">
@@ -7510,9 +7473,8 @@
           </div>
         </section>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="flex-direction: column; align-items: stretch">
         <section class="resizable" aria-label="Project workspace">
           <div class="resizable-group" data-orientation="vertical">
@@ -7522,13 +7484,12 @@
           </div>
         </section>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-color-picker"><h2 id="preview-color-picker">Color Picker</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <div class="field">
           <label for="color-picker--light--demo-accent-color">Accent color</label>
@@ -7539,9 +7500,8 @@
           <p class="field-description" id="color-picker--light--demo-accent-color-description">Choose an opaque color.</p>
         </div>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <div class="field">
           <label for="color-picker--dark--demo-accent-color">Accent color</label>
@@ -7552,13 +7512,12 @@
           <p class="field-description" id="color-picker--dark--demo-accent-color-description">Choose an opaque color.</p>
         </div>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-file-upload"><h2 id="preview-file-upload">File Upload</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <div class="file-upload" data-file-upload data-max-files="4" data-max-size="5242880" data-preview>
           <label class="file-upload-dropzone" for="file-upload--light--demo-project-images">
@@ -7572,9 +7531,8 @@
           <p class="file-upload-error" id="file-upload--light--demo-project-images-error" data-file-upload-error role="alert" data-preview-hidden-state="visible"></p>
         </div>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <div class="file-upload" data-file-upload data-max-files="4" data-max-size="5242880" data-preview>
           <label class="file-upload-dropzone" for="file-upload--dark--demo-project-images">
@@ -7588,13 +7546,12 @@
           <p class="file-upload-error" id="file-upload--dark--demo-project-images-error" data-file-upload-error role="alert" data-preview-hidden-state="visible"></p>
         </div>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-input-otp"><h2 id="preview-input-otp">Input OTP</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <fieldset class="input-otp" data-input-otp>
           <legend>Verification code</legend>
@@ -7609,9 +7566,8 @@
           <p class="input-otp-description" id="input-otp--light--demo-verification-code-description">Enter the six-digit code sent to your phone.</p>
         </fieldset>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <fieldset class="input-otp" data-input-otp>
           <legend>Verification code</legend>
@@ -7626,13 +7582,12 @@
           <p class="input-otp-description" id="input-otp--dark--demo-verification-code-description">Enter the six-digit code sent to your phone.</p>
         </fieldset>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-tag-input"><h2 id="preview-tag-input">Tag Input</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <div class="field">
           <label for="tag-input--light--demo-skill-tags">Skills</label>
@@ -7645,9 +7600,8 @@
           <p class="field-description" id="tag-input--light--demo-skill-tags-description">Add up to six skills.</p>
         </div>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <div class="field">
           <label for="tag-input--dark--demo-skill-tags">Skills</label>
@@ -7660,13 +7614,12 @@
           <p class="field-description" id="tag-input--dark--demo-skill-tags-description">Add up to six skills.</p>
         </div>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-header"><h2 id="preview-header">Header</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <header class="header">
             <div class="header-inner">
@@ -7694,9 +7647,8 @@
             </div>
           </header>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <header class="header">
             <div class="header-inner">
@@ -7724,13 +7676,12 @@
             </div>
           </header>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-nav"><h2 id="preview-nav">Nav</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <nav class="nav" aria-label="Documentation example">
             <ul class="nav-list">
@@ -7770,9 +7721,8 @@
             </a>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <nav class="nav" aria-label="Documentation example">
             <ul class="nav-list">
@@ -7812,13 +7762,12 @@
             </a>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-footer"><h2 id="preview-footer">Footer</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <footer class="footer">
             <div class="footer-layout">
@@ -7833,9 +7782,8 @@
             </div>
           </footer>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <footer class="footer">
             <div class="footer-layout">
@@ -7850,13 +7798,12 @@
             </div>
           </footer>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-context-menu"><h2 id="preview-context-menu">Context Menu</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <div class="context-menu-trigger"
                tabindex="0"
@@ -7891,9 +7838,8 @@
             </button>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <div class="context-menu-trigger"
                tabindex="0"
@@ -7928,13 +7874,12 @@
             </button>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-hover-card"><h2 id="preview-hover-card">Hover Card</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
           <a class="hover-card-trigger"
              href="avatar.html"
@@ -7955,9 +7900,8 @@
             </div>
           </div>
         </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
           <a class="hover-card-trigger"
              href="avatar.html"
@@ -7978,13 +7922,12 @@
             </div>
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-agent-activity"><h2 id="preview-agent-activity">Agent Activity</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <ol class="agent-activity" aria-label="Agent activity">
           <li class="agent-activity-item" data-kind="reasoning" data-status="complete">
@@ -8035,9 +7978,8 @@
           </li>
         </ol>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <ol class="agent-activity" aria-label="Agent activity">
           <li class="agent-activity-item" data-kind="reasoning" data-status="complete">
@@ -8088,13 +8030,12 @@
           </li>
         </ol>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-code-block"><h2 id="preview-code-block">Code Block</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <figure class="code-block">
           <figcaption class="code-block-header">
@@ -8126,9 +8067,8 @@ Waiting for results…</code></pre>
           </div>
         </figure>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <figure class="code-block">
           <figcaption class="code-block-header">
@@ -8160,13 +8100,12 @@ Waiting for results…</code></pre>
           </div>
         </figure>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-composer"><h2 id="preview-composer">Composer</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <form class="composer" action="composer.html" method="get" data-submit-on="mod-enter">
           <label class="composer-label" for="composer--light--docs-composer-message">Message</label>
@@ -8196,9 +8135,8 @@ Waiting for results…</code></pre>
           </div>
         </form>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <form class="composer" action="composer.html" method="get" data-submit-on="mod-enter">
           <label class="composer-label" for="composer--dark--docs-composer-message">Message</label>
@@ -8228,13 +8166,12 @@ Waiting for results…</code></pre>
           </div>
         </form>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-file-diff"><h2 id="preview-file-diff">File Diff</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <details class="file-diff" open>
           <summary class="file-diff-trigger">
@@ -8333,9 +8270,8 @@ Waiting for results…</code></pre>
           </div>
         </details>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <details class="file-diff" open>
           <summary class="file-diff-trigger">
@@ -8434,13 +8370,12 @@ Waiting for results…</code></pre>
           </div>
         </details>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-message"><h2 id="preview-message">Message</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="align-items: stretch">
         <ol class="message-list" aria-label="Conversation" style="width: min(32rem, 100%)">
           <li class="message" data-author="user">
@@ -8469,9 +8404,8 @@ Waiting for results…</code></pre>
           </li>
         </ol>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="align-items: stretch">
         <ol class="message-list" aria-label="Conversation" style="width: min(32rem, 100%)">
           <li class="message" data-author="user">
@@ -8500,13 +8434,12 @@ Waiting for results…</code></pre>
           </li>
         </ol>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-message-scroller"><h2 id="preview-message-scroller">Message Scroller</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <section class="message-scroller" data-default-pinned="false" data-conversation-key="docs-support-42">
           <h2 class="message-scroller-label" id="message-scroller--light--docs-message-scroller-heading">Conversation</h2>
@@ -8554,9 +8487,8 @@ Waiting for results…</code></pre>
           </button>
         </section>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <section class="message-scroller" data-default-pinned="false" data-conversation-key="docs-support-42">
           <h2 class="message-scroller-label" id="message-scroller--dark--docs-message-scroller-heading">Conversation</h2>
@@ -8604,13 +8536,12 @@ Waiting for results…</code></pre>
           </button>
         </section>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-reasoning"><h2 id="preview-reasoning">Reasoning</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <details class="reasoning">
           <summary class="reasoning-trigger">
@@ -8641,9 +8572,8 @@ Waiting for results…</code></pre>
           </div>
         </details>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <details class="reasoning">
           <summary class="reasoning-trigger">
@@ -8674,13 +8604,12 @@ Waiting for results…</code></pre>
           </div>
         </details>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-sources"><h2 id="preview-sources">Sources</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="align-items: stretch">
         <div style="display: flex; flex-direction: column; gap: var(--space-400); width: min(36rem, 100%)">
           <p style="margin: 0">Transformers scale with data and compute <a class="citation" href="#sources--light--demo-source-1" aria-label="Source 1">1</a>, while efficient attention reduces sequence cost <a class="citation" href="#sources--light--demo-source-2" aria-label="Source 2">2</a>.</p>
@@ -8693,9 +8622,8 @@ Waiting for results…</code></pre>
           </section>
         </div>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="align-items: stretch">
         <div style="display: flex; flex-direction: column; gap: var(--space-400); width: min(36rem, 100%)">
           <p style="margin: 0">Transformers scale with data and compute <a class="citation" href="#sources--dark--demo-source-1" aria-label="Source 1">1</a>, while efficient attention reduces sequence cost <a class="citation" href="#sources--dark--demo-source-2" aria-label="Source 2">2</a>.</p>
@@ -8708,13 +8636,12 @@ Waiting for results…</code></pre>
           </section>
         </div>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-suggestion"><h2 id="preview-suggestion">Suggestion</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview">
         <ul class="suggestion" aria-label="Suggestions">
           <li class="suggestion-item"><button class="suggestion-button" type="button" data-suggestion-value="Summarise the release notes">Summarise the release notes</button></li>
@@ -8722,9 +8649,8 @@ Waiting for results…</code></pre>
           <li class="suggestion-item"><button class="suggestion-button" type="button" disabled>Draft a migration checklist</button></li>
         </ul>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview">
         <ul class="suggestion" aria-label="Suggestions">
           <li class="suggestion-item"><button class="suggestion-button" type="button" data-suggestion-value="Summarise the release notes">Summarise the release notes</button></li>
@@ -8732,31 +8658,28 @@ Waiting for results…</code></pre>
           <li class="suggestion-item"><button class="suggestion-button" type="button" disabled>Draft a migration checklist</button></li>
         </ul>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-thinking-indicator"><h2 id="preview-thinking-indicator">Thinking Indicator</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="gap: var(--space-800); flex-wrap: wrap">
         <div class="thinking-indicator" role="status"><span class="thinking-dots" aria-hidden="true"><span class="thinking-dot"></span><span class="thinking-dot"></span><span class="thinking-dot"></span></span><span class="thinking-label">Thinking</span></div>
         <div class="thinking-indicator" role="status"><span class="thinking-dots" aria-hidden="true"><span class="thinking-dot"></span><span class="thinking-dot"></span><span class="thinking-dot"></span></span><span class="thinking-label">Searching the web</span></div>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="gap: var(--space-800); flex-wrap: wrap">
         <div class="thinking-indicator" role="status"><span class="thinking-dots" aria-hidden="true"><span class="thinking-dot"></span><span class="thinking-dot"></span><span class="thinking-dot"></span></span><span class="thinking-label">Thinking</span></div>
         <div class="thinking-indicator" role="status"><span class="thinking-dots" aria-hidden="true"><span class="thinking-dot"></span><span class="thinking-dot"></span><span class="thinking-dot"></span></span><span class="thinking-label">Searching the web</span></div>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-todo-list"><h2 id="preview-todo-list">Todo List</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="align-items: stretch">
         <details class="todo-list" open style="width: min(32rem, 100%)">
           <summary class="todo-list-summary"><span class="todo-list-label">Fix the failing motion check</span><span class="todo-list-metadata">sheet.js</span><span class="todo-list-progress" data-todo-progress role="status">1 of 3 complete</span></summary>
@@ -8769,9 +8692,8 @@ Waiting for results…</code></pre>
           </div>
         </details>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="align-items: stretch">
         <details class="todo-list" open style="width: min(32rem, 100%)">
           <summary class="todo-list-summary"><span class="todo-list-label">Fix the failing motion check</span><span class="todo-list-metadata">sheet.js</span><span class="todo-list-progress" data-todo-progress role="status">1 of 3 complete</span></summary>
@@ -8784,13 +8706,12 @@ Waiting for results…</code></pre>
           </div>
         </details>
       </div>
-    </div>
+      </div>
       </div>
     </section>
 <section aria-labelledby="preview-tool-call"><h2 id="preview-tool-call">Tool Call</h2>
       <div class="preview-theme-grid">
-<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="Light theme">
-      <div class="preview-theme-name" aria-hidden="true">Light</div>
+<div class="preview-theme-panel" data-preview-theme="light" role="group" aria-label="light theme">
 <div class="preview" style="align-items: stretch">
         <div style="display: flex; flex-direction: column; gap: var(--space-400); width: min(34rem, 100%)">
           <details class="tool-call" data-status="running" open>
@@ -8801,9 +8722,8 @@ Waiting for results…</code></pre>
           <div class="tool-call tool-call-static" data-status="error" role="status"><span class="tool-call-mark" aria-hidden="true">!</span><span class="tool-call-label">Run authentication checks</span><span class="tool-call-state">Error</span></div>
         </div>
       </div>
-    </div>
-<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="Dark theme">
-      <div class="preview-theme-name" aria-hidden="true">Dark</div>
+      </div>
+<div class="preview-theme-panel dark" data-preview-theme="dark" role="group" aria-label="dark theme">
 <div class="preview" style="align-items: stretch">
         <div style="display: flex; flex-direction: column; gap: var(--space-400); width: min(34rem, 100%)">
           <details class="tool-call" data-status="running" open>
@@ -8814,9 +8734,10 @@ Waiting for results…</code></pre>
           <div class="tool-call tool-call-static" data-status="error" role="status"><span class="tool-call-mark" aria-hidden="true">!</span><span class="tool-call-label">Run authentication checks</span><span class="tool-call-state">Error</span></div>
         </div>
       </div>
-    </div>
+      </div>
       </div>
     </section>
+    </div>
   </main>
 
   <!-- Static fallback for importers that do not execute the toast module. -->
@@ -8884,13 +8805,16 @@ Waiting for results…</code></pre>
       if (target && !target.closest('.skip-link')) event.preventDefault();
     });
     document.addEventListener('submit', (event) => event.preventDefault());
-<    document.addEventListener('click', (event) => {
+    document.addEventListener('click', (event) => {
       const button = event.target.closest('[data-preview-theme-option]');
       const page = document.querySelector('.preview-page');
       if (!button || !page) return;
       const theme = button.dataset.previewThemeOption;
       if (theme !== 'light' && theme !== 'dark') return;
       page.dataset.previewTheme = theme;
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
       document.querySelectorAll('[data-preview-theme-option]').forEach((option) => {
         option.setAttribute('aria-pressed', String(option.dataset.previewThemeOption === theme));
       });
