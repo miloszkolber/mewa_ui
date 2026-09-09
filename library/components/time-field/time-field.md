@@ -116,6 +116,8 @@ Use `data-invalid` only as a root styling hook for known invalid state.
 
 Use `data-disabled` only when the wrapper needs disabled presentation.
 
+The module may expose the legacy `data-init` readiness marker for compatibility.
+
 Do not author `data-init`.
 
 ## Behavior

@@ -23,7 +23,7 @@ Use `jsMode` to decide whether a module is required.
 
 Use `files` to load the exact source assets.
 
-Use `styleDependencies` to load component presentation dependencies.
+Use `styleDependencies` to understand the flat CSS dependency closure emitted for a component.
 
 Use `behaviorDependencies` to load required controller dependencies.
 

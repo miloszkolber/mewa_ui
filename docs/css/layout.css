@@ -16,6 +16,11 @@ main {
 }
 
 /* -- Site header ------------------------------------------- */
+site-header,
+site-nav {
+  display: contents;
+}
+
 .site-header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 60;
   height: 3.5rem;
@@ -23,6 +28,12 @@ main {
   display: flex; align-items: center;
   padding: 0 1.5rem; gap: 1rem;
   background: var(--background);
+}
+.site-header-spacer { flex: 1; }
+.site-header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
 }
 
 /* -- Header brand (logo + version) ------------------------- */
@@ -92,7 +103,9 @@ main {
 
 /* -- Nav link ---------------------------------------------- */
 .nav-link {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: var(--space-150);
   padding: 0.3125rem 0.75rem;
   margin-bottom: 2px;
 
@@ -114,6 +127,11 @@ main {
   pointer-events: none;
   cursor: default;
 }
+.nav-section { margin-bottom: var(--space-500); }
+
+#icon-moon { display: none; }
+html[data-theme="dark"] #icon-sun { display: none; }
+html[data-theme="dark"] #icon-moon { display: inline-block; }
 
 /* -- Nav filter (fixed at top of the sidebar) -------------- */
 .nav-filter-wrap {

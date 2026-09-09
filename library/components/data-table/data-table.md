@@ -176,6 +176,8 @@ Do not add client pagination to a small result set.
 | `data-table-pagination` | Identifies client pagination controls. |
 | `data-table-page` | Identifies a page action. |
 
+The module may expose the legacy `data-init` readiness marker for compatibility.
+
 Do not author `data-init`.
 
 ## Events

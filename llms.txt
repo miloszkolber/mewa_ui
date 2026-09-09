@@ -22,7 +22,7 @@ Semantic HTML, tokenized CSS, local SVG icons, and optional native JavaScript be
 
 1. Identify the consumer framework, lifecycle owner, native fallback, and supported browsers.
 2. Select components from the registry and read their contracts plus relevant system guidance.
-3. Load base, tokens, and selected component CSS. Resolve behavior dependencies through packaged `components/` entries.
+3. Load base, tokens, and selected component CSS. Component CSS entries are flat and already include their declared style dependencies.
 4. Use automatic entries for plain HTML or explicit controllers/attachments for application-owned regions.
 5. Inline local SVG for icons that must work without JavaScript. `ri-*` classes require a host loader or locally loaded Remix stylesheet; the core does not provide one.
 6. Preserve every documented feature and public hook. Ask the operator before removing a feature or changing a public contract.

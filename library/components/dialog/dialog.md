@@ -81,7 +81,7 @@ Do not add `tabindex` to the dialog element.
 | --- | --- | --- | --- |
 | `data-dialog-trigger="id"` | trigger | Author | Opens the matching dialog. |
 | `data-dialog-close` | control inside dialog | Author | Closes the containing dialog. |
-| `data-init` | trigger and dialog | Module | Prevents duplicate initialization. |
+| `data-init` | trigger and dialog | Module | Legacy readiness marker; do not author. |
 
 Do not author `data-init`.
 

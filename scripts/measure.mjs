@@ -16,10 +16,15 @@ const automatic = [
   ...manifest.components.filter((component) => component.auto).map((component) => component.auto)
 ].map(measure);
 const runtime = ['runtime/core.js', 'runtime/enhancer.js'].map(measure);
+const componentStyles = manifest.components.map((component) => measure(component.css));
+const sum = (entries, field) => entries.reduce((total, entry) => total + entry[field], 0);
 const result = {
   version: manifest.version,
   note: 'Individual gzip streams approximate separate HTTP responses. Actual transfer depends on server compression and cache state.',
   css: measure('css/all.css'),
+  componentStyles,
+  componentStyleResponsesGzip: sum(componentStyles, 'gzip'),
+  componentStyleResponsesBytes: sum(componentStyles, 'bytes'),
   controllers,
   automatic,
   runtime,
@@ -31,6 +36,7 @@ fs.writeFileSync(path.join(root, 'dist/size-report.json'), JSON.stringify(result
 console.log(
   JSON.stringify({
     css: result.css.gzip,
+    componentStyles: result.componentStyleResponsesGzip,
     controllers: result.allControllerResponsesGzip,
     runtime: result.runtimeResponsesGzip
   })

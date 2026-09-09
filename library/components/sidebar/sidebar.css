@@ -191,10 +191,6 @@
     &[aria-current="page"] {
       background: var(--surface-secondary);
       color: var(--text-primary);
-    }
-
-    &[data-active="true"],
-    &[aria-current="page"] {
       font-weight: var(--font-weight-525);
     }
 

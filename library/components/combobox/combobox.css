@@ -132,8 +132,8 @@
 
   .combobox-status {
     position: absolute;
-    width: var(--size-025);
-    height: var(--size-025);
+    inline-size: var(--border-width-025);
+    block-size: var(--border-width-025);
     overflow: hidden;
     clip-path: inset(50%);
     white-space: nowrap;

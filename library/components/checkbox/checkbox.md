@@ -140,7 +140,7 @@ The module never changes a disabled item.
 | `data-checkbox-items` | item container | Author | Identifies the controlled item region. |
 | `data-checkbox-item` | item input | Author | Identifies one coordinated checkbox. |
 | `data-checkbox-status` | status output | Author | Receives the selected-count announcement. |
-| `data-init` | group root | Module | Prevents duplicate initialization. |
+| `data-init` | group root | Module | Legacy readiness marker; do not author. |
 
 Do not author `data-init`.
 

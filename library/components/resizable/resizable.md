@@ -82,6 +82,8 @@ Use `aria-orientation="horizontal"` for a top and bottom split.
 | `data-value-max` | root or handle | Sets the maximum first-panel percentage. |
 | `data-value-now` | root or handle | Sets the initial first-panel percentage. |
 
+The module may expose the legacy `data-init` readiness marker for compatibility.
+
 Do not author `data-init` or `data-resizing`.
 
 The default value is 35 percent.

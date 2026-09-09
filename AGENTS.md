@@ -90,6 +90,8 @@ Treat `registry.json` as the distribution manifest source.
 
 Keep component dependencies explicit in the registry.
 
+The build emits flat component CSS entries in registry dependency order. Preserve that order when changing the CSS packaging contract.
+
 Run `bun run docs:write` after component stylesheet changes.
 
 Run `bun run build` to generate `dist/mewa-ui`, `dist/mewa-icons`, and `dist/mewa-svelte`.
@@ -361,7 +363,7 @@ Check the browser console.
 
 ## Runtime maintenance
 
-Use behavior-specific initialization markers. Never use the shared `data-init` flag to exclude other behaviors on the same element.
+Use behavior-specific initialization markers. The module-owned legacy `data-init` flag may remain as a readiness hook for compatibility; never author it or use it to exclude another behavior on the same element.
 
 Give every listener, observer, timer, object URL, and generated DOM region an explicit owner and cleanup path.
 
@@ -373,6 +375,6 @@ Use `registry.schema.json` and catalog checks to preserve machine-readable compa
 
 Run `bun run lint`, `bun run format:check`, and `bun run typecheck` in addition to the existing contract checks.
 
-Run `bun run measure` after building to inspect separately compressed controller and runtime responses.
+Run `bun run measure` after building to inspect separately compressed complete CSS, flat component CSS entries, controller, automatic, and runtime responses.
 
 Use `tests/agent-evaluation.md` to evaluate consumer guidance in a fresh workspace. Record which tasks were actually run.

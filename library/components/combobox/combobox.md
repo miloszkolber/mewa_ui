@@ -143,7 +143,7 @@ Hide a separator from assistive technology.
 | `data-placeholder` | `.combobox-value` | Module | Marks visible placeholder text. |
 | `data-highlighted` | `.combobox-item` | Module | Marks the active keyboard option. |
 | `data-value` | `.combobox-item` | Author | Defines the submitted option value. |
-| `data-init` | `.combobox` | Module | Prevents duplicate initialization. |
+| `data-init` | `.combobox` | Module | Legacy readiness marker; do not author. |
 
 Do not set `data-highlighted` in static markup.
 

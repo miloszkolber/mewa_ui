@@ -24,7 +24,7 @@ Extract the core release archive to `/vendor/mewa-ui`. Serve the page over HTTP.
 </html>
 ```
 
-Automatic enhancement observes additions and removals. Moving a node inside the observed root preserves its instance and resources. Each behavior has its own initialization marker; do not author these markers.
+Automatic enhancement observes additions and removals. Moving a node inside the observed root preserves its instance and resources. Each behavior has its own initialization marker. A module may also expose the legacy shared `data-init` readiness flag for compatibility; never author either marker.
 
 ## Application lifecycle
 
@@ -39,7 +39,9 @@ controller.update();
 controller.destroy();
 ```
 
-`components/` entries include declared behavior dependencies. `controllers/` entries expose only the named behavior. CSS component entries include their style dependencies. Fonts and icons remain separate.
+`components/` entries include declared behavior dependencies. `controllers/` entries expose only the named behavior. CSS component entries are flat bundles in declared style-dependency order. Fonts and icons remain separate.
+
+Use one component CSS entry for a small feature. Use `css/all.css` when many components share a page, because flat entries intentionally repeat shared dependency styles across separate responses.
 
 Controllers are idempotent on destroy. Dependency compositions release resources in reverse order, attempt all cleanup hooks, and roll back partial initial setup. Controllers on the same behavior and root share a lease.
 

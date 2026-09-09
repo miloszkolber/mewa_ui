@@ -29,7 +29,7 @@ Each tagged [GitHub release](https://github.com/miloszkolber/mewa_ui/releases) p
 
 Download and extract only the archive that the application needs. The release files are ordinary web assets; an application does not need npm or a framework to use them.
 
-For plain HTML, load the foundations and one dependency-aware component stylesheet:
+For plain HTML, load the foundations and one flat, dependency-aware component stylesheet:
 
 ```html
 <link rel="stylesheet" href="/vendor/mewa-ui/css/base.css">
@@ -37,6 +37,8 @@ For plain HTML, load the foundations and one dependency-aware component styleshe
 <link rel="stylesheet" href="/vendor/mewa-ui/css/dialog.css">
 <script type="module" src="/vendor/mewa-ui/auto/dialog.js"></script>
 ```
+
+Each component entry already contains its declared style dependencies, so an isolated feature remains one component stylesheet request. When a page uses many components, prefer `css/all.css` so shared styles are transferred once.
 
 Fonts are opt-in. Load `fonts/google-sans-code.css` when the application does not already provide Google Sans Code.
 
@@ -57,7 +59,7 @@ This controller API works with plain JavaScript and can sit behind a framework a
 
 Call `destroy()` before unmounting the region. Choose one lifecycle owner per region. See the [runtime guide](library/runtime/README.md) for ownership, dynamic markup, native forms, and browser capabilities.
 
-Use `css/all.css` and `auto.js` for a quick prototype that needs the complete library. Production applications should load only their component entries.
+Use `css/all.css` and `auto.js` for a quick prototype or a broad application surface. For a small feature, load only its flat component entry and matching automatic/controller entry.
 
 ## Use Mewa UI with Svelte
 

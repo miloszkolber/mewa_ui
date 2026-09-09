@@ -186,6 +186,37 @@ test('component folders contain only the contract, stylesheet, and optional modu
   }
 });
 
+test('component styles reference declared foundation or documented consumer variables', () => {
+  const sourceFiles = [
+    'library/src/base.css',
+    'library/src/tokens.css',
+    ...registry.components.map((component) => component.files.css)
+  ];
+  const declarations = new Set();
+  const uses = [];
+  const consumerVariables = new Set([
+    '--app-shell-header-offset',
+    '--app-shell-max',
+    '--container-max',
+    '--min',
+    '--sidebar-width',
+    '--sidebar-width-collapsed'
+  ]);
+
+  sourceFiles.forEach((file) => {
+    const source = read(file);
+    for (const match of source.matchAll(/(--[a-z0-9-]+)\s*:/g)) declarations.add(match[1]);
+    for (const match of source.matchAll(/var\(\s*(--[a-z0-9-]+)/g)) uses.push([file, match[1]]);
+  });
+
+  uses.forEach(([file, variable]) => {
+    assert(
+      declarations.has(variable) || consumerVariables.has(variable),
+      `${file}: ${variable} is not declared by the library or documented as a consumer override`
+    );
+  });
+});
+
 test('docs have exact parity with the registry', () => {
   const docs = files(docsDir, '.html')
     .filter((name) => name !== 'index.html' && name !== 'preview.html')

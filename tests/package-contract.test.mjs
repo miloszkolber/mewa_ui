@@ -481,15 +481,26 @@ await test('all generated CSS references resolve inside the core package', () =>
   }
 });
 
-await test('each component stylesheet entry contains exactly its declared dependency closure', () => {
+await test('each component stylesheet entry is a flat, ordered dependency closure', () => {
   for (const component of registry.components) {
     const source = fs.readFileSync(path.join(coreRoot, `css/${component.slug}.css`), 'utf8');
-    const imports = Array.from(
-      source.matchAll(/@import\s+"\.\/components\/([^"/]+)\.css";/g),
-      (match) => match[1]
-    );
     const expected = [...dependencyClosure(component, 'styleDependencies'), component.slug];
-    assert.deepEqual(imports, expected, `${component.slug}: generated style closure drift`);
+    assert(!/@import\b/.test(source), `${component.slug}: flat entry must not use @import`);
+
+    let offset = 0;
+    for (const slug of expected) {
+      const marker = `/* ${slug} */`;
+      const position = source.indexOf(marker, offset);
+      assert(position >= offset, `${component.slug}: missing ${slug} in generated style closure`);
+      const componentSource = fs
+        .readFileSync(path.join(coreRoot, `css/components/${slug}.css`), 'utf8')
+        .trim();
+      assert(
+        source.startsWith(`${marker}\n${componentSource}`, position),
+        `${component.slug}: generated ${slug} styles drift`
+      );
+      offset = position + marker.length + componentSource.length;
+    }
   }
 });
 

@@ -295,16 +295,22 @@
     list-style: none;
   }
 
-  .app-status-row {
+  .app-status-row,
+  .app-dense-row {
     display: grid;
     grid-template-columns: var(--size-500) minmax(0, 1fr) auto;
+    min-inline-size: 0;
+    padding: var(--space-400);
+  }
+
+  .app-status-row {
     align-items: center;
     gap: var(--space-300);
-    padding: var(--space-400);
     border-block-end: var(--border-width-025) solid var(--border-primary);
   }
 
-  .app-status-row:last-child {
+  .app-status-row:last-child,
+  .app-dense-row:last-child {
     border-block-end: 0;
   }
 
@@ -380,18 +386,10 @@
   }
 
   .app-dense-row {
-    display: grid;
-    grid-template-columns: var(--size-500) minmax(0, 1fr) auto;
     align-items: start;
     gap: var(--space-300) var(--space-400);
-    min-inline-size: 0;
-    padding: var(--space-400);
     border-block-end: var(--border-width-025) dashed var(--border-muted);
     overflow-wrap: anywhere;
-  }
-
-  .app-dense-row:last-child {
-    border-block-end: 0;
   }
 
   .app-dense-row--plain {

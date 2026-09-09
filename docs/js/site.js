@@ -18,10 +18,7 @@
   }
 
   function syncThemeIcons(isDark) {
-    var sun = document.getElementById('icon-sun');
-    var moon = document.getElementById('icon-moon');
-    if (sun) sun.style.display = isDark ? 'none' : 'block';
-    if (moon) moon.style.display = isDark ? 'block' : 'none';
+    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
   }
 
   function toggleDark() {

@@ -7,8 +7,55 @@ import { execFileSync } from 'node:child_process';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const distributionRoot = path.join(root, 'dist');
 fs.mkdirSync(distributionRoot, { recursive: true });
+const buildLock = path.join(distributionRoot, '.build.lock');
+const lockWaitBuffer = new Int32Array(new SharedArrayBuffer(4));
+
+function waitForLock(milliseconds) {
+  Atomics.wait(lockWaitBuffer, 0, 0, milliseconds);
+}
+
+function acquireBuildLock() {
+  const deadline = Date.now() + 120_000;
+  while (Date.now() < deadline) {
+    let created = false;
+    try {
+      fs.mkdirSync(buildLock);
+      created = true;
+      fs.writeFileSync(path.join(buildLock, 'pid'), `${process.pid}\n`);
+      return;
+    } catch (error) {
+      if (created) fs.rmSync(buildLock, { recursive: true, force: true });
+      if (error.code !== 'EEXIST') throw error;
+
+      let owner = '';
+      try {
+        owner = fs.readFileSync(path.join(buildLock, 'pid'), 'utf8').trim();
+      } catch {
+        // A lock can be observed between mkdir and the owner write.
+      }
+      const pid = Number(owner);
+      if (Number.isInteger(pid) && pid > 0) {
+        try {
+          process.kill(pid, 0);
+        } catch (probeError) {
+          if (probeError.code === 'ESRCH') {
+            fs.rmSync(buildLock, { recursive: true, force: true });
+            continue;
+          }
+        }
+      }
+      waitForLock(50);
+    }
+  }
+  throw new Error('Timed out waiting for another build to finish publishing dist.');
+}
+
+acquireBuildLock();
 const outputRoot = fs.mkdtempSync(path.join(distributionRoot, '.build-'));
-process.on('exit', () => fs.rmSync(outputRoot, { recursive: true, force: true }));
+process.on('exit', () => {
+  fs.rmSync(outputRoot, { recursive: true, force: true });
+  fs.rmSync(buildLock, { recursive: true, force: true });
+});
 const coreRoot = path.join(outputRoot, 'mewa-ui');
 const iconsRoot = path.join(outputRoot, 'mewa-icons');
 const svelteRoot = path.join(outputRoot, 'mewa-svelte');
@@ -277,6 +324,7 @@ const allCss = [
   fonts.base.trim(),
   tokenSource.trim()
 ];
+const componentCssSources = new Map();
 
 for (const component of registry.components) {
   const source = fs
@@ -286,16 +334,19 @@ for (const component of registry.components) {
     )
     .trim();
   write(coreRoot, `css/components/${component.slug}.css`, source);
+  componentCssSources.set(component.slug, source);
   allCss.push(source);
+}
 
+for (const component of registry.components) {
   const dependencies = dependencyClosure(component, 'styleDependencies');
-  const imports = [...dependencies, component.slug]
-    .map((slug) => `@import "./components/${slug}.css";`)
+  const styles = [...dependencies, component.slug]
+    .map((slug) => `/* ${slug} */\n${componentCssSources.get(slug)}`)
     .join('\n');
   write(
     coreRoot,
     `css/${component.slug}.css`,
-    `/* mewa_ui generated ${component.slug} stylesheet entry. */\n${imports}`
+    `/* mewa_ui generated flat ${component.slug} stylesheet entry. */\n${styles}`
   );
 }
 write(coreRoot, 'css/all.css', allCss.join('\n\n'));
@@ -465,7 +516,9 @@ This is the generated, framework-neutral mewa_ui core package from the GitHub re
 
 ## Plain HTML
 
-Load \`css/base.css\`, \`css/tokens.css\`, and one dependency-aware component entry such as \`css/dialog.css\`.
+Load \`css/base.css\`, \`css/tokens.css\`, and one flat, dependency-aware component entry such as \`css/dialog.css\`.
+
+Component entries already contain their declared style dependencies in order, so consumers do not need to load dependency stylesheets separately.
 
 Load \`auto/dialog.js\` as a module when plain HTML should initialize Dialog automatically.
 
