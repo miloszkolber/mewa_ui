@@ -297,8 +297,39 @@ test('the hidden preview renders forced light and dark component columns', () =>
   assert(
     preview.includes('.preview-page dialog[open]') &&
       preview.includes('.preview-page [popover]') &&
-      preview.includes('.preview-page nav [popover]'),
+      preview.includes('.preview-page nav [popover]') &&
+      preview.includes('.preview-page dialog.sheet[open]') &&
+      preview.includes('position: relative !important'),
     'docs/preview.html: hidden overlay states must render without interaction'
+  );
+  assert(
+    preview.includes('data-export-surface="figma"') &&
+      preview.includes('body class="preview-export"'),
+    'docs/preview.html: export surface must be explicitly marked'
+  );
+  assert(
+    preview.includes('.preview-page [hidden]:not(input[type="hidden"])') &&
+      preview.includes('display: revert !important') &&
+      preview.includes('animation: none !important'),
+    'docs/preview.html: hidden states and motion must be export-safe'
+  );
+  assert(
+    !/<i\b[^>]*data-lucide=/.test(preview) &&
+      !/<i\b[^>]*\bri-[a-z0-9-]+/.test(preview) &&
+      (preview.includes('data-remix-icon-loaded=""') || preview.includes('data-icon-loaded=""')),
+    'docs/preview.html: local icons must be inline before import'
+  );
+  const previewIds = new Set(ids);
+  for (const match of preview.matchAll(
+    /\s(data-[a-z0-9_-]*trigger|popovertarget|aria-controls)="([^"]+)"/gi
+  )) {
+    for (const target of match[2].split(/\s+/)) {
+      assert(previewIds.has(target), `docs/preview.html: missing target for ${match[1]}=${target}`);
+    }
+  }
+  assert(
+    preview.includes('id="toast-container"') && preview.includes('class="toast"'),
+    'docs/preview.html: toast state must have a static import fallback'
   );
   assert(
     preview.includes("closest('a[href], [formaction]')") &&

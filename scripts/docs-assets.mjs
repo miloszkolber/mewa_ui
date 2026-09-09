@@ -6,6 +6,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const registry = JSON.parse(fs.readFileSync(path.join(root, 'registry.json'), 'utf8'));
 const outputPath = path.join(root, 'docs', 'css', 'components.generated.css');
 const mode = process.argv[2] || '--check';
+const iconDirectory = path.join(root, 'library', 'src', 'icons');
 
 function escapeHtml(value) {
   return String(value)
@@ -130,12 +131,12 @@ function namespacePreviewNames(slug, fragment) {
   );
 }
 
-function namespacePreviewIds(slug, fragment) {
-  const ids = new Set(Array.from(fragment.matchAll(/\sid="([^"]+)"/g), (match) => match[1]));
-  if (ids.size === 0) return namespacePreviewNames(slug, fragment);
+function namespacePreviewIds(slug, fragment, knownIds = new Set()) {
+  const ownIds = new Set(Array.from(fragment.matchAll(/\sid="([^"]+)"/g), (match) => match[1]));
+  const ids = new Set([...knownIds, ...ownIds]);
   const prefix = `${slug}--`;
   let output = fragment;
-  for (const id of ids) output = output.split(`id="${id}"`).join(`id="${prefix}${id}"`);
+  for (const id of ownIds) output = output.split(`id="${id}"`).join(`id="${prefix}${id}"`);
   output = output.replace(
     /\s(for|aria-labelledby|aria-describedby|aria-controls|aria-owns|aria-details|aria-activedescendant|aria-errormessage|form)="([^"]*)"/g,
     (whole, name, value) =>
@@ -163,6 +164,75 @@ function namespacePreviewIds(slug, fragment) {
   return namespacePreviewNames(slug, output);
 }
 
+function readTagAttributes(tag) {
+  const attributes = new Map();
+  for (const match of tag.matchAll(/\s([^\s=/>]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+)))?/g)) {
+    attributes.set(match[1], match[2] ?? match[3] ?? match[4] ?? '');
+  }
+  return attributes;
+}
+
+function serializeTagAttributes(attributes) {
+  return [...attributes].map(([name, value]) => ` ${name}="${escapeHtml(value)}"`).join('');
+}
+
+function inlinePreviewIcons(fragment) {
+  return fragment.replace(/<i\b([^>]*)>\s*<\/i>/gi, (whole, attrs) => {
+    const lucideName = attrs.match(/\bdata-lucide="([^"]+)"/i)?.[1];
+    if (lucideName) {
+      const iconPath = path.join(iconDirectory, `${lucideName}.svg`);
+      if (!fs.existsSync(iconPath))
+        throw new Error(`${previewPath}: missing local icon ${lucideName}`);
+      const source = fs.readFileSync(iconPath, 'utf8').trim();
+      const opening = source.match(/^<svg\b[^>]*>/i)?.[0];
+      if (!opening) throw new Error(`${iconPath}: expected an SVG root element`);
+
+      const svgAttributes = readTagAttributes(opening);
+      for (const [name, value] of readTagAttributes(`<i${attrs}>`)) {
+        if (name !== 'data-lucide') svgAttributes.set(name, value);
+      }
+      svgAttributes.set('data-lucide', lucideName);
+      svgAttributes.set('data-icon-loaded', '');
+      return source.replace(opening, `<svg${serializeTagAttributes(svgAttributes)}>`);
+    }
+
+    const classValue = attrs.match(/\bclass="([^"]*)"/i)?.[1] ?? '';
+    const remixClass = classValue
+      .split(/\s+/)
+      .find((name) => /^ri-[a-z0-9-]+$/.test(name) && name !== 'ri-fw');
+    if (!remixClass) return whole;
+    const iconName = remixClass.slice('ri-'.length);
+    const iconPath = path.join(iconDirectory, `${iconName}.svg`);
+    if (!fs.existsSync(iconPath)) throw new Error(`${previewPath}: missing local icon ${iconName}`);
+    const source = fs.readFileSync(iconPath, 'utf8').trim();
+    const opening = source.match(/^<svg\b[^>]*>/i)?.[0];
+    if (!opening) throw new Error(`${iconPath}: expected an SVG root element`);
+
+    const svgAttributes = readTagAttributes(opening);
+    for (const [name, value] of readTagAttributes(`<i${attrs}>`)) {
+      svgAttributes.set(name, value);
+    }
+    svgAttributes.set('data-remix-icon-loaded', '');
+    return source.replace(opening, `<svg${serializeTagAttributes(svgAttributes)}>`);
+  });
+}
+
+function exposeHiddenPreviewStates(fragment) {
+  return fragment.replace(/<([a-z][\w:-]*)([^>]*)>/gi, (whole, tagName, attrs) => {
+    if (!/\shidden(?:\s*=\s*(?:"hidden"|'hidden'|hidden))?(?=\s|\/?$)/i.test(attrs)) return whole;
+    if (
+      tagName.toLowerCase() === 'input' &&
+      /\btype\s*=\s*(?:"hidden"|'hidden'|hidden)/i.test(attrs)
+    )
+      return whole;
+
+    const visibleAttrs = attrs
+      .replace(/\shidden(?:\s*=\s*(?:"hidden"|'hidden'|hidden))?/i, '')
+      .replace(/\sdata-preview-hidden-state="[^"]*"/i, '');
+    return `<${tagName}${visibleAttrs} data-preview-hidden-state="visible">`;
+  });
+}
+
 const previewSections = [];
 const previewModules = [];
 for (const component of registry.components) {
@@ -174,14 +244,16 @@ for (const component of registry.components) {
   if (blocks.length === 0)
     throw new Error(`${component.docs}: no div.preview block found for the preview page`);
   const dialogs = extractOuterDialogs(bodySource, blocks);
-  const sourceFragments = [
-    ...blocks.map((block) => block.html),
-    ...dialogs.map((block) => block.html)
-  ];
+  const rawShown = [...blocks.map((block) => block.html), ...dialogs.map((block) => block.html)];
+  const knownIds = new Set(
+    rawShown.flatMap((html) => Array.from(html.matchAll(/\sid="([^"]+)"/g), (match) => match[1]))
+  );
   const themes = ['light', 'dark'].map((theme) => {
-    const shown = sourceFragments
+    const shown = rawShown
       .map((html) => forceDialogOpen(html))
-      .map((html) => namespacePreviewIds(`${component.slug}--${theme}`, html));
+      .map((html) => namespacePreviewIds(`${component.slug}--${theme}`, html, knownIds))
+      .map(exposeHiddenPreviewStates)
+      .map(inlinePreviewIcons);
     const className = theme === 'dark' ? 'preview-theme-panel dark' : 'preview-theme-panel';
     const label = theme[0].toUpperCase() + theme.slice(1);
     return `<div class="${className}" data-preview-theme="${theme}" role="group" aria-label="${label} theme">
@@ -273,6 +345,23 @@ const preview = `<!DOCTYPE html>
     .preview-page .preview {
       min-width: 0;
     }
+    /* Keep the captured surface deterministic. */
+    .preview-page,
+    .preview-page * {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+    /* Export visual examples for states that are normally hidden by HTML or
+       enhancement code. Keep native hidden inputs out of the canvas. */
+    .preview-page [hidden]:not(input[type="hidden"]) {
+      display: revert !important;
+    }
+    /* The marker survives runtime enhancement when a component restores the
+       hidden attribute for an inactive state. */
+    .preview-page [data-preview-hidden-state="visible"] {
+      display: revert !important;
+    }
     /* Let in-flow overlay states wrap with their triggers on narrow
        screens. This is a no-op wherever content already fits. */
     .preview-page div.preview > div {
@@ -285,16 +374,51 @@ const preview = `<!DOCTYPE html>
        horizontal bar: those render at their static position overlaying
        the content below, like an open menu. */
     .preview-page dialog[open] {
-      position: static;
-      inset: auto;
+      position: static !important;
+      inset: auto !important;
+      display: block !important;
+      width: min(100%, 28rem);
+      max-width: 100%;
+      max-height: none;
+      margin: 0;
+      opacity: 1 !important;
+      transform: none !important;
     }
     .preview-page [popover] {
-      position: static;
-      display: block;
+      position: static !important;
+      inset: auto !important;
+      display: block !important;
+      max-width: 100%;
+      margin: var(--space-300) 0;
+      opacity: 1 !important;
+      transform: none !important;
     }
     .preview-page nav [popover] {
-      position: absolute;
-      display: block;
+      position: static !important;
+      display: block !important;
+    }
+    .preview-page dialog.sheet[open] {
+      position: relative !important;
+      width: min(100%, 24rem);
+      height: auto;
+    }
+    .preview-page dialog.sheet[data-side="bottom"][open] {
+      width: 100%;
+    }
+    body.preview-export > .toast-container {
+      position: static !important;
+      inset: auto !important;
+      width: min(100%, 26rem);
+      max-height: none;
+      margin: var(--space-600) auto var(--space-1200);
+      padding: 0;
+      transform: none !important;
+      align-items: stretch;
+    }
+    body.preview-export > .toast-container .toast[popover] {
+      position: static !important;
+      inset: auto !important;
+      margin: 0;
     }
     @media (max-width: 48rem) {
       .preview-page {
@@ -332,9 +456,9 @@ const preview = `<!DOCTYPE html>
     }
   </style>
 </head>
-<body>
+<body class="preview-export">
   <a class="skip-link docs-skip-link" href="#main-content">Skip to content</a>
-  <main class="preview-page" id="main-content" tabindex="-1">
+  <main class="preview-page" id="main-content" data-export-surface="figma" tabindex="-1">
     <div>
       <h1>Component preview</h1>
       <p>Hidden quality-assurance page. Every component renders in forced light and dark themes for comparison. This page is not linked from the documentation navigation.</p>
@@ -348,6 +472,21 @@ const preview = `<!DOCTYPE html>
 ${previewSections.join('\n')}
   </main>
 
+  <!-- Static fallback for importers that do not execute the toast module. -->
+  <div id="toast-container" class="toast-container" role="region" aria-label="Notifications" data-position="bottom-right">
+    <div class="toast" role="status" aria-live="polite" aria-atomic="true">
+      <div class="toast-content">
+        <div class="toast-text">
+          <p class="toast-title">Event created</p>
+          <p class="toast-description">Monday, January 3rd at 6:00pm</p>
+        </div>
+        <button class="toast-close" type="button" data-toast-close aria-label="Dismiss">
+          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="js/site.js" defer></script>
 ${previewModules.map((src) => `  <script type="module" src="${src}"></script>`).join('\n')}
   <script>
@@ -358,7 +497,7 @@ ${previewModules.map((src) => `  <script type="module" src="${src}"></script>`).
       if (target && !target.closest('.skip-link')) event.preventDefault();
     });
     document.addEventListener('submit', (event) => event.preventDefault());
-    document.addEventListener('click', (event) => {
+<    document.addEventListener('click', (event) => {
       const button = event.target.closest('[data-preview-theme-option]');
       const page = document.querySelector('.preview-page');
       if (!button || !page) return;
@@ -369,12 +508,19 @@ ${previewModules.map((src) => `  <script type="module" src="${src}"></script>`).
         option.setAttribute('aria-pressed', String(option.dataset.previewThemeOption === theme));
       });
     });
-    // Show one toast on load so the toast state is visible without interaction.
+    // Keep a runtime fallback for importers that remove the static toast.
     window.addEventListener('DOMContentLoaded', () => {
-      window.toast?.show({
-        title: 'Event created',
-        description: 'Monday, January 3rd at 6:00pm',
-        duration: Infinity
+      if (!document.querySelector('#toast-container .toast')) {
+        window.toast?.show({
+          title: 'Event created',
+          description: 'Monday, January 3rd at 6:00pm',
+          duration: Infinity
+        });
+      }
+      // Enhancement code can restore hidden attributes for inactive panels or
+      // paginated rows. The export surface keeps every documented state visible.
+      document.querySelectorAll('.preview-page [data-preview-hidden-state="visible"]').forEach((element) => {
+        element.removeAttribute('hidden');
       });
     });
   </script>
