@@ -7,9 +7,13 @@ import { createRequire } from 'node:module';
 const root = process.env.MEWA_UI_ROOT || path.resolve(import.meta.dirname, '..');
 const require = createRequire(path.join(root, 'package.json'));
 const { default: puppeteer } = await import(require.resolve('puppeteer-core'));
+const requestedPort = Number.parseInt(process.env.MEWA_UI_PORT || '0', 10);
 const server = Bun.serve({
   hostname: '127.0.0.1',
-  port: 0,
+  // Port 0 is convenient locally, but some sandboxed browser runtimes cannot
+  // discover or connect to the ephemeral listener. Keep it as the default and
+  // allow CI or constrained environments to select a known free port.
+  port: Number.isFinite(requestedPort) && requestedPort >= 0 ? requestedPort : 0,
   fetch(req) {
     const p = new URL(req.url).pathname;
     if (/favicon\.(?:svg|ico)$/.test(p)) return new Response(null, { status: 204 });

@@ -22,7 +22,10 @@ Nav requires no JavaScript.
 
 ## Visual states
 
-Nav links use a 36px minimum height, 10px horizontal padding, and a 4px icon gap. The state matrix accepts `aria-current="page"`, `aria-expanded`, `aria-disabled`, and `data-state="selected|expanded|hover|focus|disabled"` hooks.
+Nav links use a 40px outer row with a 36px inner surface, 10px content padding,
+20px icons, and a 10px icon gap. The state matrix accepts
+`aria-current="page"`, `aria-expanded`, `aria-disabled`, and
+`data-state="selected|expanded|hover|focus|disabled"` hooks.
 
 Figma's `nav_search` and `nav_brand` are represented as Nav subprimitives:
 
@@ -30,6 +33,9 @@ Figma's `nav_search` and `nav_brand` are represented as Nav subprimitives:
 <div class="nav-search" data-state="focus">
   <i class="nav-search-icon ri-search-line" aria-hidden="true"></i>
   <input class="nav-search-input" type="search" aria-label="Search navigation">
+  <span class="nav-search-shortcut" aria-hidden="true">
+    <kbd class="kbd">⌘K</kbd>
+  </span>
 </div>
 
 <a class="nav-brand" data-state="collapsed" href="/">

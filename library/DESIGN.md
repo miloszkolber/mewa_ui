@@ -180,7 +180,9 @@ Use `--surface-primary` for a continuous content region.
 
 Use `--surface-secondary` for quiet grouping and alternating emphasis.
 
-Use `--surface-hover` for hover feedback.
+Use `--surface-control-hover` for controls, `--surface-menu-hover` for menus,
+`--surface-content-hover` for content rows, and `--surface-shell-hover` for
+application chrome. Keep `--surface-hover` only as a compatibility alias.
 
 Use `--surface-selected` for selected and current state.
 

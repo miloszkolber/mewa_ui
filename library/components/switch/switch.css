@@ -21,9 +21,9 @@
       position: absolute;
       top: 50%;
       inset-inline-start: var(--space-050);
-      width: var(--size-400);
-      height: var(--size-400);
-      background: var(--surface-pointer);
+      width: var(--size-350);
+      height: var(--size-350);
+      background: var(--surface-pointer-inverted);
       transform: translateY(-50%);
       transition-property: inset-inline-start, background-color;
       transition-duration: var(--motion-duration-fast);
@@ -35,13 +35,14 @@
       border-color: var(--border-interactive-inverted);
 
       &::after {
-        inset-inline-start: calc(100% - var(--size-400) - var(--space-050));
+        inset-inline-start: calc(100% - var(--size-350) - var(--space-050));
         transform: translateY(-50%);
-        background: var(--surface-pointer-inverted);
+        background: var(--surface-pointer);
       }
     }
 
-    &:focus-visible {
+    &:is(:focus-visible, [data-state="focus"]) {
+      border-color: var(--border-focus);
       box-shadow: var(--ring-default);
     }
 
@@ -51,30 +52,28 @@
       color: var(--text-disabled);
       cursor: not-allowed;
 
-      &::after {
-        background: var(--surface-pointer-disabled);
-      }
+      &::after { background: var(--surface-control-disabled); }
 
       &:checked {
         background: var(--surface-control-disabled);
 
-        &::after { background: var(--surface-pointer-disabled); }
+        &::after { background: var(--surface-control-disabled); }
       }
     }
 
-    &:is([aria-invalid="true"], :user-invalid) {
+    &:is([aria-invalid="true"], [data-state="destructive"], :user-invalid):not(:disabled) {
       border-color: var(--border-invalid);
-      background: var(--surface-control-invalid);
+      background: var(--surface-control);
+      box-shadow: var(--ring-invalid);
 
-      &::after { background: var(--surface-pointer); }
+      &::after { background: var(--surface-pointer-inverted); }
 
       &:checked {
-        background: var(--surface-control-invalid);
+        background: var(--surface-control-inverted);
+
+        &::after { background: var(--surface-pointer); }
       }
 
-      &:focus-visible {
-        box-shadow: var(--ring-invalid);
-      }
     }
   }
 

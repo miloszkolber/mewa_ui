@@ -74,7 +74,8 @@ Use `.radio-item-block` when a choice needs one short description.
 
 ## Choice surface
 
-Use `.radio-card` only when the complete option needs a larger selectable surface.
+Use `.radio-card` (or the Figma-aligned `.choice-card` alias) only when the
+complete option needs a larger selectable surface.
 
 Keep the native radio inside the surface.
 
@@ -82,7 +83,10 @@ Keep one associated label for the radio.
 
 Do not nest buttons, links, or other form controls inside a Radio Card.
 
-Selected Radio Cards use the control surface, interactive-inverted border, and default focus ring. Hover uses the control-hover surface.
+Selected Radio Cards and Choice Cards use the control surface,
+interactive-inverted border, and default focus ring. Hover uses the
+control-hover surface. The alias does not merge the native Radio and Checkbox
+APIs; it only makes the shared visual surface available to either control.
 
 ```html
 <fieldset class="radio-group">

@@ -93,9 +93,14 @@ Do not place business actions in the route list.
 
 ## Collapsed state
 
-`data-state="expanded"` uses the full 16rem rail.
+`data-state="expanded"` uses the full 16rem (256px) rail.
 
-`data-state="collapsed"` uses the compact icon rail.
+`data-state="collapsed"` uses the compact 48px icon rail.
+
+Sidebar navigation rows are 40px outer / 36px inner surfaces, with 10px
+horizontal content padding, 10px icon gap, and 20px icons. The header uses a
+48px row and a 36px signet. The inner state surface is the shared control-hover
+role; it is not a separate sidebar-only color.
 
 The same links remain in the DOM in both states.
 

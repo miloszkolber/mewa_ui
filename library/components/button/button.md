@@ -94,6 +94,19 @@ Give an icon-only button an accessible name.
 
 Replace the example path with the matching local SVG from `library/src/icons/`.
 
+When the action has line and fill assets, keep both in one icon slot so the
+button state can swap them without changing layout.
+
+```html
+<button class="btn" type="button" data-variant="secondary" aria-pressed="false">
+  <span data-icon-pair aria-hidden="true">
+    <i class="ri-heart-line" data-icon-variant="line"></i>
+    <i class="ri-heart-fill" data-icon-variant="fill"></i>
+  </span>
+  Save
+</button>
+```
+
 ## Variants
 
 | `data-variant` | Intended use |
@@ -102,6 +115,7 @@ Replace the example path with the matching local SVG from `library/src/icons/`.
 | `secondary` | Use for a secondary action with a persistent boundary. |
 | `ghost` | Use for a low-emphasis local action. |
 | `destructive` | Use for the final destructive confirmation. |
+| `link` | Use for a low-emphasis navigation action without a visible boundary. |
 
 The secondary variant uses the shared secondary surface and border roles.
 

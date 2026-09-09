@@ -138,7 +138,7 @@
 
         <!-- -- Example: Line and fill variants -------------------- -->
           <p class="text-sm font-medium mb-2 mt-6">Line and fill variants</p>
-          <p class="text-xs text-secondary mb-3">Use the <code>-line</code> asset for the default outlined state and the <code>-fill</code> asset for selected or active states.</p>
+          <p class="text-xs text-secondary mb-3">Use the <code>-line</code> asset for the default outlined state and the <code>-fill</code> asset for selected or active states. Use <code>data-icon-pair</code> when a control must swap both assets in one stable slot.</p>
           <div class="preview" style="gap: var(--space-800); align-items: center">
             <div style="display: flex; flex-direction: column; align-items: center; gap: var(--space-200)">
               <i class="ri-heart-line" data-size="lg" aria-hidden="true"></i>
@@ -148,6 +148,13 @@
               <i class="ri-heart-fill" data-size="lg" aria-hidden="true"></i>
               <span style="font-size: var(--font-size-300); color: var(--text-secondary); font-family: var(--font-mono)">fill</span>
             </div>
+            <button class="btn" type="button" data-variant="secondary" data-state="selected" aria-pressed="true">
+              <span data-icon-pair aria-hidden="true">
+                <i class="ri-heart-line" data-icon-variant="line"></i>
+                <i class="ri-heart-fill" data-icon-variant="fill"></i>
+              </span>
+              Saved
+            </button>
           </div>
           <div style="position: relative; margin-top: var(--space-200)">
             <button type="button" class="copy-btn">
@@ -155,7 +162,15 @@
               Copy
             </button>
             <pre><code class="language-markup">&lt;i class="ri-heart-line" data-size="lg" aria-hidden="true"&gt;&lt;/i&gt;
-&lt;i class="ri-heart-fill" data-size="lg" aria-hidden="true"&gt;&lt;/i&gt;</code></pre>
+&lt;i class="ri-heart-fill" data-size="lg" aria-hidden="true"&gt;&lt;/i&gt;
+
+&lt;button class="btn" type="button" data-variant="secondary" data-state="selected" aria-pressed="true"&gt;
+  &lt;span data-icon-pair aria-hidden="true"&gt;
+    &lt;i class="ri-heart-line" data-icon-variant="line"&gt;&lt;/i&gt;
+    &lt;i class="ri-heart-fill" data-icon-variant="fill"&gt;&lt;/i&gt;
+  &lt;/span&gt;
+  Saved
+&lt;/button&gt;</code></pre>
           </div>
 
         <!-- -- Example: Accessible icon --------------------------- -->

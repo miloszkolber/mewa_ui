@@ -53,7 +53,8 @@
       }
     }
 
-    &:focus-visible {
+    &:is(:focus-visible, [data-state="focus"]) {
+      border-color: var(--border-focus);
       box-shadow: var(--ring-default);
     }
 
@@ -79,6 +80,7 @@
 
     &:is([aria-invalid="true"], :user-invalid) {
       border-color: var(--border-invalid);
+      box-shadow: var(--ring-invalid);
 
       &:checked {
         background-color: var(--surface-control-inverted);
@@ -98,9 +100,7 @@
         }
       }
 
-      &:focus-visible {
-        box-shadow: var(--ring-invalid);
-      }
+      &:is(:focus-visible, [data-state="focus"]) { border-color: var(--border-invalid); }
     }
   }
 

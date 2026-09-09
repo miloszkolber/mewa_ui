@@ -16,7 +16,7 @@
     resize: vertical;
     field-sizing: content;
 
-    &:focus {
+    &:is(:focus-visible, [data-state="focus"]) {
       border-color: var(--border-focus);
       box-shadow: var(--ring-default);
     }
@@ -33,10 +33,10 @@
 
     &:is([aria-invalid="true"], :user-invalid) {
       border-color: var(--border-invalid);
+      box-shadow: var(--ring-invalid);
 
-      &:focus {
+      &:is(:focus-visible, [data-state="focus"]) {
         border-color: var(--border-invalid);
-        box-shadow: var(--ring-invalid);
       }
     }
   }

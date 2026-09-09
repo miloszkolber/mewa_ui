@@ -54,13 +54,13 @@
   }
 
   /* -- Card variant ------------------------------------------- */
-  .radio-card {
+  :where(.radio-card, .choice-card) {
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 0;
-    padding: var(--space-400);
-    border: var(--border-width-025) solid var(--border-primary);
+    padding: var(--space-300);
+    border: var(--border-width-025) solid var(--border-secondary);
     transition-property: background-color, border-color, color;
     transition-duration: var(--motion-duration-fast);
     transition-timing-function: var(--motion-easing-standard);
@@ -70,18 +70,18 @@
       background: var(--surface-control-hover);
     }
 
-    &:has(.radio:checked) {
+    &:has(:where(.radio, .checkbox):checked) {
       background: var(--surface-control);
       border-color: var(--border-interactive-inverted);
       box-shadow: var(--ring-default);
     }
 
-    &:has(.radio:focus-visible) {
+    &:has(:where(.radio, .checkbox):is(:focus-visible, [data-state="focus"])) {
       box-shadow: var(--ring-default);
     }
 
-    &:has(.radio:disabled) {
-      background: var(--surface-control-disabled);
+    &:has(:where(.radio, .checkbox):disabled) {
+      background: var(--surface-control-transparent);
       border-color: var(--border-disabled);
       color: var(--text-disabled);
       cursor: not-allowed;
@@ -89,15 +89,15 @@
       box-shadow: none;
 
       & > label,
-      & > .radio-description {
+      & > :where(.radio-description, .choice-description) {
         color: var(--text-disabled);
       }
     }
 
-    & > .radio {
+    & > :where(.radio, .checkbox) {
       position: absolute;
-      top: var(--space-400);
-      right: var(--space-400);
+      top: var(--space-300);
+      right: var(--space-300);
     }
 
     & > label {
@@ -106,7 +106,7 @@
       cursor: pointer;
     }
 
-    & > .radio-description {
+    & > :where(.radio-description, .choice-description) {
       font-size: var(--font-size-350);
       color: var(--text-secondary);
       line-height: var(--font-height-regular);
@@ -150,7 +150,8 @@
       }
     }
 
-    &:focus-visible {
+    &:is(:focus-visible, [data-state="focus"]) {
+      border-color: var(--border-focus);
       box-shadow: var(--ring-default);
     }
 
@@ -175,18 +176,17 @@
 
     &:is([aria-invalid="true"], :user-invalid) {
       border-color: var(--border-invalid);
+      box-shadow: var(--ring-invalid);
 
       &:checked {
         border-color: var(--border-invalid);
 
         &::after {
-          background: var(--text-negative);
+          background: var(--surface-control-inverted);
         }
       }
 
-      &:focus-visible {
-        box-shadow: var(--ring-invalid);
-      }
+      &:is(:focus-visible, [data-state="focus"]) { border-color: var(--border-invalid); }
     }
   }
 
@@ -228,10 +228,10 @@
       }
     }
 
-    .radio-card {
+    :where(.radio-card, .choice-card) {
       border-color: ButtonText;
 
-      &:has(.radio:checked) {
+      &:has(:where(.radio, .checkbox):checked) {
         border-color: Highlight;
       }
     }

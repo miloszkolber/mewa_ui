@@ -36,6 +36,13 @@
       white-space: nowrap;
       flex-shrink: 0;
     }
+
+    & > :where(svg, i, [data-remix-icon]) {
+      flex: 0 0 var(--size-400);
+      inline-size: var(--size-400);
+      block-size: var(--size-400);
+      color: var(--text-secondary);
+    }
   }
 
   /* -- Accessibility ----------------------------------------- */

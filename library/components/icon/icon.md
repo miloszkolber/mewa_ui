@@ -99,6 +99,27 @@ Do not tune outline thickness with per-icon attributes.
 
 Do not mix arbitrary icon families in one control group.
 
+### Stateful pairs
+
+Use `data-icon-pair` when one control needs to swap a line glyph for its fill
+counterpart. The containing control owns the state; the pair keeps both local
+assets in one 16px slot. Hover, focus, current, selected, and expanded states
+show the fill glyph. Disabled states keep the line glyph.
+
+```html
+<button class="btn" type="button" data-variant="secondary" aria-pressed="false">
+  <span data-icon-pair aria-hidden="true">
+    <i class="ri-heart-line" data-icon-variant="line"></i>
+    <i class="ri-heart-fill" data-icon-variant="fill"></i>
+  </span>
+  Save
+</button>
+```
+
+Use `data-icon-variant="line|fill"` when the class name is not enough for a
+consumer-owned icon loader. The utility is CSS-only and does not replace the
+local loader or inline SVG path.
+
 ## Color
 
 Let the icon inherit `currentColor` from its parent.

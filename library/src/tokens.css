@@ -99,8 +99,8 @@
   /* Page and container surfaces */
   --background: var(--color-neutral-1000);
   --background-glass: color-mix(in srgb, var(--color-neutral-1000) 85%, rgb(0 0 0 / 0%));
-  --surface-primary: var(--color-neutral-1000);
-  --surface-primary-glass: color-mix(in srgb, var(--color-neutral-1000) 85%, rgb(0 0 0 / 0%));
+  --surface-primary: var(--color-neutral-950);
+  --surface-primary-glass: color-mix(in srgb, var(--color-neutral-950) 85%, rgb(0 0 0 / 0%));
   --surface-secondary: var(--color-neutral-950);
   --surface-secondary-glass: color-mix(in srgb, var(--color-neutral-950) 85%, rgb(0 0 0 / 0%));
   /* General translucent surfaces keep their own semantic roles. */
@@ -191,4 +191,5 @@
 :root {
   --ring-default: 0 0 0 var(--ring-spread) var(--border-focus-area);
   --ring-invalid: 0 0 0 var(--ring-spread) var(--border-invalid-area);
+  --shadow-selected: 0 1px 3px rgb(0 0 0 / 10%);
 }

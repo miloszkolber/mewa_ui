@@ -115,7 +115,9 @@ Use `<kbd class="kbd">` for a key or key combination that the user can press.
 Press <kbd class="kbd">Ctrl+B</kbd> to toggle the sidebar.
 ```
 
-Kbd uses a 20px square minimum, 14px tight `MONO:1` text, and general-alpha surfaces. Use `data-variant="inverted"` when the key sits on an inverted surface.
+Kbd uses a 20px square minimum, 14px tight `MONO:0` text, and general-alpha
+surfaces. Use `data-variant="inverted"` when the key sits on an inverted
+surface.
 
 ```html
 <kbd class="kbd" data-variant="inverted">Enter</kbd>

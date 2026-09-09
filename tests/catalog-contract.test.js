@@ -432,8 +432,8 @@ test('component CSS stays square, tokenized, ring-controlled, and motion-control
     for (const match of source.matchAll(/\b(?:box-shadow|text-shadow)\s*:\s*([^;{}]+)/gi)) {
       assert.match(
         match[0],
-        /^box-shadow\s*:\s*(?:var\(--ring-(?:default|invalid)\)|none)$/i,
-        `${filename}: only shared ring shadows or explicit resets are allowed`
+        /^box-shadow\s*:\s*(?:var\(--ring-(?:default|invalid)\)|var\(--shadow-selected\)|none)$/i,
+        `${filename}: only shared ring/selection shadows or explicit resets are allowed`
       );
     }
     if (component.slug !== 'spinner') {
@@ -493,7 +493,7 @@ test('selected Figma component contracts are encoded in source', () => {
   expectMatch(button, /line-height:\s*var\(--font-height-tight\)/, 'button: tight text');
   assert.doesNotMatch(
     button,
-    /data-variant="(?:outline|destructive-outline|link)"/,
+    /data-variant="(?:outline|destructive-outline)"/,
     'button: retired variants must not remain'
   );
 
@@ -504,12 +504,8 @@ test('selected Figma component contracts are encoded in source', () => {
 
   const tabs = css('tabs');
   expectMatch(tabs, /block-size:\s*var\(--size-900\)/, 'tabs: 36px track');
-  expectMatch(tabs, /background:\s*var\(--surface-control-inverted\)/, 'tabs: inverted selection');
-  expectMatch(
-    tabs,
-    /border-color:\s*var\(--border-interactive-inverted\)/,
-    'tabs: selected border'
-  );
+  expectMatch(tabs, /background:\s*var\(--surface-control\)/, 'tabs: selected control surface');
+  expectMatch(tabs, /box-shadow:\s*var\(--shadow-selected\)/, 'tabs: selected shadow');
 
   const table = css('table');
   expectMatch(table, /padding:\s*0 var\(--space-200\)/, 'table: 8px horizontal padding');
@@ -540,7 +536,7 @@ test('selected Figma component contracts are encoded in source', () => {
   expectMatch(kbd, /block-size:\s*var\(--size-500\)/, 'kbd: 20px height');
   expectMatch(kbd, /background:\s*var\(--surface-alpha\)/, 'kbd: alpha surface');
   expectMatch(kbd, /background:\s*var\(--surface-alpha-inverted\)/, 'kbd: inverted surface');
-  expectMatch(kbd, /font-variation-settings:\s*var\(--font-mono-axis\)/, 'kbd: MONO:1');
+  expectMatch(kbd, /font-variation-settings:\s*var\(--font-text-axis\)/, 'kbd: MONO:0');
 
   const switchCss = css('switch');
   expectMatch(switchCss, /width:\s*var\(--size-900\)/, 'switch: 36px width');
@@ -565,12 +561,16 @@ test('selected Figma component contracts are encoded in source', () => {
   expectMatch(accordion, /gap:\s*var\(--space-200\)/, 'accordion: 8px icon gap');
 
   expectMatch(css('badge'), /min-block-size:\s*var\(--size-600\)/, 'badge: 24px height');
-  expectMatch(css('badge'), /padding:\s*0 var\(--space-200\)/, 'badge: 8px horizontal padding');
+  expectMatch(css('badge'), /padding:\s*0 var\(--space-150\)/, 'badge: 6px horizontal padding');
 
   const slider = css('slider');
   expectMatch(slider, /height:\s*var\(--size-100\)/, 'slider: 4px track');
   expectMatch(slider, /height:\s*var\(--size-400\)/, 'slider: 16px thumb');
-  expectMatch(slider, /filter:\s*blur\(var\(--blur-400\)\)/, 'slider: disabled thumb blur');
+  expectMatch(
+    slider,
+    /backdrop-filter:\s*blur\(var\(--blur-400\)\)/,
+    'slider: disabled thumb background blur'
+  );
 
   const progress = css('progress');
   expectMatch(progress, /height:\s*var\(--size-150\)/, 'progress: 6px height');
@@ -582,12 +582,21 @@ test('selected Figma component contracts are encoded in source', () => {
   );
   expectMatch(
     progress,
-    /background-color:\s*var\(--surface-control-disabled\)/,
+    /background-color:\s*var\(--surface-pointer-disabled\)/,
     'progress: explicit disabled value'
   );
 
   const tree = css('tree-view');
-  for (const variant of ['line', 'branch', 'first', 'last', 'overflow'])
+  for (const variant of [
+    'default',
+    'first',
+    'last',
+    'overflowTop',
+    'overflowBottom',
+    'line',
+    'branch',
+    'overflow'
+  ])
     expectMatch(tree, new RegExp(`data-variant="${variant}"`), `tree indicator: ${variant}`);
 
   const nav = css('nav');

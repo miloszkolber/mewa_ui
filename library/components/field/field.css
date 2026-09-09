@@ -34,7 +34,7 @@
     inline-size: 100%;
     min-block-size: var(--size-1000);
     border: var(--border-width-025) solid var(--border-secondary);
-    background: var(--background);
+    background: var(--surface-control-transparent);
     padding-inline: var(--space-300);
     color: var(--text-primary);
     font-family: var(--font-mono);
@@ -59,7 +59,7 @@
     input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
     select,
     textarea
-  ):focus-visible {
+  ):is(:focus-visible, [data-state="focus"]) {
     /* Form controls keep their boundary and use the shared Figma ring effect. */
     border-color: var(--border-focus);
     box-shadow: var(--ring-default);
@@ -101,13 +101,14 @@
     textarea
   ):is([aria-invalid="true"], :user-invalid) {
     border-color: var(--border-invalid);
+    box-shadow: var(--ring-invalid);
   }
 
   .field > :where(
     input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
     select,
     textarea
-  ):is([aria-invalid="true"], :user-invalid):focus-visible {
+  ):is([aria-invalid="true"], :user-invalid):is(:focus-visible, [data-state="focus"]) {
     border-color: var(--border-invalid);
     box-shadow: var(--ring-invalid);
   }

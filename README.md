@@ -134,6 +134,13 @@ bun run test:performance
 bun run measure
 ```
 
+If the local Bun runtime cannot bind an ephemeral port, provide a free fixed
+port for the browser gate; all browser harness servers honor this override:
+
+```sh
+MEWA_UI_PORT=41880 bun run test:browser
+```
+
 Set `MEWA_BROWSER=firefox` and `PUPPETEER_EXECUTABLE_PATH` to run the browser suite in Firefox. Firefox's tested automation protocol does not support forced-colors emulation or disabling JavaScript; those cases run in Chromium.
 
 For Safari, enable remote automation in Safari Settings, start `safaridriver -p 4447`, and run `bun run test:safari`. The Safari report records the actual viewport widths. Set `SAFARI_WEBDRIVER_URL` to use another local driver port. Screen-reader acceptance remains a separate manual check.

@@ -5,6 +5,7 @@ import puppeteer from 'puppeteer-core';
 import { launchOptions } from './browser-support.mjs';
 const root = path.resolve(import.meta.dirname, '..');
 const distribution = path.join(root, 'dist');
+const requestedPort = Number.parseInt(process.env.MEWA_UI_PORT || '0', 10);
 const build = await Bun.build({
   entrypoints: [path.join(root, 'tests/runtime-contract.browser.js')],
   outdir: distribution,
@@ -14,7 +15,10 @@ const build = await Bun.build({
 assert.equal(build.success, true, build.logs.map(String).join('\n'));
 const server = Bun.serve({
   hostname: '127.0.0.1',
-  port: 0,
+  // Some constrained local Bun environments reject ephemeral port 0. Keep
+  // the default for normal runs, but allow the full browser harness to use a
+  // known free port when the environment requires it.
+  port: Number.isFinite(requestedPort) && requestedPort >= 0 ? requestedPort : 0,
   fetch(request) {
     const pathname = new URL(request.url).pathname;
     if (pathname === '/')

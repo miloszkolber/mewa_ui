@@ -137,12 +137,12 @@
     justify-content: center;
     min-inline-size: var(--size-500);
     block-size: var(--size-500);
-    padding: 0;
+    padding: 0 var(--space-100);
     background: var(--surface-alpha);
     border: var(--border-width-000) solid var(--border-transparent);
-    color: var(--text-primary);
+    color: var(--text-secondary);
     font-family: var(--font-mono);
-    font-variation-settings: var(--font-mono-axis);
+    font-variation-settings: var(--font-text-axis);
     font-size: var(--font-size-350);
     line-height: var(--font-height-tight);
 

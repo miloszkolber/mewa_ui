@@ -16,7 +16,11 @@ Do not use Tree View for flat application routes.
 
 Tree items expose selected, disabled, hover, and focus treatment through native ARIA state and the shared control, border, and ring roles.
 
-Tree View also includes the structural `.tree-indicator` subprimitive. Use `data-variant="line"`, `branch`, `first`, `last`, or `overflow` for connector and continuation geometry. It is not a separate registry component.
+Tree View also includes the structural `.tree-indicator` subprimitive. The
+Figma-aligned variants are `default`, `first`, `last`, `overflowTop`, and
+`overflowBottom` (kebab-case `overflow-top` and `overflow-bottom` are accepted
+too). The older `line`, `branch`, and `overflow` hooks remain as compatibility
+aliases. It is not a separate registry component.
 
 ## Native basis
 

@@ -35,7 +35,8 @@
       color: inherit;
     }
 
-    &:focus-visible {
+    &:is(:focus-visible, [data-state="focus"]) {
+      border-color: var(--border-focus);
       box-shadow: var(--ring-default);
     }
 
@@ -51,6 +52,10 @@
       &:hover {
         background-color: var(--surface-button-primary-hover);
       }
+
+      &:is(:focus-visible, [data-state="focus"]) {
+        background-color: var(--surface-button-primary-hover);
+      }
     }
 
     &[data-variant="secondary"] {
@@ -59,6 +64,10 @@
       border-color: var(--border-secondary);
 
       &:hover {
+        background-color: var(--surface-button-secondary-hover);
+      }
+
+      &:is(:focus-visible, [data-state="focus"]) {
         background-color: var(--surface-button-secondary-hover);
       }
     }
@@ -72,6 +81,10 @@
         background-color: var(--surface-button-secondary-hover);
         color: var(--text-primary);
       }
+
+      &:is(:focus-visible, [data-state="focus"]) {
+        background-color: var(--surface-button-secondary-hover);
+      }
     }
 
     &[data-variant="destructive"] {
@@ -84,8 +97,25 @@
         background-color: var(--surface-button-destructive-hover);
       }
 
-      &:focus-visible {
+      &:is(:focus-visible, [data-state="focus"]) {
+        border-color: var(--border-focus);
+        background-color: var(--surface-button-destructive-hover);
         box-shadow: var(--ring-invalid);
+      }
+    }
+
+    &[data-variant="link"] {
+      background-color: var(--surface-control-transparent);
+      border-color: var(--border-transparent);
+      color: var(--text-primary);
+
+      &:hover {
+        background-color: var(--surface-control-transparent);
+        color: var(--text-primary);
+      }
+
+      &:is(:focus-visible, [data-state="focus"]) {
+        background-color: var(--surface-control-transparent);
       }
     }
 
@@ -104,6 +134,11 @@
 
       &[data-variant="ghost"] {
         background-color: var(--surface-button-secondary);
+      }
+
+      &[data-variant="link"] {
+        background-color: var(--surface-control-transparent);
+        border-color: var(--border-transparent);
       }
     }
 

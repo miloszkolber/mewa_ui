@@ -11,10 +11,10 @@
     /* The ready control rhythm is 36px total. */
     block-size: var(--size-900);
     padding: var(--border-width-025);
-    gap: var(--space-000);
+    gap: var(--space-150);
 
     /* -- Line variant --------------------------------------------- */
-    &[data-variant="line"] {
+    &:is([data-variant="line"], [data-variant="underline"]) {
       background: transparent;
       padding: 0;
       gap: 0;
@@ -36,6 +36,7 @@
           background: transparent;
           color: var(--text-primary);
           border-bottom-color: var(--border-interactive-inverted);
+          box-shadow: none;
         }
       }
     }
@@ -74,13 +75,14 @@
 
     /* Selected tabs use the explicit inverted control surface. */
     &[aria-selected="true"] {
-      background: var(--surface-control-inverted);
-      border-color: var(--border-interactive-inverted);
-      color: var(--text-inverted);
+      background: var(--surface-control);
+      border-color: var(--border-transparent);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-selected);
 
       &:hover {
-        background: var(--surface-control-inverted);
-        color: var(--text-inverted);
+        background: var(--surface-control);
+        color: var(--text-primary);
       }
     }
 
@@ -89,7 +91,9 @@
       color: var(--text-primary);
     }
 
-    &:focus-visible {
+    &:is(:focus-visible, [data-state="focus"]) {
+      border-color: var(--border-focus);
+      background: var(--surface-control-hover);
       box-shadow: var(--ring-default);
     }
 
@@ -98,9 +102,10 @@
       background: var(--surface-control-disabled);
       border-color: var(--border-disabled);
       color: var(--text-disabled);
+      box-shadow: none;
     }
 
-    .tab-list[data-variant="line"] & {
+    :is(.tab-list[data-variant="line"], .tab-list[data-variant="underline"]) & {
       &:is(:disabled, [aria-disabled="true"]) {
         background: var(--surface-control-transparent);
         border-color: var(--border-transparent);
@@ -137,7 +142,7 @@
       border: var(--border-width-050) solid Highlight;
     }
 
-    .tab-list[data-variant="line"] .tab-trigger[aria-selected="true"] {
+    :is(.tab-list[data-variant="line"], .tab-list[data-variant="underline"]) .tab-trigger[aria-selected="true"] {
       border: none;
       border-bottom: var(--border-width-050) solid Highlight;
     }

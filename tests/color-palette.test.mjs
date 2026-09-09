@@ -451,7 +451,7 @@ await test('light and dark semantic surfaces use the full reference endpoints', 
   };
   const expectedDark = {
     '--background': 'var(--color-neutral-1000)',
-    '--surface-primary': 'var(--color-neutral-1000)',
+    '--surface-primary': 'var(--color-neutral-950)',
     '--surface-secondary': 'var(--color-neutral-950)',
     '--surface-inverted': 'var(--color-neutral-050)',
     '--text-inverted': 'var(--color-neutral-950)',

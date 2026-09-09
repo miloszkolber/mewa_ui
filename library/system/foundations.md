@@ -175,7 +175,10 @@ Use rows, bands, and controls inside the section without another outer card.
 
 Use `--surface-secondary` for quiet grouping inside a level-one section.
 
-Use `--surface-hover` for hover feedback.
+Use `--surface-control-hover` for controls, `--surface-menu-hover` for menu
+items, `--surface-content-hover` for content rows, and
+`--surface-shell-hover` for application chrome. `--surface-hover` remains a
+compatibility alias for content hover.
 
 Use `--surface-selected` for a selected or current item.
 
@@ -245,7 +248,9 @@ Do not round a container to make it look softer.
 
 Use `var(--font-mono)` for interface text, code, terminal output, keyboard keys, IDs, and technical labels.
 
-Set the Google Sans Code `MONO` variation axis to `0` for interface text and headings, and to `1` for code, terminal output, keyboard keys, and other code-like content.
+Set the Google Sans Code `MONO` variation axis to `0` for interface text,
+headings, and keyboard keys, and to `1` for code, terminal output, and other
+code-like content.
 
 Use `var(--font-size-400)` for normal body text.
 
@@ -352,6 +357,9 @@ Use `currentColor` for icon fill.
 Use `-line` for default or outlined presentation.
 
 Use `-fill` for selected or active presentation.
+
+Use `data-icon-pair` when a control needs to swap line and fill assets in one
+stable slot; the containing control owns the state.
 
 Use a 16px icon in a normal control.
 

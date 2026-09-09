@@ -27,16 +27,16 @@
   }
 
   .progress:is(:disabled, [aria-disabled="true"]) {
-    background-color: var(--surface-control-disabled);
+    background-color: var(--surface-control);
   }
 
   .progress:is(:disabled, [aria-disabled="true"])::-webkit-progress-bar {
-    background-color: var(--surface-control-disabled);
+    background-color: var(--surface-control);
   }
 
   .progress:is(:disabled, [aria-disabled="true"])::-webkit-progress-value,
   .progress:is(:disabled, [aria-disabled="true"])::-moz-progress-bar {
-    background-color: var(--surface-control-disabled);
+    background-color: var(--surface-pointer-disabled);
   }
 
   /* -- Accessibility ---------------------------------------- */

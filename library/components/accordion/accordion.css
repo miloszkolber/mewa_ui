@@ -8,9 +8,6 @@
 
   .accordion-item {
     border-bottom: var(--border-width-025) solid var(--border-primary);
-
-    &:last-child { border-bottom: none; }
-
   }
 
   .accordion-trigger {
@@ -32,7 +29,10 @@
     outline: none;
     &::-webkit-details-marker { display: none; }
     &::marker { content: ''; }
-    &:focus-visible { box-shadow: var(--ring-default); }
+    &:is(:focus-visible, [data-state="focus"]) {
+      border-color: var(--border-focus);
+      box-shadow: var(--ring-default);
+    }
 
     &:is([aria-disabled="true"], [data-disabled]) {
       pointer-events: none;
@@ -51,7 +51,7 @@
   }
 
   .accordion-content {
-    padding-bottom: var(--space-400);
+    padding-bottom: var(--space-300);
     font-size: var(--font-size-350);
     line-height: var(--font-height-regular);
     color: var(--text-secondary);

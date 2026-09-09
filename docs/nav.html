@@ -85,14 +85,21 @@
         </div>
 
         <p class="text-sm font-medium mb-2 mt-8">States and subprimitives</p>
-        <p class="text-xs text-secondary mb-3">Nav supports selected, expanded, hover, focus, and disabled state hooks. Search and brand are composition points for navigation shells.</p>
+        <p class="text-xs text-secondary mb-3">Nav supports selected, expanded, hover, focus, and disabled state hooks. Search and brand are composition points for navigation shells. Pair line and fill Remix glyphs when a stateful item needs a visual swap.</p>
         <div class="preview">
           <div style="display: grid; gap: var(--space-300); max-width: 22rem">
-            <a class="nav-item-link" href="#" data-state="expanded" onclick="event.preventDefault()">Expanded item</a>
+            <a class="nav-item-link" href="#" data-state="expanded" onclick="event.preventDefault()">
+              <span data-icon-pair aria-hidden="true">
+                <i class="ri-folder-line" data-icon-variant="line"></i>
+                <i class="ri-folder-fill" data-icon-variant="fill"></i>
+              </span>
+              Expanded item
+            </a>
             <a class="nav-item-link" href="#" aria-disabled="true" data-state="disabled" onclick="event.preventDefault()">Disabled item</a>
             <div class="nav-search" data-state="focus">
               <i class="nav-search-icon ri-search-line" aria-hidden="true"></i>
               <input class="nav-search-input" type="search" aria-label="Search navigation" placeholder="Search navigation">
+              <span class="nav-search-shortcut" aria-hidden="true"><kbd class="kbd">⌘K</kbd></span>
             </div>
             <a class="nav-brand" data-state="collapsed" href="#" onclick="event.preventDefault()">
               <span class="nav-brand-mark" aria-hidden="true"><i class="ri-command-line"></i></span>
@@ -102,12 +109,21 @@
         </div>
         <div style="position: relative; margin-top: var(--space-200)">
           <button type="button" class="copy-btn">Copy</button>
-          <pre><code class="language-markup">&lt;a class="nav-item-link" href="/jobs" data-state="expanded"&gt;Jobs&lt;/a&gt;
+          <pre><code class="language-markup">&lt;a class="nav-item-link" href="/jobs" data-state="expanded"&gt;
+  &lt;span data-icon-pair aria-hidden="true"&gt;
+    &lt;i class="ri-folder-line" data-icon-variant="line"&gt;&lt;/i&gt;
+    &lt;i class="ri-folder-fill" data-icon-variant="fill"&gt;&lt;/i&gt;
+  &lt;/span&gt;
+  Jobs
+&lt;/a&gt;
 &lt;a class="nav-item-link" href="/settings" aria-disabled="true" data-state="disabled"&gt;Settings&lt;/a&gt;
 
 &lt;div class="nav-search" data-state="focus"&gt;
   &lt;i class="nav-search-icon ri-search-line" aria-hidden="true"&gt;&lt;/i&gt;
   &lt;input class="nav-search-input" type="search" aria-label="Search navigation"&gt;
+  &lt;span class="nav-search-shortcut" aria-hidden="true"&gt;
+    &lt;kbd class="kbd"&gt;⌘K&lt;/kbd&gt;
+  &lt;/span&gt;
 &lt;/div&gt;
 
 &lt;a class="nav-brand" data-state="collapsed" href="/"&gt;
