@@ -124,8 +124,10 @@ export function enhance(root) {
     setAttribute(input, 'aria-autocomplete', 'list');
     setAttribute(input, 'aria-expanded', String(dialog.open));
     setAttribute(input, 'aria-controls', list.id);
-    lifecycle.listen(dialog, dialog, 'beforetoggle', () => {
-      // Opening is cancelable. Read the native result after all handlers finish.
+    lifecycle.listen(dialog, dialog, 'beforetoggle', (event) => {
+      // Expose a closing state before the native close event. Opening is
+      // cancelable, so read its final native result after all handlers finish.
+      if (event.newState === 'closed') setAttribute(input, 'aria-expanded', 'false');
       queueMicrotask(() => {
         if (lifecycle.has(dialog)) setAttribute(input, 'aria-expanded', String(dialog.open));
       });
