@@ -9,7 +9,7 @@ Semantic HTML, tokenized CSS, local SVG icons, and optional native JavaScript be
 - `library/DESIGN.md`: design rules and system references.
 - `library/system/foundations.md`: tokens and responsive foundations.
 - `library/system/components.md`: generated selection guide.
-- `library/components/{slug}/{slug}.md`: exact markup, state, events, fallback, and accessibility contract.
+- `library/components/{category}/{slug}/{slug}.md`: exact markup, state, events, fallback, and accessibility contract.
 - `library/system/patterns.md`: component composition.
 - `library/system/layouts.md`: sidebar, top-navigation, and focused-tool shells.
 - `library/system/accessibility.md`: interaction acceptance criteria.

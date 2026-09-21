@@ -1,0 +1,197 @@
+/* -- Date Range Picker component -------------------------------- */
+
+@layer components {
+  .date-range-picker {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-400);
+    min-inline-size: 0;
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .date-range-picker > legend,
+  .date-range-label {
+    padding: 0;
+    color: var(--text-primary);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-525);
+    line-height: var(--font-height-flat);
+  }
+
+  .date-range-description {
+    margin: 0;
+    font-size: var(--font-size-350);
+    line-height: var(--font-height-regular);
+  }
+
+  .date-range-error,
+  .date-range-status {
+    margin: 0;
+    font-size: var(--font-size-300);
+    line-height: var(--font-height-regular);
+  }
+
+  .date-range-description,
+  .date-range-status {
+    color: var(--text-secondary);
+  }
+
+  .date-range-error {
+    color: var(--text-negative);
+  }
+
+  .date-range-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: end;
+    gap: var(--space-300);
+  }
+
+  .date-range-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+    min-inline-size: 0;
+  }
+
+  .date-range-field > label {
+    color: var(--text-primary);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-525);
+    line-height: var(--font-height-flat);
+  }
+
+  .date-range-input {
+    position: relative;
+    inline-size: 100%;
+    block-size: var(--size-900);
+    min-block-size: var(--size-900);
+    border: var(--border-width-025) solid var(--border-secondary);
+    background: var(--background);
+    padding-inline: var(--space-300);
+    padding-inline-end: var(--size-900);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-350);
+    outline: none;
+  }
+
+  .date-range-input:focus-visible {
+    border-color: var(--border-focus);
+    box-shadow: var(--ring-default);
+  }
+
+  .date-range-input:disabled {
+    cursor: not-allowed;
+    background: var(--surface-control-disabled);
+    color: var(--text-disabled);
+    border-color: var(--border-disabled);
+  }
+
+  .date-range-input:is([aria-invalid="true"], :user-invalid),
+  .date-range-picker[data-invalid] .date-range-input {
+    border-color: var(--border-invalid);
+  }
+
+  .date-range-input:is([aria-invalid="true"], :user-invalid):focus-visible,
+  .date-range-picker[data-invalid] .date-range-input:focus-visible {
+    border-color: var(--border-invalid);
+    box-shadow: var(--ring-invalid);
+  }
+
+  .date-range-input::-webkit-calendar-picker-indicator {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    inline-size: var(--size-900);
+    block-size: auto;
+    margin: 0;
+    cursor: pointer;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .date-range-input::-webkit-datetime-edit,
+  .date-range-input::-webkit-datetime-edit-fields-wrapper,
+  .date-range-input::-webkit-datetime-edit-text,
+  .date-range-input::-webkit-datetime-edit-day-field,
+  .date-range-input::-webkit-datetime-edit-month-field,
+  .date-range-input::-webkit-datetime-edit-year-field {
+    color: inherit;
+  }
+
+  .date-range-separator {
+    align-self: end;
+    padding-block: var(--space-300);
+    color: var(--text-secondary);
+    font-size: var(--font-size-350);
+  }
+
+  .date-range-picker:has(.date-range-input:disabled) > :is(legend, .date-range-label, .date-range-description, .date-range-status),
+  .date-range-picker[data-disabled] > :is(legend, .date-range-label, .date-range-description, .date-range-status) {
+    color: var(--text-disabled);
+  }
+
+  .date-range-picker[data-disabled] .date-range-field > label,
+  .date-range-picker:has(.date-range-input:disabled) .date-range-field > label {
+    color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 37.5rem) {
+    .date-range-controls {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .date-range-separator {
+      display: none;
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    .date-range-input {
+      border-width: var(--border-width-050);
+    }
+
+    .date-range-input:disabled {
+      color: var(--text-disabled);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .date-range-picker > legend,
+    .date-range-label,
+    .date-range-field > label {
+      color: CanvasText;
+    }
+
+    .date-range-input {
+      border-color: ButtonBorder;
+      background: Field;
+      color: FieldText;
+    }
+
+    .date-range-input:focus-visible {
+      outline: var(--border-width-050) solid Highlight;
+      outline-offset: 1px;
+    }
+
+    .date-range-input:disabled,
+    .date-range-picker:has(.date-range-input:disabled) > :is(legend, .date-range-label, .date-range-description, .date-range-status),
+    .date-range-picker[data-disabled] > :is(legend, .date-range-label, .date-range-description, .date-range-status),
+    .date-range-picker[data-disabled] .date-range-field > label,
+    .date-range-picker:has(.date-range-input:disabled) .date-range-field > label {
+      color: GrayText;
+    }
+
+    .date-range-input:is([aria-invalid="true"], :user-invalid),
+    .date-range-picker[data-invalid] .date-range-input,
+    .date-range-error {
+      border-color: LinkText;
+      color: LinkText;
+    }
+  }
+}

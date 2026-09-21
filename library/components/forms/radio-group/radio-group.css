@@ -1,0 +1,255 @@
+/* -- Radio Group component -------------------------------------- */
+
+@layer components {
+  .radio-group {
+    min-inline-size: 0;
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+
+    & > legend {
+      margin-bottom: var(--space-200);
+    }
+  }
+
+  .radio-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-200);
+
+    & > label {
+      font-size: var(--font-size-350);
+      font-weight: var(--font-weight-400);
+      line-height: var(--font-height-flat);
+      cursor: pointer;
+    }
+  }
+
+  /* -- With-description layout -------------------------------- */
+  .radio-item-block {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0 var(--space-200);
+
+    & > .radio {
+      grid-row: 1 / 3;
+      margin-top: var(--space-100);
+    }
+
+    & > label {
+      font-size: var(--font-size-350);
+      font-weight: var(--font-weight-525);
+      cursor: pointer;
+      line-height: var(--font-height-regular);
+    }
+
+    & > .radio-description {
+      grid-column: 2;
+      font-size: var(--font-size-350);
+      color: var(--text-secondary);
+      line-height: var(--font-height-regular);
+    }
+  }
+
+  /* -- Card variant ------------------------------------------- */
+  :where(.radio-card, .choice-card) {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: var(--space-300);
+    border: var(--border-width-025) solid var(--border-secondary);
+    transition-property: background-color, border-color, color;
+    transition-duration: var(--motion-duration-fast);
+    transition-timing-function: var(--motion-easing-standard);
+
+    cursor: pointer;
+    &:hover {
+      background: var(--surface-control-hover);
+    }
+
+    &:has(:where(.radio, .checkbox):checked) {
+      background: var(--surface-control);
+      border-color: var(--border-interactive-inverted);
+      box-shadow: var(--ring-default);
+    }
+
+    &:has(:where(.radio, .checkbox):is(:focus-visible, [data-state="focus"])) {
+      box-shadow: var(--ring-default);
+    }
+
+    &:has(:where(.radio, .checkbox):disabled) {
+      background: var(--surface-control-transparent);
+      border-color: var(--border-disabled);
+      color: var(--text-disabled);
+      cursor: not-allowed;
+      pointer-events: none;
+      box-shadow: none;
+
+      & > label,
+      & > :where(.radio-description, .choice-description) {
+        color: var(--text-disabled);
+      }
+    }
+
+    & > :where(.radio, .checkbox) {
+      position: absolute;
+      top: var(--space-300);
+      right: var(--space-300);
+    }
+
+    & > label {
+      font-size: var(--font-size-350);
+      font-weight: var(--font-weight-525);
+      cursor: pointer;
+    }
+
+    & > :where(.radio-description, .choice-description) {
+      font-size: var(--font-size-350);
+      color: var(--text-secondary);
+      line-height: var(--font-height-regular);
+    }
+  }
+
+  .radio {
+    appearance: none;
+    width: var(--size-400);
+    height: var(--size-400);
+    border: var(--border-width-025) solid var(--border-interactive-default);
+    border-radius: 50%;
+    background: var(--surface-control-transparent);
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: var(--size-200);
+      height: var(--size-200);
+      border-radius: 50%;
+      background: var(--surface-control-inverted);
+      opacity: var(--opacity-000);
+      transform: translate(-50%, -50%) scale(0.5);
+      transition-property: background-color, opacity, transform;
+      transition-duration: var(--motion-duration-fast);
+      transition-timing-function: var(--motion-easing-standard);
+    }
+
+    &:checked {
+      border-color: var(--border-interactive-inverted);
+
+      &::after {
+        background: var(--surface-control-inverted);
+        opacity: var(--opacity-100);
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    &:is(:focus-visible, [data-state="focus"]) {
+      border-color: var(--border-focus);
+      box-shadow: var(--ring-default);
+    }
+
+    &:disabled {
+      background: var(--surface-control-disabled);
+      border-color: var(--border-disabled);
+      cursor: not-allowed;
+
+      &:checked {
+        border-color: var(--border-disabled);
+
+        &::after {
+          background: var(--text-disabled);
+        }
+      }
+
+      & + label {
+        color: var(--text-disabled);
+        cursor: not-allowed;
+      }
+    }
+
+    &:is([aria-invalid="true"], :user-invalid) {
+      border-color: var(--border-invalid);
+      box-shadow: var(--ring-invalid);
+
+      &:checked {
+        border-color: var(--border-invalid);
+
+        &::after {
+          background: var(--surface-control-inverted);
+        }
+      }
+
+      &:is(:focus-visible, [data-state="focus"]) { border-color: var(--border-invalid); }
+    }
+  }
+
+  .radio-group-description {
+    font-size: var(--font-size-350);
+    color: var(--text-secondary);
+    margin: -0.125rem 0 var(--space-100);
+  }
+
+  /* -- Accessibility ------------------------------------------ */
+  @media (prefers-contrast: more) {
+    .radio {
+      border-width: var(--border-width-050);
+    }
+
+    .radio:disabled {
+      border-color: var(--border-disabled);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .radio {
+      forced-color-adjust: none;
+      background: Field;
+      border-color: ButtonText;
+
+      &:checked {
+        border-color: Highlight;
+
+        &::after {
+          background: Highlight;
+        }
+      }
+
+      &:disabled {
+        border-color: GrayText;
+
+        &:checked::after {
+          background: GrayText;
+        }
+      }
+
+      &:is([aria-invalid="true"], :user-invalid):not(:disabled) {
+        border-color: ButtonText;
+        border-style: dashed;
+        &:checked::after { background: Highlight; }
+      }
+    }
+
+    :where(.radio-card, .choice-card) {
+      border-color: ButtonText;
+
+      &:has(:where(.radio, .checkbox):checked) {
+        border-color: Highlight;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .radio-card,
+    .radio::after {
+      transition-duration: 0ms;
+    }
+  }
+}

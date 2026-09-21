@@ -1,0 +1,232 @@
+@layer components {
+  .tree {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-350);
+  }
+
+  .tree-group {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 var(--space-500);
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset-block: 0;
+      inset-inline-start: var(--space-200);
+      border-inline-start: var(--border-width-025) solid var(--border-primary);
+    }
+  }
+
+  .tree-item {
+    padding: 0;
+    position: relative;
+
+    &:is([aria-selected="true"], [data-state="selected"]) > .tree-leaf,
+    &:is([aria-selected="true"], [data-state="selected"]) > .tree-branch > .tree-branch-trigger {
+      background: var(--surface-control);
+      border-color: var(--border-interactive-inverted);
+      color: var(--text-primary);
+    }
+
+    &:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > .tree-leaf,
+    &:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > .tree-branch > .tree-branch-trigger {
+      background: var(--surface-control-disabled);
+      border-color: var(--border-disabled);
+      color: var(--text-disabled);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+
+  .tree-branch {
+    border: none;
+
+  }
+
+  .tree-branch-trigger {
+    display: flex;
+    align-items: center;
+    gap: var(--space-200);
+    min-block-size: var(--size-1000);
+    padding: var(--space-100) var(--space-200);
+    border: var(--border-width-025) solid var(--border-transparent);
+
+    cursor: pointer;
+    color: var(--text-primary);
+    list-style: none;
+
+    &:hover {
+      background-color: var(--surface-control-hover);
+    }
+
+    &:is(:focus-visible, [data-state="focus"]) {
+      box-shadow: var(--ring-default);
+    }
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    & svg {
+      width: var(--size-400);
+      height: var(--size-400);
+      flex-shrink: 0;
+    }
+
+    & svg:first-child {
+      width: 0.875rem;
+      height: 0.875rem;
+      color: var(--text-secondary);
+    }
+  }
+
+  details[open] > .tree-branch-trigger > svg:first-child {
+    transform: rotate(90deg);
+  }
+
+  .tree-leaf {
+    display: flex;
+    align-items: center;
+    gap: var(--space-200);
+    min-block-size: var(--size-900);
+    padding: var(--space-100) var(--space-200);
+    padding-left: calc(var(--space-200) + 0.875rem + var(--space-200));
+    border: var(--border-width-025) solid var(--border-transparent);
+
+    color: var(--text-primary);
+    cursor: default;
+
+    &:hover {
+      background-color: var(--surface-control-hover);
+    }
+
+    &:is(:focus-visible, [data-state="focus"]) {
+      box-shadow: var(--ring-default);
+    }
+
+    & svg {
+      width: var(--size-400);
+      height: var(--size-400);
+      flex-shrink: 0;
+      color: var(--text-secondary);
+    }
+  }
+
+  /* Structural connector/overflow primitive used by nested tree layouts.
+     Keep strokes explicit so hiding a connector does not change geometry. */
+  .tree-indicator {
+    --tree-indicator-border: var(--border-primary);
+    position: relative;
+    display: inline-block;
+    flex: 0 0 var(--size-400);
+    inline-size: var(--size-400);
+    block-size: var(--size-900);
+    color: var(--text-secondary);
+    border-inline-start: var(--border-width-025) solid var(--border-transparent);
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+    }
+
+    &[data-variant="line"] {
+      border-inline-start-color: var(--tree-indicator-border);
+    }
+
+    &[data-variant="branch"]::before {
+      inset-block-start: 50%;
+      inset-inline-start: 0;
+      inline-size: 100%;
+      border-block-start: var(--border-width-025) solid var(--tree-indicator-border);
+    }
+
+    &[data-variant="branch"]::after {
+      inset-block-start: 0;
+      inset-block-end: 50%;
+      inset-inline-start: 0;
+      border-inline-start: var(--border-width-025) solid var(--tree-indicator-border);
+    }
+
+    &[data-variant="overflow"] {
+      border-inline-start-color: var(--tree-indicator-border);
+
+      &::after {
+        inset-inline-start: 50%;
+        inset-block-start: 50%;
+        color: var(--text-secondary);
+        content: "…";
+        transform: translate(-50%, -58%);
+        line-height: var(--font-height-tight);
+      }
+    }
+
+    /* Figma's five ready variants are vertical connector segments. Keep the
+       older line/branch/overflow hooks above for existing consumers. */
+    &:is(
+      [data-variant="default"],
+      [data-variant="first"],
+      [data-variant="last"],
+      [data-variant="overflowTop"],
+      [data-variant="overflowBottom"],
+      [data-variant="overflow-top"],
+      [data-variant="overflow-bottom"]
+    ) {
+      border-inline-start-color: var(--border-transparent);
+
+      &::before {
+        inset-inline-start: 50%;
+        inline-size: var(--border-width-025);
+        border: 0;
+        background: var(--tree-indicator-border);
+        transform: translateX(-50%);
+      }
+
+      &::after { display: none; }
+    }
+
+    &:is([data-variant="default"])::before {
+      inset-block: 0;
+    }
+
+    &:is([data-variant="first"])::before {
+      inset-block-start: var(--space-100);
+      inset-block-end: 0;
+    }
+
+    &:is([data-variant="last"])::before {
+      inset-block-start: 0;
+      inset-block-end: var(--space-100);
+    }
+
+    &:is([data-variant="overflowTop"], [data-variant="overflow-top"])::before {
+      inset-block: 0;
+      background: linear-gradient(
+        to bottom,
+        var(--border-transparent),
+        var(--tree-indicator-border)
+      );
+    }
+
+    &:is([data-variant="overflowBottom"], [data-variant="overflow-bottom"])::before {
+      inset-block: 0;
+      background: linear-gradient(
+        to bottom,
+        var(--tree-indicator-border),
+        var(--border-transparent)
+      );
+    }
+  }
+
+  @media (forced-colors: active) {
+    .tree-branch-trigger,
+    .tree-leaf { color: CanvasText; }
+    .tree-branch-trigger svg:first-child { color: CanvasText; }
+    .tree-leaf svg { color: CanvasText; }
+  }
+}

@@ -1,0 +1,155 @@
+/* -- Tabs component -------------------------------------------- */
+
+@layer components {
+  /* -- Default (pill) variant ----------------------------------- */
+  .tab-list {
+    display: inline-flex;
+    max-inline-size: 100%;
+    overflow-x: auto;
+    align-items: stretch;
+    background: var(--surface-primary);
+    border: var(--border-width-025) solid var(--border-primary);
+
+    /* The ready control rhythm is 36px total. */
+    block-size: var(--size-900);
+    padding: var(--border-width-025);
+    gap: var(--space-150);
+
+    /* -- Line variant --------------------------------------------- */
+    &:is([data-variant="line"], [data-variant="underline"]) {
+      background: transparent;
+      padding: 0;
+      gap: 0;
+      border: none;
+      border-bottom: var(--border-width-025) solid var(--border-primary);
+
+      & .tab-trigger {
+        padding: 0 var(--space-250);
+        border-bottom: var(--border-width-050) solid var(--border-transparent);
+        margin-bottom: -1px;
+
+        /* Hover changes text color only; it never covers the bottom border. */
+        &:not([aria-selected="true"]):hover {
+          background: transparent;
+          color: var(--text-primary);
+        }
+
+        &[aria-selected="true"] {
+          background: transparent;
+          color: var(--text-primary);
+          border-color: var(--border-transparent);
+          border-bottom-color: var(--border-interactive-inverted);
+          box-shadow: none;
+        }
+      }
+    }
+
+    /* -- Vertical orientation ------------------------------------ */
+    &[aria-orientation="vertical"] {
+      flex-direction: column;
+      width: auto;
+      block-size: auto;
+
+      & .tab-trigger {
+        justify-content: flex-start;
+        width: 100%;
+        min-block-size: var(--size-900);
+      }
+    }
+  }
+
+  .tab-trigger {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-100);
+    block-size: 100%;
+    padding: 0 var(--space-250);
+
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-400);
+    line-height: var(--font-height-tight);
+    font-variation-settings: var(--font-text-axis);
+    border: var(--border-width-025) solid var(--border-transparent);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    white-space: nowrap;
+    outline: none;
+
+    /* A visible border marks selection without a decorative shadow. */
+    &[aria-selected="true"] {
+      background: var(--surface-control);
+      border-color: var(--border-selected);
+      color: var(--text-primary);
+      box-shadow: none;
+
+      &:hover {
+        background: var(--surface-control);
+        color: var(--text-primary);
+      }
+    }
+
+    &:not([aria-selected="true"]):hover {
+      background: var(--surface-control-hover);
+      color: var(--text-primary);
+    }
+
+    &:is(:focus-visible, [data-state="focus"]) {
+      border-color: var(--border-focus);
+      background: var(--surface-control-hover);
+      box-shadow: var(--ring-default);
+    }
+
+    &:is(:disabled, [aria-disabled="true"]) {
+      pointer-events: none;
+      background: var(--surface-control-disabled);
+      border-color: var(--border-disabled);
+      color: var(--text-disabled);
+      box-shadow: none;
+    }
+
+    :is(.tab-list[data-variant="line"], .tab-list[data-variant="underline"]) & {
+      &:is(:disabled, [aria-disabled="true"]) {
+        background: var(--surface-control-transparent);
+        border-color: var(--border-transparent);
+        color: var(--text-disabled);
+      }
+    }
+  }
+
+  /* -- Vertical layout container ----------------------------- */
+  .tabs:has(.tab-list[aria-orientation="vertical"]) {
+    display: flex;
+    gap: var(--space-400);
+    align-items: flex-start;
+
+    & > .tab-content {
+      margin-top: 0;
+      flex: 1;
+    }
+  }
+
+  /* -- Panel ---------------------------------------------------- */
+  .tab-content {
+    margin-top: var(--space-300);
+
+    &:focus-visible {
+      box-shadow: var(--ring-default);
+    }
+
+    &[hidden] { display: none; }
+  }
+
+  @media (forced-colors: active) {
+    .tab-trigger[aria-selected="true"] {
+      border: var(--border-width-050) solid Highlight;
+    }
+
+    :is(.tab-list[data-variant="line"], .tab-list[data-variant="underline"]) .tab-trigger[aria-selected="true"] {
+      border: none;
+      border-bottom: var(--border-width-050) solid Highlight;
+    }
+  }
+}

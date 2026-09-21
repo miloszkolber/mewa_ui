@@ -208,7 +208,8 @@ function controllerSource(component) {
   }
   const output = source
     .replace(autoSection, '')
-    .replaceAll('../../runtime/core.js', '../runtime/core.js')
+    .replaceAll('../../../runtime/core.js', '../runtime/core.js')
+    .replaceAll('../../../runtime/enhancer.js', '../runtime/enhancer.js')
     .trim();
   if (!/export\s+(?:\{[^}]*\benhance\b[^}]*\}|(?:const|function)\s+enhance\b)/s.test(output)) {
     throw new Error(`${component.files.js}: missing enhance export`);
@@ -471,9 +472,7 @@ const manifest = {
     purpose: component.purpose,
     stability: component.stability,
     jsMode: component.jsMode,
-    contract: source.url
-      ? `${source.url}library/components/${component.slug}/${component.slug}.md`
-      : null,
+    contract: source.url ? `${source.url}${component.files.skill}` : null,
     styleDependencies: componentDependencies(component, 'styleDependencies'),
     behaviorDependencies: componentDependencies(component, 'behaviorDependencies'),
     assets: component.assets || [],

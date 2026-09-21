@@ -23,7 +23,13 @@
     const query = event.target.value.trim().toLowerCase();
     const links = [...document.querySelectorAll('.docs-nav a')];
     links.forEach((link) => {
-      link.hidden = !link.textContent.toLowerCase().includes(query);
+      link.hidden =
+        !`${link.closest('[data-category]')?.dataset.category || ''} ${link.textContent}`
+          .toLowerCase()
+          .includes(query);
+    });
+    document.querySelectorAll('.docs-nav-group').forEach((group) => {
+      group.hidden = ![...group.querySelectorAll('a')].some((link) => !link.hidden);
     });
     document.querySelector('.docs-no-results').hidden = links.some((link) => !link.hidden);
   });

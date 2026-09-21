@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import { inspectRuntimeCompletion } from './runtime-completion.browser.js';
 const root = process.env.MEWA_UI_ROOT || path.resolve(import.meta.dirname, '..');
 const require = createRequire(path.join(root, 'package.json'));
 const { default: puppeteer } = await import(require.resolve('puppeteer-core'));
@@ -393,6 +394,31 @@ try {
   assert.equal(results.runesProbe.success, true);
   assert.doesNotMatch(results.runesProbe.output, /(?:const|var|let) state = \$state\(/);
   console.log('PASS browser lifecycle and native form regressions');
+  await inspectRuntimeCompletion(page, `http://127.0.0.1:${server.port}`);
+  await page.goto(`http://127.0.0.1:${server.port}/blank`);
+  const forms = await page.evaluate(async () => {
+    const { runFormsCompletion } = await import('/tests/forms-completion.browser.js');
+    return runFormsCompletion();
+  });
+  for (const item of forms) assert.equal(item.passed, true, `${item.name}: ${item.error || ''}`);
+  console.log(`PASS ${forms.length} form completion regressions`);
+  for (const [file, exported] of [
+    ['display-completion.browser.js', 'runDisplayCompletionTests'],
+    ['remaining-completion.browser.js', 'runRemainingCompletionTests']
+  ]) {
+    await page.goto(`http://127.0.0.1:${server.port}/blank`);
+    const results = await page.evaluate(
+      async (file, exported) => {
+        const module = await import(`/tests/${file}`);
+        return module[exported]('/dist/mewa-ui');
+      },
+      file,
+      exported
+    );
+    for (const item of results)
+      assert.equal(item.error, undefined, `${item.name}: ${item.error || ''}`);
+    console.log(`PASS ${results.length} ${file} regressions`);
+  }
 } finally {
   await browser.close();
   server.stop(true);

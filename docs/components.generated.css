@@ -1,6 +1,6 @@
 /* Generated from registry.json. Run bun run docs:write. */
 
-/* Typography — library/components/typography/typography.css */
+/* Typography — library/components/primitives/typography/typography.css */
 /* -- Typography component --------------------------------------- */
 
 /* -- Base text ---------------------------------------------- */
@@ -197,14 +197,18 @@
     & :where(h6:not([class])) {
       color: var(--text-secondary);
       font-size: var(--font-size-300);
-      text-transform: uppercase;
       letter-spacing: var(--text-tracking-default);
     }
 
     & :where(p:not([class])) { margin-block: var(--space-300); text-wrap: pretty; }
     & :where(ul:not([class]), ol:not([class])) { margin-block: var(--space-300); }
+    & :where(ul.contains-task-list, ul.task-list, ol.contains-task-list, ol.task-list) {
+      margin-block: var(--space-300);
+      padding-inline-start: var(--space-500);
+    }
+    & :where(li.task-list-item) { margin-block: var(--space-100); }
     & :where(li:not([class])) { margin-block: var(--space-100); }
-    & :where(li:not([class])) > :where(ul, ol) { margin-block: var(--space-100); }
+    & :where(li:not([class]), li.task-list-item) > :where(ul, ol) { margin-block: var(--space-100); }
 
     & :where(a:not([class])) {
       color: var(--text-primary);
@@ -232,7 +236,7 @@
       font-size: 0.875em;
     }
 
-    & :where(pre:not([class])) {
+    & :where(pre:not([class]), pre[class^="language-"], pre[class*=" language-"]) {
       max-inline-size: 100%;
       margin-block: var(--space-400);
       padding: var(--space-400);
@@ -246,7 +250,7 @@
       line-height: var(--font-height-regular);
       tab-size: 2;
     }
-    & :where(pre:not([class])) > code:not([class]) {
+    & :where(pre:not([class]), pre[class^="language-"], pre[class*=" language-"]) > code {
       padding: 0;
       background: transparent;
       font-size: inherit;
@@ -320,13 +324,12 @@
     & :where([class~="task-list-item"] > input[type="checkbox"], li:has(> input[type="checkbox"]) > input[type="checkbox"]) {
       margin-inline-end: var(--space-200);
       accent-color: var(--text-primary);
-      pointer-events: none;
     }
 
     @media (forced-colors: active) {
       & :where(a:not([class])) { color: LinkText; }
       & :where(mark:not([class])) { border: var(--border-width-025) solid CanvasText; }
-      & :where(pre:not([class])) { border-color: CanvasText; background: Canvas; color: CanvasText; }
+      & :where(pre:not([class]), pre[class^="language-"], pre[class*=" language-"]) { border-color: CanvasText; background: Canvas; color: CanvasText; }
       & :where(th, td) { border-color: CanvasText; }
       & :where(blockquote:not([class])) { border-inline-start-color: CanvasText; }
     }
@@ -376,7 +379,7 @@
   }
 }
 
-/* Layout — library/components/layout/layout.css */
+/* Layout — library/components/primitives/layout/layout.css */
 /* -- Layout component ---------------------------------------- */
 
 @layer components {
@@ -447,7 +450,7 @@
   }
 }
 
-/* Separator — library/components/separator/separator.css */
+/* Separator — library/components/primitives/separator/separator.css */
 /* -- Separator component ---------------------------------------- */
 
 @layer components {
@@ -515,7 +518,7 @@
   }
 }
 
-/* Icon — library/components/icon/icon.css */
+/* Icon — library/components/primitives/icon/icon.css */
 /* -- Icon component ---------------------------------------- */
 
 @layer components {
@@ -633,14 +636,11 @@
     display: inline-flex;
   }
 
-  @media (forced-colors: active) {
-    :where([class^="ri-"], [class*=" ri-"], [data-remix-icon]) {
-      color: CanvasText;
-    }
-  }
+  /* In forced colors, inherit the containing control's system text color.
+     CanvasText would disappear on an inverted or highlighted control. */
 }
 
-/* Button — library/components/button/button.css */
+/* Button — library/components/actions/button/button.css */
 /* -- Button component ------------------------------------------ */
 
 @layer components {
@@ -786,9 +786,7 @@
     }
 
     /* -- Sizes ----------------------------------------------- */
-    &[data-size="sm"]      { height: var(--size-800);    padding: 0 var(--space-300); font-size: var(--font-size-350); }
     &[data-icon-only] { width: var(--size-900); padding: 0; }
-    &[data-icon-only][data-size="sm"] { width: var(--size-800); }
   }
 
   /* -- Accessibility ------------------------------------------ */
@@ -820,7 +818,7 @@
   }
 }
 
-/* Toggle — library/components/toggle/toggle.css */
+/* Toggle — library/components/actions/toggle/toggle.css */
 /* -- Toggle component ------------------------------------------ */
 
 @layer components {
@@ -937,7 +935,7 @@
   }
 }
 
-/* Toggle Group — library/components/toggle-group/toggle-group.css */
+/* Toggle Group — library/components/actions/toggle-group/toggle-group.css */
 /* -- Toggle Group component ------------------------------------- */
 
 @layer components {
@@ -990,15 +988,16 @@
         pointer-events: none;
         background-color: var(--surface-control-disabled);
         color: var(--text-disabled);
+      }
 
-        &[data-variant="outline"] {
-          border-color: var(--border-disabled);
-        }
+      /* The variant lives on the group, not on the child. */
+      &:not([data-variant="outline"]) > .toggle {
+        background-color: var(--surface-control-transparent);
+        border-color: var(--border-transparent);
+      }
 
-        &:not([data-variant="outline"]) {
-          background-color: var(--surface-control-transparent);
-          border-color: var(--border-transparent);
-        }
+      &[data-variant="outline"] > .toggle {
+        border-color: var(--border-disabled);
       }
     }
   }
@@ -1021,7 +1020,7 @@
   }
 }
 
-/* Button Group — library/components/button-group/button-group.css */
+/* Button Group — library/components/actions/button-group/button-group.css */
 /* -- Button Group component ------------------------------------- */
 
 @layer components {
@@ -1081,7 +1080,7 @@
   }
 }
 
-/* Toolbar — library/components/toolbar/toolbar.css */
+/* Toolbar — library/components/actions/toolbar/toolbar.css */
 /* -- Toolbar component ------------------------------------------ */
 
 @layer components {
@@ -1126,7 +1125,7 @@
   }
 }
 
-/* Label — library/components/label/label.css */
+/* Label — library/components/forms/label/label.css */
 /* -- Label component -------------------------------------------- */
 
 @layer components {
@@ -1161,16 +1160,14 @@
 
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {
-    .label[data-disabled],
-    .label:has(+ :disabled),
-    .label:has(+ [data-disabled]) {
-      color: var(--text-disabled);
+    .label-hint {
+      color: var(--text-primary);
     }
   }
 
   @media (forced-colors: active) {
     .label {
-      color: LinkText;
+      color: CanvasText;
     }
 
     .label[data-disabled],
@@ -1181,7 +1178,7 @@
   }
 }
 
-/* Field — library/components/field/field.css */
+/* Field — library/components/forms/field/field.css */
 /* -- Field component --------------------------------------------- */
 
 @layer components {
@@ -1270,9 +1267,8 @@
 
   .field > :where(
     input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
-    select,
     textarea
-  ):read-only:not(:disabled) {
+  )[readonly]:not(:disabled) {
     background: var(--surface-secondary);
     color: var(--text-secondary);
     border-color: var(--border-muted);
@@ -1326,6 +1322,7 @@
   /* Horizontal fields are useful for checkboxes, switches, and actions. */
   .field[data-orientation="horizontal"] {
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--space-200);
   }
@@ -1392,7 +1389,7 @@
     .field > label,
     .field-label,
     .fieldset > legend {
-      color: LinkText;
+      color: CanvasText;
     }
 
     .field > :where(
@@ -1432,7 +1429,7 @@
   }
 }
 
-/* Text Field — library/components/text-field/text-field.css */
+/* Text Field — library/components/forms/text-field/text-field.css */
 /* -- Text Field component --------------------------------------- */
 
 @layer components {
@@ -1517,8 +1514,8 @@
     border-color: var(--border-disabled);
   }
 
-  .text-field > :where(input, textarea, select):read-only:not(:disabled),
-  .text-field-input:read-only:not(:disabled) {
+  .text-field > :where(input, textarea)[readonly]:not(:disabled),
+  .text-field-input[readonly]:not(:disabled) {
     background: var(--surface-secondary);
     color: var(--text-secondary);
     border-color: var(--border-muted);
@@ -1591,7 +1588,7 @@
   @media (forced-colors: active) {
     .text-field > label,
     .text-field-label {
-      color: LinkText;
+      color: CanvasText;
     }
 
     .text-field > :where(input, textarea, select),
@@ -1623,7 +1620,7 @@
   }
 }
 
-/* Textarea — library/components/textarea/textarea.css */
+/* Textarea — library/components/forms/textarea/textarea.css */
 /* -- Textarea component ----------------------------------------- */
 
 @layer components {
@@ -1648,6 +1645,13 @@
     }
 
     &::placeholder { color: var(--text-secondary); }
+
+    &[readonly]:not(:disabled) {
+      background: var(--surface-secondary);
+      color: var(--text-secondary);
+      border-color: var(--border-muted);
+      cursor: default;
+    }
 
     &:disabled {
       background: var(--surface-control-disabled);
@@ -1681,7 +1685,7 @@
   @media (forced-colors: active) {
     .textarea {
       border-color: ButtonBorder;
-      color: ButtonText;
+      color: FieldText;
       background: Field;
     }
 
@@ -1695,13 +1699,19 @@
       border-color: GrayText;
     }
 
+    .textarea[readonly]:not(:disabled) {
+      background: Field;
+      color: FieldText;
+      border-color: ButtonBorder;
+    }
+
     .textarea:is([aria-invalid="true"], :user-invalid) {
       border-color: LinkText;
     }
   }
 }
 
-/* Checkbox — library/components/checkbox/checkbox.css */
+/* Checkbox — library/components/forms/checkbox/checkbox.css */
 /* -- Checkbox component ----------------------------------------- */
 
 @layer components {
@@ -1900,6 +1910,7 @@
     .checkbox {
       appearance: auto;
     }
+    .checkbox::after { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1909,11 +1920,12 @@
   }
 }
 
-/* Radio Group — library/components/radio-group/radio-group.css */
+/* Radio Group — library/components/forms/radio-group/radio-group.css */
 /* -- Radio Group component -------------------------------------- */
 
 @layer components {
   .radio-group {
+    min-inline-size: 0;
     border: none;
     padding: 0;
     margin: 0;
@@ -2121,6 +2133,8 @@
 
   @media (forced-colors: active) {
     .radio {
+      forced-color-adjust: none;
+      background: Field;
       border-color: ButtonText;
 
       &:checked {
@@ -2137,6 +2151,12 @@
         &:checked::after {
           background: GrayText;
         }
+      }
+
+      &:is([aria-invalid="true"], :user-invalid):not(:disabled) {
+        border-color: ButtonText;
+        border-style: dashed;
+        &:checked::after { background: Highlight; }
       }
     }
 
@@ -2157,7 +2177,7 @@
   }
 }
 
-/* Switch — library/components/switch/switch.css */
+/* Switch — library/components/forms/switch/switch.css */
 /* -- Switch component ------------------------------------------- */
 
 @layer components {
@@ -2212,12 +2232,12 @@
       color: var(--text-disabled);
       cursor: not-allowed;
 
-      &::after { background: var(--surface-control-disabled); }
+      &::after { background: var(--surface-pointer-disabled); }
 
       &:checked {
         background: var(--surface-control-disabled);
 
-        &::after { background: var(--surface-control-disabled); }
+        &::after { background: var(--surface-pointer-disabled); }
       }
     }
 
@@ -2283,8 +2303,17 @@
   }
 
   /* -- Accessibility ---------------------------------------- */
+  @media (prefers-contrast: more) {
+    .switch {
+      border-color: var(--text-primary);
+      border-width: var(--border-width-050);
+    }
+    .switch:disabled { border-color: var(--text-disabled); }
+  }
+
   @media (forced-colors: active) {
     .switch {
+      forced-color-adjust: none;
       background: ButtonFace;
       border: var(--border-width-025) solid ButtonText;
 
@@ -2304,11 +2333,23 @@
       }
 
       &:disabled {
+        background: ButtonFace;
         border-color: GrayText;
 
         &::after {
           background: GrayText;
           border-color: GrayText;
+        }
+      }
+
+      &:is([aria-invalid="true"], [data-state="destructive"], :user-invalid):not(:disabled) {
+        background: ButtonFace;
+        border-color: ButtonText;
+        border-style: dashed;
+        &::after { background: ButtonText; }
+        &:checked {
+          background: Highlight;
+          &::after { background: HighlightText; }
         }
       }
     }
@@ -2322,7 +2363,7 @@
   }
 }
 
-/* Slider — library/components/slider/slider.css */
+/* Slider — library/components/forms/slider/slider.css */
 /* -- Slider component ------------------------------------------- */
 
 @layer components {
@@ -2331,10 +2372,10 @@
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: var(--size-100);
+    height: var(--size-900);
     margin: 0;
     border-radius: 0;
-    background: var(--surface-control);
+    background: transparent;
     cursor: pointer;
     outline: none;
     border: none;
@@ -2401,7 +2442,7 @@
     }
 
     &:disabled {
-      background: var(--surface-control-disabled);
+      background: transparent;
       accent-color: var(--surface-pointer-disabled);
       cursor: not-allowed;
 
@@ -2417,17 +2458,13 @@
       &::-moz-range-track { background: var(--surface-pointer); }
       &::-moz-range-progress { background: var(--surface-pointer-disabled); }
       &::-webkit-slider-thumb {
-        background: var(--surface-control-transparent);
+        background: var(--surface-pointer-disabled);
         border-color: var(--border-disabled);
-        -webkit-backdrop-filter: blur(var(--blur-400));
-        backdrop-filter: blur(var(--blur-400));
         cursor: not-allowed;
       }
       &::-moz-range-thumb {
-        background: var(--surface-control-transparent);
+        background: var(--surface-pointer-disabled);
         border-color: var(--border-disabled);
-        -webkit-backdrop-filter: blur(var(--blur-400));
-        backdrop-filter: blur(var(--blur-400));
         cursor: not-allowed;
       }
     }
@@ -2435,11 +2472,12 @@
     &[data-orientation="vertical"] {
       writing-mode: vertical-lr;
       direction: rtl;
-      width: var(--size-100);
+      width: var(--size-900);
       height: 12rem;
 
       &::-webkit-slider-runnable-track {
         width: var(--size-100);
+        height: 100%;
         background: linear-gradient(
           to top,
           var(--surface-control-inverted) 0%,
@@ -2453,6 +2491,13 @@
         margin-top: 0;
         margin-left: calc((var(--size-100) - var(--size-400)) / 2);
       }
+
+      &::-moz-range-track {
+        width: var(--size-100);
+        height: 100%;
+      }
+
+      &::-moz-range-progress { width: var(--size-100); }
 
       &:disabled {
         &::-webkit-slider-runnable-track {
@@ -2483,15 +2528,23 @@
 
   @media (forced-colors: active) {
     .slider {
-      &::-webkit-slider-runnable-track {
+      forced-color-adjust: none;
+      &::-webkit-slider-runnable-track,
+      &:disabled::-webkit-slider-runnable-track,
+      &[data-orientation="vertical"]::-webkit-slider-runnable-track,
+      &[data-orientation="vertical"]:disabled::-webkit-slider-runnable-track {
         background: ButtonFace;
         border: var(--border-width-025) solid ButtonText;
       }
-      &::-moz-range-track {
+      &::-moz-range-track,
+      &:disabled::-moz-range-track,
+      &[data-orientation="vertical"]:disabled::-moz-range-track {
         background: ButtonFace;
         border: var(--border-width-025) solid ButtonText;
       }
-      &::-moz-range-progress {
+      &::-moz-range-progress,
+      &:disabled::-moz-range-progress,
+      &[data-orientation="vertical"]:disabled::-moz-range-progress {
         background: Highlight;
       }
       &::-webkit-slider-thumb {
@@ -2503,19 +2556,34 @@
         border-color: ButtonText;
       }
 
-      &:focus-visible {
+      &:is(:focus-visible, [data-state="focus"]) {
         &::-webkit-slider-thumb {
-          outline-color: Highlight;
+          background: ButtonText;
+          border-color: Highlight;
+          outline: var(--border-width-050) solid Highlight;
+          outline-offset: var(--border-width-025);
         }
         &::-moz-range-thumb {
-          outline-color: Highlight;
+          background: ButtonText;
+          border-color: Highlight;
+          outline: var(--border-width-050) solid Highlight;
+          outline-offset: var(--border-width-025);
         }
+      }
+
+      &:disabled::-webkit-slider-thumb {
+        background: GrayText;
+        border-color: GrayText;
+      }
+      &:disabled::-moz-range-thumb {
+        background: GrayText;
+        border-color: GrayText;
       }
     }
   }
 }
 
-/* Select — library/components/select/select.css */
+/* Select — library/components/forms/select/select.css */
 /* -- Select component ------------------------------------------- */
 
 @layer components {
@@ -2526,9 +2594,16 @@
     border: var(--border-width-025) solid var(--border-secondary);
 
     background-color: var(--background);
-    background-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23737373%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M11.9999%2013.1714L16.9497%208.22168L18.3639%209.63589L11.9999%2015.9999L5.63599%209.63589L7.0502%208.22168L11.9999%2013.1714Z%22%2F%3E%3C%2Fsvg%3E");
+    /* A downward chevron drawn with two gradients so it inherits currentColor
+       instead of a fixed color. */
+    background-image:
+      linear-gradient(45deg, transparent 50%, currentColor 50%),
+      linear-gradient(135deg, currentColor 50%, transparent 50%);
     background-repeat: no-repeat;
-    background-position: right var(--space-300) center;
+    background-size: var(--size-150) var(--size-150);
+    background-position:
+      calc(100% - var(--space-300) - 2 * var(--size-150)) calc(50% - var(--size-050)),
+      calc(100% - var(--space-300) - var(--size-150)) calc(50% - var(--size-050));
     padding: 0 var(--size-900) 0 var(--space-300);
     font-size: var(--font-size-350);
     font-family: var(--font-mono);
@@ -2536,13 +2611,13 @@
     outline: none;
 
     cursor: pointer;
-    &:focus {
+    &:is(:focus-visible, [data-state="focus"]) {
       border-color: var(--border-focus);
       box-shadow: var(--ring-default);
     }
 
     &:disabled {
-      background: var(--surface-control-disabled);
+      background-color: var(--surface-control-disabled);
       color: var(--text-disabled);
       border-color: var(--border-disabled);
       cursor: not-allowed;
@@ -2551,7 +2626,7 @@
     &:is([aria-invalid="true"], :user-invalid) {
       border-color: var(--border-invalid);
 
-      &:focus {
+      &:is(:focus-visible, [data-state="focus"]) {
         border-color: var(--border-invalid);
         box-shadow: var(--ring-invalid);
       }
@@ -2559,12 +2634,22 @@
 
     /* -- Sizes ----------------------------------------------- */
   }
+
+  @media (prefers-contrast: more) {
+    .select {
+      border-width: var(--border-width-050);
+    }
+  }
+
   @media (forced-colors: active) {
-    .select { appearance: auto; background-image: none; }
+    .select {
+      appearance: auto;
+      background-image: none;
+    }
   }
 }
 
-/* Number Field — library/components/number-field/number-field.css */
+/* Number Field — library/components/forms/number-field/number-field.css */
 /* -- Number Field component ------------------------------------- */
 
 @layer components {
@@ -2578,6 +2663,15 @@
     background: var(--background);
 
     overflow: visible;
+
+    &:has(input:disabled) {
+      background: var(--surface-control-disabled);
+      border-color: var(--border-disabled);
+    }
+
+    &:has(input[readonly]:not(:disabled)) {
+      background: var(--surface-secondary);
+    }
 
     &:has(input:is([aria-invalid="true"], :user-invalid)) {
       border-color: var(--border-invalid);
@@ -2598,6 +2692,13 @@
       font-family: var(--font-mono);
       color: var(--text-primary);
       -moz-appearance: textfield;
+
+      &:disabled {
+        color: var(--text-disabled);
+        cursor: not-allowed;
+      }
+
+      &[readonly]:not(:disabled) { color: var(--text-secondary); }
 
       &::-webkit-inner-spin-button,
       &::-webkit-outer-spin-button {
@@ -2646,7 +2747,7 @@
         box-shadow: var(--ring-default);
       }
 
-      &:hover {
+      &:hover:not(:disabled) {
         background: var(--surface-control-hover);
         color: var(--text-primary);
       }
@@ -2668,7 +2769,7 @@
       }
 
       &:disabled {
-        background: var(--surface-secondary);
+        background: var(--surface-control-disabled);
         color: var(--text-disabled);
         cursor: not-allowed;
       }
@@ -2676,6 +2777,15 @@
   }
 
   /* -- Accessibility ---------------------------------------- */
+  .number-field:not([data-mewa-number-field-init]) {
+    grid-template-columns: minmax(0, var(--size-3200));
+
+    & button { display: none; }
+    & input { -moz-appearance: auto; }
+    & input::-webkit-inner-spin-button,
+    & input::-webkit-outer-spin-button { -webkit-appearance: auto; }
+  }
+
   @media (prefers-contrast: more) {
     .number-field { border-width: var(--border-width-050); }
     .number-field button { border-width: var(--border-width-050); }
@@ -2696,14 +2806,21 @@
       border-color: ButtonText;
     }
 
-    .number-field button:hover {
+    .number-field button:hover:not(:disabled) {
       background: Highlight;
       color: HighlightText;
+    }
+
+    .number-field input:disabled,
+    .number-field button:disabled,
+    .number-field:has(input:disabled) {
+      color: GrayText;
+      border-color: GrayText;
     }
   }
 }
 
-/* File Input — library/components/file-input/file-input.css */
+/* File Input — library/components/forms/file-input/file-input.css */
 /* -- File Input component --------------------------------------- */
 
 @layer components {
@@ -2719,8 +2836,7 @@
     outline: none;
 
     padding: 0;
-    cursor: default;
-    pointer-events: none;
+    cursor: pointer;
 
     &::file-selector-button {
       height: 100%;
@@ -2734,15 +2850,7 @@
       padding: 0 var(--space-300);
       margin-inline-end: var(--space-300);
       cursor: pointer;
-      pointer-events: auto;
       &:hover { background: var(--surface-button-secondary-hover); }
-    }
-
-    /* Only the picker button is interactive; the field frame never
-       highlights as a whole. */
-    &:focus {
-      border-color: var(--border-secondary);
-      outline: none;
     }
 
     &:is([aria-invalid="true"], :user-invalid) {
@@ -2754,16 +2862,23 @@
       color: var(--text-disabled);
       border-color: var(--border-disabled);
       cursor: not-allowed;
+
+      &::file-selector-button {
+        background: var(--surface-control-disabled);
+        color: var(--text-disabled);
+        border-color: var(--border-disabled);
+        cursor: not-allowed;
+      }
     }
 
     &:focus-visible {
-      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: var(--ring-default);
+    }
 
-      &::file-selector-button {
-        box-shadow: var(--ring-default);
-        position: relative;
-        z-index: var(--z-raised);
-      }
+    &:is([aria-invalid="true"], :user-invalid):focus-visible {
+      border-color: var(--border-invalid);
+      box-shadow: var(--ring-invalid);
     }
   }
 
@@ -2785,17 +2900,15 @@
       border-color: ButtonText;
     }
 
-    .file-input:focus-visible {
-      outline: none;
-
-      &::file-selector-button {
-        outline: var(--border-width-050) solid Highlight;
-      }
+    .file-input:disabled,
+    .file-input:disabled::file-selector-button {
+      color: GrayText;
+      border-color: GrayText;
     }
   }
 }
 
-/* Date Field — library/components/date-field/date-field.css */
+/* Date Field — library/components/forms/date-field/date-field.css */
 /* -- Date Field component --------------------------------------- */
 
 @layer components {
@@ -2836,10 +2949,7 @@
       }
     }
 
-    /* -- Calendar indicator: full-height square hit area at the end.
-          The native glyph is replaced with a sized background icon so the
-          click target stays the height of the input, and the glyph uses the
-          current text color (light and dark variants). ---- */
+    /* Keep the native glyph and its color-scheme/forced-colors adaptation. */
     &::-webkit-calendar-picker-indicator {
       position: absolute;
       inset-block: 0;
@@ -2848,22 +2958,15 @@
       block-size: auto;
       margin: 0;
       cursor: pointer;
-      -webkit-appearance: none;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%230a0a0a%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M9%201V3H15V1H17V3H21C21.5523%203%2022%203.44772%2022%204V20C22%2020.5523%2021.5523%2021%2021%2021H3C2.44772%2021%202%2020.5523%202%2020V4C2%203.44772%202.44772%203%203%203H7V1H9ZM20%2011H4V19H20V11ZM7%205H4V9H20V5H17V7H15V5H9V7H7V5Z%22%2F%3E%3C%2Fsvg%3E");
       background-position: center;
       background-repeat: no-repeat;
       background-size: 1rem 1rem;
     }
 
-    .dark &::-webkit-calendar-picker-indicator {
-      background-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23fafafa%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M9%201V3H15V1H17V3H21C21.5523%203%2022%203.44772%2022%204V20C22%2020.5523%2021.5523%2021%2021%2021H3C2.44772%2021%202%2020.5523%202%2020V4C2%203.44772%202.44772%203%203%203H7V1H9ZM20%2011H4V19H20V11ZM7%205H4V9H20V5H17V7H15V5H9V7H7V5Z%22%2F%3E%3C%2Fsvg%3E");
-    }
-
     /* -- Date text: explicit colors, no browser default accent ---- */
     &::-webkit-datetime-edit {
       padding: 0;
-      color: var(--text-primary);
+      color: inherit;
     }
 
     &::-webkit-datetime-edit-fields-wrapper,
@@ -2871,13 +2974,33 @@
     &::-webkit-datetime-edit-day-field,
     &::-webkit-datetime-edit-month-field,
     &::-webkit-datetime-edit-year-field {
-      color: var(--text-primary);
+      color: inherit;
+    }
+    &[readonly]:not(:disabled) {
+      background: var(--surface-secondary);
+      color: var(--text-secondary);
+      cursor: default;
     }
   }
 
+  @media (prefers-contrast: more) {
+    .date-input { border-width: var(--border-width-050); }
+  }
+
+  @media (forced-colors: active) {
+    .date-input {
+      background: Field;
+      color: FieldText;
+      border-color: ButtonBorder;
+    }
+
+    .date-input[readonly]:not(:disabled) { color: FieldText; }
+    .date-input:disabled { color: GrayText; border-color: GrayText; }
+    .date-input:is([aria-invalid="true"], :user-invalid) { border-style: dashed; }
+  }
 }
 
-/* Date Picker — library/components/date-picker/date-picker.css */
+/* Date Picker — library/components/forms/date-picker/date-picker.css */
 /* -- Date Picker component --------------------------------------- */
 
 @layer components {
@@ -3011,8 +3134,14 @@
     }
 
     .date-picker-day[data-selected] button {
+      forced-color-adjust: none;
       background: Highlight;
       color: HighlightText;
+    }
+
+    .date-picker-day[data-today] button {
+      outline: var(--border-width-025) solid CanvasText;
+      outline-offset: calc(-1 * var(--border-width-025));
     }
 
     .date-picker-day button:focus-visible {
@@ -3022,7 +3151,7 @@
   }
 }
 
-/* Date Range Picker — library/components/date-range-picker/date-range-picker.css */
+/* Date Range Picker — library/components/forms/date-range-picker/date-range-picker.css */
 /* -- Date Range Picker component -------------------------------- */
 
 @layer components {
@@ -3134,16 +3263,9 @@
     block-size: auto;
     margin: 0;
     cursor: pointer;
-    -webkit-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%230a0a0a%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M9%201V3H15V1H17V3H21C21.5523%203%2022%203.44772%2022%204V20C22%2020.5523%2021.5523%2021%2021%2021H3C2.44772%2021%202%2020.5523%202%2020V4C2%203.44772%202.44772%203%203%203H7V1H9ZM20%2011H4V19H20V11ZM7%205H4V9H20V5H17V7H15V5H9V7H7V5Z%22%2F%3E%3C%2Fsvg%3E");
     background-position: center;
     background-repeat: no-repeat;
     background-size: 1rem 1rem;
-  }
-
-  .dark .date-range-input::-webkit-calendar-picker-indicator {
-    background-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23fafafa%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M9%201V3H15V1H17V3H21C21.5523%203%2022%203.44772%2022%204V20C22%2020.5523%2021.5523%2021%2021%2021H3C2.44772%2021%202%2020.5523%202%2020V4C2%203.44772%202.44772%203%203%203H7V1H9ZM20%2011H4V19H20V11ZM7%205H4V9H20V5H17V7H15V5H9V7H7V5Z%22%2F%3E%3C%2Fsvg%3E");
   }
 
   .date-range-input::-webkit-datetime-edit,
@@ -3152,7 +3274,7 @@
   .date-range-input::-webkit-datetime-edit-day-field,
   .date-range-input::-webkit-datetime-edit-month-field,
   .date-range-input::-webkit-datetime-edit-year-field {
-    color: var(--text-primary);
+    color: inherit;
   }
 
   .date-range-separator {
@@ -3167,21 +3289,13 @@
     color: var(--text-disabled);
   }
 
-  .dark .date-range-input::-webkit-calendar-picker-indicator {
-    background-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23fafafa%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M9%201V3H15V1H17V3H21C21.5523%203%2022%203.44772%2022%204V20C22%2020.5523%2021.5523%2021%2021%2021H3C2.44772%2021%202%2020.5523%202%2020V4C2%203.44772%202.44772%203%203%203H7V1H9ZM20%2011H4V19H20V11ZM7%205H4V9H20V5H17V7H15V5H9V7H7V5Z%22%2F%3E%3C%2Fsvg%3E");
-  }
-
   .date-range-picker[data-disabled] .date-range-field > label,
   .date-range-picker:has(.date-range-input:disabled) .date-range-field > label {
     color: var(--text-disabled);
     cursor: not-allowed;
   }
 
-  .dark .date-range-input::-webkit-calendar-picker-indicator {
-    background-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23fafafa%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M9%201V3H15V1H17V3H21C21.5523%203%2022%203.44772%2022%204V20C22%2020.5523%2021.5523%2021%2021%2021H3C2.44772%2021%202%2020.5523%202%2020V4C2%203.44772%202.44772%203%203%203H7V1H9ZM20%2011H4V19H20V11ZM7%205H4V9H20V5H17V7H15V5H9V7H7V5Z%22%2F%3E%3C%2Fsvg%3E");
-  }
-
-  @media (max-width: 32rem) {
+  @media (max-width: 37.5rem) {
     .date-range-controls {
       grid-template-columns: minmax(0, 1fr);
     }
@@ -3205,7 +3319,7 @@
     .date-range-picker > legend,
     .date-range-label,
     .date-range-field > label {
-      color: LinkText;
+      color: CanvasText;
     }
 
     .date-range-input {
@@ -3236,7 +3350,7 @@
   }
 }
 
-/* Combobox — library/components/combobox/combobox.css */
+/* Combobox — library/components/forms/combobox/combobox.css */
 /* -- Combobox component ---------------------------------------- */
 
 @layer components {
@@ -3398,6 +3512,14 @@
     background: var(--border-primary);
   }
 
+  @media (prefers-contrast: more) {
+    .combobox-content { border-width: var(--border-width-050); }
+    .combobox-item[data-highlighted] {
+      outline: var(--border-width-050) solid var(--border-focus);
+      outline-offset: calc(-1 * var(--border-width-050));
+    }
+  }
+
   @media (forced-colors: active) {
     .combobox-content {
       border-color: ButtonText;
@@ -3409,10 +3531,21 @@
       background: Highlight;
       color: HighlightText;
     }
+
+    .combobox-item[aria-selected="true"]::after {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
+
+    .combobox-item[aria-selected="true"]:is(:hover, [data-highlighted])::after {
+      background-color: HighlightText;
+    }
+
+    .combobox-item[aria-disabled="true"] { color: GrayText; }
   }
 }
 
-/* Time Field — library/components/time-field/time-field.css */
+/* Time Field — library/components/forms/time-field/time-field.css */
 /* -- Time Field component ---------------------------------------- */
 
 @layer components {
@@ -3475,7 +3608,6 @@
   .time-field-input {
     text-align: center;
     font-variant-numeric: tabular-nums;
-    position: relative;
   }
 
   .time-field-select {
@@ -3486,27 +3618,6 @@
   .time-field-select:focus-visible {
     border-color: var(--border-focus);
     box-shadow: var(--ring-default);
-  }
-
-  /* Native time picker glyph: square, input-height hit area with a sized icon. */
-  .time-field-input::-webkit-calendar-picker-indicator {
-    position: absolute;
-    inset-block: 0;
-    inset-inline-end: 0;
-    inline-size: var(--size-900);
-    block-size: auto;
-    margin: 0;
-    cursor: pointer;
-    -webkit-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%230a0a0a%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12%2022C6.47715%2022%202%2017.5228%202%2012C2%206.47715%206.47715%202%2012%202C17.5228%202%2022%206.47715%2022%2012C22%2017.5228%2017.5228%2022%2012%2022ZM12%2020C16.4183%2020%2020%2016.4183%2020%2012C20%207.58172%2016.4183%204%2012%204C7.58172%204%204%207.58172%204%2012C4%2016.4183%207.58172%2020%2012%2020ZM13%2012H17V14H11V7H13V12Z%22%2F%3E%3C%2Fsvg%3E");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 1rem 1rem;
-  }
-
-  .dark .time-field-input::-webkit-calendar-picker-indicator {
-    background-image: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23fafafa%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12%2022C6.47715%2022%202%2017.5228%202%2012C2%206.47715%206.47715%202%2012%202C17.5228%202%2022%206.47715%2022%2012C22%2017.5228%2017.5228%2022%2012%2022ZM12%2020C16.4183%2020%2020%2016.4183%2020%2012C20%207.58172%2016.4183%204%2012%204C7.58172%204%204%207.58172%204%2012C4%2016.4183%207.58172%2020%2012%2020ZM13%2012H17V14H11V7H13V12Z%22%2F%3E%3C%2Fsvg%3E");
   }
 
   .time-field-input:disabled,
@@ -3572,7 +3683,7 @@
     cursor: not-allowed;
   }
 
-  @media (max-width: 32rem) {
+  @media (max-width: 37.5rem) {
     .time-field-controls {
       grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     }
@@ -3598,7 +3709,7 @@
     .time-field > legend,
     .time-field-legend,
     .time-field-label {
-      color: LinkText;
+      color: CanvasText;
     }
 
     .time-field-input,
@@ -3637,7 +3748,7 @@
   }
 }
 
-/* Form — library/components/form/form.css */
+/* Form — library/components/forms/form/form.css */
 /* -- Form component --------------------------------------------- */
 
 @layer components {
@@ -3652,6 +3763,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-100);
+    min-inline-size: 0;
 
     /* Keep label and description metrics identical to Text Field. */
     & > .label {
@@ -3733,6 +3845,7 @@
   /* -- Button actions row ----------------------------------- */
   .form-actions {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--space-200);
     align-items: center;
     padding-top: var(--space-200);
@@ -3740,6 +3853,7 @@
 
   /* -- Fieldset --------------------------------------------- */
   .form-fieldset {
+    min-inline-size: 0;
     border: none;
     padding: 0;
     margin: 0;
@@ -3769,6 +3883,13 @@
   }
 
   /* -- Accessibility ---------------------------------------- */
+  @media (max-width: 37.5rem) {
+    .form-field[data-orientation="horizontal"] {
+      flex-direction: column;
+      gap: var(--space-100);
+    }
+  }
+
   @media (prefers-contrast: more) {
     .form-field-row {
       border-width: var(--border-width-050);
@@ -3781,12 +3902,12 @@
     }
 
     .form-fieldset > legend {
-      color: LinkText;
+      color: CanvasText;
     }
   }
 }
 
-/* Badge — library/components/badge/badge.css */
+/* Badge — library/components/data-display/badge/badge.css */
 /* -- Badge component ------------------------------------------- */
 
 @layer components {
@@ -3874,7 +3995,7 @@
   }
 }
 
-/* Avatar — library/components/avatar/avatar.css */
+/* Avatar — library/components/data-display/avatar/avatar.css */
 @layer components {
   .avatar {
     position: relative;
@@ -3887,11 +4008,6 @@
     overflow: visible;
     flex-shrink: 0;
     background-color: var(--surface-secondary);
-
-    /* Same shorthand as other primitives: sm 32, default 36, lg 48. */
-    &[data-size="sm"] { width: var(--size-800); height: var(--size-800); }
-    &[data-size="lg"] { width: var(--size-1200); height: var(--size-1200); }
-
   }
 
   .avatar-image {
@@ -3953,11 +4069,12 @@
   }
 }
 
-/* Card — library/components/card/card.css */
+/* Card — library/components/data-display/card/card.css */
 /* -- Card component -------------------------------------------- */
 
 @layer components {
   .card {
+    display: block;
     background-color: var(--surface-primary);
     color: var(--text-primary);
     border: var(--border-width-025) solid var(--border-primary);
@@ -3995,6 +4112,7 @@
 
   .card-footer {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--space-200);
     padding: var(--space-600);
@@ -4023,13 +4141,23 @@
   }
 }
 
-/* Image — library/components/image/image.css */
+/* Image — library/components/data-display/image/image.css */
 @layer components {
   .image {
     position: relative;
     overflow: hidden;
 
     margin: 0;
+
+    &:has(> .image-fallback) {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+
+      & > img,
+      & > .image-fallback { grid-area: 1 / 1; }
+
+      & > .image-caption { grid-area: 2 / 1; }
+    }
 
     & > img {
       display: block;
@@ -4068,8 +4196,7 @@
 
     /* -- Fallback -------------------------------------------- */
     & > .image-fallback {
-      position: absolute;
-      inset: 0;
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -4194,7 +4321,7 @@
   }
 }
 
-/* Statistic — library/components/statistic/statistic.css */
+/* Statistic — library/components/data-display/statistic/statistic.css */
 @layer components {
   .statistic {
     display: flex;
@@ -4257,7 +4384,7 @@
   }
 }
 
-/* Table — library/components/table/table.css */
+/* Table — library/components/data-display/table/table.css */
 @layer components {
   .table-container {
     width: 100%;
@@ -4387,7 +4514,7 @@
   }
 }
 
-/* Data Table — library/components/data-table/data-table.css */
+/* Data Table — library/components/data-display/data-table/data-table.css */
 @layer components {
   .data-table {
     display: grid;
@@ -4630,7 +4757,7 @@
   }
 }
 
-/* Collapsible — library/components/collapsible/collapsible.css */
+/* Collapsible — library/components/data-display/collapsible/collapsible.css */
 @layer components {
   .collapsible {
     border: var(--border-width-025) solid var(--border-primary);
@@ -4647,7 +4774,7 @@
     gap: var(--space-300);
     padding-block: 0;
     padding-inline: var(--space-400);
-    block-size: var(--size-1000);
+    min-block-size: var(--size-1000);
     font-size: var(--font-size-350);
     font-weight: var(--font-weight-525);
     cursor: pointer;
@@ -4700,7 +4827,7 @@
   }
 }
 
-/* Timeline — library/components/timeline/timeline.css */
+/* Timeline — library/components/data-display/timeline/timeline.css */
 @layer components {
   .timeline {
     list-style: none;
@@ -4738,7 +4865,7 @@
     width: 0.625rem;
     height: 0.625rem;
     border-radius: 0;
-    background-color: var(--border-primary);
+    background-color: var(--text-secondary);
     flex-shrink: 0;
     margin-top: var(--space-200);
     position: relative;
@@ -4793,7 +4920,7 @@
   }
 }
 
-/* Tree View — library/components/tree-view/tree-view.css */
+/* Tree View — library/components/data-display/tree-view/tree-view.css */
 @layer components {
   .tree {
     list-style: none;
@@ -4821,13 +4948,15 @@
     padding: 0;
     position: relative;
 
-    &:is([aria-selected="true"], [data-state="selected"]) > :is(.tree-leaf, .tree-branch > .tree-branch-trigger) {
+    &:is([aria-selected="true"], [data-state="selected"]) > .tree-leaf,
+    &:is([aria-selected="true"], [data-state="selected"]) > .tree-branch > .tree-branch-trigger {
       background: var(--surface-control);
       border-color: var(--border-interactive-inverted);
       color: var(--text-primary);
     }
 
-    &:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > :is(.tree-leaf, .tree-branch > .tree-branch-trigger) {
+    &:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > .tree-leaf,
+    &:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > .tree-branch > .tree-branch-trigger {
       background: var(--surface-control-disabled);
       border-color: var(--border-disabled);
       color: var(--text-disabled);
@@ -4911,8 +5040,7 @@
   }
 
   /* Structural connector/overflow primitive used by nested tree layouts.
-     All five variants keep their stroke explicit so a connector can be
-     hidden without changing the item geometry. */
+     Keep strokes explicit so hiding a connector does not change geometry. */
   .tree-indicator {
     --tree-indicator-border: var(--border-primary);
     position: relative;
@@ -4942,28 +5070,6 @@
     }
 
     &[data-variant="branch"]::after {
-      inset-block-start: 0;
-      inset-block-end: 50%;
-      inset-inline-start: 0;
-      border-inline-start: var(--border-width-025) solid var(--tree-indicator-border);
-    }
-
-    &[data-variant="first"]::before,
-    &[data-variant="last"]::before {
-      inset-block-start: 50%;
-      inset-inline-start: 0;
-      inline-size: 100%;
-      border-block-start: var(--border-width-025) solid var(--tree-indicator-border);
-    }
-
-    &[data-variant="first"]::after {
-      inset-block-start: 50%;
-      inset-block-end: 0;
-      inset-inline-start: 0;
-      border-inline-start: var(--border-width-025) solid var(--tree-indicator-border);
-    }
-
-    &[data-variant="last"]::after {
       inset-block-start: 0;
       inset-block-end: 50%;
       inset-inline-start: 0;
@@ -5048,7 +5154,7 @@
   }
 }
 
-/* Carousel — library/components/carousel/carousel.css */
+/* Carousel — library/components/data-display/carousel/carousel.css */
 @layer components {
   .carousel {
     position: relative;
@@ -5127,7 +5233,7 @@
       border: 0;
       border-radius: 0;
       background: transparent;
-      color: var(--border-secondary);
+      color: var(--text-secondary);
       cursor: pointer;
 
       &::before {
@@ -5192,7 +5298,7 @@
   }
 }
 
-/* Scroll Area — library/components/scroll-area/scroll-area.css */
+/* Scroll Area — library/components/data-display/scroll-area/scroll-area.css */
 @layer components {
   .scroll-area {
     overflow: auto;
@@ -5213,7 +5319,7 @@
   }
 }
 
-/* Sortable — library/components/sortable/sortable.css */
+/* Sortable — library/components/data-display/sortable/sortable.css */
 @layer components {
   .sortable {
     display: flex;
@@ -5390,7 +5496,7 @@
   }
 }
 
-/* Spinner — library/components/spinner/spinner.css */
+/* Spinner — library/components/feedback/spinner/spinner.css */
 /* -- Spinner component ---------------------------------------- */
 /* The spinner is deliberately the one animated primitive in the
    library: a loading indicator is meaningless without motion.
@@ -5412,6 +5518,10 @@
     &[data-size="xl"] { width: var(--size-800); height: var(--size-800); }
   }
 
+  :where(button, [role="button"], a[aria-busy="true"]) .spinner {
+    color: inherit;
+  }
+
   @keyframes spinner-rotate {
     to { rotate: 1turn; }
   }
@@ -5421,12 +5531,12 @@
   }
 }
 
-/* Skeleton — library/components/skeleton/skeleton.css */
+/* Skeleton — library/components/feedback/skeleton/skeleton.css */
 @layer components {
   .skeleton {
     inline-size: 100%;
     min-block-size: var(--size-300);
-    background-color: var(--surface-secondary);
+    background-color: var(--surface-control);
   }
 
   .skeleton-round {
@@ -5434,6 +5544,10 @@
     block-size: var(--size-1000);
     min-block-size: 0;
     border-radius: var(--border-radius-6400);
+  }
+
+  @media (prefers-contrast: more) {
+    .skeleton { outline: var(--border-width-025) solid var(--border-secondary); }
   }
 
   @media (forced-colors: active) {
@@ -5445,7 +5559,7 @@
   }
 }
 
-/* Progress — library/components/progress/progress.css */
+/* Progress — library/components/feedback/progress/progress.css */
 @layer components {
   .progress {
     appearance: none;
@@ -5474,16 +5588,37 @@
     border-radius: var(--border-radius-000);
   }
 
-  .progress:is(:disabled, [aria-disabled="true"]) {
+  /* A stationary segment distinguishes unknown completion from zero without
+     adding another continuously animated primitive. */
+  .progress:indeterminate {
+    background-image: linear-gradient(var(--surface-control-inverted), var(--surface-control-inverted));
+    background-size: 30% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .progress:indeterminate::-webkit-progress-bar {
+    background: transparent;
+  }
+
+  .progress:indeterminate::-moz-progress-bar {
+    background: transparent;
+  }
+
+  /* Compatibility treatment only; progress has no native disabled state. */
+  .progress[aria-disabled="true"] {
     background-color: var(--surface-control);
   }
 
-  .progress:is(:disabled, [aria-disabled="true"])::-webkit-progress-bar {
+  .progress[aria-disabled="true"]::-webkit-progress-bar {
     background-color: var(--surface-control);
   }
 
-  .progress:is(:disabled, [aria-disabled="true"])::-webkit-progress-value,
-  .progress:is(:disabled, [aria-disabled="true"])::-moz-progress-bar {
+  .progress[aria-disabled="true"]::-webkit-progress-value {
+    background-color: var(--surface-pointer-disabled);
+  }
+
+  .progress[aria-disabled="true"]::-moz-progress-bar {
     background-color: var(--surface-pointer-disabled);
   }
 
@@ -5493,10 +5628,17 @@
     .progress::-webkit-progress-bar { background: ButtonFace; }
     .progress::-webkit-progress-value { background: Highlight; }
     .progress::-moz-progress-bar { background: Highlight; }
+    .progress:indeterminate {
+      forced-color-adjust: none;
+      background-color: Canvas;
+      background-image: linear-gradient(Highlight, Highlight);
+    }
+    .progress:indeterminate::-webkit-progress-bar { background: transparent; }
+    .progress:indeterminate::-moz-progress-bar { background: transparent; }
   }
 }
 
-/* Callout — library/components/callout/callout.css */
+/* Callout — library/components/feedback/callout/callout.css */
 @layer components {
   .callout {
     position: relative;
@@ -5583,7 +5725,7 @@
   }
 }
 
-/* Alert Dialog — library/components/alert-dialog/alert-dialog.css */
+/* Alert Dialog — library/components/feedback/alert-dialog/alert-dialog.css */
 @layer components {
   dialog.alert-dialog {
     border: var(--border-width-025) solid var(--border-secondary);
@@ -5664,6 +5806,7 @@
 
   .alert-dialog-footer {
     display: flex;
+    flex-wrap: wrap;
     justify-content: flex-end;
     gap: var(--space-200);
   }
@@ -5682,7 +5825,7 @@
       border: var(--border-width-050) solid CanvasText;
     }
 
-    &::backdrop {
+    dialog.alert-dialog::backdrop {
       backdrop-filter: none;
     }
   }
@@ -5695,7 +5838,7 @@
   }
 }
 
-/* Toast — library/components/toast/toast.css */
+/* Toast — library/components/feedback/toast/toast.css */
 /* -- Toast component ------------------------------------------- */
 
 @layer components {
@@ -5854,7 +5997,7 @@
   }
 }
 
-/* Popover — library/components/popover/popover.css */
+/* Popover — library/components/overlays/popover/popover.css */
 @layer components {
   .popover {
     position: fixed;
@@ -5866,7 +6009,10 @@
     color: var(--text-primary);
     padding: var(--space-400);
 
-    width: 20rem;
+    width: min(20rem, calc(100vw - var(--space-400)));
+    max-height: calc(100dvh - var(--space-400));
+    overflow: auto;
+    overflow-wrap: anywhere;
 
     /* -- Default: bottom center -- */
     position-area: bottom;
@@ -5930,7 +6076,7 @@
   }
 }
 
-/* Tooltip — library/components/tooltip/tooltip.css */
+/* Tooltip — library/components/overlays/tooltip/tooltip.css */
 /* Flipped placement needs the arrow on the opposite side. These named
    tries re-position the tooltip AND carry the arrow side through a custom
    property, so a flipped tip never keeps a stale arrow. @position-try is a
@@ -6082,7 +6228,7 @@
   }
 }
 
-/* Dialog — library/components/dialog/dialog.css */
+/* Dialog — library/components/overlays/dialog/dialog.css */
 /* -- Dialog component ------------------------------------------ */
 
 @layer components {
@@ -6174,7 +6320,7 @@
   }
 }
 
-/* Sheet — library/components/sheet/sheet.css */
+/* Sheet — library/components/overlays/sheet/sheet.css */
 /* -- Sheet component ------------------------------------------- */
 
 @layer components {
@@ -6316,7 +6462,7 @@
       border: var(--border-width-050) solid CanvasText;
     }
 
-    &[open]::backdrop {
+    dialog.sheet[open]::backdrop {
       backdrop-filter: none;
     }
   }
@@ -6329,7 +6475,7 @@
   }
 }
 
-/* Accordion — library/components/accordion/accordion.css */
+/* Accordion — library/components/overlays/accordion/accordion.css */
 /* -- Accordion component --------------------------------------- */
 
 @layer components {
@@ -6403,7 +6549,7 @@
   }
 }
 
-/* Command Palette — library/components/command-palette/command-palette.css */
+/* Command Palette — library/components/overlays/command-palette/command-palette.css */
 /* -- Command Palette component ---------------------------------- */
 
 @layer components {
@@ -6530,7 +6676,7 @@
   }
 }
 
-/* Breadcrumbs — library/components/breadcrumbs/breadcrumbs.css */
+/* Breadcrumbs — library/components/navigation/breadcrumbs/breadcrumbs.css */
 @layer components {
   .breadcrumb-list {
     display: flex; flex-wrap: wrap; align-items: center;
@@ -6572,10 +6718,10 @@
   }
 }
 
-/* Pagination — library/components/pagination/pagination.css */
+/* Pagination — library/components/navigation/pagination/pagination.css */
 @layer components {
   .pagination { display: flex; justify-content: center; }
-  .pagination-list { display: flex; align-items: center; gap: var(--space-100); list-style: none; margin: 0; padding: 0; }
+  .pagination-list { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--space-100); list-style: none; margin: 0; padding: 0; }
   .pagination-link, .pagination-prev, .pagination-next {
     display: inline-flex; align-items: center; justify-content: center;
     min-width: var(--size-900); height: var(--size-900); padding-inline: var(--space-200);
@@ -6627,13 +6773,15 @@
   }
 }
 
-/* Tabs — library/components/tabs/tabs.css */
+/* Tabs — library/components/navigation/tabs/tabs.css */
 /* -- Tabs component -------------------------------------------- */
 
 @layer components {
   /* -- Default (pill) variant ----------------------------------- */
   .tab-list {
     display: inline-flex;
+    max-inline-size: 100%;
+    overflow-x: auto;
     align-items: stretch;
     background: var(--surface-primary);
     border: var(--border-width-025) solid var(--border-primary);
@@ -6665,6 +6813,7 @@
         &[aria-selected="true"] {
           background: transparent;
           color: var(--text-primary);
+          border-color: var(--border-transparent);
           border-bottom-color: var(--border-interactive-inverted);
           box-shadow: none;
         }
@@ -6680,12 +6829,14 @@
       & .tab-trigger {
         justify-content: flex-start;
         width: 100%;
+        min-block-size: var(--size-900);
       }
     }
   }
 
   .tab-trigger {
     display: inline-flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
     gap: var(--space-100);
@@ -6703,12 +6854,12 @@
     white-space: nowrap;
     outline: none;
 
-    /* Selected tabs use the explicit inverted control surface. */
+    /* A visible border marks selection without a decorative shadow. */
     &[aria-selected="true"] {
       background: var(--surface-control);
-      border-color: var(--border-transparent);
+      border-color: var(--border-selected);
       color: var(--text-primary);
-      box-shadow: var(--shadow-selected);
+      box-shadow: none;
 
       &:hover {
         background: var(--surface-control);
@@ -6779,7 +6930,7 @@
   }
 }
 
-/* Dropdown Menu — library/components/dropdown-menu/dropdown-menu.css */
+/* Dropdown Menu — library/components/navigation/dropdown-menu/dropdown-menu.css */
 /* -- Dropdown Menu component ------------------------------------ */
 
 @layer components {
@@ -6922,7 +7073,7 @@
   }
 }
 
-/* Navigation Menu — library/components/navigation-menu/navigation-menu.css */
+/* Navigation Menu — library/components/navigation/navigation-menu/navigation-menu.css */
 @layer components {
   .nav-menu-list { display: flex; align-items: center; gap: var(--space-200); list-style: none; margin: 0; padding: 0; }
   .nav-menu-link, .nav-menu-trigger {
@@ -6970,7 +7121,7 @@
   }
 }
 
-/* App Shell — library/components/app-shell/app-shell.css */
+/* App Shell — library/components/application/app-shell/app-shell.css */
 /* mewa_ui — App Shell */
 
 @layer components {
@@ -7732,7 +7883,7 @@
   }
 }
 
-/* Sidebar — library/components/sidebar/sidebar.css */
+/* Sidebar — library/components/application/sidebar/sidebar.css */
 /* -- Sidebar component ------------------------------------------ */
 
 @layer components {
@@ -8137,7 +8288,7 @@
   }
 }
 
-/* Resizable — library/components/resizable/resizable.css */
+/* Resizable — library/components/application/resizable/resizable.css */
 /* -- Resizable component ----------------------------------------- */
 
 @layer components {
@@ -8415,7 +8566,7 @@
   }
 }
 
-/* Color Picker — library/components/color-picker/color-picker.css */
+/* Color Picker — library/components/forms/color-picker/color-picker.css */
 /* -- Color Picker component ------------------------------------ */
 
 @layer components {
@@ -8531,7 +8682,7 @@
   }
 }
 
-/* File Upload — library/components/file-upload/file-upload.css */
+/* File Upload — library/components/forms/file-upload/file-upload.css */
 /* -- File Upload component ------------------------------------- */
 
 @layer components {
@@ -8801,7 +8952,7 @@
   }
 }
 
-/* Input OTP — library/components/input-otp/input-otp.css */
+/* Input OTP — library/components/forms/input-otp/input-otp.css */
 /* -- Input OTP component --------------------------------------- */
 
 @layer components {
@@ -8826,7 +8977,7 @@
     gap: var(--space-200);
     max-inline-size: 100%;
     overflow-x: auto;
-    padding-block: var(--border-width-025);
+    padding: var(--border-width-050);
   }
 
   .input-otp-cell {
@@ -8908,7 +9059,7 @@
 
   @media (forced-colors: active) {
     .input-otp > legend {
-      color: LinkText;
+      color: CanvasText;
     }
 
     .input-otp-cell {
@@ -8942,7 +9093,7 @@
   }
 }
 
-/* Tag Input — library/components/tag-input/tag-input.css */
+/* Tag Input — library/components/forms/tag-input/tag-input.css */
 /* -- Tag Input component --------------------------------------- */
 
 @layer components {
@@ -8983,6 +9134,22 @@
   .tag-input-fallback:focus-visible {
     border-color: var(--border-focus);
     box-shadow: var(--ring-default);
+  }
+
+  .tag-input-fallback:disabled {
+    background: var(--surface-control-disabled);
+    border-color: var(--border-disabled);
+    color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+
+  .tag-input-fallback[readonly]:not(:disabled) {
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+  }
+
+  .tag-input-fallback:is([aria-invalid="true"], :user-invalid) {
+    border-color: var(--border-invalid);
   }
 
   .tag-input[data-enhanced] .tag-input-field {
@@ -9087,6 +9254,11 @@
     cursor: not-allowed;
   }
 
+  .tag-input-remove:disabled {
+    color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+
   .tag-input:has(.tag-input-fallback:disabled) .tag-input-tag {
     color: var(--text-disabled);
     border-color: var(--border-disabled);
@@ -9148,7 +9320,7 @@
   }
 }
 
-/* Header — library/components/header/header.css */
+/* Header — library/components/application/header/header.css */
 /* -- Header component -------------------------------------- */
 
 @layer components {
@@ -9215,7 +9387,7 @@
     gap: var(--space-200);
     margin-inline-start: auto;
 
-    & > a {
+    & > a:not(.btn) {
       display: inline-flex;
       align-items: center;
       min-block-size: var(--size-1000);
@@ -9256,7 +9428,7 @@
       color: Canvas;
     }
 
-    .header-actions > a:hover {
+    .header-actions > a:not(.btn):hover {
       forced-color-adjust: none;
       background: Highlight;
       color: HighlightText;
@@ -9264,7 +9436,7 @@
   }
 }
 
-/* Nav — library/components/nav/nav.css */
+/* Nav — library/components/application/nav/nav.css */
 /* -- Nav component ----------------------------------------- */
 
 @layer components {
@@ -9378,12 +9550,6 @@
         box-shadow: var(--ring-default);
       }
     }
-  }
-
-  .nav[data-state="collapsed"] .nav-item-link,
-  .nav-item-link[data-state="collapsed"] {
-    inline-size: var(--size-1000);
-    padding-inline: var(--space-200);
   }
 
   .nav[data-orientation="vertical"] .nav-list {
@@ -9575,15 +9741,30 @@
   }
 
   @media (forced-colors: active) {
+    .nav-item-link:hover,
+    .nav-item-link[aria-current="page"],
+    .nav-item-link[data-state="selected"],
+    .nav-item-link[data-state="hover"],
+    .nav-item-link[aria-expanded="true"],
+    .nav-item-link[data-state="expanded"] {
+      forced-color-adjust: none;
+      color: HighlightText;
+    }
+
     .nav-item-link:hover::before,
     .nav-item-link[aria-current="page"]::before,
     .nav-item-link[data-state="selected"]::before,
     .nav-item-link[data-state="hover"]::before,
+    .nav-item-link[aria-expanded="true"]::before,
     .nav-item-link[data-state="expanded"]::before {
       forced-color-adjust: none;
       border-color: Highlight;
       background: Highlight;
       color: HighlightText;
+    }
+
+    .nav-item-link:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) {
+      color: GrayText;
     }
 
     .nav-item-link[aria-disabled="true"]::before,
@@ -9605,7 +9786,7 @@
   }
 }
 
-/* Footer — library/components/footer/footer.css */
+/* Footer — library/components/application/footer/footer.css */
 /* -- Footer component -------------------------------------- */
 
 @layer components {
@@ -9697,7 +9878,7 @@
   }
 }
 
-/* Context Menu — library/components/context-menu/context-menu.css */
+/* Context Menu — library/components/overlays/context-menu/context-menu.css */
 /* -- Context Menu component -------------------------------- */
 
 @layer components {
@@ -9733,6 +9914,8 @@
     inset: auto;
     min-inline-size: 12rem;
     max-inline-size: calc(100vw - var(--space-400));
+    max-block-size: calc(100dvh - var(--space-400));
+    overflow: auto;
     margin: 0;
     padding: var(--space-100);
     border: var(--border-width-025) solid var(--border-secondary);
@@ -9849,7 +10032,7 @@
   }
 }
 
-/* Hover Card — library/components/hover-card/hover-card.css */
+/* Hover Card — library/components/overlays/hover-card/hover-card.css */
 /* -- Hover Card component ---------------------------------- */
 
 @layer components {
@@ -10011,7 +10194,7 @@
   }
 }
 
-/* Agent Activity — library/components/agent-activity/agent-activity.css */
+/* Agent Activity — library/components/ai/agent-activity/agent-activity.css */
 @layer components {
   .agent-activity {
     display: flex;
@@ -10040,11 +10223,11 @@
     inline-size: var(--size-200);
     block-size: var(--size-200);
     margin-block-start: var(--space-200);
-    background: var(--border-secondary);
+    background: var(--text-secondary);
   }
 
   .agent-activity-item[data-status="pending"] .agent-activity-marker {
-    background: var(--border-muted);
+    background: var(--text-secondary);
   }
 
   .agent-activity-item[data-status="running"] .agent-activity-marker {
@@ -10165,7 +10348,7 @@
   }
 }
 
-/* Code Block — library/components/code-block/code-block.css */
+/* Code Block — library/components/ai/code-block/code-block.css */
 @layer components {
   .code-block {
     inline-size: 100%;
@@ -10332,7 +10515,7 @@
   }
 }
 
-/* Composer — library/components/composer/composer.css */
+/* Composer — library/components/ai/composer/composer.css */
 @layer components {
   .composer {
     display: flex;
@@ -10389,10 +10572,14 @@
     color: var(--text-secondary);
   }
 
-  .composer-input:disabled,
-  .composer-input:read-only {
+  .composer-input:disabled {
     color: var(--text-disabled);
     cursor: not-allowed;
+  }
+
+  .composer-input:read-only:not(:disabled) {
+    color: var(--text-secondary);
+    cursor: text;
   }
 
   .composer-actions {
@@ -10464,7 +10651,7 @@
   }
 }
 
-/* File Diff — library/components/file-diff/file-diff.css */
+/* File Diff — library/components/ai/file-diff/file-diff.css */
 @layer components {
   .file-diff {
     inline-size: 100%;
@@ -10682,7 +10869,7 @@
   }
 }
 
-/* Message — library/components/message/message.css */
+/* Message — library/components/ai/message/message.css */
 @layer components {
   .message-list {
     display: flex;
@@ -10869,7 +11056,7 @@
   }
 }
 
-/* Message Scroller — library/components/message-scroller/message-scroller.css */
+/* Message Scroller — library/components/ai/message-scroller/message-scroller.css */
 @layer components {
   .message-scroller {
     position: relative;
@@ -10982,7 +11169,7 @@
   }
 }
 
-/* Reasoning — library/components/reasoning/reasoning.css */
+/* Reasoning — library/components/ai/reasoning/reasoning.css */
 @layer components {
   .reasoning {
     inline-size: 100%;
@@ -11025,7 +11212,7 @@
     inline-size: var(--size-200);
     block-size: var(--size-200);
     flex: none;
-    background: var(--border-secondary);
+    background: var(--text-secondary);
   }
 
   .reasoning[data-streaming] .reasoning-marker {
@@ -11104,7 +11291,7 @@
   }
 }
 
-/* Sources — library/components/sources/sources.css */
+/* Sources — library/components/ai/sources/sources.css */
 @layer components {
   .sources {
     display: flex;
@@ -11220,7 +11407,7 @@
   }
 }
 
-/* Suggestion — library/components/suggestion/suggestion.css */
+/* Suggestion — library/components/ai/suggestion/suggestion.css */
 @layer components {
   .suggestion {
     display: flex;
@@ -11287,7 +11474,7 @@
   }
 }
 
-/* Thinking Indicator — library/components/thinking-indicator/thinking-indicator.css */
+/* Thinking Indicator — library/components/ai/thinking-indicator/thinking-indicator.css */
 @layer components {
   .thinking-indicator {
     display: inline-flex;
@@ -11334,7 +11521,7 @@
   }
 }
 
-/* Todo List — library/components/todo-list/todo-list.css */
+/* Todo List — library/components/ai/todo-list/todo-list.css */
 @layer components {
   .todo-list {
     border: var(--border-width-025) solid var(--border-primary);
@@ -11447,18 +11634,15 @@
   }
 
   .todo-item-status {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    border: 0;
-    clip-path: inset(50%);
-    white-space: nowrap;
+    grid-column: 2;
+    grid-row: 2;
+    color: inherit;
+    font-size: var(--font-size-300);
   }
 
   .todo-item-metadata {
+    grid-column: 3;
+    grid-row: 1;
     color: var(--text-secondary);
     font-family: var(--font-mono);
     font-size: var(--font-size-300);
@@ -11472,6 +11656,7 @@
 
     .todo-item-metadata {
       grid-column: 2;
+      grid-row: 3;
     }
   }
 
@@ -11494,7 +11679,7 @@
   }
 }
 
-/* Tool Call — library/components/tool-call/tool-call.css */
+/* Tool Call — library/components/ai/tool-call/tool-call.css */
 @layer components {
   .tool-call {
     border-block: var(--border-width-025) solid var(--border-primary);

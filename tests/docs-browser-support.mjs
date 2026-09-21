@@ -28,7 +28,9 @@ export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath
       for (const i of ['canonical']) {
         const result = await page.evaluate(() => {
           const section = document.querySelector('.component-playground:not([hidden])');
-          const demo = section.querySelector('.playground-demo');
+          const demo =
+            section.querySelector('.playground-demo') ||
+            section.querySelector('.presentation-surface');
           const ids = [...document.querySelectorAll('[id]')].map((el) => el.id);
           return {
             overflow: document.documentElement.scrollWidth - innerWidth,
@@ -107,12 +109,12 @@ export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath
   assert.equal(await page.$$eval('#toast-container .toast', (els) => els.length), 0);
   await page.click(`${active} .playground-demo button`);
   await page.waitForSelector('#toast-container .toast');
-  await page.select(`${active} [name="state:part-dismiss"]`, 'Focus');
+  await page.select(`${active} [name="state:part-dismiss:0"]`, 'Focus');
   assert.equal(
     await page.$$eval('#toast-container .toast-close[data-demo-focus]', (els) => els.length),
     1
   );
-  await page.select(`${active} [name="state:part-dismiss"]`, 'Default');
+  await page.select(`${active} [name="state:part-dismiss:0"]`, 'Default');
   assert.equal(
     await page.$eval('#toast-container', (el) => getComputedStyle(el).position),
     'fixed'
@@ -171,6 +173,13 @@ export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath
   assert.equal(await page.$$eval('.matrix-specimens[inert]', (els) => els.length), catalog.length);
   assert.equal(await page.evaluate(() => typeof window.toast), 'undefined');
   assert(
+    await page.$$eval(
+      '[data-component="input-otp"] [data-part="root"] .input-otp-cells',
+      (els) => els.length > 0 && els.every((el) => el.scrollWidth <= el.clientWidth + 1)
+    ),
+    'full OTP anatomy must not be clipped in the desktop matrix'
+  );
+  assert(
     await page.$eval(
       '[data-component="select"] [data-state-name="Focus"] .select',
       (el) => getComputedStyle(el).boxShadow !== 'none'
@@ -187,7 +196,15 @@ export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath
   );
   assert.equal(
     await page.$$eval('[data-component="toast"] [data-part="root"] .toast', (els) => els.length),
-    10
+    10,
+    'toast crosses every visual variant with both content variants'
+  );
+  assert.equal(
+    await page.$$eval(
+      '[data-component="toast"] [data-part="root"] .toast:has(.toast-actions)',
+      (els) => new Set(els.map((el) => el.getAttribute('data-variant'))).size
+    ),
+    5
   );
   assert.equal(
     (await page.$$eval(

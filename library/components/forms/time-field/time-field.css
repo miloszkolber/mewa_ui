@@ -1,0 +1,201 @@
+/* -- Time Field component ---------------------------------------- */
+
+@layer components {
+  .time-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-300);
+    min-inline-size: 0;
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .time-field > legend,
+  .time-field-legend {
+    padding: 0;
+    color: var(--text-primary);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-525);
+    line-height: var(--font-height-flat);
+  }
+
+  .time-field-controls {
+    display: grid;
+    grid-template-columns: minmax(3rem, 4rem) max-content minmax(3rem, 4rem) minmax(5rem, 7rem);
+    justify-content: start;
+    align-items: end;
+    gap: var(--space-300);
+    min-inline-size: 0;
+  }
+
+  .time-field-segment {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-200);
+    min-inline-size: 0;
+  }
+
+  .time-field-label {
+    display: block;
+    color: var(--text-primary);
+    font-size: var(--font-size-300);
+    font-weight: var(--font-weight-525);
+    line-height: var(--font-height-flat);
+  }
+
+  .time-field-input,
+  .time-field-select {
+    inline-size: 100%;
+    min-block-size: var(--size-900);
+    border: var(--border-width-025) solid var(--border-secondary);
+    background: var(--background);
+    padding-inline: var(--space-300);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-350);
+    outline: none;
+  }
+
+  .time-field-input {
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .time-field-select {
+    cursor: pointer;
+  }
+
+  .time-field-input:focus-visible,
+  .time-field-select:focus-visible {
+    border-color: var(--border-focus);
+    box-shadow: var(--ring-default);
+  }
+
+  .time-field-input:disabled,
+  .time-field-select:disabled {
+    cursor: not-allowed;
+    background: var(--surface-control-disabled);
+    color: var(--text-disabled);
+    border-color: var(--border-disabled);
+  }
+
+  .time-field-input:read-only:not(:disabled) {
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+    border-color: var(--border-muted);
+    cursor: default;
+  }
+
+  .time-field-input:is([aria-invalid="true"], :user-invalid),
+  .time-field-select:is([aria-invalid="true"], :user-invalid),
+  .time-field[data-invalid] .time-field-input,
+  .time-field[data-invalid] .time-field-select {
+    border-color: var(--border-invalid);
+  }
+
+  .time-field-input:is([aria-invalid="true"], :user-invalid):focus-visible,
+  .time-field-select:is([aria-invalid="true"], :user-invalid):focus-visible,
+  .time-field[data-invalid] .time-field-input:focus-visible,
+  .time-field[data-invalid] .time-field-select:focus-visible {
+    border-color: var(--border-invalid);
+    box-shadow: var(--ring-invalid);
+  }
+
+  .time-field-separator {
+    align-self: end;
+    padding-block: var(--space-300);
+    color: var(--text-secondary);
+    font-size: var(--font-size-400);
+    line-height: var(--font-height-flat);
+  }
+
+  .time-field-description {
+    margin: 0;
+    font-size: var(--font-size-350);
+    line-height: var(--font-height-regular);
+  }
+
+  .time-field-status {
+    margin: 0;
+    font-size: var(--font-size-300);
+    line-height: var(--font-height-regular);
+  }
+
+  .time-field-description,
+  .time-field-status {
+    color: var(--text-secondary);
+  }
+
+  .time-field:has(.time-field-input:disabled, .time-field-select:disabled) > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
+  .time-field[data-disabled] > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
+  .time-field:has(.time-field-input:disabled, .time-field-select:disabled) .time-field-label,
+  .time-field[data-disabled] .time-field-label {
+    color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 37.5rem) {
+    .time-field-controls {
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    }
+
+    .time-field-period {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    .time-field-input,
+    .time-field-select {
+      border-width: var(--border-width-050);
+    }
+
+    .time-field-input:disabled,
+    .time-field-select:disabled {
+      color: var(--text-disabled);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .time-field > legend,
+    .time-field-legend,
+    .time-field-label {
+      color: CanvasText;
+    }
+
+    .time-field-input,
+    .time-field-select {
+      border-color: ButtonBorder;
+      background: Field;
+      color: FieldText;
+    }
+
+    .time-field-input:focus-visible,
+    .time-field-select:focus-visible {
+      outline: var(--border-width-050) solid Highlight;
+      outline-offset: 1px;
+    }
+
+    .time-field-input:disabled,
+    .time-field-select:disabled,
+    .time-field:has(.time-field-input:disabled, .time-field-select:disabled) > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
+    .time-field[data-disabled] > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
+    .time-field:has(.time-field-input:disabled, .time-field-select:disabled) .time-field-label,
+    .time-field[data-disabled] .time-field-label {
+      color: GrayText;
+    }
+
+    .time-field-input:is([aria-invalid="true"], :user-invalid),
+    .time-field-select:is([aria-invalid="true"], :user-invalid),
+    .time-field[data-invalid] .time-field-input,
+    .time-field[data-invalid] .time-field-select {
+      border-color: LinkText;
+    }
+
+    .time-field-status[role="alert"],
+    .time-field-error {
+      color: LinkText;
+    }
+  }
+}

@@ -133,7 +133,7 @@ test('component selection documentation routes agents through registry metadata'
 
 test('dense row guidance names the shared semantic hooks', () => {
   const patterns = read('library/system/patterns.md');
-  const shell = read('library/components/app-shell/app-shell.md');
+  const shell = read('library/components/application/app-shell/app-shell.md');
   for (const hook of [
     'app-dense-list',
     'app-dense-row',

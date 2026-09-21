@@ -22,7 +22,7 @@
     "package:check": "bun scripts/color-palette.mjs --check && bun scripts/build.mjs && bun tests/package-contract.test.mjs && bun tests/svelte-contract.test.mjs",
     "palette:check": "bun scripts/color-palette.mjs --check",
     "palette:write": "bun scripts/color-palette.mjs --write",
-    "test": "bun tests/registry-schema.test.mjs && bun scripts/catalog.mjs --check && bun scripts/docs-assets.mjs --check && bun scripts/color-palette.mjs --check && bun scripts/build.mjs && bun tests/system-contract.test.js && bun tests/catalog-contract.test.js && bun tests/color-palette.test.mjs && bun tests/package-contract.test.mjs && bun tests/svelte-contract.test.mjs",
+    "test": "bun tests/registry-schema.test.mjs && bun scripts/catalog.mjs --check && bun scripts/docs-assets.mjs --check && bun tests/docs-model-completion.test.mjs && bun tests/docs-render-completion.test.mjs && bun scripts/color-palette.mjs --check && bun scripts/build.mjs && bun tests/system-contract.test.js && bun tests/catalog-contract.test.js && bun tests/color-palette.test.mjs && bun tests/package-contract.test.mjs && bun tests/svelte-contract.test.mjs",
     "test:browser": "bun scripts/build.mjs && bun tests/svelte-contract.test.mjs && bun tests/runtime-contract.test.js && bun tests/browser-smoke.mjs && bun tests/browser-regressions.mjs",
     "format": "prettier --write \"library/**/*.js\" \"scripts/*.mjs\" \"tests/*.{js,mjs,ts}\" \"docs/*.{js,mjs}\"",
     "format:check": "prettier --check \"library/**/*.js\" \"scripts/*.mjs\" \"tests/*.{js,mjs,ts}\" \"docs/*.{js,mjs}\"",

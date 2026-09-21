@@ -1,0 +1,120 @@
+/* -- Icon component ---------------------------------------- */
+
+@layer components {
+  :where([class^="ri-"], [class*=" ri-"], [data-remix-icon]) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    vertical-align: middle;
+    width: var(--size-400);
+    height: var(--size-400);
+    pointer-events: none;
+    font-style: normal;
+    line-height: 1;
+
+    /* -- Sizes via data-size --------------------------------- */
+    &[data-size="xs"] { width: var(--size-300); height: var(--size-300); }
+    &[data-size="md"] { width: var(--size-500); height: var(--size-500); }
+    &[data-size="lg"] { width: var(--size-600); height: var(--size-600); }
+    &[data-size="xl"] { width: var(--size-800); height: var(--size-800); }
+
+  }
+
+  /* A pair keeps line and fill glyphs in the same slot. The containing
+     control owns the state; this utility only swaps the already-local SVGs. */
+  :where([data-icon-pair]) {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 var(--icon-pair-size, var(--size-400));
+    inline-size: var(--icon-pair-size, var(--size-400));
+    block-size: var(--icon-pair-size, var(--size-400));
+    vertical-align: middle;
+  }
+
+  :where([data-icon-pair] > :where(svg, i, [data-remix-icon])) {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  :where([data-icon-pair] > :is([data-icon-variant="fill"], [class*="-fill"])) {
+    display: none;
+  }
+
+  :where(
+    .btn,
+    .toggle,
+    .tab-trigger,
+    .nav-item-link,
+    .nav-search,
+    .nav-brand,
+    .sidebar-link
+  ):is(
+    :hover,
+    :focus-visible,
+    [aria-current="page"],
+    [aria-pressed="true"],
+    [aria-selected="true"],
+    [data-state="hover"],
+    [data-state="focus"],
+    [data-state="selected"],
+    [data-state="expanded"]
+  ) [data-icon-pair] > :is([data-icon-variant="fill"], [class*="-fill"]) {
+    display: inline-flex;
+  }
+
+  :where(
+    .btn,
+    .toggle,
+    .tab-trigger,
+    .nav-item-link,
+    .nav-search,
+    .nav-brand,
+    .sidebar-link
+  ):is(
+    :hover,
+    :focus-visible,
+    [aria-current="page"],
+    [aria-pressed="true"],
+    [aria-selected="true"],
+    [data-state="hover"],
+    [data-state="focus"],
+    [data-state="selected"],
+    [data-state="expanded"]
+  ) [data-icon-pair] > :is([data-icon-variant="line"], [class*="-line"]) {
+    display: none;
+  }
+
+  :where(
+    .btn,
+    .toggle,
+    .tab-trigger,
+    .nav-item-link,
+    .nav-search,
+    .nav-brand,
+    .sidebar-link
+  ):is(:disabled, [aria-disabled="true"], [data-disabled], [data-state="disabled"])
+    [data-icon-pair] > :is([data-icon-variant="fill"], [class*="-fill"]) {
+    display: none;
+  }
+
+  :where(
+    .btn,
+    .toggle,
+    .tab-trigger,
+    .nav-item-link,
+    .nav-search,
+    .nav-brand,
+    .sidebar-link
+  ):is(:disabled, [aria-disabled="true"], [data-disabled], [data-state="disabled"])
+    [data-icon-pair] > :is([data-icon-variant="line"], [class*="-line"]) {
+    display: inline-flex;
+  }
+
+  /* In forced colors, inherit the containing control's system text color.
+     CanvasText would disappear on an inverted or highlighted control. */
+}

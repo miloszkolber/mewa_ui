@@ -397,6 +397,8 @@ In the repository, Figma's `ring.default` is exposed as `--ring-default`; both r
 
 Bind ring colors through semantic roles when the semantic token mapping is updated.
 
+Use the solid focus-area and invalid-area colors for visible perimeters. Keep the interactive boundary and focus perimeter at least 3:1 against the adjacent control surface in both themes. Subtle content dividers use separate roles and do not define an input boundary.
+
 The destructive button intentionally uses `ring.invalid`, matching the Figma component.
 
 In forced-colors mode, the repository uses the operating system's `Highlight` outline instead of

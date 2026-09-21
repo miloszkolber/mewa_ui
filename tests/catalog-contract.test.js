@@ -17,6 +17,17 @@ const directories = (directory) =>
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
     .sort();
+// Components live one level below a category directory. Derive paths from the
+// registry so the physical grouping can change without editing every test.
+const componentFile = (slug, key) => {
+  const component = registry.components.find((entry) => entry.slug === slug);
+  assert(component, `unknown component ${slug}`);
+  return component.files[key];
+};
+const componentDirectories = () =>
+  directories(componentsDir)
+    .flatMap((category) => directories(path.join(componentsDir, category)))
+    .sort();
 const files = (directory, suffix = '') =>
   fs
     .readdirSync(directory, { withFileTypes: true })
@@ -67,7 +78,7 @@ test('registry v3 defines the canonical source roots', () => {
 test('registry selection metadata covers every component', () => {
   assert.equal(registry.components.length, 80);
   const slugs = registry.components.map((component) => component.slug).sort();
-  assert.deepEqual(slugs, directories(componentsDir));
+  assert.deepEqual(slugs, componentDirectories());
 
   for (const component of registry.components) {
     assert.match(component.slug, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
@@ -117,16 +128,22 @@ test('registry selection metadata covers every component', () => {
         [],
         `${component.slug}: behavior dependencies require an auto entry`
       );
-    assert.equal(
+    assert.match(
       component.files.skill,
-      `library/components/${component.slug}/${component.slug}.md`
+      new RegExp(`^library/components/[a-z-]+/${component.slug}/${component.slug}\\.md$`)
     );
-    assert.equal(component.files.css, `library/components/${component.slug}/${component.slug}.css`);
+    assert.match(
+      component.files.css,
+      new RegExp(`^library/components/[a-z-]+/${component.slug}/${component.slug}\\.css$`)
+    );
     assert.equal(component.docs, `docs/preview.html#preview-${component.slug}`);
     if (component.jsMode === 'none')
       assert.equal(component.files.js, undefined, `${component.slug}: unexpected module`);
     else
-      assert.equal(component.files.js, `library/components/${component.slug}/${component.slug}.js`);
+      assert.match(
+        component.files.js,
+        new RegExp(`^library/components/[a-z-]+/${component.slug}/${component.slug}\\.js$`)
+      );
     for (const file of [component.files.skill, component.files.css, component.files.js].filter(
       Boolean
     )) {
@@ -173,7 +190,7 @@ test('component dependency metadata references the catalog without cycles', () =
 
 test('component folders contain only the contract, stylesheet, and optional module', () => {
   for (const component of registry.components) {
-    const names = files(path.join(componentsDir, component.slug));
+    const names = files(path.join(root, path.dirname(component.files.css)));
     const expected = [`${component.slug}.css`, `${component.slug}.md`];
     if (component.files.js) expected.push(`${component.slug}.js`);
     assert.deepEqual(
@@ -224,8 +241,13 @@ test('documentation covers every component with separate playgrounds and inert s
   assert(!figma.includes('class="docs-sidebar"'), 'the export matrix has no navigation chrome');
   assert(!preview.includes('As authored'));
   assert(!preview.includes('name="example"'));
-  assert(preview.includes('name="instance:part-button"'));
-  assert(figma.includes('data-part="part-button"'));
+  assert(preview.includes('name="prop:part-button:0:data-variant"'));
+  assert(!preview.includes('name="instance:part-button"'));
+  assert(figma.includes('data-part="part-message-bubble"'));
+  assert(
+    !figma.includes('data-part="part-button"'),
+    'standalone Button matrix owns button states rather than repeating parent cards'
+  );
   assert.deepEqual(files(docsDir, '.html'), ['figma.html', 'preview.html']);
   assert.deepEqual(
     specimens.map((c) => c.slug),
@@ -238,9 +260,17 @@ test('documentation covers every component with separate playgrounds and inert s
     assert.equal(new Set(ids).size, ids.length, 'each state cell needs independent IDs');
     for (const c of registry.components) assert(page.includes(`id="preview-${c.slug}"`));
   }
+  // Every component anchor opens either one playground with controls or one
+  // static presentation (Typography).
   assert.equal(
-    (preview.match(/class="playground-controls"/g) || []).length,
+    (preview.match(/class="playground-controls"/g) || []).length +
+      (preview.match(/class="component-playground component-presentation"/g) || []).length,
     registry.components.length
+  );
+  assert(
+    preview.includes(
+      'class="component-playground component-presentation" data-component="typography"'
+    )
   );
   assert.equal(
     (figma.match(/class="matrix-specimens" inert/g) || []).length,
@@ -268,7 +298,7 @@ test('documentation covers every component with separate playgrounds and inert s
 
 test('single-line input controls and action controls use the 36px token', () => {
   const expectSize900 = (slug, selector) => {
-    const source = stripCssComments(read(`library/components/${slug}/${slug}.css`));
+    const source = stripCssComments(read(`${componentFile(slug, 'css')}`));
     assert(source.includes(selector), `${slug}: expected ${selector}`);
   };
 
@@ -293,7 +323,7 @@ test('single-line input controls and action controls use the 36px token', () => 
   ]) {
     expectSize900(slug, selector);
   }
-  assert.match(read('library/components/select/select.md'), /36px control height/);
+  assert.match(read(componentFile('select', 'skill')), /36px control height/);
   assert.match(
     read('library/system/foundations.md'),
     /default 36px button and single-line input height/
@@ -301,8 +331,8 @@ test('single-line input controls and action controls use the 36px token', () => 
 });
 
 test('Typography covers semantic Markdown document output', () => {
-  const typography = stripCssComments(read('library/components/typography/typography.css'));
-  const guide = read('library/components/typography/typography.md');
+  const typography = stripCssComments(read(componentFile('typography', 'css')));
+  const guide = read(componentFile('typography', 'skill'));
   for (const element of [
     'h1:not([class])',
     'h6:not([class])',
@@ -423,7 +453,7 @@ test('component CSS stays square, tokenized, ring-controlled, and motion-control
     for (const match of source.matchAll(/\b(?:box-shadow|text-shadow)\s*:\s*([^;{}]+)/gi)) {
       assert.match(
         match[0],
-        /^box-shadow\s*:\s*(?:var\(--ring-(?:default|invalid)\)|var\(--shadow-selected\)|none)$/i,
+        /^box-shadow\s*:\s*(?:var\(--ring-(?:default|invalid)\)|none)$/i,
         `${filename}: only shared ring/selection shadows or explicit resets are allowed`
       );
     }
@@ -474,7 +504,7 @@ test('component CSS stays square, tokenized, ring-controlled, and motion-control
 });
 
 test('selected Figma component contracts are encoded in source', () => {
-  const css = (slug) => stripCssComments(read(`library/components/${slug}/${slug}.css`));
+  const css = (slug) => stripCssComments(read(`${componentFile(slug, 'css')}`));
   const expectMatch = (source, pattern, message) => assert.match(source, pattern, message);
 
   const button = css('button');
@@ -482,6 +512,7 @@ test('selected Figma component contracts are encoded in source', () => {
   expectMatch(button, /padding:\s*0 var\(--space-250\)/, 'button: 10px horizontal padding');
   expectMatch(button, /gap:\s*var\(--space-100\)/, 'button: 4px icon gap');
   expectMatch(button, /line-height:\s*var\(--font-height-tight\)/, 'button: tight text');
+  assert.doesNotMatch(button, /data-size/, 'button: one 36px size only');
   assert.doesNotMatch(
     button,
     /data-variant="(?:outline|destructive-outline)"/,
@@ -496,7 +527,8 @@ test('selected Figma component contracts are encoded in source', () => {
   const tabs = css('tabs');
   expectMatch(tabs, /block-size:\s*var\(--size-900\)/, 'tabs: 36px track');
   expectMatch(tabs, /background:\s*var\(--surface-control\)/, 'tabs: selected control surface');
-  expectMatch(tabs, /box-shadow:\s*var\(--shadow-selected\)/, 'tabs: selected shadow');
+  expectMatch(tabs, /border-color:\s*var\(--border-selected\)/, 'tabs: selected boundary');
+  assert.doesNotMatch(tabs, /var\(--shadow-selected\)/, 'tabs: no decorative selected shadow');
 
   const table = css('table');
   expectMatch(table, /padding:\s*0 var\(--space-200\)/, 'table: 8px horizontal padding');
@@ -542,6 +574,7 @@ test('selected Figma component contracts are encoded in source', () => {
   expectMatch(avatar, /height:\s*var\(--size-200\)/, 'avatar: 8px badge');
   expectMatch(avatar, /color:\s*var\(--text-secondary\)/, 'avatar: secondary fallback');
   expectMatch(avatar, /background-color:\s*var\(--text-positive\)/, 'avatar: positive badge');
+  assert.doesNotMatch(avatar, /data-size/, 'avatar: one 36px size only');
 
   expectMatch(css('tooltip'), /min-block-size:\s*var\(--size-600\)/, 'tooltip: 24px height');
   expectMatch(css('tooltip'), /padding:\s*0 var\(--space-150\)/, 'tooltip: 6px horizontal padding');
@@ -557,11 +590,7 @@ test('selected Figma component contracts are encoded in source', () => {
   const slider = css('slider');
   expectMatch(slider, /height:\s*var\(--size-100\)/, 'slider: 4px track');
   expectMatch(slider, /height:\s*var\(--size-400\)/, 'slider: 16px thumb');
-  expectMatch(
-    slider,
-    /backdrop-filter:\s*blur\(var\(--blur-400\)\)/,
-    'slider: disabled thumb background blur'
-  );
+  assert.doesNotMatch(slider, /backdrop-filter:\s*blur/, 'slider: controls must not blur');
 
   const progress = css('progress');
   expectMatch(progress, /height:\s*var\(--size-150\)/, 'progress: 6px height');
@@ -606,11 +635,11 @@ test('selected Figma component contracts are encoded in source', () => {
     /padding:\s*var\(--space-200\) var\(--space-300\)/,
     'textarea: repository padding'
   );
-  assert.match(read('library/components/radio-group/radio-group.md'), /conceptual|abstraction/i);
+  assert.match(read(componentFile('radio-group', 'skill')), /conceptual|abstraction/i);
 });
 
 test('App Shell provides the shared dense row composition', () => {
-  const source = stripCssComments(read('library/components/app-shell/app-shell.css'));
+  const source = stripCssComments(read(componentFile('app-shell', 'css')));
   for (const hook of [
     'app-dense-list',
     'app-dense-row',
@@ -689,7 +718,7 @@ test('shared CSS rejects raw pixel breakpoints and retired width presets', () =>
 });
 
 test('App Shell resets the wrapped mobile navigation margin', () => {
-  const source = stripCssComments(read('library/components/app-shell/app-shell.css'));
+  const source = stripCssComments(read(componentFile('app-shell', 'css')));
   assert.match(
     source,
     /\.app-nav\s*\{\s*flex-basis:\s*100%;[\s\S]*?flex-wrap:\s*nowrap;[\s\S]*?margin-block:\s*0;/,
@@ -698,7 +727,7 @@ test('App Shell resets the wrapped mobile navigation margin', () => {
 });
 
 test('high-risk native-first runtime contracts do not regress', () => {
-  const dialog = read('library/components/dialog/dialog.js');
+  const dialog = read(componentFile('dialog', 'js'));
   assert(
     !/dialog\.focus\(\)/.test(dialog),
     'Dialog must let native showModal and autofocus choose initial focus'
@@ -709,7 +738,7 @@ test('high-risk native-first runtime contracts do not regress', () => {
   );
 
   for (const slug of ['popover', 'tooltip']) {
-    const source = read(`library/components/${slug}/${slug}.js`);
+    const source = read(`${componentFile(slug, 'js')}`);
     assert.match(
       source,
       /delete trigger\.dataset\.mewa\w+Init/,
@@ -717,7 +746,7 @@ test('high-risk native-first runtime contracts do not regress', () => {
     );
   }
 
-  const tabs = read('library/components/tabs/tabs.md');
+  const tabs = read(componentFile('tabs', 'skill'));
   assert.match(tabs, /automatic activation/i, 'Tabs must document automatic activation');
   assert(
     !/manual activation mode/i.test(tabs),
@@ -725,9 +754,9 @@ test('high-risk native-first runtime contracts do not regress', () => {
   );
 
   for (const slug of ['resizable', 'sortable']) {
-    const script = read(`library/components/${slug}/${slug}.js`);
-    const css = read(`library/components/${slug}/${slug}.css`);
-    const skill = read(`library/components/${slug}/${slug}.md`);
+    const script = read(`${componentFile(slug, 'js')}`);
+    const css = read(`${componentFile(slug, 'css')}`);
+    const skill = read(`${componentFile(slug, 'skill')}`);
     assert.match(
       script,
       /data-(?:resizable|sortable)-(?:decrease|increase)/,
@@ -746,7 +775,7 @@ test('high-risk native-first runtime contracts do not regress', () => {
     );
   }
 
-  const carouselCss = read('library/components/carousel/carousel.css');
+  const carouselCss = read(componentFile('carousel', 'css'));
   assert.match(
     carouselCss,
     /\.carousel-dot[\s\S]*width:\s*var\(--size-600\)/,

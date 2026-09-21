@@ -9,7 +9,7 @@ Use this contract for every library change and every consumer interface.
 1. Read this file before you select a component or a shell.
 2. Read `library/system/foundations.md` before you add visual rules.
 3. Read `library/system/components.md` before you select a component.
-4. Read the matching `library/components/{slug}/{slug}.md` before you write markup.
+4. Read the matching `library/components/{category}/{slug}/{slug}.md` before you write markup.
 5. Read `library/system/patterns.md` before you compose a page region.
 6. Read `library/system/layouts.md` before you compose application chrome.
 7. Read `library/system/accessibility.md` before you add interaction.
@@ -468,11 +468,11 @@ Do not create a new component only for one shell.
 
 `library/src/tokens.css` owns semantic theme roles.
 
-`library/components/{slug}/{slug}.md` owns component implementation guidance.
+`library/components/{category}/{slug}/{slug}.md` owns component implementation guidance.
 
-`library/components/{slug}/{slug}.css` owns component presentation.
+`library/components/{category}/{slug}/{slug}.css` owns component presentation.
 
-`library/components/{slug}/{slug}.js` owns component enhancement behavior.
+`library/components/{category}/{slug}/{slug}.js` owns component enhancement behavior.
 
 `library/adapters/` owns optional framework integration.
 

@@ -17,7 +17,7 @@ The repository contains 80 components, from basic controls and form fields to da
 - a small ES module when behavior needs JavaScript;
 - an anchored section in the shared component preview.
 
-Explore the [component playgrounds](docs/preview.html) to select a component, adjust its properties and states, try its behavior, and copy the current markup. Use the [Figma state matrix](docs/figma.html) for isolated visual specimens without interactions or launcher buttons. Each page has a theme picker and covers the complete catalog in [`registry.json`](registry.json).
+Explore the [component playgrounds](docs/preview.html) to select a component, adjust its properties and states, try its behavior, and read the current markup. Typography opens as a static rendered Markdown document because it has no properties or states. Use the [Figma state matrix](docs/figma.html) for isolated visual specimens without interactions, property controls, or launcher buttons. The matrix covers visual states, properties, and variants only. Each page has a theme picker and covers the complete catalog in [`registry.json`](registry.json).
 
 ## Get a release from GitHub
 
@@ -74,6 +74,7 @@ The repository keeps description separate from instruction.
 - [`README.md`](README.md) describes the library and its structure.
 - [`docs/preview.html`](docs/preview.html) contains the interactive component playground and behavior examples.
 - [`docs/figma.html`](docs/figma.html) is the generated state matrix with a theme picker for design review and Figma import.
+- [`docs/review.md`](docs/review.md) records the catalog review's contract changes, executed acceptance checks, and verification limits.
 - [`docs/component-model.mjs`](docs/component-model.mjs) defines canonical component anatomy and nested parts; [`docs/catalog.mjs`](docs/catalog.mjs) defines their public properties. [`docs/model-operations.mjs`](docs/model-operations.mjs) keeps live controls and static matrices aligned. Source markup fixtures live in [`docs/specimens.json`](docs/specimens.json), not an example selector. Run `bun run docs:write` after edits.
 - Preview has component navigation. The export matrix has no page navigation or component behavior. Both pages show supported results without defining a second API.
 
@@ -82,7 +83,7 @@ The repository keeps description separate from instruction.
 - [`AGENTS.md`](AGENTS.md) defines the maintenance workflow.
 - [`library/DESIGN.md`](library/DESIGN.md) is the canonical design contract.
 - [`library/system/`](library/system/) covers foundations, selection, patterns, shells, and accessibility.
-- `library/components/{slug}/{slug}.md` gives exact implementation instructions for one component.
+- `library/components/{category}/{slug}/{slug}.md` gives exact implementation instructions for one component.
 - [`llms.txt`](llms.txt) is the compact machine router.
 
 ### Sources and generated output

@@ -1,0 +1,90 @@
+/* -- Date Field component --------------------------------------- */
+
+@layer components {
+  .date-input {
+    position: relative;
+    height: var(--size-900);
+    width: 100%;
+    border: var(--border-width-025) solid var(--border-secondary);
+
+    background: var(--background);
+    padding: 0 var(--space-300);
+    padding-inline-end: var(--space-1000);
+    font-size: var(--font-size-350);
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+    outline: none;
+
+    cursor: pointer;
+
+    &:focus {
+      border-color: var(--border-focus);
+      box-shadow: var(--ring-default);
+    }
+
+    &:disabled {
+      background: var(--surface-control-disabled);
+      color: var(--text-disabled);
+      border-color: var(--border-disabled);
+      cursor: not-allowed;
+    }
+
+    &:is([aria-invalid="true"], :user-invalid) {
+      border-color: var(--border-invalid);
+
+      &:focus {
+        border-color: var(--border-invalid);
+        box-shadow: var(--ring-invalid);
+      }
+    }
+
+    /* Keep the native glyph and its color-scheme/forced-colors adaptation. */
+    &::-webkit-calendar-picker-indicator {
+      position: absolute;
+      inset-block: 0;
+      inset-inline-end: 0;
+      inline-size: var(--size-900);
+      block-size: auto;
+      margin: 0;
+      cursor: pointer;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 1rem 1rem;
+    }
+
+    /* -- Date text: explicit colors, no browser default accent ---- */
+    &::-webkit-datetime-edit {
+      padding: 0;
+      color: inherit;
+    }
+
+    &::-webkit-datetime-edit-fields-wrapper,
+    &::-webkit-datetime-edit-text,
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-month-field,
+    &::-webkit-datetime-edit-year-field {
+      color: inherit;
+    }
+    &[readonly]:not(:disabled) {
+      background: var(--surface-secondary);
+      color: var(--text-secondary);
+      cursor: default;
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    .date-input { border-width: var(--border-width-050); }
+  }
+
+  @media (forced-colors: active) {
+    .date-input {
+      background: Field;
+      color: FieldText;
+      border-color: ButtonBorder;
+    }
+
+    .date-input[readonly]:not(:disabled) { color: FieldText; }
+    .date-input:disabled { color: GrayText; border-color: GrayText; }
+    .date-input:is([aria-invalid="true"], :user-invalid) { border-style: dashed; }
+  }
+}

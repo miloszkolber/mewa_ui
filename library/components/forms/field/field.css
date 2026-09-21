@@ -1,0 +1,249 @@
+/* -- Field component --------------------------------------------- */
+
+@layer components {
+  /* A field is a labelled control and its supporting text. */
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-100);
+    min-inline-size: 0;
+  }
+
+  .field > label,
+  .field-label {
+    display: block;
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-525);
+    line-height: var(--font-height-regular);
+    cursor: default;
+  }
+
+  .field-required {
+    color: var(--text-negative);
+  }
+
+  /* Keep Field usable with plain native controls. The more specific
+     component classes (for example .text-field-input and .select) can refine this. */
+  .field > :where(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+    select,
+    textarea
+  ) {
+    inline-size: 100%;
+    min-block-size: var(--size-900);
+    border: var(--border-width-025) solid var(--border-secondary);
+    background: var(--surface-control-transparent);
+    padding-inline: var(--space-300);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-350);
+    outline: none;
+  }
+
+  .field > :where(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+    select
+  ) {
+    block-size: var(--size-900);
+  }
+
+  .field > textarea {
+    min-block-size: var(--size-2000);
+    padding-block: var(--space-200);
+    resize: vertical;
+  }
+
+  .field > :where(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+    select,
+    textarea
+  ):is(:focus-visible, [data-state="focus"]) {
+    /* Form controls keep their boundary and use the shared Figma ring effect. */
+    border-color: var(--border-focus);
+    box-shadow: var(--ring-default);
+  }
+
+  .field > :where(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+    select,
+    textarea
+  )::placeholder {
+    color: var(--text-secondary);
+  }
+
+  .field > :where(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+    select,
+    textarea
+  ):disabled {
+    cursor: not-allowed;
+    background: var(--surface-control-disabled);
+    color: var(--text-disabled);
+    border-color: var(--border-disabled);
+  }
+
+  .field > :where(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+    textarea
+  )[readonly]:not(:disabled) {
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+    border-color: var(--border-muted);
+    cursor: default;
+  }
+
+  .field > :where(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+    select,
+    textarea
+  ):is([aria-invalid="true"], :user-invalid) {
+    border-color: var(--border-invalid);
+    box-shadow: var(--ring-invalid);
+  }
+
+  .field > :where(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+    select,
+    textarea
+  ):is([aria-invalid="true"], :user-invalid):is(:focus-visible, [data-state="focus"]) {
+    border-color: var(--border-invalid);
+    box-shadow: var(--ring-invalid);
+  }
+
+  .field-description,
+  .field-error {
+    margin: 0;
+    font-size: var(--font-size-350);
+    line-height: var(--font-height-regular);
+  }
+
+  .field-description {
+    color: var(--text-secondary);
+  }
+
+  .field-error {
+    color: var(--text-negative);
+  }
+
+  .field[data-invalid] > .field-description,
+  .field:has(> :is([aria-invalid="true"], :user-invalid)) > .field-description {
+    color: var(--text-negative);
+  }
+
+  .field:has(> :disabled) > :is(label, .field-label, .field-description),
+  .field[data-disabled] > :is(label, .field-label, .field-description) {
+    color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+
+  /* Horizontal fields are useful for checkboxes, switches, and actions. */
+  .field[data-orientation="horizontal"] {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-200);
+  }
+
+  .field[data-orientation="horizontal"] > :is(label, .field-label) {
+    margin: 0;
+  }
+
+  .field[data-orientation="horizontal"] > :is(.field-description, .field-error) {
+    flex-basis: 100%;
+  }
+
+  /* A fieldset is the native grouping companion to .field. Block layout
+     keeps the legend and its siblings left-aligned in every engine; the
+     legend is not a reliable flex item inside a flex fieldset. */
+  .fieldset {
+    display: block;
+    min-inline-size: 0;
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .fieldset > legend {
+    padding: 0;
+    margin: 0 0 var(--space-100);
+    color: var(--text-primary);
+    font-size: var(--font-size-350);
+    font-weight: var(--font-weight-525);
+    line-height: var(--font-height-regular);
+  }
+
+  .fieldset > :is(.field-description, .field-error) {
+    margin: 0 0 var(--space-300);
+  }
+
+  .fieldset > :not(legend):not(.field-description):not(.field-error) {
+    margin-block-start: var(--space-200);
+  }
+
+  .field-separator {
+    color: var(--border-primary);
+  }
+
+  .field-separator > hr {
+    border: 0;
+    border-block-start: var(--border-width-025) solid currentColor;
+    margin: 0;
+  }
+
+  @media (prefers-contrast: more) {
+    .field > :where(
+      input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+      select,
+      textarea
+    ) {
+      border-width: var(--border-width-050);
+    }
+
+    .field > :disabled { color: var(--text-disabled); }
+  }
+
+  @media (forced-colors: active) {
+    .field > label,
+    .field-label,
+    .fieldset > legend {
+      color: CanvasText;
+    }
+
+    .field > :where(
+      input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+      select,
+      textarea
+    ) {
+      border-color: ButtonBorder;
+      background: Field;
+      color: FieldText;
+    }
+
+    .field > :where(
+      input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+      select,
+      textarea
+    ):focus-visible {
+      outline: var(--border-width-050) solid Highlight;
+      outline-offset: 1px;
+    }
+
+    .field > :disabled,
+    .field:has(> :disabled) > :is(label, .field-label, .field-description),
+    .field[data-disabled] > :is(label, .field-label, .field-description) {
+      color: GrayText;
+    }
+
+    .field > :where(
+      input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+      select,
+      textarea
+    ):is([aria-invalid="true"], :user-invalid),
+    .field-error {
+      border-color: LinkText;
+      color: LinkText;
+    }
+  }
+}

@@ -10,9 +10,9 @@ Read the relevant file in `library/system/` before you change appearance, compos
 
 Change only this repository unless the task names a consumer repository.
 
-Treat live-mount consumers as immediately affected.
+Do not assume active consumers of this experimental library.
 
-Keep changes additive when a current consumer can still use the old contract.
+When a task authorizes breaking changes, update implementation, registry, examples, and checks together instead of retaining unsupported compatibility hooks.
 
 Document a breaking change before you remove a current hook.
 
@@ -26,11 +26,11 @@ Edit `scripts/color-palette.mjs` for solid and alpha palette primitives.
 
 Edit `library/src/tokens.css` for semantic light and dark roles.
 
-Edit `library/components/{slug}/{slug}.md` for component implementation guidance.
+Edit `library/components/{category}/{slug}/{slug}.md` for component implementation guidance.
 
-Edit `library/components/{slug}/{slug}.css` for component presentation.
+Edit `library/components/{category}/{slug}/{slug}.css` for component presentation.
 
-Edit `library/components/{slug}/{slug}.js` for component enhancement behavior.
+Edit `library/components/{category}/{slug}/{slug}.js` for component enhancement behavior.
 
 Edit `library/runtime/` for the shared controller and automatic enhancement lifecycle.
 
@@ -122,11 +122,15 @@ Do not publish this repository to the npm registry.
 
 Keep `README.md` descriptive and written for people.
 
-Keep `docs/preview.html` interactive. Each component anchor opens one playground with controls, live markup, and real component behavior.
+Keep `docs/preview.html` interactive. Each interactive component anchor opens one playground with controls, live markup, and real component behavior. Typography opens as a static rendered Markdown presentation with no property or state controls.
 
-Keep `docs/figma.html` as an inert grid of isolated component states. Keep the theme picker outside the specimens. Generate it from shared definitions, not from playground DOM.
+Keep `docs/figma.html` as an inert grid of isolated visual states. Keep the theme picker outside the specimens. Generate it from shared definitions, not from playground DOM. Render only visual states, properties, and variants; never render behavior-only properties.
 
 Keep documentation modules separate from library implementation. Both views use one selected theme.
+
+Use registry categories in both page groupings. Test required visual combinations independently of the model inventory. A loop over declared controls cannot detect an omitted control or state.
+
+Verify simultaneous nested changes, native interaction readback, and draft preservation. State controls must describe the rendered component, not merely emit attributes.
 
 Keep component navigation only in the playground. Do not link the two views from their page chrome.
 
@@ -159,7 +163,7 @@ Do not copy implementation instructions into descriptive documentation.
 
 ## Component changes
 
-Keep each component in `library/components/{slug}/`.
+Keep each component in `library/components/{category}/{slug}/`.
 
 Keep one Markdown skill in each component folder.
 
@@ -384,5 +388,7 @@ Use `registry.schema.json` and catalog checks to preserve machine-readable compa
 Run `bun run lint`, `bun run format:check`, and `bun run typecheck` in addition to the existing contract checks.
 
 Run `bun run measure` after building to inspect separately compressed complete CSS, flat component CSS entries, controller, automatic, and runtime responses.
+
+Run `bun tests/docs-visual-review.mjs` with `PUPPETEER_EXECUTABLE_PATH` for catalog-wide rendered sweeps and contact sheets under ignored `screenshots/review/`. Inspect the images; a completed capture is not a visual review.
 
 Use `tests/agent-evaluation.md` to evaluate consumer guidance in a fresh workspace. Record which tasks were actually run.

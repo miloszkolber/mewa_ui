@@ -59,8 +59,8 @@
 
   /* Border roles */
   --border-primary: var(--color-neutral-200);
-  --border-secondary: var(--color-neutral-300);
-  --border-interactive-default: var(--color-neutral-300);
+  --border-secondary: var(--color-neutral-500);
+  --border-interactive-default: var(--color-neutral-500);
   --border-interactive-inverted: var(--color-neutral-950);
   --border-transparent: transparent;
   --border-control: var(--border-interactive-default);
@@ -71,8 +71,8 @@
   --border-disabled: var(--color-neutral-200);
   --border-focus: var(--color-neutral-600);
   --border-invalid: var(--color-red-600);
-  --border-focus-area: var(--color-alpha-dark-200);
-  --border-invalid-area: var(--color-alpha-red-200);
+  --border-focus-area: var(--color-neutral-500);
+  --border-invalid-area: var(--color-red-600);
   --border-positive: var(--color-green-500);
   --border-negative: var(--color-red-500);
   --border-caution: var(--color-amber-500);
@@ -153,8 +153,8 @@
 
   /* Border roles */
   --border-primary: var(--color-neutral-800);
-  --border-secondary: var(--color-neutral-700);
-  --border-interactive-default: var(--color-neutral-700);
+  --border-secondary: var(--color-neutral-500);
+  --border-interactive-default: var(--color-neutral-500);
   --border-interactive-inverted: var(--color-neutral-050);
   --border-transparent: transparent;
   --border-control: var(--border-interactive-default);
@@ -165,8 +165,8 @@
   --border-disabled: var(--color-neutral-800);
   --border-focus: var(--color-neutral-400);
   --border-invalid: var(--color-red-400);
-  --border-focus-area: var(--color-alpha-light-800);
-  --border-invalid-area: var(--color-alpha-red-800);
+  --border-focus-area: var(--color-neutral-500);
+  --border-invalid-area: var(--color-red-400);
   --border-positive: var(--color-green-500);
   --border-negative: var(--color-red-500);
   --border-caution: var(--color-amber-500);
@@ -187,9 +187,8 @@
   --chart-area-caution: var(--color-alpha-amber-950);
 }
 
-/* Figma's ring styles are zero-blur, zero-offset shadows with a 2px spread. */
+/* Focus rings are solid, zero-blur perimeters, not decorative shadows. */
 :root {
   --ring-default: 0 0 0 var(--ring-spread) var(--border-focus-area);
   --ring-invalid: 0 0 0 var(--ring-spread) var(--border-invalid-area);
-  --shadow-selected: 0 1px 3px rgb(0 0 0 / 10%);
 }

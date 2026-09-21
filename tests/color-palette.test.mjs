@@ -443,7 +443,7 @@ await test('light and dark semantic surfaces use the full reference endpoints', 
     '--surface-negative': 'var(--color-alpha-red-100)',
     '--surface-caution': 'var(--color-alpha-amber-100)',
     '--overlay-strong': 'var(--color-alpha-dark-400)',
-    '--border-interactive-default': 'var(--color-neutral-300)',
+    '--border-interactive-default': 'var(--color-neutral-500)',
     '--border-interactive-inverted': 'var(--color-neutral-950)',
     '--border-positive': 'var(--color-green-500)',
     '--border-negative': 'var(--color-red-500)',
@@ -459,7 +459,7 @@ await test('light and dark semantic surfaces use the full reference endpoints', 
     '--surface-negative': 'var(--color-alpha-red-900)',
     '--surface-caution': 'var(--color-alpha-amber-900)',
     '--overlay-strong': 'var(--color-alpha-dark-600)',
-    '--border-interactive-default': 'var(--color-neutral-700)',
+    '--border-interactive-default': 'var(--color-neutral-500)',
     '--border-interactive-inverted': 'var(--color-neutral-050)',
     '--border-positive': 'var(--color-green-500)',
     '--border-negative': 'var(--color-red-500)',
@@ -483,7 +483,7 @@ await test('universal semantic areas retain directional light and dark mappings'
     '--surface-menu-hover': 'var(--color-alpha-dark-050)',
     '--surface-content-hover': 'var(--color-alpha-dark-050)',
     '--surface-shell-hover': 'var(--color-alpha-dark-050)',
-    '--border-invalid-area': 'var(--color-alpha-red-200)',
+    '--border-invalid-area': 'var(--color-red-600)',
     '--border-transparent': 'transparent'
   };
   const expectedDark = {
@@ -494,7 +494,7 @@ await test('universal semantic areas retain directional light and dark mappings'
     '--surface-menu-hover': 'var(--color-alpha-light-950)',
     '--surface-content-hover': 'var(--color-alpha-light-950)',
     '--surface-shell-hover': 'var(--color-alpha-light-950)',
-    '--border-invalid-area': 'var(--color-alpha-red-800)',
+    '--border-invalid-area': 'var(--color-red-400)',
     '--border-transparent': 'transparent'
   };
 
