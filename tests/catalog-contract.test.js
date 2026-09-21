@@ -241,7 +241,11 @@ test('documentation covers every component with separate playgrounds and inert s
   assert(!figma.includes('class="docs-sidebar"'), 'the export matrix has no navigation chrome');
   assert(!preview.includes('As authored'));
   assert(!preview.includes('name="example"'));
-  assert(preview.includes('name="prop:part-button:0:data-variant"'));
+  assert(preview.includes('name="prop:part-button:0:disabled"'));
+  assert(
+    !preview.includes('name="prop:part-button:0:data-variant"'),
+    'a grouped button does not own its variant'
+  );
   assert(!preview.includes('name="instance:part-button"'));
   assert(figma.includes('data-part="part-message-bubble"'));
   assert(

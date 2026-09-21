@@ -13,6 +13,8 @@
 
   .time-field > legend,
   .time-field-legend {
+    display: block;
+    margin: 0 0 var(--space-300);
     padding: 0;
     color: var(--text-primary);
     font-size: var(--font-size-350);

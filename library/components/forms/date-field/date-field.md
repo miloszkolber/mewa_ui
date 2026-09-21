@@ -71,7 +71,9 @@ The input remains the only focusable control.
 
 The browser opens its native picker through the platform affordance.
 
-Keep the native picker glyph. The shared `color-scheme` adapts the glyph to the theme. Do not replace the glyph with a fixed-color background image.
+The picker indicator paints the calendar line glyph as a `currentColor` mask so the affordance uses the `--text-secondary` role.
+
+Do not replace the picker indicator with a fixed-color background image.
 
 The browser owns date-segment keyboard editing.
 

@@ -47,6 +47,32 @@ Give the input a `name` when its value belongs to form submission.
 
 Use native `min`, `max`, and `step` values.
 
+## Step
+
+Use the native `step` attribute to set the numeric increment.
+
+```html
+<div class="field">
+  <label class="label" for="opacity">Opacity</label>
+  <input class="slider"
+         id="opacity"
+         name="opacity"
+         type="range"
+         min="0"
+         max="100"
+         step="10"
+         value="40">
+</div>
+```
+
+The browser applies `step` to pointer, touch, and keyboard adjustment.
+
+The module reads the stepped native value and keeps the filled track consistent on `input` and `change`.
+
+Omit `step` only when the default increment of `1` fits the domain.
+
+Do not round the submitted value in the module.
+
 ## Visible value
 
 Show a visible value when users need precise feedback while adjusting the slider.
@@ -104,7 +130,9 @@ The module calculates the current percentage from `min`, `max`, and `value`.
 
 The module writes that percentage to `--slider-value` for the visual filled track.
 
-The module updates the value on native `input` events.
+The module updates the value on native `input` and `change` events.
+
+The native `step` value owns the increment.
 
 The module does not change the submitted numeric value.
 

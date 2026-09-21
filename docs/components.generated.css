@@ -542,6 +542,12 @@
 
   }
 
+  /* A local loader injects the glyph; it fills the sized class hook. */
+  :where([class^="ri-"], [class*=" ri-"]) > svg {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
   /* A pair keeps line and fill glyphs in the same slot. The containing
      control owns the state; this utility only swaps the already-local SVGs. */
   :where([data-icon-pair]) {
@@ -673,6 +679,32 @@
       &:not([class*="size-"]) { width: var(--size-400); height: var(--size-400); }
     }
 
+    /* The button owns the state of its line and fill icon pair. The swap is
+       CSS-only, so the no-JavaScript path is unchanged. */
+    & [data-icon-pair] > :is([data-icon-variant="fill"], [class*="-fill"]) {
+      display: none;
+    }
+
+    &:is(:hover, :focus-visible, [aria-pressed="true"], [data-state="hover"], [data-state="focus"])
+      [data-icon-pair] > :is([data-icon-variant="fill"], [class*="-fill"]) {
+      display: inline-flex;
+    }
+
+    &:is(:hover, :focus-visible, [aria-pressed="true"], [data-state="hover"], [data-state="focus"])
+      [data-icon-pair] > :is([data-icon-variant="line"], [class*="-line"]) {
+      display: none;
+    }
+
+    &:is(:disabled, [aria-disabled="true"], [data-disabled], [data-state="disabled"])
+      [data-icon-pair] > :is([data-icon-variant="fill"], [class*="-fill"]) {
+      display: none;
+    }
+
+    &:is(:disabled, [aria-disabled="true"], [data-disabled], [data-state="disabled"])
+      [data-icon-pair] > :is([data-icon-variant="line"], [class*="-line"]) {
+      display: inline-flex;
+    }
+
     /* A spinner inside a button follows the button's own text color. */
     & .spinner {
       color: inherit;
@@ -688,7 +720,7 @@
     }
 
     /* -- Variants -------------------------------------------- */
-    &:not([data-variant]), &[data-variant="default"] {
+    &:not([data-variant]), &[data-variant="primary"] {
       background-color: var(--surface-button-primary);
       color: var(--text-inverted);
 
@@ -769,7 +801,7 @@
       border-color: var(--border-disabled);
       color: var(--text-disabled);
 
-      &[data-variant="default"],
+      &[data-variant="primary"],
       &[data-variant="destructive"],
       &[data-variant="ghost"] {
         border-color: var(--border-transparent);
@@ -794,7 +826,7 @@
     .btn {
       border: var(--border-width-050) solid var(--border-transparent);
 
-      &[data-variant="default"],
+      &[data-variant="primary"],
       &[data-variant="secondary"],
       &[data-variant="destructive"] {
         border-color: currentColor;
@@ -875,10 +907,10 @@
     }
 
     /* -- Variants -------------------------------------------- */
-    &[data-variant="outline"] {
+    /* The containing Toggle Group owns the variant for grouped toggles. */
+    &:not(.toggle-group .toggle)[data-variant="outline"] {
       border: var(--border-width-025) solid var(--border-secondary);
       background: var(--surface-control-transparent);
-
 
       &:not([aria-pressed="true"]):hover {
         background-color: var(--surface-control-hover);
@@ -891,20 +923,21 @@
       }
     }
 
-    &[data-variant="outline"]:disabled {
+    &:not(.toggle-group .toggle)[data-variant="outline"]:disabled {
       background: var(--surface-control-disabled);
       border-color: var(--border-disabled);
       color: var(--text-disabled);
     }
 
     /* -- Sizes ----------------------------------------------- */
+    &[data-icon-only] { width: var(--size-900); padding: 0; }
   }
 
   @media (prefers-contrast: more) {
     .toggle {
       border: var(--border-width-050) solid var(--border-transparent);
 
-      &[data-variant="outline"] {
+      &:not(.toggle-group .toggle)[data-variant="outline"] {
         border-color: var(--text-primary);
       }
 
@@ -960,17 +993,23 @@
       }
     }
 
-    &[data-variant="outline"]:not([data-spacing]) > .toggle:not(:first-child) {
-      margin-inline-start: -1px;
+    /* Connected outline items share one boundary between adjacent toggles. */
+    &[data-variant="outline"]:not([data-spacing]) > .toggle + .toggle {
+      margin-inline-start: calc(-1 * var(--border-width-025));
     }
 
-    &[data-variant="outline"]:not([data-spacing])[data-orientation="vertical"] > .toggle:not(:first-child) {
+    &[data-variant="outline"]:not([data-spacing])[data-orientation="vertical"] > .toggle + .toggle {
       margin-inline-start: 0;
-      margin-block-start: -1px;
+      margin-block-start: calc(-1 * var(--border-width-025));
     }
 
-    /* -- Sizes: propagate to child toggles ---------------------- */
-            /* -- Vertical orientation ----------------------------------- */
+    /* A focused or hovered connected item paints above its shared boundary. */
+    &[data-variant="outline"]:not([data-spacing]) > .toggle:is(:hover, :focus-visible) {
+      position: relative;
+      z-index: var(--z-raised);
+    }
+
+    /* -- Vertical orientation ----------------------------------- */
     &[data-orientation="vertical"] {
       flex-direction: column;
     }
@@ -991,14 +1030,15 @@
       }
 
       /* The variant lives on the group, not on the child. */
-      &:not([data-variant="outline"]) > .toggle {
-        background-color: var(--surface-control-transparent);
-        border-color: var(--border-transparent);
-      }
-
       &[data-variant="outline"] > .toggle {
         border-color: var(--border-disabled);
       }
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    .toggle-group[data-variant="outline"] > .toggle {
+      border-color: var(--text-primary);
     }
   }
 
@@ -1088,7 +1128,8 @@
     display: flex;
     align-items: center;
     gap: 0;
-    padding: 0;
+    /* Leave room for the child focus ring inside the scroll container. */
+    padding: var(--ring-spread);
     border: var(--border-width-025) solid var(--border-primary);
 
     background: var(--background);
@@ -1103,11 +1144,22 @@
     & > .separator[data-orientation="vertical"] {
       align-self: stretch;
       height: auto;
-      margin: 0;
+      margin-block: calc(-1 * var(--ring-spread));
+      margin-inline: 0;
     }
 
+    /* The toolbar owns the orientation of every child control group. */
     &[aria-orientation="vertical"] {
       flex-direction: column;
+
+      & > .toggle-group {
+        flex-direction: column;
+      }
+
+      & > .toggle-group[data-variant="outline"]:not([data-spacing]) > .toggle + .toggle {
+        margin-inline-start: 0;
+        margin-block-start: calc(-1 * var(--border-width-025));
+      }
 
       & > .separator[data-orientation="horizontal"],
       & > .separator:not([data-orientation]) {
@@ -1149,6 +1201,18 @@
       color: var(--text-disabled);
       cursor: not-allowed;
     }
+  }
+
+  /* A required sibling control marks the label; optional states are explicit. */
+  .label:has(+ :required)::after {
+    content: " *";
+    color: var(--text-negative);
+  }
+
+  .label[data-optional]::after {
+    content: " (optional)";
+    font-weight: var(--font-weight-400);
+    color: var(--text-secondary);
   }
 
   /* -- Hint text (optional, required indicators) ----------- */
@@ -1202,6 +1266,13 @@
   }
 
   .field-required {
+    color: var(--text-negative);
+  }
+
+  /* A required control marks its own label; the star stays decorative. */
+  .field:has(:required) > label::after,
+  .field:has(:required) > .field-label::after {
+    content: " *";
     color: var(--text-negative);
   }
 
@@ -1452,6 +1523,13 @@
   }
 
   .text-field-required {
+    color: var(--text-negative);
+  }
+
+  /* A required control marks its own label; the star stays decorative. */
+  .text-field:has(:required) > label::after,
+  .text-field:has(:required) > .text-field-label::after {
+    content: " *";
     color: var(--text-negative);
   }
 
@@ -2428,13 +2506,13 @@
 
     &:is(:focus-visible, [data-state="focus"]) {
       &::-webkit-slider-thumb {
-        background: var(--surface-pointer-inverted);
+        background: var(--surface-control-transparent);
         border-width: var(--border-width-025);
         border-color: var(--border-focus);
         box-shadow: var(--ring-default);
       }
       &::-moz-range-thumb {
-        background: var(--surface-pointer-inverted);
+        background: var(--surface-control-transparent);
         border-width: var(--border-width-025);
         border-color: var(--border-focus);
         box-shadow: var(--ring-default);
@@ -2458,12 +2536,12 @@
       &::-moz-range-track { background: var(--surface-pointer); }
       &::-moz-range-progress { background: var(--surface-pointer-disabled); }
       &::-webkit-slider-thumb {
-        background: var(--surface-pointer-disabled);
+        background: var(--surface-control-transparent);
         border-color: var(--border-disabled);
         cursor: not-allowed;
       }
       &::-moz-range-thumb {
-        background: var(--surface-pointer-disabled);
+        background: var(--surface-control-transparent);
         border-color: var(--border-disabled);
         cursor: not-allowed;
       }
@@ -2548,23 +2626,23 @@
         background: Highlight;
       }
       &::-webkit-slider-thumb {
-        background: ButtonText;
+        background: ButtonFace;
         border-color: ButtonText;
       }
       &::-moz-range-thumb {
-        background: ButtonText;
+        background: ButtonFace;
         border-color: ButtonText;
       }
 
       &:is(:focus-visible, [data-state="focus"]) {
         &::-webkit-slider-thumb {
-          background: ButtonText;
+          background: ButtonFace;
           border-color: Highlight;
           outline: var(--border-width-050) solid Highlight;
           outline-offset: var(--border-width-025);
         }
         &::-moz-range-thumb {
-          background: ButtonText;
+          background: ButtonFace;
           border-color: Highlight;
           outline: var(--border-width-050) solid Highlight;
           outline-offset: var(--border-width-025);
@@ -2572,11 +2650,11 @@
       }
 
       &:disabled::-webkit-slider-thumb {
-        background: GrayText;
+        background: ButtonFace;
         border-color: GrayText;
       }
       &:disabled::-moz-range-thumb {
-        background: GrayText;
+        background: ButtonFace;
         border-color: GrayText;
       }
     }
@@ -2601,9 +2679,11 @@
       linear-gradient(135deg, currentColor 50%, transparent 50%);
     background-repeat: no-repeat;
     background-size: var(--size-150) var(--size-150);
+    /* Center the 12px chevron in the 36px end padding and center it
+       vertically in the control. */
     background-position:
-      calc(100% - var(--space-300) - 2 * var(--size-150)) calc(50% - var(--size-050)),
-      calc(100% - var(--space-300) - var(--size-150)) calc(50% - var(--size-050));
+      calc(100% - var(--space-300) - var(--size-150)) 50%,
+      calc(100% - var(--space-300)) 50%;
     padding: 0 var(--size-900) 0 var(--space-300);
     font-size: var(--font-size-350);
     font-family: var(--font-mono);
@@ -2913,6 +2993,9 @@
 
 @layer components {
   .date-input {
+    /* Calendar line glyph painted as a currentColor mask. The native picker
+       glyph cannot inherit a semantic color. */
+    --date-field-glyph: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23000%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M9%201V3H15V1H17V3H21C21.5523%203%2022%203.44772%2022%204V20C22%2020.5523%2021.5523%2021%2021%2021H3C2.44772%2021%202%2020.5523%202%2020V4C2%203.44772%202.44772%203%203%203H7V1H9ZM20%2011H4V19H20V11ZM7%205H4V9H20V5H17V7H15V5H9V7H7V5Z%22/%3E%3C/svg%3E");
     position: relative;
     height: var(--size-900);
     width: 100%;
@@ -2949,7 +3032,8 @@
       }
     }
 
-    /* Keep the native glyph and its color-scheme/forced-colors adaptation. */
+    /* Paint the calendar line glyph as a currentColor mask so the picker
+       affordance uses a semantic role instead of the browser default. */
     &::-webkit-calendar-picker-indicator {
       position: absolute;
       inset-block: 0;
@@ -2958,9 +3042,14 @@
       block-size: auto;
       margin: 0;
       cursor: pointer;
+      color: var(--text-secondary);
+      background-color: currentColor;
+      background-image: none;
       background-position: center;
       background-repeat: no-repeat;
       background-size: 1rem 1rem;
+      -webkit-mask: var(--date-field-glyph) center / 1rem 1rem no-repeat;
+      mask: var(--date-field-glyph) center / 1rem 1rem no-repeat;
     }
 
     /* -- Date text: explicit colors, no browser default accent ---- */
@@ -2985,6 +3074,7 @@
 
   @media (prefers-contrast: more) {
     .date-input { border-width: var(--border-width-050); }
+    .date-input::-webkit-calendar-picker-indicator { color: var(--text-primary); }
   }
 
   @media (forced-colors: active) {
@@ -2997,6 +3087,9 @@
     .date-input[readonly]:not(:disabled) { color: FieldText; }
     .date-input:disabled { color: GrayText; border-color: GrayText; }
     .date-input:is([aria-invalid="true"], :user-invalid) { border-style: dashed; }
+
+    .date-input::-webkit-calendar-picker-indicator { color: ButtonText; }
+    .date-input:disabled::-webkit-calendar-picker-indicator { color: GrayText; }
   }
 }
 
@@ -3390,11 +3483,13 @@
     width: anchor-size(width);
     margin: var(--space-100) 0 0;
     padding: 0;
-    overflow: hidden;
     border: var(--border-width-025) solid var(--border-primary);
     background-color: var(--surface-primary);
     color: var(--text-primary);
     position-try-fallbacks: flip-block;
+    /* The native popover surface adds a shadow. The design contract keeps one
+       border and no shadow on a top-layer surface. */
+    box-shadow: none;
   }
 
   .combobox-search {
@@ -3432,6 +3527,12 @@
     font-family: var(--font-mono);
     font-size: var(--font-size-350);
 
+    /* The search row owns the focus ring. The input must not draw a second
+       ring inside it. */
+    &:focus-visible {
+      box-shadow: none;
+    }
+
     &::placeholder {
       color: var(--text-secondary);
     }
@@ -3448,8 +3549,8 @@
     display: flex;
     align-items: center;
     gap: var(--space-200);
-    min-block-size: var(--size-1000);
-    padding: var(--space-200);
+    min-block-size: var(--size-900);
+    padding: var(--space-150) var(--space-200);
     outline: none;
     font-size: var(--font-size-350);
     cursor: pointer;
@@ -3561,6 +3662,8 @@
 
   .time-field > legend,
   .time-field-legend {
+    display: block;
+    margin: 0 0 var(--space-300);
     padding: 0;
     color: var(--text-primary);
     font-size: var(--font-size-350);
@@ -9188,7 +9291,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-100);
-    min-block-size: var(--size-800);
+    min-block-size: var(--size-600);
     border: var(--border-width-025) solid var(--border-primary);
     background: var(--surface-secondary);
     padding-inline-start: var(--space-200);
@@ -9205,8 +9308,8 @@
   }
 
   .tag-input-remove {
-    inline-size: var(--size-800);
-    block-size: var(--size-800);
+    inline-size: var(--size-600);
+    block-size: var(--size-600);
     border: 0;
     border-inline-start: var(--border-width-025) solid var(--border-primary);
     background: transparent;
@@ -9223,7 +9326,7 @@
   .tag-input-control {
     flex: 1 1 auto;
     min-inline-size: 0;
-    block-size: var(--size-800);
+    block-size: var(--size-600);
     border: 0;
     background: transparent;
     padding: 0 var(--space-100);
@@ -9231,6 +9334,12 @@
     font-family: var(--font-mono);
     font-size: var(--font-size-350);
     outline: none;
+
+    /* The enhanced field owns the focus ring. The inner input must not draw
+       a second ring inside the field. */
+    &:focus-visible {
+      box-shadow: none;
+    }
   }
 
   .tag-input[data-invalid] .tag-input-field,

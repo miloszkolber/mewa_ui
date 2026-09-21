@@ -1,4 +1,4 @@
-import { demoIcon } from './component-model.mjs';
+import { demoIcon, demoIconEnd, demoSpinner } from './component-model.mjs';
 
 // Exact owner paths are compiled before controls are rendered. A missing label
 // in one item must never shift an update onto the following item's label.
@@ -14,7 +14,18 @@ export const companionSelectors = {
   'toggle-group': ['.toggle'],
   'number-field': ['.number-field button'],
   resizable: ['.resizable-group', '.resizable-handle'],
-  toolbar: ['.separator']
+  toolbar: ['.separator'],
+  'date-picker': ['.date-picker-nav', '.date-picker-day button'],
+  'file-input': ['.file-input'],
+  'text-field': ['.text-field'],
+  field: ['.field'],
+  'tag-input': [
+    '.tag-input-field',
+    '.tag-input-fallback',
+    '.tag-input-remove',
+    '.tag-input-control'
+  ],
+  'file-upload': ['.file-upload']
 };
 
 function owned(scope, child) {
@@ -32,69 +43,104 @@ function companionOperations(scope, selector, operation) {
 
 // Operations are consumed by both HTMLRewriter (export) and DOM (playground).
 // Keeping mutations here prevents the two surfaces from inventing different APIs.
-export function propertyOperations(scope, attr, value) {
-  const ops = [
-    {
-      selector: scope.target,
-      index: scope.index || 0,
-      attr,
-      value: scope.type === 'badge' && attr === 'data-state' && !value ? null : value
+export function propertyOperations(scope, property, value) {
+  const name = property.name;
+  const attr = property.attr;
+  const index = scope.index || 0;
+  const ops = [];
+  if (!attr) return ops;
+  if (name === 'data-icon-variant') {
+    ops.push({ selector: scope.target, index, variant: value });
+    return ops;
+  }
+  ops.push({ selector: scope.target, index, attr, value });
+
+  if (name === 'disabled') {
+    if (scope.type === 'toggle-group')
+      ops.push(...companionOperations(scope, '.toggle', { attr: 'disabled', value }));
+    if (scope.type === 'number-field')
+      ops.push(...companionOperations(scope, '.number-field button', { attr: 'disabled', value }));
+    if (scope.type === 'date-picker')
+      ops.push(
+        ...companionOperations(scope, '.date-picker-nav, .date-picker-day button', {
+          attr: 'disabled',
+          value
+        })
+      );
+    if (scope.type === 'tag-input') {
+      ops.push({
+        selector: owned(scope, '.tag-input-fallback'),
+        attr: 'disabled',
+        value
+      });
+      ops.push({
+        selector: `${owned(scope, '.tag-input-remove')},${owned(scope, '.tag-input-control')}`,
+        attr: 'disabled',
+        value
+      });
     }
-  ];
+    if (['text-field', 'field'].includes(scope.type))
+      ops.push(...companionOperations(scope, scope.type, { attr: 'data-disabled', value }));
+  }
+  if (name === 'invalid') {
+    if (['text-field', 'tag-input', 'file-upload', 'field'].includes(scope.type))
+      ops.push(...companionOperations(scope, scope.type, { attr: 'data-invalid', value }));
+  }
+  if (name === 'open' && scope.type === 'combobox')
+    ops.push({
+      selector: owned(scope, '.combobox-trigger'),
+      attr: 'aria-expanded',
+      value: value === null ? 'false' : 'true'
+    });
+  if (name === 'loading')
+    ops.push({
+      selector: scope.target,
+      index,
+      attr: 'aria-busy',
+      value: value === null ? null : 'true'
+    });
+  if (name === 'checked') {
+    ops.push({ selector: scope.target, index, attr: 'checked', value });
+  }
+  if (name === 'indeterminate') {
+    ops.push({ selector: scope.target, index, attr: 'data-demo-mixed', value });
+  }
   if (attr === 'data-orientation' && scope.type === 'slider')
     ops.push({
       selector: scope.target,
-      index: scope.index || 0,
+      index,
       attr: 'aria-orientation',
       value: value || 'horizontal'
     });
   if (scope.type === 'nav-link' && attr === 'aria-current' && value === 'page')
     for (let i = 0; i < scope.count; i++)
-      if (i !== (scope.index || 0))
-        ops.push({ selector: scope.target, index: i, attr, value: null });
-  if (
-    attr === 'data-icon-only' &&
-    scope.id !== 'root' &&
-    value !== null &&
-    !Object.hasOwn(scope.instances?.[scope.index || 0] || {}, 'data-icon-only')
-  ) {
-    ops.push({ selector: scope.target, index: scope.index || 0, html: demoIcon });
-    ops.push({
-      selector: scope.target,
-      index: scope.index || 0,
-      attr: 'aria-label',
-      value: 'Action'
-    });
-  }
+      if (i !== index) ops.push({ selector: scope.target, index: i, attr, value: null });
   if (attr === 'data-orientation' && scope.type === 'resizable') {
     ops.push(...companionOperations(scope, '.resizable-group', { attr, value }));
     ops.push(
       ...companionOperations(scope, '.resizable-handle', { attr: 'aria-orientation', value })
     );
   }
-  if (attr === 'aria-orientation' && scope.type === 'toolbar')
+  if (attr === 'aria-orientation' && scope.type === 'toolbar') {
+    ops.push(...companionOperations(scope, '.toggle-group', { attr: 'data-orientation', value }));
     ops.push(
       ...companionOperations(scope, '.separator', {
         attr: 'data-orientation',
         value: value === 'vertical' ? 'horizontal' : 'vertical'
       })
     );
+  }
   if (attr === 'data-variant' && scope.type === 'badge')
     ops.push({
       selector: scope.target,
-      index: scope.index || 0,
+      index,
       text: value === 'count' ? '8' : 'Badge'
     });
   if (attr === 'data-state' && scope.type === 'badge' && value) {
+    ops.push({ selector: scope.target, index, attr: 'data-variant', value: null });
     ops.push({
       selector: scope.target,
-      index: scope.index || 0,
-      attr: 'data-variant',
-      value: null
-    });
-    ops.push({
-      selector: scope.target,
-      index: scope.index || 0,
+      index,
       text: { positive: 'Ready', caution: 'Delayed', negative: 'Failed', running: 'Running' }[value]
     });
   }
@@ -111,7 +157,7 @@ export function propertyOperations(scope, attr, value) {
     const streaming = value !== null;
     ops.push({
       selector: scope.target,
-      index: scope.index || 0,
+      index,
       attr: 'aria-busy',
       value: streaming ? 'true' : null
     });
@@ -149,7 +195,7 @@ export function propertyOperations(scope, attr, value) {
   if (attr === 'data-state' && scope.type === 'composer') {
     ops.push({
       selector: scope.target,
-      index: scope.index || 0,
+      index,
       attr: 'aria-busy',
       value: value === 'thinking' ? 'true' : null
     });
@@ -162,11 +208,9 @@ export function propertyOperations(scope, attr, value) {
   if (attr === 'data-trend')
     ops.push({
       selector: scope.target,
-      index: scope.index || 0,
+      index,
       text: value === 'up' ? '↑ +20.1%' : value === 'down' ? '↓ −4.5%' : 'No change'
     });
-  if (attr === 'data-disabled' && scope.type === 'toggle-group')
-    ops.push(...companionOperations(scope, '.toggle', { attr: 'disabled', value }));
   if (attr === 'data-submit-on')
     ops.push(
       ...companionOperations(scope, '.composer-hint', {
@@ -179,6 +223,44 @@ export function propertyOperations(scope, attr, value) {
       })
     );
   return ops;
+}
+
+// Action content is a computed set of booleans, not an attribute. Both surfaces
+// call this once with the resolved content state.
+export function contentOperations(scope, state = {}) {
+  if (!['button', 'toggle'].includes(scope.type)) return [];
+  const label = 'Button';
+  const showLabel = state.showLabel !== false;
+  const showIconStart = Boolean(state.showIconStart);
+  const showIconEnd = Boolean(state.showIconEnd);
+  const loading = Boolean(state.loading);
+  if (!showLabel && !showIconStart && !showIconEnd) return [];
+  const html =
+    (loading ? demoSpinner : '') +
+    (showIconStart ? demoIcon : '') +
+    (showLabel ? label : '') +
+    (showIconEnd ? demoIconEnd : '');
+  return [
+    { selector: scope.target, index: scope.index || 0, html },
+    {
+      selector: scope.target,
+      index: scope.index || 0,
+      attr: 'aria-label',
+      value: showLabel ? null : label
+    },
+    {
+      selector: scope.target,
+      index: scope.index || 0,
+      attr: 'data-icon-only',
+      value: showLabel ? null : ''
+    },
+    {
+      selector: scope.target,
+      index: scope.index || 0,
+      attr: 'aria-busy',
+      value: loading ? 'true' : null
+    }
+  ];
 }
 
 // A mutually exclusive part property (for example `aria-current` on navigation
@@ -195,79 +277,7 @@ export function exclusiveOperations(scope, chosen) {
   return ops;
 }
 
-export function stateOperations(scope, state) {
-  if (!scope.states || scope.states.length < 2) return [];
-  const selector = scope.focus || scope.target;
-  const index = scope.index || 0;
-  if (scope.disclosure)
-    return [{ selector: scope.target, index, attr: 'open', value: state === 'Open' ? '' : null }];
-  const flags = {
-    'data-demo-hover': state === 'Hover',
-    'data-demo-focus': /focus/i.test(state),
-    ...(scope.states.some((s) => /disabled/i.test(s))
-      ? { disabled: /disabled/i.test(state), 'aria-disabled': /disabled/i.test(state) }
-      : {}),
-    ...(scope.states.some((s) => /invalid/i.test(s))
-      ? { 'aria-invalid': /invalid/i.test(state) }
-      : {}),
-    ...(scope.checkable
-      ? { checked: /Checked/.test(state), 'data-demo-mixed': /Mixed/.test(state) }
-      : {})
-  };
-  const ops = Object.entries(flags).map(([attr, on]) => ({
-    selector,
-    index,
-    attr,
-    value: on ? (attr.startsWith('aria-') ? 'true' : '') : null
-  }));
-  if (scope.hover)
-    ops.push({
-      selector: scope.hover,
-      index,
-      attr: 'data-demo-hover',
-      value: state === 'Hover' ? '' : null
-    });
-  if (scope.focusWithin)
-    ops.push({
-      selector: scope.focusWithin,
-      index,
-      attr: 'data-demo-focus-within',
-      value: /focus/i.test(state) ? '' : null
-    });
-  if (scope.type === 'number-field')
-    ops.push(
-      ...companionOperations(scope, '.number-field button', {
-        attr: 'disabled',
-        value: /disabled/i.test(state) ? '' : null
-      })
-    );
-  if (['tag-input', 'file-upload'].includes(scope.type))
-    ops.push({
-      selector: scope.target,
-      index,
-      attr: 'data-invalid',
-      value: /invalid/i.test(state) ? '' : null
-    });
-  if (scope.type === 'tag-input') {
-    ops.push({
-      selector: owned(scope, '.tag-input-fallback'),
-      attr: 'disabled',
-      value: /disabled/i.test(state) ? '' : null
-    });
-    ops.push({
-      selector: `${owned(scope, '.tag-input-remove')},${owned(scope, '.tag-input-control')}`,
-      attr: 'disabled',
-      value: /disabled/i.test(state) ? '' : null
-    });
-  }
-  // Group availability wins over an individual visual-state selector. The
-  // compiler and the browser post-enhancement pass use the same constraint.
-  if (scope.type === 'toggle')
-    ops.push({ selector: '.toggle-group[data-disabled] > .toggle', attr: 'disabled', value: '' });
-  return ops;
-}
-
-export function slotOperations(slug, value, iconOnly = false) {
+export function slotOperations(slug, value) {
   if (slug === 'table')
     return [
       {
@@ -306,18 +316,6 @@ export function slotOperations(slug, value, iconOnly = false) {
         attr: 'style',
         value: value === 'round' ? null : 'height:var(--size-900)'
       }
-    ];
-  if (slug === 'button')
-    return [
-      {
-        selector: '.btn',
-        index: 0,
-        html: iconOnly
-          ? demoIcon
-          : `${value === 'loading' ? '<svg class="spinner" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9h-2a7 7 0 1 1-7-7z"/></svg>' : value === 'leading-icon' ? demoIcon : ''}Button`
-      },
-      { selector: '.btn', index: 0, attr: 'aria-label', value: iconOnly ? 'Button' : null },
-      { selector: '.btn', index: 0, attr: 'aria-busy', value: value === 'loading' ? 'true' : null }
     ];
   if (slug === 'avatar')
     return [

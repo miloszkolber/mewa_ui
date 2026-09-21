@@ -1,31 +1,9 @@
 // Shared, component-first presentation contract. A part owns its own state;
-// focus on a nested button is never a state of its containing group or card.
-import { profiles, statesFor } from './catalog.mjs';
-
-const parentOnly = new Set([
-  'button-group',
-  'toggle-group',
-  'toolbar',
-  'field',
-  'form',
-  'radio-group',
-  'date-picker',
-  'date-range-picker',
-  'time-field',
-  'pagination',
-  'tabs',
-  'tree-view',
-  'color-picker',
-  'input-otp',
-  'suggestion',
-  'combobox',
-  'accordion'
-]);
+// focus on a nested button is never a property of its containing group or card.
+import { profiles, propertiesFor, booleanProps } from './catalog.mjs';
 
 export function rootProfile(slug) {
-  const p = { matrixExcludedProps: [], ...profiles[slug] };
-  if (parentOnly.has(slug)) p.states = ['Default'];
-  return p;
+  return { ...profiles[slug] };
 }
 
 // Each selector identifies a documented atom/part, not an arbitrary descendant.
@@ -89,8 +67,12 @@ export const standaloneParts = new Set([
   'number'
 ]);
 
-const visualParts = {
-  'form-field': { props: { 'data-orientation': [null, 'horizontal'] } },
+// Persistent conditions are properties now, never a second "visual state" axis.
+const partProperties = {
+  'form-field': {
+    props: { 'data-orientation': [null, 'horizontal'] },
+    booleans: ['disabled', 'invalid', 'required']
+  },
   'activity-item': { props: { 'data-status': ['pending', 'running', 'complete', 'error'] } },
   'todo-item': { props: { 'data-status': ['pending', 'active', 'done', 'error'] } },
   'avatar-badge': { props: { hidden: [null, ''] } },
@@ -110,67 +92,40 @@ const visualParts = {
       ]
     }
   },
-  'source-link': { states: ['Default', 'Hover', 'Focus'] },
-  'composer-input': {
-    states: ['Default', 'Focus', 'Disabled'],
-    props: { readonly: [null, ''] },
-    focusWithin: '.composer'
-  },
-  day: { states: ['Default', 'Hover', 'Focus', 'Disabled'], dynamic: true },
-  dismiss: { states: ['Default', 'Hover', 'Focus'] },
-  'nav-trigger': { states: ['Default', 'Hover', 'Focus'] },
-  tab: {
-    states: ['Default', 'Hover', 'Focus', 'Disabled'],
-    exclusive: { attr: 'aria-selected', on: 'true' }
-  },
-  page: {
-    states: ['Default', 'Hover', 'Focus', 'Disabled'],
-    exclusive: { attr: 'aria-current', on: 'page' }
-  }
+  'source-link': { booleans: ['disabled'] },
+  'composer-input': { booleans: ['readonly'] },
+  day: {},
+  dismiss: { booleans: ['disabled'] },
+  'nav-trigger': { booleans: ['disabled'] },
+  tab: { booleans: ['disabled'], exclusive: { attr: 'aria-selected', on: 'true' } },
+  page: { booleans: ['disabled'], exclusive: { attr: 'aria-current', on: 'page' } },
+  radio: { booleans: ['checked', 'disabled'], booleanOverrides: { checked: { attr: 'checked' } } },
+  'command-input': {},
+  'command-item': { booleans: ['disabled'] },
+  menuitem: { booleans: ['disabled'] },
+  treeitem: { booleans: ['disabled'], exclusive: { attr: 'aria-selected', on: 'true' } },
+  treecontrol: { booleans: ['disabled'] },
+  'accordion-item': { booleans: ['open'] },
+  'message-bubble': { props: { 'data-tone': ['', 'muted', 'negative', 'selected'] } },
+  summary: { booleans: ['disabled'] },
+  'nav-link': { booleans: ['disabled'], exclusive: { attr: 'aria-current', on: 'page' } },
+  'carousel-control': { booleans: ['disabled'] },
+  resize: { booleans: ['disabled'] },
+  'suggestion-item': { booleans: ['disabled'] }
 };
 
 export function partProfile(type, selector) {
-  if (visualParts[type]) return { ...visualParts[type], target: selector };
-  if (type === 'command-input')
+  if (partProperties[type]) return { ...partProperties[type], target: selector };
+  // A grouped control never exposes its own variant or content. The owning
+  // group or toolbar sets those once for every child.
+  if (type === 'button') return { target: selector, booleans: ['disabled'] };
+  if (type === 'toggle')
     return {
       target: selector,
-      focusWithin: '.command-palette-input-wrapper',
-      states: ['Default', 'Focus']
+      booleans: ['checked', 'disabled'],
+      booleanOverrides: { checked: { attr: 'aria-pressed', on: 'true', values: ['false', 'true'] } }
     };
-  if (type === 'treeitem')
-    return {
-      target: selector,
-      states: ['Default', 'Disabled'],
-      exclusive: { attr: 'aria-selected', on: 'true' }
-    };
-  if (type === 'treecontrol') return { target: selector, states: ['Default', 'Hover', 'Focus'] };
-  if (type === 'accordion-item')
-    return { target: selector, disclosure: true, states: ['Closed', 'Open'] };
-  if (type === 'message-bubble')
-    return {
-      target: selector,
-      states: ['Default'],
-      props: { 'data-tone': ['', 'muted', 'negative', 'selected'] }
-    };
-  if (type === 'summary')
-    return {
-      target: selector,
-      states: [
-        'Default',
-        ...(/\.(?:collapsible|tree|agent-activity|reasoning|file-diff)\b/.test(selector)
-          ? ['Hover']
-          : []),
-        'Focus',
-        ...(/\.accordion\b/.test(selector) ? ['Disabled'] : [])
-      ]
-    };
-  if (type === 'nav-link')
-    return {
-      target: selector,
-      states: ['Default', 'Hover', 'Focus'],
-      exclusive: { attr: 'aria-current', on: 'page' }
-    };
-  if (profiles[type]) return { ...profiles[type], target: selector, focus: selector };
+  if (profiles[type]) return { ...profiles[type], target: selector };
   const input = [
     'radio',
     'date',
@@ -185,82 +140,95 @@ export function partProfile(type, selector) {
   ].includes(type);
   return {
     target: selector,
-    input,
-    interactive: !input,
-    checkable: type === 'radio',
-    ...(['color', 'color-hex', 'otp', 'combobox-trigger'].includes(type)
-      ? { hover: selector }
-      : {}),
-    ...(['range-date', 'time'].includes(type) ? { hover: false } : {}),
-    ...(type === 'resize' ? { states: ['Default', 'Focus'] } : {})
+    ...(type === 'radio' ? { booleans: ['checked', 'disabled'] } : {}),
+    ...(input ? { booleans: ['disabled', 'invalid'] } : {}),
+    ...(type === 'combobox-trigger' ? { booleans: ['disabled', 'invalid', 'open'] } : {}),
+    ...(type === 'otp' ? { booleans: ['disabled', 'invalid'] } : {})
   };
 }
 
-export function propertyLabel(attr) {
-  return (
-    {
-      'aria-pressed': 'Pressed',
-      'aria-orientation': 'Orientation',
-      'data-icon-only': 'Icon only',
-      'data-type': 'Selection',
-      'data-state': 'Status',
-      'data-submit-on': 'Submit shortcut',
-      value: 'Completion'
-    }[attr] ||
-    attr
-      .replace(/^data-/, '')
-      .replaceAll('-', ' ')
-      .replace(/^./, (s) => s.toUpperCase())
-  );
+// Property labels are lowercase, like a code inspector.
+export function propertyLabel(name) {
+  const map = {
+    'aria-pressed': 'checked',
+    'aria-orientation': 'orientation',
+    'aria-busy': 'loading',
+    'data-icon-only': 'icon only',
+    'data-icon-variant': 'variant',
+    'data-type': 'selection',
+    'data-state': 'status',
+    'data-submit-on': 'submit shortcut',
+    'data-variant': 'variant',
+    'data-orientation': 'orientation',
+    'data-spacing': 'spacing',
+    'data-position': 'position',
+    'data-side': 'side',
+    'data-align': 'align',
+    'data-tone': 'tone',
+    'data-trend': 'trend',
+    'data-status': 'status',
+    'data-author': 'author',
+    'data-streaming': 'streaming',
+    'data-ratio': 'ratio',
+    'data-fit': 'fit',
+    'data-radius': 'radius',
+    value: 'completion'
+  };
+  if (map[name]) return map[name];
+  return name
+    .replace(/^data-/, '')
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replaceAll('-', ' ')
+    .toLowerCase();
 }
 
-export function optionLabel(slug, attr, value, values) {
+export function optionLabel(slug, attr, value, values, kind) {
   if (slug === 'progress' && attr === 'value')
-    return value === null ? 'Indeterminate' : `${value}%`;
-  if (values.includes(null) && values.includes('')) return value === null ? 'Off' : 'On';
-  if (value === null) return 'Default';
+    return value === null ? 'indeterminate' : `${value}%`;
+  if (kind === 'boolean') return value === null ? 'off' : 'on';
+  if (values.includes(null) && values.includes('')) return value === null ? 'off' : 'on';
+  if (value === null) return 'default';
   if (attr === 'data-size') {
     const sizes =
       slug === 'icon'
         ? { xs: 12, '': 16, md: 20, lg: 24, xl: 32 }
         : { xs: 12, sm: 16, md: 20, lg: 24, xl: 32 };
-    return sizes[value] ? `${sizes[value]}px` : value;
+    return sizes[value] ?? value;
   }
-  return value === '' ? 'Default' : value.replace(/^./, (s) => s.toUpperCase());
+  return String(value);
 }
 
 export const encodeValue = (value) => (value === null ? '__remove' : value);
 export const decodeValue = (value) => (value === '__remove' ? null : value);
-export function booleanValues(values) {
-  if (values.length !== 2) return null;
-  if (values.includes(null) && values.includes('')) return [null, ''];
-  if (values.includes('false') && values.includes('true')) return ['false', 'true'];
-  return null;
+export function booleanValues(property) {
+  if (property.kind !== 'boolean') return null;
+  return property.values ?? [null, property.on];
+}
+
+function isPresence(property) {
+  return property.on === '';
 }
 
 export function initialValue(scope, property, index = 0) {
   if (property.initialValues && index < property.initialValues.length)
     return property.initialValues[index];
-  const authored = scope.instances?.[index]?.[property.attr];
+  const authored = property.attr ? scope.instances?.[index]?.[property.attr] : undefined;
   if (authored !== undefined) return authored;
+  // A boolean is represented by its attribute value, not a JS boolean.
+  if (property.kind === 'boolean')
+    return property.default ? property.on : (property.values?.[0] ?? null);
   if (Object.hasOwn(scope.defaults || {}, property.attr)) return scope.defaults[property.attr];
-  if (property.values.includes(null)) return null;
-  if (property.values.includes('')) return '';
-  return property.default;
+  if (property.values?.includes(null)) return null;
+  if (property.values?.includes('')) return '';
+  return property.default ?? null;
 }
 
-// Badge status and neutral emphasis are separate documented forms, not axes.
-// The playground can hide ignored controls without discarding their choice.
-export function propertyConstraints(scope, values = {}) {
-  const ignoredProps = scope.type === 'badge' && values['data-state'] ? ['data-variant'] : [];
-  return { hiddenProps: ignoredProps, ignoredProps };
-}
-export { statesFor };
+export { profiles, propertiesFor, booleanProps, isPresence };
 
 // Canonical anatomy, not a selectable collection of application examples.
 export function canonicalHtml(c, matrix = false) {
   if (c.slug === 'button')
-    return '<button class="btn" type="button" data-variant="default">Button</button>';
+    return '<button class="btn" type="button" data-variant="primary">Button</button>';
   if (c.slug === 'badge') return '<span class="badge" data-variant="default">Badge</span>';
   if (c.slug === 'avatar')
     return '<span class="avatar"><img class="avatar-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&fit=crop&crop=faces" width="36" height="36" alt="Portrait"><span class="avatar-fallback" aria-hidden="true">MK</span><span class="avatar-badge" role="img" aria-label="Available"></span></span>';
@@ -297,6 +265,8 @@ export function canonicalHtml(c, matrix = false) {
     return '<ul class="tree" role="tree" aria-label="Files"><li class="tree-item" role="treeitem" aria-expanded="true"><details class="tree-branch" open><summary class="tree-branch-trigger">Source</summary><ul class="tree-group" role="group"><li class="tree-item" role="treeitem" aria-selected="true"><span class="tree-leaf" tabindex="0"><span class="tree-indicator" data-variant="default" aria-hidden="true"></span>index.js</span></li><li class="tree-item" role="treeitem"><span class="tree-leaf" tabindex="-1">styles.css</span></li></ul></details></li></ul>';
   if (c.slug === 'statistic')
     return c.specimens.find((s) => s.html.includes('statistic-trend'))?.html || c.specimens[0].html;
+  if (c.slug === 'icon')
+    return '<i class="ri-home-line" data-icon-variant="line" aria-hidden="true"></i>';
   if (['toggle', 'thinking-indicator'].includes(c.slug)) return c.specimens[0].html;
   if (matrix) return c.specimens[0].html;
   return c.samples[0].html;
@@ -305,21 +275,24 @@ export function canonicalHtml(c, matrix = false) {
 // Structural slots have real markup semantics and explicit values, unlike an
 // "example" selector. These are shared by the playground and export matrix.
 export const slots = {
-  table: { label: 'Density', values: ['plain', 'dense'], default: 'plain' },
-  'tool-call': { label: 'Structure', values: ['disclosure', 'status-only'], default: 'disclosure' },
+  table: { label: 'density', values: ['plain', 'dense'], default: 'plain' },
+  'tool-call': { label: 'structure', values: ['disclosure', 'status-only'], default: 'disclosure' },
   layout: {
-    label: 'Primitive',
+    label: 'primitive',
     values: ['stack', 'grid', 'sidebar', 'center', 'split', 'container'],
     default: 'stack'
   },
-  skeleton: { label: 'Shape', values: ['bar', 'round'], default: 'bar' },
-  avatar: { label: 'Content', values: ['image', 'initials', 'icon'], default: 'image' },
-  toast: { label: 'Action', values: ['dismiss', 'action'], default: 'dismiss' },
-  button: { label: 'Content', values: ['label', 'leading-icon', 'loading'], default: 'label' }
+  skeleton: { label: 'shape', values: ['bar', 'round'], default: 'bar' },
+  avatar: { label: 'content', values: ['image', 'initials', 'icon'], default: 'image' },
+  toast: { label: 'action', values: ['dismiss', 'action'], default: 'dismiss' }
 };
 
 export const demoIcon =
   '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z"/></svg>';
+export const demoIconEnd =
+  '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"/></svg>';
+export const demoSpinner =
+  '<svg class="spinner" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9h-2a7 7 0 1 1-7-7z"/></svg>';
 
 // One complete rendered Markdown document. Typography is a presentation
 // component: it styles native Markdown output and has no properties or states.

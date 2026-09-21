@@ -71,7 +71,9 @@ Toolbar owns roving focus across the buttons inside each Toggle Group.
 
 Arrow keys can leave a Toggle Group without wrapping inside that group.
 
-The Toolbar orientation controls arrow direction for all child buttons.
+The Toolbar orientation controls arrow direction and the visual orientation of every child control group.
+
+A child Toggle Group does not set its own orientation or variant inside the Toolbar.
 
 Do not put text inputs or route links in Toolbar unless the component keyboard model explicitly supports that composition.
 

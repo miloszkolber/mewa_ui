@@ -54,10 +54,10 @@
     }
 
     /* -- Variants -------------------------------------------- */
-    &[data-variant="outline"] {
+    /* The containing Toggle Group owns the variant for grouped toggles. */
+    &:not(.toggle-group .toggle)[data-variant="outline"] {
       border: var(--border-width-025) solid var(--border-secondary);
       background: var(--surface-control-transparent);
-
 
       &:not([aria-pressed="true"]):hover {
         background-color: var(--surface-control-hover);
@@ -70,20 +70,21 @@
       }
     }
 
-    &[data-variant="outline"]:disabled {
+    &:not(.toggle-group .toggle)[data-variant="outline"]:disabled {
       background: var(--surface-control-disabled);
       border-color: var(--border-disabled);
       color: var(--text-disabled);
     }
 
     /* -- Sizes ----------------------------------------------- */
+    &[data-icon-only] { width: var(--size-900); padding: 0; }
   }
 
   @media (prefers-contrast: more) {
     .toggle {
       border: var(--border-width-050) solid var(--border-transparent);
 
-      &[data-variant="outline"] {
+      &:not(.toggle-group .toggle)[data-variant="outline"] {
         border-color: var(--text-primary);
       }
 

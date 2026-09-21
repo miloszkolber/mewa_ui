@@ -21,6 +21,12 @@
 
   }
 
+  /* A local loader injects the glyph; it fills the sized class hook. */
+  :where([class^="ri-"], [class*=" ri-"]) > svg {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
   /* A pair keeps line and fill glyphs in the same slot. The containing
      control owns the state; this utility only swaps the already-local SVGs. */
   :where([data-icon-pair]) {

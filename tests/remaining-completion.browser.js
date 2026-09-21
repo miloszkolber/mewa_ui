@@ -103,8 +103,8 @@ export async function runRemainingCompletionTests(assetBase = '/mewa-ui') {
     await test(
       'Header composes Button links without overriding their size or variant',
       `
-      <a class="btn" data-variant="default" href="#">Action</a>
-      <header class="header"><div class="header-actions"><a class="btn" data-variant="default" href="#">Action</a></div></header>`,
+      <a class="btn" data-variant="primary" href="#">Action</a>
+      <header class="header"><div class="header-actions"><a class="btn" data-variant="primary" href="#">Action</a></div></header>`,
       (host) => {
         const [standalone, nested] = host.querySelectorAll('a');
         check(

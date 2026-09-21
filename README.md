@@ -17,7 +17,7 @@ The repository contains 80 components, from basic controls and form fields to da
 - a small ES module when behavior needs JavaScript;
 - an anchored section in the shared component preview.
 
-Explore the [component playgrounds](docs/preview.html) to select a component, adjust its properties and states, try its behavior, and read the current markup. Typography opens as a static rendered Markdown document because it has no properties or states. Use the [Figma state matrix](docs/figma.html) for isolated visual specimens without interactions, property controls, or launcher buttons. The matrix covers visual states, properties, and variants only. Each page has a theme picker and covers the complete catalog in [`registry.json`](registry.json).
+Explore the [component playgrounds](docs/preview.html) to select a component, adjust its properties, try its behavior, and read the current markup. Typography opens as a static rendered Markdown document because it has no properties. Use the [Figma matrix](docs/figma.html) for isolated visual specimens without interactions, property controls, or launcher buttons. The matrix covers visual properties and variants only. Each page has a theme picker and covers the complete catalog in [`registry.json`](registry.json).
 
 ## Get a release from GitHub
 

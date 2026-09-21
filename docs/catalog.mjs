@@ -1,15 +1,34 @@
 // Documentation metadata. Selectors and options refer to the public component contracts.
 
+// Boolean properties replace the former "visual state" selector. Each one is a
+// real, persistent attribute the component already supports.
+export const booleanProps = {
+  disabled: { attr: 'disabled', on: '', default: false },
+  invalid: { attr: 'aria-invalid', on: 'true', default: false },
+  readonly: { attr: 'readonly', on: '', default: false },
+  required: { attr: 'required', on: '', default: false },
+  checked: { attr: 'checked', on: '', default: false },
+  indeterminate: { attr: 'data-demo-mixed', on: '', default: false },
+  loading: { attr: 'aria-busy', on: 'true', default: false },
+  open: { attr: 'open', on: '', default: false },
+  optional: { attr: 'data-optional', on: '', default: false },
+  showLabel: { attr: null, on: '', default: true },
+  showIconStart: { attr: null, on: '', default: false },
+  showIconEnd: { attr: null, on: '', default: false }
+};
+
 // Properties that change behavior or data, not appearance. The preview may
 // still expose them, but the Figma state matrix must not render them.
-export const nonVisualProps = new Set([
-  'required',
-  'multiple',
-  'data-loop',
-  'data-submit-on',
-  'data-preview',
-  'data-type'
-]);
+export const nonVisualProps = new Set(['multiple', 'data-loop', 'data-submit-on', 'data-preview']);
+
+// A shared content model for actions. The booleans above stay independently
+// editable in the preview; the matrix crosses these named combinations instead.
+export const actionContent = {
+  label: { showLabel: true, showIconStart: false, showIconEnd: false },
+  'leading icon': { showLabel: true, showIconStart: true, showIconEnd: false },
+  'trailing icon': { showLabel: true, showIconStart: false, showIconEnd: true },
+  'icon only': { showLabel: false, showIconStart: true, showIconEnd: false }
+};
 
 export const profiles = {
   // Typography documents rendered Markdown. It has no property controls and no
@@ -20,102 +39,175 @@ export const profiles = {
       '.layout-container,.layout-stack,.layout-grid,.layout-sidebar,.layout-center,.layout-split',
     wide: true,
     defaults: { 'data-gap': 'md' },
-    props: { 'data-gap': ['none', 'xs', 'sm', 'md', 'lg', 'xl'] }
+    props: { 'data-gap': ['none', 'xs', 'sm', 'md', 'lg', 'xl'] },
+    // Gap only separates children in these primitives.
+    gapFor: ['stack', 'grid', 'sidebar'],
+    matrix: [{ slot: true }, { prop: 'data-gap' }]
   },
   separator: { target: '.separator', props: { 'data-orientation': ['horizontal', 'vertical'] } },
   icon: {
     target: '[data-remix-icon], [class^="ri-"], [class*=" ri-"]',
-    props: { 'data-size': ['xs', '', 'md', 'lg', 'xl'] }
+    props: {
+      'data-size': ['xs', '', 'md', 'lg', 'xl'],
+      'data-icon-variant': ['line', 'fill']
+    },
+    matrix: [{ prop: 'data-size' }]
   },
   button: {
     target: '.btn',
-    interactive: true,
-    props: {
-      'data-variant': ['default', 'secondary', 'ghost', 'destructive', 'link'],
-      'data-icon-only': [null, '']
-    }
+    props: { 'data-variant': ['primary', 'secondary', 'ghost', 'destructive', 'link'] },
+    booleans: ['disabled', 'loading', 'showLabel', 'showIconStart', 'showIconEnd'],
+    content: actionContent,
+    matrix: [{ prop: 'data-variant' }, { content: true }]
   },
   toggle: {
     target: '.toggle',
-    interactive: true,
-    props: { 'aria-pressed': ['false', 'true'], 'data-variant': ['', 'outline'] }
+    props: { 'data-variant': ['', 'outline'] },
+    booleans: ['checked', 'disabled', 'showLabel', 'showIconStart', 'showIconEnd'],
+    // `aria-pressed` is always present on a toggle, so its boolean has no absent form.
+    booleanOverrides: { checked: { attr: 'aria-pressed', on: 'true', values: ['false', 'true'] } },
+    content: actionContent,
+    matrix: [{ prop: 'data-variant' }, { bool: 'checked' }]
   },
   'toggle-group': {
     target: '.toggle-group',
     interactive: true,
-    focus: '.toggle',
     defaults: { 'data-type': 'single', 'data-orientation': 'horizontal' },
     props: {
       'data-type': ['single', 'multiple'],
       'data-orientation': ['horizontal', 'vertical'],
       'data-variant': ['', 'outline'],
-      'data-spacing': [null, ''],
-      'data-disabled': [null, '']
-    }
+      'data-spacing': [null, '']
+    },
+    booleans: ['disabled'],
+    booleanOverrides: { disabled: { attr: 'data-disabled', on: '' } },
+    matrix: [
+      { prop: 'data-orientation' },
+      { prop: 'data-variant' },
+      { prop: 'data-spacing' },
+      { bool: 'disabled' }
+    ]
   },
   'button-group': {
     target: '.btn-group',
     interactive: true,
-    focus: '.btn',
-    props: { 'data-orientation': ['horizontal', 'vertical'] }
+    props: { 'data-orientation': ['horizontal', 'vertical'] },
+    booleans: ['disabled']
   },
   toolbar: {
     target: '.toolbar',
     interactive: true,
-    focus: 'button',
     wide: true,
-    props: { 'aria-orientation': ['horizontal', 'vertical'] }
+    props: { 'aria-orientation': ['horizontal', 'vertical'] },
+    matrix: [{ prop: 'aria-orientation' }]
   },
-  label: { target: '.label' },
+  label: {
+    target: '.label',
+    booleans: ['disabled', 'optional'],
+    matrix: [{ bool: 'optional' }]
+  },
   field: {
     target: '.field',
     input: true,
-    focus: 'input,select,textarea',
-    props: { 'data-orientation': [null, 'horizontal'] }
+    props: { 'data-orientation': [null, 'horizontal'] },
+    booleans: ['disabled', 'invalid', 'required'],
+    textFields: [
+      { name: 'label', selector: '.field > label' },
+      { name: 'description', selector: '.field-description' }
+    ],
+    matrix: [{ prop: 'data-orientation' }, { bool: 'required' }]
   },
   'text-field': {
     target: '.text-field-input',
     input: true,
-    props: { readonly: [null, ''], required: [null, ''] }
+    booleans: ['disabled', 'invalid', 'readonly', 'required'],
+    textFields: [
+      { name: 'label', selector: '.text-field > label' },
+      { name: 'description', selector: '.text-field-description' }
+    ],
+    matrix: [{ bool: 'required' }, { bool: 'invalid' }]
   },
   textarea: {
     target: '.textarea',
     input: true,
-    props: { readonly: [null, ''], required: [null, ''] }
+    booleans: ['disabled', 'invalid', 'readonly', 'required'],
+    textFields: [{ name: 'label', selector: '.label' }],
+    matrix: [{ bool: 'required' }, { bool: 'invalid' }]
   },
-  checkbox: { target: '.checkbox', input: true, checkable: true, mixed: true },
-  'radio-group': { target: '.radio-group', input: true, focus: '.radio', checkable: true },
-  switch: { target: '.switch', input: true, checkable: true },
+  checkbox: {
+    target: '.checkbox',
+    input: true,
+    booleans: ['checked', 'indeterminate', 'disabled', 'invalid'],
+    matrix: [
+      { bool: 'checked' },
+      { bool: 'indeterminate', when: { checked: [null] } },
+      { bool: 'invalid' }
+    ]
+  },
+  'radio-group': { target: '.radio-group', input: true },
+  switch: {
+    target: '.switch',
+    input: true,
+    booleans: ['checked', 'disabled', 'invalid'],
+    matrix: [{ bool: 'checked' }, { bool: 'invalid' }]
+  },
   slider: {
     target: '.slider',
     input: true,
-    states: ['Default', 'Focus', 'Disabled'],
-    props: { 'data-orientation': ['horizontal', 'vertical'] }
+    props: { 'data-orientation': ['horizontal', 'vertical'], step: ['1', '5', '10'] },
+    booleans: ['disabled'],
+    matrix: [{ prop: 'data-orientation' }, { bool: 'disabled' }]
   },
-  select: { target: '.select', input: true },
-  'number-field': { target: '.number-field input', input: true, value: 'number' },
+  select: {
+    target: '.select',
+    input: true,
+    booleans: ['disabled', 'invalid'],
+    matrix: [{ bool: 'invalid' }]
+  },
+  'number-field': {
+    target: '.number-field input',
+    input: true,
+    props: { step: ['1', '5', '10'] },
+    booleans: ['disabled', 'invalid', 'readonly'],
+    matrix: [{ bool: 'readonly' }, { bool: 'invalid' }]
+  },
   'file-input': {
     target: '.file-input',
     input: true,
-    hover: '.file-input',
-    props: { multiple: [null, ''] }
+    props: { multiple: [null, ''] },
+    booleans: ['disabled', 'invalid']
   },
-  'date-field': { target: '.date-input', input: true, value: 'date' },
+  'date-field': {
+    target: '.date-input',
+    input: true,
+    booleans: ['disabled', 'invalid', 'readonly'],
+    matrix: [{ bool: 'readonly' }, { bool: 'invalid' }]
+  },
   'date-picker': {
     target: '.date-picker',
-    focus: '.date-picker-day button:not([disabled])',
     interactive: true,
-    wide: true
+    wide: true,
+    booleans: ['disabled', 'invalid']
   },
-  'date-range-picker': { target: '.date-range-picker', input: true, focus: 'input', wide: true },
-  combobox: { target: '.combobox', interactive: true, input: true, focus: '.combobox-trigger' },
+  'date-range-picker': {
+    target: '.date-range-picker',
+    input: true,
+    wide: true,
+    booleans: ['disabled', 'invalid', 'readonly']
+  },
+  combobox: {
+    target: '.combobox',
+    interactive: true,
+    input: true,
+    booleans: ['disabled', 'invalid', 'open']
+  },
   'time-field': {
     target: '.time-field',
     input: true,
-    focus: 'input:not([type="hidden"]),select',
-    wide: true
+    wide: true,
+    booleans: ['disabled', 'invalid', 'readonly']
   },
-  form: { target: '.form', input: true, focus: 'input', wide: true },
+  form: { target: '.form', input: true, wide: true, booleans: ['invalid'] },
   badge: {
     target: '.badge',
     props: {
@@ -138,9 +230,9 @@ export const profiles = {
   statistic: { target: '.statistic' },
   table: { target: '.table-container', wide: true },
   'data-table': { target: '.data-table', wide: true },
-  collapsible: { target: '.collapsible', disclosure: true, focus: 'summary' },
+  collapsible: { target: '.collapsible', booleans: ['open'] },
   timeline: { target: '.timeline' },
-  'tree-view': { target: '.tree', focus: '.tree-leaf', interactive: true },
+  'tree-view': { target: '.tree', interactive: true },
   carousel: {
     target: '.carousel',
     wide: true,
@@ -158,7 +250,7 @@ export const profiles = {
     props: { 'data-size': ['xs', 'sm', 'md', 'lg', 'xl'] }
   },
   skeleton: { target: '.skeleton' },
-  progress: { target: '.progress', value: 'range', props: { value: [null, '0', '50', '100'] } },
+  progress: { target: '.progress', props: { value: [null, '0', '50', '100'] } },
   callout: { target: '.callout', props: { 'data-variant': ['default', 'destructive'] } },
   'alert-dialog': { target: '.alert-dialog', overlay: true },
   toast: {
@@ -169,41 +261,36 @@ export const profiles = {
     target: '.popover',
     overlay: true,
     defaults: { 'data-side': 'bottom', 'data-align': 'center' },
-    matrixExcludedProps: ['data-side', 'data-align'],
     props: {
       'data-side': ['top', 'right', 'bottom', 'left'],
       'data-align': ['start', 'center', 'end']
-    }
+    },
+    matrix: [{ prop: 'data-side' }]
   },
   tooltip: {
     target: '.tooltip',
     overlay: true,
     defaults: { 'data-side': 'top', 'data-align': 'center' },
-    matrixExcludedProps: ['data-align'],
     props: {
       'data-side': ['top', 'right', 'bottom', 'left'],
       'data-align': ['start', 'center', 'end']
-    }
+    },
+    matrix: [{ prop: 'data-side' }]
   },
   dialog: { target: '.dialog', overlay: true },
   sheet: { target: '.sheet', overlay: true, props: { 'data-side': ['right', 'left', 'bottom'] } },
   accordion: { target: '.accordion', wide: true, props: { 'data-type': [null, 'single'] } },
   'command-palette': { target: '.command-palette', overlay: true },
   breadcrumbs: { target: '.breadcrumb' },
-  pagination: { target: '.pagination', interactive: true, focus: '.pagination-link', wide: true },
+  pagination: { target: '.pagination', interactive: true, wide: true },
   tabs: {
     target: '.tab-list',
     interactive: true,
-    focus: '.tab-trigger',
     wide: true,
     props: { 'data-variant': ['', 'underline'], 'aria-orientation': ['horizontal', 'vertical'] }
   },
-  'dropdown-menu': { target: '.dropdown-menu-content', overlay: true, focus: '[role="menuitem"]' },
-  'navigation-menu': {
-    target: '.nav-menu',
-    focus: '.nav-menu-link,.nav-menu-trigger,.nav-menu-content-link',
-    wide: true
-  },
+  'dropdown-menu': { target: '.dropdown-menu-content', overlay: true },
+  'navigation-menu': { target: '.nav-menu', wide: true },
   'app-shell': { target: '.app-header', wide: true },
   sidebar: { target: '.app-sidebar', props: { 'data-state': ['expanded', 'collapsed'] } },
   resizable: {
@@ -211,21 +298,19 @@ export const profiles = {
     wide: true,
     props: { 'data-orientation': ['horizontal', 'vertical'] }
   },
-  'color-picker': { target: '.color-picker', input: true, focus: 'input', value: 'color' },
+  'color-picker': { target: '.color-picker', input: true, booleans: ['disabled', 'invalid'] },
   'file-upload': {
     target: '.file-upload',
     input: true,
-    focus: 'input',
-    hover: '.file-upload-dropzone',
-    wide: true
+    wide: true,
+    booleans: ['disabled', 'invalid']
   },
-  'input-otp': { target: '.input-otp', input: true, focus: 'input', wide: true },
+  'input-otp': { target: '.input-otp', input: true, wide: true, booleans: ['disabled', 'invalid'] },
   'tag-input': {
     target: '.tag-input',
     input: true,
-    focus: 'input:not([type="hidden"])',
-    hover: '.tag-input-field',
-    wide: true
+    wide: true,
+    booleans: ['disabled', 'invalid', 'readonly']
   },
   header: { target: '.header', wide: true, props: { 'data-sticky': [null, ''] } },
   nav: {
@@ -241,11 +326,11 @@ export const profiles = {
     target: '.hover-card',
     overlay: true,
     defaults: { 'data-side': 'bottom', 'data-align': 'center' },
-    matrixExcludedProps: ['data-side', 'data-align'],
     props: {
       'data-side': ['top', 'right', 'bottom', 'left'],
       'data-align': ['start', 'center', 'end']
-    }
+    },
+    matrix: [{ prop: 'data-side' }]
   },
   'agent-activity': { target: '.agent-activity', wide: true },
   'code-block': { target: '.code-block', wide: true, props: { 'data-streaming': [null, ''] } },
@@ -257,8 +342,8 @@ export const profiles = {
   'file-diff': {
     target: '.file-diff',
     wide: true,
-    disclosure: true,
-    props: { 'data-streaming': [null, ''] }
+    props: { 'data-streaming': [null, ''] },
+    booleans: ['open']
   },
   message: {
     target: '.message',
@@ -272,17 +357,17 @@ export const profiles = {
   reasoning: {
     target: '.reasoning',
     wide: true,
-    disclosure: true,
-    props: { 'data-streaming': [null, ''] }
+    props: { 'data-streaming': [null, ''] },
+    booleans: ['open']
   },
   sources: { target: '.sources', wide: true },
-  suggestion: { target: '.suggestion', interactive: true, focus: 'button' },
+  suggestion: { target: '.suggestion', interactive: true },
   'thinking-indicator': { target: '.thinking-indicator' },
-  'todo-list': { target: '.todo-list', wide: true, disclosure: true },
+  'todo-list': { target: '.todo-list', wide: true, booleans: ['open'] },
   'tool-call': {
     target: '.tool-call',
     wide: true,
-    disclosure: true,
+    booleans: ['open'],
     props: { 'data-status': ['pending', 'running', 'complete', 'error'] }
   }
 };
@@ -294,33 +379,24 @@ export const escapeHtml = (value) =>
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;');
 
-export function statesFor(profile) {
-  if (profile.presentation) return [];
-  if (profile.states) return profile.states;
-  if (profile.disclosure) return ['Closed', 'Open'];
-  if (profile.input)
-    return [
-      'Default',
-      ...(profile.hover ? ['Hover'] : []),
-      'Focus',
-      'Disabled',
-      'Invalid',
-      'Invalid focus',
-      ...(profile.checkable
-        ? [
-            'Checked',
-            'Checked focus',
-            'Checked disabled',
-            'Checked invalid',
-            'Checked invalid focus',
-            ...(profile.mixed
-              ? ['Mixed', 'Mixed focus', 'Mixed disabled', 'Mixed invalid', 'Mixed invalid focus']
-              : [])
-          ]
-        : [])
-    ];
-  if (profile.interactive) return ['Default', 'Hover', 'Focus', 'Disabled'];
-  return ['Default'];
+// A flat property list replaces the former state dropdown. Enum properties come
+// from `props`; boolean properties come from `booleans`. The order is stable so
+// the control panel and the matrix agree.
+export function propertiesFor(profile) {
+  const props = Object.entries(profile.props || {}).map(([attr, values]) => ({
+    name: attr === 'step' ? 'step' : attr,
+    attr,
+    kind: 'enum',
+    values,
+    default: values[0]
+  }));
+  const booleans = (profile.booleans || []).map((name) => {
+    const base = booleanProps[name];
+    if (!base) throw new Error(`Unknown boolean property: ${name}`);
+    const merged = { ...base, ...profile.booleanOverrides?.[name] };
+    return { ...merged, name, kind: 'boolean', values: merged.values ?? [null, merged.on] };
+  });
+  return [...props, ...booleans];
 }
 
 // Text content is not an attribute. Expose only an explicitly identified text

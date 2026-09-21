@@ -15,9 +15,11 @@
       linear-gradient(135deg, currentColor 50%, transparent 50%);
     background-repeat: no-repeat;
     background-size: var(--size-150) var(--size-150);
+    /* Center the 12px chevron in the 36px end padding and center it
+       vertically in the control. */
     background-position:
-      calc(100% - var(--space-300) - 2 * var(--size-150)) calc(50% - var(--size-050)),
-      calc(100% - var(--space-300) - var(--size-150)) calc(50% - var(--size-050));
+      calc(100% - var(--space-300) - var(--size-150)) 50%,
+      calc(100% - var(--space-300)) 50%;
     padding: 0 var(--size-900) 0 var(--space-300);
     font-size: var(--font-size-350);
     font-family: var(--font-mono);

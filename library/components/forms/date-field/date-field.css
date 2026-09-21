@@ -2,6 +2,9 @@
 
 @layer components {
   .date-input {
+    /* Calendar line glyph painted as a currentColor mask. The native picker
+       glyph cannot inherit a semantic color. */
+    --date-field-glyph: url("data:image/svg+xml,%3Csvg%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22%23000%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M9%201V3H15V1H17V3H21C21.5523%203%2022%203.44772%2022%204V20C22%2020.5523%2021.5523%2021%2021%2021H3C2.44772%2021%202%2020.5523%202%2020V4C2%203.44772%202.44772%203%203%203H7V1H9ZM20%2011H4V19H20V11ZM7%205H4V9H20V5H17V7H15V5H9V7H7V5Z%22/%3E%3C/svg%3E");
     position: relative;
     height: var(--size-900);
     width: 100%;
@@ -38,7 +41,8 @@
       }
     }
 
-    /* Keep the native glyph and its color-scheme/forced-colors adaptation. */
+    /* Paint the calendar line glyph as a currentColor mask so the picker
+       affordance uses a semantic role instead of the browser default. */
     &::-webkit-calendar-picker-indicator {
       position: absolute;
       inset-block: 0;
@@ -47,9 +51,14 @@
       block-size: auto;
       margin: 0;
       cursor: pointer;
+      color: var(--text-secondary);
+      background-color: currentColor;
+      background-image: none;
       background-position: center;
       background-repeat: no-repeat;
       background-size: 1rem 1rem;
+      -webkit-mask: var(--date-field-glyph) center / 1rem 1rem no-repeat;
+      mask: var(--date-field-glyph) center / 1rem 1rem no-repeat;
     }
 
     /* -- Date text: explicit colors, no browser default accent ---- */
@@ -74,6 +83,7 @@
 
   @media (prefers-contrast: more) {
     .date-input { border-width: var(--border-width-050); }
+    .date-input::-webkit-calendar-picker-indicator { color: var(--text-primary); }
   }
 
   @media (forced-colors: active) {
@@ -86,5 +96,8 @@
     .date-input[readonly]:not(:disabled) { color: FieldText; }
     .date-input:disabled { color: GrayText; border-color: GrayText; }
     .date-input:is([aria-invalid="true"], :user-invalid) { border-style: dashed; }
+
+    .date-input::-webkit-calendar-picker-indicator { color: ButtonText; }
+    .date-input:disabled::-webkit-calendar-picker-indicator { color: GrayText; }
   }
 }

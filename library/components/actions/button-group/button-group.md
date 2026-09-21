@@ -57,9 +57,9 @@ Use a separator only when filled adjacent buttons need a visible division.
 
 ```html
 <div class="btn-group" role="group" aria-label="Clipboard actions">
-  <button class="btn" type="button" data-variant="default">Copy</button>
+  <button class="btn" type="button" data-variant="primary">Copy</button>
   <hr role="separator" aria-orientation="vertical">
-  <button class="btn" type="button" data-variant="default">Paste</button>
+  <button class="btn" type="button" data-variant="primary">Paste</button>
 </div>
 ```
 

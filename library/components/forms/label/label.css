@@ -23,6 +23,18 @@
     }
   }
 
+  /* A required sibling control marks the label; optional states are explicit. */
+  .label:has(+ :required)::after {
+    content: " *";
+    color: var(--text-negative);
+  }
+
+  .label[data-optional]::after {
+    content: " (optional)";
+    font-weight: var(--font-weight-400);
+    color: var(--text-secondary);
+  }
+
   /* -- Hint text (optional, required indicators) ----------- */
   .label-hint {
     font-weight: var(--font-weight-400);

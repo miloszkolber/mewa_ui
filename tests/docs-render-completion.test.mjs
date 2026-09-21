@@ -30,11 +30,17 @@ assert.doesNotMatch(
   preview,
   /Interact with the component to inspect its state|data-copy|Component contract|<details class="usage"/
 );
-assert.match(preview, /role="switch" name="prop:aria-pressed" data-off="false" data-on="true"/);
-assert.match(preview, /name="state:part-nav-link:1"/);
+// Persistent conditions are boolean properties, never a second state dropdown.
+assert.doesNotMatch(preview, /Visual state|name="state(?::|")/);
+assert.doesNotMatch(preview, /playground-feedback/);
+assert.doesNotMatch(matrix, /data-state-name="(?:Focus|Hover|Disabled|Invalid)"/);
+assert.match(preview, /role="switch" name="prop:checked" data-off="false" data-on="true"/);
+assert.match(preview, /name="prop:disabled"/);
+assert.match(preview, /name="prop:part-nav-link:1:disabled"/);
 assert.match(preview, /name="exclusive:part-nav-link"/);
+assert.match(preview, /class="control-label">variant</);
 assert.doesNotMatch(matrix, /<h3>[^<]*(?:Submit shortcut|Required|Multiple|Selection):/);
 assert.doesNotMatch(matrix, /© 2026 Atlas/);
 console.log(
-  'PASS grouped documentation, exact ID references, semantic switches, concurrent parts and action removal'
+  'PASS grouped documentation, lowercase properties, boolean conditions, exact ID references and action removal'
 );

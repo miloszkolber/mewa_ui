@@ -42,7 +42,7 @@ Do not add redundant `role="dialog"` or `aria-modal="true"` to native modal mark
 ```html
 <button class="btn"
         type="button"
-        data-variant="default"
+        data-variant="primary"
         data-dialog-trigger="edit-profile"
         aria-haspopup="dialog">
   Edit profile
@@ -65,7 +65,7 @@ Do not add redundant `role="dialog"` or `aria-modal="true"` to native modal mark
 
     <div class="dialog-footer">
       <button class="btn" type="button" data-variant="secondary" data-dialog-close>Cancel</button>
-      <button class="btn" type="button" data-variant="default">Save changes</button>
+      <button class="btn" type="button" data-variant="primary">Save changes</button>
     </div>
   </div>
 </dialog>

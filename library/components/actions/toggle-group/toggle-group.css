@@ -22,17 +22,23 @@
       }
     }
 
-    &[data-variant="outline"]:not([data-spacing]) > .toggle:not(:first-child) {
-      margin-inline-start: -1px;
+    /* Connected outline items share one boundary between adjacent toggles. */
+    &[data-variant="outline"]:not([data-spacing]) > .toggle + .toggle {
+      margin-inline-start: calc(-1 * var(--border-width-025));
     }
 
-    &[data-variant="outline"]:not([data-spacing])[data-orientation="vertical"] > .toggle:not(:first-child) {
+    &[data-variant="outline"]:not([data-spacing])[data-orientation="vertical"] > .toggle + .toggle {
       margin-inline-start: 0;
-      margin-block-start: -1px;
+      margin-block-start: calc(-1 * var(--border-width-025));
     }
 
-    /* -- Sizes: propagate to child toggles ---------------------- */
-            /* -- Vertical orientation ----------------------------------- */
+    /* A focused or hovered connected item paints above its shared boundary. */
+    &[data-variant="outline"]:not([data-spacing]) > .toggle:is(:hover, :focus-visible) {
+      position: relative;
+      z-index: var(--z-raised);
+    }
+
+    /* -- Vertical orientation ----------------------------------- */
     &[data-orientation="vertical"] {
       flex-direction: column;
     }
@@ -53,14 +59,15 @@
       }
 
       /* The variant lives on the group, not on the child. */
-      &:not([data-variant="outline"]) > .toggle {
-        background-color: var(--surface-control-transparent);
-        border-color: var(--border-transparent);
-      }
-
       &[data-variant="outline"] > .toggle {
         border-color: var(--border-disabled);
       }
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    .toggle-group[data-variant="outline"] > .toggle {
+      border-color: var(--text-primary);
     }
   }
 

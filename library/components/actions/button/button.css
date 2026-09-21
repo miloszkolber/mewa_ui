@@ -30,6 +30,32 @@
       &:not([class*="size-"]) { width: var(--size-400); height: var(--size-400); }
     }
 
+    /* The button owns the state of its line and fill icon pair. The swap is
+       CSS-only, so the no-JavaScript path is unchanged. */
+    & [data-icon-pair] > :is([data-icon-variant="fill"], [class*="-fill"]) {
+      display: none;
+    }
+
+    &:is(:hover, :focus-visible, [aria-pressed="true"], [data-state="hover"], [data-state="focus"])
+      [data-icon-pair] > :is([data-icon-variant="fill"], [class*="-fill"]) {
+      display: inline-flex;
+    }
+
+    &:is(:hover, :focus-visible, [aria-pressed="true"], [data-state="hover"], [data-state="focus"])
+      [data-icon-pair] > :is([data-icon-variant="line"], [class*="-line"]) {
+      display: none;
+    }
+
+    &:is(:disabled, [aria-disabled="true"], [data-disabled], [data-state="disabled"])
+      [data-icon-pair] > :is([data-icon-variant="fill"], [class*="-fill"]) {
+      display: none;
+    }
+
+    &:is(:disabled, [aria-disabled="true"], [data-disabled], [data-state="disabled"])
+      [data-icon-pair] > :is([data-icon-variant="line"], [class*="-line"]) {
+      display: inline-flex;
+    }
+
     /* A spinner inside a button follows the button's own text color. */
     & .spinner {
       color: inherit;
@@ -45,7 +71,7 @@
     }
 
     /* -- Variants -------------------------------------------- */
-    &:not([data-variant]), &[data-variant="default"] {
+    &:not([data-variant]), &[data-variant="primary"] {
       background-color: var(--surface-button-primary);
       color: var(--text-inverted);
 
@@ -126,7 +152,7 @@
       border-color: var(--border-disabled);
       color: var(--text-disabled);
 
-      &[data-variant="default"],
+      &[data-variant="primary"],
       &[data-variant="destructive"],
       &[data-variant="ghost"] {
         border-color: var(--border-transparent);
@@ -151,7 +177,7 @@
     .btn {
       border: var(--border-width-050) solid var(--border-transparent);
 
-      &[data-variant="default"],
+      &[data-variant="primary"],
       &[data-variant="secondary"],
       &[data-variant="destructive"] {
         border-color: currentColor;

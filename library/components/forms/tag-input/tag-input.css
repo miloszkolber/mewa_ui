@@ -92,7 +92,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-100);
-    min-block-size: var(--size-800);
+    min-block-size: var(--size-600);
     border: var(--border-width-025) solid var(--border-primary);
     background: var(--surface-secondary);
     padding-inline-start: var(--space-200);
@@ -109,8 +109,8 @@
   }
 
   .tag-input-remove {
-    inline-size: var(--size-800);
-    block-size: var(--size-800);
+    inline-size: var(--size-600);
+    block-size: var(--size-600);
     border: 0;
     border-inline-start: var(--border-width-025) solid var(--border-primary);
     background: transparent;
@@ -127,7 +127,7 @@
   .tag-input-control {
     flex: 1 1 auto;
     min-inline-size: 0;
-    block-size: var(--size-800);
+    block-size: var(--size-600);
     border: 0;
     background: transparent;
     padding: 0 var(--space-100);
@@ -135,6 +135,12 @@
     font-family: var(--font-mono);
     font-size: var(--font-size-350);
     outline: none;
+
+    /* The enhanced field owns the focus ring. The inner input must not draw
+       a second ring inside the field. */
+    &:focus-visible {
+      box-shadow: none;
+    }
   }
 
   .tag-input[data-invalid] .tag-input-field,

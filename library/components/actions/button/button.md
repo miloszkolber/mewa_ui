@@ -10,7 +10,7 @@ Use a `<button>` for an action.
 
 Use an `<a>` for navigation.
 
-Use one filled default button for the primary action in a local group.
+Use one filled primary button for the primary action in a local group.
 
 Use secondary or ghost buttons for secondary actions.
 
@@ -44,7 +44,7 @@ Use `<a>` for a navigation destination that needs button presentation.
 ## Structure
 
 ```html
-<button class="btn" type="button" data-variant="default">
+<button class="btn" type="button" data-variant="primary">
   Save changes
 </button>
 ```
@@ -52,7 +52,7 @@ Use `<a>` for a navigation destination that needs button presentation.
 Use `type="submit"` only when the button submits the current form.
 
 ```html
-<button class="btn" type="submit" data-variant="default">
+<button class="btn" type="submit" data-variant="primary">
   Save changes
 </button>
 ```
@@ -72,7 +72,7 @@ Keep a visible label when space permits it.
 Mark a decorative icon as hidden.
 
 ```html
-<button class="btn" type="button" data-variant="default">
+<button class="btn" type="button" data-variant="primary">
   <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"/></svg>
   Save
 </button>
@@ -111,7 +111,7 @@ button state can swap them without changing layout.
 
 | `data-variant` | Intended use |
 | --- | --- |
-| `default` | Use for the primary normal action. |
+| `primary` | Use for the primary normal action. |
 | `secondary` | Use for a secondary action with a persistent boundary. |
 | `ghost` | Use for a low-emphasis local action. |
 | `destructive` | Use for the final destructive confirmation. |

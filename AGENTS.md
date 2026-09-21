@@ -124,17 +124,17 @@ Keep `README.md` descriptive and written for people.
 
 Keep `docs/preview.html` interactive. Each interactive component anchor opens one playground with controls, live markup, and real component behavior. Typography opens as a static rendered Markdown presentation with no property or state controls.
 
-Keep `docs/figma.html` as an inert grid of isolated visual states. Keep the theme picker outside the specimens. Generate it from shared definitions, not from playground DOM. Render only visual states, properties, and variants; never render behavior-only properties.
+Keep `docs/figma.html` as an inert grid of isolated property and variant combinations. Keep the theme picker outside the specimens. Generate it from shared definitions, not from playground DOM. Render only visual properties and variants; never render behavior-only properties.
 
 Keep documentation modules separate from library implementation. Both views use one selected theme.
 
-Use registry categories in both page groupings. Test required visual combinations independently of the model inventory. A loop over declared controls cannot detect an omitted control or state.
+Use registry categories in both page groupings. Test required visual combinations independently of the model inventory. A loop over declared controls cannot detect an omitted control or property.
 
-Verify simultaneous nested changes, native interaction readback, and draft preservation. State controls must describe the rendered component, not merely emit attributes.
+Verify simultaneous nested changes, native interaction readback, and draft preservation. Property controls must describe the rendered component, not merely emit attributes. Model persistent conditions as boolean properties; never add a generic hover/focus state selector.
 
 Keep component navigation only in the playground. Do not link the two views from their page chrome.
 
-Expose only implemented attributes in playground property controls. Label simulated pseudo-states as visual states.
+Expose only implemented attributes in playground property controls. Use lowercase property labels. Keep native hover and focus in the live preview only.
 
 Keep `library/DESIGN.md`, `library/system/`, and component Markdown instructional.
 

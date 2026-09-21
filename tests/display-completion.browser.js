@@ -394,7 +394,7 @@ export async function runDisplayCompletionTests(assetBase = '/mewa-ui') {
       `
       <progress class="progress" aria-label="Unknown completion"></progress>
       <progress class="progress" value="0" max="100" aria-label="Zero completion"></progress>
-      <button class="btn" data-variant="default" type="button"><svg class="spinner" aria-hidden="true"></svg>Saving</button>
+      <button class="btn" data-variant="primary" type="button"><svg class="spinner" aria-hidden="true"></svg>Saving</button>
       <details class="todo-list" open><summary>Plan</summary><ol class="todo-list-items">
         <li class="todo-item" data-status="active"><span class="todo-item-mark">›</span><span class="todo-item-copy">Work</span><span class="todo-item-status">In progress</span></li>
       </ol></details>

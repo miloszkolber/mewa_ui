@@ -60,7 +60,7 @@ The component uses the shared spatial motion duration for edge disclosure.
               data-sheet-close>
         Cancel
       </button>
-      <button class="btn" type="button" data-variant="default">
+      <button class="btn" type="button" data-variant="primary">
         Save changes
       </button>
     </div>

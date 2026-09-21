@@ -1,10 +1,10 @@
 import 'mewa-docs-behaviors';
 import models from 'mewa-docs-models';
 import { idReferences, valueComponents, textTargets } from './catalog.mjs';
-import { decodeValue, propertyConstraints } from './component-model.mjs';
+import { decodeValue } from './component-model.mjs';
 import {
   propertyOperations,
-  stateOperations,
+  contentOperations,
   slotOperations,
   exclusiveOperations
 } from './model-operations.mjs';
@@ -98,6 +98,11 @@ function operate(root, operations) {
       }
       if (op.html !== undefined) el.innerHTML = op.html;
       if (op.text !== undefined) el.textContent = op.text;
+      if (op.variant !== undefined) {
+        el.className = `${el.className.replace(/-?(?:line|fill)$/, '')}-${op.variant}`;
+        el.setAttribute('data-icon-variant', op.variant);
+        el.replaceChildren();
+      }
     });
 }
 
@@ -132,6 +137,7 @@ function updateCode(section) {
       if (/^data-(?:demo-|init$|.*-init$)/.test(a.name)) el.removeAttribute(a.name);
     })
   );
+  copy.querySelectorAll('[class^="ri-"], [class*=" ri-"]').forEach((el) => el.replaceChildren());
   copy.querySelectorAll('.tag-input[data-enhanced]').forEach((root) => {
     const fallback = root.querySelector('.tag-input-fallback'),
       draft = root.querySelector('.tag-input-control');
@@ -227,8 +233,7 @@ function reconcileSelection(section, content, changed) {
   const scope = model.scopes.find((s) => s.type === 'toggle');
   if (scope) {
     const toggles = [...content.querySelectorAll(scope.target)];
-    const name = (i) =>
-      scope.id === 'root' ? 'prop:aria-pressed' : `prop:${scope.id}:${i}:aria-pressed`;
+    const name = (i) => (scope.id === 'root' ? 'prop:checked' : `prop:${scope.id}:${i}:checked`);
     for (const group of content.querySelectorAll('.toggle-group:not([data-type="multiple"])')) {
       const items = toggles.filter((el) => el.closest('.toggle-group') === group);
       const selected = items.filter((el) => el.getAttribute('aria-pressed') === 'true');
@@ -243,12 +248,8 @@ function reconcileSelection(section, content, changed) {
     }
   }
   const radioScope = model.scopes.find((s) => s.type === 'radio');
-  if (
-    radioScope &&
-    changed?.name.startsWith(`state:${radioScope.id}:`) &&
-    changed.value.startsWith('Checked')
-  ) {
-    const index = Number(changed.name.split(':').at(-1));
+  if (radioScope && changed?.name.endsWith(':checked') && changed.checked) {
+    const index = Number(changed.name.split(':').at(-2));
     const radios = [...content.querySelectorAll(radioScope.target)];
     const winner = radios[index];
     if (winner) {
@@ -278,41 +279,42 @@ function syncControls(section) {
   if (model.slug === 'tag-input')
     section.tagDraft = demo.querySelector('.tag-input-control')?.value || '';
   for (const scope of model.scopes) {
-    const targets = [...demo.querySelectorAll(scope.focus || scope.target)];
+    const targets = [...demo.querySelectorAll(scope.target)];
     if (scope.exclusive) {
       const selected = [...demo.querySelectorAll(scope.target)].findIndex(
         (el) => el.getAttribute(scope.exclusive.attr) === scope.exclusive.on
       );
-      form.elements[`exclusive:${scope.id}`].value = String(selected);
+      const control = form.elements[`exclusive:${scope.id}`];
+      if (control) control.value = String(selected);
     }
     for (const index of instancesFor(scope)) {
       const el = targets[index];
-      if (!el || scope.dynamic) continue;
+      if (!el) continue;
+      // Native interaction owns the live checkbox state; mirror it back.
+      if (el.matches?.('input[type="checkbox"]'))
+        el.toggleAttribute('data-demo-mixed', Boolean(el.indeterminate));
       for (const p of scope.props) {
-        const name = scope.id === 'root' ? `prop:${p.attr}` : `prop:${scope.id}:${index}:${p.attr}`;
+        if (!p.attr) continue;
+        const name = scope.id === 'root' ? `prop:${p.name}` : `prop:${scope.id}:${index}:${p.name}`;
         const control = form.elements[name];
         if (!control || control.closest('[hidden]')) continue;
-        const value = el.getAttribute(p.attr);
-        if (!p.values.includes(value)) continue;
-        if (control.type === 'checkbox')
-          control.checked = value === decodeValue(control.dataset.on);
-        else control.value = value === null ? '__remove' : value;
-      }
-      const control = form.elements[scope.id === 'root' ? 'state' : `state:${scope.id}:${index}`];
-      if (!control) continue;
-      if (scope.disclosure) control.value = el.open ? 'Open' : 'Closed';
-      else if (scope.checkable) {
-        el.toggleAttribute('data-demo-mixed', Boolean(el.indeterminate));
-        const candidate =
-          [
-            el.indeterminate ? 'Mixed' : el.checked ? 'Checked' : '',
-            el.getAttribute('aria-invalid') === 'true' ? 'invalid' : '',
-            el.disabled ? 'disabled' : el.hasAttribute('data-demo-focus') ? 'focus' : ''
-          ]
-            .filter(Boolean)
-            .join(' ') || 'Default';
-        const match = scope.states.find((s) => s.toLowerCase() === candidate.toLowerCase());
-        if (match) control.value = match;
+        if (p.kind === 'boolean') {
+          if (p.name === 'checked' && el.matches?.('input[type="checkbox"],input[type="radio"]')) {
+            control.checked = el.checked;
+            continue;
+          }
+          const off = decodeLive(control.dataset.off);
+          const value = el.hasAttribute(p.attr)
+            ? el.getAttribute(p.attr) === ''
+              ? ''
+              : el.getAttribute(p.attr)
+            : null;
+          control.checked = value !== null && value !== off;
+        } else {
+          const value = el.getAttribute(p.attr);
+          if (!p.values.includes(value)) continue;
+          control.value = value === null ? '__remove' : value;
+        }
       }
     }
   }
@@ -322,6 +324,10 @@ function syncControls(section) {
   });
 }
 
+function decodeLive(value) {
+  return value === '__remove' ? null : value;
+}
+
 function render(section, changedControl) {
   const model = modelFor(section);
   if (model.presentation) return;
@@ -329,10 +335,8 @@ function render(section, changedControl) {
     demo = section.querySelector('.playground-demo');
   applyVisibility(form);
   const content = namespace(model.html, `live-${model.slug}`);
-  const iconOnly = form.elements['prop:data-icon-only']?.checked ?? false;
   configureContent(section, content);
-  const operations = [],
-    stateOps = [];
+  const operations = [];
   for (const scope of model.scopes) {
     if (scope.exclusive) {
       const control = form.elements[`exclusive:${scope.id}`];
@@ -340,7 +344,7 @@ function render(section, changedControl) {
       if (scope.type === 'tab') {
         const enabled = scope.instances
           .map((_, i) => i)
-          .filter((i) => !/disabled/i.test(form.elements[`state:${scope.id}:${i}`]?.value));
+          .filter((i) => !form.elements[`prop:${scope.id}:${i}:disabled`]?.checked);
         const prior = [...demo.querySelectorAll(scope.target)].findIndex(
           (el) => el.getAttribute('aria-selected') === 'true'
         );
@@ -355,53 +359,42 @@ function render(section, changedControl) {
     }
     for (const instance of instancesFor(scope)) {
       const selected = { ...scope, index: instance };
-      const propName = (attr) =>
-        scope.id === 'root' ? `prop:${attr}` : `prop:${scope.id}:${instance}:${attr}`;
-      const values = Object.fromEntries(
-        scope.props.map((p) => [p.attr, controlValue(form.elements[propName(p.attr)])])
-      );
-      const constraints = propertyConstraints(scope, values);
-      for (const property of scope.props) {
-        const name =
-          scope.id === 'root'
-            ? `prop:${property.attr}`
-            : `prop:${scope.id}:${instance}:${property.attr}`;
-        const value = controlValue(form.elements[name]);
-        if (value === undefined) continue;
-        const cell = form.elements[name]?.closest('.control-cell');
-        if (cell && !cell.dataset.hideWhen)
-          cell.hidden = constraints.hiddenProps.includes(property.attr);
-        operations.push(
-          ...propertyOperations(
-            selected,
-            property.attr,
-            constraints.ignoredProps.includes(property.attr) ? null : value
-          )
-        );
+      const propName = (name) =>
+        scope.id === 'root' ? `prop:${name}` : `prop:${scope.id}:${instance}:${name}`;
+      const badgeStatus =
+        model.slug === 'badge' && Boolean(form.elements['prop:data-state']?.value);
+      if (model.slug === 'badge') {
+        const cell = form.elements['prop:data-variant']?.closest('.control-cell');
+        if (cell) cell.hidden = badgeStatus;
       }
-      const stateControl =
-        form.elements[scope.id === 'root' ? 'state' : `state:${scope.id}:${instance}`];
-      const state = stateControl?.value || scope.initialStates?.[instance] || scope.states[0];
-      const irrelevant =
-        model.slug === 'tool-call' &&
-        form.elements.slot?.value === 'status-only' &&
-        (scope.disclosure || scope.type === 'summary');
-      if (stateControl) stateControl.closest('label').hidden = irrelevant;
-      if (scope.type === 'summary' && model.slug === 'tool-call')
-        stateControl?.closest('fieldset')?.toggleAttribute('hidden', irrelevant);
-      if (!irrelevant) stateOps.push(...stateOperations(selected, state));
+      for (const property of scope.props) {
+        if (badgeStatus && property.name === 'data-variant') continue;
+        const control = form.elements[propName(property.name)];
+        const value = controlValue(control);
+        if (value === undefined) continue;
+        operations.push(...propertyOperations(selected, property, value));
+      }
     }
   }
   operate(content, operations);
-  operate(
-    content,
-    slotOperations(
-      model.slug,
-      model.slug === 'button' && iconOnly ? 'label' : form.elements.slot?.value,
-      iconOnly
-    )
-  );
-  operate(content, stateOps);
+  operate(content, slotOperations(model.slug, form.elements.slot?.value));
+  const rootScope = model.scopes.find((s) => s.id === 'root');
+  const contentState = {};
+  for (const property of rootScope?.props || []) {
+    if (!['showLabel', 'showIconStart', 'showIconEnd', 'loading'].includes(property.name)) continue;
+    const control = form.elements[`prop:${property.name}`];
+    if (control) contentState[property.name] = controlValue(control) !== null;
+  }
+  if (Object.keys(contentState).length)
+    operate(
+      content,
+      contentOperations({ type: model.slug, target: rootScope?.target || '.btn' }, contentState)
+    );
+  for (const field of rootScope?.textFields || []) {
+    const input = form.elements[`text:${field.name}`];
+    const target = content.querySelector(field.selector);
+    if (input && target) target.textContent = input.value;
+  }
   reconcileSelection(section, content, changedControl);
   valueFields(content, model.slug).forEach((field, index) => {
     const value = form.elements[`value:${index}`]?.value;
@@ -417,19 +410,15 @@ function render(section, changedControl) {
   const text = form.elements.content;
   const editable = textTargets[model.slug] && content.querySelector(textTargets[model.slug]);
   if (text && editable) {
-    if (editable.hasAttribute('data-icon-only')) editable.setAttribute('aria-label', text.value);
-    else {
-      const walker = document.createTreeWalker(editable, NodeFilter.SHOW_TEXT, {
-        acceptNode: (n) =>
-          n.textContent.trim() && !n.parentElement.closest('svg')
-            ? NodeFilter.FILTER_ACCEPT
-            : NodeFilter.FILTER_REJECT
-      });
-      const node = walker.nextNode();
-      if (node) node.textContent = text.value;
-    }
+    const walker = document.createTreeWalker(editable, NodeFilter.SHOW_TEXT, {
+      acceptNode: (n) =>
+        n.textContent.trim() && !n.parentElement.closest('svg')
+          ? NodeFilter.FILTER_ACCEPT
+          : NodeFilter.FILTER_REJECT
+    });
+    const node = walker.nextNode();
+    if (node) node.textContent = text.value;
   }
-  section.calendarObserver?.disconnect();
   demo.replaceChildren(content);
   resizeDemo(section);
   if (model.slug === 'toast') {
@@ -439,13 +428,8 @@ function render(section, changedControl) {
     trigger.dataset.variant = 'secondary';
     trigger.textContent = 'Show toast';
     const show = () => {
-      const options = toastOptions(section);
-      if (options.action)
-        options.action.onClick = () =>
-          (section.querySelector('.playground-feedback').textContent = 'Undo activated');
-      section.liveToast = window.toast.show(options);
+      section.liveToast = window.toast.show(toastOptions(section));
       section.liveToast.dataset.stateSurface = '';
-      operate(section.liveToast, stateOps);
     };
     trigger.addEventListener('click', show);
     if (section.liveToast?.isConnected) {
@@ -455,11 +439,11 @@ function render(section, changedControl) {
     demo.replaceChildren(trigger);
   }
   enhance(demo);
+  window.mewaDocsIcons?.enhance(demo);
   if (model.slug === 'tag-input' && section.tagDraft !== undefined) {
     const draft = demo.querySelector('.tag-input-control');
     if (draft) draft.value = section.tagDraft;
   }
-  operate(demo, stateOps);
   reconcileSelection(section, demo, changedControl);
   if (model.slug === 'tabs') {
     const chosen = demo.querySelector('[role="tab"][aria-selected="true"]');
@@ -477,39 +461,6 @@ function render(section, changedControl) {
       if (panel) panel.hidden = !selected;
     }
   }
-  if (model.slug === 'date-picker') {
-    const dynamic = model.scopes.find((s) => s.dynamic);
-    const applyDay = () => {
-      const target = demo.querySelector(dynamic.target);
-      if (section.calendarTarget?.element !== target) {
-        if (section.calendarTarget)
-          for (const [attr, value] of section.calendarTarget.attributes) {
-            if (value === null) section.calendarTarget.element.removeAttribute(attr);
-            else section.calendarTarget.element.setAttribute(attr, value);
-          }
-        section.calendarTarget = target
-          ? {
-              element: target,
-              attributes: ['disabled', 'aria-disabled', 'data-demo-focus', 'data-demo-hover'].map(
-                (attr) => [attr, target.getAttribute(attr)]
-              )
-            }
-          : null;
-      }
-      const state = form.elements[`state:${dynamic.id}:0`]?.value || 'Default';
-      operate(demo, stateOperations(dynamic, state));
-      updateCode(section);
-    };
-    if (dynamic) {
-      section.applyCalendarState = applyDay;
-      section.calendarObserver = new MutationObserver(applyDay);
-      section.calendarObserver.observe(demo.querySelector('.date-picker-grid'), {
-        childList: true,
-        subtree: true
-      });
-      applyDay();
-    }
-  }
   syncControls(section);
   updateCode(section);
 }
@@ -519,7 +470,6 @@ function route() {
     sections.find((el) => `#preview-${el.dataset.component}` === location.hash) || sections[0];
   if (active === section) return;
   if (active) {
-    active.calendarObserver?.disconnect();
     if (active.dataset.component === 'toast') window.toast?.dismiss();
     active.querySelectorAll('dialog[open]').forEach((el) => el.close());
     active.querySelector('.playground-demo')?.replaceChildren();
@@ -545,29 +495,17 @@ for (const section of sections) {
       resizeDemo(section);
       return;
     }
-    if (section.dataset.component === 'date-picker' && e.target.name.startsWith('state')) {
-      const scope = modelFor(section).scopes.find((s) =>
-        e.target.name.startsWith(`state:${s.id}:`)
-      );
-      if (scope?.dynamic) section.applyCalendarState?.();
-      else if (scope)
-        operate(
-          demo,
-          stateOperations(
-            { ...scope, index: Number(e.target.name.split(':').at(-1)) },
-            e.target.value
-          )
-        );
-      updateCode(section);
-      return;
-    }
+    // A calendar owns live navigation state; mutate it without rebuilding.
     if (section.dataset.component === 'date-picker' && e.target.name.startsWith('prop:')) {
-      const [, scopeId, index, attr] = e.target.name.split(':');
+      const parts = e.target.name.split(':');
+      const [scopeId, index, name] =
+        parts.length === 4 ? [parts[1], Number(parts[2]), parts[3]] : ['root', 0, parts[1]];
       const scope = modelFor(section).scopes.find((s) => s.id === scopeId);
-      if (scope)
+      const property = scope?.props.find((p) => p.name === name);
+      if (scope && property)
         operate(
           demo,
-          propertyOperations({ ...scope, index: Number(index) }, attr, controlValue(e.target))
+          propertyOperations({ ...scope, index: Number(index) }, property, controlValue(e.target))
         );
       updateCode(section);
       return;
@@ -580,22 +518,11 @@ for (const section of sections) {
       render(section);
     })
   );
-  function report(event) {
+  function report() {
     queueMicrotask(() => {
-      section.applyCalendarState?.();
       syncControls(section);
       updateCode(section);
     });
-    const target = event.target;
-    const name =
-      target.getAttribute?.('aria-label') ||
-      target.name ||
-      target.textContent?.trim().slice(0, 60) ||
-      section.dataset.component;
-    const value = ['checkbox', 'radio'].includes(target.type) ? target.checked : target.value;
-    const feedback = section.querySelector('.playground-feedback');
-    if (feedback)
-      feedback.textContent = `${event.type}: ${name}${value !== undefined ? ` → ${value}` : ''}`;
   }
   for (const event of [
     'input',
@@ -619,12 +546,7 @@ for (const section of sections) {
   demo.addEventListener('click', (e) => {
     if (e.target.closest('a[href]')) e.preventDefault();
   });
-  demo.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const feedback = section.querySelector('.playground-feedback');
-    if (feedback)
-      feedback.textContent = `Submitted: ${JSON.stringify([...new FormData(e.target)])}`;
-  });
+  demo.addEventListener('submit', (e) => e.preventDefault());
   demo.replaceChildren();
 }
 window.addEventListener('hashchange', route);

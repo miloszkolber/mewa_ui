@@ -82,6 +82,8 @@ Use `data-spacing` when items should remain visually separate.
 
 Omit `data-spacing` when connected outline items should share borders.
 
+The group owns the variant. A child Toggle does not switch variant individually.
+
 Square geometry remains unchanged in both modes.
 
 ## Disabled state

@@ -81,7 +81,10 @@ export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath
     await page.$eval(`${active} .playground-code`, (el) => el.textContent),
     /Save &lt;draft&gt;/
   );
-  await page.select(`${active} [name="state"]`, 'Disabled');
+  await page.$eval(`${active} [name="prop:disabled"]`, (el) => {
+    el.checked = true;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  });
   assert.equal(await page.$eval(`${active} .playground-demo .btn`, (el) => el.disabled), true);
   await go('radio-group');
   await page.click(`${active} .playground-demo input[type="radio"]:not(:checked)`);
@@ -109,12 +112,6 @@ export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath
   assert.equal(await page.$$eval('#toast-container .toast', (els) => els.length), 0);
   await page.click(`${active} .playground-demo button`);
   await page.waitForSelector('#toast-container .toast');
-  await page.select(`${active} [name="state:part-dismiss:0"]`, 'Focus');
-  assert.equal(
-    await page.$$eval('#toast-container .toast-close[data-demo-focus]', (els) => els.length),
-    1
-  );
-  await page.select(`${active} [name="state:part-dismiss:0"]`, 'Default');
   assert.equal(
     await page.$eval('#toast-container', (el) => getComputedStyle(el).position),
     'fixed'
@@ -179,6 +176,42 @@ export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath
   assert.equal(await page.$$eval('.component-matrix', (els) => els.length), catalog.length);
   assert.equal(await page.$$eval('.matrix-specimens[inert]', (els) => els.length), catalog.length);
   assert.equal(await page.evaluate(() => typeof window.toast), 'undefined');
+  await page.setViewport({ width: 2560, height: 1000 });
+  const matrixLayout = await page.evaluate(() => {
+    const columnCount = (selector) =>
+      Math.max(
+        0,
+        ...[...document.querySelectorAll(selector)].map((grid) => {
+          const rows = new Map();
+          for (const child of grid.children) {
+            const rect = child.getBoundingClientRect();
+            if (!rect.width) continue;
+            const key = Math.round(rect.top * 100) / 100;
+            rows.set(key, (rows.get(key) || 0) + 1);
+          }
+          return Math.max(0, ...rows.values());
+        })
+      );
+    return {
+      maxOuterColumns: columnCount('.matrix-specimens'),
+      maxInnerColumns: columnCount('.matrix-cells'),
+      importableCells: [...document.querySelectorAll('.matrix-cell')].every(
+        (cell) =>
+          cell.children.length === 2 &&
+          cell.children[0].matches('.matrix-state-label') &&
+          cell.children[1].matches('.specimen')
+      )
+    };
+  });
+  assert(
+    matrixLayout.maxOuterColumns <= 4,
+    `matrix outer grid exceeds four columns: ${JSON.stringify(matrixLayout)}`
+  );
+  assert(
+    matrixLayout.maxInnerColumns <= 4,
+    `matrix state grid exceeds four columns: ${JSON.stringify(matrixLayout)}`
+  );
+  assert.equal(matrixLayout.importableCells, true, 'matrix cells stay isolated for import');
   assert(
     await page.$$eval(
       '[data-component="input-otp"] [data-part="root"] .input-otp-cells',
@@ -187,11 +220,18 @@ export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath
     'full OTP anatomy must not be clipped in the desktop matrix'
   );
   assert(
-    await page.$eval(
-      '[data-component="select"] [data-state-name="Focus"] .select',
-      (el) => getComputedStyle(el).boxShadow !== 'none'
+    await page.$$eval(
+      '[data-component="select"] [data-state-name="invalid: on"] .select',
+      (els) => els.length > 0
     ),
-    'static native select focus is visible'
+    'static select exposes its invalid specimen'
+  );
+  assert(
+    await page.$$eval(
+      '[data-component="checkbox"] [data-state-name="checked: off · indeterminate: on · invalid: off"] .checkbox',
+      (els) => els.length > 0
+    ),
+    'static checkbox exposes its indeterminate specimen'
   );
   assert.deepEqual(
     await page.$eval('[data-component="skeleton"] .skeleton-round', (el) => [
@@ -224,7 +264,7 @@ export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath
   await page.click('[data-docs-theme-toggle]');
   const after = await page.$eval('body', (el) => getComputedStyle(el).backgroundColor);
   assert.notEqual(before, after, 'theme picker changes the single canvas');
-  for (const width of [1440, 320, 720]) {
+  for (const width of [2560, 1440, 320, 720]) {
     await page.setViewport({ width, height: 1000 });
     assert(
       (await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)) <= 1,

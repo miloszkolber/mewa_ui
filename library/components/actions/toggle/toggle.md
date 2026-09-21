@@ -60,6 +60,22 @@ Use `data-variant="outline"` when the control needs a persistent boundary.
 
 Do not use a filled primary Button treatment for a normal Toggle.
 
+A Toggle inside a Toggle Group does not use its own `data-variant`. The Toggle Group owns the variant for every child.
+
+## Icon-only
+
+Add the boolean `data-icon-only` attribute when the Toggle contains only an icon.
+
+```html
+<button class="toggle" type="button" data-icon-only aria-pressed="false" aria-label="Pin job">
+  <i class="ri-pushpin-line" aria-hidden="true"></i>
+</button>
+```
+
+An icon-only Toggle stays square at the 36px control height.
+
+Give every icon-only Toggle an accessible name on the button.
+
 ## Behavior
 
 Activating a standalone Toggle switches `aria-pressed` between `true` and `false`.

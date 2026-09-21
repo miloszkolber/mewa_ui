@@ -10,14 +10,20 @@ The September 2026 catalog review covers all 80 registered components, their sou
 - Nav route lists retain their horizontal and vertical forms. The undocumented fixed-width collapsed-row hook is removed because it clipped text-only links. Sidebar retains its supported collapse behavior.
 - Progress supports measured completion and a stationary indeterminate treatment. It does not replace native `meter` for utilization.
 - Control-boundary and focus-perimeter roles use solid colors with measured contrast above 3:1 against the adjacent input surface in both themes. Decorative selected-tab shadows are removed.
+- The generic hover/focus "visual state" selector is removed. Persistent conditions are boolean properties (`disabled`, `invalid`, `readonly`, `required`, `checked`, `indeterminate`, `loading`, `open`, `optional`) and content toggles (`showLabel`, `showIconStart`, `showIconEnd`). Property labels are lowercase.
+- Button's first variant is renamed `primary`. Grouped buttons and toggles no longer own a variant; the owning group or toolbar sets it once. Button and Toggle expose content toggles instead of a single icon-only flag.
+- Icon exposes a line/fill variant and uses the local `ri-*` class hook. A documentation loader injects the local glyph, so the rendered specimen stays visual and the HTML output stays a short class hook.
+- Field, Text Field, and Textarea expose editable label and description text; `required` marks the label. Label exposes an `optional` property.
 
 ## Documentation acceptance
 
-Preview and Figma use the same nine registry categories. Boolean controls distinguish presence attributes from string-valued ARIA booleans. Selection cardinality does not control which neighboring item may be hovered, focused, invalid, or disabled. Required cross-property combinations remain represented in the matrix; behavior-only properties and isolated placement controls do not create redundant specimens.
+Preview and Figma use the same nine registry categories. Boolean controls distinguish presence attributes from string-valued ARIA booleans. Selection cardinality does not control which neighboring item may be disabled. Each component declares a bounded matrix dimension list; behavior-only properties and isolated placement controls do not create redundant specimens.
 
-The matrix contains 712 generated cells at this revision. This count is an inspection result, not a coverage target. Independent inventory assertions cover required combinations and compound states, so deleting a model entry cannot make an omitted feature disappear from the expected result.
+The matrix contains 363 generated rows at this revision. This count is an inspection result, not a coverage target. Independent inventory assertions cover required combinations and compound states, so deleting a model entry cannot make an omitted feature disappear from the expected result.
 
-Preview regressions cover bidirectional radio changes, all-disabled tabs and panel correspondence, committed Tag Input values plus pending drafts, native Mixed checkbox transitions, retained calendar context, semantic switches, conditional controls, and status-only Tool Call anatomy. Static ID references are rewritten as exact HTML attributes, including command-palette triggers and Markdown footnotes.
+The static Figma matrix caps outer specimen rows and inner cells at four columns on large canvases, preserves readable wide compositions, and keeps each cell isolated for import.
+
+Preview regressions cover bidirectional radio changes, all-disabled tabs and panel correspondence, committed Tag Input values plus pending drafts, native indeterminate checkbox transitions, retained calendar context, semantic switches, conditional controls, and status-only Tool Call anatomy. Static ID references are rewritten as exact HTML attributes, including command-palette triggers and Markdown footnotes.
 
 ## Runtime acceptance
 

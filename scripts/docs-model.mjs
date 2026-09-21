@@ -3,18 +3,17 @@ import {
   rootProfile,
   partDefinitions,
   partProfile,
-  statesFor,
+  propertiesFor,
   slots,
   standaloneParts,
   initialValue,
-  propertyConstraints,
   propertyLabel,
   optionLabel
 } from '../docs/component-model.mjs';
 import { nonVisualProps } from '../docs/catalog.mjs';
 import {
   propertyOperations,
-  stateOperations,
+  contentOperations,
   slotOperations,
   companionSelectors
 } from '../docs/model-operations.mjs';
@@ -23,6 +22,19 @@ export async function rewrite(html, rules) {
   const r = new HTMLRewriter();
   for (const [selector, element] of rules) r.on(selector, { element });
   return r.transform(new Response(html)).text();
+}
+
+// Read the rendered text of the first match. HTMLRewriter exposes text through
+// its own handler rather than the element object.
+export async function readText(html, selector) {
+  let out = '';
+  const rewriter = new HTMLRewriter().on(selector, {
+    text(chunk) {
+      out += chunk.text;
+    }
+  });
+  await rewriter.transform(new Response(html)).text();
+  return out.trim();
 }
 
 export async function operate(html, operations) {
@@ -58,6 +70,12 @@ export async function operate(html, operations) {
           }
           if (op.html !== undefined) el.setInnerContent(op.html, { html: true });
           if (op.text !== undefined) el.setInnerContent(op.text);
+          if (op.variant !== undefined) {
+            // Local Remix classes swap their line/fill suffix in place.
+            const cls = (el.getAttribute('class') || '').replace(/-?(?:line|fill)$/, '');
+            el.setAttribute('class', `${cls}-${op.variant}`);
+            el.setAttribute('data-icon-variant', op.variant);
+          }
         }
       ]
     ]);
@@ -138,47 +156,16 @@ async function inspect(html, selector) {
   return { nodes, matches };
 }
 
-function authoredState(profile, attrs, states) {
-  if (!states.length) return undefined;
-  if (profile.disclosure) return Object.hasOwn(attrs, 'open') ? 'Open' : 'Closed';
-  const disabled = Object.hasOwn(attrs, 'disabled') || attrs['aria-disabled'] === 'true';
-  const invalid = attrs['aria-invalid'] === 'true';
-  const checked = profile.checkable && Object.hasOwn(attrs, 'checked');
-  const mixed =
-    profile.checkable &&
-    (Object.hasOwn(attrs, 'data-demo-mixed') || attrs['aria-checked'] === 'mixed');
-  const focus = Object.hasOwn(attrs, 'data-demo-focus');
-  const candidate = [
-    mixed ? 'Mixed' : checked ? 'Checked' : '',
-    invalid ? 'invalid' : '',
-    disabled ? 'disabled' : focus ? 'focus' : ''
-  ]
-    .filter(Boolean)
-    .join(' ');
-  return (
-    states.find((s) => s.toLowerCase() === candidate.toLowerCase()) ||
-    (checked && disabled && states.includes('Checked disabled')
-      ? 'Checked disabled'
-      : disabled && states.includes('Disabled')
-        ? 'Disabled'
-        : invalid && states.includes('Invalid')
-          ? 'Invalid'
-          : states[0])
-  );
-}
-
 async function scopeFor(html, type, label, profile, id) {
   const inspected = await inspect(html, profile.target);
   const matches = inspected.matches.map((n) => n.attrs);
   if (!matches.length) return null;
-  const props = Object.entries(profile.props || {}).map(([attr, values]) => {
-    const property = { attr, values, default: values[0] };
+  const props = (profile.resolved ? profile.props : propertiesFor(profile)).map((property) => {
     const initialValues = matches.map((_, index) =>
       initialValue({ ...profile, instances: matches }, property, index)
     );
     return { ...property, default: initialValues[0], initialValues };
   });
-  const states = statesFor(profile);
   let companions;
   if (companionSelectors[type]) {
     const owners = inspected.matches.map((node) => {
@@ -202,16 +189,11 @@ async function scopeFor(html, type, label, profile, id) {
       }
     }
   }
-  const focusMatches = profile.focus
-    ? (await inspect(html, profile.focus)).matches.map((n) => n.attrs)
-    : matches;
   return {
     ...profile,
+    matrix: profile.matrix,
+    content: profile.content,
     props,
-    states,
-    initialStates: matches.map((attrs, i) =>
-      authoredState(profile, profile.disclosure ? attrs : focusMatches[i] || attrs, states)
-    ),
     selector: profile.target,
     instanceSelectors: inspected.matches.map((n) => n.path),
     ...(companions ? { companionIndices: companions } : {}),
@@ -281,6 +263,14 @@ export async function compileModel(c, component) {
   const scopes = [];
   const root = await scopeFor(html, c.slug, c.name, profile, 'root');
   if (root) scopes.push(root);
+  if (root?.textFields) {
+    const initial = {};
+    for (const field of root.textFields) initial[field.name] = await readText(html, field.selector);
+    root.textFields = root.textFields.map((field) => ({
+      ...field,
+      initial: initial[field.name] ?? ''
+    }));
+  }
   for (const [type, label, selector] of profile.presentation ? [] : partDefinitions) {
     if (type === c.slug || (c.slug === 'text-field' && type === 'text-field')) continue;
     // Only descendants of the component belong to it. Overlay launchers live
@@ -307,30 +297,15 @@ export async function compileModel(c, component) {
     const part = await scopeFor(html, type, label, partProfile(type, nested), `part-${type}`);
     if (part) scopes.push(part);
   }
-  if (c.slug === 'date-picker' && !scopes.some((s) => s.id === 'part-day')) {
-    const profile = partProfile('day', '.date-picker-day button[tabindex="0"]');
-    scopes.push({
-      ...profile,
-      selector: profile.target,
-      type: 'day',
-      label: 'Calendar day',
-      id: 'part-day',
-      count: 1,
-      index: 0,
-      props: [],
-      instances: [{}],
-      states: profile.states,
-      initialStates: ['Default']
-    });
-  }
+  // Normalize authored values without clearing an authored boolean. A part's
+  // absent default must never remove a condition its owner just set.
+  const applyInitial = (scope, instance, property) => {
+    const value = initialValue(scope, property, instance);
+    if (property.kind === 'boolean' && value === null) return [];
+    return propertyOperations({ ...scope, index: instance }, property, value);
+  };
   const operations = scopes.flatMap((s) =>
-    s.instances.flatMap((_, index) => {
-      const instance = { ...s, index };
-      return [
-        ...s.props.flatMap((p) => propertyOperations(instance, p.attr, initialValue(s, p, index))),
-        ...stateOperations(instance, s.initialStates[index])
-      ];
-    })
+    s.instances.flatMap((_, index) => s.props.flatMap((p) => applyInitial(s, index, p)))
   );
   html = await operate(html, operations);
   // Static anatomy can differ from live overlay launchers. Never reuse a live
@@ -340,9 +315,7 @@ export async function compileModel(c, component) {
     staticHtml = await operate(
       staticHtml,
       staticRoot.instances.flatMap((_, index) =>
-        staticRoot.props.flatMap((p) =>
-          propertyOperations({ ...staticRoot, index }, p.attr, initialValue(staticRoot, p, index))
-        )
+        staticRoot.props.flatMap((p) => applyInitial(staticRoot, index, p))
       )
     );
   const slot = slots[c.slug];
@@ -367,117 +340,120 @@ export async function compileModel(c, component) {
   };
 }
 
-// All independent visual dimensions cross. Exclusions describe dimensions
-// whose effect is absent in isolation, not a sampling budget.
+// The matrix crosses a bounded, per-component list of dimensions. A component
+// without an explicit `matrix` crosses its visual enum properties; booleans are
+// opt-in so a component can never explode into an accidental cross-product.
 export async function matrixRows(model) {
   const root = model.scopes.find((s) => s.id === 'root');
   const rows = [];
   if (model.presentation)
-    return [
-      {
-        label: 'Rendered Markdown',
-        html: model.staticHtml,
-        scope: root,
-        states: ['Default'],
-        wide: true
-      }
-    ];
-  const visualProps = (scope) =>
-    (scope?.props || []).filter(
-      (p) => !nonVisualProps.has(p.attr) && !scope.matrixExcludedProps?.includes(p.attr)
-    );
+    return [{ label: 'Rendered Markdown', html: model.staticHtml, scope: root, wide: true }];
+  const visualEnums = (scope) =>
+    (scope?.props || []).filter((p) => p.kind === 'enum' && !nonVisualProps.has(p.attr));
+  const byName = (scope, name) => (scope?.props || []).find((p) => p.name === name);
+  function dimensionsFor(scope) {
+    // An explicit matrix drives the export. `prop` and `bool` name properties;
+    // `content` uses the shared action content set; `slot` is the structural slot.
+    if (scope.matrix) {
+      return scope.matrix.flatMap((d) => {
+        if (d.prop) {
+          const property = byName(scope, d.prop);
+          return property ? [{ kind: 'prop', property }] : [];
+        }
+        if (d.bool) {
+          const property = byName(scope, d.bool);
+          return property ? [{ kind: 'bool', property, when: d.when }] : [];
+        }
+        if (d.content && scope.content) return [{ kind: 'content' }];
+        if (d.slot && model.slot) return [{ kind: 'slot' }];
+        return [];
+      });
+    }
+    return visualEnums(scope).map((property) => ({ kind: 'prop', property }));
+  }
   async function addRows(scope, base, slot, wide) {
-    const properties = visualProps(scope);
+    const dimensions = dimensionsFor(scope);
     if (scope?.exclusive)
-      properties.push({ attr: scope.exclusive.attr, values: [null, scope.exclusive.on] });
-    const contextProperties = scope?.id !== 'root' ? visualProps(root) : [];
-    const dimensions = [
-      ...properties.map((p) => p.values.map((value) => ({ property: p, value }))),
-      ...contextProperties.map((p) =>
-        p.values.map((value) => ({ property: p, value, context: true }))
-      ),
-      ...(slot ? [slot.values.map((value) => ({ slot: true, value }))] : [])
-    ];
+      dimensions.push({
+        kind: 'prop',
+        property: {
+          attr: scope.exclusive.attr,
+          name: scope.exclusive.attr,
+          values: [null, scope.exclusive.on],
+          kind: 'enum'
+        }
+      });
+    if (slot) dimensions.push({ kind: 'slot' });
+    const choicesFor = (dimension) => {
+      if (dimension.kind === 'content')
+        return Object.entries(scope.content).map(([id, state]) => ({ content: id, state }));
+      if (dimension.kind === 'slot') return slot.values.map((value) => ({ slot: value }));
+      const property = dimension.property;
+      return property.values.map((value) => ({ property, value }));
+    };
     const combinations = dimensions.reduce(
-      (all, values) => all.flatMap((prior) => values.map((value) => [...prior, value])),
+      (all, dimension) => all.flatMap((prior) => choicesFor(dimension).map((c) => [...prior, c])),
       [[]]
     );
+    const propertyValue = (combination, name) =>
+      combination.find((c) => c.property?.name === name)?.value;
+    const scopeValues = Object.fromEntries(scope.props.map((p) => [p.name, p.default]));
     for (const combination of combinations) {
-      const values = Object.fromEntries(
-        combination.filter((v) => v.property && !v.context).map((v) => [v.property.attr, v.value])
-      );
-      const { ignoredProps } = propertyConstraints(scope, values);
-      // Emit one status form, not one duplicate for every ignored neutral variant.
-      if (
-        ignoredProps.some(
-          (attr) => values[attr] !== properties.find((p) => p.attr === attr)?.values[0]
-        )
-      )
-        continue;
-      const iconOnly = combination.some(
-        (v) => v.property?.attr === 'data-icon-only' && v.value === ''
-      );
-      const content = combination.find((v) => v.slot)?.value;
-      // Icon-only content owns its accessible name; loading/leading content is
-      // not independently visible. Layout center/container do not consume gap.
-      if (model.slug === 'button' && iconOnly && content !== 'label') continue;
+      const values = { ...scopeValues };
+      for (const choice of combination)
+        if (choice.property) values[choice.property.name] = choice.value;
+      // A gated dimension only applies when its `when` values hold.
+      // A primitive that does not consume gap never crosses a gap value.
       if (
         model.slug === 'layout' &&
-        ['center', 'container'].includes(content) &&
-        combination.some((v) => v.property?.attr === 'data-gap' && v.value !== 'md')
+        ['center', 'container', 'split'].includes(combination.find((c) => c.slot)?.slot) &&
+        combination.some((c) => c.property?.name === 'data-gap' && c.value !== 'md')
       )
         continue;
+      const gatedOut = combination.some(
+        (c) =>
+          c.property &&
+          dimensions.find((d) => d.property === c.property)?.when &&
+          !Object.entries(dimensions.find((d) => d.property === c.property).when).every(
+            ([name, allowed]) => allowed.includes(propertyValue(combination, name))
+          )
+      );
+      if (gatedOut) continue;
       let html =
-        model.slug === 'toast' && content === 'action' && model.toastActionHtml
+        model.slug === 'toast' &&
+        combination.find((c) => c.slot === 'action') &&
+        model.toastActionHtml
           ? model.toastActionHtml
           : base;
-      if (slot) html = await operate(html, slotOperations(model.slug, content, iconOnly));
-      const statusOnly = model.slug === 'tool-call' && content === 'status-only';
+      const contentChoice = combination.find((c) => c.content);
+      if (slot)
+        html = await operate(
+          html,
+          slotOperations(
+            model.slug,
+            contentChoice?.content ?? combination.find((c) => c.slot)?.slot,
+            contentChoice?.state || {}
+          )
+        );
       const activeScope = scope
-        ? await scopeFor(
-            html,
-            scope.type,
-            scope.label,
-            {
-              ...scope,
-              ...(statusOnly ? { disclosure: false, states: ['Default'] } : {}),
-              props: Object.fromEntries(scope.props.map((p) => [p.attr, p.values]))
-            },
-            scope.id
-          )
+        ? await scopeFor(html, scope.type, scope.label, { ...scope, resolved: true }, scope.id)
         : null;
-      const contextScope = contextProperties.length
-        ? await scopeFor(
-            html,
-            root.type,
-            root.label,
-            { ...root, props: Object.fromEntries(root.props.map((p) => [p.attr, p.values])) },
-            root.id
-          )
-        : null;
-      for (const choice of combination)
-        if (
-          choice.property &&
-          activeScope &&
-          (choice.context || !ignoredProps.includes(choice.property.attr))
-        )
-          html = await operate(
-            html,
-            propertyOperations(
-              choice.context ? contextScope : activeScope,
-              choice.property.attr,
-              choice.value
-            )
-          );
+      for (const choice of combination) {
+        if (!choice.property || !activeScope) continue;
+        html = await operate(html, propertyOperations(activeScope, choice.property, choice.value));
+      }
+      if (contentChoice)
+        html = await operate(html, contentOperations(activeScope, contentChoice.state));
       const label =
         combination
-          .filter((v) => !v.property || v.context || !ignoredProps.includes(v.property.attr))
-          .map((v) =>
-            v.slot
-              ? `${slot.label}: ${v.value}`
-              : `${v.context ? `${root.label} ` : ''}${propertyLabel(v.property.attr)}: ${optionLabel(scope.type, v.property.attr, v.value, v.property.values)}`
+          .map((c) =>
+            c.content
+              ? `content: ${c.content}`
+              : c.slot
+                ? `${slot.label}: ${c.slot}`
+                : `${propertyLabel(c.property.name)}: ${optionLabel(scope.type, c.property.name, c.value, c.property.values, c.property.kind)}`
           )
-          .join(' · ') || 'Default';
+          .join(' · ') || 'default';
       rows.push({
         label:
           scope.type === 'avatar-badge'
@@ -486,8 +462,7 @@ export async function matrixRows(model) {
               ? `${scope.label} · ${label}`
               : label,
         html,
-        scope: scope.type === 'avatar-badge' ? root : activeScope || scope,
-        states: activeScope?.states?.length ? activeScope.states : ['Default'],
+        scope: activeScope || scope,
         wide
       });
     }
@@ -498,15 +473,10 @@ export async function matrixRows(model) {
     const base = await isolatePart(model.staticHtml, scope);
     if (base) await addRows(scope, base, scope.type === 'avatar-badge' ? model.slot : null, false);
   }
-  // Remove exact duplicates after normalization. State targets are included in
-  // the key so distinct interactive parts do not collapse into one another.
+  // Remove exact duplicates after normalization.
   const seen = new Set();
   return rows.filter((row) => {
-    const key = JSON.stringify([
-      row.html.replace(/>\s+</g, '><').trim(),
-      row.states.length > 1 ? row.scope?.target : null,
-      row.states
-    ]);
+    const key = JSON.stringify([row.html.replace(/>\s+</g, '><').trim()]);
     if (seen.has(key)) return false;
     seen.add(key);
     return true;

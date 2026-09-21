@@ -37,11 +37,13 @@
     width: anchor-size(width);
     margin: var(--space-100) 0 0;
     padding: 0;
-    overflow: hidden;
     border: var(--border-width-025) solid var(--border-primary);
     background-color: var(--surface-primary);
     color: var(--text-primary);
     position-try-fallbacks: flip-block;
+    /* The native popover surface adds a shadow. The design contract keeps one
+       border and no shadow on a top-layer surface. */
+    box-shadow: none;
   }
 
   .combobox-search {
@@ -79,6 +81,12 @@
     font-family: var(--font-mono);
     font-size: var(--font-size-350);
 
+    /* The search row owns the focus ring. The input must not draw a second
+       ring inside it. */
+    &:focus-visible {
+      box-shadow: none;
+    }
+
     &::placeholder {
       color: var(--text-secondary);
     }
@@ -95,8 +103,8 @@
     display: flex;
     align-items: center;
     gap: var(--space-200);
-    min-block-size: var(--size-1000);
-    padding: var(--space-200);
+    min-block-size: var(--size-900);
+    padding: var(--space-150) var(--space-200);
     outline: none;
     font-size: var(--font-size-350);
     cursor: pointer;

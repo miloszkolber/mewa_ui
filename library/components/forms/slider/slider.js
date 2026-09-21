@@ -17,13 +17,13 @@ function updateSliderValue(el) {
 
 export function enhance(root) {
   queryAll(root, '.slider').forEach((el) => {
-    updateSliderValue(el);
-    if (lifecycle.has(el)) return;
     el.dataset.init = '';
     if (lifecycle.has(el)) return;
     el.dataset.mewaSliderInit = '';
     updateSliderValue(el);
+    // Native `step` snapping can settle on `change` without a second `input`.
     lifecycle.listen(el, el, 'input', () => updateSliderValue(el));
+    lifecycle.listen(el, el, 'change', () => updateSliderValue(el));
     lifecycle.reset(el, el.form, () => updateSliderValue(el));
   });
 }

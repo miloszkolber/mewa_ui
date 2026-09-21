@@ -62,13 +62,13 @@
 
     &:is(:focus-visible, [data-state="focus"]) {
       &::-webkit-slider-thumb {
-        background: var(--surface-pointer-inverted);
+        background: var(--surface-control-transparent);
         border-width: var(--border-width-025);
         border-color: var(--border-focus);
         box-shadow: var(--ring-default);
       }
       &::-moz-range-thumb {
-        background: var(--surface-pointer-inverted);
+        background: var(--surface-control-transparent);
         border-width: var(--border-width-025);
         border-color: var(--border-focus);
         box-shadow: var(--ring-default);
@@ -92,12 +92,12 @@
       &::-moz-range-track { background: var(--surface-pointer); }
       &::-moz-range-progress { background: var(--surface-pointer-disabled); }
       &::-webkit-slider-thumb {
-        background: var(--surface-pointer-disabled);
+        background: var(--surface-control-transparent);
         border-color: var(--border-disabled);
         cursor: not-allowed;
       }
       &::-moz-range-thumb {
-        background: var(--surface-pointer-disabled);
+        background: var(--surface-control-transparent);
         border-color: var(--border-disabled);
         cursor: not-allowed;
       }
@@ -182,23 +182,23 @@
         background: Highlight;
       }
       &::-webkit-slider-thumb {
-        background: ButtonText;
+        background: ButtonFace;
         border-color: ButtonText;
       }
       &::-moz-range-thumb {
-        background: ButtonText;
+        background: ButtonFace;
         border-color: ButtonText;
       }
 
       &:is(:focus-visible, [data-state="focus"]) {
         &::-webkit-slider-thumb {
-          background: ButtonText;
+          background: ButtonFace;
           border-color: Highlight;
           outline: var(--border-width-050) solid Highlight;
           outline-offset: var(--border-width-025);
         }
         &::-moz-range-thumb {
-          background: ButtonText;
+          background: ButtonFace;
           border-color: Highlight;
           outline: var(--border-width-050) solid Highlight;
           outline-offset: var(--border-width-025);
@@ -206,11 +206,11 @@
       }
 
       &:disabled::-webkit-slider-thumb {
-        background: GrayText;
+        background: ButtonFace;
         border-color: GrayText;
       }
       &:disabled::-moz-range-thumb {
-        background: GrayText;
+        background: ButtonFace;
         border-color: GrayText;
       }
     }

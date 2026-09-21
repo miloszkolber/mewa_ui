@@ -137,7 +137,7 @@ Do not use palette primitive tokens in component markup.
 Hide decorative icons when visible text names the action.
 
 ```html
-<button class="btn" type="button" data-variant="default">
+<button class="btn" type="button" data-variant="primary">
   <i class="ri-save-line" aria-hidden="true"></i>
   Save
 </button>

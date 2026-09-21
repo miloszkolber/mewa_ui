@@ -8,8 +8,7 @@ import {
   booleanValues,
   initialValue
 } from '../docs/component-model.mjs';
-import { stateOperations } from '../docs/model-operations.mjs';
-import { compileModel, matrixRows, operate, rewrite } from './docs-model.mjs';
+import { compileModel, matrixRows, rewrite } from './docs-model.mjs';
 
 export async function namespace(html, prefix) {
   const ids = new Map();
@@ -50,44 +49,42 @@ export async function namespace(html, prefix) {
 
 function select(label, name, values, initial, labels = values) {
   if (values.length < 2) return '';
-  return `<label>${esc(label)}<select class="select" name="${name}">${values.map((v, i) => `<option value="${esc(encodeValue(v))}"${v === initial ? ' selected' : ''}>${esc(labels[i])}</option>`).join('')}</select></label>`;
+  return `<label><span class="control-label">${esc(label)}</span><select class="select" name="${name}">${values.map((v, i) => `<option value="${esc(encodeValue(v))}"${v === initial ? ' selected' : ''}>${esc(labels[i])}</option>`).join('')}</select></label>`;
 }
 
-function controlName(scopeId, attr, instance) {
-  return scopeId === 'root' ? `prop:${attr}` : `prop:${scopeId}:${instance}:${attr}`;
-}
-
-function stateName(scopeId, instance) {
-  return scopeId === 'root' ? 'state' : `state:${scopeId}:${instance}`;
+function controlName(scopeId, name, instance) {
+  return scopeId === 'root' ? `prop:${name}` : `prop:${scopeId}:${instance}:${name}`;
 }
 
 // Each repeated part instance owns its own value. Fall back to the value that
 // means "attribute absent" rather than to another instance's authored value.
 function propertyControl(scope, property, instance) {
-  const name = controlName(scope.id, property.attr, instance);
-  const label = propertyLabel(property.attr);
+  const name = controlName(scope.id, property.name, instance);
+  const label = propertyLabel(property.name);
   const initial = initialValue(scope, property, instance);
-  const boolean = booleanValues(property.values);
-  if (boolean) {
-    return `<label class="control-switch"><span>${esc(label)}</span><input type="checkbox" role="switch" name="${esc(name)}" data-off="${esc(encodeValue(boolean[0]))}" data-on="${esc(encodeValue(boolean[1]))}"${initial === boolean[1] ? ' checked' : ''}></label>`;
+  if (property.kind === 'boolean') {
+    const [off, on] = booleanValues(property);
+    return `<label class="control-switch"><span class="control-label">${esc(label)}</span><input type="checkbox" role="switch" name="${esc(name)}" data-off="${esc(encodeValue(off))}" data-on="${esc(encodeValue(on))}"${initial === on ? ' checked' : ''}></label>`;
   }
   return select(
     label,
     name,
     property.values,
     initial,
-    property.values.map((v) => optionLabel(scope.type, property.attr, v, property.values))
+    property.values.map((v) =>
+      optionLabel(scope.type, property.name, v, property.values, property.kind)
+    )
   );
 }
 
-// Property controls that only apply in some states. The playground reads this
-// attribute and hides the matching fieldset without re-rendering the form.
+// Property controls that only apply to some structure. The playground reads
+// this attribute and hides the matching cell without re-rendering the form.
 function hideWhen(slug, scopeId, kind) {
   if (scopeId !== 'root') return '';
-  if (slug === 'button' && kind === 'slot')
-    return ' data-hide-when="{&quot;control&quot;:&quot;prop:data-icon-only&quot;,&quot;in&quot;:[&quot;&quot;]}"';
   if (slug === 'layout' && kind === 'prop:data-gap')
-    return ' data-hide-when="{&quot;control&quot;:&quot;slot&quot;,&quot;in&quot;:[&quot;container&quot;,&quot;center&quot;]}"';
+    return ' data-hide-when="{&quot;control&quot;:&quot;slot&quot;,&quot;in&quot;:[&quot;container&quot;,&quot;center&quot;,&quot;split&quot;]}"';
+  if (slug === 'tool-call' && kind === 'prop:open')
+    return ' data-hide-when="{&quot;control&quot;:&quot;slot&quot;,&quot;in&quot;:[&quot;status-only&quot;]}"';
   return '';
 }
 
@@ -95,29 +92,20 @@ function scopeControls(model, scope) {
   const instances = scope.id === 'root' ? [0] : Array.from({ length: scope.count }, (_, i) => i);
   return instances
     .map((instance) => {
-      const state =
-        scope.states.length > 1
-          ? select(
-              scope.dynamic ? 'Active day visual state' : 'Visual state',
-              stateName(scope.id, instance),
-              scope.states,
-              scope.initialStates?.[instance] || scope.states[0]
-            )
-          : '';
       const properties = scope.props
         .map(
           (property) =>
-            `<span class="control-cell" data-property="${esc(property.attr)}"${hideWhen(model.slug, scope.id, `prop:${property.attr}`)}>${propertyControl(scope, property, instance)}</span>`
+            `<span class="control-cell" data-property="${esc(property.name)}"${hideWhen(model.slug, scope.id, `prop:${property.name}`)}>${propertyControl(scope, property, instance)}</span>`
         )
         .join('');
-      if (!state && !properties) return '';
+      if (!properties) return '';
       const legend =
         scope.id === 'root' || instances.length === 1
           ? scope.id === 'root'
             ? model.name
             : scope.label
           : `${scope.label} ${instance + 1}`;
-      return `${instance === 0 && scope.exclusive ? exclusiveControls(scope) : ''}<fieldset class="property-scope" data-scope="${esc(scope.id)}" data-instance="${instance}"><legend>${esc(legend)}</legend>${properties}${state}</fieldset>`;
+      return `${instance === 0 && scope.exclusive ? exclusiveControls(scope) : ''}<fieldset class="property-scope" data-scope="${esc(scope.id)}" data-instance="${instance}"><legend>${esc(legend)}</legend>${properties}</fieldset>`;
     })
     .join('');
 }
@@ -142,7 +130,17 @@ function controls(model) {
   const slot = model.slot
     ? `<fieldset class="property-scope" data-scope="slot"${hideWhen(model.slug, 'root', 'slot')}><legend>${esc(model.slot.label)}</legend>${select(model.slot.label, 'slot', model.slot.values, model.slot.default)}</fieldset>`
     : '';
-  return `${scopes}${slot}<fieldset class="property-scope playground-values" hidden><legend>Values</legend></fieldset><fieldset class="property-scope"><legend>Viewport</legend>${select('Width', 'width', ['auto', '320px', '480px', '768px'], 'auto', ['Fill available space', '320px', '480px', '768px'])}<button class="btn" data-variant="secondary" type="reset">Reset</button></fieldset>`;
+  const root = model.scopes.find((scope) => scope.id === 'root');
+  const texts = (root?.textFields || [])
+    .map(
+      (field) =>
+        `<label><span class="control-label">${esc(field.name)}</span><input class="text-field-input" type="text" name="text:${esc(field.name)}" value="${esc(field.initial)}"></label>`
+    )
+    .join('');
+  const textSection = texts
+    ? `<fieldset class="property-scope" data-scope="text"><legend>content</legend>${texts}</fieldset>`
+    : '';
+  return `${scopes}${slot}${textSection}<fieldset class="property-scope playground-values" hidden><legend>values</legend></fieldset><fieldset class="property-scope"><legend>viewport</legend>${select('Width', 'width', ['auto', '320px', '480px', '768px'], 'auto', ['Fill available space', '320px', '480px', '768px'])}<button class="btn" data-variant="secondary" type="reset">Reset</button></fieldset>`;
 }
 
 const themeIcon =
@@ -165,7 +163,7 @@ function shell(models, matrix, content) {
   const themeScript = `try{let t=localStorage.getItem('mewa-docs-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.classList.toggle('dark',t==='dark');document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t;}catch{}`;
   return `<!DOCTYPE html>
 <!-- Generated from component models. Run bun run docs:write. -->
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex, nofollow"><meta name="color-scheme" content="light dark"><title>mewa_ui | ${matrix ? 'State matrix' : 'Component playgrounds'}</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><script>${themeScript}${matrix ? '' : "document.documentElement.classList.add('playground-loading');"}</script><link rel="stylesheet" href="../library/src/base.css"><link rel="stylesheet" href="../library/src/tokens.css"><link rel="stylesheet" href="components.generated.css"><link rel="stylesheet" href="states.generated.css"><link rel="stylesheet" href="docs-utilities.css"><link rel="stylesheet" href="workbench.css"></head><body class="${matrix ? 'matrix-page' : 'playground-page'}"><a class="skip-link" href="#content">Skip to content</a><div class="docs-layout">${chrome}<main id="content" tabindex="-1" data-export-surface="${matrix ? 'figma' : 'playground'}">${content}</main></div><script src="theme.js" defer></script>${matrix ? '' : '<script src="playground.generated.js" defer></script>'}</body></html>\n`;
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex, nofollow"><meta name="color-scheme" content="light dark"><title>mewa_ui | ${matrix ? 'State matrix' : 'Component playgrounds'}</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><script>${themeScript}${matrix ? '' : "document.documentElement.classList.add('playground-loading');"}</script><link rel="stylesheet" href="../library/src/base.css"><link rel="stylesheet" href="../library/src/tokens.css"><link rel="stylesheet" href="components.generated.css"><link rel="stylesheet" href="states.generated.css"><link rel="stylesheet" href="docs-utilities.css"><link rel="stylesheet" href="workbench.css"></head><body class="${matrix ? 'matrix-page' : 'playground-page'}"><a class="skip-link" href="#content">Skip to content</a><div class="docs-layout">${chrome}<main id="content" tabindex="-1" data-export-surface="${matrix ? 'figma' : 'playground'}">${content}</main></div><script src="theme.js" defer></script><script src="icons.js" defer></script>${matrix ? '' : '<script src="playground.generated.js" defer></script>'}</body></html>\n`;
 }
 
 export async function renderDocumentation(root, registry) {
@@ -201,7 +199,7 @@ export async function renderDocumentation(root, registry) {
       );
     } else {
       preview.push(
-        `<section class="component-playground" data-component="${model.slug}" aria-labelledby="${label}"><header class="component-heading"><h1 id="${label}">${esc(model.name)}</h1></header><p class="component-purpose">${esc(meta.purpose)}</p><div class="workbench"><div class="preview playground-viewport" data-state-surface><div class="playground-demo${model.wide ? ' demo-wide' : ''}">${html}</div></div><form class="playground-controls" aria-label="${esc(model.name)} controls">${controls(model)}</form></div><div class="playground-feedback" role="status" aria-live="polite"></div><div class="usage"><h2>HTML</h2><pre tabindex="0"><code class="playground-code">${esc(html)}</code></pre></div></section>`
+        `<section class="component-playground" data-component="${model.slug}" aria-labelledby="${label}"><header class="component-heading"><h1 id="${label}">${esc(model.name)}</h1></header><p class="component-purpose">${esc(meta.purpose)}</p><div class="workbench"><div class="preview playground-viewport" data-state-surface><div class="playground-demo${model.wide ? ' demo-wide' : ''}">${html}</div></div><form class="playground-controls" aria-label="${esc(model.name)} controls">${controls(model)}</form></div><div class="usage"><h2>HTML</h2><pre tabindex="0"><code class="playground-code">${esc(html)}</code></pre></div></section>`
       );
     }
     const rows = [];
@@ -229,18 +227,12 @@ export async function renderDocumentation(root, registry) {
           }
         ]
       ]);
-      const cells = [];
-      for (const state of row.states) {
-        const cell = await namespace(
-          await operate(base, row.scope ? stateOperations(row.scope, state) : []),
-          `matrix-${model.slug}-${i}-${state.replaceAll(' ', '-').toLowerCase()}`
-        );
-        cells.push(
-          `<div class="matrix-cell" data-state-surface data-state-name="${state}"><div class="matrix-state-label">${state}</div><div class="preview specimen">${cell}</div></div>`
-        );
-      }
+      const cell = await namespace(
+        base,
+        `matrix-${model.slug}-${i}-${row.label.replaceAll(/[^a-z0-9]+/gi, '-').toLowerCase()}`
+      );
       rows.push(
-        `<div class="matrix-row${(row.wide ?? model.wide) ? ' matrix-wide' : ''}" data-part="${row.scope?.id || 'root'}"${cells.length === 1 ? ' data-single-state' : ''}><h3>${esc(row.label)}</h3><div class="matrix-cells">${cells.join('')}</div></div>`
+        `<div class="matrix-row${(row.wide ?? model.wide) ? ' matrix-wide' : ''}" data-part="${row.scope?.id || 'root'}" data-single-state><h3>${esc(row.label)}</h3><div class="matrix-cells"><div class="matrix-cell" data-state-surface data-state-name="${esc(row.label)}"><div class="matrix-state-label">${esc(row.label)}</div><div class="preview specimen">${cell}</div></div></div></div>`
       );
     }
     matrix.push(

@@ -24,6 +24,13 @@
     color: var(--text-negative);
   }
 
+  /* A required control marks its own label; the star stays decorative. */
+  .field:has(:required) > label::after,
+  .field:has(:required) > .field-label::after {
+    content: " *";
+    color: var(--text-negative);
+  }
+
   /* Keep Field usable with plain native controls. The more specific
      component classes (for example .text-field-input and .select) can refine this. */
   .field > :where(

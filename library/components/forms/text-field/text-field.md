@@ -138,7 +138,7 @@ Compose a normal form when a search field has a submit action.
            enterkeyhint="search">
   </div>
   <div class="form-actions">
-    <button class="btn" type="submit" data-variant="default">Search</button>
+    <button class="btn" type="submit" data-variant="primary">Search</button>
   </div>
 </form>
 ```

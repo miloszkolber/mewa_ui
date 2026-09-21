@@ -23,6 +23,13 @@
     color: var(--text-negative);
   }
 
+  /* A required control marks its own label; the star stays decorative. */
+  .text-field:has(:required) > label::after,
+  .text-field:has(:required) > .text-field-label::after {
+    content: " *";
+    color: var(--text-negative);
+  }
+
   /* A hidden label remains in the accessibility tree. */
   .text-field-label[data-hidden] {
     position: absolute;

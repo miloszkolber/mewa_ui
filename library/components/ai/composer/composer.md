@@ -47,7 +47,7 @@ The optional module adds documented Enter submission modes.
     </div>
     <div class="composer-actions-trailing">
       <span class="composer-hint" id="composer-submit-hint">⌘ or Ctrl + Enter</span>
-      <button class="btn composer-submit" type="submit" data-variant="default">Send</button>
+      <button class="btn composer-submit" type="submit" data-variant="primary">Send</button>
     </div>
   </div>
 </form>

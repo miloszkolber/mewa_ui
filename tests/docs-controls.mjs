@@ -1,12 +1,7 @@
 import assert from 'node:assert/strict';
 import catalog from '../docs/specimens.json' with { type: 'json' };
 import { compileModel } from '../scripts/docs-model.mjs';
-import {
-  encodeValue,
-  booleanValues,
-  initialValue,
-  propertyConstraints
-} from '../docs/component-model.mjs';
+import { encodeValue, initialValue } from '../docs/component-model.mjs';
 
 export async function inspectPlaygroundControls(page, go) {
   const active = '.component-playground:not([hidden])';
@@ -21,8 +16,7 @@ export async function inspectPlaygroundControls(page, go) {
       encodeValue(value)
     );
   const reset = () => page.$eval(`${active} form`, (el) => el.reset());
-  const propName = (s, i, attr) => (s.id === 'root' ? `prop:${attr}` : `prop:${s.id}:${i}:${attr}`);
-  const stateName = (s, i) => (s.id === 'root' ? 'state' : `state:${s.id}:${i}`);
+  const propName = (s, i, name) => (s.id === 'root' ? `prop:${name}` : `prop:${s.id}:${i}:${name}`);
   for (const c of catalog) {
     const model = await compileModel(c);
     await go(c.slug);
@@ -36,68 +30,37 @@ export async function inspectPlaygroundControls(page, go) {
       const indices = scope.id === 'root' ? [0] : Array.from({ length: scope.count }, (_, i) => i);
       for (const i of indices) {
         for (const prop of scope.props) {
-          const name = propName(scope, i, prop.attr);
-          const boolean = booleanValues(prop.values);
+          const name = propName(scope, i, prop.name);
           assert.equal(
             await page.$eval(`${active} [name="${name}"]`, (el) => el.getAttribute('role')),
-            boolean ? 'switch' : null
+            prop.kind === 'boolean' ? 'switch' : null
           );
+          // The carousel controller owns prev/next availability at the edges.
+          // Some controllers re-derive availability and validity from their owner.
+          const controllerOwned =
+            ['color', 'color-hex'].includes(scope.type) ||
+            (scope.type === 'carousel-control' && prop.name === 'disabled');
           for (const value of prop.values) {
             await set(name, value);
-            if (c.slug === 'toast') continue;
-            const values = Object.fromEntries(
-              scope.props.map((p) => [
-                p.attr,
-                p.attr === prop.attr ? value : initialValue(scope, p, i)
-              ])
-            );
-            const expected =
-              propertyConstraints(scope, values).ignoredProps.includes(prop.attr) ||
-              (scope.type === 'badge' && prop.attr === 'data-state' && value === '')
-                ? null
-                : value;
+            if (c.slug === 'toast' || !prop.attr || controllerOwned) continue;
+            const expected = value;
             const actual = await page.$eval(
               `${active} .playground-demo`,
-              (el, selector, attr, index) =>
-                el.querySelectorAll(selector)[index]?.getAttribute(attr) ?? null,
+              (el, selector, attr, index) => {
+                const target = el.querySelectorAll(selector)[index];
+                if (!target) return null;
+                if (target.hasAttribute(attr)) return target.getAttribute(attr);
+                if (attr === 'disabled' && target.getAttribute('aria-disabled') === 'true')
+                  return '';
+                return null;
+              },
               scope.target,
               prop.attr,
               i
             );
-            assert.equal(actual, expected, `${c.slug}/${scope.id}/${i}/${prop.attr}/${value}`);
+            assert.equal(actual, expected, `${c.slug}/${scope.id}/${i}/${prop.name}/${value}`);
           }
           await set(name, initialValue(scope, prop, i));
-        }
-        if (scope.states.length > 1) {
-          for (const state of scope.states) {
-            await set(stateName(scope, i), state);
-            if (c.slug === 'toast') continue;
-            const attr = /focus/i.test(state)
-              ? 'data-demo-focus'
-              : /disabled/i.test(state)
-                ? 'disabled'
-                : state === 'Hover'
-                  ? 'data-demo-hover'
-                  : null;
-            if (attr) {
-              const actual = await page.$eval(
-                `${active} .playground-demo`,
-                (el, selector, attr, index) => {
-                  const target = el.querySelectorAll(selector)[index];
-                  return (
-                    !!target &&
-                    (target.hasAttribute(attr) ||
-                      (attr === 'disabled' && target.getAttribute('aria-disabled') === 'true'))
-                  );
-                },
-                scope.focus || scope.target,
-                attr,
-                i
-              );
-              assert(actual, `${c.slug}/${scope.id}/${i}/${state}: state reaches owner`);
-            }
-          }
-          await set(stateName(scope, i), scope.initialStates?.[i] || scope.states[0]);
         }
       }
     }
@@ -105,12 +68,16 @@ export async function inspectPlaygroundControls(page, go) {
   }
 
   await go('button');
-  await set('prop:data-icon-only', '');
+  await set('prop:showLabel', null);
+  await set('prop:showIconStart', '');
   assert.deepEqual(
     await page.$eval(`${active} .playground-demo .btn`, (el) => [el.offsetWidth, el.offsetHeight]),
     [36, 36]
   );
-  assert(await page.$eval(`${active} [data-scope="slot"]`, (el) => el.hidden));
+  assert.equal(
+    await page.$eval(`${active} .playground-demo .btn`, (el) => el.getAttribute('aria-label')),
+    'Button'
+  );
   await reset();
   await go('avatar');
   await set('slot', 'icon');
@@ -132,25 +99,19 @@ export async function inspectPlaygroundControls(page, go) {
 
   await go('nav');
   await set('exclusive:part-nav-link', '0');
-  await set('state:part-nav-link:1', 'Hover');
+  await set('prop:part-nav-link:1:disabled', '');
   assert.equal(
     await page.$eval(`${active} .nav-item-link`, (el) => el.getAttribute('aria-current')),
     'page'
   );
-  assert(
-    await page.$eval(
-      `${active} .nav-item-link:nth-of-type(1)`,
-      (el) => !el.hasAttribute('data-demo-hover')
-    )
-  );
   assert.equal(
-    await page.$$eval(`${active} .nav-item-link[data-demo-hover]`, (els) => els.length),
+    await page.$$eval(`${active} .nav-item-link[aria-disabled="true"]`, (els) => els.length),
     1
   );
 
   await go('toggle-group');
   await reset();
-  await set('prop:part-toggle:1:aria-pressed', 'true');
+  await set('prop:part-toggle:1:checked', 'true');
   assert.deepEqual(
     await page.$$eval(`${active} .toggle-group .toggle`, (els) =>
       els.map((el) => el.getAttribute('aria-pressed'))
@@ -158,7 +119,7 @@ export async function inspectPlaygroundControls(page, go) {
     ['false', 'true', 'false']
   );
   await set('prop:data-type', 'multiple');
-  await set('prop:part-toggle:0:aria-pressed', 'true');
+  await set('prop:part-toggle:0:checked', 'true');
   assert.equal(
     await page.$$eval(`${active} .toggle-group [aria-pressed="true"]`, (els) => els.length),
     2
@@ -170,26 +131,19 @@ export async function inspectPlaygroundControls(page, go) {
   );
 
   await go('button-group');
-  await set('state:part-button:0', 'Disabled');
-  await set('state:part-button:1', 'Focus');
+  await set('prop:part-button:0:disabled', '');
   assert.deepEqual(
-    await page.$$eval(`${active} .btn-group .btn`, (els) =>
-      els.map((el) => [el.disabled, el.hasAttribute('data-demo-focus')])
-    ),
-    [
-      [true, false],
-      [false, true],
-      [false, false]
-    ]
+    await page.$$eval(`${active} .btn-group .btn`, (els) => els.map((el) => el.disabled)),
+    [true, false, false]
   );
 
   await go('date-picker');
-  await set('state:part-day:0', 'Focus');
   await page.click(`${active} [data-action="next-month"]`);
-  await page.waitForFunction(() =>
-    document
-      .querySelector('.component-playground:not([hidden]) .date-picker-day button[tabindex="0"]')
-      ?.hasAttribute('data-demo-focus')
+  await page.waitForFunction(
+    () =>
+      document.querySelector(
+        '.component-playground:not([hidden]) .date-picker-day button[tabindex="0"]'
+      ) !== null
   );
 
   await go('time-field');
@@ -228,18 +182,18 @@ export async function inspectPlaygroundControls(page, go) {
   await reset();
   const committed = await page.$eval(`${active} .tag-input-fallback`, (el) => el.value);
   await page.type(`${active} .tag-input-control`, 'Draft');
-  await set('state', 'Focus');
+  await set('prop:invalid', 'true');
   assert.equal(await page.$eval(`${active} .tag-input-fallback`, (el) => el.value), committed);
   assert.equal(await page.$eval(`${active} .tag-input-control`, (el) => el.value), 'Draft');
   await page.click(`${active} .tag-input-remove`);
   const afterRemoval = await page.$eval(`${active} .tag-input-fallback`, (el) => el.value);
   assert.notEqual(afterRemoval, committed);
-  await set('state', 'Default');
+  await set('prop:invalid', null);
   assert.equal(await page.$eval(`${active} .tag-input-fallback`, (el) => el.value), afterRemoval);
   assert.equal(await page.$eval(`${active} .tag-input-control`, (el) => el.value), 'Draft');
 
   await go('checkbox');
-  await set('state', 'Mixed');
+  await set('prop:indeterminate', '');
   const minus = await page.$eval(
     `${active} .checkbox`,
     (el) => getComputedStyle(el, '::after').maskImage
@@ -264,23 +218,25 @@ export async function inspectPlaygroundControls(page, go) {
 
   await go('radio-group');
   await reset();
-  await set('state:part-radio:1', 'Checked');
-  assert.deepEqual(
-    await page.$$eval(`${active} [name^="state:part-radio:"]`, (els) => els.map((el) => el.value)),
-    ['Default', 'Checked', 'Default']
-  );
-  await set('state:part-radio:0', 'Checked');
+  await set('prop:part-radio:1:checked', '');
+  assert.deepEqual(await page.$$eval(`${active} .radio`, (els) => els.map((el) => el.checked)), [
+    false,
+    true,
+    false
+  ]);
+  await set('prop:part-radio:0:checked', '');
   assert.deepEqual(await page.$$eval(`${active} .radio`, (els) => els.map((el) => el.checked)), [
     true,
     false,
     false
   ]);
-  await set('state:part-radio:2', 'Checked');
-  await set('state:part-radio:0', 'Checked');
-  assert.deepEqual(
-    await page.$$eval(`${active} [name^="state:part-radio:"]`, (els) => els.map((el) => el.value)),
-    ['Checked', 'Default', 'Default']
-  );
+  await set('prop:part-radio:2:checked', '');
+  await set('prop:part-radio:0:checked', '');
+  assert.deepEqual(await page.$$eval(`${active} .radio`, (els) => els.map((el) => el.checked)), [
+    true,
+    false,
+    false
+  ]);
 
   await go('tabs');
   await reset();
@@ -291,7 +247,7 @@ export async function inspectPlaygroundControls(page, go) {
     ),
     0
   );
-  await set('state:part-tab:1', 'Disabled');
+  await set('prop:part-tab:1:disabled', '');
   await set('exclusive:part-tab', '1');
   assert.equal(await page.$eval(`${active} [name="exclusive:part-tab"]`, (el) => el.value), '0');
   assert(
@@ -300,10 +256,10 @@ export async function inspectPlaygroundControls(page, go) {
       (el) => !document.getElementById(el.getAttribute('aria-controls')).hidden
     )
   );
-  await set('state:part-tab:1', 'Default');
+  await set('prop:part-tab:1:disabled', null);
   await set('exclusive:part-tab', '1');
-  await set('state:part-tab:0', 'Disabled');
-  await set('state:part-tab:1', 'Disabled');
+  await set('prop:part-tab:0:disabled', '');
+  await set('prop:part-tab:1:disabled', '');
   assert.equal(await page.$eval(`${active} [name="exclusive:part-tab"]`, (el) => el.value), '1');
   assert(
     await page.$eval(
@@ -311,7 +267,7 @@ export async function inspectPlaygroundControls(page, go) {
       (el) => !document.getElementById(el.getAttribute('aria-controls')).hidden
     )
   );
-  await set('state:part-tab:0', 'Default');
+  await set('prop:part-tab:0:disabled', null);
   assert.equal(await page.$eval(`${active} [name="exclusive:part-tab"]`, (el) => el.value), '0');
   assert(
     await page.$eval(
@@ -323,24 +279,12 @@ export async function inspectPlaygroundControls(page, go) {
   await go('date-picker');
   await reset();
   await page.click(`${active} [data-action="next-month"]`);
-  await page.click(`${active} .date-picker-day:not([data-outside]) button[data-day="15"]`);
-  const date = await page.$eval(
-    `${active} .date-picker-day[data-selected] button`,
-    (el) => el.dataset.date
-  );
   const month = await page.$eval(`${active} .date-picker-heading`, (el) => el.textContent);
-  await set('state:part-day:0', 'Focus');
-  assert.equal(
-    await page.$eval(`${active} .date-picker-day[data-selected] button`, (el) => el.dataset.date),
-    date
-  );
+  const days = await page.$$eval(`${active} .date-picker-day button`, (els) => els.length);
+  await set('prop:disabled', '');
   assert.equal(await page.$eval(`${active} .date-picker-heading`, (el) => el.textContent), month);
-  await set('prop:part-button:0:data-variant', 'ghost');
-  assert.equal(await page.$eval(`${active} .date-picker-heading`, (el) => el.textContent), month);
-  assert.equal(
-    await page.$eval(`${active} .date-picker-day[data-selected] button`, (el) => el.dataset.date),
-    date
-  );
+  assert.equal(await page.$$eval(`${active} .date-picker-day button`, (els) => els.length), days);
+  await set('prop:disabled', null);
 
   await go('tool-call');
   await set('slot', 'status-only');
@@ -351,8 +295,10 @@ export async function inspectPlaygroundControls(page, go) {
     ),
     0
   );
-  assert(await page.$eval(`${active} [name="state"]`, (el) => el.closest('label').hidden));
+  assert(
+    await page.$eval(`${active} [name="prop:open"]`, (el) => el.closest('.control-cell').hidden)
+  );
   console.log(
-    'PASS modeled properties, semantic switches, independent concurrent states, exclusive selection, dynamic calendar and retained drafts'
+    'PASS modeled properties, semantic switches, exclusive selection, calendar and retained drafts'
   );
 }
