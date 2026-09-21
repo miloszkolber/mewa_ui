@@ -304,11 +304,18 @@ function syncControls(section) {
             continue;
           }
           const off = decodeLive(control.dataset.off);
-          const value = el.hasAttribute(p.attr)
+          let value = el.hasAttribute(p.attr)
             ? el.getAttribute(p.attr) === ''
               ? ''
               : el.getAttribute(p.attr)
             : null;
+          // A non-form owner receives `disabled` as `aria-disabled`.
+          if (
+            value === null &&
+            p.attr === 'disabled' &&
+            el.getAttribute('aria-disabled') === 'true'
+          )
+            value = '';
           control.checked = value !== null && value !== off;
         } else {
           const value = el.getAttribute(p.attr);
@@ -493,6 +500,24 @@ for (const section of sections) {
   form.addEventListener('input', (e) => {
     if (e.target.name === 'width') {
       resizeDemo(section);
+      return;
+    }
+    // Single-selection disclosure keeps at most one item open.
+    const disclosureToggle =
+      e.target.name === 'prop:data-type' || (e.target.name.endsWith(':open') && e.target.checked);
+    if (section.dataset.component === 'accordion' && disclosureToggle) {
+      const model = modelFor(section);
+      const item = model.scopes.find((s) => s.type === 'accordion-item');
+      if (item && form.elements['prop:data-type']?.value === 'single') {
+        const controls = instancesFor(item).map((i) => form.elements[`prop:${item.id}:${i}:open`]);
+        const chosen = e.target.name.endsWith(':open')
+          ? Number(e.target.name.split(':').at(-2))
+          : controls.findIndex((control) => control?.checked);
+        controls.forEach((control, i) => {
+          if (control && i !== chosen) control.checked = false;
+        });
+      }
+      render(section, e.target);
       return;
     }
     // A calendar owns live navigation state; mutate it without rebuilding.

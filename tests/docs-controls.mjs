@@ -298,7 +298,42 @@ export async function inspectPlaygroundControls(page, go) {
   assert(
     await page.$eval(`${active} [name="prop:open"]`, (el) => el.closest('.control-cell').hidden)
   );
+
+  // A non-form owner receives `disabled` as `aria-disabled`; the switch stays on.
+  await go('button-group');
+  await set('prop:disabled', '');
+  await new Promise((r) => setTimeout(r, 20));
+  assert.equal(await page.$eval(`${active} [name="prop:disabled"]`, (el) => el.checked), true);
+  assert(
+    await page.$eval(`${active} .btn-group`, (el) => el.getAttribute('aria-disabled') === 'true')
+  );
+  await reset();
+
+  // Single-selection disclosure keeps at most one item open.
+  await go('accordion');
+  await reset();
+  await set('prop:data-type', 'single');
+  await set('prop:part-accordion-item:1:open', '');
+  assert.deepEqual(
+    await page.$$eval(`${active} .accordion-item`, (els) => els.map((el) => el.open)),
+    [false, true, false]
+  );
+  assert.deepEqual(
+    await page.$$eval(`${active} [name$=":open"]`, (els) => els.map((el) => el.checked)),
+    [false, true, false]
+  );
+  await reset();
+
+  // Reset restores the initial demo markup exactly.
+  await go('toggle-group');
+  const initialDemo = await page.$eval(`${active} .playground-demo`, (el) => el.innerHTML);
+  await set('prop:data-variant', 'outline');
+  await set('prop:disabled', '');
+  await reset();
+  await new Promise((r) => setTimeout(r, 20));
+  assert.equal(await page.$eval(`${active} .playground-demo`, (el) => el.innerHTML), initialDemo);
+
   console.log(
-    'PASS modeled properties, semantic switches, exclusive selection, calendar and retained drafts'
+    'PASS modeled properties, native interaction sync, exclusive selection, disclosure and reset'
   );
 }

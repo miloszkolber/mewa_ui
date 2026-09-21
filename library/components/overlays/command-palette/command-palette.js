@@ -243,7 +243,12 @@ export function enhance(root) {
       filter('');
       clearHighlight(list, input, setAttribute);
       highlightIndex = -1;
-      if (dialog._trigger?.isConnected) dialog._trigger.focus();
+      // The browser already restores focus when a modal dialog closes. Only
+      // restore it here when focus is still inside or has fallen back to body,
+      // so a later close event never steals focus the user has moved.
+      const active = dialog.ownerDocument.activeElement;
+      const restore = !active || active === dialog.ownerDocument.body || dialog.contains(active);
+      if (restore && dialog._trigger?.isConnected) dialog._trigger.focus();
     });
 
     filter('');

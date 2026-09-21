@@ -126,6 +126,8 @@ export function partProfile(type, selector) {
       booleanOverrides: { checked: { attr: 'aria-pressed', on: 'true', values: ['false', 'true'] } }
     };
   if (profiles[type]) return { ...profiles[type], target: selector };
+  // The Color Picker controller derives its children's availability and validity.
+  if (type === 'color' || type === 'color-hex') return { target: selector };
   const input = [
     'radio',
     'date',
@@ -195,6 +197,8 @@ export function optionLabel(slug, attr, value, values, kind) {
         : { xs: 12, sm: 16, md: 20, lg: 24, xl: 32 };
     return sizes[value] ?? value;
   }
+  // An empty enum value is the neutral form, never a blank option.
+  if (value === '') return 'default';
   return String(value);
 }
 

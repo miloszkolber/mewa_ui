@@ -15,6 +15,10 @@ The September 2026 catalog review covers all 80 registered components, their sou
 - Icon exposes a line/fill variant and uses the local `ri-*` class hook. A documentation loader injects the local glyph, so the rendered specimen stays visual and the HTML output stays a short class hook.
 - Field, Text Field, and Textarea expose editable label and description text; `required` marks the label. Label exposes an `optional` property.
 
+## Playground interaction
+
+A catalog-wide interaction audit now exercises every playground control (each select option and boolean), every value editor, native interaction inside each demo, exclusive selection, single-selection disclosure, and Reset. Fixed here: the empty enum value rendered a blank option label (`default` again); a boolean whose attribute is applied as `aria-disabled` on a non-form owner flipped its switch back off; single-selection Accordion kept several items open instead of one; Color Picker exposed controller-owned child controls that fought the controller; and the Command Palette close handler stole focus from an element the user had already focused after the browser restored it. The audit reports no control desync, no empty demo, and no page error across all 80 components.
+
 ## Systemic follow-up
 
 The same defect classes found in the reviewed components were checked across the rest of the catalog. Fixed here: menu and command list rows were 40px and now use the 36px control rhythm (Command Palette, Context Menu, Dropdown Menu); the Tabs scroll container clipped child focus rings and now reserves the ring spread, with the line variant's selected underline kept flush; Date Range Picker had the Time Field legend-spacing bug and the native date-picker glyph color; Select, Number Field, File Input, and Date Field now mark a required label. A nested `:has()` selector in the Label required indicator was invalid CSS and silently dropped the whole rule; it now uses a relative child selector. A command-palette close assertion in the runtime suite raced the native toggle events and now waits for the settled attribute.

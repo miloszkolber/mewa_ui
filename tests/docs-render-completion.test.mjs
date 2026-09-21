@@ -39,6 +39,13 @@ assert.match(preview, /name="prop:disabled"/);
 assert.match(preview, /name="prop:part-nav-link:1:disabled"/);
 assert.match(preview, /name="exclusive:part-nav-link"/);
 assert.match(preview, /class="control-label">variant</);
+// Every option needs a visible label, and controller-owned children stay hidden.
+assert.doesNotMatch(preview, /<option[^>]*>\s*<\/option>/, 'no blank option labels');
+assert.doesNotMatch(
+  preview,
+  /name="prop:part-color(?:-hex)?:\d+:(?:invalid|disabled)"/,
+  'Color Picker children are controller-owned'
+);
 assert.doesNotMatch(matrix, /<h3>[^<]*(?:Submit shortcut|Required|Multiple|Selection):/);
 assert.doesNotMatch(matrix, /© 2026 Atlas/);
 console.log(

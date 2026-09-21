@@ -576,18 +576,22 @@ assert(
   )
 );
 
+// The Color Picker controller derives its children's availability and validity,
+// so the child atoms expose no independent property controls.
+{
+  const picker = await model('color-picker');
+  for (const type of ['color', 'color-hex']) {
+    const scope = picker.scopes.find((s) => s.type === type);
+    assert(scope, `color-picker must expose ${type}`);
+    assert.equal(scope.props.length, 0, `color-picker ${type} is controller-owned`);
+  }
+}
+
 // These contextual controls do not share the standalone Text Field/Button
 // contract. Each exposes its own atom, and a disabled boolean must target that
 // atom rather than the composed root.
 for (const [slug, expectedParts] of [
   ['input-otp', [['otp', '.input-otp input:not([type="hidden"])']]],
-  [
-    'color-picker',
-    [
-      ['color', '.color-picker-input'],
-      ['color-hex', '.color-picker-hex']
-    ]
-  ],
   ['suggestion', [['suggestion-item', '.suggestion-button']]],
   [
     'time-field',
