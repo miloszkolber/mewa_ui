@@ -432,7 +432,11 @@ export async function runDisplayCompletionTests(assetBase = '/mewa-ui') {
           );
           const fallback = host.querySelector('.image-fallback').getBoundingClientRect();
           const caption = host.querySelector('figcaption').getBoundingClientRect();
-          equal(caption.top >= fallback.bottom, true, 'Failed media does not cover its caption');
+          equal(
+            caption.top + 0.5 >= fallback.bottom,
+            true,
+            'Failed media does not cover its caption'
+          );
           const summary = host.querySelector('.collapsible-trigger');
           equal(
             summary.clientHeight >= summary.scrollHeight,

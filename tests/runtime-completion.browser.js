@@ -29,7 +29,7 @@ export async function inspectRuntimeCompletion(page, baseUrl) {
       assert.equal(await active(), 'bold');
       await page.keyboard.press('ArrowRight');
       assert.equal(await active(), 'italic', `${order}: one arrow moves once`);
-      await page.keyboard.press('Space');
+      await page.keyboard.press(' ');
       assert.equal(
         await page.$eval('#italic', (item) => item.getAttribute('aria-pressed')),
         'true'

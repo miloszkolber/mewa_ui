@@ -123,6 +123,7 @@ export function enhance(root) {
     if (!items.length) return;
 
     const visibleItems = () => getVisibleItems(tree);
+    const displacedFocus = new WeakMap();
     const setRoving = (active) => {
       const visible = visibleItems();
       const next =
@@ -160,6 +161,24 @@ export function enhance(root) {
     lifecycle.listen(
       tree,
       tree,
+      'focusout',
+      (event) => {
+        const target = event.target.closest('.tree-branch-trigger, .tree-leaf');
+        if (!target || target.closest('[role="tree"]') !== tree) return;
+        const details = target.closest('details.tree-branch');
+        if (
+          details &&
+          !details.open &&
+          !event.relatedTarget &&
+          target !== getBranchTrigger(details)
+        )
+          displacedFocus.set(details, target);
+      },
+      true
+    );
+    lifecycle.listen(
+      tree,
+      tree,
       'toggle',
       (event) => {
         const details = event.target;
@@ -168,7 +187,13 @@ export function enhance(root) {
         if (!isBranchOpen(details)) {
           const trigger = getBranchTrigger(details);
           const active = tree.ownerDocument.activeElement;
-          if (trigger && active && details.contains(active) && active !== trigger)
+          const displaced = displacedFocus.get(details);
+          displacedFocus.delete(details);
+          if (
+            trigger &&
+            ((active && details.contains(active) && active !== trigger) ||
+              (displaced && displaced !== trigger))
+          )
             focusItem(trigger);
         }
         setRoving();

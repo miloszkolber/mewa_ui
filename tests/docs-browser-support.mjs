@@ -142,6 +142,9 @@ export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath
       els.map((el) => el.getBoundingClientRect().toJSON())
     );
     const latest = rects[1];
+    const layoutViewportCenter = await page.evaluate(
+      () => document.documentElement.clientWidth / 2
+    );
     assert(
       rects.every((r) => r.left >= 0 && r.top >= 0 && r.right <= 1440 && r.bottom <= 1000),
       `${position}: toasts remain in viewport`
@@ -151,7 +154,11 @@ export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath
     else assert(latest.bottom <= rects[0].top, `${position}: newest toast at top, no overlap`);
     if (position.endsWith('right')) assert(latest.right > 1400);
     if (position.endsWith('left')) assert(latest.left < 40);
-    if (position.endsWith('center')) assert(Math.abs((latest.left + latest.right) / 2 - 720) < 1);
+    if (position.endsWith('center'))
+      assert(
+        Math.abs((latest.left + latest.right) / 2 - layoutViewportCenter) < 1,
+        `${position}: newest toast centered in the layout viewport`
+      );
   }
   await page.click('#toast-container .toast:last-child .toast-close');
   assert.equal(await page.$$eval('#toast-container .toast', (els) => els.length), 1);
