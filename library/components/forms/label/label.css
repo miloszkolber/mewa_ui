@@ -24,7 +24,9 @@
   }
 
   /* A required sibling control marks the label; optional states are explicit. */
-  .label:has(+ :required)::after {
+  /* `:has()` cannot nest, so the wrapped control uses a relative child selector. */
+  .label:has(+ :required)::after,
+  .label:has(+ .number-field > input:required)::after {
     content: " *";
     color: var(--text-negative);
   }

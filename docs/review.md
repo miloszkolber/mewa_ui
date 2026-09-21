@@ -15,6 +15,12 @@ The September 2026 catalog review covers all 80 registered components, their sou
 - Icon exposes a line/fill variant and uses the local `ri-*` class hook. A documentation loader injects the local glyph, so the rendered specimen stays visual and the HTML output stays a short class hook.
 - Field, Text Field, and Textarea expose editable label and description text; `required` marks the label. Label exposes an `optional` property.
 
+## Systemic follow-up
+
+The same defect classes found in the reviewed components were checked across the rest of the catalog. Fixed here: menu and command list rows were 40px and now use the 36px control rhythm (Command Palette, Context Menu, Dropdown Menu); the Tabs scroll container clipped child focus rings and now reserves the ring spread, with the line variant's selected underline kept flush; Date Range Picker had the Time Field legend-spacing bug and the native date-picker glyph color; Select, Number Field, File Input, and Date Field now mark a required label. A nested `:has()` selector in the Label required indicator was invalid CSS and silently dropped the whole rule; it now uses a relative child selector. A command-palette close assertion in the runtime suite raced the native toggle events and now waits for the settled attribute.
+
+Remaining candidates, measured but not changed: Navigation, Tree View, Accordion, and Collapsible rows are 40-45px; Input OTP and Radio Group legends use 4px and 8px where Time Field and Date Range Picker use 12px; 22 component fixtures still embed inline icon SVG rather than the local `ri-*` class hook.
+
 ## Documentation acceptance
 
 Preview and Figma use the same nine registry categories. Boolean controls distinguish presence attributes from string-valued ARIA booleans. Selection cardinality does not control which neighboring item may be disabled. Each component declares a bounded matrix dimension list; behavior-only properties and isolated placement controls do not create redundant specimens.

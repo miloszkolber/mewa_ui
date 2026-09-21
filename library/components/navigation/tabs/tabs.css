@@ -12,13 +12,14 @@
 
     /* The ready control rhythm is 36px total. */
     block-size: var(--size-900);
-    padding: var(--border-width-025);
+    /* Leave room for a child focus ring inside the scroll container. */
+    padding: var(--ring-spread);
     gap: var(--space-150);
 
     /* -- Line variant --------------------------------------------- */
     &:is([data-variant="line"], [data-variant="underline"]) {
       background: transparent;
-      padding: 0;
+      padding: var(--ring-spread);
       gap: 0;
       border: none;
       border-bottom: var(--border-width-025) solid var(--border-primary);
@@ -26,7 +27,8 @@
       & .tab-trigger {
         padding: 0 var(--space-250);
         border-bottom: var(--border-width-050) solid var(--border-transparent);
-        margin-bottom: -1px;
+        /* Keep the selected underline flush with the shared track. */
+        margin-bottom: calc(-1 * (var(--ring-spread) + var(--border-width-025)));
 
         /* Hover changes text color only; it never covers the bottom border. */
         &:not([aria-selected="true"]):hover {

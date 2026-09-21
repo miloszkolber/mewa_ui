@@ -207,8 +207,12 @@ export async function inspectRuntimeCompletion(page, baseUrl) {
     await page.keyboard.press('k');
     await page.keyboard.up('Control');
     await page.keyboard.press('Escape');
+    // The native close and its toggle events settle in order; wait for both.
     await page.waitForFunction(
-      () => !document.querySelector('dialog').open && document.activeElement.id === 'other'
+      () =>
+        !document.querySelector('dialog').open &&
+        document.activeElement.id === 'other' &&
+        document.querySelector('input').getAttribute('aria-expanded') === 'false'
     );
     assert.equal(
       await page.$eval('input', (input) => input.getAttribute('aria-expanded')),

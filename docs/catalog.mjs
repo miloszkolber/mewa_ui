@@ -161,26 +161,26 @@ export const profiles = {
   select: {
     target: '.select',
     input: true,
-    booleans: ['disabled', 'invalid'],
+    booleans: ['disabled', 'invalid', 'required'],
     matrix: [{ bool: 'invalid' }]
   },
   'number-field': {
     target: '.number-field input',
     input: true,
     props: { step: ['1', '5', '10'] },
-    booleans: ['disabled', 'invalid', 'readonly'],
+    booleans: ['disabled', 'invalid', 'readonly', 'required'],
     matrix: [{ bool: 'readonly' }, { bool: 'invalid' }]
   },
   'file-input': {
     target: '.file-input',
     input: true,
     props: { multiple: [null, ''] },
-    booleans: ['disabled', 'invalid']
+    booleans: ['disabled', 'invalid', 'required']
   },
   'date-field': {
     target: '.date-input',
     input: true,
-    booleans: ['disabled', 'invalid', 'readonly'],
+    booleans: ['disabled', 'invalid', 'readonly', 'required'],
     matrix: [{ bool: 'readonly' }, { bool: 'invalid' }]
   },
   'date-picker': {
