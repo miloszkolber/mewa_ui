@@ -14,7 +14,7 @@ Do not use Toast as the only presentation of a form validation error.
 
 ## Native basis
 
-Toast uses a manual Popover surface and a live status role.
+Toast uses a shared manual Popover container and a live status role for each notification.
 
 The module creates, stacks, pauses, dismisses, and announces Toast instances.
 
@@ -30,6 +30,8 @@ The module exposes the `window.toast` API.
 ## Container
 
 The module creates the container when the page does not provide one.
+
+The container owns the top-layer surface so notifications remain in one positioned stack.
 
 Provide one container only when the application needs a non-default position.
 

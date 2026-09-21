@@ -48,9 +48,9 @@
   .command-palette-input-wrapper {
     display: flex; align-items: center; gap: var(--space-200);
     width: 100%;
-    min-block-size: var(--size-1000);
+    min-block-size: var(--size-900);
     box-sizing: border-box;
-    padding: var(--space-300) var(--space-400); border-bottom: var(--border-width-025) solid var(--border-primary);
+    padding: var(--space-100) var(--space-400); border-bottom: var(--border-width-025) solid var(--border-primary);
     cursor: text;
 
     &:focus-within {

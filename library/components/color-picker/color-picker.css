@@ -10,8 +10,8 @@
 
   .color-picker-input {
     flex: 0 0 auto;
-    inline-size: var(--size-1000);
-    block-size: var(--size-1000);
+    inline-size: var(--size-900);
+    block-size: var(--size-900);
     border: var(--border-width-025) solid var(--border-secondary);
     border-radius: var(--border-radius-000);
     background: var(--background);
@@ -49,7 +49,7 @@
   .color-picker-hex {
     inline-size: var(--size-3200);
     min-inline-size: 0;
-    block-size: var(--size-1000);
+    block-size: var(--size-900);
     border: var(--border-width-025) solid var(--border-secondary);
     border-radius: var(--border-radius-000);
     background: var(--background);

@@ -58,6 +58,7 @@ test('registry v3 defines the canonical source roots', () => {
     components: 'library/components/',
     runtime: 'library/runtime/',
     documentation: 'docs/preview.html',
+    figmaDocumentation: 'docs/figma.html',
     system: 'library/system/'
   });
   assert(!exists('layouts'), 'complete layout templates must not ship in this repository');
@@ -214,129 +215,119 @@ test('component styles reference declared foundation or documented consumer vari
   });
 });
 
-test('the preview is the only rendered documentation surface', () => {
+test('documentation covers every component with separate playgrounds and inert state matrices', () => {
   const preview = read('docs/preview.html');
-  assert.deepEqual(files(docsDir, '.html'), ['preview.html']);
+  const figma = read('docs/figma.html');
+  const specimens = JSON.parse(read('docs/specimens.json'));
+  assert(!preview.includes('href="figma.html'), 'playgrounds do not link to the export matrix');
+  assert(!figma.includes('href="preview.html'), 'the export matrix does not link to playgrounds');
+  assert(!figma.includes('class="docs-sidebar"'), 'the export matrix has no navigation chrome');
+  assert(!preview.includes('As authored'));
+  assert(!preview.includes('name="example"'));
+  assert(preview.includes('name="instance:part-button"'));
+  assert(figma.includes('data-part="part-button"'));
+  assert.deepEqual(files(docsDir, '.html'), ['figma.html', 'preview.html']);
   assert.deepEqual(
-    directories(docsDir),
-    [],
-    'docs/: support assets must stay flat beside the preview'
+    specimens.map((c) => c.slug),
+    registry.components.map((c) => c.slug)
   );
-  assert(
-    preview.includes('<meta name="robots" content="noindex, nofollow">'),
-    'docs/preview.html: hidden preview must opt out of search indexing'
-  );
-  assert(!preview.includes('<iframe'), 'docs/preview.html: frames break Figma export');
-  assert(
-    preview.includes('class="preview-sidebar"') &&
-      preview.includes('class="preview-nav"') &&
-      !preview.includes('Component preview'),
-    'docs/preview.html: preview must use the compact anchor navigation'
+  for (const page of [preview, figma]) {
+    assert(page.includes('data-docs-theme-toggle'));
+    assert(!page.includes('preview-theme-panel'), 'only one selected theme is rendered');
+    const ids = [...page.matchAll(/\\sid="([^"]+)"/g)].map((m) => m[1]);
+    assert.equal(new Set(ids).size, ids.length, 'each state cell needs independent IDs');
+    for (const c of registry.components) assert(page.includes(`id="preview-${c.slug}"`));
+  }
+  assert.equal(
+    (preview.match(/class="playground-controls"/g) || []).length,
+    registry.components.length
   );
   assert.equal(
-    (preview.match(/href="components\.generated\.css"/g) || []).length,
-    1,
-    'docs/preview.html: duplicate generated component styles'
+    (figma.match(/class="matrix-specimens" inert/g) || []).length,
+    registry.components.length
   );
   assert(
-    !/href="\.\.\/library\/components\//.test(preview),
-    'docs/preview.html: raw component stylesheet remains'
+    !figma.includes('playground.generated.js'),
+    'component behavior must not run in the matrix'
   );
-  assert(
-    preview.includes('class="preview-theme-grid"') &&
-      preview.includes('data-preview-theme="light"') &&
-      preview.includes('data-preview-theme="dark"') &&
-      preview.includes('.preview-theme-grid {\n      display: block;'),
-    'docs/preview.html: themes must use one active panel instead of columns'
-  );
-  assert(
-    preview.includes('data-preview-theme-toggle') &&
-      preview.includes('class="toggle preview-theme-toggle"') &&
-      preview.includes('class="preview-header"') &&
-      preview.includes('class="preview-sidebar"'),
-    'docs/preview.html: theme toggle must sit in the left-navigation header'
-  );
-  assert(
-    preview.includes('.preview-content > section > h2') &&
-      preview.includes('color: var(--text-secondary);') &&
-      preview.includes('text-transform: uppercase;') &&
-      preview.includes('<h4 class="preview-nav-heading">'),
-    'docs/preview.html: section headings must use the H4 treatment'
-  );
-  assert(
-    !preview.includes('assets/demo-') && preview.includes('images.unsplash.com/'),
-    'docs/preview.html: demo imagery must use curated remote resources'
-  );
-  const ids = Array.from(preview.matchAll(/\sid="([^"]+)"/g), (match) => match[1]);
-  assert.equal(
-    new Set(ids).size,
-    ids.length,
-    'docs/preview.html: duplicate ids break stacked examples'
-  );
-  for (const component of registry.components) {
+  const toasts = specimens.find((c) => c.slug === 'toast').specimens;
+  assert(toasts.some((s) => s.html.includes('toast-actions')));
+  assert(toasts.some((s) => !s.html.includes('toast-actions')));
+  assert(toasts.every((s) => s.html.startsWith('<div class="toast"')));
+  for (const slug of ['dialog', 'sheet', 'popover', 'tooltip', 'hover-card', 'context-menu']) {
+    const entry = specimens.find((c) => c.slug === slug);
     assert(
-      preview.includes(`id="preview-${component.slug}"`),
-      `docs/preview.html: missing ${component.slug} section`
+      entry.specimens.every(
+        (s) => !/data-(dialog|sheet|tooltip|hover-card|context-menu)-trigger=/.test(s.html)
+      ),
+      slug + ': launcher leaked into isolated specimens'
     );
   }
-  assert(
-    !/<dialog\b(?![^>]*\bopen\b)[^>]*>/.test(preview),
-    'docs/preview.html: every showcased dialog must render open without interaction'
-  );
-  assert(
-    preview.includes('.preview-page dialog[open]') &&
-      preview.includes('.preview-page [popover]') &&
-      preview.includes('.preview-page nav [popover]') &&
-      preview.includes('.preview-page dialog.sheet[open]') &&
-      preview.includes('position: relative !important'),
-    'docs/preview.html: hidden overlay states must render without interaction'
-  );
-  assert(
-    preview.includes('data-export-surface="figma"') &&
-      preview.includes('body class="preview-export"'),
-    'docs/preview.html: export surface must be explicitly marked'
-  );
-  assert(
-    preview.includes('.preview-page [hidden]:not(input[type="hidden"])') &&
-      preview.includes('display: revert !important') &&
-      preview.includes('animation: none !important'),
-    'docs/preview.html: hidden states and motion must be export-safe'
-  );
-  assert(
-    !/<i\b[^>]*data-lucide=/.test(preview) &&
-      !/<i\b[^>]*\bri-[a-z0-9-]+/.test(preview) &&
-      (preview.includes('data-remix-icon-loaded=""') || preview.includes('data-icon-loaded=""')),
-    'docs/preview.html: local icons must be inline before import'
-  );
-  const previewIds = new Set(ids);
-  for (const match of preview.matchAll(
-    /\s(data-[a-z0-9_-]*trigger|popovertarget|aria-controls)="([^"]+)"/gi
-  )) {
-    for (const target of match[2].split(/\s+/)) {
-      assert(previewIds.has(target), `docs/preview.html: missing target for ${match[1]}=${target}`);
-    }
+  assert(!read('docs/workbench.css').includes('display: revert !important'));
+});
+
+test('single-line input controls and action controls use the 36px token', () => {
+  const expectSize900 = (slug, selector) => {
+    const source = stripCssComments(read(`library/components/${slug}/${slug}.css`));
+    assert(source.includes(selector), `${slug}: expected ${selector}`);
+  };
+
+  for (const [slug, selector] of [
+    ['field', 'min-block-size: var(--size-900)'],
+    ['text-field', 'block-size: var(--size-900)'],
+    ['select', 'height: var(--size-900)'],
+    ['number-field', 'height: var(--size-900)'],
+    ['date-field', 'height: var(--size-900)'],
+    ['date-range-picker', 'block-size: var(--size-900)'],
+    ['time-field', 'min-block-size: var(--size-900)'],
+    ['combobox', 'height: var(--size-900)'],
+    ['file-input', 'height: var(--size-900)'],
+    ['file-upload', 'block-size: var(--size-900)'],
+    ['color-picker', 'block-size: var(--size-900)'],
+    ['input-otp', 'block-size: var(--size-900)'],
+    ['tag-input', 'block-size: var(--size-900)'],
+    ['command-palette', 'min-block-size: var(--size-900)'],
+    ['data-table', 'height: var(--size-900)'],
+    ['pagination', 'height: var(--size-900)'],
+    ['date-picker', 'height: var(--size-900)']
+  ]) {
+    expectSize900(slug, selector);
   }
-  assert(
-    preview.includes('id="toast-container"') && preview.includes('class="toast"'),
-    'docs/preview.html: toast state must have a static import fallback'
+  assert.match(read('library/components/select/select.md'), /36px control height/);
+  assert.match(
+    read('library/system/foundations.md'),
+    /default 36px button and single-line input height/
   );
-  assert(
-    preview.includes("closest('a[href], [formaction]')") &&
-      preview.includes("addEventListener('submit'"),
-    'docs/preview.html: showcase links and forms must not navigate away'
-  );
-  assert(
-    preview.includes('window.toast?.show') && preview.includes('duration: Infinity'),
-    'docs/preview.html: a persistent demo toast must render on load'
-  );
-  for (const theme of ['light', 'dark']) {
-    for (const id of [`dialog--${theme}--demo-dialog`, `sheet--${theme}--sheet-right`]) {
-      assert(
-        preview.includes(`id="${id}"`),
-        `docs/preview.html: body-level overlay ${id} is missing from the forced theme page`
-      );
-    }
+});
+
+test('Typography covers semantic Markdown document output', () => {
+  const typography = stripCssComments(read('library/components/typography/typography.css'));
+  const guide = read('library/components/typography/typography.md');
+  for (const element of [
+    'h1:not([class])',
+    'h6:not([class])',
+    'p:not([class])',
+    'ul:not([class])',
+    'a:not([class])',
+    'strong:not([class])',
+    'del:not([class])',
+    'code:not([class])',
+    'pre:not([class])',
+    'blockquote:not([class])',
+    'table:not([class])',
+    'hr:not([class])',
+    'img:not([class])',
+    'figure:not([class])',
+    'details:not([class])'
+  ]) {
+    assert(typography.includes(element), `Typography Markdown styles must cover ${element}`);
   }
+  assert(guide.includes('Wrap renderer output in `.typography-content`'));
+  assert(
+    JSON.parse(read('docs/specimens.json'))
+      .find((c) => c.slug === 'typography')
+      .specimens.some((s) => s.html.includes('class="typography-content"'))
+  );
 });
 
 test('component documentation anchors resolve in the preview', () => {

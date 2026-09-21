@@ -24,7 +24,7 @@ The module also marks failed images so the documented fallback can appear.
 - [`<figcaption>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/figcaption) provides a visible caption.
 - [`<img>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img) provides intrinsic image loading and alternative text.
 - [`loading="lazy"`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img#loading) defers non-critical images.
-- [`aspect-ratio`](https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio) constrains the figure geometry.
+- [`aspect-ratio`](https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio) constrains the image region without clipping the caption.
 - [`object-fit`](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit) controls image fitting.
 - [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) provides modal preview behavior.
 
@@ -69,6 +69,10 @@ Keep important failure information in visible text outside a decorative fallback
 ## Aspect ratio
 
 Use `data-ratio` only when the image region needs predictable geometry.
+
+Keep the caption outside the constrained image region.
+
+Set native image `width` and `height` attributes to reserve space before a remote image loads.
 
 Supported values are `1/1`, `4/3`, `3/2`, `16/9`, `21/9`, and `3/4`.
 

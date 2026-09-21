@@ -71,6 +71,8 @@ Use the same submitted `name` for every input.
 
 Use the native `disabled` attribute on the fieldset to disable the full group.
 
+Keep cells 36px high. Narrow screens reduce the gap between cells instead of reducing their height.
+
 Use `aria-invalid="true"` on every cell when the complete code is known to be invalid.
 
 ## Behavior

@@ -77,6 +77,8 @@ Set `aria-orientation="vertical"` when controls are visually stacked.
 
 Keep arrow-key direction synchronized with the visual orientation.
 
+Horizontal toolbars scroll within narrow containers instead of wrapping their keyboard order onto multiple rows.
+
 Do not use CSS order to make keyboard order differ from visual order.
 
 ## Behavior

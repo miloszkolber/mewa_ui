@@ -10,6 +10,12 @@
 
     background: var(--background);
     width: fit-content;
+    max-width: 100%;
+    overflow-x: auto;
+    /* Preserve the single-row keyboard model in narrow containers. */
+    & > * {
+      flex-shrink: 0;
+    }
 
     & > .separator[data-orientation="vertical"] {
       align-self: stretch;

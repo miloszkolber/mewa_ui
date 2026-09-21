@@ -36,7 +36,11 @@ Edit `library/runtime/` for the shared controller and automatic enhancement life
 
 Edit `library/adapters/` for optional framework integration.
 
-Edit `docs/preview.html` only for the rendered component reference.
+Edit `docs/specimens.json` for source markup fixtures. These are not selectable playground examples.
+
+Edit `docs/catalog.mjs` for supported public attributes. `docs/component-model.mjs` defines canonical anatomy, explicit defaults, content slots, and ownership of nested parts. `docs/model-operations.mjs` applies the same property and state changes to live playgrounds and static export. Never infer a container's state from its first button or offer placeholder/single-option controls.
+
+Generate both HTML pages and documentation bundles with `bun run docs:write`. Do not hand-edit generated files.
 
 Edit `registry.json` for component selection metadata and token purposes.
 
@@ -118,7 +122,15 @@ Do not publish this repository to the npm registry.
 
 Keep `README.md` descriptive and written for people.
 
-Keep `docs/preview.html` descriptive and example-focused. Do not add one page per component.
+Keep `docs/preview.html` interactive. Each component anchor opens one playground with controls, live markup, and real component behavior.
+
+Keep `docs/figma.html` as an inert grid of isolated component states. Keep the theme picker outside the specimens. Generate it from shared definitions, not from playground DOM.
+
+Keep documentation modules separate from library implementation. Both views use one selected theme.
+
+Keep component navigation only in the playground. Do not link the two views from their page chrome.
+
+Expose only implemented attributes in playground property controls. Label simulated pseudo-states as visual states.
 
 Keep `library/DESIGN.md`, `library/system/`, and component Markdown instructional.
 

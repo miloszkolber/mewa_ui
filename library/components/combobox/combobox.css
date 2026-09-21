@@ -7,7 +7,7 @@
 
   .combobox-trigger {
     width: 100%;
-    height: var(--size-1000);
+    height: var(--size-900);
     justify-content: space-between;
   }
 
@@ -49,9 +49,9 @@
     align-items: center;
     gap: var(--space-200);
     width: 100%;
-    min-block-size: var(--size-1000);
+    min-block-size: var(--size-900);
     box-sizing: border-box;
-    padding: var(--space-200) var(--space-300);
+    padding: var(--space-100) var(--space-300);
     border-bottom: var(--border-width-025) solid var(--border-primary);
     cursor: text;
 

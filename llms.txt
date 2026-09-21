@@ -15,7 +15,9 @@ Semantic HTML, tokenized CSS, local SVG icons, and optional native JavaScript be
 - `library/system/accessibility.md`: interaction acceptance criteria.
 - `library/runtime/README.md`: vanilla integration, lifecycle ownership, and browser capabilities.
 - `library/adapters/svelte/README.md`: Svelte attachment and Bun compilation.
-- `docs/preview.html#preview-{slug}`: anchored rendered reference for each component.
+- `docs/preview.html#preview-{slug}`: individual interactive playground for each component.
+- `docs/figma.html`: generated static state matrix with a theme picker for Figma import.
+- `docs/specimens.json` and `docs/catalog.mjs`: shared documentation sources; regenerate with `bun run docs:write`.
 - `AGENTS.md`: repository maintenance and validation.
 
 ## Consumer task protocol

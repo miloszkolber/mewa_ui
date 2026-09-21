@@ -62,7 +62,7 @@
   .file-upload-input {
     inline-size: 100%;
     min-inline-size: 0;
-    block-size: var(--size-1000);
+    block-size: var(--size-900);
     margin-block-start: var(--space-300);
     border: var(--border-width-025) solid var(--border-secondary);
     background: var(--background);

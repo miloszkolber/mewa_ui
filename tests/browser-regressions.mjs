@@ -314,14 +314,14 @@ try {
   );
   console.log('PASS listener teardown and reinitialization for all 41 behaviors');
   await page.goto(`http://127.0.0.1:${server.port}/docs/preview.html`);
-  await page.waitForSelector('.preview-nav a[href="#preview-tabs"]');
-  await page.click('.preview-nav a[href="#preview-tabs"]');
+  await page.waitForSelector('.docs-nav a[href="#preview-tabs"]');
+  await page.click('.docs-nav a[href="#preview-tabs"]');
   assert.equal(await page.evaluate(() => location.hash), '#preview-tabs');
-  await page.click('.preview-theme-toggle');
-  assert.equal(await page.$eval('main', (main) => main.dataset.previewTheme), 'dark');
+  await page.click('[data-docs-theme-toggle]');
   assert.equal(await page.$eval('html', (html) => html.dataset.theme), 'dark');
-  await page.click('.preview-theme-toggle');
-  assert.equal(await page.$eval('main', (main) => main.dataset.previewTheme), 'light');
+  assert.equal(await page.$eval('html', (html) => html.dataset.theme), 'dark');
+  await page.click('[data-docs-theme-toggle]');
+  assert.equal(await page.$eval('html', (html) => html.dataset.theme), 'light');
   console.log('PASS preview anchor navigation and focus');
   if (browserName === 'chrome') {
     const cdp = await page.createCDPSession();
@@ -341,9 +341,11 @@ try {
     await page.setJavaScriptEnabled(false);
     try {
       await page.goto(`http://127.0.0.1:${server.port}/docs/preview.html`);
-      assert.equal(await page.$$eval('.preview-nav a', (links) => links.length), 80);
+      assert.equal(await page.$$eval('.docs-nav a', (links) => links.length), 80);
       assert.equal(
-        await page.$eval('.preview-theme-toggle', (button) => button.getAttribute('aria-pressed')),
+        await page.$eval('[data-docs-theme-toggle]', (button) =>
+          button.getAttribute('aria-pressed')
+        ),
         'false'
       );
     } finally {

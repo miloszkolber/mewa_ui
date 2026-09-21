@@ -32,6 +32,7 @@ function ensureToastState(doc, root = doc) {
   const state = {
     container: toastContainer,
     createdContainer,
+    originalPopover: toastContainer.getAttribute('popover'),
     adapterInstalled: current?.adapterInstalled || false,
     api: current?.api || null,
     roots: current?.roots || new Set(),
@@ -78,12 +79,10 @@ const toastDismiss = (el, callback) => {
   if (!isMounted(el)) return;
   if (typeof el._toastCancelTimer === 'function') el._toastCancelTimer();
   lifecycle.destroy(el);
-  try {
-    el.hidePopover();
-  } catch {
-    /* already closed */
-  }
+  const container = el.parentElement;
   el.remove();
+  if (container?.matches(':popover-open') && !container.querySelector('.toast'))
+    container.hidePopover();
   if (callback) callback();
 };
 
@@ -97,7 +96,6 @@ const toastCreate = (doc, options) => {
   el.setAttribute('role', variant === 'destructive' ? 'alert' : 'status');
   el.setAttribute('aria-live', variant === 'destructive' ? 'assertive' : 'polite');
   el.setAttribute('aria-atomic', 'true');
-  el.setAttribute('popover', 'manual');
   if (variant) el.setAttribute('data-variant', variant);
   const icons = {
     success:
@@ -145,7 +143,7 @@ const toastCreate = (doc, options) => {
     const actionBtn = doc.createElement('button');
     actionBtn.type = 'button';
     actionBtn.className = 'btn';
-    actionBtn.setAttribute('data-variant', 'outline');
+    actionBtn.setAttribute('data-variant', 'secondary');
     actionBtn.setAttribute('data-size', 'sm');
     actionBtn.dataset.toastAction = '';
     actionBtn.textContent = action.label;
@@ -153,7 +151,13 @@ const toastCreate = (doc, options) => {
     el.appendChild(actionsDiv);
   }
   toastContainer.appendChild(el);
-  el.showPopover();
+  // Keep the stack together in the top layer. Individual popovers leave flex
+  // layout and receive the browser's centered fixed positioning.
+  const focused = toastContainer.contains(doc.activeElement) ? doc.activeElement : null;
+  if (toastContainer.matches(':popover-open')) toastContainer.hidePopover();
+  toastContainer.setAttribute('popover', 'manual');
+  toastContainer.showPopover();
+  focused?.focus({ preventScroll: true });
   lifecycle.listen(el, closeBtn, 'click', () => {
     toastDismiss(el, onDismiss);
   });
@@ -255,6 +259,8 @@ export function destroy(root) {
     else view.toast = state.previousApi;
   }
   if (state.createdContainer) state.container.remove();
+  else if (state.originalPopover === null) state.container.removeAttribute('popover');
+  else state.container.setAttribute('popover', state.originalPopover);
   toastStates.delete(doc);
 }
 

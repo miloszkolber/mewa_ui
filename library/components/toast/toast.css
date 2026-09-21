@@ -4,9 +4,15 @@
   /* -- Container ------------------------------------------------ */
   .toast-container {
     position: fixed;
+    inset: auto;
+    margin: 0;
+    width: max-content;
+    max-width: 100%;
+    border: 0;
+    background: transparent;
     z-index: var(--z-toast);
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     gap: var(--space-200);
     padding: var(--space-400);
     max-height: 100vh;
@@ -14,11 +20,13 @@
     bottom: 0;
     right: 0;
 
+    &[popover]:not(:popover-open) { display: none; }
+
     &[data-position="bottom-right"] { top: auto; bottom: 0; left: auto; right: 0; }
     &[data-position="bottom-left"]  { top: auto; bottom: 0; left: 0; right: auto; }
-    &[data-position="top-right"]    { top: 0; bottom: auto; left: auto; right: 0; flex-direction: column; }
-    &[data-position="top-left"]     { top: 0; bottom: auto; left: 0; right: auto; flex-direction: column; }
-    &[data-position="top-center"]   { top: 0; bottom: auto; left: 50%; right: auto; transform: translateX(-50%); flex-direction: column; align-items: center; }
+    &[data-position="top-right"]    { top: 0; bottom: auto; left: auto; right: 0; flex-direction: column-reverse; }
+    &[data-position="top-left"]     { top: 0; bottom: auto; left: 0; right: auto; flex-direction: column-reverse; }
+    &[data-position="top-center"]   { top: 0; bottom: auto; left: 50%; right: auto; transform: translateX(-50%); flex-direction: column-reverse; align-items: center; }
     &[data-position="bottom-center"]{ top: auto; bottom: 0; left: 50%; right: auto; transform: translateX(-50%); align-items: center; }
   }
 
@@ -103,6 +111,7 @@
     justify-content: center;
     width: var(--size-500);
     height: var(--size-500);
+    padding: 0;
     border: none;
     background: transparent;
     color: var(--text-secondary);

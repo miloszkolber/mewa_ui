@@ -3,7 +3,7 @@
 @layer components {
   .file-input {
     width: 100%;
-    height: var(--size-1000);
+    height: var(--size-900);
     border: var(--border-width-025) solid var(--border-secondary);
 
     background: var(--background);

@@ -143,6 +143,25 @@ Keep component-owned lists on their component classes so Typography does not ove
 
 Use Table for data with stable row and column relationships.
 
+## Markdown content
+
+Wrap renderer output in `.typography-content` to style semantic Markdown HTML without adding presentation classes to every node.
+
+```html
+<article class="typography-content">
+  <h1>Release notes</h1>
+  <p>Review the <strong>important changes</strong> and the <a href="/changes">full changelog</a>.</p>
+  <blockquote><p>One quoted note.</p></blockquote>
+  <pre><code>const ready = true;</code></pre>
+</article>
+```
+
+The content treatment covers native `h1` through `h6`, paragraphs, nested ordered and unordered lists, task-list checkboxes, links, strong and emphasized text, deletion, marks, inline and fenced code, keyboard notation, blockquotes, tables and captions, thematic breaks, images and figures, details/summary, and footnote-sized superscript or subscript.
+
+Keep headings and lists semantic. Use real table headers, image alt text, and links with meaningful destinations. Do not use the Markdown content class around interactive application components; it is for rendered prose, not a general-purpose layout wrapper.
+
+The Markdown treatment inherits the active light or dark semantic tokens, wraps long content, keeps images inside the reading column, and makes wide tables and code blocks scroll within their own bounds. Forced-colors mode retains structural borders and link affordance.
+
 ## Visual classes
 
 `.h1` uses the shared first-level heading treatment.

@@ -67,6 +67,10 @@
           "type": "string",
           "minLength": 1
         },
+        "figmaDocumentation": {
+          "type": "string",
+          "minLength": 1
+        },
         "system": {
           "type": "string",
           "minLength": 1
@@ -80,6 +84,7 @@
         "components",
         "runtime",
         "documentation",
+        "figmaDocumentation",
         "system"
       ],
       "additionalProperties": false

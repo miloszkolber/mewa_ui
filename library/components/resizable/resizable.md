@@ -111,6 +111,8 @@ The module adds `tabindex="0"` only while resize behavior is available.
 
 Dragging the separator changes the split continuously.
 
+Pointer activation focuses the separator so keyboard resizing can continue from the same split.
+
 The generated decrease and increase buttons change the split without dragging.
 
 Each generated button has a 32px target.

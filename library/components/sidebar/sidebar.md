@@ -126,7 +126,7 @@ Use a native dialog below the `--breakpoint-compact` shell tier, 48rem.
 <button class="btn"
         type="button"
         data-variant="ghost"
-        data-size="icon-sm"
+        data-size="sm" data-icon-only
         data-sidebar-mobile="workspace-mobile-nav"
         aria-haspopup="dialog"
         aria-expanded="false"

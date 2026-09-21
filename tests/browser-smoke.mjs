@@ -1,4 +1,5 @@
 import { launchOptions, browserName } from './browser-support.mjs';
+import { inspectDocumentationSurfaces } from './docs-browser-support.mjs';
 import assert from 'node:assert/strict';
 import { checkReactiveAttachments } from './svelte-browser-support.mjs';
 import fs from 'node:fs';
@@ -13,6 +14,7 @@ const host = '127.0.0.1';
 const requestedPort = Number.parseInt(process.env.MEWA_UI_PORT || '0', 10);
 const configuredBaseUrl = process.env.MEWA_UI_BASE_URL?.replace(/\/+$/, '');
 const screenshotDir = process.env.MEWA_UI_SCREENSHOT_DIR;
+const figmaScreenshotPath = process.env.MEWA_UI_FIGMA_SCREENSHOT;
 
 const coreViewports = [
   { name: 'mobile', width: 390, height: 844 },
@@ -380,10 +382,13 @@ try {
     await inspect(page, baseUrl, 'preview', coreViewports[1], 'dark');
     await inspect(page, baseUrl, 'preview', coreViewports[0], 'dark');
 
+    await inspectDocumentationSurfaces(page, baseUrl, figmaScreenshotPath);
+
     await inspectPackage(page, baseUrl);
     await inspectSveltePackage(page, baseUrl);
 
     console.log(`PASS browser smoke for the ${registry.components.length}-component preview`);
+    console.log('PASS live playground, viewport Toast behavior, and static Figma matrix');
     console.log(`PASS responsive matrix for the preview`);
     console.log(
       'PASS generated GitHub package auto, observer, and controller entries in a browser'
@@ -393,5 +398,8 @@ try {
     await browser.close();
   }
 } finally {
-  if (server) await new Promise((resolve) => server.close(resolve));
+  if (server) {
+    server.closeAllConnections?.();
+    await new Promise((resolve) => server.close(resolve));
+  }
 }

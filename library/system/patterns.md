@@ -341,7 +341,7 @@ State the consequence.
 
 Use one destructive filled action for the final destructive confirmation.
 
-Use an outline or ghost action for cancellation.
+Use a secondary or ghost action for cancellation.
 
 Return focus after cancellation or completion.
 
@@ -438,7 +438,7 @@ Do not add reordering to a list that the user does not own.
 
 Use one filled primary action in a local group.
 
-Use Outline for a normal secondary action.
+Use Secondary for a normal secondary action.
 
 Use Ghost for a low-emphasis local action.
 
@@ -446,7 +446,7 @@ Use Link style for an inline action.
 
 Use Destructive fill only for the final destructive confirmation.
 
-Use a destructive outline or ghost treatment for a non-final destructive option.
+Use a ghost action with an explicit label for a non-final destructive option.
 
 Use icon-only actions only when the icon is familiar and the control has an accessible name.
 

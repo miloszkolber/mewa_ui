@@ -41,8 +41,8 @@
 .mt-8 { margin-top: var(--space-800); }
 
 /* Typography */
-.text-sm               { font-size: var(--font-size-400); line-height: var(--font-height-regular); }
-.text-xs               { font-size: var(--font-size-350); line-height: var(--font-height-regular); }
+.text-base, .text-sm   { font-size: var(--font-size-350); line-height: var(--font-height-regular); }
+.text-xs               { font-size: var(--font-size-300); line-height: var(--font-height-regular); }
 .text-secondary { color: var(--text-secondary); }
 .text-negative      { color: var(--text-negative); }
 .font-medium           { font-weight: var(--font-weight-525); }

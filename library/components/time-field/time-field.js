@@ -13,7 +13,14 @@ const TIME_PARTS = {
 };
 
 function findPart(root, name) {
-  return root.querySelector(`[data-time-part="${name}"], .time-field-${name}`);
+  // The period layout wrapper also has .time-field-period. Resolve the
+  // explicit part first and restrict legacy class hooks to actual controls.
+  return (
+    root.querySelector(`[data-time-part="${name}"]`) ||
+    root.querySelector(
+      `input.time-field-${name}, select.time-field-${name}, output.time-field-${name}`
+    )
+  );
 }
 
 function numericValue(field, fallback) {

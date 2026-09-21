@@ -378,6 +378,7 @@ export function enhance(scope) {
 
         event.preventDefault();
         finishPointer();
+        handle.focus({ preventScroll: true });
         const pointerId = Number.isFinite(event.pointerId) ? event.pointerId : 1;
         drag = {
           pointerId,

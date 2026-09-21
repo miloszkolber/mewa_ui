@@ -122,7 +122,7 @@ Do not remove the browser outline without an equivalent replacement.
 
 ## Target size
 
-Use a 40px target for normal controls.
+Use a 36px target for normal controls.
 
 Use a 32px target for compact controls.
 

@@ -15,9 +15,9 @@ The repository contains 80 components, from basic controls and form fields to da
 - a precise implementation contract;
 - its own stylesheet;
 - a small ES module when behavior needs JavaScript;
-   - an anchored section in the shared component preview.
+- an anchored section in the shared component preview.
 
-Browse the single [component preview](docs/preview.html). It contains every component, provides scroll anchors in the left navigation, and switches between light and dark themes without duplicating documentation pages. The complete machine-readable inventory lives in [`registry.json`](registry.json).
+Explore the [component playgrounds](docs/preview.html) to select a component, adjust its properties and states, try its behavior, and copy the current markup. Use the [Figma state matrix](docs/figma.html) for isolated visual specimens without interactions or launcher buttons. Each page has a theme picker and covers the complete catalog in [`registry.json`](registry.json).
 
 ## Get a release from GitHub
 
@@ -72,8 +72,10 @@ The repository keeps description separate from instruction.
 ### For people
 
 - [`README.md`](README.md) describes the library and its structure.
-- [`docs/preview.html`](docs/preview.html) contains the complete browsable component reference.
-- The preview shows supported results without defining a second API.
+- [`docs/preview.html`](docs/preview.html) contains the interactive component playground and behavior examples.
+- [`docs/figma.html`](docs/figma.html) is the generated state matrix with a theme picker for design review and Figma import.
+- [`docs/component-model.mjs`](docs/component-model.mjs) defines canonical component anatomy and nested parts; [`docs/catalog.mjs`](docs/catalog.mjs) defines their public properties. [`docs/model-operations.mjs`](docs/model-operations.mjs) keeps live controls and static matrices aligned. Source markup fixtures live in [`docs/specimens.json`](docs/specimens.json), not an example selector. Run `bun run docs:write` after edits.
+- Preview has component navigation. The export matrix has no page navigation or component behavior. Both pages show supported results without defining a second API.
 
 ### For agents and maintainers
 
@@ -94,7 +96,7 @@ mewa_ui/
 │   ├── runtime/                shared controller and enhancement lifecycle
 │   ├── src/                    foundations, fonts, and local icons
 │   └── system/                 selection and composition instructions
-├── docs/                       single component preview and its assets
+├── docs/                       interactive playground, generated Figma matrix, and shared assets
 ├── scripts/                    reproducible catalog and distribution builders
 ├── dist/                       ignored, generated release packages
 ├── registry.json               component, dependency, asset, and token metadata

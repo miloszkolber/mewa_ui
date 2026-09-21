@@ -3,9 +3,9 @@
 @layer components {
   .number-field {
     display: inline-grid;
-    grid-template-columns: minmax(0, var(--size-1600)) var(--size-1000) var(--size-1000);
+    grid-template-columns: minmax(0, var(--size-1600)) var(--size-900) var(--size-900);
     grid-template-rows: 1fr;
-    height: var(--size-1000);
+    height: var(--size-900);
     border: var(--border-width-025) solid var(--border-secondary);
 
     background: var(--background);

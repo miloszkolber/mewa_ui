@@ -39,7 +39,7 @@
   .data-table-filter {
     min-width: min(100%, 20rem);
     width: 100%;
-    height: var(--size-1000);
+    height: var(--size-900);
     padding: 0 var(--space-300);
     border: var(--border-width-025) solid var(--border-secondary);
     background: var(--background);
@@ -157,8 +157,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: var(--size-1000);
-    min-height: var(--size-1000);
+    min-width: var(--size-900);
+    min-height: var(--size-900);
     padding: 0 var(--space-300);
     border: var(--border-width-025) solid var(--border-transparent);
     background: transparent;

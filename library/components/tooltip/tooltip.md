@@ -38,7 +38,7 @@ Use Tooltip only as supplementary description.
 ```html
 <button class="btn"
         type="button"
-        data-size="icon"
+        data-icon-only
         data-tooltip-trigger="settings-tip"
         aria-label="Open settings">
   <i class="ri-settings-3-line" aria-hidden="true"></i>

@@ -1,7 +1,0 @@
-/* -- Documentation site overrides -------------------------- */
-/* Doc-site-only styles. Fonts come from library/src/base.css (Google Sans Code). */
-
-/* -- Scrollbar --------------------------------------------- */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-primary); }

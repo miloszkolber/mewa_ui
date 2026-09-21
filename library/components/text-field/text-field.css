@@ -40,7 +40,7 @@
   .text-field > :where(input, textarea, select),
   .text-field-input {
     inline-size: 100%;
-    min-block-size: var(--size-1000);
+    min-block-size: var(--size-900);
     border: var(--border-width-025) solid var(--border-secondary);
     background: var(--background);
     padding-inline: var(--space-300);
@@ -52,7 +52,7 @@
 
   .text-field > :where(input, select),
   .text-field-input:not(textarea) {
-    block-size: var(--size-1000);
+    block-size: var(--size-900);
   }
 
   .text-field > textarea,

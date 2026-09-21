@@ -61,7 +61,7 @@ Use native buttons for actions.
         <button class="btn"
                 type="button"
                 data-variant="secondary"
-                data-size="icon"
+                data-icon-only
                 data-theme-toggle
                 aria-label="Toggle theme">
           <i class="ri-moon-line" aria-hidden="true"></i>

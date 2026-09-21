@@ -47,7 +47,7 @@
   .time-field-input,
   .time-field-select {
     inline-size: 100%;
-    min-block-size: var(--size-1000);
+    min-block-size: var(--size-900);
     border: var(--border-width-025) solid var(--border-secondary);
     background: var(--background);
     padding-inline: var(--space-300);
@@ -78,7 +78,7 @@
     position: absolute;
     inset-block: 0;
     inset-inline-end: 0;
-    inline-size: var(--size-1000);
+    inline-size: var(--size-900);
     block-size: auto;
     margin: 0;
     cursor: pointer;

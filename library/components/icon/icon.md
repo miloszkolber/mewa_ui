@@ -149,7 +149,7 @@ Give an icon-only control an accessible name on the control.
 <button class="btn"
         type="button"
         data-variant="secondary"
-        data-size="icon"
+        data-icon-only
         aria-label="Open settings">
   <i class="ri-settings-3-line" aria-hidden="true"></i>
 </button>

@@ -71,7 +71,7 @@ Do not use visible option text as an application identifier.
 
 ## Behavior
 
-Select uses the shared 40px control height.
+Select uses the shared 36px control height.
 
 The browser provides arrow-key navigation and type-ahead.
 

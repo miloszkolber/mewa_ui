@@ -45,7 +45,7 @@
     }
 
     /* -- Variants -------------------------------------------- */
-    &[data-variant="default"] {
+    &:not([data-variant]), &[data-variant="default"] {
       background-color: var(--surface-button-primary);
       color: var(--text-inverted);
 
@@ -144,8 +144,8 @@
 
     /* -- Sizes ----------------------------------------------- */
     &[data-size="sm"]      { height: var(--size-800);    padding: 0 var(--space-300); font-size: var(--font-size-350); }
-    &[data-size="icon"]    { height: var(--size-900); width: var(--size-900); padding: 0; }
-    &[data-size="icon-sm"] { height: var(--size-800);    width: var(--size-800);     padding: 0; }
+    &[data-icon-only] { width: var(--size-900); padding: 0; }
+    &[data-icon-only][data-size="sm"] { width: var(--size-800); }
   }
 
   /* -- Accessibility ------------------------------------------ */

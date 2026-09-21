@@ -18,6 +18,7 @@
     "components": "library/components/",
     "runtime": "library/runtime/",
     "documentation": "docs/preview.html",
+    "figmaDocumentation": "docs/figma.html",
     "system": "library/system/"
   },
   "designTokens": {

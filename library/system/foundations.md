@@ -252,9 +252,9 @@ Set the Google Sans Code `MONO` variation axis to `0` for interface text,
 headings, and keyboard keys, and to `1` for code, terminal output, and other
 code-like content.
 
-Use `var(--font-size-400)` for normal body text.
+Use `var(--font-size-350)` for normal 14px body text and controls.
 
-Use `var(--font-size-350)` for supporting text and dense controls.
+Use `var(--font-size-400)` for 16px lead text and local titles.
 
 Use `var(--font-size-300)` for metadata and technical labels.
 
@@ -320,11 +320,13 @@ Do not use an arbitrary pixel value when a current token matches the need.
 
 ## Interactive size
 
-Use `--size-1000` for the default 40px control height.
+Use `--size-900` for the default 36px button and single-line input height.
 
 Use `--size-800` for the compact 32px control height.
 
-Use `--size-1000` for normal buttons, inputs, tabs, pagination items, and primary navigation rows.
+Use `--size-900` for normal buttons, inputs, tabs, and pagination items.
+
+Use `--size-1000` for 40px navigation and menu rows where the larger row target is intentional.
 
 Use `--size-800` for icon-only header tools and dense row actions.
 

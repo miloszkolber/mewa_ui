@@ -28,8 +28,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--size-1000);
-    height: var(--size-1000);
+    width: var(--size-900);
+    height: var(--size-900);
     padding: 0;
     border: var(--border-width-025) solid var(--border-transparent);
 
@@ -111,7 +111,7 @@
       color: var(--text-secondary);
     }
 
-    &[data-disabled] button {
+    &[data-disabled] button, & button:disabled {
       background-color: var(--surface-control-disabled);
       color: var(--text-disabled);
       cursor: not-allowed;

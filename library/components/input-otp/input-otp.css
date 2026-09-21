@@ -26,10 +26,10 @@
   }
 
   .input-otp-cell {
-    flex: 0 1 var(--size-1000);
+    flex: 0 1 var(--size-900);
     min-inline-size: var(--size-800);
-    inline-size: var(--size-1000);
-    block-size: var(--size-1000);
+    inline-size: var(--size-900);
+    block-size: var(--size-900);
     border: var(--border-width-025) solid var(--border-secondary);
     border-radius: var(--border-radius-000);
     background: var(--background);
@@ -91,9 +91,8 @@
   }
 
   @media (max-width: 37.5rem) {
-    .input-otp-cell {
-      inline-size: var(--size-800);
-      block-size: var(--size-800);
+    .input-otp-cells {
+      gap: var(--space-100);
     }
   }
 
