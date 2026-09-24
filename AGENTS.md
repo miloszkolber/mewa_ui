@@ -38,7 +38,7 @@ Edit `library/adapters/` for optional framework integration.
 
 Edit `docs/specimens.json` for source markup fixtures. These are not selectable playground examples.
 
-Edit `docs/catalog.mjs` for supported public attributes. `docs/component-model.mjs` defines canonical anatomy, explicit defaults, content slots, and ownership of nested parts. `docs/model-operations.mjs` applies the same property and state changes to live playgrounds and static export. Never infer a container's state from its first button or offer placeholder/single-option controls.
+Edit `docs/catalog.mjs` for supported public attributes. `docs/component-model.mjs` defines canonical anatomy, explicit defaults, content slots, and ownership of nested parts. `docs/model-operations.mjs` applies the same property changes to live playgrounds and static export. Never infer a container's state from its first button or offer placeholder/single-option controls.
 
 Generate both HTML pages and documentation bundles with `bun run docs:write`. Do not hand-edit generated files.
 

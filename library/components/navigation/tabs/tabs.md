@@ -129,13 +129,15 @@ Use the default grouped track for a compact control-like tab set.
 Use `data-variant="underline"` for an underline treatment. `line` remains a
 compatibility alias for existing markup.
 
-Both variants use the shared 36px control rhythm.
+Both variants use 36px tab targets. The tablist adds the shared focus-ring gutter and its border outside those targets.
 
 Tab labels use 14px regular tight text with `MONO:0`. Selected, hovered, focused, and disabled states use the explicit control and interactive roles.
 
 Both variants remain square and use fast selection feedback.
 
-The grouped selected tab uses a visible border instead of a shadow. Long horizontal tab sets scroll inside the tablist. Vertical tabs retain a 36px minimum target height.
+The grouped selected tab uses a visible border instead of a shadow. Long horizontal tab sets scroll inside the tablist. Vertical tabs retain a 36px minimum target height without overlapping adjacent targets.
+
+Keep the focus-ring gutter around both variants. Keep selected and unselected keyboard focus visible inside the scrolling tablist. The underline stays inside the gutter rather than crossing the scroll boundary.
 
 ## Accessibility
 

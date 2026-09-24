@@ -3,7 +3,35 @@
 import { profiles, propertiesFor, booleanProps } from './catalog.mjs';
 
 export function rootProfile(slug) {
-  return { ...profiles[slug] };
+  return wrapperProfile(slug, profiles[slug]);
+}
+
+// Documentation markers record composed state; operations also update native
+// descendants. A fieldset retains its native disabled semantics.
+function wrapperProfile(type, profile) {
+  const wrappers = [
+    'button-group',
+    'field',
+    'form-field',
+    'form',
+    'color-picker',
+    'file-upload',
+    'combobox',
+    'tag-input',
+    'time-field',
+    'date-range-picker',
+    'input-otp',
+    'date-picker'
+  ];
+  if (!wrappers.includes(type)) return { ...profile };
+  const overrides = { ...profile.booleanOverrides };
+  for (const name of profile.booleans || []) {
+    if (name === 'disabled' && ['time-field', 'date-range-picker', 'input-otp'].includes(type))
+      continue;
+    if (['disabled', 'invalid', 'readonly', 'required', 'open'].includes(name))
+      overrides[name] = { attr: `data-${name}`, on: '' };
+  }
+  return { ...profile, booleanOverrides: overrides };
 }
 
 // Each selector identifies a documented atom/part, not an arbitrary descendant.
@@ -107,23 +135,23 @@ const partProperties = {
   treecontrol: { booleans: ['disabled'] },
   'accordion-item': { booleans: ['open'] },
   'message-bubble': { props: { 'data-tone': ['', 'muted', 'negative', 'selected'] } },
-  summary: { booleans: ['disabled'] },
+  summary: {},
   'nav-link': { booleans: ['disabled'], exclusive: { attr: 'aria-current', on: 'page' } },
-  'carousel-control': { booleans: ['disabled'] },
+  'carousel-control': {},
   resize: { booleans: ['disabled'] },
   'suggestion-item': { booleans: ['disabled'] }
 };
 
 export function partProfile(type, selector) {
-  if (partProperties[type]) return { ...partProperties[type], target: selector };
+  if (partProperties[type])
+    return { ...wrapperProfile(type, partProperties[type]), target: selector };
   // A grouped control never exposes its own variant or content. The owning
   // group or toolbar sets those once for every child.
   if (type === 'button') return { target: selector, booleans: ['disabled'] };
   if (type === 'toggle')
     return {
       target: selector,
-      booleans: ['checked', 'disabled'],
-      booleanOverrides: { checked: { attr: 'aria-pressed', on: 'true', values: ['false', 'true'] } }
+      booleans: ['pressed', 'disabled']
     };
   if (profiles[type]) return { ...profiles[type], target: selector };
   // The Color Picker controller derives its children's availability and validity.
@@ -144,7 +172,7 @@ export function partProfile(type, selector) {
     target: selector,
     ...(type === 'radio' ? { booleans: ['checked', 'disabled'] } : {}),
     ...(input ? { booleans: ['disabled', 'invalid'] } : {}),
-    ...(type === 'combobox-trigger' ? { booleans: ['disabled', 'invalid', 'open'] } : {}),
+    ...(type === 'combobox-trigger' ? { booleans: [] } : {}),
     ...(type === 'otp' ? { booleans: ['disabled', 'invalid'] } : {})
   };
 }
@@ -152,7 +180,7 @@ export function partProfile(type, selector) {
 // Property labels are lowercase, like a code inspector.
 export function propertyLabel(name) {
   const map = {
-    'aria-pressed': 'checked',
+    'aria-pressed': 'pressed',
     'aria-orientation': 'orientation',
     'aria-busy': 'loading',
     'data-icon-only': 'icon only',
@@ -187,7 +215,7 @@ export function propertyLabel(name) {
 export function optionLabel(slug, attr, value, values, kind) {
   if (slug === 'progress' && attr === 'value')
     return value === null ? 'indeterminate' : `${value}%`;
-  if (kind === 'boolean') return value === null ? 'off' : 'on';
+  if (kind === 'boolean') return value === null || value === 'false' ? 'off' : 'on';
   if (values.includes(null) && values.includes('')) return value === null ? 'off' : 'on';
   if (value === null) return 'default';
   if (attr === 'data-size') {
@@ -199,7 +227,9 @@ export function optionLabel(slug, attr, value, values, kind) {
   }
   // An empty enum value is the neutral form, never a blank option.
   if (value === '') return 'default';
-  return String(value);
+  return String(value)
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .toLowerCase();
 }
 
 export const encodeValue = (value) => (value === null ? '__remove' : value);
@@ -271,7 +301,9 @@ export function canonicalHtml(c, matrix = false) {
     return c.specimens.find((s) => s.html.includes('statistic-trend'))?.html || c.specimens[0].html;
   if (c.slug === 'icon')
     return '<i class="ri-home-line" data-icon-variant="line" aria-hidden="true"></i>';
-  if (['toggle', 'thinking-indicator'].includes(c.slug)) return c.specimens[0].html;
+  if (c.slug === 'toggle')
+    return '<button class="toggle" type="button" aria-pressed="false">Bookmark</button>';
+  if (c.slug === 'thinking-indicator') return c.specimens[0].html;
   if (matrix) return c.specimens[0].html;
   return c.samples[0].html;
 }
@@ -291,10 +323,12 @@ export const slots = {
   toast: { label: 'action', values: ['dismiss', 'action'], default: 'dismiss' }
 };
 
-export const demoIcon =
-  '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6z"/></svg>';
-export const demoIconEnd =
-  '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9.9997 15.1709L19.1921 5.97852L20.6063 7.39273L9.9997 17.9993L3.63574 11.6354L5.04996 10.2212L9.9997 15.1709Z"/></svg>';
+// Local bookmark-line/bookmark-fill paths keep live content synchronous and
+// give selected actions a real filled glyph in the same single icon slot.
+const bookmarkPath =
+  'M5 2H19C19.5523 2 20 2.44772 20 3V22.1433C20 22.4194 19.7761 22.6434 19.5 22.6434C19.4061 22.6434 19.314 22.6168 19.2344 22.5669L12 18.0313L4.76559 22.5669C4.53163 22.7136 4.22306 22.6429 4.07637 22.4089C4.02647 22.3293 4 22.2373 4 22.1433V3C4 2.44772 4.44772 2 5 2Z';
+export const demoIcon = `<span data-icon-pair aria-hidden="true">${['line', 'fill'].map((variant) => `<i class="ri-bookmark-${variant}" data-icon-variant="${variant}"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="${bookmarkPath}${variant === 'line' ? 'M18 4H6V19.4324L12 15.6707L18 19.4324V4Z' : ''}"/></svg></i>`).join('')}</span>`;
+export const demoIconEnd = demoIcon;
 export const demoSpinner =
   '<svg class="spinner" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9h-2a7 7 0 1 1-7-7z"/></svg>';
 

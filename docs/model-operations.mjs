@@ -1,8 +1,10 @@
 import { demoIcon, demoIconEnd, demoSpinner } from './component-model.mjs';
+import { escapeHtml } from './catalog.mjs';
 
 // Exact owner paths are compiled before controls are rendered. A missing label
 // in one item must never shift an update onto the following item's label.
 export const companionSelectors = {
+  label: ['input,select,textarea'],
   'tool-call': ['.tool-call-state', '.tool-call-mark'],
   'activity-item': ['.agent-activity-status', '.agent-activity-marker'],
   'todo-item': ['.todo-item-status', '.todo-item-mark'],
@@ -31,7 +33,7 @@ export const companionSelectors = {
 function owned(scope, child) {
   return (scope.instanceSelectors?.[scope.index || 0] || scope.target)
     .split(',')
-    .map((selector) => `${selector.trim()} ${child}`)
+    .flatMap((selector) => child.split(',').map((part) => `${selector.trim()} ${part.trim()}`))
     .join(',');
 }
 
@@ -55,17 +57,48 @@ export function propertyOperations(scope, property, value) {
   }
   ops.push({ selector: scope.target, index, attr, value });
 
+  const nativeTargets = {
+    field: 'input,select,textarea',
+    'form-field': 'input,select,textarea',
+    form: 'input,select,textarea',
+    'button-group': 'button',
+    'color-picker': 'input',
+    'file-upload': 'input[type="file"]',
+    combobox: '.combobox-trigger,[data-combobox-input]',
+    'tag-input': '.tag-input-fallback,.tag-input-control',
+    'time-field': '[data-time-part="hour"],[data-time-part="minute"],[data-time-part="period"]',
+    'date-range-picker': '.date-range-input',
+    'input-otp': 'input:not([type="hidden"])'
+  };
+  if (['disabled', 'invalid', 'required', 'readonly'].includes(name) && nativeTargets[scope.type]) {
+    let selector = nativeTargets[scope.type];
+    if (name === 'readonly' && scope.type === 'time-field')
+      selector = '[data-time-part="hour"],[data-time-part="minute"]';
+    ops.push({
+      selector: owned(scope, selector),
+      attr: name === 'invalid' ? 'aria-invalid' : name,
+      value: value === null ? null : name === 'invalid' ? 'true' : ''
+    });
+    if (name === 'readonly' && scope.type === 'time-field')
+      ops.push({ selector: owned(scope, '[data-time-part="period"]'), attr: 'disabled', value });
+    if (name === 'readonly' && scope.type === 'tag-input')
+      ops.push({ selector: owned(scope, '.tag-input-remove'), attr: 'disabled', value });
+  }
   if (name === 'disabled') {
+    if (scope.type === 'label')
+      ops.push(...companionOperations(scope, 'input,select,textarea', { attr: 'disabled', value }));
     if (scope.type === 'toggle-group')
       ops.push(...companionOperations(scope, '.toggle', { attr: 'disabled', value }));
     if (scope.type === 'number-field')
       ops.push(...companionOperations(scope, '.number-field button', { attr: 'disabled', value }));
     if (scope.type === 'date-picker')
       ops.push(
-        ...companionOperations(scope, '.date-picker-nav, .date-picker-day button', {
-          attr: 'disabled',
-          value
-        })
+        ...['.date-picker-nav', '.date-picker-day button'].flatMap((selector) =>
+          companionOperations(scope, selector, {
+            attr: 'disabled',
+            value
+          })
+        )
       );
     if (scope.type === 'tag-input') {
       ops.push({
@@ -79,19 +112,20 @@ export function propertyOperations(scope, property, value) {
         value
       });
     }
-    if (['text-field', 'field'].includes(scope.type))
-      ops.push(...companionOperations(scope, scope.type, { attr: 'data-disabled', value }));
+    if (scope.type === 'text-field')
+      ops.push(...companionOperations(scope, '.text-field', { attr: 'data-disabled', value }));
   }
   if (name === 'invalid') {
-    if (['text-field', 'tag-input', 'file-upload', 'field'].includes(scope.type))
-      ops.push(...companionOperations(scope, scope.type, { attr: 'data-invalid', value }));
+    if (scope.type === 'text-field')
+      ops.push(
+        ...companionOperations(scope, '.text-field', {
+          attr: 'data-invalid',
+          value: value === null ? null : ''
+        })
+      );
   }
   if (name === 'open' && scope.type === 'combobox')
-    ops.push({
-      selector: owned(scope, '.combobox-trigger'),
-      attr: 'aria-expanded',
-      value: value === null ? 'false' : 'true'
-    });
+    ops.push({ selector: scope.target, index, popover: value !== null });
   if (name === 'loading')
     ops.push({
       selector: scope.target,
@@ -99,9 +133,6 @@ export function propertyOperations(scope, property, value) {
       attr: 'aria-busy',
       value: value === null ? null : 'true'
     });
-  if (name === 'checked') {
-    ops.push({ selector: scope.target, index, attr: 'checked', value });
-  }
   if (name === 'indeterminate') {
     ops.push({ selector: scope.target, index, attr: 'data-demo-mixed', value });
   }
@@ -222,6 +253,40 @@ export function propertyOperations(scope, property, value) {
               : 'Use Send to submit'
       })
     );
+  // Shared constraints can coexist. Clearing readonly must not re-enable a
+  // removal action or period select while the owner remains disabled.
+  if (['disabled', 'readonly'].includes(name) && ['tag-input', 'time-field'].includes(scope.type)) {
+    const child = scope.type === 'tag-input' ? '.tag-input-remove' : '[data-time-part="period"]';
+    ops.push({ selector: owned(scope, child), attr: 'disabled', value: null });
+    for (const marker of ['[disabled]', '[data-disabled]', '[data-readonly]'])
+      ops.push({
+        selector: (scope.instanceSelectors?.[index] || scope.target)
+          .split(',')
+          .map((selector) => `${selector.trim()}${marker} ${child}`)
+          .join(','),
+        attr: 'disabled',
+        value: ''
+      });
+  }
+  // Off removes the owner's inherited constraint, not a native child's local
+  // authored availability. Restoration uses ordinary attribute operations so
+  // both consumers keep the same operation API.
+  if (
+    value === null &&
+    (name === 'disabled' ||
+      (name === 'readonly' && ['tag-input', 'time-field'].includes(scope.type)))
+  )
+    for (const baseline of scope.authoredDisabled?.[index] || []) {
+      ops.push({ selector: baseline.selector, attr: 'disabled', value: baseline.value });
+      // Controller-owned counterparts mirror their authoritative native input,
+      // including generated controls absent when the baseline was compiled.
+      if (baseline.mirrors)
+        ops.push({
+          selector: owned(scope, baseline.mirrors),
+          attr: 'disabled',
+          value: baseline.value
+        });
+    }
   return ops;
 }
 
@@ -229,17 +294,16 @@ export function propertyOperations(scope, property, value) {
 // call this once with the resolved content state.
 export function contentOperations(scope, state = {}) {
   if (!['button', 'toggle'].includes(scope.type)) return [];
-  const label = 'Button';
-  const showLabel = state.showLabel !== false;
+  const label = state.label?.trim() || (scope.type === 'toggle' ? 'Bookmark' : 'Button');
   const showIconStart = Boolean(state.showIconStart);
-  const showIconEnd = Boolean(state.showIconEnd);
+  const showLabel = state.showLabel !== false || (!showIconStart && !state.showIconEnd);
+  const showIconEnd = Boolean(state.showIconEnd) && (showLabel || !showIconStart);
   const loading = Boolean(state.loading);
-  if (!showLabel && !showIconStart && !showIconEnd) return [];
   const html =
     (loading ? demoSpinner : '') +
-    (showIconStart ? demoIcon : '') +
-    (showLabel ? label : '') +
-    (showIconEnd ? demoIconEnd : '');
+    (showIconStart && (showLabel || !loading) ? demoIcon : '') +
+    (showLabel ? escapeHtml(label) : '') +
+    (showIconEnd && (showLabel || !loading) ? demoIconEnd : '');
   return [
     { selector: scope.target, index: scope.index || 0, html },
     {

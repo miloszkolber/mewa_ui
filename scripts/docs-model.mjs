@@ -40,6 +40,28 @@ export async function readText(html, selector) {
 export async function operate(html, operations) {
   // Sequential: multiple handlers on the same element must see prior mutations.
   for (const op of operations) {
+    if (op.popover !== undefined) {
+      const owner = (await inspect(html, op.selector)).matches[op.index || 0];
+      if (!owner) continue;
+      html = await operate(html, [
+        {
+          selector: `${owner.path} .combobox-content`,
+          attr: 'data-static-overlay',
+          value: op.popover ? '' : null
+        },
+        {
+          selector: `${owner.path} .combobox-content`,
+          attr: 'hidden',
+          value: op.popover ? null : ''
+        },
+        ...['.combobox-trigger', '.combobox-search-input'].map((selector) => ({
+          selector: `${owner.path} ${selector}`,
+          attr: 'aria-expanded',
+          value: String(op.popover)
+        }))
+      ]);
+      continue;
+    }
     let index = 0;
     html = await rewrite(html, [
       [
@@ -160,18 +182,73 @@ async function scopeFor(html, type, label, profile, id) {
   const inspected = await inspect(html, profile.target);
   const matches = inspected.matches.map((n) => n.attrs);
   if (!matches.length) return null;
+  // Record local availability before a composed owner applies inherited state.
+  // These paths are compiled separately for live and static anatomy.
+  const authoredDisabled = inspected.matches.map((owner) =>
+    inspected.nodes.flatMap((node) => {
+      if (
+        !['input', 'select', 'textarea', 'button', 'fieldset'].includes(node.tag) ||
+        node.attrs.disabled === undefined
+      )
+        return [];
+      // These hidden fallback values are controller-owned, not targets of the
+      // group's visible-control disabled propagation.
+      if (['time-field', 'input-otp'].includes(type) && node.attrs.type === 'hidden') return [];
+      for (let parent = node.parent; parent; parent = parent.parent)
+        if (parent === owner)
+          return [
+            {
+              selector: node.path,
+              value: node.attrs.disabled,
+              ...(type === 'tag-input' && node.classes.includes('tag-input-fallback')
+                ? { mirrors: '.tag-input-control,.tag-input-remove' }
+                : type === 'color-picker' && node.attrs.type === 'color'
+                  ? { mirrors: '.color-picker-hex' }
+                  : {})
+            }
+          ];
+      return [];
+    })
+  );
   const props = (profile.resolved ? profile.props : propertiesFor(profile)).map((property) => {
-    const initialValues = matches.map((_, index) =>
-      initialValue({ ...profile, instances: matches }, property, index)
-    );
+    const initialValues = matches.map((attrs, index) => {
+      // A Field represents its actual native controls. Preserve authored native
+      // constraints when introducing the documentation readback marker; never
+      // infer a group's state from its first incidental action.
+      if (
+        ['field', 'form-field'].includes(type) &&
+        property.attr === `data-${property.name}` &&
+        attrs[property.attr] === undefined
+      ) {
+        const owner = inspected.matches[index];
+        const controls = inspected.nodes.filter((node) => {
+          if (!['input', 'select', 'textarea'].includes(node.tag) || node.attrs.type === 'hidden')
+            return false;
+          for (let parent = node.parent; parent; parent = parent.parent)
+            if (parent === owner) return true;
+          return false;
+        });
+        const nativeAttr = property.name === 'invalid' ? 'aria-invalid' : property.name;
+        if (
+          controls.length &&
+          controls.every((node) =>
+            property.name === 'invalid'
+              ? node.attrs[nativeAttr] === 'true'
+              : node.attrs[nativeAttr] !== undefined
+          )
+        )
+          return property.on;
+      }
+      return initialValue({ ...profile, instances: matches }, property, index);
+    });
     return { ...property, default: initialValues[0], initialValues };
   });
   let companions;
   if (companionSelectors[type]) {
     const owners = inspected.matches.map((node) => {
-      if (type !== 'number-field') return node;
+      if (!['number-field', 'text-field'].includes(type)) return node;
       for (let parent = node.parent; parent; parent = parent.parent)
-        if (parent.classes.includes('number-field')) return parent;
+        if (parent.classes.includes(type)) return parent;
       return node;
     });
     companions = matches.map(() =>
@@ -179,6 +256,13 @@ async function scopeFor(html, type, label, profile, id) {
     );
     for (const selector of companionSelectors[type]) {
       for (const [childIndex, child] of (await inspect(html, selector)).matches.entries()) {
+        if (type === 'label') {
+          const index = owners.findIndex(
+            (owner) => owner.attrs.for && owner.attrs.for === child.attrs.id
+          );
+          if (index >= 0) companions[index][selector].push(childIndex);
+          continue;
+        }
         // Stop at the closest owner; nested components never share status text.
         for (let parent = child; parent; parent = parent.parent) {
           const index = owners.findIndex((owner) => owner.path === parent.path);
@@ -196,9 +280,10 @@ async function scopeFor(html, type, label, profile, id) {
     props,
     selector: profile.target,
     instanceSelectors: inspected.matches.map((n) => n.path),
+    authoredDisabled,
     ...(companions ? { companionIndices: companions } : {}),
     type,
-    label,
+    label: label.toLowerCase(),
     id,
     count: matches.length,
     instances: matches,
@@ -295,29 +380,89 @@ export async function compileModel(c, component) {
       .join(',');
     if (!nested) continue;
     const part = await scopeFor(html, type, label, partProfile(type, nested), `part-${type}`);
+    // A composed root owns constraints once. Keep independent selection and
+    // nested field constraints where the outer form does not own that state.
+    if (part) {
+      const owned = new Set(
+        root.props
+          .filter((p) => ['disabled', 'invalid', 'readonly', 'required'].includes(p.name))
+          .map((p) => p.name)
+      );
+      part.props = part.props.filter((p) => !owned.has(p.name));
+      if (['date-picker', 'carousel'].includes(c.slug) && type === 'button') part.props = [];
+    }
     if (part) scopes.push(part);
   }
-  // Normalize authored values without clearing an authored boolean. A part's
-  // absent default must never remove a condition its owner just set.
+  const fieldScope = scopes.find((s) => s.type === 'form-field');
+  if (fieldScope) {
+    for (const scope of scopes.filter((s) => s.id !== 'root' && s !== fieldScope)) {
+      const nodes = (await inspect(html, scope.target)).matches;
+      if (
+        nodes.length &&
+        nodes.every((node) => {
+          for (let parent = node.parent; parent; parent = parent.parent)
+            if (parent.classes.includes('form-field')) return true;
+          return false;
+        })
+      )
+        scope.props = scope.props.filter(
+          (p) =>
+            !fieldScope.props.some(
+              (owner) =>
+                owner.name === p.name && ['disabled', 'invalid', 'required'].includes(p.name)
+            )
+        );
+    }
+  }
+  // Native leaf defaults preserve authored state; composed owners apply last,
+  // including their off state, so the initial document agrees with its controls.
   const applyInitial = (scope, instance, property) => {
     const value = initialValue(scope, property, instance);
-    if (property.kind === 'boolean' && value === null) return [];
+    if (
+      property.kind === 'boolean' &&
+      value === null &&
+      !property.attr?.startsWith('data-') &&
+      !['time-field', 'date-range-picker', 'input-otp'].includes(scope.type)
+    )
+      return [];
     return propertyOperations({ ...scope, index: instance }, property, value);
   };
-  const operations = scopes.flatMap((s) =>
-    s.instances.flatMap((_, index) => s.props.flatMap((p) => applyInitial(s, index, p)))
-  );
+  const operations = [...scopes]
+    .reverse()
+    .flatMap((s) =>
+      s.instances.flatMap((_, index) => s.props.flatMap((p) => applyInitial(s, index, p)))
+    );
   html = await operate(html, operations);
   // Static anatomy can differ from live overlay launchers. Never reuse a live
   // instance index or owner path against a separate fixture.
   const staticRoot = await scopeFor(staticHtml, c.slug, c.name, profile, 'root');
-  if (staticRoot)
+  const staticDisabledDefaults = {};
+  if (staticRoot) {
+    const staticScopes = [staticRoot];
+    for (const scope of scopes.filter((s) => s.id !== 'root')) {
+      const part = await scopeFor(
+        staticHtml,
+        scope.type,
+        scope.label,
+        partProfile(scope.type, scope.target),
+        scope.id
+      );
+      if (!part) continue;
+      part.props = part.props.filter((p) => scope.props.some((live) => live.name === p.name));
+      staticScopes.push(part);
+    }
+    for (const scope of staticScopes) staticDisabledDefaults[scope.id] = scope.authoredDisabled;
     staticHtml = await operate(
       staticHtml,
-      staticRoot.instances.flatMap((_, index) =>
-        staticRoot.props.flatMap((p) => applyInitial(staticRoot, index, p))
-      )
+      staticScopes
+        .reverse()
+        .flatMap((scope) =>
+          scope.instances.flatMap((_, index) =>
+            scope.props.flatMap((p) => applyInitial(scope, index, p))
+          )
+        )
     );
+  }
   const slot = slots[c.slug];
   if (slot) {
     html = await operate(html, slotOperations(c.slug, slot.default));
@@ -329,6 +474,7 @@ export async function compileModel(c, component) {
     ...(component?.category ? { category: component.category } : {}),
     html,
     staticHtml,
+    staticDisabledDefaults,
     scopes,
     slot,
     wide: profile.wide || profile.overlay,
@@ -347,9 +493,11 @@ export async function matrixRows(model) {
   const root = model.scopes.find((s) => s.id === 'root');
   const rows = [];
   if (model.presentation)
-    return [{ label: 'Rendered Markdown', html: model.staticHtml, scope: root, wide: true }];
+    return [{ label: 'rendered markdown', html: model.staticHtml, scope: root, wide: true }];
   const visualEnums = (scope) =>
-    (scope?.props || []).filter((p) => p.kind === 'enum' && !nonVisualProps.has(p.attr));
+    (scope?.props || []).filter(
+      (p) => (p.kind === 'enum' || p.presence) && !nonVisualProps.has(p.attr)
+    );
   const byName = (scope, name) => (scope?.props || []).find((p) => p.name === name);
   function dimensionsFor(scope) {
     // An explicit matrix drives the export. `prop` and `bool` name properties;
@@ -383,7 +531,7 @@ export async function matrixRows(model) {
           kind: 'enum'
         }
       });
-    if (slot) dimensions.push({ kind: 'slot' });
+    if (slot && !dimensions.some((d) => d.kind === 'slot')) dimensions.push({ kind: 'slot' });
     const choicesFor = (dimension) => {
       if (dimension.kind === 'content')
         return Object.entries(scope.content).map(([id, state]) => ({ content: id, state }));
@@ -395,6 +543,28 @@ export async function matrixRows(model) {
       (all, dimension) => all.flatMap((prior) => choicesFor(dimension).map((c) => [...prior, c])),
       [[]]
     );
+    // Uncrossed booleans get compact off/on representatives rather than a
+    // Cartesian product. Content controls use their named combinations instead.
+    const baseline = dimensions.map((d) => choicesFor(d)[0]);
+    if (scope.content && !dimensions.some((d) => d.kind === 'content')) {
+      for (const [content, state] of Object.entries(scope.content))
+        combinations.push([...baseline, { content, state }]);
+      const pressed = byName(scope, 'pressed');
+      if (pressed && scope.content['icon only'])
+        combinations.push([
+          ...baseline.filter((choice) => choice.property !== pressed),
+          { property: pressed, value: pressed.on },
+          { content: 'icon only', state: scope.content['icon only'] }
+        ]);
+    }
+    for (const property of scope.props.filter(
+      (p) =>
+        p.kind === 'boolean' &&
+        p.attr &&
+        !nonVisualProps.has(p.attr) &&
+        !dimensions.some((d) => d.property === p)
+    ))
+      for (const value of property.values) combinations.push([...baseline, { property, value }]);
     const propertyValue = (combination, name) =>
       combination.find((c) => c.property?.name === name)?.value;
     const scopeValues = Object.fromEntries(scope.props.map((p) => [p.name, p.default]));
@@ -413,6 +583,7 @@ export async function matrixRows(model) {
       const gatedOut = combination.some(
         (c) =>
           c.property &&
+          c.value !== c.property.values[0] &&
           dimensions.find((d) => d.property === c.property)?.when &&
           !Object.entries(dimensions.find((d) => d.property === c.property).when).every(
             ([name, allowed]) => allowed.includes(propertyValue(combination, name))
@@ -438,12 +609,29 @@ export async function matrixRows(model) {
       const activeScope = scope
         ? await scopeFor(html, scope.type, scope.label, { ...scope, resolved: true }, scope.id)
         : null;
+      // Do not mistake the inherited state in normalized markup for local
+      // authored state when rendering the owner's off representative.
+      if (activeScope)
+        activeScope.authoredDisabled =
+          model.staticDisabledDefaults?.[scope.id] || scope.authoredDisabled;
       for (const choice of combination) {
         if (!choice.property || !activeScope) continue;
+        if (
+          model.slug === 'tool-call' &&
+          combination.some((c) => c.slot === 'status-only') &&
+          choice.property.name === 'open'
+        )
+          continue;
         html = await operate(html, propertyOperations(activeScope, choice.property, choice.value));
       }
-      if (contentChoice)
-        html = await operate(html, contentOperations(activeScope, contentChoice.state));
+      if (scope.content)
+        html = await operate(
+          html,
+          contentOperations(activeScope, {
+            ...contentChoice?.state,
+            loading: values.loading === 'true'
+          })
+        );
       const label =
         combination
           .map((c) =>
@@ -457,7 +645,7 @@ export async function matrixRows(model) {
       rows.push({
         label:
           scope.type === 'avatar-badge'
-            ? `${model.name} · ${label}`
+            ? `${model.name.toLowerCase()} · ${label}`
             : scope?.id !== 'root'
               ? `${scope.label} · ${label}`
               : label,
@@ -469,7 +657,9 @@ export async function matrixRows(model) {
   }
   if (!(model.slug === 'avatar' && model.scopes.some((s) => s.type === 'avatar-badge')))
     await addRows(root, model.staticHtml, model.slot, model.wide);
-  for (const scope of model.scopes.filter((s) => s.id !== 'root' && !standaloneParts.has(s.type))) {
+  for (const scope of model.scopes.filter(
+    (s) => s.id !== 'root' && !standaloneParts.has(s.type) && (s.props.length || s.exclusive)
+  )) {
     const base = await isolatePart(model.staticHtml, scope);
     if (base) await addRows(scope, base, scope.type === 'avatar-badge' ? model.slot : null, false);
   }

@@ -10,9 +10,7 @@
     background: var(--surface-primary);
     border: var(--border-width-025) solid var(--border-primary);
 
-    /* The ready control rhythm is 36px total. */
-    block-size: var(--size-900);
-    /* Leave room for a child focus ring inside the scroll container. */
+    /* Keep the 36px targets separate from the scroll container's ring gutter. */
     padding: var(--ring-spread);
     gap: var(--space-150);
 
@@ -27,8 +25,6 @@
       & .tab-trigger {
         padding: 0 var(--space-250);
         border-bottom: var(--border-width-050) solid var(--border-transparent);
-        /* Keep the selected underline flush with the shared track. */
-        margin-bottom: calc(-1 * (var(--ring-spread) + var(--border-width-025)));
 
         /* Hover changes text color only; it never covers the bottom border. */
         &:not([aria-selected="true"]):hover {
@@ -41,7 +37,6 @@
           color: var(--text-primary);
           border-color: var(--border-transparent);
           border-bottom-color: var(--border-interactive-inverted);
-          box-shadow: none;
         }
       }
     }
@@ -66,7 +61,8 @@
     align-items: center;
     justify-content: center;
     gap: var(--space-100);
-    block-size: 100%;
+    block-size: var(--size-900);
+    scroll-margin: var(--ring-spread);
     padding: 0 var(--space-250);
 
     font-size: var(--font-size-350);
@@ -145,6 +141,11 @@
   }
 
   @media (forced-colors: active) {
+    .tab-trigger:focus-visible {
+      /* The shared 1px outline offset would exceed the 2px scroll gutter. */
+      outline-offset: 0;
+    }
+
     .tab-trigger[aria-selected="true"] {
       border: var(--border-width-050) solid Highlight;
     }

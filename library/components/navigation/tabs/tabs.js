@@ -72,6 +72,7 @@ export function enhance(root) {
       event.preventDefault();
       selectTab(next, tabsIn(tablist));
       next.focus();
+      next.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
     });
   });
 }

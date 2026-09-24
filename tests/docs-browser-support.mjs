@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
 import catalog from '../docs/specimens.json' with { type: 'json' };
 import { inspectPlaygroundControls } from './docs-controls.mjs';
+import { inspectDocsSemantics } from './docs-semantics.browser.mjs';
+import { inspectDocsIcons } from './docs-icons.browser.mjs';
+import { browserName } from './browser-support.mjs';
 
 export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath) {
   const errors = [];
@@ -275,6 +278,31 @@ export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath
     await page.setViewport({ width: 1440, height: 1000 });
     await page.screenshot({ path: screenshotPath });
   }
+  if (browserName === 'chrome') {
+    const inertPage = await page.browser().newPage();
+    try {
+      await inertPage.setJavaScriptEnabled(false);
+      await inertPage.goto(`${baseUrl}/docs/figma.html`, { waitUntil: 'load' });
+      assert.deepEqual(
+        await inertPage.evaluate(() => [
+          document.querySelectorAll('[data-component="icon"] .ri-home-line svg path').length > 0,
+          document.querySelectorAll('[data-component="icon"] .ri-home-fill svg path').length > 0,
+          document.querySelectorAll('[data-component="checkbox"] .checkbox[checked]').length > 0,
+          [...document.querySelectorAll('[data-component="icon"] svg')].every(
+            (svg) => svg.getBoundingClientRect().width > 0
+          )
+        ]),
+        [true, true, true, true],
+        'the Figma reference has visible line/fill and checked specimens without JavaScript'
+      );
+    } finally {
+      await inertPage.close();
+    }
+  }
+  // Both inspectors navigate. Run them after the surface checks and capture,
+  // while this page's error listener still covers every navigation.
+  await inspectDocsSemantics(page, baseUrl);
+  await inspectDocsIcons(page, baseUrl);
   assert.deepEqual(errors, []);
   page.off('pageerror', onError);
   console.log(

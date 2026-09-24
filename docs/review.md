@@ -10,18 +10,18 @@ The September 2026 catalog review covers all 80 registered components, their sou
 - Nav route lists retain their horizontal and vertical forms. The undocumented fixed-width collapsed-row hook is removed because it clipped text-only links. Sidebar retains its supported collapse behavior.
 - Progress supports measured completion and a stationary indeterminate treatment. It does not replace native `meter` for utilization.
 - Control-boundary and focus-perimeter roles use solid colors with measured contrast above 3:1 against the adjacent input surface in both themes. Decorative selected-tab shadows are removed.
-- The generic hover/focus "visual state" selector is removed. Persistent conditions are boolean properties (`disabled`, `invalid`, `readonly`, `required`, `checked`, `indeterminate`, `loading`, `open`, `optional`) and content toggles (`showLabel`, `showIconStart`, `showIconEnd`). Property labels are lowercase.
+- The generic hover/focus "visual state" selector is removed. Persistent conditions are boolean properties (`disabled`, `invalid`, `readonly`, `required`, `checked`, `indeterminate`, `loading`, `open`, `optional`) and content toggles (`showLabel`, `showIconStart`, `showIconEnd`). Toggle uses `pressed` through `aria-pressed`; native checkable inputs use `checked`. Property labels are lowercase.
 - Button's first variant is renamed `primary`. Grouped buttons and toggles no longer own a variant; the owning group or toolbar sets it once. Button and Toggle expose content toggles instead of a single icon-only flag.
 - Icon exposes a line/fill variant and uses the local `ri-*` class hook. A documentation loader injects the local glyph, so the rendered specimen stays visual and the HTML output stays a short class hook.
 - Field, Text Field, and Textarea expose editable label and description text; `required` marks the label. Label exposes an `optional` property.
 
 ## Playground interaction
 
-A catalog-wide interaction audit now exercises every playground control (each select option and boolean), every value editor, native interaction inside each demo, exclusive selection, single-selection disclosure, and Reset. Fixed here: the empty enum value rendered a blank option label (`default` again); a boolean whose attribute is applied as `aria-disabled` on a non-form owner flipped its switch back off; single-selection Accordion kept several items open instead of one; Color Picker exposed controller-owned child controls that fought the controller; and the Command Palette close handler stole focus from an element the user had already focused after the browser restored it. The audit reports no control desync, no empty demo, and no page error across all 80 components.
+The catalog-wide control sweep covers select options, booleans, value editors, exclusive selection, disclosure, and Reset. Independent browser regressions also exercise real native activation and constraints, selected Combobox and File Upload values, canceled reset, and accessible action names. Inspector edits now update mounted components rather than replacing their nodes; native reset retains authored defaults. Composite owners propagate constraints to their native controls. Authored inline SVG paths survive code export, and the Icon loader modifies only empty class hooks. Text content can be cleared and re-entered. Existing File Upload Remove buttons track dynamic native disabled state. No page error was reported in the executed browser suites.
 
 ## Systemic follow-up
 
-The same defect classes found in the reviewed components were checked across the rest of the catalog. Fixed here: menu and command list rows were 40px and now use the 36px control rhythm (Command Palette, Context Menu, Dropdown Menu); the Tabs scroll container clipped child focus rings and now reserves the ring spread, with the line variant's selected underline kept flush; Date Range Picker had the Time Field legend-spacing bug and the native date-picker glyph color; Select, Number Field, File Input, and Date Field now mark a required label. A nested `:has()` selector in the Label required indicator was invalid CSS and silently dropped the whole rule; it now uses a relative child selector. A command-palette close assertion in the runtime suite raced the native toggle events and now waits for the settled attribute.
+The same defect classes found in the reviewed components were checked across the rest of the catalog. Fixed here: menu and command list rows were 40px and now use the 36px control rhythm (Command Palette, Context Menu, Dropdown Menu); Tabs now keeps 36px targets, reserves space for focus inside its scroll container, and scrolls the active tab into view on keyboard navigation; Date Range Picker had the Time Field legend-spacing bug and the native date-picker glyph color; Select, Number Field, File Input, and Date Field now mark a required label. A nested `:has()` selector in the Label required indicator was invalid CSS and silently dropped the whole rule; it now uses a relative child selector. Command Palette close handling no longer steals focus after the browser has restored it.
 
 Remaining candidates, measured but not changed: Navigation, Tree View, Accordion, and Collapsible rows are 40-45px; Input OTP and Radio Group legends use 4px and 8px where Time Field and Date Range Picker use 12px; 22 component fixtures still embed inline icon SVG rather than the local `ri-*` class hook.
 
@@ -29,9 +29,9 @@ Remaining candidates, measured but not changed: Navigation, Tree View, Accordion
 
 Preview and Figma use the same nine registry categories. Boolean controls distinguish presence attributes from string-valued ARIA booleans. Selection cardinality does not control which neighboring item may be disabled. Each component declares a bounded matrix dimension list; behavior-only properties and isolated placement controls do not create redundant specimens.
 
-The matrix contains 363 generated rows at this revision. This count is an inspection result, not a coverage target. Independent inventory assertions cover required combinations and compound states, so deleting a model entry cannot make an omitted feature disappear from the expected result.
+The matrix contains 426 generated cells at this revision. This count is an inspection result, not a coverage target. Independent assertions require checked and invalid Checkbox, pressed Toggle, line/fill Icon, disabled Button, loading Button, selected Radio, and open disclosure specimens rather than trusting generated inventory counts alone.
 
-The static Figma matrix caps outer specimen rows and inner cells at four columns on large canvases, preserves readable wide compositions, and keeps each cell isolated for import.
+The static Figma matrix caps outer specimen rows and inner cells at four columns on large canvases, preserves readable wide compositions, and keeps each cell isolated for import. Chromium also verifies that line/fill Icon and checked Checkbox specimens render with JavaScript disabled.
 
 Preview regressions cover bidirectional radio changes, all-disabled tabs and panel correspondence, committed Tag Input values plus pending drafts, native indeterminate checkbox transitions, retained calendar context, semantic switches, conditional controls, and status-only Tool Call anatomy. Static ID references are rewritten as exact HTML attributes, including command-palette triggers and Markdown footnotes.
 
@@ -49,7 +49,7 @@ The browser suite covers all 41 behavior lifecycles and the existing native-form
 | `bun run format:check` | Pass |
 | `bun run typecheck` | Pass |
 | `bun run palette:check` and `bun run catalog:check` | Pass |
-| `bun run test:browser` with Chrome 153 | Pass: existing suites plus the added runtime, form, display, and remaining-component regressions |
+| `bun run test:browser` with Chrome 153 and Firefox 155 | Pass: existing suites plus native playground semantics, icon ownership, runtime, form, display, Tabs geometry, and remaining-component regressions |
 | `bun tests/docs-visual-review.mjs` with Chrome 153 | Pass: 560 preview route/condition checks, measured control/focus contrast, 160 rendered matrix captures |
 | `bun run measure` | Complete; generated report at `dist/size-report.json` |
 | `git diff --check` | Pass |
@@ -58,6 +58,6 @@ The visual sweep covers light and dark desktop, light and dark 320px layouts, in
 
 ## Verification limits
 
-Safari, Firefox, browser-toolbar zoom, and screen-reader announcement testing were not executed in this pass. The enlarged layout check uses CSS `zoom: 2`, explicitly recorded in the coverage output. Native JavaScript-disabled checks cover representative disclosure, popover, navigation, and resize fallback paths rather than every enhanced component. External demonstration photographs require network access; package runtime code has no such dependency.
+Safari, browser-toolbar zoom, actual Figma importer output, and screen-reader announcements were not tested. Firefox BiDi could not emulate forced colors or JavaScript-disabled navigation; Chrome covered those conditions. The enlarged layout check uses CSS `zoom: 2`, explicitly recorded in the coverage output. Native JavaScript-disabled checks cover the Figma matrix and representative disclosure, popover, navigation, and resize fallback paths rather than every enhanced component. External demonstration photographs require network access; package runtime code has no such dependency.
 
-No repository dependency was added. Build-time palette, schema, lint, format, type, browser, and optional Svelte tooling each have active consumers. Temporary browser binaries and task-owned servers are removed after verification; screenshots remain as ignored review evidence. Required third-party asset licenses remain intact.
+No repository dependency was added. Build-time palette, schema, lint, format, type, browser, and optional Svelte tooling each have active consumers. Screenshots remain as ignored review evidence. Required third-party asset licenses remain intact.

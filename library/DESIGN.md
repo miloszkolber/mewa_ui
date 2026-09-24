@@ -23,7 +23,7 @@ The component stylesheet and module define the executable contract.
 
 `docs/preview.html` is the interactive component playground and behavior reference.
 
-`docs/figma.html` is a static component-state matrix for Figma import. Both documentation views have a theme picker and use shared authored specimens.
+`docs/figma.html` is a static property and variant matrix for Figma import. Both documentation views have a theme picker and use shared authored specimens.
 
 Neither page defines a second API; component anchors are documentation links only.
 
@@ -478,7 +478,7 @@ Do not create a new component only for one shell.
 
 `registry.json` owns machine-readable component and token metadata.
 
-`docs/specimens.json` owns authored examples and isolated visual specimens. `docs/catalog.mjs` defines their supported controls and states.
+`docs/specimens.json` owns authored examples and isolated visual specimens. `docs/catalog.mjs` defines their supported properties and matrix dimensions.
 
 `docs/preview.html` is generated as individual component playgrounds; each component uses a `#preview-{slug}` anchor.
 

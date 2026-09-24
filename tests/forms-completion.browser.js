@@ -1,6 +1,7 @@
 import * as time from '../library/components/forms/time-field/time-field.js';
 import * as number from '../library/components/forms/number-field/number-field.js';
 import * as otp from '../library/components/forms/input-otp/input-otp.js';
+import * as upload from '../library/components/forms/file-upload/file-upload.js';
 
 // Serve the repository root, then import and call runFormsCompletion() in a browser.
 // Source imports intentionally verify this boundary without regenerating packages.
@@ -157,6 +158,40 @@ export async function runFormsCompletion() {
       backspace();
       equal(first.value, '', 'enabled preceding cell clears');
       equal(changes, 1, 'successful backspace emits once');
+    }
+  );
+  await test(
+    'file upload synchronizes existing Remove buttons with native disabled state',
+    `<fieldset><div class="file-upload" data-file-upload>
+      <label class="file-upload-dropzone">Files
+        <input class="file-upload-input" type="file" name="files">
+      </label>
+      <ul class="file-upload-list" data-file-upload-list></ul>
+      <p data-file-upload-status></p><p data-file-upload-error hidden></p>
+    </div></fieldset>`,
+    upload,
+    async (fixture) => {
+      const input = fixture.querySelector('[type="file"]');
+      const transfer = new DataTransfer();
+      transfer.items.add(new File(['example'], 'file.txt', { type: 'text/plain' }));
+      input.files = transfer.files;
+      fire(input, 'change');
+      const remove = fixture.querySelector('.file-upload-remove');
+      equal(Boolean(remove), true, 'selected file has a removal control');
+      equal(remove.disabled, false, 'normal selection can be removed');
+      input.disabled = true;
+      await Promise.resolve();
+      equal(remove.disabled, true, 'disabled native input removes keyboard removal target');
+      equal(input.files.length, 1, 'disable keeps the selected file');
+      input.disabled = false;
+      await Promise.resolve();
+      equal(remove.disabled, false, 'enabled input restores removal target');
+      fixture.querySelector('fieldset').disabled = true;
+      await Promise.resolve();
+      equal(remove.disabled, true, 'disabled ancestor fieldset suppresses removal');
+      fixture.querySelector('fieldset').disabled = false;
+      await Promise.resolve();
+      equal(remove.disabled, false, 'fieldset re-enable restores removal target');
     }
   );
   return results;

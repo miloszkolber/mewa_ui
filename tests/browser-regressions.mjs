@@ -404,6 +404,7 @@ try {
   console.log(`PASS ${forms.length} form completion regressions`);
   for (const [file, exported] of [
     ['display-completion.browser.js', 'runDisplayCompletionTests'],
+    ['tabs-geometry.browser.js', 'runTabsGeometryTests'],
     ['remaining-completion.browser.js', 'runRemainingCompletionTests']
   ]) {
     await page.goto(`http://127.0.0.1:${server.port}/blank`);

@@ -13,6 +13,7 @@ import { enhance } from '../library/runtime/enhancer.js';
 const sections = [...document.querySelectorAll('.component-playground')];
 const nativeValues =
   'input:not([type="hidden"]):not([type="file"]):not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),textarea,select,progress';
+const editableTextNodes = new WeakMap();
 let active;
 function modelFor(section) {
   return models.find((m) => m.slug === section.dataset.component);
@@ -84,9 +85,10 @@ function operate(root, operations) {
           attr = 'aria-disabled';
           if (value !== null) value = 'true';
         }
-        if (value === null) el.removeAttribute(attr);
+        if (attr === 'checked' && el.matches('input[type="checkbox"],input[type="radio"]'))
+          el.checked = value !== null;
+        else if (value === null) el.removeAttribute(attr);
         else el.setAttribute(attr, value);
-        if (attr === 'checked') el.checked = value !== null;
         if (attr === 'data-demo-mixed') el.indeterminate = value !== null;
         if (attr === 'data-demo-focus' && value !== null)
           for (
@@ -102,6 +104,17 @@ function operate(root, operations) {
         el.className = `${el.className.replace(/-?(?:line|fill)$/, '')}-${op.variant}`;
         el.setAttribute('data-icon-variant', op.variant);
         el.replaceChildren();
+      }
+      if (op.popover !== undefined && el.isConnected) {
+        const popup = el.querySelector('.combobox-content');
+        const trigger = el.querySelector('.combobox-trigger');
+        if (!popup || !trigger) return;
+        popup.hidden = false;
+        popup.removeAttribute('data-static-overlay');
+        if (popup.matches(':popover-open') !== op.popover) {
+          if (op.popover) trigger.click();
+          else popup.hidePopover();
+        }
       }
     });
 }
@@ -121,11 +134,16 @@ function updateCode(section) {
   const code = section.querySelector('.playground-code');
   if (!demo || !code) return;
   const copy = demo.cloneNode(true);
+  const mixed = [];
   copy.querySelectorAll('input,textarea,select').forEach((el, i) => {
     const original = demo.querySelectorAll('input,textarea,select')[i];
-    if (el.matches('input[type="checkbox"],input[type="radio"]'))
+    if (el.matches('input[type="checkbox"],input[type="radio"]')) {
       el.toggleAttribute('checked', original.checked);
-    else if (el.matches('textarea')) el.textContent = original.value;
+      if (original.indeterminate) {
+        if (!el.id) el.id = `mewa-mixed-${i}`;
+        mixed.push(el.id);
+      }
+    } else if (el.matches('textarea')) el.textContent = original.value;
     else if (el.matches('select'))
       [...el.options].forEach((o, i) =>
         o.toggleAttribute('selected', i === original.selectedIndex)
@@ -137,7 +155,12 @@ function updateCode(section) {
       if (/^data-(?:demo-|init$|.*-init$)/.test(a.name)) el.removeAttribute(a.name);
     })
   );
-  copy.querySelectorAll('[class^="ri-"], [class*=" ri-"]').forEach((el) => el.replaceChildren());
+  // Only loader-owned HTML hooks lose their injected content. Authored SVGs
+  // are complete no-JavaScript markup and must keep their paths.
+  copy.querySelectorAll('[data-docs-icon-loaded]').forEach((el) => {
+    el.replaceChildren();
+    el.removeAttribute('data-docs-icon-loaded');
+  });
   copy.querySelectorAll('.tag-input[data-enhanced]').forEach((root) => {
     const fallback = root.querySelector('.tag-input-fallback'),
       draft = root.querySelector('.tag-input-control');
@@ -151,7 +174,10 @@ function updateCode(section) {
   code.textContent =
     section.dataset.component === 'toast'
       ? `window.toast.show(${JSON.stringify(toastOptions(section), null, 2)});`
-      : copy.innerHTML.trim();
+      : copy.innerHTML.trim() +
+        (mixed.length
+          ? `\n<script>\n${mixed.map((id) => `document.getElementById(${JSON.stringify(id).replaceAll('<', '\\u003c')}).indeterminate = true;`).join('\n')}\n</script>`
+          : '');
 }
 
 function valueFields(content, slug) {
@@ -174,7 +200,7 @@ function configureContent(section, content) {
     const linked =
       field.id && [...content.querySelectorAll('label')].find((el) => el.htmlFor === field.id);
     label.append(
-      `${linked?.textContent?.trim() || field.getAttribute('aria-label') || field.dataset.timePart || `Input ${index + 1}`} · value`
+      `${linked?.textContent?.trim() || field.getAttribute('aria-label') || field.dataset.timePart || `input ${index + 1}`} · value`.toLowerCase()
     );
     const editor = field.matches('select')
       ? field.cloneNode(true)
@@ -203,7 +229,7 @@ function configureContent(section, content) {
   container.hidden = !fields.length && !target;
   if (target) {
     const label = document.createElement('label');
-    label.append('Text');
+    label.append('text');
     const input = document.createElement('input');
     input.className = 'text-field-input';
     input.name = 'content';
@@ -233,7 +259,7 @@ function reconcileSelection(section, content, changed) {
   const scope = model.scopes.find((s) => s.type === 'toggle');
   if (scope) {
     const toggles = [...content.querySelectorAll(scope.target)];
-    const name = (i) => (scope.id === 'root' ? 'prop:checked' : `prop:${scope.id}:${i}:checked`);
+    const name = (i) => (scope.id === 'root' ? 'prop:pressed' : `prop:${scope.id}:${i}:pressed`);
     for (const group of content.querySelectorAll('.toggle-group:not([data-type="multiple"])')) {
       const items = toggles.filter((el) => el.closest('.toggle-group') === group);
       const selected = items.filter((el) => el.getAttribute('aria-pressed') === 'true');
@@ -298,6 +324,11 @@ function syncControls(section) {
         const name = scope.id === 'root' ? `prop:${p.name}` : `prop:${scope.id}:${index}:${p.name}`;
         const control = form.elements[name];
         if (!control || control.closest('[hidden]')) continue;
+        if (scope.type === 'combobox' && p.name === 'open') {
+          control.checked = Boolean(el.querySelector('.combobox-content:popover-open'));
+          el.toggleAttribute('data-open', control.checked);
+          continue;
+        }
         if (p.kind === 'boolean') {
           if (p.name === 'checked' && el.matches?.('input[type="checkbox"],input[type="radio"]')) {
             control.checked = el.checked;
@@ -335,6 +366,162 @@ function decodeLive(value) {
   return value === '__remove' ? null : value;
 }
 
+function replaceContentText(target, value) {
+  let node = editableTextNodes.get(target);
+  if (!node || !target.contains(node)) {
+    const walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT, {
+      acceptNode: (text) =>
+        !text.parentElement.closest('svg') && text.textContent.trim()
+          ? NodeFilter.FILTER_ACCEPT
+          : NodeFilter.FILTER_REJECT
+    });
+    node = walker.nextNode();
+    if (!node) {
+      node = document.createTextNode('');
+      target.append(node);
+    }
+    editableTextNodes.set(target, node);
+  }
+  node.textContent = value;
+}
+
+function actionContent(section, root) {
+  const model = modelFor(section);
+  if (!['button', 'toggle'].includes(model.slug)) return;
+  const form = section.querySelector('.playground-controls');
+  const state = { label: form.elements.content?.value };
+  for (const name of ['showLabel', 'showIconStart', 'showIconEnd', 'loading']) {
+    const control = form.elements[`prop:${name}`];
+    if (control) state[name] = control.checked;
+  }
+  // Do not leave an empty, unnamed action or fit two icons into one square.
+  if (!state.showLabel && !state.showIconStart && !state.showIconEnd) {
+    state.showLabel = true;
+    form.elements['prop:showLabel'].checked = true;
+  }
+  if (!state.showLabel && state.showIconStart && state.showIconEnd) {
+    state.showIconEnd = false;
+    form.elements['prop:showIconEnd'].checked = false;
+  }
+  operate(
+    root,
+    contentOperations(
+      model.scopes.find((scope) => scope.id === 'root'),
+      state
+    )
+  );
+}
+
+function refresh(section) {
+  const demo = section.querySelector('.playground-demo');
+  enhance(demo);
+  window.mewaDocsIcons?.enhance(demo);
+  syncControls(section);
+  updateCode(section);
+}
+
+// Inspector edits normally mutate the mounted component. Rebuilding from a
+// fixture on every keystroke loses FileLists, selection, focus and reset defaults.
+function updateInspector(section, changed) {
+  const model = modelFor(section);
+  const form = section.querySelector('.playground-controls');
+  const demo = section.querySelector('.playground-demo');
+  const name = changed.name;
+  applyVisibility(form);
+  if (name === 'slot' || model.slug === 'toast') {
+    render(section, changed);
+    return;
+  }
+  if (name.startsWith('prop:')) {
+    const parts = name.split(':');
+    const [scopeId, index, key] =
+      parts.length === 4 ? [parts[1], Number(parts[2]), parts[3]] : ['root', 0, parts[1]];
+    const scope = model.scopes.find((item) => item.id === scopeId);
+    const property = scope?.props.find((item) => item.name === key);
+    if (!property) return;
+    // Accordion reconciliation can update sibling switches in the same edit.
+    if (model.slug === 'accordion') {
+      for (const owner of [...model.scopes].reverse())
+        for (const i of instancesFor(owner))
+          for (const prop of owner.props) {
+            const input =
+              form.elements[
+                owner.id === 'root' ? `prop:${prop.name}` : `prop:${owner.id}:${i}:${prop.name}`
+              ];
+            if (input)
+              operate(demo, propertyOperations({ ...owner, index: i }, prop, controlValue(input)));
+          }
+    } else operate(demo, propertyOperations({ ...scope, index }, property, controlValue(changed)));
+    if (['showLabel', 'showIconStart', 'showIconEnd', 'loading'].includes(key))
+      actionContent(section, demo);
+    if (model.slug === 'badge' && key === 'data-state') {
+      const variant = form.elements['prop:data-variant'];
+      variant.closest('.control-cell').hidden = Boolean(changed.value);
+      if (!changed.value)
+        operate(
+          demo,
+          propertyOperations(
+            scope,
+            scope.props.find((p) => p.name === 'data-variant'),
+            controlValue(variant)
+          )
+        );
+    }
+  } else if (name.startsWith('exclusive:')) {
+    const scope = model.scopes.find((item) => item.id === name.slice('exclusive:'.length));
+    if (scope) operate(demo, exclusiveOperations(scope, Number(changed.value)));
+  } else if (name.startsWith('value:')) {
+    const field = valueFields(demo, model.slug)[Number(name.slice(6))];
+    if (field) {
+      if (field.matches('progress') && !changed.value) field.removeAttribute('value');
+      else field.value = changed.value;
+      // Setting a current value is not a change to the authored reset baseline.
+      field.dispatchEvent(new Event('input', { bubbles: true }));
+      field.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  } else if (name.startsWith('text:')) {
+    const field = model.scopes
+      .find((s) => s.id === 'root')
+      ?.textFields?.find((item) => item.name === name.slice(5));
+    const target = field && demo.querySelector(field.selector);
+    if (target) target.textContent = changed.value;
+  } else if (name === 'content') {
+    if (['button', 'toggle'].includes(model.slug)) actionContent(section, demo);
+    else {
+      const target = textTargets[model.slug] && demo.querySelector(textTargets[model.slug]);
+      if (target) replaceContentText(target, changed.value);
+    }
+  }
+  reconcileSelection(section, demo, changed);
+  if (model.slug === 'tabs') reconcileTabs(section, demo);
+  if (model.slug === 'combobox' && form.elements['prop:disabled']?.checked) {
+    const popup = demo.querySelector('.combobox-content:popover-open');
+    popup?.hidePopover();
+  }
+  refresh(section);
+}
+
+function reconcileTabs(section, demo) {
+  const control = section.querySelector('[name="exclusive:part-tab"]');
+  const tabs = [...demo.querySelectorAll('[role="tab"]')];
+  if (!control || !tabs.length) return;
+  const enabled = tabs.filter(
+    (tab) => !tab.matches(':disabled') && tab.getAttribute('aria-disabled') !== 'true'
+  );
+  const selected = tabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
+  const chosen = enabled.includes(selected) ? selected : enabled[0] || selected || tabs[0];
+  tabs.forEach((tab) => {
+    tab.setAttribute('aria-selected', String(tab === chosen));
+    tab.tabIndex = tab === chosen && enabled.includes(tab) ? 0 : -1;
+    const panel = document.getElementById(tab.getAttribute('aria-controls'));
+    if (panel) panel.hidden = tab !== chosen;
+  });
+  control.value = String(tabs.indexOf(chosen));
+  control.disabled = !enabled.length;
+  for (const option of control.options)
+    option.disabled = !enabled.includes(tabs[Number(option.value)]);
+}
+
 function render(section, changedControl) {
   const model = modelFor(section);
   if (model.presentation) return;
@@ -344,7 +531,7 @@ function render(section, changedControl) {
   const content = namespace(model.html, `live-${model.slug}`);
   configureContent(section, content);
   const operations = [];
-  for (const scope of model.scopes) {
+  for (const scope of [...model.scopes].reverse()) {
     if (scope.exclusive) {
       const control = form.elements[`exclusive:${scope.id}`];
       let chosen = Number(control?.value ?? -1);
@@ -386,17 +573,7 @@ function render(section, changedControl) {
   operate(content, operations);
   operate(content, slotOperations(model.slug, form.elements.slot?.value));
   const rootScope = model.scopes.find((s) => s.id === 'root');
-  const contentState = {};
-  for (const property of rootScope?.props || []) {
-    if (!['showLabel', 'showIconStart', 'showIconEnd', 'loading'].includes(property.name)) continue;
-    const control = form.elements[`prop:${property.name}`];
-    if (control) contentState[property.name] = controlValue(control) !== null;
-  }
-  if (Object.keys(contentState).length)
-    operate(
-      content,
-      contentOperations({ type: model.slug, target: rootScope?.target || '.btn' }, contentState)
-    );
+  actionContent(section, content);
   for (const field of rootScope?.textFields || []) {
     const input = form.elements[`text:${field.name}`];
     const target = content.querySelector(field.selector);
@@ -409,24 +586,19 @@ function render(section, changedControl) {
     if (field.matches('progress') && !value) field.removeAttribute('value');
     else {
       field.value = value;
-      if (field.matches('input,textarea')) field.defaultValue = value;
-      if (field.matches('select'))
-        [...field.options].forEach((o) => (o.defaultSelected = o.value === value));
     }
   });
   const text = form.elements.content;
   const editable = textTargets[model.slug] && content.querySelector(textTargets[model.slug]);
-  if (text && editable) {
-    const walker = document.createTreeWalker(editable, NodeFilter.SHOW_TEXT, {
-      acceptNode: (n) =>
-        n.textContent.trim() && !n.parentElement.closest('svg')
-          ? NodeFilter.FILTER_ACCEPT
-          : NodeFilter.FILTER_REJECT
-    });
-    const node = walker.nextNode();
-    if (node) node.textContent = text.value;
-  }
+  if (text && editable && !['button', 'toggle'].includes(model.slug))
+    replaceContentText(editable, text.value);
   demo.replaceChildren(content);
+  // Static model operations expose overlays for export; a mounted playground
+  // uses only native popover visibility, never the static hidden/display flags.
+  demo.querySelectorAll('.combobox-content').forEach((popup) => {
+    popup.hidden = false;
+    popup.removeAttribute('data-static-overlay');
+  });
   resizeDemo(section);
   if (model.slug === 'toast') {
     const trigger = document.createElement('button');
@@ -446,6 +618,10 @@ function render(section, changedControl) {
     demo.replaceChildren(trigger);
   }
   enhance(demo);
+  operate(
+    demo,
+    operations.filter((op) => op.popover !== undefined)
+  );
   window.mewaDocsIcons?.enhance(demo);
   if (model.slug === 'tag-input' && section.tagDraft !== undefined) {
     const draft = demo.querySelector('.tag-input-control');
@@ -479,7 +655,7 @@ function route() {
   if (active) {
     if (active.dataset.component === 'toast') window.toast?.dismiss();
     active.querySelectorAll('dialog[open]').forEach((el) => el.close());
-    active.querySelector('.playground-demo')?.replaceChildren();
+    active.querySelectorAll('[popover]:popover-open').forEach((el) => el.hidePopover());
   }
   active = section;
   sections.forEach((el) => (el.hidden = el !== section));
@@ -487,7 +663,8 @@ function route() {
     if (a.hash === `#preview-${section.dataset.component}`) a.setAttribute('aria-current', 'page');
     else a.removeAttribute('aria-current');
   });
-  render(section);
+  if (section.querySelector('.playground-demo')?.childElementCount) refresh(section);
+  else render(section);
   document.title = `${modelFor(section).name} playground | mewa_ui`;
   requestAnimationFrame(() => window.scrollTo(0, 0));
 }
@@ -517,34 +694,22 @@ for (const section of sections) {
           if (control && i !== chosen) control.checked = false;
         });
       }
-      render(section, e.target);
+      updateInspector(section, e.target);
       return;
     }
-    // A calendar owns live navigation state; mutate it without rebuilding.
-    if (section.dataset.component === 'date-picker' && e.target.name.startsWith('prop:')) {
-      const parts = e.target.name.split(':');
-      const [scopeId, index, name] =
-        parts.length === 4 ? [parts[1], Number(parts[2]), parts[3]] : ['root', 0, parts[1]];
-      const scope = modelFor(section).scopes.find((s) => s.id === scopeId);
-      const property = scope?.props.find((p) => p.name === name);
-      if (scope && property)
-        operate(
-          demo,
-          propertyOperations({ ...scope, index: Number(index) }, property, controlValue(e.target))
-        );
-      updateCode(section);
-      return;
-    }
-    render(section, e.target);
+    updateInspector(section, e.target);
   });
-  form.addEventListener('reset', () =>
-    queueMicrotask(() => {
+  form.addEventListener('reset', (event) =>
+    requestAnimationFrame(() => {
+      if (event.defaultPrevented) return;
       delete section.tagDraft;
       render(section);
     })
   );
   function report() {
-    queueMicrotask(() => {
+    if (section.readbackFrame) return;
+    section.readbackFrame = requestAnimationFrame(() => {
+      section.readbackFrame = 0;
       syncControls(section);
       updateCode(section);
     });
@@ -568,6 +733,15 @@ for (const section of sections) {
     'todo-list:progress'
   ])
     demo.addEventListener(event, report, true);
+  demo.addEventListener(
+    'reset',
+    (event) => {
+      requestAnimationFrame(() => {
+        if (!event.defaultPrevented) report();
+      });
+    },
+    true
+  );
   demo.addEventListener('click', (e) => {
     if (e.target.closest('a[href]')) e.preventDefault();
   });

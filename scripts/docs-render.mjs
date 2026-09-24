@@ -10,6 +10,28 @@ import {
 } from '../docs/component-model.mjs';
 import { compileModel, matrixRows, rewrite } from './docs-model.mjs';
 
+// Resolve local hooks at build time. Figma's inert document must contain the
+// actual vectors before any browser loader or network request can run.
+export async function inlineLocalIcons(html, root) {
+  return rewrite(html, [
+    [
+      '[class^="ri-"], [class*=" ri-"]',
+      (el) => {
+        const name = (el.getAttribute('class') || '')
+          .split(/\s+/)
+          .find((value) => /^ri-[a-z0-9-]+$/.test(value));
+        if (!name) return;
+        const svg = fs
+          .readFileSync(path.join(root, 'library/src/icons', `${name.slice(3)}.svg`), 'utf8')
+          .trim();
+        if (el.tagName === 'svg')
+          el.setInnerContent(svg.replace(/^<svg[^>]*>|<\/svg>$/g, ''), { html: true });
+        else el.setInnerContent(svg, { html: true });
+      }
+    ]
+  ]);
+}
+
 export async function namespace(html, prefix) {
   const ids = new Map();
   await rewrite(html, [
@@ -102,7 +124,7 @@ function scopeControls(model, scope) {
       const legend =
         scope.id === 'root' || instances.length === 1
           ? scope.id === 'root'
-            ? model.name
+            ? model.name.toLowerCase()
             : scope.label
           : `${scope.label} ${instance + 1}`;
       return `${instance === 0 && scope.exclusive ? exclusiveControls(scope) : ''}<fieldset class="property-scope" data-scope="${esc(scope.id)}" data-instance="${instance}"><legend>${esc(legend)}</legend>${properties}</fieldset>`;
@@ -122,7 +144,7 @@ function exclusiveControls(scope) {
         `<option value="${index}"${index === initial ? ' selected' : ''}>${esc(`${scope.label} ${index + 1}`)}</option>`
     )
     .join('');
-  return `<fieldset class="property-scope" data-exclusive="true"><legend>${esc(scope.label)} selection</legend><label>${scope.exclusive.attr === 'aria-current' ? 'Current item' : 'Selected item'}<select class="select" name="exclusive:${esc(scope.id)}">${scope.type === 'tab' ? '' : `<option value="-1"${initial < 0 ? ' selected' : ''}>None</option>`}${options}</select></label></fieldset>`;
+  return `<fieldset class="property-scope" data-exclusive="true"><legend>${esc(scope.label)} selection</legend><label>${scope.exclusive.attr === 'aria-current' ? 'current item' : 'selected item'}<select class="select" name="exclusive:${esc(scope.id)}">${scope.type === 'tab' ? '' : `<option value="-1"${initial < 0 ? ' selected' : ''}>none</option>`}${options}</select></label></fieldset>`;
 }
 
 function controls(model) {
@@ -140,7 +162,7 @@ function controls(model) {
   const textSection = texts
     ? `<fieldset class="property-scope" data-scope="text"><legend>content</legend>${texts}</fieldset>`
     : '';
-  return `${scopes}${slot}${textSection}<fieldset class="property-scope playground-values" hidden><legend>values</legend></fieldset><fieldset class="property-scope"><legend>viewport</legend>${select('Width', 'width', ['auto', '320px', '480px', '768px'], 'auto', ['Fill available space', '320px', '480px', '768px'])}<button class="btn" data-variant="secondary" type="reset">Reset</button></fieldset>`;
+  return `${scopes}${slot}${textSection}<fieldset class="property-scope playground-values" hidden><legend>values</legend></fieldset><fieldset class="property-scope"><legend>viewport</legend>${select('width', 'width', ['auto', '320px', '480px', '768px'], 'auto', ['fill available space', '320px', '480px', '768px'])}<button class="btn" data-variant="secondary" type="reset">reset</button></fieldset>`;
 }
 
 const themeIcon =
@@ -209,7 +231,7 @@ export async function renderDocumentation(root, registry) {
           '[popover]',
           (el) => {
             el.removeAttribute('popover');
-            el.setAttribute('data-static-overlay', '');
+            if (el.getAttribute('hidden') === null) el.setAttribute('data-static-overlay', '');
           }
         ],
         [
@@ -228,7 +250,7 @@ export async function renderDocumentation(root, registry) {
         ]
       ]);
       const cell = await namespace(
-        base,
+        await inlineLocalIcons(base, root),
         `matrix-${model.slug}-${i}-${row.label.replaceAll(/[^a-z0-9]+/gi, '-').toLowerCase()}`
       );
       rows.push(
@@ -242,7 +264,10 @@ export async function renderDocumentation(root, registry) {
   matrix.push('</section>');
   const outputs = new Map([
     ['docs/preview.html', shell(models, false, preview.join('\n'))],
-    ['docs/figma.html', shell(models, true, matrix.join('\n'))]
+    [
+      'docs/figma.html',
+      shell(models, true, matrix.join('\n')).replace('<script src="icons.js" defer></script>', '')
+    ]
   ]);
   outputs.models = models;
   return outputs;

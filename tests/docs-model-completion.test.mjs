@@ -43,6 +43,255 @@ assert.equal(optionLabel('progress', 'value', null, [null, '50']), 'indeterminat
 assert.equal(optionLabel('toggle-group', 'data-spacing', null, [null, '']), 'off');
 assert.equal(optionLabel('toggle-group', 'data-spacing', '', [null, '']), 'on');
 assert.equal(optionLabel('image', 'data-ratio', null, [null, '1/1']), 'default');
+assert.equal(optionLabel('toggle', 'pressed', 'false', ['false', 'true'], 'boolean'), 'off');
+assert.equal(optionLabel('toggle', 'pressed', 'true', ['false', 'true'], 'boolean'), 'on');
+
+// Independent semantic inventory: these combinations were missing even while
+// every declared dimension/count test passed.
+for (const [slug, selector] of [
+  ['checkbox', '.checkbox[checked][aria-invalid="true"]'],
+  ['button', '.btn[disabled]'],
+  ['button', '.btn[aria-busy="true"] .spinner'],
+  ['collapsible', 'details[open]'],
+  ['radio-group', 'input[type="radio"][checked]'],
+  ['radio-group', 'input[type="radio"][disabled]'],
+  ['icon', '.ri-home-fill']
+]) {
+  let found = false;
+  for (const row of await matrixRows(await model(slug))) found ||= await has(row.html, selector);
+  assert(found, `${slug} requires ${selector}`);
+}
+assert(
+  (await matrixRows(await model('toggle'))).some(
+    (row) => row.html.includes('aria-pressed="true"') && row.html.includes('ri-bookmark-fill')
+  ),
+  'Pressed action has an actual fill glyph, not only a text-only pressed row'
+);
+for (const slug of ['toggle', 'toggle-group']) {
+  const m = await model(slug);
+  const scope = m.scopes.find((s) => s.type === 'toggle');
+  assert.equal(prop(scope, 'checked'), undefined);
+  const pressed = prop(scope, 'pressed');
+  assert.deepEqual(booleanValues(pressed), ['false', 'true']);
+  for (const value of ['false', 'true']) {
+    const html = await operate(m.html, propertyOperations(scope, pressed, value));
+    assert(await has(html, `.toggle[aria-pressed="${value}"]`));
+    assert(!(await has(html, 'button[checked]')));
+  }
+}
+for (const [slug, name] of [
+  ['toggle-group', 'data-spacing'],
+  ['code-block', 'data-streaming'],
+  ['file-input', 'multiple'],
+  ['header', 'data-sticky']
+]) {
+  const property = prop((await model(slug)).scopes[0], name);
+  assert.equal(property.kind, 'boolean');
+  assert.deepEqual(booleanValues(property), [null, '']);
+}
+
+for (const [slug, name, selector, marker] of [
+  ['label', 'disabled', 'input[disabled]', 'data-disabled'],
+  ['field', 'required', 'input[required]', 'data-required'],
+  ['field', 'disabled', 'input[disabled]', 'data-disabled'],
+  ['field', 'invalid', 'input[aria-invalid="true"]', 'data-invalid'],
+  ['button-group', 'disabled', 'button[disabled]', 'data-disabled'],
+  ['color-picker', 'disabled', 'input[type="color"][disabled]', 'data-disabled'],
+  ['color-picker', 'invalid', 'input[type="color"][aria-invalid="true"]', 'data-invalid'],
+  ['file-upload', 'disabled', 'input[type="file"][disabled]', 'data-disabled'],
+  ['combobox', 'disabled', '.combobox-trigger[disabled]', 'data-disabled'],
+  ['tag-input', 'readonly', '.tag-input-fallback[readonly]', 'data-readonly'],
+  ['time-field', 'readonly', 'input[data-time-part="hour"][readonly]', 'data-readonly'],
+  ['date-range-picker', 'readonly', '.date-range-input[readonly]', 'data-readonly']
+]) {
+  const m = await model(slug);
+  const scope = m.scopes[0],
+    property = prop(scope, name);
+  assert.equal(property.attr, marker, `${slug}: wrapper readback marker`);
+  const html = await operate(m.html, propertyOperations(scope, property, property.on));
+  assert(await has(html, selector), `${slug}: ${name} reaches native control`);
+  assert(
+    !(await has(html, 'div[required],div[readonly],div[disabled],fieldset[readonly]')),
+    'No fake wrapper constraints'
+  );
+  if (slug === 'button-group') assert.equal((await attrs(html, 'button[disabled]')).length, 3);
+  if (slug === 'color-picker')
+    assert(
+      await has(
+        html,
+        `.color-picker-hex[${name === 'invalid' ? 'aria-invalid="true"' : 'disabled'}]`
+      )
+    );
+  if (slug === 'combobox') assert(await has(html, '[data-combobox-input][disabled]'));
+  if (slug === 'time-field') {
+    assert(await has(html, '[data-time-part="period"][disabled]'));
+    assert(!(await has(html, 'select[readonly]')));
+  }
+  const cleared = await operate(html, propertyOperations(scope, property, null));
+  assert(!(await has(cleared, selector)), `${slug}: off clears the native constraint`);
+}
+
+const formFieldModel = await compileModel(
+  fixture(
+    'form',
+    '<form class="form"><div class="form-field" data-required><input class="text-field-input"></div><div class="form-field"><input class="text-field-input"></div></form>'
+  )
+);
+const formFieldScope = formFieldModel.scopes.find((s) => s.type === 'form-field');
+assert(await has(formFieldModel.html, '.form-field[data-required] input[required]'));
+assert.equal((await attrs(formFieldModel.html, 'input[required]')).length, 1);
+assert.equal(
+  prop(
+    formFieldModel.scopes.find((s) => s.type === 'text-field'),
+    'required'
+  ),
+  undefined
+);
+const requiredSecondField = await operate(
+  formFieldModel.html,
+  propertyOperations({ ...formFieldScope, index: 1 }, prop(formFieldScope, 'required'), '')
+);
+assert.equal((await attrs(requiredSecondField, 'input[required]')).length, 2);
+assert(!(await has(requiredSecondField, 'div[required]')));
+const invalidSecondField = await operate(
+  formFieldModel.html,
+  propertyOperations({ ...formFieldScope, index: 1 }, { name: 'invalid', attr: 'data-invalid' }, '')
+);
+assert.equal((await attrs(invalidSecondField, 'input[aria-invalid="true"]')).length, 1);
+assert(
+  await has(invalidSecondField, '.form-field:nth-child(2)[data-invalid] input[aria-invalid="true"]')
+);
+const rootWins = await compileModel(
+  fixture(
+    'field',
+    '<div class="field" data-disabled data-invalid data-required><input class="text-field-input" aria-invalid="false"></div>'
+  )
+);
+assert(
+  await has(rootWins.html, 'input[disabled][required][aria-invalid="true"]'),
+  'Root constraints win initial compilation over authored child off state'
+);
+
+const textOwners = await compileModel(
+  fixture(
+    'text-field',
+    '<div class="text-field"><input class="text-field-input"></div><div class="text-field"><input class="text-field-input"></div>'
+  )
+);
+const textRoot = textOwners.scopes[0];
+const secondInvalid = await operate(
+  textOwners.html,
+  propertyOperations({ ...textRoot, index: 1 }, prop(textRoot, 'invalid'), 'true')
+);
+assert.equal(
+  (await attrs(secondInvalid, '.text-field[data-invalid]')).length,
+  1,
+  'Native input companion resolves its ancestor, not a descendant'
+);
+assert(
+  await has(secondInvalid, '.text-field:nth-of-type(2)[data-invalid] input[aria-invalid="true"]')
+);
+
+const enhancedTags = await compileModel(
+  fixture(
+    'tag-input',
+    '<div class="tag-input"><input class="tag-input-fallback"><input class="tag-input-control"><button class="tag-input-remove" type="button">Remove</button></div>'
+  )
+);
+const tagRoot = enhancedTags.scopes[0];
+let constrainedTags = await operate(
+  enhancedTags.html,
+  propertyOperations(tagRoot, prop(tagRoot, 'disabled'), '')
+);
+constrainedTags = await operate(
+  constrainedTags,
+  propertyOperations(tagRoot, prop(tagRoot, 'readonly'), '')
+);
+assert(await has(constrainedTags, '.tag-input-control[readonly][disabled]'));
+constrainedTags = await operate(
+  constrainedTags,
+  propertyOperations(tagRoot, prop(tagRoot, 'readonly'), null)
+);
+assert(
+  await has(constrainedTags, '.tag-input-remove[disabled]'),
+  'Removing readonly preserves disabled'
+);
+constrainedTags = await operate(
+  constrainedTags,
+  propertyOperations(tagRoot, prop(tagRoot, 'disabled'), null)
+);
+assert(!(await has(constrainedTags, '[disabled],[readonly]')), 'Both off restores editing');
+
+const actionModel = await model('toggle');
+const contentScope = actionModel.scopes[0];
+const fallbackAction = await operate(
+  actionModel.html,
+  contentOperations(contentScope, { showLabel: false, showIconStart: false, showIconEnd: false })
+);
+assert.match(fallbackAction, />Bookmark<\/button>/);
+assert(!(await has(fallbackAction, '[data-icon-only]')));
+const iconAction = await operate(
+  actionModel.html,
+  contentOperations(contentScope, {
+    label: 'Save <item>',
+    showLabel: false,
+    showIconStart: true,
+    showIconEnd: true
+  })
+);
+assert(await has(iconAction, '.toggle[aria-label="Save <item>"][data-icon-only]'));
+assert.equal(
+  (await attrs(iconAction, '[data-icon-pair]')).length,
+  1,
+  'One icon slot in square icon-only control'
+);
+assert(await has(iconAction, '[data-icon-variant="line"] path'));
+assert(await has(iconAction, '[data-icon-variant="fill"] path'));
+const emptyLabelAction = await operate(
+  actionModel.html,
+  contentOperations(contentScope, { label: ' ', showLabel: false, showIconStart: true })
+);
+assert(await has(emptyLabelAction, '.toggle[aria-label="Bookmark"]'));
+const loadingIcon = await operate(
+  actionModel.html,
+  contentOperations(contentScope, {
+    showLabel: false,
+    showIconStart: true,
+    showIconEnd: true,
+    loading: true
+  })
+);
+assert.equal((await attrs(loadingIcon, 'svg')).length, 1, 'Loading occupies the icon-only slot');
+
+const comboModel = await model('combobox');
+assert.equal(comboModel.scopes.filter((s) => prop(s, 'open')).length, 1, 'One open owner');
+const comboRoot = comboModel.scopes[0],
+  open = prop(comboRoot, 'open');
+const comboOpenOps = propertyOperations(comboRoot, open, open.on);
+assert(
+  comboOpenOps.some((op) => op.selector === '.combobox' && op.index === 0 && op.popover === true)
+);
+const comboOpen = await operate(comboModel.staticHtml, comboOpenOps);
+assert(await has(comboOpen, '.combobox-content[data-static-overlay]:not([hidden])'));
+assert.equal(
+  (
+    await attrs(
+      comboOpen,
+      '.combobox-trigger[aria-expanded="true"],.combobox-search-input[aria-expanded="true"]'
+    )
+  ).length,
+  2
+);
+const comboClosed = await operate(comboOpen, propertyOperations(comboRoot, open, null));
+assert(await has(comboClosed, '.combobox-content[hidden]:not([data-static-overlay])'));
+
+for (const slug of ['carousel', 'date-picker', 'collapsible']) {
+  const m = await model(slug);
+  for (const scope of m.scopes.filter((s) =>
+    ['carousel-control', 'day', 'summary'].includes(s.type)
+  ))
+    assert.equal(scope.props.length, 0, `${slug}: controller-owned or unsupported control`);
+}
 
 // No profile declares the removed visual-state axis.
 for (const [slug, profile] of Object.entries(profiles))
@@ -51,20 +300,20 @@ for (const [slug, profile] of Object.entries(profiles))
 // Independent row inventory. A matrix-driven profile must cross every declared
 // dimension; composed components list their documented anatomy explicitly.
 const expectedRows = {
-  button: 20,
+  button: 22, // Five variants × four contents, plus disabled and loading.
   layout: 21,
   'toggle-group': 16,
   image: 56,
-  'tree-view': 12,
-  toast: 11,
+  'tree-view': 13, // Native availability representatives, no fake summary disabled.
+  toast: 12, // Dismiss atom now includes disabled.
   message: 10,
   'tool-call': 9,
   badge: 8,
   avatar: 6,
-  tabs: 6,
-  'agent-activity': 6,
+  tabs: 7, // One compact disabled trigger beside selection.
+  'agent-activity': 5, // No unsupported summary control/row.
   'todo-list': 6,
-  icon: 5
+  icon: 10 // Five sizes × real line/fill glyphs.
 };
 for (const [slug, expected] of Object.entries(expectedRows))
   assert.equal((await matrixRows(await model(slug))).length, expected, `${slug} matrix rows`);
@@ -79,7 +328,7 @@ function declaredCount(slug) {
     return count;
   }, 1);
 }
-assert.equal(declaredCount('button'), expectedRows.button);
+assert.equal(declaredCount('button'), 20);
 assert.equal(declaredCount('toggle-group'), expectedRows['toggle-group']);
 assert.equal(declaredCount('icon'), expectedRows.icon);
 const layoutGap = profiles.layout.props['data-gap'].length;
@@ -91,6 +340,12 @@ assert.equal(
   expectedRows.layout,
   'Gap only separates children in the declared primitives'
 );
+for (const row of await matrixRows(await model('layout')))
+  assert.equal(
+    row.label.split('primitive:').length - 1,
+    1,
+    'A structural slot is crossed only once'
+  );
 const imageEnums = Object.entries(profiles.image.props).filter(
   ([attr]) => !nonVisualProps.has(attr)
 );
@@ -127,6 +382,101 @@ assert(
 );
 
 const groups = await matrixRows(await model('toggle-group'));
+// An off owner is not an instruction to enable locally unavailable children.
+// Exercise raw compilation, repeated live-compatible ops, and independent
+// static rows, including an owner authored on before normalization.
+for (const inherited of [false, true]) {
+  const mixedGroup = await compileModel(
+    fixture(
+      'toggle-group',
+      `<div class="toggle-group"${inherited ? ' data-disabled' : ''}><button class="toggle local-disabled" type="button" disabled aria-pressed="false">Unavailable</button><button class="toggle local-enabled" type="button" aria-pressed="false">Available</button></div>`
+    )
+  );
+  const scope = mixedGroup.scopes[0];
+  const disabled = prop(scope, 'disabled');
+  for (const html of [mixedGroup.html, mixedGroup.staticHtml])
+    assert.equal(
+      (await attrs(html, 'button[disabled]')).length,
+      inherited ? 2 : 1,
+      'Initial root off preserves the authored local disabled child'
+    );
+  let html = mixedGroup.html;
+  for (let cycle = 0; cycle < 2; cycle++) {
+    html = await operate(html, propertyOperations(scope, disabled, ''));
+    assert.equal(
+      (await attrs(html, 'button[disabled]')).length,
+      2,
+      'Root on disables both children'
+    );
+    html = await operate(html, propertyOperations(scope, disabled, null));
+    assert(await has(html, '.local-disabled[disabled]'), 'Root off restores local availability');
+    assert(
+      !(await has(html, '.local-enabled[disabled]')),
+      'Inherited disabled does not become a local default'
+    );
+  }
+  const rows = await matrixRows(mixedGroup);
+  const offRows = rows.filter((row) => row.label.includes('disabled: off'));
+  assert.equal(offRows.length, 8);
+  for (const row of offRows) {
+    assert(await has(row.html, '.local-disabled[disabled]'));
+    assert(!(await has(row.html, '.local-enabled[disabled]')));
+  }
+}
+const locallyDisabledTags = await compileModel(
+  fixture('tag-input', '<div class="tag-input"><input class="tag-input-fallback" disabled></div>')
+);
+const localTagRoot = locallyDisabledTags.scopes[0];
+const enhancedLocalTags = locallyDisabledTags.html.replace(
+  '</div>',
+  '<input class="tag-input-control"><button class="tag-input-remove" type="button">Remove</button></div>'
+);
+const restoredLocalTags = await operate(
+  enhancedLocalTags,
+  propertyOperations(localTagRoot, prop(localTagRoot, 'disabled'), null)
+);
+assert.equal(
+  (await attrs(restoredLocalTags, 'input[disabled],button[disabled]')).length,
+  3,
+  'Generated tag controls inherit the restored authored fallback availability'
+);
+const localColor = await compileModel(
+  fixture(
+    'color-picker',
+    '<div class="color-picker"><input type="color" disabled><input class="color-picker-hex" type="text" hidden></div>'
+  )
+);
+assert.equal(
+  (await attrs(localColor.html, 'input[disabled]')).length,
+  2,
+  'The editable color view mirrors authored native unavailability'
+);
+const localTime = await compileModel(
+  fixture(
+    'time-field',
+    '<fieldset class="time-field"><input data-time-part="hour"><input class="local-minute" data-time-part="minute" disabled><select data-time-part="period"><option>AM</option></select><input type="hidden" data-time-part="value" disabled></fieldset>'
+  )
+);
+const timeRoot = localTime.scopes[0];
+const enabledCanonicalTime = await operate(localTime.html, [
+  { selector: '[data-time-part="value"]', attr: 'disabled', value: null }
+]);
+const inheritedTime = await operate(
+  enabledCanonicalTime,
+  propertyOperations(timeRoot, prop(timeRoot, 'disabled'), '')
+);
+const restoredTime = await operate(
+  inheritedTime,
+  propertyOperations(timeRoot, prop(timeRoot, 'disabled'), null)
+);
+assert(await has(restoredTime, '.local-minute[disabled]'));
+assert(
+  !(await has(
+    restoredTime,
+    '[data-time-part="hour"][disabled],[data-time-part="value"][disabled]'
+  )),
+  'Root off preserves local disabled but does not restore a controller-owned hidden fallback flag'
+);
 const disabledGroup = await compileModel(
   fixture(
     'toggle-group',
@@ -207,7 +557,7 @@ const form = await compileModel(
 const checks = form.scopes.find((s) => s.type === 'checkbox');
 assert.deepEqual(prop(checks, 'checked').initialValues, ['', null]);
 assert.deepEqual(prop(checks, 'disabled').initialValues, ['', null]);
-assert.deepEqual(prop(checks, 'invalid').initialValues, [null, null]);
+assert.equal(prop(checks, 'invalid'), undefined, 'Form owns invalid for every descendant');
 assert(await has(form.html, '.checkbox[checked][disabled]'));
 assert.equal((await attrs(form.html, '.checkbox[checked]')).length, 1);
 const inputs = form.scopes.find((s) => s.type === 'text-field');
@@ -538,6 +888,16 @@ const field = await model('field');
 assert.deepEqual(prop(field.scopes[0], 'data-orientation').values, [null, 'horizontal']);
 const formModel = await model('form');
 assert(!formModel.scopes[0].props.some((p) => p.attr === 'data-orientation'));
+assert.deepEqual(
+  prop(
+    formModel.scopes.find((s) => s.type === 'form-field'),
+    'required'
+  ).initialValues,
+  ['', '', null],
+  'Form fields preserve each native required default, not the first field value'
+);
+for (const html of [formModel.html, formModel.staticHtml])
+  assert.equal((await attrs(html, '.form-field[data-required] input[required]')).length, 2);
 assert(
   formModel.scopes.some(
     (s) => s.type === 'form-field' && s.props.some((p) => p.attr === 'data-orientation')
@@ -587,9 +947,8 @@ assert(
   }
 }
 
-// These contextual controls do not share the standalone Text Field/Button
-// contract. Each exposes its own atom, and a disabled boolean must target that
-// atom rather than the composed root.
+// Composed roots own native constraints once; independent Suggestion actions
+// still expose availability on their own actual buttons.
 for (const [slug, expectedParts] of [
   ['input-otp', [['otp', '.input-otp input:not([type="hidden"])']]],
   ['suggestion', [['suggestion-item', '.suggestion-button']]],
@@ -603,19 +962,19 @@ for (const [slug, expectedParts] of [
   ['date-range-picker', [['range-date', '.date-range-input']]]
 ]) {
   const m = await model(slug);
-  const rows = await matrixRows(m);
   for (const [type, target] of expectedParts) {
     const scope = m.scopes.find((s) => s.type === type);
     assert(scope, `${slug} must expose ${type}`);
     assert.equal((await attrs(m.html, scope.selector)).length, scope.count);
     assert(!scope.selector.includes(`.${slug} .${slug} `), `${slug}: no duplicated root qualifier`);
-    const parts = rows.filter((row) => row.scope?.type === type);
-    assert(parts.length, `${slug}: ${type} must not be suppressed as a standalone atom`);
-    const disabledProp = prop(scope, 'disabled');
-    assert(disabledProp, `${slug}: ${type} disabled property`);
+    const owner = slug === 'suggestion' ? scope : m.scopes[0];
+    if (owner !== scope)
+      assert.equal(prop(scope, 'disabled'), undefined, 'No redundant child constraint');
+    const disabledProp = prop(owner, 'disabled');
+    assert(disabledProp, `${slug}: disabled property`);
     const html = await operate(
-      parts[0].html,
-      propertyOperations({ ...parts[0].scope, index: 0 }, disabledProp, '')
+      m.html,
+      propertyOperations({ ...owner, index: 0 }, disabledProp, '')
     );
     assert(
       await has(html, `${target}[disabled]`),

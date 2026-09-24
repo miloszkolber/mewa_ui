@@ -82,6 +82,8 @@ Validate file type, size, and contents again in application and server code.
 
 A disabled input or fieldset blocks drops and removal.
 
+The module disables existing Remove buttons when the input or ancestor fieldset becomes disabled after selection.
+
 Native form reset clears the selected files and enhancement errors.
 
 Picker selection replaces the current native selection.

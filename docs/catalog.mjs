@@ -1,13 +1,22 @@
 // Documentation metadata. Selectors and options refer to the public component contracts.
 
-// Boolean properties replace the former "visual state" selector. Each one is a
-// real, persistent attribute the component already supports.
+// Boolean inspector metadata replaces the former "visual state" selector.
+// Entries cover native/ARIA state, documentation-only readback and mixed-state
+// markers, and virtual action-content controls. Operations supply the native
+// semantics; these metadata entries are not all public component attributes.
 export const booleanProps = {
   disabled: { attr: 'disabled', on: '', default: false },
   invalid: { attr: 'aria-invalid', on: 'true', default: false },
   readonly: { attr: 'readonly', on: '', default: false },
   required: { attr: 'required', on: '', default: false },
   checked: { attr: 'checked', on: '', default: false },
+  pressed: {
+    attr: 'aria-pressed',
+    off: 'false',
+    on: 'true',
+    values: ['false', 'true'],
+    default: false
+  },
   indeterminate: { attr: 'data-demo-mixed', on: '', default: false },
   loading: { attr: 'aria-busy', on: 'true', default: false },
   open: { attr: 'open', on: '', default: false },
@@ -51,7 +60,7 @@ export const profiles = {
       'data-size': ['xs', '', 'md', 'lg', 'xl'],
       'data-icon-variant': ['line', 'fill']
     },
-    matrix: [{ prop: 'data-size' }]
+    matrix: [{ prop: 'data-size' }, { prop: 'data-icon-variant' }]
   },
   button: {
     target: '.btn',
@@ -63,11 +72,10 @@ export const profiles = {
   toggle: {
     target: '.toggle',
     props: { 'data-variant': ['', 'outline'] },
-    booleans: ['checked', 'disabled', 'showLabel', 'showIconStart', 'showIconEnd'],
+    booleans: ['pressed', 'disabled', 'showLabel', 'showIconStart', 'showIconEnd'],
     // `aria-pressed` is always present on a toggle, so its boolean has no absent form.
-    booleanOverrides: { checked: { attr: 'aria-pressed', on: 'true', values: ['false', 'true'] } },
     content: actionContent,
-    matrix: [{ prop: 'data-variant' }, { bool: 'checked' }]
+    matrix: [{ prop: 'data-variant' }, { bool: 'pressed' }]
   },
   'toggle-group': {
     target: '.toggle-group',
@@ -104,6 +112,7 @@ export const profiles = {
   label: {
     target: '.label',
     booleans: ['disabled', 'optional'],
+    booleanOverrides: { disabled: { attr: 'data-disabled', on: '' } },
     matrix: [{ bool: 'optional' }]
   },
   field: {
@@ -186,8 +195,7 @@ export const profiles = {
   'date-picker': {
     target: '.date-picker',
     interactive: true,
-    wide: true,
-    booleans: ['disabled', 'invalid']
+    wide: true
   },
   'date-range-picker': {
     target: '.date-range-picker',
@@ -383,13 +391,19 @@ export const escapeHtml = (value) =>
 // from `props`; boolean properties come from `booleans`. The order is stable so
 // the control panel and the matrix agree.
 export function propertiesFor(profile) {
-  const props = Object.entries(profile.props || {}).map(([attr, values]) => ({
-    name: attr === 'step' ? 'step' : attr,
-    attr,
-    kind: 'enum',
-    values,
-    default: values[0]
-  }));
+  const props = Object.entries(profile.props || {})
+    .filter(([, values]) => values.length > 1)
+    .map(([attr, values]) => ({
+      name: attr === 'step' ? 'step' : attr,
+      attr,
+      kind:
+        values.length === 2 && values.includes(null) && values.includes('') ? 'boolean' : 'enum',
+      ...(values.length === 2 && values.includes(null) && values.includes('')
+        ? { on: '', off: null, presence: true }
+        : {}),
+      values,
+      default: values[0]
+    }));
   const booleans = (profile.booleans || []).map((name) => {
     const base = booleanProps[name];
     if (!base) throw new Error(`Unknown boolean property: ${name}`);

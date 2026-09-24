@@ -160,6 +160,22 @@ export function enhance(root) {
           : `${files.length} ${files.length === 1 ? 'file' : 'files'} selected.`;
     };
 
+    // Native disabled state may change after files have been selected. Keep
+    // generated removal controls out of the keyboard path while it is active.
+    const syncDisabled = () => {
+      const disabled = input.matches(':disabled');
+      list.querySelectorAll('.file-upload-remove').forEach((button) => {
+        button.disabled = disabled;
+      });
+    };
+    const disabledObserver = new MutationObserver(syncDisabled);
+    disabledObserver.observe(input, { attributes: true, attributeFilter: ['disabled'] });
+    for (let ancestor = input.parentElement; ancestor; ancestor = ancestor.parentElement)
+      if (ancestor.matches('fieldset'))
+        disabledObserver.observe(ancestor, { attributes: true, attributeFilter: ['disabled'] });
+    lifecycle.add(upload, () => disabledObserver.disconnect());
+    lifecycle.onUpdate(upload, syncDisabled);
+
     const assignNativeFiles = (next) => {
       if (typeof DataTransfer !== 'function') return false;
       try {
