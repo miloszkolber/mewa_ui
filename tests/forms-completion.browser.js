@@ -2,6 +2,7 @@ import * as time from '../library/components/forms/time-field/time-field.js';
 import * as number from '../library/components/forms/number-field/number-field.js';
 import * as otp from '../library/components/forms/input-otp/input-otp.js';
 import * as upload from '../library/components/forms/file-upload/file-upload.js';
+import * as datePicker from '../library/components/forms/date-picker/date-picker.js';
 
 // Serve the repository root, then import and call runFormsCompletion() in a browser.
 // Source imports intentionally verify this boundary without regenerating packages.
@@ -11,6 +12,12 @@ export async function runFormsCompletion() {
     if (actual !== expected) throw new Error(`${message}: expected ${expected}, got ${actual}`);
   };
   const fire = (element, type) => element.dispatchEvent(new Event(type, { bubbles: true }));
+  // Move the roving tab stop the way the module does, so the test does not
+  // depend on a particular rendered month.
+  const setTabStopByKeyboard = (picker, active) => {
+    for (const cell of picker.querySelectorAll('.date-picker-day'))
+      cell.tabIndex = cell === active ? 0 : -1;
+  };
   const test = async (name, html, module, check) => {
     const fixture = document.createElement('div');
     fixture.innerHTML = html;
@@ -192,6 +199,151 @@ export async function runFormsCompletion() {
       fixture.querySelector('fieldset').disabled = false;
       await Promise.resolve();
       equal(remove.disabled, false, 'fieldset re-enable restores removal target');
+    }
+  );
+  await test(
+    'date picker restores the authored month grid and heading on teardown',
+    `<div class="date-picker">
+      <div class="date-picker-heading">Authored heading</div>
+      <table class="date-picker-grid"><tbody><tr><td>authored cell</td></tr></tbody></table>
+    </div>`,
+    datePicker,
+    async (fixture) => {
+      const picker = fixture.querySelector('.date-picker');
+      const heading = picker.querySelector('.date-picker-heading');
+      const grid = picker.querySelector('.date-picker-grid');
+      equal(grid.querySelectorAll('[role="gridcell"]').length > 0, true, 'grid renders day cells');
+      equal(grid.hasAttribute('role'), true, 'grid receives the grid role');
+      equal(heading.hasAttribute('aria-live'), true, 'heading becomes a polite live region');
+      equal(
+        heading.textContent.includes('Authored heading'),
+        false,
+        'the rendered month replaces the authored heading while enhanced'
+      );
+      equal(grid.querySelectorAll('tbody').length, 1, 'module supplies the month body');
+
+      datePicker.destroy(fixture);
+
+      equal(grid.hasAttribute('role'), false, 'destroy removes the generated grid role');
+      equal(grid.hasAttribute('aria-label'), false, 'destroy removes the generated grid label');
+      equal(heading.hasAttribute('aria-live'), false, 'destroy removes the generated live region');
+      equal(heading.textContent, 'Authored heading', 'destroy restores the authored heading');
+      equal(
+        grid.textContent.includes('authored cell'),
+        true,
+        'destroy restores the authored grid children'
+      );
+
+      // Re-enhancing the restored node has to work from the authored baseline.
+      datePicker.enhance(fixture);
+      equal(
+        grid.querySelectorAll('[role="gridcell"]').length > 0,
+        true,
+        're-render after teardown'
+      );
+    }
+  );
+  await test(
+    'a date picker without a month grid is not marked ready',
+    `<div class="date-picker"><div class="date-picker-heading">No grid</div></div>`,
+    datePicker,
+    async (fixture) => {
+      equal(
+        fixture.querySelector('.date-picker').hasAttribute('data-mewa-date-picker-init'),
+        false,
+        'an unrenderable date picker does not report ready'
+      );
+    }
+  );
+  await test(
+    'the grid cell is the focus target and carries its own selection state',
+    `<div class="date-picker">
+      <button class="btn date-picker-nav" type="button" data-action="next-month" aria-label="Next month">Next</button>
+      <div class="date-picker-heading"></div>
+      <table class="date-picker-grid"></table>
+    </div>`,
+    datePicker,
+    async (fixture) => {
+      const picker = fixture.querySelector('.date-picker');
+      const cells = () => [...picker.querySelectorAll('.date-picker-day')];
+      equal(
+        picker.querySelectorAll('.date-picker-day button').length,
+        0,
+        'a grid cell holds no nested control'
+      );
+      equal(cells().filter((cell) => cell.tabIndex === 0).length, 1, 'one grid tab stop');
+      equal(
+        cells().every((cell) => cell.getAttribute('role') === 'gridcell'),
+        true,
+        'every day is a gridcell'
+      );
+      equal(
+        cells().every((cell) => cell.hasAttribute('aria-label')),
+        true,
+        'every day carries a localized full-date name'
+      );
+
+      const day = cells().find((cell) => !cell.dataset.outside && cell.dataset.day === '15');
+      day.click();
+      await new Promise(requestAnimationFrame);
+
+      const selected = picker.querySelector('.date-picker-day[aria-selected="true"]');
+      equal(Boolean(selected), true, 'selection marks exactly one cell');
+      equal(
+        document.activeElement,
+        selected,
+        'focus lands on the selected cell, so the state is announced on the focused node'
+      );
+      equal(selected.dataset.date, day.dataset.date, 'the selected cell is the clicked day');
+
+      // A focusable grid cell is not natively activatable, so the module
+      // handles both activation keys itself.
+      const next = cells().find(
+        (cell) => !cell.dataset.outside && cell.dataset.date > selected.dataset.date
+      );
+      setTabStopByKeyboard(picker, next);
+      next.focus();
+      next.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true })
+      );
+      await new Promise(requestAnimationFrame);
+      equal(
+        picker.querySelector(`.date-picker-day[aria-selected="true"]`).dataset.date,
+        next.dataset.date,
+        'Enter selects the focused cell'
+      );
+      equal(
+        picker.querySelectorAll('.date-picker-day[aria-selected="true"]').length,
+        1,
+        'still one selection'
+      );
+
+      const after = cells().find(
+        (cell) => !cell.dataset.outside && cell.dataset.date > next.dataset.date
+      );
+      setTabStopByKeyboard(picker, after);
+      after.focus();
+      after.dispatchEvent(
+        new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true })
+      );
+      await new Promise(requestAnimationFrame);
+      equal(
+        picker.querySelector(`.date-picker-day[aria-selected="true"]`).dataset.date,
+        after.dataset.date,
+        'Space selects the focused cell'
+      );
+      equal(
+        cells().filter((cell) => cell.tabIndex === 0).length,
+        1,
+        'the roving tab stop follows the selected cell'
+      );
+
+      datePicker.destroy(fixture);
+      equal(
+        fixture.querySelectorAll('.date-picker-day').length,
+        0,
+        'teardown removes the generated grid'
+      );
     }
   );
   return results;

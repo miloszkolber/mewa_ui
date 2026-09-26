@@ -109,6 +109,73 @@ export async function runDisplayCompletionTests(assetBase = '/mewa-ui') {
     );
 
     await test(
+      'Carousel reacts to data-loop on a live instance and restores its baseline',
+      `
+      <div class="carousel">
+        <button class="carousel-prev" type="button">Previous</button>
+        <div class="carousel-viewport">
+          <div class="carousel-slide">One</div>
+          <div class="carousel-slide">Two</div>
+        </div>
+        <button class="carousel-next" type="button">Next</button>
+      </div>
+    `,
+      ['carousel'],
+      async (host, [carousel]) => {
+        const root = host.querySelector('.carousel');
+        const next = host.querySelector('.carousel-next');
+        const prev = host.querySelector('.carousel-prev');
+        // Walk to the last slide, where a non-loop carousel must stop.
+        while (!next.disabled) {
+          next.click();
+          await new Promise(requestAnimationFrame);
+        }
+        equal(next.disabled, true, 'A non-loop carousel disables Next at the last slide');
+        equal(prev.disabled, false, 'A non-loop carousel enables Previous away from the first');
+
+        // The public property has to reach an already-enhanced carousel.
+        root.setAttribute('data-loop', '');
+        carousel.enhance(host);
+        equal(next.disabled, false, 'Enabling data-loop re-enables Next at the last slide');
+        equal(prev.disabled, false, 'A loop enables Previous at the last slide');
+
+        root.removeAttribute('data-loop');
+        carousel.enhance(host);
+        equal(
+          next.disabled,
+          true,
+          'Removing data-loop restores the non-loop end state without a scroll'
+        );
+
+        carousel.destroy(host);
+        equal(root.hasAttribute('role'), false, 'Destroy removes the generated region role');
+        equal(
+          root.hasAttribute('aria-roledescription'),
+          false,
+          'Destroy removes the generated roledescription'
+        );
+        equal(root.hasAttribute('tabindex'), false, 'Destroy removes the generated tab stop');
+        equal(
+          host.querySelector('.carousel-slide').hasAttribute('role'),
+          false,
+          'Destroy removes the generated slide role'
+        );
+
+        // A carousel without a viewport cannot work and must not claim to.
+        const broken = document.createElement('div');
+        broken.innerHTML = '<div class="carousel"><div class="carousel-slides"></div></div>';
+        host.append(broken);
+        carousel.enhance(broken);
+        equal(
+          broken.querySelector('.carousel').hasAttribute('data-mewa-carousel-init'),
+          false,
+          'A carousel without a viewport is not marked ready'
+        );
+        broken.remove();
+      }
+    );
+
+    await test(
       'Carousel keeps authored slide names and owns only generated dots',
       `
       <div class="carousel" aria-labelledby="display-carousel-name">

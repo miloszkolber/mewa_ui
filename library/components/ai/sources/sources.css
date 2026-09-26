@@ -42,6 +42,15 @@
     background-color: var(--surface-content-hover);
   }
 
+  /* A source the assistant cannot open still reads as a link list entry,
+     so it leaves the pointer path and takes the disabled text role. */
+  .source-link[aria-disabled="true"] {
+    pointer-events: none;
+    background-color: transparent;
+    color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+
   .source-link:focus-visible,
   .citation:focus-visible {
     box-shadow: var(--ring-default);
@@ -64,6 +73,10 @@
   }
 
   .citation {
+    /* The inline citation is its own pointer target, so it needs the
+       24px minimum rather than the 20px list badge size. */
+    min-inline-size: var(--size-600);
+    min-block-size: var(--size-600);
     margin-inline: var(--space-100);
     vertical-align: 0.1em;
     color: var(--text-primary);
@@ -109,6 +122,10 @@
 
     .source-link {
       color: LinkText;
+    }
+
+    .source-link[aria-disabled="true"] {
+      color: GrayText;
     }
   }
 }

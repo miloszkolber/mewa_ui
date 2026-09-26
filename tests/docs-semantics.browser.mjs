@@ -592,9 +592,9 @@ export async function inspectDocsSemantics(page, baseUrl) {
         heading,
         original
       );
-      await page.click(`${demo} .date-picker-day:not([data-outside]) button[data-day="15"]`);
+      await page.click(`${demo} .date-picker-day:not([data-outside])[data-day="15"]`);
       await settle(page);
-      const selected = `${demo} .date-picker-day[aria-selected="true"] button`;
+      const selected = `${demo} .date-picker-day[aria-selected="true"]`;
       const date = await page.$eval(selected, (el) => el.dataset.date);
       const month = await page.$eval(heading, (el) => el.textContent);
       const node = await page.$(`${demo} .date-picker`);

@@ -13,6 +13,31 @@ export function queryAll(root, selector) {
   return matches;
 }
 
+// Records the authored value of every attribute a module writes, so teardown
+// can restore the baseline and leave an application edit alone. One owner per
+// generated attribute, shared by every behavior that writes one.
+export function attributeSnapshot() {
+  const saved = new Map();
+  const set = (element, name, value) => {
+    if (!saved.has(element)) saved.set(element, new Map());
+    const attributes = saved.get(element);
+    if (!attributes.has(name)) attributes.set(name, { original: element.getAttribute(name) });
+    attributes.get(name).current = value;
+    if (value === null) element.removeAttribute(name);
+    else element.setAttribute(name, value);
+  };
+  const restore = () => {
+    for (const [element, attributes] of saved) {
+      for (const [name, { original, current }] of attributes) {
+        if (element.getAttribute(name) !== current) continue;
+        if (original === null) element.removeAttribute(name);
+        else element.setAttribute(name, original);
+      }
+    }
+  };
+  return { set, restore };
+}
+
 // Explicit ownership keeps document/form listeners attached to their component,
 // even when the listener target lives outside the enhanced subtree.
 export function createLifecycle(name) {

@@ -3,6 +3,7 @@ import catalog from '../docs/specimens.json' with { type: 'json' };
 import { inspectPlaygroundControls } from './docs-controls.mjs';
 import { inspectDocsSemantics } from './docs-semantics.browser.mjs';
 import { inspectDocsIcons } from './docs-icons.browser.mjs';
+import { inspectLayoutRhythm } from './layout-rhythm.browser.js';
 import { browserName } from './browser-support.mjs';
 
 export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath) {
@@ -257,10 +258,7 @@ export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath
     5
   );
   assert.equal(
-    (await page.$$eval(
-      '[data-component="date-picker"] .date-picker-day button',
-      (els) => els.length
-    )) > 0,
+    (await page.$$eval('[data-component="date-picker"] .date-picker-day', (els) => els.length)) > 0,
     true
   );
   const before = await page.$eval('body', (el) => getComputedStyle(el).backgroundColor);
@@ -303,6 +301,7 @@ export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath
   // while this page's error listener still covers every navigation.
   await inspectDocsSemantics(page, baseUrl);
   await inspectDocsIcons(page, baseUrl);
+  await inspectLayoutRhythm(page, baseUrl);
   assert.deepEqual(errors, []);
   page.off('pageerror', onError);
   console.log(

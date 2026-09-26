@@ -67,7 +67,7 @@ export const partDefinitions = [
   ['number', 'Number input', '.number-field input'],
   ['color', 'Color input', '.color-picker input[type="color"]'],
   ['color-hex', 'Color hex input', '.color-picker-hex'],
-  ['day', 'Calendar day', '.date-picker-day button[tabindex="0"]'],
+  ['day', 'Calendar day', '.date-picker-day[tabindex="0"]'],
   ['resize', 'Resize handle', '.resizable-handle'],
   ['dismiss', 'Dismiss button', '.toast-close'],
   ['suggestion-item', 'Suggestion button', '.suggestion button'],

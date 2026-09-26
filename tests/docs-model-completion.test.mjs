@@ -723,8 +723,8 @@ assert.match(thinking, /composer-status[^>]*>Thinking…</);
 // carries the single active day atom. `dynamic` is no longer a scope field.
 const calendar = await model('date-picker');
 assert(!calendar.scopes.some((s) => s.type === 'day'), 'No synthetic live day atom');
-assert.equal((await attrs(calendar.staticHtml, '.date-picker-day button[tabindex="0"]')).length, 1);
-assert((await attrs(calendar.staticHtml, '.date-picker-day button')).length > 1);
+assert.equal((await attrs(calendar.staticHtml, '.date-picker-day[tabindex="0"]')).length, 1);
+assert((await attrs(calendar.staticHtml, '.date-picker-day')).length > 1);
 assert.equal((await matrixRows(calendar)).length, 1);
 
 const navigation = await model('nav');

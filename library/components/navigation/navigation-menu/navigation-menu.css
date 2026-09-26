@@ -2,11 +2,21 @@
   .nav-menu-list { display: flex; align-items: center; gap: var(--space-200); list-style: none; margin: 0; padding: 0; }
   .nav-menu-link, .nav-menu-trigger {
     display: inline-flex; align-items: center; gap: var(--space-100);
+    min-block-size: var(--size-1000);
     padding: var(--space-200); border: none;
     background: transparent; color: var(--text-primary); font-size: var(--font-size-350); font-weight: var(--font-weight-525);
     font-family: inherit; text-decoration: none; cursor: pointer;
     outline: none;
     &:hover { background-color: var(--surface-menu-hover); color: var(--text-primary); }
+    /* The current route stays marked the way Nav marks it, and a disabled
+       row leaves the pointer path exactly like Nav's disabled row. */
+    &[aria-current="page"] { background-color: var(--surface-menu-hover); color: var(--text-primary); }
+    &[aria-disabled="true"], &[data-disabled] {
+      pointer-events: none;
+      background-color: transparent;
+      color: var(--text-disabled);
+      cursor: not-allowed;
+    }
     &:focus-visible {
       box-shadow: var(--ring-default);
     }
@@ -42,5 +52,6 @@
     .nav-menu-content {
       border-color: ButtonText;
     }
+    .nav-menu-link:is([aria-disabled="true"], [data-disabled]) { color: GrayText; }
   }
 }

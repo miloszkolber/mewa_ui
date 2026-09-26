@@ -329,13 +329,12 @@ export async function compileModel(c, component) {
     // One conceptual day target follows the selected/active date after runtime
     // regeneration. The static fixture never supplies browser day indices.
     async function activeDay(markup) {
-      const selected = (await inspect(markup, '.date-picker-day[data-selected] button')).matches
-        .length;
+      const selected = (await inspect(markup, '.date-picker-day[data-selected]')).matches.length;
       return operate(markup, [
         {
           selector: selected
-            ? '.date-picker-day[data-selected] button'
-            : '.date-picker-day:not([data-disabled]) button',
+            ? '.date-picker-day[data-selected]'
+            : '.date-picker-day:not([data-disabled])',
           index: 0,
           attr: 'tabindex',
           value: '0'

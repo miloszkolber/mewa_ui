@@ -104,8 +104,10 @@ function getOutput(root) {
 function createOutput(root) {
   const output = root.ownerDocument.createElement('output');
   output.className = 'resizable-output';
-  output.setAttribute('aria-live', 'polite');
-  output.setAttribute('aria-atomic', 'true');
+  // <output> carries an implicit status role. The separator already exposes
+  // the value through aria-valuetext, so a live output would announce every
+  // step twice.
+  output.setAttribute('aria-live', 'off');
   root.append(output);
   return output;
 }

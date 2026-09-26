@@ -83,7 +83,11 @@
     align-items: center;
     gap: var(--space-200);
 
+    /* The label is the pointer target beside a 20px track. */
     & > label {
+      display: inline-flex;
+      align-items: center;
+      min-block-size: var(--size-600);
       font-size: var(--font-size-350);
       cursor: pointer;
     }

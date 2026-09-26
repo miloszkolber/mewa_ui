@@ -32,8 +32,10 @@ export function enhance(scope) {
       queryAll(root, '[data-table-filter], .data-table-filter').filter((element) =>
         element.matches('input, textarea')
       );
+    // Only claim a status region the table owns. A bare [role="status"]
+    // would capture an author's own live region placed inside the table.
     const status = () =>
-      queryAll(root, '[data-table-status], .data-table-summary[role="status"], [role="status"]')[0];
+      queryAll(root, '[data-table-status], .data-table-summary[role="status"]')[0];
     const emptyState = () => queryAll(root, '[data-table-empty], .data-table-empty')[0];
     const range = () => queryAll(root, '[data-table-range], .data-table-range')[0];
     const pagination = () => queryAll(root, '[data-table-pagination], .data-table-pagination')[0];

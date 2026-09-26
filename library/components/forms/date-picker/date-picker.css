@@ -65,40 +65,36 @@
     vertical-align: middle;
   }
 
+  /* The gridcell is the control: it carries the day, the selection state, the
+     roving tab stop, and every visual state. No nested button. */
   .date-picker-day {
-    width: 2.25rem;
-    height: 2.25rem;
+    display: table-cell;
+    width: var(--size-900);
+    height: var(--size-900);
+    min-width: var(--size-900);
+    padding: 0;
     text-align: center;
     vertical-align: middle;
-    padding: 0;
+    font-size: var(--font-size-350);
+    background-color: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
 
-    & button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: var(--size-800);
-      height: var(--size-800);
-      font-size: var(--font-size-350);
-      border: none;
-
-      background-color: transparent;
-      color: var(--text-primary);
-      cursor: pointer;
-      &:hover {
-        background-color: var(--surface-control-hover);
-      }
-
-      &:focus-visible {
-        box-shadow: var(--ring-default);
-      }
+    &:hover {
+      background-color: var(--surface-control-hover);
     }
 
-    &[data-today] button {
+    &:focus-visible {
+      position: relative;
+      box-shadow: var(--ring-default);
+    }
+
+    &[data-today] {
       background-color: var(--surface-secondary);
       font-weight: var(--font-weight-525);
     }
 
-    &[data-selected] button {
+    &[data-selected] {
       background-color: var(--surface-control-inverted);
       color: var(--text-inverted);
 
@@ -107,11 +103,11 @@
       }
     }
 
-    &[data-outside] button {
+    &[data-outside] {
       color: var(--text-secondary);
     }
 
-    &[data-disabled] button, & button:disabled {
+    &[data-disabled] {
       background-color: var(--surface-control-disabled);
       color: var(--text-disabled);
       cursor: not-allowed;
@@ -120,7 +116,9 @@
 
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {
-    .date-picker { border-width: var(--border-width-050); }
+    .date-picker {
+      border-width: var(--border-width-050);
+    }
   }
 
   @media (forced-colors: active) {
@@ -130,18 +128,18 @@
       border-color: CanvasText;
     }
 
-    .date-picker-day[data-selected] button {
+    .date-picker-day[data-selected] {
       forced-color-adjust: none;
       background: Highlight;
       color: HighlightText;
     }
 
-    .date-picker-day[data-today] button {
+    .date-picker-day[data-today] {
       outline: var(--border-width-025) solid CanvasText;
       outline-offset: calc(-1 * var(--border-width-025));
     }
 
-    .date-picker-day button:focus-visible {
+    .date-picker-day:focus-visible {
       outline: var(--border-width-050) solid Highlight;
       outline-offset: var(--border-width-025);
     }

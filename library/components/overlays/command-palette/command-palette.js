@@ -1,6 +1,6 @@
 // -- Command Palette -----------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -98,24 +98,8 @@ export function enhance(root) {
       return;
     }
 
-    const attributes = new Map();
-    const setAttribute = (element, name, value) => {
-      if (!attributes.has(element)) attributes.set(element, new Map());
-      const saved = attributes.get(element);
-      if (!saved.has(name)) saved.set(name, { original: element.getAttribute(name) });
-      saved.get(name).current = value;
-      if (value === null) element.removeAttribute(name);
-      else element.setAttribute(name, value);
-    };
-    lifecycle.add(dialog, () => {
-      for (const [element, saved] of attributes) {
-        for (const [name, { original, current }] of saved) {
-          if (element.getAttribute(name) !== current) continue;
-          if (original === null) element.removeAttribute(name);
-          else element.setAttribute(name, original);
-        }
-      }
-    });
+    const { set: setAttribute, restore } = attributeSnapshot();
+    lifecycle.add(dialog, restore);
     if (!list.id) setAttribute(list, 'id', `command-palette-list-${++commandItemId}`);
     setAttribute(list, 'role', 'listbox');
     if (!list.hasAttribute('aria-label') && !list.hasAttribute('aria-labelledby'))

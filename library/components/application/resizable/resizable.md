@@ -20,7 +20,7 @@ The module upgrades the divider with keyboard and pointer resizing.
 
 The module generates decrease and increase buttons as a non-drag single-pointer alternative.
 
-The module generates a live output when the author does not provide one.
+The module generates a visible output when the author does not provide one.
 
 ## Native Web APIs
 
@@ -28,7 +28,7 @@ The module generates a live output when the author does not provide one.
 - [Pointer Events](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events) supports mouse, pen, and touch dragging.
 - [`setPointerCapture()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/setPointerCapture) keeps dragging active outside the handle.
 - [`ResizeObserver`](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) preserves the selected proportion after container resize.
-- [`<output>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/output) announces the current split.
+- [`<output>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/output) shows the current split.
 - [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) publishes split changes.
 - [WCAG 2.2 Dragging Movements](https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html) requires a non-drag single-pointer alternative for authored drag behavior.
 
@@ -144,6 +144,8 @@ Keep the separator name specific when a page contains several adjustable splits.
 Keep the current percentage available through `aria-valuenow` and `aria-valuetext`.
 
 Keep the output concise.
+
+Do not make the generated output a second live region.
 
 Do not rely on dragging as the only pointer path.
 

@@ -1,6 +1,6 @@
 // -- Carousel -------------------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -8,6 +8,9 @@ import { registerBehavior } from '../../../runtime/enhancer.js';
 const lifecycle = createLifecycle('carousel');
 
 export function enhance(root) {
+  // Re-derive the state of already-enhanced carousels before returning early,
+  // so a public property changed on a live carousel takes effect.
+  lifecycle.refresh(root);
   queryAll(root, '.carousel').forEach((carousel) => {
     carousel.dataset.init = '';
     if (lifecycle.has(carousel)) return;
@@ -18,33 +21,37 @@ export function enhance(root) {
     const nextBtn = carousel.querySelector('.carousel-next');
     const dotsContainer = carousel.querySelector('.carousel-dots');
     const counter = carousel.querySelector('.carousel-counter');
-    if (!viewport) return;
+    // A carousel without a viewport cannot work, so do not report it ready.
+    if (!viewport) {
+      delete carousel.dataset.mewaCarouselInit;
+      return;
+    }
 
     const slides = () => Array.from(viewport.querySelectorAll('.carousel-slide'));
-    const isLoop = carousel.hasAttribute('data-loop');
+    // Read at use time: this public property can change on a live carousel.
+    const isLoop = () => carousel.hasAttribute('data-loop');
 
     let currentIndex = 0;
 
     // ── ARIA setup ───────────────────────────────
-    if (!carousel.hasAttribute('role')) carousel.setAttribute('role', 'region');
-    carousel.setAttribute('aria-roledescription', 'carousel');
+    // Every attribute written below is owned here and restored on destroy.
+    const { set: setAttribute, restore } = attributeSnapshot();
+    lifecycle.add(carousel, restore);
+
+    if (!carousel.hasAttribute('role')) setAttribute(carousel, 'role', 'region');
+    setAttribute(carousel, 'aria-roledescription', 'carousel');
     if (!carousel.hasAttribute('aria-label') && !carousel.hasAttribute('aria-labelledby')) {
-      carousel.setAttribute('aria-label', 'Carousel');
+      setAttribute(carousel, 'aria-label', 'Carousel');
     }
 
     const generatedLabels = new Map();
     slides().forEach((slide, i) => {
-      slide.setAttribute('role', 'group');
-      slide.setAttribute('aria-roledescription', 'slide');
+      setAttribute(slide, 'role', 'group');
+      setAttribute(slide, 'aria-roledescription', 'slide');
       if (!slide.hasAttribute('aria-label') && !slide.hasAttribute('aria-labelledby')) {
         const label = `${i + 1} of ${slides().length}`;
-        slide.setAttribute('aria-label', label);
+        setAttribute(slide, 'aria-label', label);
         generatedLabels.set(slide, label);
-      }
-    });
-    lifecycle.add(carousel, () => {
-      for (const [slide, label] of generatedLabels) {
-        if (slide.getAttribute('aria-label') === label) slide.removeAttribute('aria-label');
       }
     });
 
@@ -54,7 +61,7 @@ export function enhance(root) {
       if (!allSlides.length) return;
 
       let target = index;
-      if (isLoop) {
+      if (isLoop()) {
         target = ((index % allSlides.length) + allSlides.length) % allSlides.length;
       } else {
         target = Math.max(0, Math.min(index, allSlides.length - 1));
@@ -70,9 +77,14 @@ export function enhance(root) {
       if (!allSlides.length) return;
       currentIndex = index;
 
-      if (!isLoop) {
+      if (!isLoop()) {
         if (prevBtn) prevBtn.disabled = currentIndex <= 0;
         if (nextBtn) nextBtn.disabled = currentIndex >= allSlides.length - 1;
+      } else {
+        // A loop that was enabled after a non-loop pass left a control
+        // disabled at an end, and turning it off needs the end states back.
+        if (prevBtn) prevBtn.disabled = false;
+        if (nextBtn) nextBtn.disabled = false;
       }
 
       if (dotsContainer) {
@@ -94,7 +106,7 @@ export function enhance(root) {
         )
           return;
         const label = `${i + 1} of ${allSlides.length}`;
-        slide.setAttribute('aria-label', label);
+        setAttribute(slide, 'aria-label', label);
         generatedLabels.set(slide, label);
       });
     };
@@ -185,9 +197,11 @@ export function enhance(root) {
       }
     });
 
-    if (!carousel.hasAttribute('tabindex')) {
-      carousel.setAttribute('tabindex', '0');
-    }
+    if (!carousel.hasAttribute('tabindex')) setAttribute(carousel, 'tabindex', '0');
+
+    // A public property can change on an already-enhanced carousel, so
+    // re-derive the state the current attributes imply.
+    lifecycle.onUpdate(carousel, () => updateState(currentIndex));
 
     // ── Initial state ───────────────────────────
     updateState(0);

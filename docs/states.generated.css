@@ -1904,7 +1904,11 @@
     align-items: center;
     gap: var(--space-200);
 
+    /* The label is the pointer target beside a 16px box. */
     & > label {
+      display: inline-flex;
+      align-items: center;
+      min-block-size: var(--size-600);
       font-size: var(--font-size-350);
       cursor: pointer;
     }
@@ -2014,7 +2018,7 @@
     gap: var(--space-200);
 
     & > legend {
-      margin-bottom: var(--space-200);
+      margin-block-end: var(--space-300);
     }
   }
 
@@ -2023,7 +2027,11 @@
     align-items: center;
     gap: var(--space-200);
 
+    /* The label is the pointer target beside a 16px radio. */
     & > label {
+      display: inline-flex;
+      align-items: center;
+      min-block-size: var(--size-600);
       font-size: var(--font-size-350);
       font-weight: var(--font-weight-400);
       line-height: var(--font-height-flat);
@@ -2343,7 +2351,11 @@
     align-items: center;
     gap: var(--space-200);
 
+    /* The label is the pointer target beside a 20px track. */
     & > label {
+      display: inline-flex;
+      align-items: center;
+      min-block-size: var(--size-600);
       font-size: var(--font-size-350);
       cursor: pointer;
     }
@@ -3163,40 +3175,36 @@
     vertical-align: middle;
   }
 
+  /* The gridcell is the control: it carries the day, the selection state, the
+     roving tab stop, and every visual state. No nested button. */
   .date-picker-day {
-    width: 2.25rem;
-    height: 2.25rem;
+    display: table-cell;
+    width: var(--size-900);
+    height: var(--size-900);
+    min-width: var(--size-900);
+    padding: 0;
     text-align: center;
     vertical-align: middle;
-    padding: 0;
+    font-size: var(--font-size-350);
+    background-color: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
 
-    & button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: var(--size-800);
-      height: var(--size-800);
-      font-size: var(--font-size-350);
-      border: none;
-
-      background-color: transparent;
-      color: var(--text-primary);
-      cursor: pointer;
-      &[data-demo-hover] {
-        background-color: var(--surface-control-hover);
-      }
-
-      &[data-demo-focus] {
-        box-shadow: var(--ring-default);
-      }
+    &[data-demo-hover] {
+      background-color: var(--surface-control-hover);
     }
 
-    &[data-today] button {
+    &[data-demo-focus] {
+      position: relative;
+      box-shadow: var(--ring-default);
+    }
+
+    &[data-today] {
       background-color: var(--surface-secondary);
       font-weight: var(--font-weight-525);
     }
 
-    &[data-selected] button {
+    &[data-selected] {
       background-color: var(--surface-control-inverted);
       color: var(--text-inverted);
 
@@ -3205,11 +3213,11 @@
       }
     }
 
-    &[data-outside] button {
+    &[data-outside] {
       color: var(--text-secondary);
     }
 
-    &[data-disabled] button, & button:disabled {
+    &[data-disabled] {
       background-color: var(--surface-control-disabled);
       color: var(--text-disabled);
       cursor: not-allowed;
@@ -3218,7 +3226,9 @@
 
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {
-    .date-picker { border-width: var(--border-width-050); }
+    .date-picker {
+      border-width: var(--border-width-050);
+    }
   }
 
   @media (forced-colors: active) {
@@ -3228,18 +3238,18 @@
       border-color: CanvasText;
     }
 
-    .date-picker-day[data-selected] button {
+    .date-picker-day[data-selected] {
       forced-color-adjust: none;
       background: Highlight;
       color: HighlightText;
     }
 
-    .date-picker-day[data-today] button {
+    .date-picker-day[data-today] {
       outline: var(--border-width-025) solid CanvasText;
       outline-offset: calc(-1 * var(--border-width-025));
     }
 
-    .date-picker-day button[data-demo-focus] {
+    .date-picker-day[data-demo-focus] {
       outline: var(--border-width-050) solid Highlight;
       outline-offset: var(--border-width-025);
     }
@@ -3403,6 +3413,15 @@
     cursor: not-allowed;
   }
 
+  /* The native readonly attribute lands on each input. Match the treatment
+     the other date and text controls give it. */
+  .date-range-picker[data-readonly] .date-range-input:not(:disabled),
+  .date-range-input[readonly]:not(:disabled) {
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+    cursor: default;
+  }
+
   @media (max-width: 37.5rem) {
     .date-range-controls {
       grid-template-columns: minmax(0, 1fr);
@@ -3451,6 +3470,11 @@
 
     .date-range-input:disabled::-webkit-calendar-picker-indicator {
       color: GrayText;
+    }
+
+    .date-range-picker[data-readonly] .date-range-input:not(:disabled),
+    .date-range-input[readonly]:not(:disabled) {
+      color: FieldText;
     }
 
     .date-range-input:disabled,
@@ -3813,6 +3837,22 @@
     cursor: not-allowed;
   }
 
+  /* The native readonly attribute lands on each segment. Match the treatment
+     the other text controls give it. */
+  .time-field[data-readonly] .time-field-input:not(:disabled),
+  .time-field[data-readonly] .time-field-select:not(:disabled),
+  .time-field-input[readonly]:not(:disabled) {
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+    cursor: default;
+  }
+
+  .time-field[data-readonly] .time-field-label,
+  .time-field:has(.time-field-input[readonly], .time-field-select[readonly]) .time-field-label {
+    color: var(--text-secondary);
+    cursor: default;
+  }
+
   @media (max-width: 37.5rem) {
     .time-field-controls {
       grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -3862,6 +3902,12 @@
     .time-field:has(.time-field-input:disabled, .time-field-select:disabled) .time-field-label,
     .time-field[data-disabled] .time-field-label {
       color: GrayText;
+    }
+
+    .time-field[data-readonly] .time-field-input:not(:disabled),
+    .time-field[data-readonly] .time-field-select:not(:disabled),
+    .time-field-input[readonly]:not(:disabled) {
+      color: FieldText;
     }
 
     .time-field-input:is([aria-invalid="true"], :user-invalid),
@@ -6080,8 +6126,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: var(--size-500);
-    height: var(--size-500);
+    width: var(--size-600);
+    height: var(--size-600);
     padding: 0;
     border: none;
     background: transparent;
@@ -6092,6 +6138,13 @@
     &[data-demo-hover] {
       color: var(--text-primary);
       background: var(--surface-control-hover);
+    }
+
+    /* A disabled close control still has to read as unavailable. */
+    &:disabled {
+      color: var(--text-disabled);
+      background: transparent;
+      cursor: not-allowed;
     }
   }
 
@@ -6815,6 +6868,7 @@
   }
   .breadcrumb-item { display: inline-flex; align-items: center; gap: var(--space-200); }
   .breadcrumb-link {
+    display: inline-flex; align-items: center; min-block-size: var(--size-600);
     color: var(--text-secondary); text-decoration: none;
      outline: none;
     &[data-demo-hover] { color: var(--text-primary); }
@@ -7211,11 +7265,21 @@
   .nav-menu-list { display: flex; align-items: center; gap: var(--space-200); list-style: none; margin: 0; padding: 0; }
   .nav-menu-link, .nav-menu-trigger {
     display: inline-flex; align-items: center; gap: var(--space-100);
+    min-block-size: var(--size-1000);
     padding: var(--space-200); border: none;
     background: transparent; color: var(--text-primary); font-size: var(--font-size-350); font-weight: var(--font-weight-525);
     font-family: inherit; text-decoration: none; cursor: pointer;
     outline: none;
     &[data-demo-hover] { background-color: var(--surface-menu-hover); color: var(--text-primary); }
+    /* The current route stays marked the way Nav marks it, and a disabled
+       row leaves the pointer path exactly like Nav's disabled row. */
+    &[aria-current="page"] { background-color: var(--surface-menu-hover); color: var(--text-primary); }
+    &[aria-disabled="true"], &[data-disabled] {
+      pointer-events: none;
+      background-color: transparent;
+      color: var(--text-disabled);
+      cursor: not-allowed;
+    }
     &[data-demo-focus] {
       box-shadow: var(--ring-default);
     }
@@ -7251,6 +7315,7 @@
     .nav-menu-content {
       border-color: ButtonText;
     }
+    .nav-menu-link:is([aria-disabled="true"], [data-disabled]) { color: GrayText; }
   }
 }
 
@@ -9097,7 +9162,7 @@
   }
 
   .input-otp > legend {
-    margin-block-end: var(--space-100);
+    margin-block-end: var(--space-300);
     padding: 0;
     color: var(--text-primary);
     font-size: var(--font-size-350);
@@ -9300,6 +9365,15 @@
   .tag-input[data-enhanced] .tag-input-field:has(.tag-input-control[data-demo-focus]) {
     border-color: var(--border-focus);
     box-shadow: var(--ring-default);
+  }
+
+  /* The enhanced control replaces the styled fallback, so the readonly
+     treatment the fallback already has has to reach the field here. */
+  .tag-input[data-readonly][data-enhanced] .tag-input-field,
+  .tag-input[data-readonly][data-enhanced] .tag-input-control:not(:disabled) {
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+    cursor: default;
   }
 
   .tag-input-list {
@@ -10176,6 +10250,7 @@
 
 @layer components {
   .hover-card-trigger {
+    display: inline-flex; align-items: center; min-block-size: var(--size-600);
     color: var(--text-primary);
     font-weight: var(--font-weight-525);
     text-decoration: underline;
@@ -10428,8 +10503,10 @@
   }
 
   .agent-activity-trigger {
+    display: inline-flex; align-items: center;
     inline-size: max-content;
     max-inline-size: 100%;
+    min-block-size: var(--size-600);
     color: var(--text-secondary);
     font-size: var(--font-size-350);
     cursor: pointer;
@@ -11475,6 +11552,15 @@
     background-color: var(--surface-content-hover);
   }
 
+  /* A source the assistant cannot open still reads as a link list entry,
+     so it leaves the pointer path and takes the disabled text role. */
+  .source-link[aria-disabled="true"] {
+    pointer-events: none;
+    background-color: transparent;
+    color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+
   .source-link[data-demo-focus],
   .citation[data-demo-focus] {
     box-shadow: var(--ring-default);
@@ -11497,6 +11583,10 @@
   }
 
   .citation {
+    /* The inline citation is its own pointer target, so it needs the
+       24px minimum rather than the 20px list badge size. */
+    min-inline-size: var(--size-600);
+    min-block-size: var(--size-600);
     margin-inline: var(--space-100);
     vertical-align: 0.1em;
     color: var(--text-primary);
@@ -11542,6 +11632,10 @@
 
     .source-link {
       color: LinkText;
+    }
+
+    .source-link[aria-disabled="true"] {
+      color: GrayText;
     }
   }
 }

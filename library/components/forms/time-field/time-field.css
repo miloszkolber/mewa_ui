@@ -137,6 +137,22 @@
     cursor: not-allowed;
   }
 
+  /* The native readonly attribute lands on each segment. Match the treatment
+     the other text controls give it. */
+  .time-field[data-readonly] .time-field-input:not(:disabled),
+  .time-field[data-readonly] .time-field-select:not(:disabled),
+  .time-field-input[readonly]:not(:disabled) {
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+    cursor: default;
+  }
+
+  .time-field[data-readonly] .time-field-label,
+  .time-field:has(.time-field-input[readonly], .time-field-select[readonly]) .time-field-label {
+    color: var(--text-secondary);
+    cursor: default;
+  }
+
   @media (max-width: 37.5rem) {
     .time-field-controls {
       grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -186,6 +202,12 @@
     .time-field:has(.time-field-input:disabled, .time-field-select:disabled) .time-field-label,
     .time-field[data-disabled] .time-field-label {
       color: GrayText;
+    }
+
+    .time-field[data-readonly] .time-field-input:not(:disabled),
+    .time-field[data-readonly] .time-field-select:not(:disabled),
+    .time-field-input[readonly]:not(:disabled) {
+      color: FieldText;
     }
 
     .time-field-input:is([aria-invalid="true"], :user-invalid),

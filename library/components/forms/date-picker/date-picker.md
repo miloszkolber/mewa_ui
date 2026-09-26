@@ -14,7 +14,9 @@ Do not use Date Picker only to restyle the browser picker.
 
 Date Picker renders a semantic `<table>` as an ARIA grid.
 
-Native buttons provide month navigation and date selection.
+Native buttons provide month navigation.
+
+The grid cell is the date control. It carries the day, the selection state, and the roving tab stop.
 
 The module renders the current month, manages grid focus, and dispatches the selected date.
 
@@ -22,7 +24,9 @@ The module renders the current month, manages grid focus, and dispatches the sel
 
 - [`<table>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/table) provides the month structure.
 - [`role="grid"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/grid_role) exposes two-dimensional managed navigation.
-- [`<button>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) provides date and month actions.
+- [`role="gridcell"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/gridcell_role) exposes each selectable date.
+- [`<button>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button) provides month navigation.
+- [`tabindex`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex) provides the single grid tab stop.
 - [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) localizes month, weekday, and date names.
 - [`CustomEvent`](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent) reports date selection to the application.
 
@@ -70,7 +74,11 @@ The module adds `data-outside` to dates from an adjacent month.
 
 The module sets `aria-current="date"` on today's cell.
 
-The module sets `aria-selected` on each grid cell.
+The module sets `aria-selected` on each grid cell, which is also the focusable cell.
+
+The module sets a localized `aria-label` on each grid cell.
+
+The module sets `tabindex` so exactly one grid cell is in the tab order.
 
 Do not author `data-selected` or `data-today` as persistent application state.
 
@@ -84,7 +92,7 @@ Selecting an outside-month date moves the grid to that date's month.
 
 Selecting a date updates the selected cell.
 
-Selecting a date returns focus to the selected date button after the grid re-renders.
+Selecting a date returns focus to the selected date cell after the grid re-renders.
 
 The month heading updates in a polite live region.
 
@@ -100,7 +108,7 @@ Arrow Down moves one rendered week forward when that day is present in the curre
 
 Arrow Up moves one rendered week backward when that day is present in the current grid.
 
-Enter or Space selects the focused date through native button activation.
+Enter or Space selects the focused date. The module handles both keys because a focusable grid cell is not natively activatable.
 
 Tab moves between the month navigation controls and the one active grid tab stop.
 
@@ -126,9 +134,13 @@ Keep month navigation buttons explicitly named.
 
 Hide decorative icons from assistive technology.
 
-Keep one date button in the tab order.
+Keep one date cell in the tab order.
 
-Keep localized full-date names on generated date buttons.
+Keep the selection state and the focus on the same grid cell.
+
+Do not nest a button inside a grid cell.
+
+Keep localized full-date names on generated date cells.
 
 Keep the month heading available for month-change announcements.
 

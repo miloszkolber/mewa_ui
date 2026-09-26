@@ -73,6 +73,15 @@
     box-shadow: var(--ring-default);
   }
 
+  /* The enhanced control replaces the styled fallback, so the readonly
+     treatment the fallback already has has to reach the field here. */
+  .tag-input[data-readonly][data-enhanced] .tag-input-field,
+  .tag-input[data-readonly][data-enhanced] .tag-input-control:not(:disabled) {
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+    cursor: default;
+  }
+
   .tag-input-list {
     display: flex;
     flex: 1 1 100%;

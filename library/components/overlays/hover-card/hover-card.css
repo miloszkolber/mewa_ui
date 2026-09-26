@@ -2,6 +2,7 @@
 
 @layer components {
   .hover-card-trigger {
+    display: inline-flex; align-items: center; min-block-size: var(--size-600);
     color: var(--text-primary);
     font-weight: var(--font-weight-525);
     text-decoration: underline;

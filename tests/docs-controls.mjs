@@ -190,7 +190,7 @@ export async function inspectPlaygroundControls(page, go) {
   await page.waitForFunction(
     () =>
       document.querySelector(
-        '.component-playground:not([hidden]) .date-picker-day button[tabindex="0"]'
+        '.component-playground:not([hidden]) .date-picker-day[tabindex="0"]'
       ) !== null
   );
 
@@ -351,18 +351,18 @@ export async function inspectPlaygroundControls(page, go) {
     active,
     originalMonth
   );
-  await page.click(`${active} .date-picker-day:not([data-outside]) button[data-day="15"]`);
-  const selected = `${active} .date-picker-day[aria-selected='true'] button`;
+  await page.click(`${active} .date-picker-day:not([data-outside])[data-day="15"]`);
+  const selected = `${active} .date-picker-day[aria-selected='true']`;
   await page.waitForSelector(selected);
   const date = await page.$eval(selected, (el) => el.dataset.date);
   assert.match(date, /^\d{4}-\d{2}-15$/, 'the calendar selected the requested date');
   const month = await page.$eval(`${active} .date-picker-heading`, (el) => el.textContent);
-  const days = await page.$$eval(`${active} .date-picker-day button`, (els) => els.length);
+  const days = await page.$$eval(`${active} .date-picker-day`, (els) => els.length);
   await set('width', '480px');
   assert.equal(await page.$eval(`${active} .playground-demo`, (el) => el.style.width), '480px');
   assert.equal(await page.$eval(selected, (el) => el.dataset.date), date);
   assert.equal(await page.$eval(`${active} .date-picker-heading`, (el) => el.textContent), month);
-  assert.equal(await page.$$eval(`${active} .date-picker-day button`, (els) => els.length), days);
+  assert.equal(await page.$$eval(`${active} .date-picker-day`, (els) => els.length), days);
 
   await go('tool-call');
   await set('slot', 'status-only');

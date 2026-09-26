@@ -17,7 +17,7 @@ export const companionSelectors = {
   'number-field': ['.number-field button'],
   resizable: ['.resizable-group', '.resizable-handle'],
   toolbar: ['.separator'],
-  'date-picker': ['.date-picker-nav', '.date-picker-day button'],
+  'date-picker': ['.date-picker-nav', '.date-picker-day'],
   'file-input': ['.file-input'],
   'text-field': ['.text-field'],
   field: ['.field'],
@@ -93,7 +93,7 @@ export function propertyOperations(scope, property, value) {
       ops.push(...companionOperations(scope, '.number-field button', { attr: 'disabled', value }));
     if (scope.type === 'date-picker')
       ops.push(
-        ...['.date-picker-nav', '.date-picker-day button'].flatMap((selector) =>
+        ...['.date-picker-nav', '.date-picker-day'].flatMap((selector) =>
           companionOperations(scope, selector, {
             attr: 'disabled',
             value

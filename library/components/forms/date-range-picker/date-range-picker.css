@@ -154,6 +154,15 @@
     cursor: not-allowed;
   }
 
+  /* The native readonly attribute lands on each input. Match the treatment
+     the other date and text controls give it. */
+  .date-range-picker[data-readonly] .date-range-input:not(:disabled),
+  .date-range-input[readonly]:not(:disabled) {
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+    cursor: default;
+  }
+
   @media (max-width: 37.5rem) {
     .date-range-controls {
       grid-template-columns: minmax(0, 1fr);
@@ -202,6 +211,11 @@
 
     .date-range-input:disabled::-webkit-calendar-picker-indicator {
       color: GrayText;
+    }
+
+    .date-range-picker[data-readonly] .date-range-input:not(:disabled),
+    .date-range-input[readonly]:not(:disabled) {
+      color: FieldText;
     }
 
     .date-range-input:disabled,

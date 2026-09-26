@@ -11,7 +11,7 @@
     gap: var(--space-200);
 
     & > legend {
-      margin-bottom: var(--space-200);
+      margin-block-end: var(--space-300);
     }
   }
 
@@ -20,7 +20,11 @@
     align-items: center;
     gap: var(--space-200);
 
+    /* The label is the pointer target beside a 16px radio. */
     & > label {
+      display: inline-flex;
+      align-items: center;
+      min-block-size: var(--size-600);
       font-size: var(--font-size-350);
       font-weight: var(--font-weight-400);
       line-height: var(--font-height-flat);

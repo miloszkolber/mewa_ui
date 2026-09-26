@@ -1,6 +1,6 @@
 // -- Date Picker ------------------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -46,22 +46,24 @@ const moveMonth = (state, offset) => {
   state.month = next.getMonth();
 };
 
-const setTabStop = (datePicker, activeButton) => {
-  datePicker.querySelectorAll('.date-picker-day button').forEach((button) => {
-    button.tabIndex = button === activeButton ? 0 : -1;
+// The gridcell is the focus target, so aria-selected and the roving tab stop
+// live on the same element and a focusable cell carries no nested control.
+const setTabStop = (datePicker, activeCell) => {
+  datePicker.querySelectorAll('.date-picker-day').forEach((cell) => {
+    cell.tabIndex = cell === activeCell ? 0 : -1;
   });
 };
 
 const focusDate = (datePicker, value) => {
-  const button = Array.from(datePicker.querySelectorAll('.date-picker-day button')).find(
+  const cell = Array.from(datePicker.querySelectorAll('.date-picker-day')).find(
     (candidate) => candidate.dataset.date === value
   );
-  if (!button) return;
-  setTabStop(datePicker, button);
-  button.focus();
+  if (!cell) return;
+  setTabStop(datePicker, cell);
+  cell.focus();
 };
 
-const renderDatePicker = (el, year, month, selectedDay) => {
+const renderDatePicker = (el, year, month, selectedDay, setAttribute) => {
   const documentRoot = el.ownerDocument;
   const heading = el.querySelector('.date-picker-heading');
   const grid = el.querySelector('.date-picker-grid');
@@ -70,11 +72,11 @@ const renderDatePicker = (el, year, month, selectedDay) => {
   const headingText = `${monthFormatter.format(new Date(year, month, 1))} ${year}`;
   if (heading) {
     heading.textContent = headingText;
-    heading.setAttribute('aria-live', 'polite');
+    setAttribute(heading, 'aria-live', 'polite');
   }
 
-  grid.setAttribute('role', 'grid');
-  grid.setAttribute('aria-label', headingText);
+  setAttribute(grid, 'role', 'grid');
+  setAttribute(grid, 'aria-label', headingText);
 
   const thead = documentRoot.createElement('thead');
   const headerRow = documentRoot.createElement('tr');
@@ -105,25 +107,21 @@ const renderDatePicker = (el, year, month, selectedDay) => {
       const outside = date.getMonth() !== month;
       const selected = !outside && date.getDate() === selectedDay;
       const cell = documentRoot.createElement('td');
-      const button = documentRoot.createElement('button');
 
       cell.className = 'date-picker-day';
       cell.setAttribute('role', 'gridcell');
       cell.setAttribute('aria-selected', String(selected));
-      button.type = 'button';
-      button.dataset.day = String(date.getDate());
-      button.dataset.date = dateKey(date);
-      button.setAttribute('aria-label', dateFormatter.format(date));
-      button.textContent = String(date.getDate());
+      cell.dataset.day = String(date.getDate());
+      cell.dataset.date = dateKey(date);
+      cell.setAttribute('aria-label', dateFormatter.format(date));
+      cell.textContent = String(date.getDate());
 
       if (outside) {
-        const direction = date < new Date(year, month, 1) ? 'prev' : 'next';
-        cell.dataset.outside = '';
-        button.dataset.outside = direction;
-        button.tabIndex = -1;
+        cell.dataset.outside = date < new Date(year, month, 1) ? 'prev' : 'next';
+        cell.tabIndex = -1;
       } else {
-        button.tabIndex = selected || (!hasTabStop && selectedDay === null) ? 0 : -1;
-        hasTabStop ||= button.tabIndex === 0;
+        cell.tabIndex = selected || (!hasTabStop && selectedDay === null) ? 0 : -1;
+        hasTabStop ||= cell.tabIndex === 0;
 
         if (isToday(date)) {
           cell.dataset.today = '';
@@ -132,7 +130,6 @@ const renderDatePicker = (el, year, month, selectedDay) => {
         if (selected) cell.dataset.selected = '';
       }
 
-      cell.append(button);
       tableRow.append(cell);
     }
     tbody.append(tableRow);
@@ -145,7 +142,25 @@ export function enhance(root) {
   queryAll(root, '.date-picker').forEach((datePicker) => {
     datePicker.dataset.init = '';
     if (lifecycle.has(datePicker)) return;
+    const grid = datePicker.querySelector('.date-picker-grid');
+    // A date picker without a grid cannot work, so do not report it ready.
+    if (!grid) return;
     datePicker.dataset.mewaDatePickerInit = '';
+
+    // The month grid and its ARIA are generated, so destroy has to restore the
+    // authored children and attributes, and leave application edits alone.
+    const heading = datePicker.querySelector('.date-picker-heading');
+    const authoredHeadingText = heading?.textContent ?? null;
+    const authoredChildren = Array.from(grid.childNodes);
+    const { set: setAttribute, restore } = attributeSnapshot();
+    lifecycle.add(datePicker, () => {
+      restore();
+      if (heading && heading.textContent !== authoredHeadingText)
+        heading.textContent = authoredHeadingText;
+      if (grid.childNodes.length !== authoredChildren.length)
+        grid.replaceChildren(...authoredChildren);
+    });
+
     const now = new Date();
     const state = {
       year: now.getFullYear(),
@@ -153,7 +168,25 @@ export function enhance(root) {
       selected: null
     };
 
-    renderDatePicker(datePicker, state.year, state.month, state.selected);
+    renderDatePicker(datePicker, state.year, state.month, state.selected, setAttribute);
+
+    // One selection path for pointer and keyboard, so both re-render, move
+    // focus, and publish the same event.
+    const selectDate = (day) => {
+      const selectedDate = dateFromKey(day.dataset.date);
+      state.year = selectedDate.getFullYear();
+      state.month = selectedDate.getMonth();
+      state.selected = selectedDate.getDate();
+      renderDatePicker(datePicker, state.year, state.month, state.selected, setAttribute);
+      focusDate(datePicker, dateKey(selectedDate));
+
+      datePicker.dispatchEvent(
+        new CustomEvent('date-picker:select', {
+          detail: { date: selectedDate },
+          bubbles: true
+        })
+      );
+    };
 
     lifecycle.listen(datePicker, datePicker, 'click', (event) => {
       const nav = event.target.closest('.date-picker-nav');
@@ -163,53 +196,49 @@ export function enhance(root) {
         if (action === 'next-month') moveMonth(state, 1);
         if (action === 'prev-month' || action === 'next-month') {
           state.selected = null;
-          renderDatePicker(datePicker, state.year, state.month, state.selected);
+          renderDatePicker(datePicker, state.year, state.month, state.selected, setAttribute);
         }
         return;
       }
 
-      const dayButton = event.target.closest('.date-picker-day button');
-      if (!dayButton || dayButton.disabled || dayButton.closest('[data-disabled]')) return;
-
-      const selectedDate = dateFromKey(dayButton.dataset.date);
-      state.year = selectedDate.getFullYear();
-      state.month = selectedDate.getMonth();
-      state.selected = selectedDate.getDate();
-      renderDatePicker(datePicker, state.year, state.month, state.selected);
-      focusDate(datePicker, dateKey(selectedDate));
-
-      datePicker.dispatchEvent(
-        new CustomEvent('date-picker:select', {
-          detail: { date: selectedDate },
-          bubbles: true
-        })
-      );
+      const day = event.target.closest('.date-picker-day');
+      if (!day || day.matches('[data-disabled]')) return;
+      selectDate(day);
     });
 
     lifecycle.listen(datePicker, datePicker, 'keydown', (event) => {
-      const dayButton = event.target.closest('.date-picker-day button');
-      if (!dayButton) return;
+      const day = event.target.closest('.date-picker-day');
+      if (!day) return;
 
-      const allButtons = Array.from(datePicker.querySelectorAll('.date-picker-day button'));
-      const index = allButtons.indexOf(dayButton);
+      // A focusable gridcell is not natively activatable, so Enter and Space
+      // select the day here instead of relying on button activation.
+      if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
+        if (day.matches('[data-disabled]')) return;
+        event.preventDefault();
+        selectDate(day);
+        return;
+      }
+
+      const allCells = Array.from(datePicker.querySelectorAll('.date-picker-day'));
+      const index = allCells.indexOf(day);
       let next = null;
 
       switch (event.key) {
         case 'ArrowRight':
           event.preventDefault();
-          next = allButtons[index + 1];
+          next = allCells[index + 1];
           break;
         case 'ArrowLeft':
           event.preventDefault();
-          next = allButtons[index - 1];
+          next = allCells[index - 1];
           break;
         case 'ArrowDown':
           event.preventDefault();
-          next = allButtons[index + 7];
+          next = allCells[index + 7];
           break;
         case 'ArrowUp':
           event.preventDefault();
-          next = allButtons[index - 7];
+          next = allCells[index - 7];
           break;
       }
 

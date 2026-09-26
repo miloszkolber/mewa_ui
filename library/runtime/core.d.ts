@@ -25,3 +25,8 @@ export interface Lifecycle {
   refresh(root?: Node | null, ancestors?: boolean): void;
 }
 export declare function createLifecycle(name: string): Lifecycle;
+export interface AttributeSnapshot {
+  set(element: Element, name: string, value: string | null): void;
+  restore(): void;
+}
+export declare function attributeSnapshot(): AttributeSnapshot;

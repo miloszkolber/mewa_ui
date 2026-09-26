@@ -9,7 +9,7 @@
   }
 
   .input-otp > legend {
-    margin-block-end: var(--space-100);
+    margin-block-end: var(--space-300);
     padding: 0;
     color: var(--text-primary);
     font-size: var(--font-size-350);

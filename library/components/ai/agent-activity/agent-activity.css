@@ -92,8 +92,10 @@
   }
 
   .agent-activity-trigger {
+    display: inline-flex; align-items: center;
     inline-size: max-content;
     max-inline-size: 100%;
+    min-block-size: var(--size-600);
     color: var(--text-secondary);
     font-size: var(--font-size-350);
     cursor: pointer;
