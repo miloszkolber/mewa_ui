@@ -2,8 +2,14 @@ import assert from 'node:assert/strict';
 
 // The reader must be able to leave a live transcript through native input while
 // text-node updates and new blocks continue. This helper owns no browser/server.
+//
+// Give the fixture an explicit desktop viewport. Without one this helper inherits
+// Puppeteer's default, where the transcript overflows the visible area and a
+// trusted scrollbar click can reach the element without ever being treated as a
+// native scrollbar action.
 export async function inspectStreamingIntent(page, baseUrl, assetRoot = '/dist/mewa-ui') {
   const checks = [];
+  await page.setViewport({ width: 1440, height: 1000 });
   const state = () =>
     page.evaluate(() => {
       const { root, viewport, content, jump, ticks, events } = window.__streamingIntent;
@@ -343,10 +349,37 @@ export async function inspectStreamingIntent(page, baseUrl, assetRoot = '/dist/m
           if (mode !== 'paused') await start();
           const before = await state();
           await nativeBarAction(action, bounds);
-          await page.waitForFunction(
-            (top) => window.__streamingIntent.viewport.scrollTop < top - 24,
-            {},
-            before.top
+          // Name the case in the failure, so a lost native action can be told
+          // apart from a lost fixture.
+          const departure = await page
+            .waitForFunction(
+              (top) => window.__streamingIntent.viewport.scrollTop < top - 24,
+              { timeout: 8000 },
+              before.top
+            )
+            .then(() => true)
+            .catch(() => false);
+          assert.ok(
+            departure,
+            `native ${action}/${mode}: ${
+              (await state()).top < before.top - 24 ? 'observed' : 'not observed'
+            } departure from top ${before.top}, now ${(await state()).top}; ${JSON.stringify(
+              await page.evaluate(() => {
+                const viewport = document.getElementById('streaming-viewport');
+                const marker = document.querySelector('.message-scroller-end');
+                const rect = viewport.getBoundingClientRect();
+                return {
+                  inner: [innerWidth, innerHeight],
+                  clientWidth: document.documentElement.clientWidth,
+                  gutter: viewport.offsetWidth - viewport.clientWidth,
+                  anchor: marker ? getComputedStyle(marker).overflowAnchor : null,
+                  edge: { right: Math.round(rect.right), top: Math.round(rect.top) },
+                  gestures: window.__streamingIntent.events.filter(
+                    (event) => event.kind === 'pointerdown' || event.kind === 'pointerup'
+                  ).length
+                };
+              })
+            )}`
           );
           if (mode === 'enhanced-stream') {
             await away();
