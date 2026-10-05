@@ -86,7 +86,39 @@ try {
 const componentBySlug = new Map(
   registry.components.map((component) => [component.slug, component])
 );
+const guidance = {
+  router: 'llms.txt',
+  design: 'library/DESIGN.md',
+  selection: 'library/system/components.md',
+  foundations: 'library/system/foundations.md',
+  patterns: 'library/system/patterns.md',
+  layouts: 'library/system/layouts.md',
+  accessibility: 'library/system/accessibility.md',
+  runtime: 'library/runtime/README.md',
+  components: 'components/index.md'
+};
+const sharedMarkdownPaths = [
+  guidance.design,
+  guidance.selection,
+  guidance.foundations,
+  guidance.patterns,
+  guidance.layouts,
+  guidance.accessibility,
+  guidance.runtime
+];
 const autoSection = /\/\* mewa:auto:start \*\/[\s\S]*?\/\* mewa:auto:end \*\//g;
+// Keep controller imports and callable names intact. Only generated whitespace
+// is compacted; shared runtime ownership must never be bundled per controller.
+const controllerCompiler = new Bun.Transpiler({
+  loader: 'js',
+  target: 'browser',
+  minifyWhitespace: true,
+  deadCodeElimination: false,
+  inline: false,
+  treeShaking: false,
+  trimUnusedImports: false,
+  allowBunRuntime: false
+});
 
 if (path.dirname(outputRoot) !== distributionRoot || path.dirname(distributionRoot) !== root) {
   throw new Error(`Refusing to replace unsafe output path: ${outputRoot}`);
@@ -149,7 +181,87 @@ function dependencyClosure(component, field, visiting = new Set(), result = []) 
   return result;
 }
 
-function packageExports() {
+function manifestComponent(component) {
+  const contractLocal = component.files.skill;
+  if (
+    !/^library\/components\/[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*\/[a-z][a-z0-9-]*\.md$/.test(
+      contractLocal
+    ) ||
+    !contractLocal.endsWith(`/${component.slug}/${component.slug}.md`)
+  ) {
+    throw new Error(`${component.slug}: expected a source-relative component Markdown contract`);
+  }
+  return {
+    name: component.name,
+    slug: component.slug,
+    category: component.category,
+    purpose: component.purpose,
+    useWhen: component.useWhen,
+    avoidWhen: component.avoidWhen,
+    fallback: component.fallback,
+    nativeBasis: component.nativeBasis,
+    stability: component.stability,
+    jsMode: component.jsMode,
+    contract: source.url ? `${source.url}${component.files.skill}` : null,
+    contractLocal,
+    styleDependencies: componentDependencies(component, 'styleDependencies'),
+    behaviorDependencies: componentDependencies(component, 'behaviorDependencies'),
+    assets: component.assets || [],
+    css: `css/${component.slug}.css`,
+    controller: component.jsMode === 'none' ? null : `controllers/${component.slug}.js`,
+    component: component.jsMode === 'none' ? null : `components/${component.slug}.js`,
+    auto: component.jsMode === 'none' ? null : `auto/${component.slug}.js`
+  };
+}
+
+function archiveRouter(router) {
+  const start = '<!-- REPOSITORY-ONLY:START -->';
+  const end = '<!-- REPOSITORY-ONLY:END -->';
+  const markerPrefixes = router.match(/<!--\s*REPOSITORY-ONLY\b/g) || [];
+  const markers = router.match(/<!--\s*REPOSITORY-ONLY\b[\s\S]*?-->/g) || [];
+  if (
+    markerPrefixes.length !== 2 ||
+    markers.length !== 2 ||
+    markers[0] !== start ||
+    markers[1] !== end
+  ) {
+    throw new Error('llms.txt: expected exactly one balanced REPOSITORY-ONLY marker pair');
+  }
+  const body =
+    router.slice(0, router.indexOf(start)) + router.slice(router.indexOf(end) + end.length);
+  return `# mewa-ui archive guidance
+
+Start at \`library/DESIGN.md\` for the consumer boundary and task route. Find candidates in \`components/index.md\`; read only selected \`components/{slug}.json\` records and their \`component.contractLocal\` contracts. Use \`manifest.json\` for the complete inventory, package-local guidance paths, and dependencies.
+
+All read paths are relative to this package root. Load \`css/base.css\`, \`css/tokens.css\`, then selected flat \`css/{slug}.css\` entries. Use \`css/all.css\` for many shared components instead of repeating dependencies across flat entries. Choose one lifecycle owner: \`auto/{slug}.js\` for plain HTML or \`components/{slug}.js\` with an application controller. Read \`library/runtime/README.md\` for lifecycle ownership. Fonts are opt-in; icons come from the separate optional \`mewa-icons\` archive.
+
+${body}`;
+}
+
+function componentIndex(components) {
+  const categories = new Map();
+  for (const component of components) {
+    if (!categories.has(component.category)) categories.set(component.category, []);
+    categories.get(component.category).push(component);
+  }
+  return [
+    '# Component lookup',
+    'Open a candidate JSON record, then read its `component.contractLocal` contract. Record paths are relative to the package root.',
+    ...Array.from(categories, ([category, entries]) =>
+      [
+        `## ${category}`,
+        entries
+          .map(
+            (component) =>
+              `- [${component.name} (\`${component.slug}\`)](./${component.slug}.json): ${component.purpose}`
+          )
+          .join('\n')
+      ].join('\n\n')
+    )
+  ].join('\n\n');
+}
+
+function packageExports(markdownPaths) {
   const exports = {
     '.': { types: './index.d.ts', import: './index.js', default: './index.js' },
     './runtime/core.js': { types: './runtime/core.d.ts', import: './runtime/core.js' },
@@ -164,10 +276,15 @@ function packageExports() {
     './licenses/REMIX-ICON-LICENSE.txt': './licenses/REMIX-ICON-LICENSE.txt',
     './LICENSE': './LICENSE',
     './manifest.json': './manifest.json',
-    './checksums.json': './checksums.json'
+    './checksums.json': './checksums.json',
+    './llms.txt': './llms.txt',
+    './integration.md': './integration.md',
+    './components/index.md': './components/index.md'
   };
 
+  for (const relativePath of markdownPaths) exports[`./${relativePath}`] = `./${relativePath}`;
   for (const component of registry.components) {
+    exports[`./components/${component.slug}.json`] = `./components/${component.slug}.json`;
     exports[`./css/${component.slug}.css`] = `./css/${component.slug}.css`;
     if (component.jsMode !== 'none') {
       exports[`./controllers/${component.slug}.js`] = {
@@ -300,6 +417,10 @@ fs.mkdirSync(coreRoot, { recursive: true });
 fs.mkdirSync(iconsRoot, { recursive: true });
 fs.mkdirSync(svelteRoot, { recursive: true });
 
+const router = archiveRouter(
+  fs.readFileSync(resolveInside(root, guidance.router, 'source router path'), 'utf8')
+);
+
 const baseSource = fs.readFileSync(
   resolveInside(root, 'library/src/base.css', 'base stylesheet path'),
   'utf8'
@@ -405,7 +526,7 @@ for (const component of registry.components.filter((entry) => entry.jsMode !== '
   const destroyType = /export\s+function\s+destroy\b/.test(controller)
     ? '\nexport declare function destroy(root?: ParentNode): void;'
     : '';
-  write(coreRoot, `controllers/${component.slug}.js`, controller);
+  write(coreRoot, `controllers/${component.slug}.js`, controllerCompiler.transformSync(controller));
   write(
     coreRoot,
     `controllers/${component.slug}.d.ts`,
@@ -455,6 +576,7 @@ const manifest = {
   name: 'mewa-ui',
   version: workspacePackage.version,
   source,
+  guidance,
   foundations: {
     base: 'css/base.css',
     tokens: 'css/tokens.css',
@@ -465,23 +587,22 @@ const manifest = {
     googleSansCode: 'licenses/GOOGLE-SANS-CODE-OFL.txt',
     remixIcon: 'licenses/REMIX-ICON-LICENSE.txt'
   },
-  components: registry.components.map((component) => ({
-    name: component.name,
-    slug: component.slug,
-    category: component.category,
-    purpose: component.purpose,
-    stability: component.stability,
-    jsMode: component.jsMode,
-    contract: source.url ? `${source.url}${component.files.skill}` : null,
-    styleDependencies: componentDependencies(component, 'styleDependencies'),
-    behaviorDependencies: componentDependencies(component, 'behaviorDependencies'),
-    assets: component.assets || [],
-    css: `css/${component.slug}.css`,
-    controller: component.jsMode === 'none' ? null : `controllers/${component.slug}.js`,
-    component: component.jsMode === 'none' ? null : `components/${component.slug}.js`,
-    auto: component.jsMode === 'none' ? null : `auto/${component.slug}.js`
-  }))
+  components: registry.components.map(manifestComponent)
 };
+const markdownPaths = [
+  ...sharedMarkdownPaths,
+  ...manifest.components.map((component) => component.contractLocal)
+];
+for (const relativePath of markdownPaths) copy(coreRoot, relativePath, relativePath);
+fs.writeFileSync(resolveInside(coreRoot, guidance.router, 'archive router path'), router);
+write(coreRoot, guidance.components, componentIndex(manifest.components));
+for (const component of manifest.components) {
+  write(
+    coreRoot,
+    `components/${component.slug}.json`,
+    JSON.stringify({ version: manifest.version, source: manifest.source, component }, null, 2)
+  );
+}
 write(coreRoot, 'manifest.json', JSON.stringify(manifest, null, 2));
 write(
   coreRoot,
@@ -495,7 +616,7 @@ write(
       license: 'MIT',
       type: 'module',
       files: ['**/*'],
-      exports: packageExports(),
+      exports: packageExports(markdownPaths),
       sideEffects: ['./auto.js', './auto/*.js', './css/**/*.css', './fonts/*.css'],
       repository: workspacePackage.repository,
       homepage: workspacePackage.homepage,
@@ -511,7 +632,7 @@ write(
   `
 # mewa-ui ${workspacePackage.version}
 
-This is the generated, framework-neutral mewa_ui core package from the GitHub release.
+This is the generated, framework-neutral mewa_ui core package. Published archives are distributed through GitHub releases.
 
 ## Plain HTML
 
@@ -533,14 +654,21 @@ Read \`integration.md\` for a complete vanilla example, lifecycle ownership, and
 
 Fonts remain opt-in under \`fonts/\`. SVG icons ship in the separate \`mewa-icons\` release archive. The Google Sans Code and Remix Icon notices are preserved under \`licenses/\`.
 
-Read \`manifest.json\` for component files and dependencies. Use \`checksums.json\` to verify every packaged file.
+## Local contracts and guidance
 
-Clean Git builds include immutable component contract links in the manifest. A modified checkout or a source archive without Git metadata leaves those links empty; use the matching source checkout for its contracts. Do not substitute documentation from a different revision.
+Start at \`llms.txt\` for archive-specific routing. Find candidates in \`components/index.md\`, then read only selected \`components/{slug}.json\` records and their \`component.contractLocal\` Markdown. These generated records project the same selection metadata, dependencies, and executable paths as \`manifest.json\`; they do not define another component API.
+
+The manifest's \`guidance\` map points to local \`library/DESIGN.md\`, the five \`library/system/\` specifications, \`library/runtime/README.md\`, and the component lookup. Canonical Markdown and all component contracts are copied at their source-relative paths. \`integration.md\` remains a byte-identical mirror of the runtime guide. Read only the system sections and component contracts needed for the task. Use \`checksums.json\` to verify every packaged file.
+
+Local contracts are available in clean Git, modified-checkout, and Git-less builds. The existing manifest \`contract\` field remains an immutable GitHub URL for clean Git builds and \`null\` otherwise; it is optional provenance, not the local read path. Older archives without \`contractLocal\` still require matching source contracts or their immutable URLs. Do not substitute documentation from a different revision.
 
 The mewa_ui code is MIT licensed. Bundled Google Sans Code remains under the SIL Open Font License 1.1, and bundled Remix Icon glyphs retain the upstream Remix Icon license. See \`licenses/\` and \`LICENSE\`.
 `.trim()
 );
-copy(coreRoot, 'integration.md', 'library/runtime/README.md');
+fs.copyFileSync(
+  resolveInside(coreRoot, guidance.runtime, 'packaged runtime guide path'),
+  resolveInside(coreRoot, 'integration.md', 'runtime guide mirror path')
+);
 copy(coreRoot, 'LICENSE', 'LICENSE');
 
 const iconDirectory = resolveInside(root, registry.canonicalAssets.icons, 'icon directory path');

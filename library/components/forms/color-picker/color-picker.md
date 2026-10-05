@@ -78,6 +78,16 @@ The module restores the committed value when the hexadecimal input loses focus w
 
 The module dispatches native `input` and `change` events from the color input when hexadecimal editing changes the committed color.
 
+Blur dispatches one `change` event when the final native color differs from its value at focus.
+
+Invalid draft recovery does not suppress a change from an earlier valid edit.
+
+Teardown restores module-owned hexadecimal visibility, disabled state, and validity attributes.
+
+Teardown preserves the current native color and later application attribute edits.
+
+Re-enhancement reads the current native color before showing the hexadecimal input.
+
 ## Keyboard
 
 Tab reaches the native color input and the enhanced hexadecimal input in document order.

@@ -125,6 +125,25 @@ Use Switch only when changing the control has immediate meaning.
 
 Use Checkbox when the value is only submitted later.
 
+## Horizontal field
+
+Use `data-orientation="horizontal"` on `.form-field` to place a label beside its control.
+
+Group the control and its description in one direct child `<div>` when an orientation can change.
+
+Keep the grouped control and description below the label in the default vertical orientation.
+
+```html
+<div class="form-field" data-orientation="horizontal">
+  <label class="label" for="profile-display-name">Name</label>
+  <div>
+    <input class="text-field-input" id="profile-display-name" name="display_name"
+           type="text" aria-describedby="profile-name-help">
+    <p class="field-description" id="profile-name-help">Your full name.</p>
+  </div>
+</div>
+```
+
 ## Invalid field
 
 Keep invalid state on the native control.

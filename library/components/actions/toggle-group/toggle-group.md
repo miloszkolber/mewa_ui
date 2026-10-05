@@ -96,6 +96,10 @@ Do not rely on `data-disabled` alone when the buttons must be natively disabled.
 
 Disabled items are skipped during managed focus movement.
 
+Disabled presentation takes precedence over the outline variant and pressed text color.
+
+An inset outline preserves the pressed indicator on an unavailable item.
+
 ## Behavior
 
 Tab enters the group through one active tab stop.
@@ -111,6 +115,10 @@ Enter or Space activates the focused native button.
 Inside `.toolbar[role="toolbar"]`, Toolbar owns Tab, arrow, Home, and End navigation across all child controls.
 
 Toggle Group keeps ownership of pressed state inside Toolbar.
+
+Toggle Group resumes one enabled tab stop when the group leaves Toolbar.
+
+Moving the group does not reset pressed state or move focus.
 
 Single mode clears other pressed items before setting the activated item state.
 
@@ -139,3 +147,7 @@ Load `toggle-group.js` whenever Toggle Group appears.
 The child buttons remain natively clickable without the module, but coordinated selection and roving focus require JavaScript.
 
 Cleanup restores authored `tabindex` values unless the application replaces the managed value.
+
+The automatic enhancer reconciles moves into or out of an enhanced Toolbar.
+
+Call `controller.update()` after a move when the automatic enhancer is absent.

@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { gzipSync } from 'node:zlib';
+import { runLeaseOwnershipTests } from './lease-ownership.test.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
 const coreRoot = path.join(root, 'dist', 'mewa-ui');
@@ -12,6 +14,35 @@ const svelteRoot = path.join(root, 'dist', 'mewa-svelte');
 const registry = JSON.parse(fs.readFileSync(path.join(root, 'registry.json'), 'utf8'));
 const workspacePackage = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 const enhanced = registry.components.filter((component) => component.jsMode !== 'none');
+const controllerScanner = new Bun.Transpiler({ loader: 'js' });
+const expectedGuidance = {
+  router: 'llms.txt',
+  design: 'library/DESIGN.md',
+  selection: 'library/system/components.md',
+  foundations: 'library/system/foundations.md',
+  patterns: 'library/system/patterns.md',
+  layouts: 'library/system/layouts.md',
+  accessibility: 'library/system/accessibility.md',
+  runtime: 'library/runtime/README.md',
+  components: 'components/index.md'
+};
+const sourceMarkdownPaths = [
+  expectedGuidance.design,
+  expectedGuidance.selection,
+  expectedGuidance.foundations,
+  expectedGuidance.patterns,
+  expectedGuidance.layouts,
+  expectedGuidance.accessibility,
+  expectedGuidance.runtime,
+  ...registry.components.map((component) => component.files.skill)
+];
+const documentExports = [
+  expectedGuidance.router,
+  expectedGuidance.components,
+  'integration.md',
+  ...sourceMarkdownPaths,
+  ...registry.components.map((component) => `components/${component.slug}.json`)
+];
 
 let failures = 0;
 
@@ -77,6 +108,23 @@ function dependencyClosure(component, field, result = []) {
     if (!result.includes(slug)) result.push(slug);
   }
   return result;
+}
+
+function verifyDocumentExports(base) {
+  const packaged = readJson(base, 'package.json');
+  for (const relativePath of documentExports) {
+    assert.equal(
+      packaged.exports[`./${relativePath}`],
+      `./${relativePath}`,
+      `${relativePath}: documents and data must be direct file exports, not JavaScript modules`
+    );
+    const filename = assertLocalPath(base, `guidance export ${relativePath}`, relativePath);
+    const stat = fs.lstatSync(filename);
+    assert(
+      stat.isFile() && !stat.isSymbolicLink(),
+      `${relativePath}: expected a packaged regular file, not a link to source`
+    );
+  }
 }
 
 await test('the core package is private, versioned, dependency-free, and export-mapped', () => {
@@ -149,12 +197,48 @@ await test('the Svelte adapter is private, versioned, optional, and export-mappe
 
 await test('the package manifest exposes every component and its dependencies', () => {
   const manifest = readJson(coreRoot, 'manifest.json');
+  assert.equal(manifest.schemaVersion, 1, 'additive guidance does not change manifest v1');
+  assert.equal(manifest.name, 'mewa-ui');
   assert.equal(manifest.version, workspacePackage.version);
   assert.equal(manifest.components.length, registry.components.length);
+  assert.deepEqual(manifest.guidance, expectedGuidance);
+  assert.deepEqual(Object.keys(manifest.source).sort(), ['dirty', 'revision', 'url']);
+  if (manifest.source.revision === null) {
+    assert.deepEqual(manifest.source, { revision: null, dirty: null, url: null });
+  } else {
+    assert.match(manifest.source.revision, /^[a-f0-9]{40,64}$/);
+    assert.equal(typeof manifest.source.dirty, 'boolean');
+    assert.equal(
+      manifest.source.url,
+      manifest.source.dirty
+        ? null
+        : `https://github.com/miloszkolber/mewa_ui/blob/${manifest.source.revision}/`
+    );
+  }
 
   registry.components.forEach((component) => {
     const packaged = manifest.components.find((entry) => entry.slug === component.slug);
     assert(packaged, `${component.slug}: missing manifest entry`);
+    for (const field of [
+      'name',
+      'slug',
+      'category',
+      'purpose',
+      'useWhen',
+      'avoidWhen',
+      'fallback',
+      'nativeBasis',
+      'stability',
+      'jsMode'
+    ]) {
+      assert.equal(packaged[field], component[field], `${component.slug}: ${field} drift`);
+    }
+    assert.equal(packaged.contractLocal, component.files.skill);
+    assert.equal(
+      packaged.contract,
+      manifest.source.url ? `${manifest.source.url}${component.files.skill}` : null,
+      `${component.slug}: external contract URL semantics must remain unchanged`
+    );
     assert.deepEqual(packaged.styleDependencies, component.styleDependencies);
     assert.deepEqual(packaged.behaviorDependencies, component.behaviorDependencies);
     assert.deepEqual(packaged.assets, component.assets);
@@ -166,10 +250,17 @@ await test('the package manifest exposes every component and its dependencies', 
       fs.existsSync(path.join(coreRoot, `css/components/${component.slug}.css`)),
       `${component.slug}: missing source CSS copy`
     );
-    assert.equal(Boolean(packaged.controller), component.jsMode !== 'none');
-    assert.equal(Boolean(packaged.component), component.jsMode !== 'none');
-    assert.equal(Boolean(packaged.auto), component.jsMode !== 'none');
-    [packaged.css, packaged.controller, packaged.component, packaged.auto]
+    assert.equal(packaged.css, `css/${component.slug}.css`);
+    assert.equal(
+      packaged.controller,
+      component.jsMode === 'none' ? null : `controllers/${component.slug}.js`
+    );
+    assert.equal(
+      packaged.component,
+      component.jsMode === 'none' ? null : `components/${component.slug}.js`
+    );
+    assert.equal(packaged.auto, component.jsMode === 'none' ? null : `auto/${component.slug}.js`);
+    [packaged.css, packaged.controller, packaged.component, packaged.auto, packaged.contractLocal]
       .filter(Boolean)
       .forEach((relativePath) =>
         assertLocalPath(coreRoot, `${component.slug} manifest`, relativePath)
@@ -184,12 +275,238 @@ await test('the package manifest exposes every component and its dependencies', 
   Object.values(manifest.licenses).forEach((relativePath) => {
     assertLocalPath(coreRoot, 'license manifest', relativePath);
   });
+  Object.values(manifest.guidance).forEach((relativePath) => {
+    assertLocalPath(coreRoot, 'guidance manifest', relativePath);
+  });
+});
+
+await test('the core library tree contains only byte-identical allowlisted Markdown', () => {
+  assert.equal(registry.components.length, 80);
+  const libraryFiles = walkFiles(path.join(coreRoot, 'library')).map(
+    (filename) => `library/${filename}`
+  );
+  assert.deepEqual(libraryFiles, [...sourceMarkdownPaths].sort());
+  for (const relativePath of sourceMarkdownPaths) {
+    assert(relativePath.endsWith('.md'), `${relativePath}: only Markdown may enter library/`);
+    assert.deepEqual(
+      fs.readFileSync(path.join(coreRoot, relativePath)),
+      fs.readFileSync(path.join(root, relativePath)),
+      `${relativePath}: canonical contract must be copied without rewriting`
+    );
+  }
+  assert.deepEqual(
+    fs.readFileSync(path.join(coreRoot, 'integration.md')),
+    fs.readFileSync(path.join(coreRoot, expectedGuidance.runtime)),
+    'integration.md must remain a byte-identical runtime guide mirror'
+  );
+  verifyDocumentExports(coreRoot);
+});
+
+await test('scoped component records share the manifest version, source, and complete record', () => {
+  const manifest = readJson(coreRoot, 'manifest.json');
+  const scopedPaths = walkFiles(path.join(coreRoot, 'components')).filter((filename) =>
+    filename.endsWith('.json')
+  );
+  assert.deepEqual(
+    scopedPaths,
+    registry.components.map((component) => `${component.slug}.json`).sort()
+  );
+  for (const component of manifest.components) {
+    const relativePath = `components/${component.slug}.json`;
+    const scoped = readJson(coreRoot, relativePath);
+    assert.deepEqual(Object.keys(scoped).sort(), ['component', 'source', 'version']);
+    assert.equal(scoped.version, manifest.version, `${relativePath}: version identity drift`);
+    assert.deepEqual(scoped.source, manifest.source, `${relativePath}: source identity drift`);
+    assert.deepEqual(scoped.component, component, `${relativePath}: manifest projection drift`);
+  }
+});
+
+await test('the component lookup groups names, purpose summaries, and scoped JSON links', () => {
+  const index = fs.readFileSync(path.join(coreRoot, expectedGuidance.components), 'utf8');
+  const categories = [...new Set(registry.components.map((component) => component.category))];
+  assert.deepEqual(
+    index.split('\n').filter((line) => line.startsWith('## ')),
+    categories.map((category) => `## ${category}`)
+  );
+  const seen = [];
+  let category;
+  for (const line of index.split('\n')) {
+    if (line.startsWith('## ')) category = line.slice(3);
+    const entry = line.match(/^- \[([^\n]+)\]\(\.\/([a-z][a-z0-9-]*)\.json\): (.+)$/);
+    if (!entry) continue;
+    const [, name, slug, purpose] = entry;
+    const component = registry.components.find((candidate) => candidate.slug === slug);
+    assert(component, `lookup: unknown component ${slug}`);
+    assert.equal(name, `${component.name} (\`${slug}\`)`);
+    assert.equal(category, component.category, `${slug}: lookup category drift`);
+    assert.equal(purpose, component.purpose, `${slug}: lookup summary drift`);
+    assertLocalPath(coreRoot, `${slug} lookup`, `components/${slug}.json`);
+    seen.push(slug);
+  }
+  assert.deepEqual(seen.sort(), registry.components.map((component) => component.slug).sort());
+  assert.match(index, /component\.contractLocal/);
+});
+
+await test('the archive router removes only its one balanced repository-only block', () => {
+  const sourceRouter = fs.readFileSync(path.join(root, 'llms.txt'), 'utf8');
+  const start = '<!-- REPOSITORY-ONLY:START -->';
+  const end = '<!-- REPOSITORY-ONLY:END -->';
+  assert.equal(sourceRouter.split(start).length - 1, 1);
+  assert.equal(sourceRouter.split(end).length - 1, 1);
+  assert(sourceRouter.indexOf(end) > sourceRouter.indexOf(start));
+  const body =
+    sourceRouter.slice(0, sourceRouter.indexOf(start)) +
+    sourceRouter.slice(sourceRouter.indexOf(end) + end.length);
+  const router = fs.readFileSync(path.join(coreRoot, expectedGuidance.router), 'utf8');
+  assert(router.endsWith(body), 'source routing outside the repository-only block must not change');
+  const entry = router.slice(0, router.length - body.length);
+  assert.match(entry, /^# mewa-ui archive guidance\n\n/);
+  for (const route of [
+    expectedGuidance.design,
+    expectedGuidance.components,
+    'components/{slug}.json',
+    'component.contractLocal',
+    'manifest.json',
+    'css/all.css',
+    expectedGuidance.runtime
+  ]) {
+    assert(entry.includes(`\`${route}\``), `archive entry: missing ${route}`);
+  }
+  assert(!/REPOSITORY-ONLY|AGENTS\.md|registry(?:\.schema)?\.json|docs\//.test(router));
+  assert(!/source checkout|matching source/i.test(router), 'archive routing must work offline');
+});
+
+await test('archive guidance resolves its local Markdown reads without maintainer prerequisites', () => {
+  const readPaths = [
+    'llms.txt',
+    'README.md',
+    'integration.md',
+    expectedGuidance.components,
+    ...sourceMarkdownPaths
+  ];
+  for (const relativePath of readPaths) {
+    const filename = path.join(coreRoot, relativePath);
+    const content = fs.readFileSync(filename, 'utf8');
+    assert(
+      !/(?:Read|Open|Use)\s+`AGENTS\.md`/.test(content),
+      `${relativePath}: archive consumers must not need maintainer guidance`
+    );
+    assert(
+      !/^(?:Read|Open|Use|Load|Inline)\b[^\n]*`library\/(?:src|adapters)\//m.test(content),
+      `${relativePath}: source asset instructions must be explicitly source-only`
+    );
+    for (const [, target] of content.matchAll(/\[[^\]\n]*\]\(([^)\n]+)\)/g)) {
+      if (/^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(target)) continue;
+      const pathname = target.split(/[?#]/)[0];
+      const resolved = path.resolve(
+        pathname.startsWith('library/') ? coreRoot : path.dirname(filename),
+        pathname
+      );
+      assertLocalPath(coreRoot, `${relativePath} Markdown link`, path.relative(coreRoot, resolved));
+    }
+    for (const [, readPath] of content.matchAll(/`(library\/[^`\n]+\.md)`/g)) {
+      if (/[{}]/.test(readPath)) continue;
+      assertLocalPath(coreRoot, `${relativePath} Markdown read`, readPath);
+    }
+  }
+  const readme = fs.readFileSync(path.join(coreRoot, 'README.md'), 'utf8');
+  assert.match(readme, /contractLocal/);
+  assert.match(readme, /immutable GitHub URL/);
+  assert(!/use the matching source checkout/i.test(readme));
+});
+
+await test('invalid repository-only router markers fail before replacing generated packages', () => {
+  const start = '<!-- REPOSITORY-ONLY:START -->';
+  const end = '<!-- REPOSITORY-ONLY:END -->';
+  const invalidRouters = [
+    ['missing', '# Consumer route\n'],
+    ['missing end', `${start}\nRepository route\n`],
+    ['missing start', `Repository route\n${end}\n`],
+    ['reversed', `${end}\n${start}\n`],
+    ['multiple', `${start}\n${end}\n${start}\n${end}\n`],
+    ['nested', `${start}\n${start}\n${end}\n${end}\n`],
+    ['unexpected', `${start}\n${end}\n<!-- REPOSITORY-ONLY:OTHER -->\n`],
+    ['unterminated extra marker', `${start}\n${end}\n<!-- REPOSITORY-ONLY:START`]
+  ];
+  const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'mewa-router-contract-'));
+  try {
+    fs.mkdirSync(path.join(scratch, 'scripts'));
+    fs.copyFileSync(path.join(root, 'scripts/build.mjs'), path.join(scratch, 'scripts/build.mjs'));
+    for (const filename of ['registry.json', 'package.json']) {
+      fs.copyFileSync(path.join(root, filename), path.join(scratch, filename));
+    }
+    for (const name of ['mewa-ui', 'mewa-icons', 'mewa-svelte']) {
+      fs.mkdirSync(path.join(scratch, 'dist', name), { recursive: true });
+      fs.writeFileSync(path.join(scratch, 'dist', name, 'existing.txt'), name);
+    }
+    for (const [label, router] of invalidRouters) {
+      fs.writeFileSync(path.join(scratch, 'llms.txt'), router);
+      const result = Bun.spawnSync([process.execPath, 'scripts/build.mjs'], { cwd: scratch });
+      assert.notEqual(result.exitCode, 0, `${label}: build must reject invalid routing`);
+      assert.match(
+        result.stderr.toString(),
+        /llms\.txt: expected exactly one balanced REPOSITORY-ONLY marker pair/,
+        `${label}: build failed at the wrong boundary`
+      );
+      assert.deepEqual(fs.readdirSync(path.join(scratch, 'dist')).sort(), [
+        'mewa-icons',
+        'mewa-svelte',
+        'mewa-ui'
+      ]);
+      for (const name of ['mewa-ui', 'mewa-icons', 'mewa-svelte']) {
+        assert.equal(
+          fs.readFileSync(path.join(scratch, 'dist', name, 'existing.txt'), 'utf8'),
+          name
+        );
+      }
+    }
+  } finally {
+    fs.rmSync(scratch, { recursive: true, force: true });
+  }
+});
+
+await test('guidance exports and checksums survive an isolated core archive extraction', () => {
+  const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'mewa-guidance-archive-'));
+  try {
+    const archive = path.join(scratch, 'mewa-ui.tar.gz');
+    const packed = Bun.spawnSync(['tar', '-czf', archive, '-C', path.dirname(coreRoot), 'mewa-ui']);
+    assert.equal(packed.exitCode, 0, packed.stderr.toString());
+    const extracted = Bun.spawnSync(['tar', '-xzf', archive, '-C', scratch]);
+    assert.equal(extracted.exitCode, 0, extracted.stderr.toString());
+    const extractedRoot = path.join(scratch, 'mewa-ui');
+    assert.deepEqual(walkFiles(extractedRoot), walkFiles(coreRoot));
+    verifyDocumentExports(extractedRoot);
+    verifyChecksums(extractedRoot);
+    assert.deepEqual(readJson(extractedRoot, 'manifest.json'), readJson(coreRoot, 'manifest.json'));
+    assert(!fs.existsSync(path.join(extractedRoot, 'AGENTS.md')));
+    assert(!fs.existsSync(path.join(extractedRoot, 'registry.json')));
+  } finally {
+    fs.rmSync(scratch, { recursive: true, force: true });
+  }
 });
 
 await test('controller modules are side-effect-free and safe to import without a DOM', async () => {
   for (const component of enhanced) {
     const filename = path.join(coreRoot, `controllers/${component.slug}.js`);
     const source = fs.readFileSync(filename, 'utf8');
+    const authored = fs
+      .readFileSync(path.join(root, component.files.js), 'utf8')
+      .replace(/\/\* mewa:auto:start \*\/[\s\S]*?\/\* mewa:auto:end \*\//g, '')
+      .replaceAll('../../../runtime/core.js', '../runtime/core.js')
+      .replaceAll('../../../runtime/enhancer.js', '../runtime/enhancer.js');
+    const expectedShape = controllerScanner.scan(authored);
+    const emittedShape = controllerScanner.scan(source);
+    assert.deepEqual(
+      emittedShape.exports.toSorted(),
+      expectedShape.exports.toSorted(),
+      `${component.slug}: generated exports drift`
+    );
+    const imports = (shape) => shape.imports.map(({ kind, path }) => `${kind}:${path}`).toSorted();
+    assert.deepEqual(
+      imports(emittedShape),
+      imports(expectedShape),
+      `${component.slug}: generated imports must retain shared runtime boundaries`
+    );
     assert(
       !source.includes('mewa:auto:'),
       `${component.slug}: auto marker escaped into controller`
@@ -200,6 +517,13 @@ await test('controller modules are side-effect-free and safe to import without a
     );
     const module = await import(`${pathToFileURL(filename).href}?contract=${component.slug}`);
     assert.equal(typeof module.enhance, 'function', `${component.slug}: missing enhance export`);
+    assert.equal(module.enhance.name, 'enhance', `${component.slug}: enhance callable name drift`);
+    if (typeof module.destroy === 'function')
+      assert.equal(
+        module.destroy.name,
+        'destroy',
+        `${component.slug}: destroy callable name drift`
+      );
     assert.equal(module.behavior?.name, component.slug, `${component.slug}: behavior name drift`);
     const types = fs.readFileSync(
       path.join(coreRoot, `controllers/${component.slug}.d.ts`),
@@ -529,11 +853,27 @@ await test('packaged SVG icons contain no executable or remote content', () => {
   }
 });
 
-await test('generated packages contain no development or documentation trees', () => {
+await test('generated packages exclude development and source trees beyond allowlisted contracts', () => {
   for (const base of [coreRoot, iconsRoot, svelteRoot]) {
-    const topLevel = fs.readdirSync(base);
-    for (const name of ['docs', 'tests', 'scripts', 'node_modules', '.github']) {
-      assert(!topLevel.includes(name), `${path.basename(base)}: unexpected ${name}`);
+    for (const filename of walkFiles(base)) {
+      for (const name of [
+        'src',
+        'docs',
+        'tests',
+        'scripts',
+        'node_modules',
+        '.github',
+        '.git',
+        'workflows',
+        'AGENTS.md',
+        'registry.json',
+        'registry.schema.json'
+      ]) {
+        assert(
+          !filename.split(path.sep).includes(name),
+          `${path.basename(base)}: unexpected ${filename}`
+        );
+      }
     }
   }
 });
@@ -647,5 +987,10 @@ await test('enhancer cleanup continues after a behavior fails', async () => {
   assert.throws(() => enhancer.destroy({}), AggregateError);
   assert.deepEqual(calls, ['second', 'first']);
 });
+
+await runLeaseOwnershipTests(
+  await import(pathToFileURL(path.join(coreRoot, 'runtime/core.js')).href),
+  test
+);
 
 if (failures) process.exitCode = 1;

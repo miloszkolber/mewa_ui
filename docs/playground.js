@@ -6,7 +6,9 @@ import {
   propertyOperations,
   contentOperations,
   slotOperations,
-  exclusiveOperations
+  exclusiveOperations,
+  syncDisabledAnchor,
+  removeIdReferences
 } from './model-operations.mjs';
 import { enhance } from '../library/runtime/enhancer.js';
 
@@ -36,9 +38,11 @@ function namespace(html, prefix) {
             .join(' ')
         );
     if (el.hasAttribute('name')) el.setAttribute('name', `${prefix}-${el.getAttribute('name')}`);
-    const href = el.getAttribute('href');
-    if (href?.startsWith('#') && ids.has(href.slice(1)))
-      el.setAttribute('href', `#${ids.get(href.slice(1))}`);
+    for (const attr of ['href', 'data-demo-href']) {
+      const href = el.getAttribute(attr);
+      if (href?.startsWith('#') && ids.has(href.slice(1)))
+        el.setAttribute(attr, `#${ids.get(href.slice(1))}`);
+    }
   });
   return t.content;
 }
@@ -64,6 +68,11 @@ function operate(root, operations) {
     [...root.querySelectorAll(op.selector)].forEach((el, index) => {
       if (op.index !== undefined && index !== op.index) return;
       if (op.remove) {
+        if (op.removeReferences && el.id)
+          for (const reference of root.querySelectorAll(
+            op.removeReferences.map((attribute) => `[${attribute}]`).join(',')
+          ))
+            removeIdReferences(reference, op.removeReferences, new Set([el.id]));
         el.remove();
         return;
       }
@@ -81,6 +90,7 @@ function operate(root, operations) {
       if (op.attr) {
         let attr = op.attr,
           value = op.value;
+        if (attr === 'disabled') syncDisabledAnchor(el, value !== null);
         if (attr === 'disabled' && !('disabled' in el)) {
           attr = 'aria-disabled';
           if (value !== null) value = 'true';
@@ -90,13 +100,6 @@ function operate(root, operations) {
         else if (value === null) el.removeAttribute(attr);
         else el.setAttribute(attr, value);
         if (attr === 'data-demo-mixed') el.indeterminate = value !== null;
-        if (attr === 'data-demo-focus' && value !== null)
-          for (
-            let parent = el.parentElement;
-            parent && parent !== root;
-            parent = parent.parentElement
-          )
-            parent.dataset.demoFocusWithin = '';
       }
       if (op.html !== undefined) el.innerHTML = op.html;
       if (op.text !== undefined) el.textContent = op.text;
@@ -149,6 +152,9 @@ function updateCode(section) {
         o.toggleAttribute('selected', i === original.selectedIndex)
       );
     else if (el.type !== 'file') el.setAttribute('value', original.value);
+  });
+  copy.querySelectorAll('[data-demo-route-tabindex]').forEach((el) => {
+    if (el.getAttribute('tabindex') === '-1') el.removeAttribute('tabindex');
   });
   copy.querySelectorAll('*').forEach((el) =>
     [...el.attributes].forEach((a) => {
@@ -334,7 +340,7 @@ function syncControls(section) {
             control.checked = el.checked;
             continue;
           }
-          const off = decodeLive(control.dataset.off);
+          const off = decodeValue(control.dataset.off);
           let value = el.hasAttribute(p.attr)
             ? el.getAttribute(p.attr) === ''
               ? ''
@@ -360,10 +366,6 @@ function syncControls(section) {
     const control = form.elements[`value:${index}`];
     if (control) control.value = el.value;
   });
-}
-
-function decodeLive(value) {
-  return value === '__remove' ? null : value;
 }
 
 function replaceContentText(target, value) {
@@ -721,10 +723,8 @@ for (const section of sections) {
     'keydown',
     'toggle',
     'combobox:change',
-    'number-field:change',
-    'date-picker:change',
-    'date-range-picker:change',
-    'color-picker:change',
+    'date-picker:select',
+    'date-range:change',
     'tag-input:change',
     'input-otp:complete',
     'sortable-change',

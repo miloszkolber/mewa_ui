@@ -12,7 +12,15 @@ export function enhance(root) {
     img.dataset.init = '';
     if (lifecycle.has(img)) return;
     img.dataset.mewaAvatarInit = '';
-    const display = img.style.display;
+    let display = null;
+    const restoreDisplay = () => {
+      if (!display) return;
+      if (img.style.display === 'none' && img.style.getPropertyPriority('display') === '') {
+        if (display.value) img.style.setProperty('display', display.value, display.priority);
+        else img.style.removeProperty('display');
+      }
+      display = null;
+    };
     const fallback = img.closest('.avatar')?.querySelector('.avatar-fallback');
     const fallbackAttributes = new Map();
     const restoreFallback = () => {
@@ -30,8 +38,12 @@ export function enhance(root) {
     const sync = () => {
       const failed = img.complete && img.naturalWidth === 0;
       restoreFallback();
+      restoreDisplay();
       img.toggleAttribute('data-error', failed);
-      img.style.display = failed && fallback ? 'none' : display;
+      if (failed && fallback) {
+        display = { value: img.style.display, priority: img.style.getPropertyPriority('display') };
+        img.style.setProperty('display', 'none');
+      }
       if (failed && fallback && img.alt.trim()) {
         setFallbackAttribute('aria-hidden', 'false');
         if (!fallback.hasAttribute('role')) setFallbackAttribute('role', 'img');
@@ -44,7 +56,7 @@ export function enhance(root) {
     lifecycle.listen(img, img, 'load', sync);
     lifecycle.add(img, () => {
       restoreFallback();
-      img.style.display = display;
+      restoreDisplay();
       img.removeAttribute('data-error');
     });
     sync();

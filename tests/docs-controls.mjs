@@ -23,7 +23,7 @@ export async function inspectPlaygroundControls(page, go) {
     await settle();
   };
   const reset = async () => {
-    await page.$eval(`${active} form`, (el) => el.reset());
+    await page.$eval(`${active} .playground-controls`, (el) => el.reset());
     await settle();
   };
   const propName = (s, i, name) => (s.id === 'root' ? `prop:${name}` : `prop:${s.id}:${i}:${name}`);
@@ -35,6 +35,10 @@ export async function inspectPlaygroundControls(page, go) {
       continue;
     }
     await reset();
+    // Optional sibling actions have no target in the default plain field.
+    // Exercise every property against complete anatomy; the independent
+    // variant pass checks all absent/present inspector conditions separately.
+    if (c.slug === 'text-field') await set('slot', 'affixes and action');
     assert.equal(await page.$$eval(`${active} [name^="instance:"]`, (els) => els.length), 0);
     for (const scope of model.scopes) {
       const indices = scope.id === 'root' ? [0] : Array.from({ length: scope.count }, (_, i) => i);

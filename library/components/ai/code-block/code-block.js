@@ -1,9 +1,9 @@
-import { queryAll } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
 
-const codeBlockInstances = new WeakMap();
+const lifecycle = createLifecycle('code-block');
 
 function codeBlockAtBottom(viewport) {
   return viewport.scrollHeight - viewport.clientHeight - viewport.scrollTop <= 24;
@@ -16,33 +16,66 @@ function codeBlockText(root, code) {
 }
 
 function initCodeBlock(root) {
-  if (codeBlockInstances.has(root)) return;
+  if (lifecycle.has(root)) return;
+  const viewport = root.querySelector('.code-block-viewport');
+  const code = root.querySelector('.code-block-code');
+  if (!viewport || !code) return;
+
   root.dataset.init = '';
   root.dataset.mewaCodeBlockInit = '';
 
-  const viewport = root.querySelector('.code-block-viewport');
-  const code = root.querySelector('.code-block-code');
-  if (!viewport || !code) {
-    root.removeAttribute('data-mewa-code-block-init');
-    return;
-  }
-
   const copyButton = root.querySelector('[data-code-block-copy]');
   const status = root.querySelector('.code-block-status');
-  const copyContents = copyButton ? Array.from(copyButton.childNodes) : [];
-  const copyLabel = copyButton?.getAttribute('aria-label');
-  const copyHidden = copyButton?.hidden;
-  const statusText = status?.textContent;
-  const restoreCopy = () => {
-    if (!copyButton) return;
-    copyButton.replaceChildren(...copyContents);
-    if (copyLabel === null) copyButton.removeAttribute('aria-label');
-    else copyButton.setAttribute('aria-label', copyLabel);
-  };
+  const attributes = attributeSnapshot();
+  let restoreFeedback = null;
   let copyTimer = null;
+  let copyAttempt = 0;
   let active = true;
   let streaming = root.hasAttribute('data-streaming');
   let pinned = streaming || codeBlockAtBottom(viewport);
+
+  const clearFeedback = () => {
+    if (copyTimer !== null) clearTimeout(copyTimer);
+    copyTimer = null;
+    restoreFeedback?.();
+    restoreFeedback = null;
+  };
+
+  const showFeedback = (copied) => {
+    const feedbackAttributes = attributeSnapshot();
+    const restoreContents = [];
+    const writeText = (element, text) => {
+      if (!element) return;
+      const contents = Array.from(element.childNodes);
+      const feedback = element.ownerDocument.createTextNode(text);
+      element.replaceChildren(feedback);
+      restoreContents.push(() => {
+        if (feedback.parentNode !== element || feedback.data !== text) return;
+        // Restore only this feedback node. Keep application insertions and do
+        // not reclaim baseline nodes that the application moved elsewhere.
+        feedback.replaceWith(...contents.filter((node) => !node.parentNode));
+      });
+    };
+    if (copied) {
+      writeText(copyButton, 'Copied');
+      feedbackAttributes.set(copyButton, 'aria-label', 'Copied');
+    }
+    writeText(
+      status,
+      copied ? 'Copied to clipboard.' : 'Copy failed. Select and copy the code manually.'
+    );
+    restoreFeedback = () => {
+      restoreContents.forEach((restore) => restore());
+      feedbackAttributes.restore();
+    };
+    if (copied) copyTimer = setTimeout(clearFeedback, 2000);
+  };
+
+  lifecycle.add(root, () => {
+    active = false;
+    clearFeedback();
+    attributes.restore();
+  });
 
   const scrollToBottom = () => {
     viewport.scrollTop = viewport.scrollHeight;
@@ -54,38 +87,33 @@ function initCodeBlock(root) {
 
   const onCopy = async () => {
     if (typeof navigator === 'undefined' || !navigator.clipboard?.writeText) return;
-    if (copyTimer !== null) clearTimeout(copyTimer);
-    copyTimer = null;
-    restoreCopy();
-    if (status) status.textContent = statusText;
+    const attempt = ++copyAttempt;
+    clearFeedback();
     try {
       await navigator.clipboard.writeText(codeBlockText(root, code));
     } catch {
-      if (active && status) status.textContent = 'Copy failed. Select and copy the code manually.';
+      if (active && attempt === copyAttempt) showFeedback(false);
       return;
     }
 
-    if (!active) return;
-    copyButton.textContent = 'Copied';
-    copyButton.setAttribute('aria-label', 'Copied');
-    if (status) status.textContent = 'Copied to clipboard.';
-    copyTimer = setTimeout(() => {
-      restoreCopy();
-      if (status) status.textContent = statusText;
-      copyTimer = null;
-    }, 2000);
+    if (active && attempt === copyAttempt) showFeedback(true);
   };
 
-  viewport.addEventListener('scroll', onScroll, { passive: true });
+  lifecycle.listen(root, viewport, 'scroll', onScroll, { passive: true });
 
   if (copyButton) {
-    copyButton.hidden = typeof navigator === 'undefined' || !navigator.clipboard?.writeText;
-    copyButton.addEventListener('click', onCopy);
+    attributes.set(
+      copyButton,
+      'hidden',
+      typeof navigator === 'undefined' || !navigator.clipboard?.writeText ? '' : null
+    );
+    lifecycle.listen(root, copyButton, 'click', onCopy);
   }
 
   const contentObserver = new MutationObserver(() => {
     if (streaming && pinned) scrollToBottom();
   });
+  lifecycle.add(root, () => contentObserver.disconnect());
   contentObserver.observe(code, { childList: true, subtree: true, characterData: true });
 
   const attributeObserver = new MutationObserver(() => {
@@ -96,6 +124,7 @@ function initCodeBlock(root) {
     }
     streaming = next;
   });
+  lifecycle.add(root, () => attributeObserver.disconnect());
   attributeObserver.observe(root, { attributes: true, attributeFilter: ['data-streaming'] });
 
   const resizeObserver =
@@ -104,38 +133,18 @@ function initCodeBlock(root) {
           if (streaming && pinned) scrollToBottom();
         })
       : null;
+  lifecycle.add(root, () => resizeObserver?.disconnect());
   resizeObserver?.observe(code);
 
   if (streaming) scrollToBottom();
-
-  codeBlockInstances.set(root, {
-    destroy() {
-      active = false;
-      viewport.removeEventListener('scroll', onScroll);
-      copyButton?.removeEventListener('click', onCopy);
-      contentObserver.disconnect();
-      attributeObserver.disconnect();
-      resizeObserver?.disconnect();
-      if (copyTimer !== null) clearTimeout(copyTimer);
-      if (copyButton) {
-        copyButton.hidden = copyHidden;
-        restoreCopy();
-      }
-      if (status) status.textContent = statusText;
-      root.removeAttribute('data-mewa-code-block-init');
-      codeBlockInstances.delete(root);
-    }
-  });
 }
 
 export function enhance(root) {
   queryAll(root, '.code-block').forEach(initCodeBlock);
 }
 
-export function destroy(root) {
-  queryAll(root, '.code-block').forEach((codeBlock) => {
-    codeBlockInstances.get(codeBlock)?.destroy();
-  });
+export function destroy(root = typeof document === 'undefined' ? null : document) {
+  lifecycle.destroy(root);
 }
 
 export const behavior = { name: 'code-block', enhance, destroy };

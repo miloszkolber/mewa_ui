@@ -15,7 +15,9 @@ import {
   propertyOperations,
   contentOperations,
   slotOperations,
-  companionSelectors
+  companionSelectors,
+  syncDisabledAnchor,
+  removeIdReferences
 } from '../docs/model-operations.mjs';
 
 export async function rewrite(html, rules) {
@@ -40,6 +42,19 @@ export async function readText(html, selector) {
 export async function operate(html, operations) {
   // Sequential: multiple handlers on the same element must see prior mutations.
   for (const op of operations) {
+    if (op.remove && op.removeReferences) {
+      const removed = (await inspect(html, op.selector)).matches
+        .filter((_, index) => op.index === undefined || index === op.index)
+        .map((node) => node.attrs.id)
+        .filter(Boolean);
+      if (removed.length)
+        html = await rewrite(html, [
+          [
+            op.removeReferences.map((attribute) => `[${attribute}]`).join(','),
+            (element) => removeIdReferences(element, op.removeReferences, new Set(removed))
+          ]
+        ]);
+    }
     if (op.popover !== undefined) {
       const owner = (await inspect(html, op.selector)).matches[op.index || 0];
       if (!owner) continue;
@@ -80,6 +95,7 @@ export async function operate(html, operations) {
           if (op.attr) {
             let attr = op.attr;
             let value = op.value;
+            if (attr === 'disabled') syncDisabledAnchor(el, value !== null);
             if (
               attr === 'disabled' &&
               !['input', 'select', 'textarea', 'button', 'fieldset'].includes(el.tagName)
@@ -278,7 +294,6 @@ async function scopeFor(html, type, label, profile, id) {
     matrix: profile.matrix,
     content: profile.content,
     props,
-    selector: profile.target,
     instanceSelectors: inspected.matches.map((n) => n.path),
     authoredDisabled,
     ...(companions ? { companionIndices: companions } : {}),
@@ -360,7 +375,9 @@ export async function compileModel(c, component) {
     // Only descendants of the component belong to it. Overlay launchers live
     // outside the component and must never become properties of its anatomy.
     if (!root) continue;
-    const nested = root.target
+    // A leaf input owns native constraints, but composed affixes and actions
+    // are siblings discovered through its documented composition owner.
+    const nested = (profile.partsTarget || root.target)
       .split(',')
       .flatMap((parent) =>
         selector.split(',').flatMap((child) => {
@@ -383,7 +400,7 @@ export async function compileModel(c, component) {
     // nested field constraints where the outer form does not own that state.
     if (part) {
       const owned = new Set(
-        root.props
+        (profile.partsTarget ? [] : root.props)
           .filter((p) => ['disabled', 'invalid', 'readonly', 'required'].includes(p.name))
           .map((p) => p.name)
       );
@@ -463,7 +480,9 @@ export async function compileModel(c, component) {
     );
   }
   const slot = slots[c.slug];
-  if (slot) {
+  // Structural alternatives may remove optional parts. Retain those parts in
+  // the model source; each rendered view applies its selected slot afterward.
+  if (slot && !slot.preserveAnatomy) {
     html = await operate(html, slotOperations(c.slug, slot.default));
     staticHtml = await operate(staticHtml, slotOperations(c.slug, slot.default));
   }
@@ -505,11 +524,13 @@ export async function matrixRows(model) {
       return scope.matrix.flatMap((d) => {
         if (d.prop) {
           const property = byName(scope, d.prop);
-          return property ? [{ kind: 'prop', property }] : [];
+          return property && !nonVisualProps.has(property.attr) ? [{ kind: 'prop', property }] : [];
         }
         if (d.bool) {
           const property = byName(scope, d.bool);
-          return property ? [{ kind: 'bool', property, when: d.when }] : [];
+          return property && !nonVisualProps.has(property.attr)
+            ? [{ kind: 'bool', property, when: d.when }]
+            : [];
         }
         if (d.content && scope.content) return [{ kind: 'content' }];
         if (d.slot && model.slot) return [{ kind: 'slot' }];
@@ -650,7 +671,7 @@ export async function matrixRows(model) {
               : label,
         html,
         scope: activeScope || scope,
-        wide
+        wide: wide || (scope.type === 'form-field' && values['data-orientation'] === 'horizontal')
       });
     }
   }
@@ -684,6 +705,13 @@ async function isolatePart(html, scope) {
     node.children.forEach(descendants);
   }
   descendants(chosen);
+  // A retained ancestor remains a native disclosure, not a label-free wrapper.
+  // Keep its authored trigger without restoring unrelated sibling content.
+  for (const node of nodes)
+    if (keep.has(node.number) && node.tag === 'details') {
+      const summary = node.children.find((child) => child.tag === 'summary');
+      if (summary) descendants(summary);
+    }
   // Keep accessible names/descriptions with the isolated part, but not the
   // complete controlled panel or the original component's unrelated siblings.
   const labels = ['aria-labelledby', 'aria-describedby', 'aria-errormessage'];

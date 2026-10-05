@@ -1,6 +1,6 @@
 // -- Sortable -------------------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -14,6 +14,8 @@ export function enhance(root) {
     if (lifecycle.has(list)) return;
     list.dataset.mewaSortableInit = '';
     const doc = list.ownerDocument;
+    const attributes = attributeSnapshot();
+    lifecycle.add(list, attributes.restore);
 
     const isHorizontal = list.dataset.orientation === 'horizontal';
     const NEXT_KEY = isHorizontal ? 'ArrowRight' : 'ArrowDown';
@@ -22,6 +24,7 @@ export function enhance(root) {
     let liveRegion = list.nextElementSibling?.matches('.sortable-live')
       ? list.nextElementSibling
       : null;
+    const generatedLiveRegion = !liveRegion;
     if (!liveRegion) {
       liveRegion = doc.createElement('span');
       liveRegion.className = 'sortable-live';
@@ -29,11 +32,31 @@ export function enhance(root) {
       liveRegion.setAttribute('role', 'status');
       if (list.parentElement) list.parentElement.insertBefore(liveRegion, list.nextSibling);
       else list.after(liveRegion);
-      lifecycle.add(list, () => liveRegion.remove());
     }
 
+    const authoredLiveNodes = Array.from(liveRegion.childNodes);
+    const liveParent = liveRegion.parentNode;
+    const generatedLiveMarkup = generatedLiveRegion ? liveRegion.outerHTML : null;
+    let lastAnnouncement = null;
+    lifecycle.add(list, () => {
+      if (generatedLiveRegion && liveRegion.parentNode !== liveParent) return;
+      if (lastAnnouncement) {
+        if (
+          lastAnnouncement.node.parentNode !== liveRegion ||
+          lastAnnouncement.node.data !== lastAnnouncement.text
+        )
+          return;
+        // An unchanged announcement does not confer ownership of other children
+        // or of authored nodes the application has reparented elsewhere.
+        lastAnnouncement.node.replaceWith(...authoredLiveNodes.filter((node) => !node.parentNode));
+      }
+      // A generated region may also acquire application children or attributes.
+      if (generatedLiveRegion && liveRegion.outerHTML === generatedLiveMarkup) liveRegion.remove();
+    });
     function announce(message) {
-      liveRegion.textContent = message;
+      const node = doc.createTextNode(message);
+      liveRegion.replaceChildren(node);
+      lastAnnouncement = { node, text: message };
     }
 
     function getAllItems() {
@@ -49,13 +72,12 @@ export function enhance(root) {
     }
 
     function markActive(item, { focus = true } = {}) {
+      if (!getItems().includes(item)) item = null;
       getAllItems().forEach((candidate) => {
-        candidate.removeAttribute('data-active');
-        candidate.setAttribute('tabindex', '-1');
+        attributes.set(candidate, 'data-active', candidate === item ? '' : null);
+        attributes.set(candidate, 'tabindex', candidate === item ? '0' : '-1');
       });
       if (!item) return;
-      item.setAttribute('data-active', '');
-      item.setAttribute('tabindex', '0');
       if (focus) item.focus();
     }
 
@@ -123,23 +145,24 @@ export function enhance(root) {
 
     function updateStepControls() {
       const items = getItems();
-      items.forEach((item, index) => {
+      getAllItems().forEach((item) => {
+        const index = items.indexOf(item);
+        const disabled = index === -1;
         const label = getItemLabel(item);
         const previous = item.querySelector('[data-sortable-decrease]');
         const next = item.querySelector('[data-sortable-increase]');
         if (previous) {
-          previous.disabled = index === 0;
-          previous.setAttribute('aria-label', `Move ${label} ${isHorizontal ? 'left' : 'up'}`);
+          attributes.set(previous, 'disabled', disabled || index === 0 ? '' : null);
+          attributes.set(previous, 'aria-label', `Move ${label} ${isHorizontal ? 'left' : 'up'}`);
         }
         if (next) {
-          next.disabled = index === items.length - 1;
-          next.setAttribute('aria-label', `Move ${label} ${isHorizontal ? 'right' : 'down'}`);
+          attributes.set(next, 'disabled', disabled || index === items.length - 1 ? '' : null);
+          attributes.set(next, 'aria-label', `Move ${label} ${isHorizontal ? 'right' : 'down'}`);
         }
       });
     }
 
     getAllItems().forEach((item) => {
-      item.setAttribute('tabindex', '-1');
       createStepControls(item);
     });
     markActive(getItems()[0], { focus: false });
@@ -148,7 +171,9 @@ export function enhance(root) {
     lifecycle.onUpdate(list, () => {
       getAllItems().forEach(createStepControls);
       const active = getActiveItem();
-      markActive(active || getItems()[0], { focus: false });
+      const eligible = getItems();
+      const next = eligible.includes(active) ? active : eligible[0];
+      markActive(next, { focus: active !== next && Boolean(active?.contains(doc.activeElement)) });
       updateStepControls();
     });
     let dragged = null;
@@ -158,19 +183,18 @@ export function enhance(root) {
       if (!item || item.parentElement !== list || item.getAttribute('aria-disabled') === 'true')
         return;
       dragged = item;
-      item.setAttribute('data-dragging', '');
+      attributes.set(item, 'data-dragging', '');
       event.dataTransfer.effectAllowed = 'move';
       event.dataTransfer.setData('text/plain', '');
     });
 
     lifecycle.listen(list, list, 'dragend', (event) => {
       const item = event.target.closest('.sortable-item');
-      if (!item || item.parentElement !== list || item.getAttribute('aria-disabled') === 'true')
-        return;
-      item.removeAttribute('data-dragging');
+      if (!item || item.parentElement !== list) return;
+      attributes.set(item, 'data-dragging', null);
       list
         .querySelectorAll('[data-over]')
-        .forEach((candidate) => candidate.removeAttribute('data-over'));
+        .forEach((candidate) => attributes.set(candidate, 'data-over', null));
       dragged = null;
     });
 
@@ -185,16 +209,16 @@ export function enhance(root) {
       const midpoint = isHorizontal ? rect.left + rect.width / 2 : rect.top + rect.height / 2;
       const pointer = isHorizontal ? event.clientX : event.clientY;
       list.querySelectorAll('[data-over]').forEach((candidate) => {
-        if (candidate !== item) candidate.removeAttribute('data-over');
+        if (candidate !== item) attributes.set(candidate, 'data-over', null);
       });
-      item.setAttribute('data-over', pointer < midpoint ? 'before' : 'after');
+      attributes.set(item, 'data-over', pointer < midpoint ? 'before' : 'after');
     });
 
     lifecycle.listen(list, list, 'dragleave', (event) => {
       const item = event.target.closest('.sortable-item');
       if (!item || item.parentElement !== list || item.getAttribute('aria-disabled') === 'true')
         return;
-      item.removeAttribute('data-over');
+      attributes.set(item, 'data-over', null);
     });
 
     lifecycle.listen(list, list, 'drop', (event) => {
@@ -203,8 +227,8 @@ export function enhance(root) {
         return;
       event.preventDefault();
       const position = item.getAttribute('data-over');
-      item.removeAttribute('data-over');
-      if (!dragged || dragged === item) return;
+      attributes.set(item, 'data-over', null);
+      if (!getItems().includes(dragged) || dragged === item) return;
 
       if (position === 'before') list.insertBefore(dragged, item);
       else list.insertBefore(dragged, item.nextSibling);
@@ -216,7 +240,7 @@ export function enhance(root) {
 
     lifecycle.listen(list, list, 'click', (event) => {
       const control = event.target.closest('.sortable-step');
-      if (!control || control.disabled) return;
+      if (!control || control.matches(':disabled')) return;
       const item = control.closest('.sortable-item');
       if (!item || item.parentElement !== list || item.getAttribute('aria-disabled') === 'true')
         return;
@@ -235,10 +259,10 @@ export function enhance(root) {
         event.target.parentElement !== list
       )
         return;
-      const active = getActiveItem() || list.querySelector(':scope > .sortable-item[tabindex="0"]');
-      if (!active) return;
+      const active = event.target;
       const items = getItems();
       const index = items.indexOf(active);
+      if (index === -1) return;
 
       if (event.key === NEXT_KEY && !event.altKey) {
         event.preventDefault();

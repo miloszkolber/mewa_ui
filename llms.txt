@@ -2,39 +2,33 @@
 
 Semantic HTML, tokenized CSS, local SVG icons, and optional native JavaScript behaviors.
 
-## Routes
+Read `README.md` for release installation and `library/DESIGN.md` for system boundaries and conditional task routes.
 
-- `registry.schema.json`: machine-readable registry v3 shape.
-- `registry.json`: versioned component selection, file paths, dependencies, and token purposes.
-- `library/DESIGN.md`: design rules and system references.
-- `library/system/foundations.md`: tokens and responsive foundations.
-- `library/system/components.md`: generated selection guide.
-- `library/components/{category}/{slug}/{slug}.md`: exact markup, state, events, fallback, and accessibility contract.
-- `library/system/patterns.md`: component composition.
-- `library/system/layouts.md`: sidebar, top-navigation, and focused-tool shells.
-- `library/system/accessibility.md`: interaction acceptance criteria.
-- `library/runtime/README.md`: vanilla integration, lifecycle ownership, and browser capabilities.
-- `library/adapters/svelte/README.md`: Svelte attachment and Bun compilation.
-- `docs/preview.html#preview-{slug}`: individual interactive playground for each component.
-- `docs/figma.html`: generated static state matrix with a theme picker for Figma import.
-- `docs/specimens.json` and `docs/catalog.mjs`: shared documentation sources; regenerate with `bun run docs:write`.
-- `AGENTS.md`: repository maintenance and validation.
+## Consumer routes
 
-## Consumer task protocol
+- Selection: `library/system/components.md#selection-order`, then candidate metadata and only selected component contracts.
+- Markup, keyboard, state, events, and fallback: the selected `library/components/{category}/{slug}/{slug}.md`.
+- Visual changes: the relevant section of `library/system/foundations.md`.
+- Repeated regions: the relevant section of `library/system/patterns.md`.
+- Application chrome: `library/system/layouts.md#choose-a-shell` and the selected recipe.
+- Interaction acceptance: relevant sections of `library/system/accessibility.md` and the selected component contract.
+- Mount/update/unmount: `library/runtime/README.md`; choose one lifecycle owner.
 
-1. Identify the consumer framework, lifecycle owner, native fallback, and supported browsers.
-2. Select components from the registry and read their contracts plus relevant system guidance.
-3. Load base, tokens, and selected component CSS. Component CSS entries are flat and already include their declared style dependencies.
-4. Use automatic entries for plain HTML or explicit controllers/attachments for application-owned regions.
-5. Inline local SVG for icons that must work without JavaScript. `ri-*` classes require a host loader or locally loaded Remix stylesheet; the core does not provide one.
-6. Preserve every documented feature and public hook. Ask the operator before removing a feature or changing a public contract.
-7. Verify keyboard, focus, native forms, theme, narrow width, zoom, reduced motion, forced colors, and the documented fallback.
-8. Report modified files, checks run, failures, and unverified browser or assistive-technology coverage.
+For a core archive with local contracts, find candidates in `components/index.md`, then read selected `components/{slug}.json` and `component.contractLocal`.
 
-## Source ownership
+Use `manifest.json` for full inventory or `guidance` paths when needed.
 
-`library/` is the authored implementation. `dist/` is generated release output. Keep human explanation in README and docs; keep implementation instructions in library contracts.
+Icons are optional assets from the separate `mewa-icons` archive; inline SVG needs no loader.
 
-Follow the current motion tokens and reduced-motion rules in `library/system/foundations.md`. Preserve native semantics, square geometry, structural borders, and status meaning without color.
+<!-- REPOSITORY-ONLY:START -->
+## Source-checkout routes
 
-Never invent classes, events, or framework bindings. Use documented APIs and preserve the consumer's application state ownership.
+- `AGENTS.md`: repository ownership, generation, compatibility, and validation.
+- `registry.json`: source registry v3 selection, exact file paths, dependencies, assets, and token purposes.
+- `registry.schema.json`: registry compatibility checks.
+- `library/adapters/svelte/README.md`: source Svelte attachment and Bun compilation guide; the optional archive has its own README.
+- `docs/preview.html#preview-{slug}`: component playgrounds, not another API authority.
+- `docs/figma.html`: inert visual property and variant matrix for Figma import.
+
+`library/` contains authored implementation and contracts; `dist/` contains generated release files.
+<!-- REPOSITORY-ONLY:END -->

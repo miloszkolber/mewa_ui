@@ -1,10 +1,60 @@
-import { demoIcon, demoIconEnd, demoSpinner } from './component-model.mjs';
+import { demoIcon, demoSpinner } from './component-model.mjs';
 import { escapeHtml } from './catalog.mjs';
+
+// Structural removal also removes only the references to the removed IDs.
+// The same routine works on native elements and HTMLRewriter elements, so
+// scoped playground IDs and static matrix IDs receive identical treatment.
+export function removeIdReferences(element, attributes, ids) {
+  for (const attribute of attributes) {
+    const current = element.getAttribute(attribute);
+    if (current === null) continue;
+    const remaining = current
+      .split(/\s+/)
+      .filter((id) => id && !ids.has(id))
+      .join(' ');
+    if (remaining === current) continue;
+    if (remaining) element.setAttribute(attribute, remaining);
+    else element.removeAttribute(attribute);
+  }
+}
+
+// Both consumers keep the route while unavailable, without rebuilding its node.
+// The documentation-only marker is namespaced with href and stripped from code.
+export function syncDisabledAnchor(element, disabled) {
+  if (element.tagName.toLowerCase() !== 'a') return;
+  const href = element.getAttribute('href');
+  const saved = element.getAttribute('data-demo-href');
+  if (disabled) {
+    // Removing href otherwise blurs a focused native link. Retain that focus,
+    // but do not leave an unavailable route in the sequential tab order.
+    if (
+      href !== null &&
+      element.ownerDocument?.activeElement === element &&
+      element.getAttribute('tabindex') === null
+    ) {
+      element.setAttribute('data-demo-route-tabindex', '');
+      element.setAttribute('tabindex', '-1');
+    }
+    if (href !== null) element.setAttribute('data-demo-href', href);
+    element.removeAttribute('href');
+  } else {
+    if (saved !== null) {
+      // An application-authored route edit takes precedence over our saved value.
+      if (href === null) element.setAttribute('href', saved);
+      element.removeAttribute('data-demo-href');
+    }
+    if (element.getAttribute('data-demo-route-tabindex') !== null) {
+      if (element.getAttribute('tabindex') === '-1') element.removeAttribute('tabindex');
+      element.removeAttribute('data-demo-route-tabindex');
+    }
+  }
+}
 
 // Exact owner paths are compiled before controls are rendered. A missing label
 // in one item must never shift an update onto the following item's label.
 export const companionSelectors = {
   label: ['input,select,textarea'],
+  callout: ['.callout-title', '.callout-description'],
   'tool-call': ['.tool-call-state', '.tool-call-mark'],
   'activity-item': ['.agent-activity-status', '.agent-activity-marker'],
   'todo-item': ['.todo-item-status', '.todo-item-mark'],
@@ -17,7 +67,6 @@ export const companionSelectors = {
   'number-field': ['.number-field button'],
   resizable: ['.resizable-group', '.resizable-handle'],
   toolbar: ['.separator'],
-  'date-picker': ['.date-picker-nav', '.date-picker-day'],
   'file-input': ['.file-input'],
   'text-field': ['.text-field'],
   field: ['.field'],
@@ -43,6 +92,15 @@ function companionOperations(scope, selector, operation) {
   return [{ selector: owned(scope, selector), ...operation }];
 }
 
+function currentPageOperations(scope, index, value) {
+  if (scope.type !== 'page') return [];
+  const classes = (scope.instances?.[index]?.class || 'pagination-link')
+    .split(/\s+/)
+    .filter((name) => name && name !== 'pagination-active');
+  if (value === 'page') classes.push('pagination-active');
+  return [{ selector: scope.target, index, attr: 'class', value: classes.join(' ') }];
+}
+
 // Operations are consumed by both HTMLRewriter (export) and DOM (playground).
 // Keeping mutations here prevents the two surfaces from inventing different APIs.
 export function propertyOperations(scope, property, value) {
@@ -56,6 +114,7 @@ export function propertyOperations(scope, property, value) {
     return ops;
   }
   ops.push({ selector: scope.target, index, attr, value });
+  if (attr === 'aria-current') ops.push(...currentPageOperations(scope, index, value));
 
   const nativeTargets = {
     field: 'input,select,textarea',
@@ -91,15 +150,6 @@ export function propertyOperations(scope, property, value) {
       ops.push(...companionOperations(scope, '.toggle', { attr: 'disabled', value }));
     if (scope.type === 'number-field')
       ops.push(...companionOperations(scope, '.number-field button', { attr: 'disabled', value }));
-    if (scope.type === 'date-picker')
-      ops.push(
-        ...['.date-picker-nav', '.date-picker-day'].flatMap((selector) =>
-          companionOperations(scope, selector, {
-            attr: 'disabled',
-            value
-          })
-        )
-      );
     if (scope.type === 'tag-input') {
       ops.push({
         selector: owned(scope, '.tag-input-fallback'),
@@ -126,16 +176,6 @@ export function propertyOperations(scope, property, value) {
   }
   if (name === 'open' && scope.type === 'combobox')
     ops.push({ selector: scope.target, index, popover: value !== null });
-  if (name === 'loading')
-    ops.push({
-      selector: scope.target,
-      index,
-      attr: 'aria-busy',
-      value: value === null ? null : 'true'
-    });
-  if (name === 'indeterminate') {
-    ops.push({ selector: scope.target, index, attr: 'data-demo-mixed', value });
-  }
   if (attr === 'data-orientation' && scope.type === 'slider')
     ops.push({
       selector: scope.target,
@@ -174,6 +214,21 @@ export function propertyOperations(scope, property, value) {
       index,
       text: { positive: 'Ready', caution: 'Delayed', negative: 'Failed', running: 'Running' }[value]
     });
+  }
+  // These example messages keep status meaning available without color. They
+  // are documentation content, not automatic behavior of the CSS-only Callout.
+  if (attr === 'data-variant' && scope.type === 'callout') {
+    const message = {
+      default: ['Connection required', 'Connect the service before starting a sync.'],
+      positive: ['Connected', 'The service is ready to sync.'],
+      caution: ['Connection interrupted', 'Check the service before restarting the sync.'],
+      destructive: ['Connection failed', 'Reconnect the service and try again.']
+    }[value || 'default'];
+    if (message)
+      ops.push(
+        ...companionOperations(scope, '.callout-title', { text: message[0] }),
+        ...companionOperations(scope, '.callout-description', { text: message[1] })
+      );
   }
   if (attr === 'data-author' && value) {
     const author = value === 'user' ? 'You' : value[0].toUpperCase() + value.slice(1);
@@ -303,7 +358,7 @@ export function contentOperations(scope, state = {}) {
     (loading ? demoSpinner : '') +
     (showIconStart && (showLabel || !loading) ? demoIcon : '') +
     (showLabel ? escapeHtml(label) : '') +
-    (showIconEnd && (showLabel || !loading) ? demoIconEnd : '');
+    (showIconEnd && (showLabel || !loading) ? demoIcon : '');
   return [
     { selector: scope.target, index: scope.index || 0, html },
     {
@@ -331,17 +386,46 @@ export function contentOperations(scope, state = {}) {
 // links) selects one instance. Every other instance drops the attribute.
 export function exclusiveOperations(scope, chosen) {
   const ops = [];
-  for (let index = 0; index < scope.count; index += 1)
+  for (let index = 0; index < scope.count; index += 1) {
+    const value = index === chosen ? scope.exclusive.on : null;
     ops.push({
       selector: scope.target,
       index,
       attr: scope.exclusive.attr,
-      value: index === chosen ? scope.exclusive.on : null
+      value
     });
+    if (scope.exclusive.attr === 'aria-current')
+      ops.push(...currentPageOperations(scope, index, value));
+  }
   return ops;
 }
 
 export function slotOperations(slug, value) {
+  if (slug === 'text-field')
+    return [
+      ...(!['prefix', 'affixes', 'affixes and action'].includes(value)
+        ? [
+            {
+              selector: '.text-field-affix[data-side="start"]',
+              remove: true,
+              removeReferences: ['aria-describedby']
+            }
+          ]
+        : []),
+      ...(!['suffix', 'affixes', 'affixes and action'].includes(value)
+        ? [
+            {
+              selector: '.text-field-affix[data-side="end"]',
+              remove: true,
+              removeReferences: ['aria-describedby']
+            }
+          ]
+        : []),
+      ...(!['action', 'affixes and action'].includes(value)
+        ? [{ selector: '.text-field-action', remove: true }]
+        : []),
+      ...(value === 'plain' || !value ? [{ selector: '.text-field-control', unwrap: true }] : [])
+    ];
   if (slug === 'table')
     return [
       {

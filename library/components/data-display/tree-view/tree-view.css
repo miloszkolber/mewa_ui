@@ -33,12 +33,17 @@
     }
 
     &:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > .tree-leaf,
-    &:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > .tree-branch > .tree-branch-trigger {
+    &[aria-disabled="true"] .tree-leaf,
+    & > .tree-leaf:is(:disabled, [aria-disabled="true"]),
+    &:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > .tree-branch > .tree-branch-trigger,
+    &[aria-disabled="true"] .tree-branch > .tree-branch-trigger,
+    & > .tree-branch > .tree-branch-trigger:is(:disabled, [aria-disabled="true"]) {
       background: var(--surface-control-disabled);
       border-color: var(--border-disabled);
       color: var(--text-disabled);
       cursor: not-allowed;
       pointer-events: none;
+      & svg { color: inherit; }
     }
   }
 
@@ -228,5 +233,15 @@
     .tree-leaf { color: CanvasText; }
     .tree-branch-trigger svg:first-child { color: CanvasText; }
     .tree-leaf svg { color: CanvasText; }
+    .tree-item:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > .tree-leaf,
+    .tree-item[aria-disabled="true"] .tree-leaf,
+    .tree-item > .tree-leaf:is(:disabled, [aria-disabled="true"]),
+    .tree-item:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > .tree-branch > .tree-branch-trigger,
+    .tree-item[aria-disabled="true"] .tree-branch > .tree-branch-trigger,
+    .tree-item > .tree-branch > .tree-branch-trigger:is(:disabled, [aria-disabled="true"]) {
+      color: GrayText;
+      border-color: GrayText;
+      & svg { color: GrayText; }
+    }
   }
 }

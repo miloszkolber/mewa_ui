@@ -93,6 +93,10 @@ The module sets `aria-describedby` on the trigger.
 
 The module retries initialization when a trigger appears before its target.
 
+Target replacement restores the old description and anchor styles only while the module owns those values.
+
+Cleanup preserves description and anchor values replaced by the application.
+
 The module uses explicit coordinates when CSS Anchor Positioning is unavailable.
 
 ## Keyboard

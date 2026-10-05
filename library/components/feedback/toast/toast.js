@@ -1,6 +1,6 @@
 // -- Toast -----------------------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -9,15 +9,36 @@ const lifecycle = createLifecycle('toast');
 const DURATION = 4000;
 const MAX_VISIBLE = 3;
 
-const isMounted = (el) => Boolean(el && (el.parentNode || el.parentElement));
+const isMounted = (el, doc = el?.ownerDocument) =>
+  Boolean(el?.isConnected && el.ownerDocument === doc);
 const toastStates = new WeakMap();
+// Adoption changes ownerDocument, not the document acquired by a mounted root.
+const rootDocuments = new WeakMap();
+const containerDocuments = new WeakMap();
+
+function releaseContainer(state) {
+  state.container.querySelectorAll('.toast').forEach((element) => toastDismiss(element));
+  state.attributes.restore();
+  containerDocuments.delete(state.container);
+  if (state.createdContainer) state.container.remove();
+}
 
 function ensureToastState(doc, root = doc) {
   const current = toastStates.get(doc);
-  if (current?.container && isMounted(current.container)) return current;
+  if (isMounted(current?.container, doc)) return current;
+  if (current) releaseContainer(current);
 
-  let toastContainer =
-    queryAll(root, '#toast-container')[0] || doc.getElementById('toast-container');
+  const resolveContainer = () =>
+    queryAll(root, '#toast-container').find((element) => isMounted(element, doc)) ||
+    doc.getElementById('toast-container');
+  let toastContainer = resolveContainer();
+  const previousDocument = containerDocuments.get(toastContainer);
+  if (previousDocument && previousDocument !== doc) {
+    // Another region can enhance this document before the adopted owner updates.
+    // End the previous document's container ownership before the destination binds.
+    ensureToastState(previousDocument);
+    toastContainer = resolveContainer();
+  }
   const createdContainer = !toastContainer;
   if (!toastContainer) {
     toastContainer = doc.createElement('div');
@@ -32,13 +53,14 @@ function ensureToastState(doc, root = doc) {
   const state = {
     container: toastContainer,
     createdContainer,
-    originalPopover: toastContainer.getAttribute('popover'),
+    attributes: attributeSnapshot(),
     adapterInstalled: current?.adapterInstalled || false,
     api: current?.api || null,
     roots: current?.roots || new Set(),
     previousApi: current?.previousApi
   };
   toastStates.set(doc, state);
+  containerDocuments.set(toastContainer, doc);
   return state;
 }
 
@@ -66,7 +88,8 @@ function installToastAdapter(doc, root) {
   const state = ensureToastState(doc, root);
   if (!state.api) state.api = createToastApi(doc);
 
-  const view = doc.defaultView || (typeof window === 'undefined' ? null : window);
+  // A Window-less document cannot acquire an unrelated ambient window.
+  const view = doc.defaultView;
   if (view && !state.adapterInstalled) {
     state.previousApi = view.toast;
     view.toast = state.api;
@@ -76,7 +99,7 @@ function installToastAdapter(doc, root) {
 }
 
 const toastDismiss = (el, callback) => {
-  if (!isMounted(el)) return;
+  if (!el) return;
   if (typeof el._toastCancelTimer === 'function') el._toastCancelTimer();
   lifecycle.destroy(el);
   const container = el.parentElement;
@@ -87,7 +110,8 @@ const toastDismiss = (el, callback) => {
 };
 
 const toastCreate = (doc, options) => {
-  const toastContainer = ensureToastState(doc).container;
+  const state = ensureToastState(doc);
+  const toastContainer = state.container;
   const o = typeof options === 'string' ? { title: options } : options;
   const { title, description, variant, action, onDismiss } = o;
   const duration = o.duration != null ? o.duration : DURATION;
@@ -155,7 +179,7 @@ const toastCreate = (doc, options) => {
   // layout and receive the browser's centered fixed positioning.
   const focused = toastContainer.contains(doc.activeElement) ? doc.activeElement : null;
   if (toastContainer.matches(':popover-open')) toastContainer.hidePopover();
-  toastContainer.setAttribute('popover', 'manual');
+  state.attributes.set(toastContainer, 'popover', 'manual');
   toastContainer.showPopover();
   focused?.focus({ preventScroll: true });
   lifecycle.listen(el, closeBtn, 'click', () => {
@@ -210,6 +234,10 @@ const toastCreate = (doc, options) => {
     };
 
     el._toastCancelTimer = cancelTimer;
+    lifecycle.add(el, () => {
+      cancelTimer();
+      delete el._toastCancelTimer;
+    });
     lifecycle.listen(el, el, 'mouseenter', () => {
       hovered = true;
       syncPause();
@@ -239,29 +267,53 @@ export function enhance(root) {
       ? root
       : root?.ownerDocument || (typeof document === 'undefined' ? null : document);
   if (!doc?.body) return;
-  const state = installToastAdapter(doc, root || doc);
-  if (!state.roots.has(doc)) state.roots.add(root || doc);
+  const owner = root || doc;
+  const previousDocument = rootDocuments.get(owner);
+  if (previousDocument && previousDocument !== doc) releaseRoots(previousDocument, owner);
+  const state = installToastAdapter(doc, owner);
+  if (!state.roots.has(doc)) {
+    state.roots.add(owner);
+    rootDocuments.set(owner, doc);
+  }
   return state.api;
 }
 
-export function destroy(root) {
-  const doc = root?.nodeType === 9 ? root : root?.ownerDocument;
+function releaseRoots(doc, root) {
   const state = toastStates.get(doc);
   if (!state) return;
   for (const owner of state.roots) {
-    if (owner === root || root?.contains?.(owner)) state.roots.delete(owner);
+    if (root !== doc && owner !== root && !root?.contains?.(owner)) continue;
+    state.roots.delete(owner);
+    if (rootDocuments.get(owner) === doc) rootDocuments.delete(owner);
   }
-  if (state.roots.size) return;
-  state.container.querySelectorAll('.toast').forEach((element) => toastDismiss(element));
+  if (state.roots.size) {
+    // Another owner keeps this document's API. Release an adopted container
+    // before a destination-document binding can take ownership of it.
+    if (!isMounted(state.container, doc)) ensureToastState(doc);
+    return;
+  }
+  releaseContainer(state);
   const view = doc.defaultView;
-  if (view?.toast === state.api) {
+  if (state.adapterInstalled && view?.toast === state.api) {
     if (state.previousApi === undefined) delete view.toast;
     else view.toast = state.previousApi;
   }
-  if (state.createdContainer) state.container.remove();
-  else if (state.originalPopover === null) state.container.removeAttribute('popover');
-  else state.container.setAttribute('popover', state.originalPopover);
   toastStates.delete(doc);
+}
+
+export function destroy(root) {
+  if (!root) return;
+  const documents = new Set();
+  const collect = (owner) => {
+    const doc = rootDocuments.get(owner);
+    if (doc) documents.add(doc);
+  };
+  collect(root);
+  queryAll(root, '*').forEach(collect);
+  // A document-wide destroy also owns standalone API resources. A region's
+  // current document alone does not establish a binding after adoption.
+  if (root.nodeType === 9) documents.add(root);
+  documents.forEach((doc) => releaseRoots(doc, root));
 }
 
 export const behavior = { name: 'toast', enhance, destroy };

@@ -86,6 +86,10 @@ The module may expose the legacy `data-init` readiness marker for compatibility.
 
 Do not author `data-init` or `data-resizing`.
 
+Use `aria-disabled="true"` on an unavailable `.resizable-handle`.
+
+Disabled handle presentation does not require a readiness marker.
+
 The default value is 35 percent.
 
 The default arrow-key step is 1 percentage point.
@@ -166,3 +170,9 @@ No dead pointer or keyboard resize controls are rendered.
 Load `resizable.js` only when user-controlled resizing is needed.
 
 Omit the module for a static split.
+
+Destroy removes generated resize controls and generated output.
+
+Destroy restores authored handle attributes, group orientation, panel styles, and existing output only when the module still owns their current values.
+
+Application changes to handle semantics, panel styles, and existing output remain intact.

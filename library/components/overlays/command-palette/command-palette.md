@@ -80,6 +80,8 @@ Set `data-command-palette-trigger` to the dialog ID.
 
 The module also uses `Cmd+K` on macOS and `Ctrl+K` on other platforms.
 
+The global shortcut ignores composing events and events with `defaultPrevented` set.
+
 Do not register a second application shortcut for the same key combination.
 
 ## Disabled commands
@@ -89,6 +91,10 @@ Use the native `disabled` attribute when the command is a button.
 Use `aria-disabled="true"` only when application behavior requires a non-native command item state.
 
 Skip disabled items during managed keyboard navigation.
+
+Native disabled state includes buttons inside a disabled fieldset.
+
+Disabled command labels, icons, and shortcuts use the disabled presentation.
 
 Do not hide a disabled command when its presence explains an unavailable capability.
 
@@ -115,6 +121,8 @@ The module labels each `role="group"` from its group heading unless the group ha
 Command buttons use `tabindex="-1"` while enhanced so the search input owns keyboard focus.
 
 Enter activates the highlighted command.
+
+Enter does not activate a substitute command when the highlighted command becomes unavailable.
 
 Escape closes the dialog through native dialog behavior.
 

@@ -1,6 +1,6 @@
 // -- Combobox -------------------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -8,6 +8,7 @@ import { registerBehavior } from '../../../runtime/enhancer.js';
 const lifecycle = createLifecycle('combobox');
 
 export function enhance(root) {
+  lifecycle.refresh(root);
   queryAll(root, '.combobox').forEach((wrapper) => {
     wrapper.dataset.init = '';
     if (lifecycle.has(wrapper)) return;
@@ -36,36 +37,61 @@ export function enhance(root) {
     popover.append(status);
     lifecycle.add(wrapper, () => status.remove());
 
-    const initialValue = hiddenInput?.defaultValue;
+    let resetValue = hiddenInput?.defaultValue;
+    let writtenValue = hiddenInput?.value;
+    // Hidden value writes also replace the native default attribute. Keep the
+    // reset value separate and adopt a later application default before writing.
     const initialLabel = valueElement?.textContent || '';
     const initialPlaceholder = valueElement?.hasAttribute('data-placeholder');
     const allItems = () => Array.from(listbox.querySelectorAll('[role="option"]'));
-    let highlightedIndex = -1;
+    let highlightedItem = null;
+    const attributes = attributeSnapshot();
 
     if (!searchInput.hasAttribute('aria-label') && !searchInput.hasAttribute('aria-labelledby')) {
       const triggerLabel = trigger.getAttribute('aria-label');
-      if (triggerLabel) searchInput.setAttribute('aria-label', `Search ${triggerLabel}`);
+      if (triggerLabel) attributes.set(searchInput, 'aria-label', `Search ${triggerLabel}`);
     }
 
     const anchorId = `--combobox-${popover.id}`;
+    const originalTriggerAnchor = trigger.style.anchorName;
+    const originalPopoverAnchor = popover.style.positionAnchor;
     trigger.style.anchorName = anchorId;
     popover.style.positionAnchor = anchorId;
+    lifecycle.add(wrapper, () => {
+      if (popover.matches(':popover-open')) popover.hidePopover();
+      attributes.restore();
+      if (trigger.style.anchorName === anchorId) trigger.style.anchorName = originalTriggerAnchor;
+      if (popover.style.positionAnchor === anchorId)
+        popover.style.positionAnchor = originalPopoverAnchor;
+    });
 
     const getVisibleItems = () =>
-      allItems().filter((item) => !item.hidden && item.getAttribute('aria-disabled') !== 'true');
+      allItems().filter(
+        (item) =>
+          !item.hidden &&
+          !item.matches(':disabled') &&
+          item.getAttribute('aria-disabled') !== 'true'
+      );
 
     const setExpanded = (expanded) => {
       const value = String(expanded);
-      trigger.setAttribute('aria-expanded', value);
-      searchInput.setAttribute('aria-expanded', value);
+      attributes.set(trigger, 'aria-expanded', value);
+      attributes.set(searchInput, 'aria-expanded', value);
     };
 
     const clearHighlight = () => {
-      allItems().forEach((item) => {
-        delete item.dataset.highlighted;
-      });
-      highlightedIndex = -1;
-      searchInput.setAttribute('aria-activedescendant', '');
+      if (highlightedItem) attributes.set(highlightedItem, 'data-highlighted', null);
+      highlightedItem = null;
+      attributes.set(searchInput, 'aria-activedescendant', '');
+    };
+
+    const reconcileHighlight = (items = getVisibleItems()) => {
+      if (!highlightedItem) return -1;
+      const index = items.indexOf(highlightedItem);
+      if (index < 0) clearHighlight();
+      else if (searchInput.getAttribute('aria-activedescendant') !== highlightedItem.id)
+        attributes.set(searchInput, 'aria-activedescendant', highlightedItem.id);
+      return index;
     };
 
     const highlight = (index) => {
@@ -74,10 +100,10 @@ export function enhance(root) {
       if (index < 0 || index >= items.length) return;
 
       const item = items[index];
-      highlightedIndex = index;
-      item.dataset.highlighted = '';
+      highlightedItem = item;
+      attributes.set(item, 'data-highlighted', '');
       item.scrollIntoView({ block: 'nearest' });
-      searchInput.setAttribute('aria-activedescendant', item.id);
+      attributes.set(searchInput, 'aria-activedescendant', item.id);
     };
 
     const updateGroupVisibility = () => {
@@ -96,13 +122,13 @@ export function enhance(root) {
           next = next.nextElementSibling;
         }
 
-        label.hidden = !groupHasVisibleItem;
+        attributes.set(label, 'hidden', groupHasVisibleItem ? null : '');
       });
 
       listbox.querySelectorAll('.combobox-separator').forEach((separator) => {
         const previous = separator.previousElementSibling;
         const next = separator.nextElementSibling;
-        separator.hidden = Boolean((previous && previous.hidden) || (next && next.hidden));
+        attributes.set(separator, 'hidden', previous?.hidden || next?.hidden ? '' : null);
       });
     };
 
@@ -113,12 +139,12 @@ export function enhance(root) {
       allItems().forEach((item) => {
         const label = item.textContent.trim().toLocaleLowerCase();
         const match = !normalizedQuery || label.includes(normalizedQuery);
-        item.hidden = !match;
+        attributes.set(item, 'hidden', match ? null : '');
         if (match) hasVisibleItem = true;
       });
 
       updateGroupVisibility();
-      if (emptyState) emptyState.hidden = hasVisibleItem;
+      if (emptyState) attributes.set(emptyState, 'hidden', hasVisibleItem ? '' : null);
       const count = getVisibleItems().length;
       status.textContent = announce
         ? `${count} ${count === 1 ? 'option' : 'options'} available.`
@@ -126,7 +152,7 @@ export function enhance(root) {
     };
 
     const writeSelection = (item, { announce = true } = {}) => {
-      if (!item || item.getAttribute('aria-disabled') === 'true') return;
+      if (!allItems().includes(item)) return false;
 
       allItems().forEach((option) => {
         option.setAttribute('aria-selected', String(option === item));
@@ -138,12 +164,15 @@ export function enhance(root) {
       }
 
       if (hiddenInput) {
+        if (hiddenInput.defaultValue !== writtenValue) resetValue = hiddenInput.defaultValue;
         hiddenInput.value = item.dataset.value ?? item.textContent.trim();
+        writtenValue = hiddenInput.value;
         if (announce) {
           hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
           hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
         }
       }
+      return true;
     };
 
     const close = ({ restoreFocus = true } = {}) => {
@@ -156,6 +185,10 @@ export function enhance(root) {
     const open = () => {
       if (trigger.matches(':disabled') || hiddenInput?.matches(':disabled')) return;
       popover.showPopover();
+      if (!popover.matches(':popover-open')) {
+        setExpanded(false);
+        return;
+      }
       setExpanded(true);
       searchInput.value = '';
       filter('');
@@ -164,15 +197,19 @@ export function enhance(root) {
     };
 
     lifecycle.reset(wrapper, hiddenInput?.form, () => {
+      if (hiddenInput.defaultValue !== writtenValue) resetValue = hiddenInput.value;
       searchInput.value = '';
       filter('');
       const selected = allItems().find(
-        (item) => (item.dataset.value ?? item.textContent.trim()) === initialValue
+        (item) => (item.dataset.value ?? item.textContent.trim()) === resetValue
       );
       if (selected) writeSelection(selected, { announce: false });
       else {
         allItems().forEach((item) => item.setAttribute('aria-selected', 'false'));
-        if (hiddenInput) hiddenInput.value = initialValue || '';
+        if (hiddenInput) {
+          hiddenInput.value = resetValue || '';
+          writtenValue = hiddenInput.value;
+        }
         if (valueElement) {
           valueElement.textContent = initialLabel;
           valueElement.toggleAttribute('data-placeholder', Boolean(initialPlaceholder));
@@ -182,9 +219,13 @@ export function enhance(root) {
     });
 
     const selectItem = (item) => {
-      if (trigger.matches(':disabled') || hiddenInput?.matches(':disabled')) return;
-      writeSelection(item);
-      close();
+      if (
+        trigger.matches(':disabled') ||
+        hiddenInput?.matches(':disabled') ||
+        !getVisibleItems().includes(item)
+      )
+        return;
+      if (writeSelection(item)) close();
     };
 
     const selectedItem = allItems().find((item) => item.getAttribute('aria-selected') === 'true');
@@ -207,6 +248,7 @@ export function enhance(root) {
     lifecycle.listen(wrapper, searchInput, 'keydown', (event) => {
       if (event.isComposing) return;
       const items = getVisibleItems();
+      const highlightedIndex = reconcileHighlight(items);
 
       switch (event.key) {
         case 'ArrowDown':
@@ -227,7 +269,7 @@ export function enhance(root) {
           break;
         case 'Enter':
           event.preventDefault();
-          if (highlightedIndex >= 0 && items[highlightedIndex]) selectItem(items[highlightedIndex]);
+          if (highlightedItem) selectItem(highlightedItem);
           break;
         case 'Escape':
           event.preventDefault();
@@ -257,6 +299,15 @@ export function enhance(root) {
       setExpanded(expanded);
       if (!expanded) clearHighlight();
     });
+    const observer = new MutationObserver(() => reconcileHighlight());
+    observer.observe(listbox, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ['aria-disabled', 'disabled', 'hidden', 'id']
+    });
+    lifecycle.add(wrapper, () => observer.disconnect());
+    lifecycle.onUpdate(wrapper, () => reconcileHighlight());
   });
 }
 

@@ -83,6 +83,8 @@ Apply `.btn` to action links and buttons. Load Button styles for this compositio
 
 Keep `aria-current="page"` on only one route in each navigation landmark.
 
+App navigation links retain a 40px minimum height when the header wraps.
+
 Use `.brand-mark` for the shared 32px signet.
 
 Do not duplicate the same product brand in another visible shell region.
@@ -395,12 +397,15 @@ Put the pre-paint preference script in `<head>` after the foundation styles.
   (function () {
     var stored = null;
     try {
-      stored = localStorage.getItem('mewa-ui-theme') || localStorage.getItem('mewa-theme');
+      stored = localStorage.getItem('mewa-ui-theme');
+      if (stored !== 'light' && stored !== 'dark') stored = localStorage.getItem('mewa-theme');
     } catch (error) {}
     var theme = stored === 'light' || stored === 'dark'
       ? stored
       : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
   }());
 </script>
 ```
@@ -408,6 +413,18 @@ Put the pre-paint preference script in `<head>` after the foundation styles.
 The module writes the `mewa-ui-theme` storage key.
 
 The module follows the OS preference until the user selects a theme.
+
+The module synchronizes the root `.dark` class, `data-theme`, and native color scheme.
+
+App Shell owns every `data-theme-toggle` control.
+
+Ordinary theme buttons receive a command label for the opposite theme.
+
+Add `aria-pressed` to a theme Toggle when dark theme is its pressed state.
+
+Give that Toggle a stable accessible name such as `Dark theme`.
+
+App Shell synchronizes its pressed state without changing the authored name.
 
 ## Accessibility
 

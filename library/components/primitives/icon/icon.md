@@ -12,7 +12,7 @@ Do not load remote icon assets.
 
 ## Native basis
 
-Inline SVG copied from `library/src/icons/` is the complete no-JavaScript path.
+Inline local SVG is the complete no-JavaScript path.
 
 Remix assets use `name-line.svg` for outlined icons and `name-fill.svg` for filled icons.
 
@@ -29,7 +29,11 @@ Icon has no component JavaScript module.
 
 ## Inline SVG
 
-Copy the matching `-line` or `-fill` file from `library/src/icons/`.
+In a source checkout, copy the matching `-line` or `-fill` SVG from the registry's `canonicalAssets.icons`, currently `library/src/icons/`.
+
+In an archive integration, copy `icons/{name}-line.svg` or `icons/{name}-fill.svg` from the separate optional `mewa-icons` archive.
+
+The core archive contains this contract and `css/icon.css`, not the source icon directory or an icon loader.
 
 Keep decorative state explicit.
 
@@ -42,11 +46,13 @@ Keep decorative state explicit.
 </svg>
 ```
 
-Do not copy an SVG from a remote CDN when the same icon exists in `library/src/icons/`.
+Use the local asset from the matching source or icon archive, not a remote CDN.
 
 ## Local class hook
 
 Use the official Remix class when a host provides a local SVG loader or the Remix stylesheet.
+
+Without that host integration, use the inline SVG path above; an `ri-*` class alone does not render a glyph.
 
 ```html
 <i class="ri-search-line" aria-hidden="true"></i>

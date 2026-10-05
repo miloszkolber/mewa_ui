@@ -764,7 +764,9 @@
       },
       "docs": "docs/preview.html#preview-text-field",
       "description": "Collects one line of text with labels, descriptions, icons, and validation.",
-      "styleDependencies": [],
+      "styleDependencies": [
+        "button"
+      ],
       "behaviorDependencies": [],
       "assets": []
     },

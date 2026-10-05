@@ -60,6 +60,10 @@ The module renders the current month, manages grid focus, and dispatches the sel
 
 The module creates the weekday headers and date cells.
 
+Date cells use a 36px default width and share the available width in narrow containers.
+
+Keep at least 24px for each date target.
+
 Do not author generated date cells as application data.
 
 Do not depend on generated internal markup beyond the documented classes and states.
@@ -151,6 +155,12 @@ Do not claim disabled-date support until the component exposes a stable constrai
 ## Runtime
 
 Load `date-picker.js` whenever Date Picker appears.
+
+Destroy restores the authored heading and grid nodes when their generated content remains unchanged.
+
+Destroy preserves application replacements and edits.
+
+Destroy does not reclaim authored nodes that the application moves elsewhere.
 
 The empty grid has no useful selection behavior without the module.
 

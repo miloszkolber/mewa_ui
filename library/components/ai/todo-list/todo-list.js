@@ -1,11 +1,12 @@
 // -- Todo List -------------------------------------------------
 
-import { queryAll } from '../../../runtime/core.js';
+import { queryAll, createLifecycle } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
 
 const rootSelector = '.todo-list';
+const lifecycle = createLifecycle('todo-list');
 
 function directItems(root) {
   const list = root.querySelector('.todo-list-items');
@@ -28,31 +29,33 @@ function updateProgress(root) {
 
 export function enhance(root) {
   queryAll(root, rootSelector).forEach((todoList) => {
-    if (todoList._todoListObserver) return;
+    if (lifecycle.has(todoList)) return;
+    const list = todoList.querySelector('.todo-list-items');
+    if (!list) return;
+
     todoList.dataset.init = '';
     todoList.dataset.mewaTodoListInit = '';
-    updateProgress(todoList);
-
-    const list = todoList.querySelector('.todo-list-items');
-    if (!list || typeof MutationObserver !== 'function') return;
-
-    const observer = new MutationObserver(() => updateProgress(todoList));
-    observer.observe(list, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['data-status']
+    let observer = null;
+    lifecycle.add(todoList, () => {
+      observer?.disconnect();
+      if (todoList._todoListObserver === observer) delete todoList._todoListObserver;
     });
-    todoList._todoListObserver = observer;
+    if (typeof MutationObserver === 'function') {
+      observer = new MutationObserver(() => updateProgress(todoList));
+      observer.observe(list, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['data-status']
+      });
+      todoList._todoListObserver = observer;
+    }
+    updateProgress(todoList);
   });
 }
 
-export function destroy(root) {
-  queryAll(root, '.todo-list[data-mewa-todo-list-init]').forEach((todoList) => {
-    todoList._todoListObserver?.disconnect();
-    delete todoList._todoListObserver;
-    todoList.removeAttribute('data-mewa-todo-list-init');
-  });
+export function destroy(root = typeof document === 'undefined' ? null : document) {
+  lifecycle.destroy(root);
 }
 
 export const behavior = { name: 'todo-list', enhance, destroy };

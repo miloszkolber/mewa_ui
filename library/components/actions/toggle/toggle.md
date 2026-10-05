@@ -84,6 +84,10 @@ A Toggle inside Toggle Group is managed by the Toggle Group module.
 
 The standalone Toggle module skips grouped toggles.
 
+App Shell owns theme Toggles with `data-theme-toggle`.
+
+The standalone Toggle module skips these theme controls.
+
 Pressed state remains visible during hover.
 
 Selection feedback uses the shared fast motion primitives.

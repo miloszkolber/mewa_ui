@@ -28,7 +28,13 @@ export const booleanProps = {
 
 // Properties that change behavior or data, not appearance. The preview may
 // still expose them, but the Figma state matrix must not render them.
-export const nonVisualProps = new Set(['multiple', 'data-loop', 'data-submit-on', 'data-preview']);
+export const nonVisualProps = new Set([
+  'multiple',
+  'data-type',
+  'data-loop',
+  'data-submit-on',
+  'data-preview'
+]);
 
 // A shared content model for actions. The booleans above stay independently
 // editable in the preview; the matrix crosses these named combinations instead.
@@ -79,7 +85,6 @@ export const profiles = {
   },
   'toggle-group': {
     target: '.toggle-group',
-    interactive: true,
     defaults: { 'data-type': 'single', 'data-orientation': 'horizontal' },
     props: {
       'data-type': ['single', 'multiple'],
@@ -98,13 +103,11 @@ export const profiles = {
   },
   'button-group': {
     target: '.btn-group',
-    interactive: true,
     props: { 'data-orientation': ['horizontal', 'vertical'] },
     booleans: ['disabled']
   },
   toolbar: {
     target: '.toolbar',
-    interactive: true,
     wide: true,
     props: { 'aria-orientation': ['horizontal', 'vertical'] },
     matrix: [{ prop: 'aria-orientation' }]
@@ -117,7 +120,6 @@ export const profiles = {
   },
   field: {
     target: '.field',
-    input: true,
     props: { 'data-orientation': [null, 'horizontal'] },
     booleans: ['disabled', 'invalid', 'required'],
     textFields: [
@@ -128,24 +130,22 @@ export const profiles = {
   },
   'text-field': {
     target: '.text-field-input',
-    input: true,
+    partsTarget: '.text-field',
     booleans: ['disabled', 'invalid', 'readonly', 'required'],
     textFields: [
       { name: 'label', selector: '.text-field > label' },
       { name: 'description', selector: '.text-field-description' }
     ],
-    matrix: [{ bool: 'required' }, { bool: 'invalid' }]
+    matrix: [{ slot: true }, { bool: 'required' }, { bool: 'invalid' }]
   },
   textarea: {
     target: '.textarea',
-    input: true,
     booleans: ['disabled', 'invalid', 'readonly', 'required'],
     textFields: [{ name: 'label', selector: '.label' }],
     matrix: [{ bool: 'required' }, { bool: 'invalid' }]
   },
   checkbox: {
     target: '.checkbox',
-    input: true,
     booleans: ['checked', 'indeterminate', 'disabled', 'invalid'],
     matrix: [
       { bool: 'checked' },
@@ -153,69 +153,58 @@ export const profiles = {
       { bool: 'invalid' }
     ]
   },
-  'radio-group': { target: '.radio-group', input: true },
+  'radio-group': { target: '.radio-group' },
   switch: {
     target: '.switch',
-    input: true,
     booleans: ['checked', 'disabled', 'invalid'],
     matrix: [{ bool: 'checked' }, { bool: 'invalid' }]
   },
   slider: {
     target: '.slider',
-    input: true,
     props: { 'data-orientation': ['horizontal', 'vertical'], step: ['1', '5', '10'] },
     booleans: ['disabled'],
     matrix: [{ prop: 'data-orientation' }, { bool: 'disabled' }]
   },
   select: {
     target: '.select',
-    input: true,
     booleans: ['disabled', 'invalid', 'required'],
     matrix: [{ bool: 'invalid' }]
   },
   'number-field': {
     target: '.number-field input',
-    input: true,
     props: { step: ['1', '5', '10'] },
     booleans: ['disabled', 'invalid', 'readonly', 'required'],
     matrix: [{ bool: 'readonly' }, { bool: 'invalid' }]
   },
   'file-input': {
     target: '.file-input',
-    input: true,
     props: { multiple: [null, ''] },
     booleans: ['disabled', 'invalid', 'required']
   },
   'date-field': {
     target: '.date-input',
-    input: true,
     booleans: ['disabled', 'invalid', 'readonly', 'required'],
     matrix: [{ bool: 'readonly' }, { bool: 'invalid' }]
   },
   'date-picker': {
     target: '.date-picker',
-    interactive: true,
     wide: true
   },
   'date-range-picker': {
     target: '.date-range-picker',
-    input: true,
     wide: true,
     booleans: ['disabled', 'invalid', 'readonly']
   },
   combobox: {
     target: '.combobox',
-    interactive: true,
-    input: true,
     booleans: ['disabled', 'invalid', 'open']
   },
   'time-field': {
     target: '.time-field',
-    input: true,
     wide: true,
     booleans: ['disabled', 'invalid', 'readonly']
   },
-  form: { target: '.form', input: true, wide: true, booleans: ['invalid'] },
+  form: { target: '.form', wide: true, booleans: ['invalid'] },
   badge: {
     target: '.badge',
     props: {
@@ -224,7 +213,7 @@ export const profiles = {
     }
   },
   avatar: { target: '.avatar' },
-  card: { target: '.card' },
+  card: { target: '.card', props: { 'data-density': [null, 'compact'] } },
   image: {
     target: '.image',
     defaults: { 'data-fit': 'cover' },
@@ -235,12 +224,12 @@ export const profiles = {
       'data-preview': [null, '']
     }
   },
-  statistic: { target: '.statistic' },
+  statistic: { target: '.statistic', props: { 'data-density': [null, 'compact'] } },
   table: { target: '.table-container', wide: true },
   'data-table': { target: '.data-table', wide: true },
   collapsible: { target: '.collapsible', booleans: ['open'] },
   timeline: { target: '.timeline' },
-  'tree-view': { target: '.tree', interactive: true },
+  'tree-view': { target: '.tree' },
   carousel: {
     target: '.carousel',
     wide: true,
@@ -259,7 +248,10 @@ export const profiles = {
   },
   skeleton: { target: '.skeleton' },
   progress: { target: '.progress', props: { value: [null, '0', '50', '100'] } },
-  callout: { target: '.callout', props: { 'data-variant': ['default', 'destructive'] } },
+  callout: {
+    target: '.callout',
+    props: { 'data-variant': ['default', 'positive', 'caution', 'destructive'] }
+  },
   'alert-dialog': { target: '.alert-dialog', overlay: true },
   toast: {
     target: '.toast',
@@ -285,15 +277,14 @@ export const profiles = {
     },
     matrix: [{ prop: 'data-side' }]
   },
-  dialog: { target: '.dialog', overlay: true },
+  dialog: { target: '.dialog', overlay: true, props: { 'data-scroll': [null, 'body'] } },
   sheet: { target: '.sheet', overlay: true, props: { 'data-side': ['right', 'left', 'bottom'] } },
   accordion: { target: '.accordion', wide: true, props: { 'data-type': [null, 'single'] } },
   'command-palette': { target: '.command-palette', overlay: true },
   breadcrumbs: { target: '.breadcrumb' },
-  pagination: { target: '.pagination', interactive: true, wide: true },
+  pagination: { target: '.pagination', wide: true },
   tabs: {
     target: '.tab-list',
-    interactive: true,
     wide: true,
     props: { 'data-variant': ['', 'underline'], 'aria-orientation': ['horizontal', 'vertical'] }
   },
@@ -306,17 +297,15 @@ export const profiles = {
     wide: true,
     props: { 'data-orientation': ['horizontal', 'vertical'] }
   },
-  'color-picker': { target: '.color-picker', input: true, booleans: ['disabled', 'invalid'] },
+  'color-picker': { target: '.color-picker', booleans: ['disabled', 'invalid'] },
   'file-upload': {
     target: '.file-upload',
-    input: true,
     wide: true,
     booleans: ['disabled', 'invalid']
   },
-  'input-otp': { target: '.input-otp', input: true, wide: true, booleans: ['disabled', 'invalid'] },
+  'input-otp': { target: '.input-otp', wide: true, booleans: ['disabled', 'invalid'] },
   'tag-input': {
     target: '.tag-input',
-    input: true,
     wide: true,
     booleans: ['disabled', 'invalid', 'readonly']
   },
@@ -369,7 +358,7 @@ export const profiles = {
     booleans: ['open']
   },
   sources: { target: '.sources', wide: true },
-  suggestion: { target: '.suggestion', interactive: true },
+  suggestion: { target: '.suggestion' },
   'thinking-indicator': { target: '.thinking-indicator' },
   'todo-list': { target: '.todo-list', wide: true, booleans: ['open'] },
   'tool-call': {
@@ -394,7 +383,7 @@ export function propertiesFor(profile) {
   const props = Object.entries(profile.props || {})
     .filter(([, values]) => values.length > 1)
     .map(([attr, values]) => ({
-      name: attr === 'step' ? 'step' : attr,
+      name: attr,
       attr,
       kind:
         values.length === 2 && values.includes(null) && values.includes('') ? 'boolean' : 'enum',
@@ -467,7 +456,6 @@ export const idReferences = [
   'data-dialog-trigger',
   'data-alert-dialog-trigger',
   'data-sheet-trigger',
-  'data-command-trigger',
   'data-command-palette-trigger',
   'data-tooltip-trigger',
   'data-hover-card-trigger',

@@ -2,7 +2,7 @@
 
 Use this file as the accessibility acceptance contract.
 
-Read `library/DESIGN.md` before this file.
+Read the sections relevant to the selected interaction and its component contract.
 
 ## Native semantics
 
@@ -24,11 +24,17 @@ Use a table for data with row and column relationships.
 
 Use a details element for a disclosure.
 
+Keep the disclosure trigger as native summary markup.
+
 Use a dialog element for a modal surface.
+
+Use the Popover API for supported non-modal top-layer surfaces.
 
 Use a progress element for completion.
 
 Use a meter element for a bounded scalar value.
+
+Use an output element for a computed result.
 
 Do not add an ARIA role when native HTML already supplies the role.
 
@@ -53,6 +59,8 @@ Use `aria-describedby` for help text and supporting status.
 Use `aria-errormessage` only when the control has `aria-invalid="true"`.
 
 Keep every referenced ID unique and present.
+
+Use stable IDs for labels, descriptions, errors, and controlled regions.
 
 Mark decorative icons with `aria-hidden="true"`.
 
@@ -92,7 +100,7 @@ Use Home and End when the documented composite pattern requires them.
 
 Use Escape to close a dismissible top-layer surface.
 
-Return focus to the trigger after a scripted modal or popup closes.
+Follow the selected component's focus-return contract after a modal or popup closes.
 
 Keep one active tab stop in a roving-focus composite.
 
@@ -122,9 +130,7 @@ Do not remove the browser outline without an equivalent replacement.
 
 ## Target size
 
-Use a 36px target for normal controls.
-
-Use a 32px target for compact controls.
+Use the documented normal and compact dimensions from [Foundations: Interactive size](foundations.md#interactive-size).
 
 Keep a custom pointer target at least 24px by 24px when possible.
 
@@ -151,6 +157,8 @@ Reference inserted error text from the control.
 Use `role="alert"` only for an error that appears dynamically.
 
 Keep entered values after a failed submission.
+
+Preserve native typing and composition behavior through enhancement.
 
 Move focus only when the move helps the user find a blocking error.
 
@@ -339,6 +347,8 @@ Keep documented static tables and content readable without JavaScript.
 Hide an enhancement trigger when it cannot work without its module.
 
 State the no-JavaScript behavior in each enhanced component skill.
+
+Select the documented native fallback when the required enhanced interaction cannot work without JavaScript.
 
 Do not render a dead control.
 

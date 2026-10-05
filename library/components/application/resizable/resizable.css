@@ -76,14 +76,14 @@
       transform: translate(-50%, -50%);
     }
 
-    .resizable[data-init] & {
+    .resizable[data-init] &:not(:disabled, [aria-disabled="true"]) {
       cursor: col-resize;
       touch-action: none;
       user-select: none;
     }
 
-    .resizable[data-init] &:hover,
-    .resizable[data-init] &:focus-visible {
+    .resizable[data-init] &:not(:disabled, [aria-disabled="true"]):hover,
+    .resizable[data-init] &:not(:disabled, [aria-disabled="true"]):focus-visible {
       background: linear-gradient(
         to right,
         transparent calc(50% - (var(--border-width-025) / 2)),
@@ -94,7 +94,7 @@
       color: var(--text-secondary);
     }
 
-    .resizable[data-init] &[data-resizing] {
+    .resizable[data-init] &[data-resizing]:not(:disabled, [aria-disabled="true"]) {
       background: linear-gradient(
         to right,
         transparent calc(50% - (var(--border-width-050) / 2)),
@@ -105,15 +105,8 @@
       color: var(--text-primary);
     }
 
-    .resizable[data-init] &:focus-visible {
+    .resizable[data-init] &:not(:disabled, [aria-disabled="true"]):focus-visible {
       box-shadow: var(--ring-default);
-    }
-
-    .resizable[data-init] &:disabled,
-    .resizable[data-init] &[aria-disabled="true"] {
-      background: var(--surface-control-disabled);
-      color: var(--text-disabled);
-      cursor: not-allowed;
     }
   }
 
@@ -133,7 +126,7 @@
       transparent calc(50% + (var(--border-width-025) / 2))
     );
 
-    .resizable[data-init] & {
+    .resizable[data-init] &:not(:disabled, [aria-disabled="true"]) {
       cursor: row-resize;
     }
 
@@ -144,8 +137,8 @@
       border-block: var(--border-width-025) solid currentColor;
     }
 
-    .resizable[data-init] &:hover,
-    .resizable[data-init] &:focus-visible {
+    .resizable[data-init] &:not(:disabled, [aria-disabled="true"]):hover,
+    .resizable[data-init] &:not(:disabled, [aria-disabled="true"]):focus-visible {
       background: linear-gradient(
         to bottom,
         transparent calc(50% - (var(--border-width-025) / 2)),
@@ -156,7 +149,7 @@
       color: var(--text-secondary);
     }
 
-    .resizable[data-init] &[data-resizing] {
+    .resizable[data-init] &[data-resizing]:not(:disabled, [aria-disabled="true"]) {
       background: linear-gradient(
         to bottom,
         transparent calc(50% - (var(--border-width-050) / 2)),
@@ -168,9 +161,15 @@
     }
   }
 
+  .resizable .resizable-handle:is(:disabled, [aria-disabled="true"]) {
+    background: var(--surface-control-disabled);
+    color: var(--text-disabled);
+  }
+
   .resizable[data-init] .resizable-handle:is(:disabled, [aria-disabled="true"]) {
     background: var(--surface-control-disabled);
     color: var(--text-disabled);
+    cursor: not-allowed;
   }
 
   .resizable-controls {
@@ -245,12 +244,20 @@
       color: ButtonText;
     }
 
-    .resizable[data-init] .resizable-handle:hover,
-    .resizable[data-init] .resizable-handle:focus-visible,
-    .resizable[data-init] .resizable-handle[data-resizing] {
+    .resizable[data-init] .resizable-handle:not(:disabled, [aria-disabled="true"]):hover,
+    .resizable[data-init] .resizable-handle:not(:disabled, [aria-disabled="true"]):focus-visible,
+    .resizable[data-init] .resizable-handle[data-resizing]:not(:disabled, [aria-disabled="true"]) {
       background: Highlight;
       border-color: Highlight;
       color: HighlightText;
+    }
+
+    .resizable .resizable-handle:is(:disabled, [aria-disabled="true"]),
+    .resizable[data-init] .resizable-handle:is(:disabled, [aria-disabled="true"]) {
+      forced-color-adjust: none;
+      background: ButtonFace;
+      border-color: GrayText;
+      color: GrayText;
     }
 
     .resizable-step {

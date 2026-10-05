@@ -1,6 +1,6 @@
 // Shared, component-first presentation contract. A part owns its own state;
 // focus on a nested button is never a property of its containing group or card.
-import { profiles, propertiesFor, booleanProps } from './catalog.mjs';
+import { profiles, propertiesFor } from './catalog.mjs';
 
 export function rootProfile(slug) {
   return wrapperProfile(slug, profiles[slug]);
@@ -157,23 +157,18 @@ export function partProfile(type, selector) {
   // The Color Picker controller derives its children's availability and validity.
   if (type === 'color' || type === 'color-hex') return { target: selector };
   const input = [
-    'radio',
     'date',
     'range-date',
     'time',
     'time-period',
     'otp',
     'number',
-    'color',
-    'color-hex',
     'combobox-trigger'
   ].includes(type);
   return {
     target: selector,
-    ...(type === 'radio' ? { booleans: ['checked', 'disabled'] } : {}),
     ...(input ? { booleans: ['disabled', 'invalid'] } : {}),
-    ...(type === 'combobox-trigger' ? { booleans: [] } : {}),
-    ...(type === 'otp' ? { booleans: ['disabled', 'invalid'] } : {})
+    ...(type === 'combobox-trigger' ? { booleans: [] } : {})
   };
 }
 
@@ -239,15 +234,17 @@ export function booleanValues(property) {
   return property.values ?? [null, property.on];
 }
 
-function isPresence(property) {
-  return property.on === '';
-}
-
 export function initialValue(scope, property, index = 0) {
   if (property.initialValues && index < property.initialValues.length)
     return property.initialValues[index];
   const authored = property.attr ? scope.instances?.[index]?.[property.attr] : undefined;
   if (authored !== undefined) return authored;
+  if (
+    property.name === 'disabled' &&
+    property.attr === 'disabled' &&
+    scope.instances?.[index]?.['aria-disabled'] === 'true'
+  )
+    return property.on;
   // A boolean is represented by its attribute value, not a JS boolean.
   if (property.kind === 'boolean')
     return property.default ? property.on : (property.values?.[0] ?? null);
@@ -257,7 +254,7 @@ export function initialValue(scope, property, index = 0) {
   return property.default ?? null;
 }
 
-export { profiles, propertiesFor, booleanProps, isPresence };
+export { propertiesFor };
 
 // Canonical anatomy, not a selectable collection of application examples.
 export function canonicalHtml(c, matrix = false) {
@@ -295,6 +292,8 @@ export function canonicalHtml(c, matrix = false) {
     return '<div><label class="label" for="label-example">Name</label><input class="text-field-input" id="label-example" type="text"></div>';
   if (c.slug === 'card')
     return '<article class="card"><header class="card-header"><h3 class="card-title">Card title</h3><p class="card-description">Supporting description.</p></header><div class="card-content"><p>Card content.</p></div><footer class="card-footer"><button class="btn" data-variant="secondary" type="button">Action</button></footer></article>';
+  if (c.slug === 'callout')
+    return '<div class="callout"><svg class="callout-icon" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M11 10h2v7h-2zM11 6h2v2h-2zM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2a8 8 0 1 1 0 16 8 8 0 0 1 0-16z"/></svg><div class="callout-content"><p class="callout-title">Connection required</p><p class="callout-description">Connect the service before starting a sync.</p></div></div>';
   if (c.slug === 'tree-view')
     return '<ul class="tree" role="tree" aria-label="Files"><li class="tree-item" role="treeitem" aria-expanded="true"><details class="tree-branch" open><summary class="tree-branch-trigger">Source</summary><ul class="tree-group" role="group"><li class="tree-item" role="treeitem" aria-selected="true"><span class="tree-leaf" tabindex="0"><span class="tree-indicator" data-variant="default" aria-hidden="true"></span>index.js</span></li><li class="tree-item" role="treeitem"><span class="tree-leaf" tabindex="-1">styles.css</span></li></ul></details></li></ul>';
   if (c.slug === 'statistic')
@@ -311,6 +310,12 @@ export function canonicalHtml(c, matrix = false) {
 // Structural slots have real markup semantics and explicit values, unlike an
 // "example" selector. These are shared by the playground and export matrix.
 export const slots = {
+  'text-field': {
+    label: 'structure',
+    values: ['plain', 'prefix', 'suffix', 'affixes', 'action', 'affixes and action'],
+    default: 'plain',
+    preserveAnatomy: true
+  },
   table: { label: 'density', values: ['plain', 'dense'], default: 'plain' },
   'tool-call': { label: 'structure', values: ['disclosure', 'status-only'], default: 'disclosure' },
   layout: {
@@ -328,7 +333,6 @@ export const slots = {
 const bookmarkPath =
   'M5 2H19C19.5523 2 20 2.44772 20 3V22.1433C20 22.4194 19.7761 22.6434 19.5 22.6434C19.4061 22.6434 19.314 22.6168 19.2344 22.5669L12 18.0313L4.76559 22.5669C4.53163 22.7136 4.22306 22.6429 4.07637 22.4089C4.02647 22.3293 4 22.2373 4 22.1433V3C4 2.44772 4.44772 2 5 2Z';
 export const demoIcon = `<span data-icon-pair aria-hidden="true">${['line', 'fill'].map((variant) => `<i class="ri-bookmark-${variant}" data-icon-variant="${variant}"><svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="${bookmarkPath}${variant === 'line' ? 'M18 4H6V19.4324L12 15.6707L18 19.4324V4Z' : ''}"/></svg></i>`).join('')}</span>`;
-export const demoIconEnd = demoIcon;
 export const demoSpinner =
   '<svg class="spinner" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 1 0 9 9h-2a7 7 0 1 1-7-7z"/></svg>';
 

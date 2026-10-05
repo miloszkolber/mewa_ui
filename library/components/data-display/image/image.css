@@ -46,7 +46,7 @@
     &[data-radius="full"] > .image-fallback { border-radius: var(--border-radius-6400); }
 
     /* -- Preview cursor -------------------------------------- */
-    &[data-preview] {
+    &[data-preview][data-mewa-image-init] {
       cursor: zoom-in;
     }
 

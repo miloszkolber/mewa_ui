@@ -38,6 +38,35 @@ Keep the value visually strongest.
 
 Use the description only when it adds context that the title and value do not provide.
 
+## Density
+
+Omit `data-density` for a prominent 36px value.
+
+Use `data-density="compact"` on `.statistic` for metric strips and inspector readouts.
+
+Compact Statistic uses a 24px value from `--font-size-600`.
+
+Both densities keep the 14px title, 12px description, and 4px gap.
+
+Compose peer metrics with Layout instead of a Card wrapper.
+
+```html
+<div class="layout-grid">
+  <div class="statistic" data-density="compact">
+    <p class="statistic-title">Queued jobs</p>
+    <p class="statistic-value">12</p>
+    <p class="statistic-description">Awaiting a worker</p>
+  </div>
+  <div class="statistic" data-density="compact">
+    <p class="statistic-title">Oldest queued job</p>
+    <p class="statistic-value">8 s</p>
+    <p class="statistic-description">Since submission</p>
+  </div>
+</div>
+```
+
+Do not use compact Statistic for values that need Table row and column comparison.
+
 ## Trend
 
 Use `data-trend="up"` or `data-trend="down"` only when direction has clear product meaning.
@@ -77,6 +106,8 @@ Keep units visible when the number is ambiguous without them.
 Use a machine-readable element only when application logic benefits from it.
 
 Do not abbreviate a number when the precise value matters to the task.
+
+Long labels, values, and comparison text wrap without truncation.
 
 ## Behavior
 

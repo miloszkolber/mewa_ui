@@ -2,9 +2,19 @@
 
 Use this file to compose repeated interface tasks.
 
-Read `library/DESIGN.md` before this file.
+Read only the pattern needed for the repeated task.
 
 Read each selected component skill before you write markup.
+
+## Composition boundary
+
+Use a pattern when several components solve one repeated task.
+
+Prefer composition before a new component.
+
+Do not add pattern CSS until repeated use needs a shared hook.
+
+Promote a pattern only when it has a stable API and repeated behavior; apply the [New component gate](components.md#new-component-gate).
 
 ## Page anatomy
 
@@ -451,6 +461,10 @@ Use a ghost action with an explicit label for a non-final destructive option.
 Use icon-only actions only when the icon is familiar and the control has an accessible name.
 
 Keep action labels specific.
+
+Keep related controls close and reserve larger gaps for different tasks or sections.
+
+Use compact row actions only where their component contract permits them.
 
 Do not use “OK” when a specific action name fits.
 

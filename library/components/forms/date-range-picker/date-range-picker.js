@@ -32,10 +32,6 @@ const formatDate = (value) => {
   return dateFormatter.format(new Date(Date.UTC(year, month - 1, day)));
 };
 
-const setConstraint = (input, name, value) => {
-  input[name] = value || '';
-};
-
 const rangeDetail = (start, end, startValue, endValue, orderInvalid) => ({
   start: startValue || null,
   end: endValue || null,
@@ -84,6 +80,7 @@ const restoreAttribute = (element, name, state) => {
 const hasCustomError = (input) => Boolean(input.validity && input.validity.customError);
 
 export function enhance(root) {
+  lifecycle.refresh(root);
   queryAll(root, '.date-range-picker').forEach((picker) => {
     picker.dataset.init = '';
     if (lifecycle.has(picker)) return;
@@ -95,11 +92,27 @@ export function enhance(root) {
 
     const status = picker.querySelector('[data-range-status]');
     const error = picker.querySelector('[data-range-error]');
-    const base = {
-      startMin: start.min,
-      startMax: start.max,
-      endMin: end.min,
-      endMax: end.max
+    const bounds = [
+      [start, 'min'],
+      [start, 'max'],
+      [end, 'min'],
+      [end, 'max']
+    ].map(([input, name]) => ({
+      input,
+      name,
+      base: input.getAttribute(name),
+      written: input.getAttribute(name)
+    }));
+    const adoptBounds = () => {
+      for (const bound of bounds) {
+        const current = bound.input.getAttribute(bound.name);
+        if (current !== bound.written) bound.base = current;
+      }
+    };
+    const writeBound = (bound, value) => {
+      if (value) bound.input.setAttribute(bound.name, value);
+      else bound.input.removeAttribute(bound.name);
+      bound.written = bound.input.getAttribute(bound.name);
     };
     const initial = {
       pickerInvalid: attributeState(picker, 'data-invalid'),
@@ -119,6 +132,7 @@ export function enhance(root) {
     let managedErrorVisibility = false;
     let managedErrorText = false;
     let managedStatus = false;
+    let writtenStatus = initial.statusText;
     let managedCustomValidity = false;
     let managedOrderInvalid = false;
 
@@ -222,24 +236,23 @@ export function enhance(root) {
     };
 
     const sync = ({ announceOrder = interactionStarted } = {}) => {
+      adoptBounds();
       const startValue = isDateValue(start.value) ? start.value : '';
       const endValue = isDateValue(end.value) ? end.value : '';
       const orderInvalid = Boolean(startValue && endValue && startValue > endValue);
       const applyOrderConstraints =
         !initialOrderInvalid || interactionStarted || initialServerOrderInvalid;
 
-      setConstraint(start, 'min', base.startMin);
-      setConstraint(
-        start,
-        'max',
-        applyOrderConstraints ? minDateValue(base.startMax, endValue) : base.startMax
+      writeBound(bounds[0], bounds[0].base);
+      writeBound(
+        bounds[1],
+        applyOrderConstraints ? minDateValue(bounds[1].base, endValue) : bounds[1].base
       );
-      setConstraint(
-        end,
-        'min',
-        applyOrderConstraints ? maxDateValue(base.endMin, startValue) : base.endMin
+      writeBound(
+        bounds[2],
+        applyOrderConstraints ? maxDateValue(bounds[2].base, startValue) : bounds[2].base
       );
-      setConstraint(end, 'max', base.endMax);
+      writeBound(bounds[3], bounds[3].base);
 
       if (orderInvalid) {
         if (announceOrder || initialServerOrderInvalid) showManagedInvalidState();
@@ -248,7 +261,8 @@ export function enhance(root) {
       }
 
       if (orderInvalid && !announceOrder && !initialServerOrderInvalid) {
-        if (managedStatus && status) status.textContent = initial.statusText;
+        if (managedStatus && status?.textContent === writtenStatus)
+          status.textContent = initial.statusText;
         managedStatus = false;
       } else if (status) {
         updateStatus(
@@ -258,6 +272,7 @@ export function enhance(root) {
           orderInvalid,
           announceOrder || initialServerOrderInvalid
         );
+        writtenStatus = status.textContent;
         managedStatus = true;
       }
       return {
@@ -304,18 +319,23 @@ export function enhance(root) {
       managedOrderInvalid = initialServerOrderInvalid && result.orderInvalid;
       if (result.orderInvalid && !initialServerOrderInvalid) {
         restoreManagedInvalidState();
-        if (status && managedStatus) status.textContent = initial.statusText;
+        if (status && managedStatus && status.textContent === writtenStatus)
+          status.textContent = initial.statusText;
         managedStatus = false;
       }
     });
 
     lifecycle.add(picker, () => {
       restoreManagedInvalidState();
-      setConstraint(start, 'min', base.startMin);
-      setConstraint(start, 'max', base.startMax);
-      setConstraint(end, 'min', base.endMin);
-      setConstraint(end, 'max', base.endMax);
+      for (const bound of bounds) {
+        if (bound.input.getAttribute(bound.name) !== bound.written) continue;
+        if (bound.base === null) bound.input.removeAttribute(bound.name);
+        else bound.input.setAttribute(bound.name, bound.base);
+      }
+      if (managedStatus && status?.textContent === writtenStatus)
+        status.textContent = initial.statusText;
     });
+    lifecycle.onUpdate(picker, () => sync());
     const initialState = sync({ announceOrder: initialServerOrderInvalid });
     managedOrderInvalid = initialServerOrderInvalid && initialState.orderInvalid;
   });

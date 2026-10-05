@@ -20,6 +20,10 @@ Declarative `popovertarget` handles open and close behavior.
 
 The module only assigns CSS anchor pairs for documented positioning.
 
+The module reconciles external targets after insertion or removal through the shared enhancer.
+
+Destroy restores anchor declarations only while their module-owned values remain unchanged.
+
 ## Native Web APIs
 
 - [`<nav>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav) provides the navigation landmark.
@@ -76,6 +80,8 @@ Do not add cards inside the navigation panel.
 
 Keep route groups compact and scan-friendly.
 
+The top-level route list wraps in narrow containers.
+
 ## Behavior
 
 The trigger uses native button activation.
@@ -119,6 +125,14 @@ Hide decorative chevrons and icons from assistive technology.
 Give an icon-only trigger an accessible name when one is unavoidable.
 
 Keep the current route available through `aria-current="page"`.
+
+Use native `disabled` on unavailable button triggers.
+
+Use `aria-disabled="true"` on unavailable route links.
+
+Remove `href` from an unavailable route link.
+
+ARIA and visual state do not disable native keyboard navigation.
 
 Do not use tab roles for route navigation.
 

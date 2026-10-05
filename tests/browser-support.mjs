@@ -28,11 +28,16 @@ export function executablePath() {
   return executable;
 }
 
-export function launchOptions() {
+export function launchOptions({ nativeScrollbars = false } = {}) {
   return {
     browser: browserName,
     executablePath: executablePath(),
     headless: true,
+    // Puppeteer hides Chromium's scrollbars by default. Native track/drag
+    // acceptance needs the browser controls, not a synthetic pointer fixture.
+    ...(nativeScrollbars && browserName === 'chrome'
+      ? { ignoreDefaultArgs: ['--hide-scrollbars'] }
+      : {}),
     args: browserName === 'chrome' ? ['--no-sandbox', '--disable-dev-shm-usage'] : []
   };
 }

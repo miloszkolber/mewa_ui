@@ -61,6 +61,64 @@
   .dialog-body    { margin-top: var(--space-400); }
   .dialog-footer  { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-200); margin-top: var(--space-600); }
 
+  /* -- Bounded body scrolling -------------------------------- */
+  dialog.dialog[data-scroll="body"] {
+    inline-size: calc(100% - var(--size-800));
+    max-block-size: min(calc(100dvh - var(--size-800)), calc(100% - var(--size-800)));
+    scroll-padding-block: var(--space-600);
+
+    &[open] {
+      display: flex;
+      flex-direction: column;
+    }
+
+    & > .dialog-content {
+      display: grid;
+      /* Keep room for a label, its gap, a 36px control, and focus clearance.
+         Native dialog overflow recovers when the surrounding sections cannot fit. */
+      grid-template-rows: auto minmax(var(--size-1800), 1fr) auto;
+      gap: var(--space-400);
+      min-block-size: 0;
+      min-inline-size: 0;
+    }
+
+    & > .dialog-content > :is(.dialog-header, .dialog-body, .dialog-footer) {
+      min-inline-size: 0;
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    & > .dialog-content > .dialog-body {
+      min-block-size: 0;
+      overflow: auto;
+      padding: var(--border-width-050);
+      scroll-padding-block: var(--space-600);
+
+      &:focus-visible {
+        outline: var(--border-width-050) solid var(--border-focus);
+        outline-offset: calc(var(--border-width-050) * -1);
+        box-shadow: none;
+      }
+    }
+
+    & > .dialog-content > .dialog-footer {
+      /* Include the outer padding in native overflow when grid rows cannot
+         shrink further. The margin avoids adding that padding twice. */
+      padding-block-end: var(--space-600);
+      margin-block-end: calc(var(--space-600) * -1);
+    }
+
+    & > .dialog-content > .dialog-footer > .btn:not([data-icon-only]) {
+      min-inline-size: 0;
+      max-inline-size: 100%;
+      min-block-size: var(--size-900);
+      block-size: auto;
+      padding-block: var(--space-200);
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+  }
+
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {
     dialog.dialog {
@@ -78,6 +136,15 @@
 
     dialog.dialog[open]::backdrop {
       backdrop-filter: none;
+    }
+
+    dialog.dialog[data-scroll="body"] > .dialog-content > .dialog-body:focus-visible {
+      outline-color: Highlight;
+      outline-offset: calc(var(--border-width-050) * -1);
+    }
+
+    dialog.dialog[data-scroll="body"] > .dialog-content > .dialog-body {
+      padding: calc(var(--border-width-050) + var(--border-width-025));
     }
   }
 

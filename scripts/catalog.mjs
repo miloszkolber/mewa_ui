@@ -41,15 +41,19 @@ function renderRegistryFields() {
     '',
     'Use `fallback` to select the simpler alternative.',
     '',
+    'Use `nativeBasis` to confirm the semantic basis; read the selected Markdown for exact markup and keyboard behavior.',
+    '',
     'Use `jsMode` to decide whether a module is required.',
     '',
-    'Use `files` to load the exact source assets.',
+    'Use `files` only in a source checkout to locate exact source assets and `files.skill` Markdown.',
+    '',
+    "In a core archive, use the selected record's `contractLocal`, `css`, `component`, and `auto` paths instead of source `files`.",
     '',
     'Use `styleDependencies` to understand the flat CSS dependency closure emitted for a component.',
     '',
-    'Use `behaviorDependencies` to load required controller dependencies.',
+    'Use `behaviorDependencies` to identify required behaviors; packaged `component` and `auto` entries include their dependencies.',
     '',
-    'Use `assets` to load optional fonts, icons, or other files.',
+    'Use `assets` to identify optional resources; archive icons come from the separate `mewa-icons` package, not source paths.',
     '',
     'Use `stability` before you depend on a component contract.',
     '',
@@ -110,7 +114,7 @@ function check() {
       continue;
     }
     failures += 1;
-    console.error(`FAIL ${path.relative(root, filename)} is not generated from registry.json`);
+    console.error(`FAIL ${path.relative(root, filename)} has a stale generated catalog section`);
   }
   if (failures) process.exitCode = 1;
 }

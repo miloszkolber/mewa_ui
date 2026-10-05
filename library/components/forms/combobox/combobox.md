@@ -179,6 +179,8 @@ Opening the popover moves focus to the search input.
 
 Opening the popover clears the previous search query.
 
+A canceled native opening keeps the popover collapsed and preserves the query and focus.
+
 Typing filters options with case-insensitive substring matching.
 
 Filtering highlights the first enabled result.
@@ -198,6 +200,16 @@ Selecting an option returns focus to the trigger.
 Light dismiss closes the popover without forcing focus back to the trigger.
 
 The module restores a static `aria-selected="true"` option during initialization.
+
+The module tracks the highlighted option by element identity.
+
+Disabling or removing the highlighted option clears the active descendant without selecting a replacement.
+
+Reordering options preserves the highlighted option.
+
+Teardown closes the popover and removes module-owned filtering, highlighting, and relationships.
+
+Teardown preserves the selected value and later application attribute or anchor edits.
 
 ## Keyboard
 
@@ -219,7 +231,11 @@ The search input keeps DOM focus while option focus uses `aria-activedescendant`
 
 The hidden input submits the selected `data-value`.
 
-Native form reset restores the initial value and visible label, clears the query, and closes the popover.
+Native form reset restores the current application default, updates the visible label, clears the query, and closes the popover.
+
+Set `defaultValue` on the hidden input to replace the reset value while the component is mounted.
+
+Reset can restore a disabled default option without making the option available for new selection.
 
 A canceled reset preserves the current selection.
 
@@ -244,6 +260,14 @@ Do not put DOM focus on listbox options.
 Keep disabled options visible when their presence explains unavailable choices.
 
 Pair an application validation error with visible error text.
+
+Set `aria-invalid="true"` on `.combobox-trigger` when the selected value is invalid.
+
+Use `data-invalid` on `.combobox` when the root owns invalid presentation.
+
+Clear both invalid markers when the error is resolved.
+
+Reference the visible error from the trigger with `aria-describedby` or `aria-errormessage`.
 
 ## Runtime
 

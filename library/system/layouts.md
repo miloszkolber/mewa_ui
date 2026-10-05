@@ -2,13 +2,13 @@
 
 Use this file to compose application chrome.
 
-Read `library/DESIGN.md` before this file.
+Read the selected recipe and only the sections affected by the shell change.
 
-Read `library/system/patterns.md` before you add route content.
+Use the matching [Patterns](patterns.md) section when adding a repeated route-content region.
 
 mewa_ui does not ship complete layout templates.
 
-Compose shells from documented components and native landmarks.
+Compose shells from App Shell, Sidebar, Layout, navigation components, and native landmarks.
 
 ## Ownership model
 
@@ -28,9 +28,15 @@ Layout owns local Grid and Flexbox composition.
 
 A consumer owns routes, account data, application state, and business content.
 
+Keep page-specific shell CSS in the consumer; do not ship complete shell templates from the library.
+
+Keep the skip link first and use one main landmark.
+
 Do not copy component behavior into application code.
 
 Do not create a shell-specific component variant when composition solves the task.
+
+Do not duplicate the product brand in adjacent shell regions.
 
 ## Choose a shell
 

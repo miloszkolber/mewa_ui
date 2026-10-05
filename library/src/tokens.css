@@ -37,7 +37,7 @@
   --surface-selected: var(--color-alpha-dark-100);
   --surface-disabled: var(--surface-button-disabled);
   --surface-positive: var(--color-alpha-green-100);
-  --surface-negative: var(--color-alpha-red-100);
+  --surface-negative: var(--color-alpha-red-050);
   --surface-caution: var(--color-alpha-amber-100);
   --surface-destructive-hover: var(--color-alpha-red-100);
   --surface-inverted: var(--color-neutral-950);

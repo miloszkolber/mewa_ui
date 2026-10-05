@@ -99,9 +99,15 @@ Both custom events bubble and expose the concatenated `value` in `event.detail`.
 
 Tab follows the native input order.
 
-Arrow Left moves focus to the previous cell.
+Arrow Left moves focus to the previous editable cell.
 
-Arrow Right moves focus to the next cell.
+Arrow Right moves focus to the next editable cell.
+
+Focus movement skips readonly and effectively disabled cells.
+
+Typing advances to the next editable cell.
+
+An arrow keeps its native behavior when no editable destination exists.
 
 Backspace keeps its native behavior in a filled cell.
 

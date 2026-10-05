@@ -1,6 +1,6 @@
 // -- Time Field -------------------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -94,8 +94,29 @@ export function enhance(root) {
       return;
     }
 
-    if (submitted) submitted.disabled = false;
+    const attributes = attributeSnapshot();
+    const initialValue = submitted?.value;
+    const initialDefault = submitted?.getAttribute('value');
+    const initialStatus = status?.textContent;
+    const initialStatusValue = status?.value;
+    let writtenValue;
+    let writtenDefault;
+    let writtenStatus;
+    if (submitted) attributes.set(submitted, 'disabled', null);
     lifecycle.add(timeField, () => {
+      attributes.restore();
+      if (submitted) {
+        const ownsValue = submitted.value === writtenValue;
+        if (submitted.getAttribute('value') === writtenDefault) {
+          if (initialDefault === null) submitted.removeAttribute('value');
+          else submitted.setAttribute('value', initialDefault);
+        }
+        if (ownsValue && submitted.value !== initialValue) submitted.value = initialValue;
+      }
+      if (status && status.textContent === writtenStatus) {
+        if (status.value === writtenStatus) status.value = initialStatusValue;
+        status.textContent = initialStatus;
+      }
       for (const field of [hour, minute]) {
         if (segmentMessages.has(field) && field.validationMessage === segmentMessages.get(field))
           field.setCustomValidity('');
@@ -124,10 +145,15 @@ export function enhance(root) {
           ? `${padded(hourValue)}:${padded(minuteValue)} ${periodValue}`
           : 'Enter an hour and minute.';
 
-      if (submitted) submitted.value = serialized;
+      if (submitted) {
+        submitted.value = serialized;
+        writtenValue = submitted.value;
+        writtenDefault = submitted.getAttribute('value');
+      }
       if (status) {
         status.value = display;
         status.textContent = display;
+        writtenStatus = status.textContent;
       }
 
       if (emit) {

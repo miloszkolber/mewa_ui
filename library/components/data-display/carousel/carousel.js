@@ -6,6 +6,7 @@ import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
 
 const lifecycle = createLifecycle('carousel');
+const slideOwners = new WeakMap();
 
 export function enhance(root) {
   // Re-derive the state of already-enhanced carousels before returning early,
@@ -27,11 +28,16 @@ export function enhance(root) {
       return;
     }
 
-    const slides = () => Array.from(viewport.querySelectorAll('.carousel-slide'));
+    const slides = () =>
+      Array.from(viewport.querySelectorAll('.carousel-slide')).filter(
+        (slide) => slide.closest('.carousel') === carousel
+      );
     // Read at use time: this public property can change on a live carousel.
     const isLoop = () => carousel.hasAttribute('data-loop');
 
     let currentIndex = 0;
+    let currentSlide = null;
+    let knownSlides = [];
 
     // ── ARIA setup ───────────────────────────────
     // Every attribute written below is owned here and restored on destroy.
@@ -44,16 +50,18 @@ export function enhance(root) {
       setAttribute(carousel, 'aria-label', 'Carousel');
     }
 
-    const generatedLabels = new Map();
-    slides().forEach((slide, i) => {
-      setAttribute(slide, 'role', 'group');
-      setAttribute(slide, 'aria-roledescription', 'slide');
-      if (!slide.hasAttribute('aria-label') && !slide.hasAttribute('aria-labelledby')) {
-        const label = `${i + 1} of ${slides().length}`;
-        setAttribute(slide, 'aria-label', label);
-        generatedLabels.set(slide, label);
-      }
-    });
+    const slideStates = new Map();
+    const generatedDots = new Map();
+    const generateDots = dotsContainer && !dotsContainer.children.length;
+    const releaseSlide = (slide) => {
+      observer.unobserve(slide);
+      slideStates.get(slide)?.attributes.restore();
+      slideStates.delete(slide);
+      if (slideOwners.get(slide) === releaseSlide) slideOwners.delete(slide);
+      const dot = generatedDots.get(slide);
+      if (dot?.parentElement === dotsContainer) dot.remove();
+      generatedDots.delete(slide);
+    };
 
     // ── Scroll to index ─────────────────────────
     const scrollToIndex = (index) => {
@@ -74,10 +82,10 @@ export function enhance(root) {
     // ── Update state (buttons, dots, counter) ───
     const updateState = (index) => {
       const allSlides = slides();
-      if (!allSlides.length) return;
-      currentIndex = index;
+      currentIndex = allSlides.length ? Math.max(0, Math.min(index, allSlides.length - 1)) : -1;
+      currentSlide = allSlides[currentIndex] || null;
 
-      if (!isLoop()) {
+      if (!allSlides.length || !isLoop()) {
         if (prevBtn) prevBtn.disabled = currentIndex <= 0;
         if (nextBtn) nextBtn.disabled = currentIndex >= allSlides.length - 1;
       } else {
@@ -90,7 +98,11 @@ export function enhance(root) {
       if (dotsContainer) {
         const dots = dotsContainer.querySelectorAll('.carousel-dot');
         dots.forEach((dot, i) => {
-          dot.setAttribute('aria-current', i === currentIndex ? 'true' : 'false');
+          const active = generateDots
+            ? generatedDots.get(currentSlide) === dot
+            : i === currentIndex;
+          if (generateDots) dot.setAttribute('aria-current', active ? 'true' : 'false');
+          else setAttribute(dot, 'aria-current', active ? 'true' : 'false');
         });
       }
 
@@ -99,33 +111,98 @@ export function enhance(root) {
       }
 
       allSlides.forEach((slide, i) => {
+        const state = slideStates.get(slide);
         if (
-          !generatedLabels.has(slide) ||
-          slide.getAttribute('aria-label') !== generatedLabels.get(slide) ||
+          !state?.label ||
+          slide.getAttribute('aria-label') !== state.label ||
           slide.hasAttribute('aria-labelledby')
         )
           return;
         const label = `${i + 1} of ${allSlides.length}`;
-        setAttribute(slide, 'aria-label', label);
-        generatedLabels.set(slide, label);
+        state.attributes.set(slide, 'aria-label', label);
+        state.label = label;
       });
+    };
+
+    const visibleSlide = () => {
+      const bounds = viewport.getBoundingClientRect();
+      let visible = null;
+      let greatest = 0;
+      slides().forEach((slide) => {
+        const rect = slide.getBoundingClientRect();
+        const overlap = Math.min(rect.right, bounds.right) - Math.max(rect.left, bounds.left);
+        if (overlap > greatest) {
+          visible = slide;
+          greatest = overlap;
+        }
+      });
+      return visible || currentSlide;
     };
 
     // ── IntersectionObserver for current slide ──
     const observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-            const idx = slides().indexOf(entry.target);
-            if (idx !== -1) updateState(idx);
-          }
-        }
+        if (entries.some((entry) => slideStates.has(entry.target)))
+          updateState(slides().indexOf(visibleSlide()));
       },
       { root: viewport, threshold: 0.5 }
     );
 
-    slides().forEach((slide) => observer.observe(slide));
     lifecycle.add(carousel, () => observer.disconnect());
+    lifecycle.add(carousel, () => {
+      for (const slide of slideStates.keys()) releaseSlide(slide);
+    });
+
+    const reconcile = () => {
+      const allSlides = slides();
+      const changed =
+        allSlides.length !== knownSlides.length ||
+        allSlides.some((slide, i) => slide !== knownSlides[i]);
+      for (const slide of slideStates.keys()) {
+        if (!allSlides.includes(slide)) releaseSlide(slide);
+      }
+      allSlides.forEach((slide, i) => {
+        if (!slideStates.has(slide)) {
+          slideOwners.get(slide)?.(slide);
+          const attributes = attributeSnapshot();
+          const state = { attributes, label: null };
+          attributes.set(slide, 'role', 'group');
+          attributes.set(slide, 'aria-roledescription', 'slide');
+          if (!slide.hasAttribute('aria-label') && !slide.hasAttribute('aria-labelledby')) {
+            state.label = `${i + 1} of ${allSlides.length}`;
+            attributes.set(slide, 'aria-label', state.label);
+          }
+          slideStates.set(slide, state);
+          slideOwners.set(slide, releaseSlide);
+          observer.observe(slide);
+        }
+        if (generateDots && !generatedDots.has(slide)) {
+          const dot = carousel.ownerDocument.createElement('button');
+          dot.type = 'button';
+          dot.className = 'carousel-dot';
+          generatedDots.set(slide, dot);
+        }
+        if (generateDots) {
+          const dot = generatedDots.get(slide);
+          dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+        }
+      });
+      if (generateDots) {
+        const ordered = allSlides.map((slide) => generatedDots.get(slide));
+        const present = [...dotsContainer.children].filter((dot) => ordered.includes(dot));
+        if (ordered.some((dot, i) => dot !== present[i])) dotsContainer.append(...ordered);
+      }
+      let index = allSlides.indexOf(changed ? currentSlide : visibleSlide());
+      if (index === -1) index = Math.max(0, Math.min(currentIndex, allSlides.length - 1));
+      // Preserve the current slide's identity through insertion and reordering,
+      // and choose the nearest remaining position if that slide was removed.
+      if (changed && knownSlides.length && allSlides.length) scrollToIndex(index);
+      knownSlides = allSlides;
+      updateState(index);
+    };
+    const contentObserver = new MutationObserver(reconcile);
+    contentObserver.observe(viewport, { childList: true, subtree: true });
+    lifecycle.add(carousel, () => contentObserver.disconnect());
 
     // ── Navigation ──────────────────────────────
     const goNext = () => scrollToIndex(currentIndex + 1);
@@ -136,24 +213,13 @@ export function enhance(root) {
 
     // ── Dot click handlers ──────────────────────
     if (dotsContainer) {
-      const allSlides = slides();
-      if (!dotsContainer.children.length && allSlides.length) {
-        allSlides.forEach((_, i) => {
-          const dot = carousel.ownerDocument.createElement('button');
-          dot.type = 'button';
-          dot.className = 'carousel-dot';
-          dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-          dot.setAttribute('aria-current', i === 0 ? 'true' : 'false');
-          dotsContainer.appendChild(dot);
-          lifecycle.add(carousel, () => dot.remove());
-        });
-      }
-
       lifecycle.listen(carousel, dotsContainer, 'click', (e) => {
         const dot = e.target.closest('.carousel-dot');
-        if (!dot) return;
+        if (!dot || !dotsContainer.contains(dot)) return;
         const dots = Array.from(dotsContainer.querySelectorAll('.carousel-dot'));
-        const idx = dots.indexOf(dot);
+        const idx = generateDots
+          ? slides().findIndex((slide) => generatedDots.get(slide) === dot)
+          : dots.indexOf(dot);
         if (idx !== -1) scrollToIndex(idx);
       });
     }
@@ -201,10 +267,10 @@ export function enhance(root) {
 
     // A public property can change on an already-enhanced carousel, so
     // re-derive the state the current attributes imply.
-    lifecycle.onUpdate(carousel, () => updateState(currentIndex));
+    lifecycle.onUpdate(carousel, reconcile);
 
     // ── Initial state ───────────────────────────
-    updateState(0);
+    reconcile();
   });
 }
 

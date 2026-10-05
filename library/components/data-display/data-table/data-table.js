@@ -1,6 +1,6 @@
 // -- Data Table ------------------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -27,6 +27,57 @@ export function enhance(scope) {
       root.removeAttribute('data-mewa-data-table-init');
       return;
     }
+    const attributes = attributeSnapshot();
+    const textOutputs = new Map();
+    const rowVisibility = new Map();
+    const legacyPageClasses = new Map();
+    // Client pagination derives presentation from aria-current, not the legacy
+    // class. Own only that token so unrelated class edits survive teardown.
+    const clearLegacyPageClass = (control) => {
+      const value = control.getAttribute('class');
+      if (control.classList.contains('pagination-active')) {
+        control.classList.remove('pagination-active');
+        legacyPageClasses.set(control, control.getAttribute('class'));
+      } else if (legacyPageClasses.has(control)) {
+        if (!value && value !== legacyPageClasses.get(control)) legacyPageClasses.delete(control);
+        else legacyPageClasses.set(control, value);
+      }
+    };
+    const writeText = (element, text) => {
+      if (!textOutputs.has(element))
+        textOutputs.set(element, { original: Array.from(element.childNodes), current: null });
+      const node = element.ownerDocument.createTextNode(text);
+      textOutputs.get(element).current = { node, text };
+      element.replaceChildren(node);
+    };
+    // A row's application visibility is separate from client filtering. Adopt
+    // observable application edits before the next render, including unhide.
+    const visibilityFor = (row) => {
+      const hidden = row.getAttribute('hidden');
+      let state = rowVisibility.get(row);
+      if (!state || hidden !== state.current) {
+        state = { hidden, current: hidden, attributes: attributeSnapshot() };
+        rowVisibility.set(row, state);
+      }
+      return state;
+    };
+    lifecycle.add(root, () => {
+      attributes.restore();
+      rowVisibility.forEach((state) => state.attributes.restore());
+      legacyPageClasses.forEach((current, control) => {
+        const value = control.getAttribute('class');
+        // An observable application clear releases even an absent owned token.
+        if (!control.classList.contains('pagination-active') && (value || value === current))
+          control.classList.add('pagination-active');
+      });
+      textOutputs.forEach(({ original, current }, element) => {
+        if (!current || current.node.parentNode !== element || current.node.data !== current.text)
+          return;
+        // Replace only our output, retaining application siblings and baseline
+        // nodes that have since acquired another parent (including a fragment).
+        current.node.replaceWith(...original.filter((node) => !node.parentNode));
+      });
+    });
 
     const filters = () =>
       queryAll(root, '[data-table-filter], .data-table-filter').filter((element) =>
@@ -140,12 +191,13 @@ export function enhance(scope) {
         const direction = header.getAttribute('aria-sort');
         if (direction === 'ascending' || direction === 'descending') {
           const nextDirection = direction === 'ascending' ? 'descending' : 'ascending';
-          button.setAttribute(
+          attributes.set(
+            button,
             'aria-label',
             `Sort by ${label}. Currently ${direction}. Activate to sort ${nextDirection}.`
           );
         } else {
-          button.setAttribute('aria-label', `Sort by ${label}. Activate to sort ascending.`);
+          attributes.set(button, 'aria-label', `Sort by ${label}. Activate to sort ascending.`);
         }
       });
     };
@@ -171,25 +223,23 @@ export function enhance(scope) {
         const disabled = (isPrevious && currentPage <= 1) || (isNext && currentPage >= pageCount);
 
         if (numericPage) {
+          clearLegacyPageClass(control);
           const listItem = control.closest('li');
           const isOutOfRange = numericPage > pageCount;
-          if (listItem) listItem.hidden = isOutOfRange;
-          else control.hidden = isOutOfRange;
-          if (numericPage === currentPage) control.setAttribute('aria-current', 'page');
-          else control.removeAttribute('aria-current');
+          attributes.set(listItem || control, 'hidden', isOutOfRange ? '' : null);
+          attributes.set(control, 'aria-current', numericPage === currentPage ? 'page' : null);
         }
 
         if (control.tagName === 'BUTTON') {
-          control.disabled = disabled;
+          attributes.set(control, 'disabled', disabled ? '' : null);
         } else if (isPrevious || isNext) {
           if (disabled) {
-            control.setAttribute('aria-disabled', 'true');
-            control.setAttribute('tabindex', '-1');
+            attributes.set(control, 'aria-disabled', 'true');
+            attributes.set(control, 'tabindex', '-1');
           } else {
-            control.removeAttribute('aria-disabled');
+            attributes.set(control, 'aria-disabled', null);
             const initialTabIndex = linkTabIndexes.get(control);
-            if (initialTabIndex === undefined) control.removeAttribute('tabindex');
-            else control.setAttribute('tabindex', initialTabIndex);
+            attributes.set(control, 'tabindex', initialTabIndex ?? null);
           }
         }
       });
@@ -199,11 +249,14 @@ export function enhance(scope) {
       const allRows = rows();
       allRows.forEach((row) => {
         if (!originalOrder.has(row)) originalOrder.set(row, nextOrder++);
+        visibilityFor(row);
       });
 
       const needle = getFilterValue().toLocaleLowerCase();
-      const matchingRows = allRows.filter((row) =>
-        row.textContent.toLocaleLowerCase().includes(needle)
+      const matchingRows = allRows.filter(
+        (row) =>
+          rowVisibility.get(row).hidden === null &&
+          row.textContent.toLocaleLowerCase().includes(needle)
       );
       const size = pageSize();
       const pageCount = size ? Math.max(1, Math.ceil(matchingRows.length / size)) : 1;
@@ -213,18 +266,23 @@ export function enhance(scope) {
       const pageSet = new Set(pageRows);
 
       allRows.forEach((row) => {
-        row.hidden = !pageSet.has(row);
+        const state = rowVisibility.get(row);
+        state.current = state.hidden ?? (pageSet.has(row) ? null : '');
+        state.attributes.set(row, 'hidden', state.current);
       });
 
       const empty = emptyState();
-      if (empty) empty.hidden = matchingRows.length !== 0;
+      if (empty) attributes.set(empty, 'hidden', matchingRows.length !== 0 ? '' : null);
 
       const summary = status();
       if (summary) {
         const labels = getLabels();
-        summary.setAttribute('role', 'status');
-        if (!summary.hasAttribute('aria-live')) summary.setAttribute('aria-live', 'polite');
-        summary.textContent = `${matchingRows.length} ${matchingRows.length === 1 ? labels.singular : labels.plural}`;
+        attributes.set(summary, 'role', 'status');
+        if (!summary.hasAttribute('aria-live')) attributes.set(summary, 'aria-live', 'polite');
+        writeText(
+          summary,
+          `${matchingRows.length} ${matchingRows.length === 1 ? labels.singular : labels.plural}`
+        );
       }
 
       const rangeOutput = range();
@@ -232,9 +290,12 @@ export function enhance(scope) {
         const labels = getLabels();
         const first = matchingRows.length ? firstIndex + 1 : 0;
         const last = matchingRows.length ? firstIndex + pageRows.length : 0;
-        rangeOutput.textContent = matchingRows.length
-          ? `Showing ${first}\u2013${last} of ${matchingRows.length} ${labels.rangeLabel}`
-          : `Showing 0 of ${matchingRows.length} ${labels.rangeLabel}`;
+        writeText(
+          rangeOutput,
+          matchingRows.length
+            ? `Showing ${first}\u2013${last} of ${matchingRows.length} ${labels.rangeLabel}`
+            : `Showing 0 of ${matchingRows.length} ${labels.rangeLabel}`
+        );
       }
 
       updatePagination(pageCount);
@@ -302,20 +363,9 @@ export function enhance(scope) {
             !sortButton.matches('[data-table-sort], .data-table-sort'))
         )
           return;
-        if (!header.hasAttribute('aria-sort')) header.setAttribute('aria-sort', 'none');
+        if (!header.hasAttribute('aria-sort')) attributes.set(header, 'aria-sort', 'none');
         event.preventDefault();
         sortBy(sortButton);
-        return;
-      }
-
-      if (target.matches('[data-table-clear]')) {
-        event.preventDefault();
-        filters().forEach((input) => {
-          input.value = '';
-        });
-        currentPage = 1;
-        emitFilter();
-        filters()[0]?.focus();
         return;
       }
 
@@ -328,7 +378,10 @@ export function enhance(scope) {
         1,
         Math.ceil(
           rows().filter((row) => {
-            return row.textContent.toLocaleLowerCase().includes(needle);
+            return (
+              visibilityFor(row).hidden === null &&
+              row.textContent.toLocaleLowerCase().includes(needle)
+            );
           }).length / pageSize()
         )
       );
@@ -371,6 +424,8 @@ export function enhance(scope) {
       emitFilter();
     });
 
+    // Native reset owns defaults and cancellation. Synchronize client state
+    // through the lifecycle's post-default-action reset hook, not a click handler.
     lifecycle.reset(root, root, () => {
       currentPage = 1;
       emitFilter();
@@ -386,7 +441,7 @@ export function enhance(scope) {
 
     sortButtons().forEach((button) => {
       const header = button.closest('th');
-      if (header && !header.hasAttribute('aria-sort')) header.setAttribute('aria-sort', 'none');
+      if (header && !header.hasAttribute('aria-sort')) attributes.set(header, 'aria-sort', 'none');
     });
     const activePage = pageControls().find(
       (control) => control.getAttribute('aria-current') === 'page'

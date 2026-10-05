@@ -295,6 +295,33 @@ await test('paired semantic color steps meet the normal-text contrast floor', ()
   }
 });
 
+await test('status text meets contrast after its alpha surface composites on supported canvases', () => {
+  // Solid 600/050 pairings do not cover an alpha wash over the actual page.
+  // WCAG's 4.5 floor is unrounded; 4.488 is not a passing 4.5 ratio.
+  for (const [theme, tokens] of [
+    ['light', lightTokens],
+    ['dark', darkTokens]
+  ]) {
+    const resolve = (name) => {
+      const definition = tokens.get(name) || baseDeclarations.get(name);
+      assert(definition, `missing ${theme} color role ${name}`);
+      const reference = definition.match(/^var\((--[\w-]+)\)$/);
+      return reference ? resolve(reference[1]) : parseRgb(definition);
+    };
+    for (const status of ['positive', 'caution', 'negative']) {
+      const text = resolve(`--text-${status}`);
+      const surface = resolve(`--surface-${status}`);
+      for (const canvas of ['--background', '--surface-primary', '--surface-secondary']) {
+        const parent = resolve(canvas);
+        assert.equal(parent.opacity, 1, `${canvas}: contrast fixture needs an opaque canvas`);
+        const painted = composite(surface.rgb, parent.rgb, surface.opacity);
+        const ratio = contrast(text.rgb, painted);
+        assert(ratio >= 4.5, `${theme} ${status} on ${canvas}: ${ratio}:1 contrast`);
+      }
+    }
+  }
+});
+
 await test('directional neutral alpha ramps cover every available step and reproduce their solids', () => {
   assert.deepEqual(
     declarationNames(baseSource, /^--color-alpha-light-\d{3,4}$/),
@@ -440,7 +467,7 @@ await test('light and dark semantic surfaces use the full reference endpoints', 
     '--surface-inverted': 'var(--color-neutral-950)',
     '--text-inverted': 'var(--color-neutral-050)',
     '--surface-positive': 'var(--color-alpha-green-100)',
-    '--surface-negative': 'var(--color-alpha-red-100)',
+    '--surface-negative': 'var(--color-alpha-red-050)',
     '--surface-caution': 'var(--color-alpha-amber-100)',
     '--overlay-strong': 'var(--color-alpha-dark-400)',
     '--border-interactive-default': 'var(--color-neutral-500)',

@@ -1,543 +1,87 @@
 # mewa_ui design contract
 
-This file defines the mandatory design contract for mewa_ui.
+mewa_ui is a technical, restrained interface system with square geometry, monochrome surfaces, structural borders, and status color.
 
-Use this contract for every library change and every consumer interface.
-
-## Read order
-
-1. Read this file before you select a component or a shell.
-2. Read `library/system/foundations.md` before you add visual rules.
-3. Read `library/system/components.md` before you select a component.
-4. Read the matching `library/components/{category}/{slug}/{slug}.md` before you write markup.
-5. Read `library/system/patterns.md` before you compose a page region.
-6. Read `library/system/layouts.md` before you compose application chrome.
-7. Read `library/system/accessibility.md` before you add interaction.
-8. Read `registry.json` before you load component assets.
-
-The registry owns component selection metadata.
-
-The component skill owns implementation-specific markup and behavior.
-
-The component stylesheet and module define the executable contract.
-
-`docs/preview.html` is the interactive component playground and behavior reference.
-
-`docs/figma.html` is a static property and variant matrix for Figma import. Both documentation views have a theme picker and use shared authored specimens.
-
-Neither page defines a second API; component anchors are documentation links only.
-
-The registry defines packaged style, behavior, and asset dependencies.
-
-The generated manifest exposes those dependencies to consumers.
+This contract applies to library changes and consumer interfaces.
 
 ## System boundaries
 
 A component is a reusable control or content region.
 
-A pattern is a documented composition of components.
+A pattern composes components for a repeated task.
 
-A shell is a documented composition of application chrome.
+A shell composes application chrome.
 
-mewa_ui does not ship complete layout templates.
-
-App Shell supplies reusable application chrome and page regions.
-
-Sidebar supplies collapsible navigation behavior.
-
-Layout supplies local Grid and Flexbox composition.
-
-A consumer owns routes, business rules, application state, and page-specific layout hooks.
+Shell recipes are compositions, not complete shipped layout templates.
 
 The library owns shared appearance, semantics, and interaction contracts.
 
-## Agent decision sequence
+The consumer owns routes, business rules, application state, and page-specific layout hooks.
 
-1. Identify the user task.
-2. Identify the primary page landmark.
-3. Select the smallest shell that supports the route structure.
-4. Select the smallest documented pattern that supports the task.
-5. Select native elements before custom interaction patterns.
-6. Select components from `library/system/components.md`.
-7. Read every selected component skill.
-8. Load only the required stylesheets and modules.
-9. Preserve the documented no-JavaScript path.
-10. Verify the result against this contract.
+The registry owns component selection metadata.
 
-Do not infer an API from another library.
+Generated archive metadata projects the same selection data and packaged asset paths.
 
-Do not invent a class because its name looks familiar.
+The selected component Markdown owns exact markup, keyboard, focus, state, events, and fallback.
 
-Do not invent a `data-*` attribute.
+Stylesheets and modules define the executable contract.
 
-Do not copy a demo without its labels and relationships.
+Start with native controls and the documented simpler fallback.
 
-## Visual identity
+Use only documented APIs; do not invent classes, `data-*` hooks, events, or framework bindings.
 
-Use a raw and technical visual language.
+## Read for the task
 
-Use monochrome surfaces for normal interface structure.
+Read only the sections needed for the task.
 
-Use red, amber, and green only for status and destructive meaning.
+Follow another route only when the task crosses its responsibility.
 
-Use square geometry by default.
+| When the task changes | Read |
+| --- | --- |
+| Control selection or replacement | [Components: Selection order](system/components.md#selection-order), the relevant family section, then candidate metadata and the selected contract. |
+| Component markup or state | The selected `library/components/{category}/{slug}/{slug}.md` and [Components: Implementation](system/components.md#implementation). |
+| Visual rules or tokens | The relevant [Foundations](system/foundations.md) section and the selected component presentation contract. |
+| A repeated region | The matching [Patterns](system/patterns.md) section and contracts for the components used. |
+| Application chrome | [Layouts: Choose a shell](system/layouts.md#choose-a-shell), the selected recipe, and its component contracts. |
+| Interaction or accessibility | The relevant [Accessibility](system/accessibility.md) sections and selected keyboard, focus, and fallback contract. |
+| Enhanced markup mount, update, insertion, or removal | [Runtime: Application lifecycle](runtime/README.md#application-lifecycle) and the selected component contract. |
+| A library component | Source-checkout `AGENTS.md`, [Components: Component contract](system/components.md#component-contract), and the relevant implementation sources. |
+| Packaging or routing only | Source-checkout `AGENTS.md`, registry/schema, builder/catalog, and package/system tests; not every component contract. |
 
-Use borders to show structure.
+An isolated control does not require a shell or pattern selection.
 
-Do not use visual shadows.
+Reusing an implemented variant does not require reading the complete foundations reference.
 
-Do not use decorative color gradients.
+Read a nested component contract when writing its markup or extending its API.
 
-Use soft blur on top-level sticky chrome and documented modal backdrops.
+An asset dependency alone does not require reading that dependency's entire contract.
 
-Keep the main canvas continuous.
+## Resolve metadata and assets
 
-Do not place a card inside another card.
+Read paths are relative to the checkout or extracted core-package root; Markdown links are relative to their file.
 
-Do not wrap a table in a card.
+In a source checkout, read selected `registry.json` entries for selection fields, `files.skill`, exact source assets, and dependencies.
 
-Use one outer section border around dense rows.
+Source registry v3 and `library/src/` instructions apply only to a source checkout.
 
-Remove the inner border when a child fills a bordered section.
+In a generated core archive, find candidates in `components/index.md`.
 
-Use compact labels and direct descriptions.
+Read only selected `components/{slug}.json` records and their `component.contractLocal` Markdown.
 
-Do not repeat information that the control already makes clear.
+Use `manifest.json` for the full inventory or its `guidance` paths when needed.
 
-Use uppercase monospace text only for technical eyebrows and compact machine labels.
+Keep `useWhen`, `avoidWhen`, `fallback`, `nativeBasis`, and `jsMode` in the selection decision.
 
-Use sentence case for headings, labels, buttons, and navigation.
+Load packaged foundations and executable entries from the selected metadata, not source CSS or JavaScript paths printed in source examples.
 
-## Foundations
+Preserve declared dependency order and the selected contract's no-JavaScript behavior.
 
-Load `library/src/base.css` first.
+SVG assets are optional in the separate `mewa-icons` archive, not under the core package's `library/src/icons/`.
 
-Load `library/src/tokens.css` second.
+Use [Icon: Inline SVG](components/primitives/icon/icon.md#inline-svg) when resolving icon assets.
 
-Use Google Sans Code for all interface text, code, output, keys, IDs, and technical labels.
+Old archives without local contracts require a matching source checkout or the immutable `contract` URL when available.
 
-Use palette primitives only inside foundation files.
+Do not substitute contracts from another revision.
 
-Use semantic color roles inside components and consumers.
-
-Use neutral as the CSS name for the grayscale family.
-
-Use 13 neutral solid steps: `000`, `050`, `100` through `900`, `950`, and `1000`.
-
-Anchor neutral `000` at `#ffffff` and neutral `1000` at `#0a0a0a`.
-
-Use 11 chromatic solid steps from `050` through `950`.
-
-Generate palette values at build time from `scripts/color-palette.mjs`.
-
-Serialize every authored CSS color as modern space-separated `rgb()`, including alpha colors.
-
-Do not mix HEX, RGB, HSL, or OKLCH notation in CSS.
-
-Use HCT tone, which is CIELAB L*, as the shared perceived-lightness coordinate.
-
-Use one eased HCT tone curve across every family, with denser intervals at both ends.
-
-Keep one recipe hue per chromatic family and tune HCT chroma by step.
-
-Treat matching HCT tone as perceptual alignment, not proof of WCAG contrast.
-
-Use `alpha-light` for white over neutral `1000` from `050` through `1000`; omit `000` and make `1000` transparent.
-
-Use `alpha-dark` for neutral `1000` over white from `000` through `950`; omit `1000` and make `000` transparent.
-
-Use chromatic alpha steps `000`, `050`, `100`, `200`, `800`, `900`, `950`, and `1000`, with both endpoints holding the adjacent tuned source color at zero alpha.
-
-Use generated alpha primitives only through semantic roles.
-
-Use the token purposes in `registry.json`.
-
-Use the numeric spacing and size tokens from `library/src/base.css`.
-
-Do not add a second spacing scale.
-
-Use `--border-radius-000` for normal geometry.
-
-Use `--border-radius-6400` only when circular geometry carries meaning.
-
-Use `--border-width-025` for normal structure.
-
-Use `--border-width-050` for focus and strong emphasis.
-
-Use `--border-width-100` only when the component contract requires it.
-
-Use `--border-invalid` for the solid boundary of an invalid interactive control.
-
-Use `--blur-400` for headers and high-blur sticky shell chrome.
-
-Use `--blur-100` for other sticky shell chrome.
-
-Do not use blur on controls, cards, rows, dialogs, or body content.
-
-## Surfaces and borders
-
-Use `--background` for the page canvas.
-
-Use `--surface-primary` for a continuous content region.
-
-Use `--surface-secondary` for quiet grouping and alternating emphasis.
-
-Use `--surface-control-hover` for controls, `--surface-menu-hover` for menus,
-`--surface-content-hover` for content rows, and `--surface-shell-hover` for
-application chrome. Keep `--surface-hover` only as a compatibility alias.
-
-Use `--surface-selected` for selected and current state.
-
-Use `--surface-disabled` for disabled surfaces.
-
-Use `--surface-inverted` for the primary high-contrast action.
-
-Use status surfaces only with matching status text roles.
-
-Use `--border-primary` for normal separation.
-
-Use `--border-secondary` for stronger internal separation.
-
-Use `--border-muted` for low-emphasis or dashed boundaries.
-
-Use `--border-focus` for authored focus indicators.
-
-Use the matching semantic border for status validation.
-
-Use one border to define one visual boundary.
-
-Do not stack equivalent borders on a parent and its direct child.
-
-## Density and hierarchy
-
-Use a 36px default button and single-line input height.
-
-Use a 32px compact interactive height for dense row actions.
-
-Use a 24px target only when the component contract permits an inline or constrained target.
-
-Keep the primary action visually strongest.
-
-Use one primary filled action in a local action group.
-
-Use outline or ghost treatments for secondary actions.
-
-Reserve destructive fill for the final destructive confirmation.
-
-Keep row actions compact.
-
-Keep header actions at the default size.
-
-Keep related controls close.
-
-Use larger gaps only between different tasks or sections.
-
-## Native HTML and JavaScript
-
-Start with the native element that matches the task.
-
-Use links for navigation.
-
-Use buttons for actions.
-
-Use `<dialog>` for modal surfaces.
-
-Use the Popover API for supported non-modal top-layer surfaces.
-
-Use `<details>` and `<summary>` for disclosures.
-
-Use native form controls when the platform supports the required input.
-
-Use `<progress>` for completion.
-
-Use `<meter>` for a bounded scalar value.
-
-Use `<output>` for a computed result.
-
-Use JavaScript only for behavior that HTML and CSS cannot express.
-
-Keep component modules as modern ES modules.
-
-Keep component modules safe after repeated initialization.
-
-Keep component modules safe for markup inserted after navigation.
-
-Keep component modules safe to import without a browser DOM.
-
-Export `enhance` and `behavior` from each component module.
-
-Use the shared enhancer for document-wide insertion handling.
-
-Use side-effect-free packaged controllers with application lifecycles.
-
-Use packaged automatic enhancers for plain HTML.
-
-Do not replace native submission, navigation, validation, or disclosure.
-
-## Framework integration
-
-Keep the core package framework-neutral.
-
-Keep every framework adapter optional.
-
-Ship each framework adapter outside `mewa-ui`.
-
-Import dependency-aware behavior from `mewa-ui/components/*.js` in an adapter.
-
-Use the `mewa-svelte` attachment for Svelte-owned elements.
-
-Run behavior cleanup when Svelte removes an attached element.
-
-Keep Svelte as a peer dependency of `mewa-svelte`.
-
-Use Bun as the repository JavaScript toolchain.
-
-Compile client-side `.svelte` files with `svelte/compiler` through the Bun plugin.
-
-Do not add Vite or SvelteKit to the Mewa UI toolchain.
-
-Do not make the Svelte adapter a server-rendering contract.
-
-## State and data attributes
-
-Use native attributes and pseudo-classes first.
-
-Use `data-*` only for a documented state that the platform cannot express.
-
-Use `data-state` only for meaningful component status.
-
-Keep ARIA state synchronized with visual state.
-
-Do not use color as the only state indicator.
-
-Do not create compatibility aliases without a documented migration need.
-
-## Motion
-
-Use `--motion-duration-fast` and `--motion-easing-standard` for visual state feedback.
-
-Transition only color, background color, border color, opacity, and small state indicators.
-
-Use `--motion-duration-spatial` for Dialog, Alert Dialog, Command Palette, Sheet, and Sidebar geometry.
-
-Use only subtle opacity, offset, scale, slide, or width changes for spatial motion.
-
-Keep direct manipulation, scrolling, and other layout changes immediate.
-
-Disable all transitions when `prefers-reduced-motion: reduce` is active.
-
-Do not add smooth scrolling.
-
-Do not add View Transitions.
-
-Do not add scroll-driven animation.
-
-Do not add Web Animations.
-
-Do not add shimmer.
-
-Spinner rotation is the only continuous animation exception.
-
-Use the Spinner component only while work is in progress.
-
-## Responsive behavior
-
-Use `60rem` to collapse a wide content-and-rail composition.
-
-Use the `--breakpoint-compact` value, `48rem`, for shell navigation and major page structure.
-
-Use the `--breakpoint-narrow` value, `37.5rem`, for compact single-column behavior.
-
-Use rem units for responsive breakpoints.
-
-Use the `--breakpoint-max-dense` value, `90rem`, for dense application canvases.
-
-Use the `--breakpoint-max-focused` value, `64rem`, for focused tools and content pages.
-
-Do not add another global canvas preset.
-
-Keep normal content usable at a 320px viewport width.
-
-Keep text and controls usable at 200% zoom.
-
-Contain two-dimensional scrolling inside tables, grids, and media that require it.
-
-Do not create horizontal page scrolling.
-
-## Accessibility
-
-Use native semantics before ARIA.
-
-Give every control an accessible name.
-
-Keep visible labels for form controls.
-
-Keep stable IDs for labels, descriptions, errors, and controlled regions.
-
-Use `aria-current="page"` on the current route link.
-
-Use live regions only for dynamic information.
-
-Keep every pointer path available from the keyboard.
-
-Give every drag interaction a non-drag pointer alternative.
-
-Keep focus visible.
-
-Keep focused content clear of sticky regions.
-
-Support `prefers-contrast: more`.
-
-Support `forced-colors: active`.
-
-Keep the no-JavaScript state understandable and usable.
-
-Read `library/system/accessibility.md` for the complete acceptance contract.
-
-## Component documentation
-
-Use `library/system/components.md` to select a component.
-
-Use the component skill to implement the component.
-
-The registry stores each component purpose.
-
-The registry stores each selection condition.
-
-The registry stores each nearest misuse.
-
-The registry stores each fallback.
-
-The registry stores each runtime mode.
-
-Each component skill must state its native basis.
-
-Each component skill must state its supported structure.
-
-Each interactive component skill must state its keyboard behavior.
-
-Each interactive component skill must state its state changes or events.
-
-Each enhanced component skill must state its no-JavaScript behavior.
-
-Keep examples short.
-
-Keep every example complete.
-
-Use explicit `type` attributes on buttons.
-
-Do not use inline styles in canonical examples.
-
-Do not include a variant that the stylesheet does not implement.
-
-## Patterns
-
-Use a pattern when several components solve one repeated task.
-
-Keep patterns in `library/system/patterns.md`.
-
-Do not add pattern CSS until repeated use needs a shared hook.
-
-Prefer composition before a new component.
-
-Promote a pattern to a component only when it has a stable API and repeated behavior.
-
-## Shells
-
-Use `library/system/layouts.md` to select a shell composition.
-
-Use the sidebar shell for persistent application navigation.
-
-Use the top-navigation shell for a small flat route set.
-
-Use the focused-tool shell for one primary task.
-
-Compose shells from App Shell, Sidebar, Layout, navigation components, and native landmarks.
-
-Keep page-specific shell CSS in the consumer.
-
-Do not ship complete shell templates from this repository.
-
-Do not create a new component only for one shell.
-
-## Source ownership
-
-`scripts/color-palette.mjs` owns the build-time HCT palette recipe.
-
-`library/src/base.css` owns static foundations and contains the generated palette output.
-
-`library/src/tokens.css` owns semantic theme roles.
-
-`library/components/{category}/{slug}/{slug}.md` owns component implementation guidance.
-
-`library/components/{category}/{slug}/{slug}.css` owns component presentation.
-
-`library/components/{category}/{slug}/{slug}.js` owns component enhancement behavior.
-
-`library/adapters/` owns optional framework integration.
-
-`registry.json` owns machine-readable component and token metadata.
-
-`docs/specimens.json` owns authored examples and isolated visual specimens. `docs/catalog.mjs` defines their supported properties and matrix dimensions.
-
-`docs/preview.html` is generated as individual component playgrounds; each component uses a `#preview-{slug}` anchor.
-
-`docs/figma.html` is generated by `bun run docs:write` and owns the static visual matrix used for design review and Figma import.
-
-`library/system/` owns design selection and composition rules.
-
-`README.md` owns the human repository overview.
-
-`llms.txt` owns the short machine routing guide.
-
-`AGENTS.md` owns maintainer workflow.
-
-## Writing contract
-
-Use ASD-STE100 style.
-
-Use active voice.
-
-Use present tense.
-
-Write one instruction in each sentence.
-
-Keep each rule self-contained.
-
-Use the exact class, attribute, token, and path names.
-
-Avoid pronouns when the noun is not clear.
-
-Avoid idioms.
-
-Avoid rhetorical language.
-
-Avoid deep heading nesting.
-
-Avoid long examples.
-
-## Validation
-
-Run `bun run test`.
-
-Run `bun run test:browser` when Chromium is available.
-
-Run `bun run catalog:check` after registry changes.
-
-Check the changed page with a keyboard.
-
-Check the changed page at 200% zoom.
-
-Check the changed preview section at a 320px viewport width.
-
-Check the changed preview section in light and dark themes.
-
-Check the changed preview section with increased contrast.
-
-Check the changed preview section in forced colors.
-
-Check the changed preview section without JavaScript when a native path exists.
-
-Check the browser console.
-
-Reject the change when the preview and implementation differ.
+Ordinary Markdown/JSON readers and native file search are sufficient; no particular agent framework, context service, or transport is required.

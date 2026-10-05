@@ -1,6 +1,6 @@
 /* -- Resizable component ----------------------------------------- */
 
-import { queryAll } from '../../../runtime/core.js';
+import { queryAll, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -10,16 +10,6 @@ const DEFAULT_MAX = 100;
 const DEFAULT_VALUE = 35;
 const DEFAULT_STEP = 1;
 const DEFAULT_PAGE_STEP = 10;
-const ENHANCED_ATTRIBUTES = [
-  'tabindex',
-  'aria-label',
-  'aria-controls',
-  'aria-orientation',
-  'aria-valuemin',
-  'aria-valuemax',
-  'aria-valuenow',
-  'aria-valuetext'
-];
 const instances = new WeakMap();
 const initializingRoots = new WeakSet();
 const resizeFallbacks = new WeakMap();
@@ -66,17 +56,6 @@ function readConfiguredNumber(handle, root, dataAttribute, ariaAttribute, fallba
 
 function readConfiguredString(handle, root, attribute) {
   return handle.getAttribute(attribute) || root.getAttribute(attribute) || '';
-}
-
-function snapshotAttributes(element, attributes) {
-  return new Map(attributes.map((attribute) => [attribute, element.getAttribute(attribute)]));
-}
-
-function restoreAttributes(element, snapshot) {
-  snapshot.forEach((value, attribute) => {
-    if (value === null) element.removeAttribute(attribute);
-    else element.setAttribute(attribute, value);
-  });
 }
 
 function clamp(value, minimum, maximum) {
@@ -156,12 +135,20 @@ export function enhance(scope) {
       root.dataset.init = '';
       root.dataset.mewaResizableInit = '';
 
-      const handleAttributes = snapshotAttributes(handle, ENHANCED_ATTRIBUTES);
-      const groupOrientation = group.getAttribute('data-orientation');
-      const panelStyles = {
-        flexBasis: panels[0].style.flexBasis,
-        flexGrow: panels[0].style.flexGrow,
-        flexShrink: panels[0].style.flexShrink
+      const attributes = attributeSnapshot();
+      const panelStyles = new Map(
+        ['flex-basis', 'flex-grow', 'flex-shrink'].map((property) => [
+          property,
+          {
+            original: panels[0].style.getPropertyValue(property),
+            priority: panels[0].style.getPropertyPriority(property),
+            current: null
+          }
+        ])
+      );
+      const writePanelStyle = (property, next) => {
+        panels[0].style.setProperty(property, next);
+        panelStyles.get(property).current = panels[0].style.getPropertyValue(property);
       };
 
       const requestedOrientation =
@@ -176,10 +163,10 @@ export function enhance(scope) {
       const decreaseKey = isHorizontal ? 'ArrowUp' : 'ArrowLeft';
       const increaseKey = isHorizontal ? 'ArrowDown' : 'ArrowRight';
 
-      handle.setAttribute('aria-orientation', orientation);
-      group.dataset.orientation = orientation;
+      attributes.set(handle, 'aria-orientation', orientation);
+      attributes.set(group, 'data-orientation', orientation);
       if (!handle.hasAttribute('tabindex') && handle.tagName !== 'BUTTON') {
-        handle.setAttribute('tabindex', '0');
+        attributes.set(handle, 'tabindex', '0');
       }
 
       let minimum = clamp(
@@ -193,8 +180,8 @@ export function enhance(scope) {
         100
       );
       if (maximum < minimum) [minimum, maximum] = [maximum, minimum];
-      handle.setAttribute('aria-valuemin', formatValue(minimum));
-      handle.setAttribute('aria-valuemax', formatValue(maximum));
+      attributes.set(handle, 'aria-valuemin', formatValue(minimum));
+      attributes.set(handle, 'aria-valuemax', formatValue(maximum));
 
       const requestedStep = readNumber(
         handle,
@@ -238,21 +225,22 @@ export function enhance(scope) {
           .filter(Boolean)
           .join(' ');
 
-      handle.setAttribute('aria-label', accessibleLabel);
-      if (controls) handle.setAttribute('aria-controls', controls);
-      else handle.removeAttribute('aria-controls');
+      attributes.set(handle, 'aria-label', accessibleLabel);
+      attributes.set(handle, 'aria-controls', controls || null);
 
       const existingOutput = getOutput(root);
-      const outputAttributes = existingOutput
-        ? snapshotAttributes(existingOutput, ['class', 'aria-live', 'aria-atomic'])
-        : null;
       const outputText = existingOutput?.textContent || '';
       const outputValue = existingOutput?.value || '';
+      let lastOutputValue = null;
       let output = existingOutput;
       if (!output) output = createOutput(root);
-      output.classList.add('resizable-output');
-      output.setAttribute('aria-live', output.getAttribute('aria-live') || 'polite');
-      output.setAttribute('aria-atomic', output.getAttribute('aria-atomic') || 'true');
+      attributes.set(
+        output,
+        'class',
+        [...new Set([...output.classList, 'resizable-output'])].join(' ')
+      );
+      attributes.set(output, 'aria-live', output.getAttribute('aria-live') || 'polite');
+      attributes.set(output, 'aria-atomic', output.getAttribute('aria-atomic') || 'true');
 
       const pointerControls = createPointerControls(root, output, valueLabel);
 
@@ -264,10 +252,11 @@ export function enhance(scope) {
 
       function announcement(next) {
         const text = `${valueLabel}: ${formatValue(next)} percent`;
-        handle.setAttribute('aria-valuenow', formatValue(next));
-        handle.setAttribute('aria-valuetext', text);
+        attributes.set(handle, 'aria-valuenow', formatValue(next));
+        attributes.set(handle, 'aria-valuetext', text);
         output.value = text;
         output.textContent = text;
+        lastOutputValue = text;
         const interactionDisabled =
           handle.disabled || handle.getAttribute('aria-disabled') === 'true';
         pointerControls.decrease.disabled = interactionDisabled || next <= minimum;
@@ -277,9 +266,9 @@ export function enhance(scope) {
       function setPanelBasis(next) {
         const size = containerSize();
         if (size <= 0) return;
-        panels[0].style.flexBasis = `${(size * next) / 100}px`;
-        panels[0].style.flexGrow = '0';
-        panels[0].style.flexShrink = '0';
+        writePanelStyle('flex-basis', `${(size * next) / 100}px`);
+        writePanelStyle('flex-grow', '0');
+        writePanelStyle('flex-shrink', '0');
       }
 
       function setValue(next, source = 'programmatic', emit = true) {
@@ -370,8 +359,9 @@ export function enhance(scope) {
             }
           }
         }
-        handle.removeAttribute('data-resizing');
-        root.removeAttribute('data-resizing');
+        if (handle.getAttribute('data-resizing') === '')
+          attributes.set(handle, 'data-resizing', null);
+        if (root.getAttribute('data-resizing') === '') attributes.set(root, 'data-resizing', null);
         drag = null;
       }
 
@@ -396,8 +386,8 @@ export function enhance(scope) {
           start: Number(event[coordinate]) || 0,
           initialSize: panelSize() || (containerSize() * value) / 100
         };
-        handle.setAttribute('data-resizing', '');
-        root.setAttribute('data-resizing', '');
+        attributes.set(handle, 'data-resizing', '');
+        attributes.set(root, 'data-resizing', '');
         try {
           handle.setPointerCapture?.(pointerId);
         } catch {
@@ -436,20 +426,28 @@ export function enhance(scope) {
         pointerControls.controls.remove();
         if (resizeObserver) resizeObserver.disconnect();
         else removeResizeFallback?.();
-        restoreAttributes(handle, handleAttributes);
-        if (groupOrientation === null) group.removeAttribute('data-orientation');
-        else group.setAttribute('data-orientation', groupOrientation);
-        panels[0].style.flexBasis = panelStyles.flexBasis;
-        panels[0].style.flexGrow = panelStyles.flexGrow;
-        panels[0].style.flexShrink = panelStyles.flexShrink;
+        attributes.restore();
+        panelStyles.forEach(({ original, priority, current }, property) => {
+          if (
+            current === null ||
+            panels[0].style.getPropertyValue(property) !== current ||
+            panels[0].style.getPropertyPriority(property)
+          )
+            return;
+          if (original) panels[0].style.setProperty(property, original, priority);
+          else panels[0].style.removeProperty(property);
+        });
         if (existingOutput) {
-          restoreAttributes(existingOutput, outputAttributes);
-          existingOutput.value = outputValue;
-          existingOutput.textContent = outputText;
+          if (
+            existingOutput.value === lastOutputValue &&
+            existingOutput.textContent === lastOutputValue
+          ) {
+            existingOutput.value = outputValue;
+            existingOutput.textContent = outputText;
+          }
         } else {
           output.remove();
         }
-        root.removeAttribute('data-resizing');
         root.removeAttribute('data-mewa-resizable-init');
         if (
           !root

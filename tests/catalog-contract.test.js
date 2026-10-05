@@ -741,14 +741,8 @@ test('high-risk native-first runtime contracts do not regress', () => {
     'Dialog must not add tabindex to native dialog'
   );
 
-  for (const slug of ['popover', 'tooltip']) {
-    const source = read(`${componentFile(slug, 'js')}`);
-    assert.match(
-      source,
-      /delete trigger\.dataset\.mewa\w+Init/,
-      `${slug}: missing-target initialization must retry`
-    );
-  }
+  // Missing-target retries are native-browser cases in overlay-ownership.browser.js;
+  // marker deletion is not the contract when initialization never claimed a target.
 
   const tabs = read(componentFile('tabs', 'skill'));
   assert.match(tabs, /automatic activation/i, 'Tabs must document automatic activation');

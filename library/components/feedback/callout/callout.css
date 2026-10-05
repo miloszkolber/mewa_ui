@@ -6,7 +6,7 @@
     gap: var(--space-200);
     border: var(--border-width-025) solid var(--border-primary);
 
-    padding: var(--space-400) var(--space-500);
+    padding: var(--space-400);
     font-size: var(--font-size-350);
     color: var(--text-primary);
     background-color: var(--background);
@@ -15,17 +15,23 @@
       border-color: var(--border-negative);
       background-color: var(--surface-negative);
       color: var(--text-negative);
+    }
 
-      & .callout-title {
-        color: var(--text-negative);
-      }
+    &[data-variant="positive"] {
+      border-color: var(--border-positive);
+      background-color: var(--surface-positive);
+      color: var(--text-positive);
+    }
 
-      & .callout-description {
-        color: var(--text-negative);
-      }
+    &[data-variant="caution"] {
+      border-color: var(--border-caution);
+      background-color: var(--surface-caution);
+      color: var(--text-caution);
+    }
 
-      & .callout-icon {
-        color: var(--text-negative);
+    &:is([data-variant="destructive"], [data-variant="positive"], [data-variant="caution"]) {
+      & :is(.callout-title, .callout-description, .callout-icon) {
+        color: inherit;
       }
     }
   }
@@ -41,6 +47,7 @@
   .callout-content {
     flex: 1;
     min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .callout-title {
@@ -77,8 +84,8 @@
       border-color: CanvasText;
     }
 
-    .callout[data-variant="destructive"] {
-      border-color: Mark;
+    .callout:is([data-variant="destructive"], [data-variant="positive"], [data-variant="caution"]) {
+      border-color: CanvasText;
       color: CanvasText;
     }
   }

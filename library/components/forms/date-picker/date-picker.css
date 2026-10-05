@@ -4,6 +4,8 @@
   .date-picker {
     display: inline-flex;
     flex-direction: column;
+    inline-size: calc(7 * var(--size-900) + 2 * var(--space-300) + 2 * var(--border-width-025));
+    max-inline-size: 100%;
     padding: var(--space-300);
     border: var(--border-width-025) solid var(--border-primary);
 
@@ -51,12 +53,13 @@
   }
 
   .date-picker-grid {
+    width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
     border-spacing: 0;
   }
 
   .date-picker-day-label {
-    width: 2.25rem;
     height: 2.25rem;
     font-size: var(--font-size-300);
     font-weight: var(--font-weight-400);
@@ -69,9 +72,8 @@
      roving tab stop, and every visual state. No nested button. */
   .date-picker-day {
     display: table-cell;
-    width: var(--size-900);
     height: var(--size-900);
-    min-width: var(--size-900);
+    min-width: var(--size-600);
     padding: 0;
     text-align: center;
     vertical-align: middle;
@@ -85,8 +87,9 @@
     }
 
     &:focus-visible {
-      position: relative;
-      box-shadow: var(--ring-default);
+      /* Collapsed table cells do not paint the shared box-shadow ring. */
+      outline: var(--border-width-050) solid var(--border-focus-area);
+      outline-offset: calc(-1 * var(--border-width-050));
     }
 
     &[data-today] {

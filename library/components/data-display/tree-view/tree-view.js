@@ -1,6 +1,6 @@
 // -- Tree View ------------------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -93,8 +93,9 @@ function getItemControl(treeitem) {
   );
 }
 
-function normalizeTreeItems(tree) {
+function normalizeTreeItems(tree, attributes, branches) {
   tree.querySelectorAll('li.tree-item').forEach((listItem) => {
+    if (listItem.closest('[role="tree"]') !== tree) return;
     const details = Array.from(listItem.children).find((child) =>
       child.matches('details.tree-branch')
     );
@@ -102,13 +103,25 @@ function normalizeTreeItems(tree) {
       ? Array.from(details.children).find((child) => child.matches('.tree-branch-trigger'))
       : Array.from(listItem.children).find((child) => child.matches('.tree-leaf'));
     if (!control) return;
+    if (details && !branches.has(details)) {
+      branches.set(details, {
+        listItem,
+        control,
+        authoredItemState: listItem.hasAttribute('aria-expanded'),
+        authoredControlState: control.hasAttribute('aria-expanded'),
+        current: null
+      });
+    }
 
     const expanded =
       listItem.getAttribute('aria-expanded') ?? control.getAttribute('aria-expanded');
-    listItem.setAttribute('role', 'treeitem');
-    if (expanded !== null && details) listItem.setAttribute('aria-expanded', expanded);
-    control.removeAttribute('role');
-    control.removeAttribute('aria-expanded');
+    attributes.set(listItem, 'role', 'treeitem');
+    if (expanded !== null && details) {
+      attributes.set(listItem, 'aria-expanded', expanded);
+      branches.get(details).current = expanded;
+    }
+    if (control.getAttribute('role') === 'treeitem') attributes.set(control, 'role', null);
+    if (control.hasAttribute('aria-expanded')) attributes.set(control, 'aria-expanded', null);
   });
 }
 
@@ -117,10 +130,29 @@ export function enhance(root) {
   queryAll(root, '.tree[role="tree"]').forEach((tree) => {
     tree.dataset.init = '';
     if (lifecycle.has(tree)) return;
+    if (!getItems(tree).length) return;
     tree.dataset.mewaTreeViewInit = '';
-    normalizeTreeItems(tree);
-    const items = getItems(tree);
-    if (!items.length) return;
+    const attributes = attributeSnapshot();
+    const branches = new Map();
+    lifecycle.add(tree, () => {
+      const currentAuthoredStates = [];
+      branches.forEach((state, details) => {
+        const expanded = String(isBranchOpen(details));
+        if (
+          state.authoredItemState &&
+          state.listItem.getAttribute('aria-expanded') === state.current
+        )
+          currentAuthoredStates.push([state.listItem, expanded]);
+        if (state.authoredControlState && !state.control.hasAttribute('aria-expanded'))
+          currentAuthoredStates.push([state.control, expanded]);
+      });
+      attributes.restore();
+      // Restore the authored location, not an obsolete disclosure value.
+      currentAuthoredStates.forEach(([element, expanded]) =>
+        attributes.set(element, 'aria-expanded', expanded)
+      );
+    });
+    normalizeTreeItems(tree, attributes, branches);
 
     const visibleItems = () => getVisibleItems(tree);
     const displacedFocus = new WeakMap();
@@ -131,7 +163,7 @@ export function enhance(root) {
           ? active
           : visible.find((item) => item.getAttribute('tabindex') === '0') || visible[0];
       getItems(tree).forEach((item) => {
-        item.setAttribute('tabindex', item === next ? '0' : '-1');
+        attributes.set(item, 'tabindex', item === next ? '0' : '-1');
       });
       return next;
     };
@@ -141,18 +173,21 @@ export function enhance(root) {
       item.focus();
     };
     const syncBranch = (details) => {
+      if (details.closest('[role="tree"]') !== tree) return;
       const trigger = Array.from(details.children).find((child) =>
         child.matches('.tree-branch-trigger')
       );
       const treeitem = trigger?.closest('li.tree-item');
       if (!treeitem) return;
-      treeitem.setAttribute('aria-expanded', String(isBranchOpen(details)));
+      attributes.set(treeitem, 'aria-expanded', String(isBranchOpen(details)));
+      const state = branches.get(details);
+      if (state) state.current = String(isBranchOpen(details));
     };
 
     setRoving();
 
     const refresh = () => {
-      normalizeTreeItems(tree);
+      normalizeTreeItems(tree, attributes, branches);
       tree.querySelectorAll('.tree-branch').forEach(syncBranch);
       setRoving();
     };

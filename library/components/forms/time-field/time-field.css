@@ -82,11 +82,18 @@
     border-color: var(--border-disabled);
   }
 
-  .time-field-input:read-only:not(:disabled) {
+  .time-field-input:read-only:not(:disabled),
+  .time-field[data-readonly] .time-field-input:not(:disabled),
+  .time-field[data-readonly]:not([data-disabled]):not(:disabled) .time-field-select {
     background: var(--surface-secondary);
     color: var(--text-secondary);
     border-color: var(--border-muted);
     cursor: default;
+  }
+
+  .time-field[data-readonly]:not([data-disabled]):not(:disabled) .time-field-select {
+    /* Native disabled selects can dim their text even with the readonly color. */
+    opacity: 1;
   }
 
   .time-field-input:is([aria-invalid="true"], :user-invalid),
@@ -129,26 +136,15 @@
     color: var(--text-secondary);
   }
 
-  .time-field:has(.time-field-input:disabled, .time-field-select:disabled) > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
+  .time-field:has(.time-field-input:disabled) > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
   .time-field[data-disabled] > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
-  .time-field:has(.time-field-input:disabled, .time-field-select:disabled) .time-field-label,
+  .time-field:has(.time-field-input:disabled) .time-field-label,
   .time-field[data-disabled] .time-field-label {
     color: var(--text-disabled);
     cursor: not-allowed;
   }
 
-  /* The native readonly attribute lands on each segment. Match the treatment
-     the other text controls give it. */
-  .time-field[data-readonly] .time-field-input:not(:disabled),
-  .time-field[data-readonly] .time-field-select:not(:disabled),
-  .time-field-input[readonly]:not(:disabled) {
-    background: var(--surface-secondary);
-    color: var(--text-secondary);
-    cursor: default;
-  }
-
-  .time-field[data-readonly] .time-field-label,
-  .time-field:has(.time-field-input[readonly], .time-field-select[readonly]) .time-field-label {
+  .time-field[data-readonly]:not([data-disabled]):not(:disabled) .time-field-label {
     color: var(--text-secondary);
     cursor: default;
   }
@@ -197,15 +193,15 @@
 
     .time-field-input:disabled,
     .time-field-select:disabled,
-    .time-field:has(.time-field-input:disabled, .time-field-select:disabled) > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
+    .time-field:has(.time-field-input:disabled) > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
     .time-field[data-disabled] > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
-    .time-field:has(.time-field-input:disabled, .time-field-select:disabled) .time-field-label,
+    .time-field:has(.time-field-input:disabled) .time-field-label,
     .time-field[data-disabled] .time-field-label {
       color: GrayText;
     }
 
     .time-field[data-readonly] .time-field-input:not(:disabled),
-    .time-field[data-readonly] .time-field-select:not(:disabled),
+    .time-field[data-readonly]:not([data-disabled]):not(:disabled) .time-field-select,
     .time-field-input[readonly]:not(:disabled) {
       color: FieldText;
     }

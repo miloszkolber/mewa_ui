@@ -3,6 +3,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-100);
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
   }
 
   .statistic-title {
@@ -22,22 +24,29 @@
     color: var(--text-primary);
   }
 
+  .statistic[data-density="compact"] > .statistic-value {
+    font-size: var(--font-size-600);
+  }
+
   .statistic-description {
     margin: 0;
     font-size: var(--font-size-300);
     color: var(--text-secondary);
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--space-100);
   }
 
   .statistic-trend {
     display: inline-flex;
+    min-inline-size: 0;
     align-items: center;
     gap: var(--space-100);
     font-weight: var(--font-weight-525);
 
     & svg {
+      flex-shrink: 0;
       width: var(--size-300);
       height: var(--size-300);
     }
@@ -56,6 +65,6 @@
     .statistic-description { color: CanvasText; }
     .statistic-value { color: CanvasText; }
     .statistic-trend[data-trend="up"] { color: Highlight; }
-    .statistic-trend[data-trend="down"] { color: Mark; }
+    .statistic-trend[data-trend="down"] { color: CanvasText; }
   }
 }

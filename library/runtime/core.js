@@ -38,15 +38,64 @@ export function attributeSnapshot() {
   return { set, restore };
 }
 
+const tabIndexWriter = Symbol.for('mewa.tabindex-owner');
+let acquisition = null;
+
+// Nested composites transfer roving tab stops before capturing a new baseline.
+// Later application writes become the next restoration baseline.
+export function createTabIndexOwner() {
+  const saved = new Map();
+  const release = (element) => {
+    const state = saved.get(element);
+    if (!state) return;
+    if (element.getAttribute('tabindex') === state.current) {
+      if (state.original === null) element.removeAttribute('tabindex');
+      else element.setAttribute('tabindex', state.original);
+    }
+    saved.delete(element);
+    if (element[tabIndexWriter] === release) delete element[tabIndexWriter];
+  };
+  return {
+    set(element, value) {
+      if (element[tabIndexWriter] !== release) {
+        element[tabIndexWriter]?.(element);
+        saved.set(element, { original: element.getAttribute('tabindex') });
+        element[tabIndexWriter] = release;
+      }
+      const state = saved.get(element);
+      if (state.current !== undefined && element.getAttribute('tabindex') !== state.current)
+        state.original = element.getAttribute('tabindex');
+      state.current = value;
+      element.setAttribute('tabindex', value);
+    },
+    releaseExcept(elements) {
+      const retained = new Set(elements);
+      for (const element of saved.keys()) if (!retained.has(element)) release(element);
+    },
+    restore() {
+      for (const element of saved.keys()) release(element);
+    }
+  };
+}
+
 // Explicit ownership keeps document/form listeners attached to their component,
 // even when the listener target lives outside the enhanced subtree.
 export function createLifecycle(name) {
   const instances = new Map();
   const updates = new WeakMap();
+  const captures = new WeakMap();
   const marker = `data-mewa-${name}-init`;
   function add(owner, cleanup) {
     let cleanups = instances.get(owner);
-    if (!cleanups) instances.set(owner, (cleanups = []));
+    if (!cleanups) {
+      instances.set(owner, (cleanups = []));
+      const context = acquisition;
+      if (context && (owner === context.root || context.root.contains?.(owner))) {
+        const dispose = () => disposeOwner(owner, cleanups);
+        context.disposers.add(dispose);
+        captures.set(cleanups, () => context.disposers.delete(dispose));
+      }
+    }
     cleanups.push(cleanup);
     return cleanup;
   }
@@ -55,18 +104,21 @@ export function createLifecycle(name) {
     target.addEventListener(type, listener, options);
     add(owner, () => target.removeEventListener(type, listener, options));
   }
-  function destroy(root) {
+  function disposeOwner(owner, cleanups) {
+    if (instances.get(owner) !== cleanups) return;
+    instances.delete(owner);
+    captures.get(cleanups)?.();
+    captures.delete(cleanups);
     const errors = [];
-    for (const [owner, cleanups] of instances) {
-      if (owner !== root && !root?.contains?.(owner)) continue;
-      instances.delete(owner);
-      for (const cleanup of cleanups.reverse()) {
-        try {
-          cleanup();
-        } catch (error) {
-          errors.push(error);
-        }
+    for (const cleanup of cleanups.reverse()) {
+      try {
+        cleanup();
+      } catch (error) {
+        errors.push(error);
       }
+    }
+    // Cleanup may mount a replacement generation on the same node.
+    if (!instances.has(owner)) {
       owner.removeAttribute?.(marker);
       const markers = owner.getAttributeNames?.() || [];
       if (
@@ -79,21 +131,48 @@ export function createLifecycle(name) {
     }
     if (errors.length) throw new AggregateError(errors, `Failed to dispose ${name}`);
   }
+  function destroy(root) {
+    const errors = [];
+    // A cleanup may mount a replacement; this disposal owns the prior batch.
+    const batch = Array.from(instances);
+    for (const [owner, cleanups] of batch) {
+      if (owner !== root && !root?.contains?.(owner)) continue;
+      try {
+        disposeOwner(owner, cleanups);
+      } catch (error) {
+        errors.push(error);
+      }
+    }
+    if (errors.length) throw new AggregateError(errors, `Failed to dispose ${name}`);
+  }
   function reset(owner, form, callback) {
+    if (!form) return;
+    const pending = new Set();
     listen(owner, form, 'reset', (event) => {
-      queueMicrotask(() => {
+      // Trusted dispatch can run microtasks between listeners, before a later
+      // cancellation or the native reset action. A task observes the result.
+      const timer = setTimeout(() => {
+        pending.delete(timer);
         if (!event.defaultPrevented && instances.has(owner)) callback();
-      });
+      }, 0);
+      pending.add(timer);
+    });
+    add(owner, () => {
+      for (const timer of pending) clearTimeout(timer);
+      pending.clear();
     });
   }
   function onUpdate(owner, callback) {
-    updates.set(owner, callback);
-    add(owner, () => updates.delete(owner));
+    const registration = { callback };
+    updates.set(owner, registration);
+    add(owner, () => {
+      if (updates.get(owner) === registration) updates.delete(owner);
+    });
   }
   function refresh(root = defaultDocument(), ancestors = true) {
     for (const owner of instances.keys()) {
       if (owner === root || root?.contains?.(owner) || (ancestors && owner.contains?.(root)))
-        updates.get(owner)?.();
+        updates.get(owner)?.callback();
     }
   }
   return { add, listen, destroy, reset, onUpdate, refresh, has: (owner) => instances.has(owner) };
@@ -124,18 +203,51 @@ export function createController(behavior, root, options) {
 
 const leases = new WeakMap();
 
+function enhanceLease(behavior, root, options, entry) {
+  const previous = acquisition;
+  // Dependency compositions acquire their own innermost leases. Never capture
+  // their generations into an outer owner and bypass their reference counts.
+  acquisition = { root, disposers: entry.disposers };
+  try {
+    return behavior.enhance(root, options);
+  } finally {
+    acquisition = previous;
+  }
+}
+
+function disposeLease(behavior, root, entry) {
+  const errors = [];
+  try {
+    behavior.destroy?.(root, entry.state);
+  } catch (error) {
+    errors.push(error);
+  }
+  // Live containment cannot find a child removed after acquisition. Dispose
+  // only captured generations; normal cleanup disarms their records eagerly.
+  for (const dispose of [...entry.disposers].reverse()) {
+    try {
+      dispose();
+    } catch (error) {
+      errors.push(error);
+    }
+  }
+  entry.disposers.clear();
+  if (errors.length === 1) throw errors[0];
+  if (errors.length) throw new AggregateError(errors, 'Behavior cleanup failed');
+}
+
 // Generated dependency compositions share the raw behavior and its lifetime.
 export function acquireBehavior(behavior, root, options) {
   let roots = leases.get(behavior);
   if (!roots) leases.set(behavior, (roots = new WeakMap()));
   let entry = roots.get(root);
   if (!entry) {
-    entry = { count: 0, options, state: undefined };
+    entry = { count: 0, options, state: undefined, disposers: new Set() };
     try {
-      entry.state = behavior.enhance(root, options);
+      entry.state = enhanceLease(behavior, root, options, entry);
     } catch (error) {
       try {
-        behavior.destroy?.(root);
+        disposeLease(behavior, root, entry);
       } catch (cleanupError) {
         throw new AggregateError([error, cleanupError], 'Behavior setup and rollback failed');
       }
@@ -151,7 +263,7 @@ export function acquireBehavior(behavior, root, options) {
     },
     update(nextOptions = entry.options) {
       if (!active) return;
-      entry.state = behavior.enhance(root, nextOptions) ?? entry.state;
+      entry.state = enhanceLease(behavior, root, nextOptions, entry) ?? entry.state;
       entry.options = nextOptions;
     },
     destroy() {
@@ -159,7 +271,7 @@ export function acquireBehavior(behavior, root, options) {
       active = false;
       if (--entry.count) return;
       roots.delete(root);
-      behavior.destroy?.(root, entry.state);
+      disposeLease(behavior, root, entry);
     }
   };
 }

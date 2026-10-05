@@ -10,6 +10,17 @@ import {
 } from '../docs/component-model.mjs';
 import { compileModel, matrixRows, rewrite } from './docs-model.mjs';
 
+export function renderComponentStyles(root, registry) {
+  const styles = registry.components
+    .map(
+      (c) =>
+        `/* ${c.name} — ${c.files.css} */\n${fs.readFileSync(path.join(root, c.files.css), 'utf8').trim()}`
+    )
+    .join('\n\n');
+  // Inert mixed specimens need a marker; keep native states and the source cascade.
+  return `/* Generated from registry.json. Run bun run docs:write. */\n\n${styles.replace(/:indeterminate\b/g, ':is(:indeterminate,[data-demo-mixed])')}\n`;
+}
+
 // Resolve local hooks at build time. Figma's inert document must contain the
 // actual vectors before any browser loader or network request can run.
 export async function inlineLocalIcons(html, root) {
@@ -58,9 +69,11 @@ export async function namespace(html, prefix) {
                 .join(' ')
             );
         }
-        const href = el.getAttribute('href');
-        if (href?.startsWith('#') && ids.has(href.slice(1)))
-          el.setAttribute('href', `#${ids.get(href.slice(1))}`);
+        for (const attr of ['href', 'data-demo-href']) {
+          const href = el.getAttribute(attr);
+          if (href?.startsWith('#') && ids.has(href.slice(1)))
+            el.setAttribute(attr, `#${ids.get(href.slice(1))}`);
+        }
         const name = el.getAttribute('name');
         if (name !== null) el.setAttribute('name', `${prefix}-${name}`);
       }
@@ -102,6 +115,8 @@ function propertyControl(scope, property, instance) {
 // Property controls that only apply to some structure. The playground reads
 // this attribute and hides the matching cell without re-rendering the form.
 function hideWhen(slug, scopeId, kind) {
+  if (slug === 'text-field' && scopeId === 'part-button' && kind === 'scope')
+    return ' data-hide-when="{&quot;control&quot;:&quot;slot&quot;,&quot;in&quot;:[&quot;plain&quot;,&quot;prefix&quot;,&quot;suffix&quot;,&quot;affixes&quot;]}"';
   if (scopeId !== 'root') return '';
   if (slug === 'layout' && kind === 'prop:data-gap')
     return ' data-hide-when="{&quot;control&quot;:&quot;slot&quot;,&quot;in&quot;:[&quot;container&quot;,&quot;center&quot;,&quot;split&quot;]}"';
@@ -127,7 +142,7 @@ function scopeControls(model, scope) {
             ? model.name.toLowerCase()
             : scope.label
           : `${scope.label} ${instance + 1}`;
-      return `${instance === 0 && scope.exclusive ? exclusiveControls(scope) : ''}<fieldset class="property-scope" data-scope="${esc(scope.id)}" data-instance="${instance}"><legend>${esc(legend)}</legend>${properties}</fieldset>`;
+      return `${instance === 0 && scope.exclusive ? exclusiveControls(scope) : ''}<fieldset class="property-scope" data-scope="${esc(scope.id)}" data-instance="${instance}"${hideWhen(model.slug, scope.id, 'scope')}><legend>${esc(legend)}</legend>${properties}</fieldset>`;
     })
     .join('');
 }
@@ -171,7 +186,7 @@ function grouped(models) {
   return [...Map.groupBy(models, (m) => m.category)];
 }
 function shell(models, matrix, content) {
-  const brand = `<div class="docs-brand-row"><span class="docs-brand">mewa_ui</span><button class="toggle" type="button" data-docs-theme-toggle aria-pressed="false" aria-label="Switch to dark theme">${themeIcon}</button></div>`;
+  const brand = `<div class="docs-brand-row"><span class="docs-brand">mewa_ui</span><button class="toggle" type="button" data-docs-theme-toggle${matrix ? '' : ' data-theme-toggle'} aria-pressed="false" aria-label="Dark theme">${themeIcon}</button></div>`;
   const chrome = matrix
     ? `<header class="matrix-toolbar">${brand}</header>`
     : `<aside class="docs-sidebar" aria-label="Component navigation">${brand}<label class="docs-search-label" for="component-search">Components <span>${models.length}</span></label><input class="text-field-input" type="search" id="component-search" placeholder="Find a component" autocomplete="off"><nav class="docs-nav" aria-label="Components">${grouped(
@@ -182,10 +197,12 @@ function shell(models, matrix, content) {
             `<section class="docs-nav-group" data-category="${esc(category)}"><h2>${esc(category)}</h2>${items.map((c) => `<a href="#preview-${c.slug}">${esc(c.name)}</a>`).join('')}</section>`
         )
         .join('')}</nav><p class="docs-no-results" hidden>No matching components.</p></aside>`;
-  const themeScript = `try{let t=localStorage.getItem('mewa-docs-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.classList.toggle('dark',t==='dark');document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t;}catch{}`;
+  // The preview delegates to App Shell. Migrate its old docs choice to the
+  // shared key before enhancement; neither view persists a system default.
+  const themeScript = `(()=>{let t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';const valid=v=>v==='light'||v==='dark'?v:null;try{let current=valid(localStorage.getItem('mewa-ui-theme'));const docs=valid(localStorage.getItem('mewa-docs-theme'));if(!current&&docs){try{localStorage.setItem('mewa-ui-theme',docs);current=docs;}catch{}}t=current||valid(localStorage.getItem('mewa-theme'))||t;}catch{}document.documentElement.classList.toggle('dark',t==='dark');document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t;})();`;
   return `<!DOCTYPE html>
 <!-- Generated from component models. Run bun run docs:write. -->
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex, nofollow"><meta name="color-scheme" content="light dark"><title>mewa_ui | ${matrix ? 'State matrix' : 'Component playgrounds'}</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><script>${themeScript}${matrix ? '' : "document.documentElement.classList.add('playground-loading');"}</script><link rel="stylesheet" href="../library/src/base.css"><link rel="stylesheet" href="../library/src/tokens.css"><link rel="stylesheet" href="components.generated.css"><link rel="stylesheet" href="states.generated.css"><link rel="stylesheet" href="docs-utilities.css"><link rel="stylesheet" href="workbench.css"></head><body class="${matrix ? 'matrix-page' : 'playground-page'}"><a class="skip-link" href="#content">Skip to content</a><div class="docs-layout">${chrome}<main id="content" tabindex="-1" data-export-surface="${matrix ? 'figma' : 'playground'}">${content}</main></div><script src="theme.js" defer></script><script src="icons.js" defer></script>${matrix ? '' : '<script src="playground.generated.js" defer></script>'}</body></html>\n`;
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex, nofollow"><meta name="color-scheme" content="light dark"><title>mewa_ui | ${matrix ? 'State matrix' : 'Component playgrounds'}</title><link rel="icon" href="favicon.svg" type="image/svg+xml"><script>${themeScript}${matrix ? '' : "document.documentElement.classList.add('playground-loading');"}</script><link rel="stylesheet" href="../library/src/base.css"><link rel="stylesheet" href="../library/src/tokens.css"><link rel="stylesheet" href="components.generated.css"><link rel="stylesheet" href="docs-utilities.css"><link rel="stylesheet" href="workbench.css"></head><body class="${matrix ? 'matrix-page' : 'playground-page'}"><a class="skip-link" href="#content">Skip to content</a><div class="docs-layout">${chrome}<main id="content" tabindex="-1" data-export-surface="${matrix ? 'figma' : 'playground'}">${content}</main></div><script src="theme.js" defer></script><script src="icons.js" defer></script>${matrix ? '' : '<script src="playground.generated.js" defer></script>'}</body></html>\n`;
 }
 
 export async function renderDocumentation(root, registry) {

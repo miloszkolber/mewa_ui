@@ -1,6 +1,6 @@
 // -- Toggle Group ---------------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, createTabIndexOwner } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -13,7 +13,7 @@ export function enhance(root) {
     group.dataset.init = '';
     if (lifecycle.has(group)) return;
     group.dataset.mewaToggleGroupInit = '';
-    const tabIndices = new Map();
+    const tabIndices = createTabIndexOwner();
     const inToolbar = () => Boolean(group.closest('.toolbar[role="toolbar"]'));
     const getToggles = () =>
       Array.from(group.querySelectorAll('.toggle')).filter(
@@ -23,23 +23,13 @@ export function enhance(root) {
       !toggle.matches(':disabled') &&
       toggle.getAttribute('aria-disabled') !== 'true' &&
       !toggle.closest('[hidden], [inert]');
-    const setTabindex = (toggle, value) => {
-      if (!tabIndices.has(toggle))
-        tabIndices.set(toggle, { original: toggle.getAttribute('tabindex') });
-      tabIndices.get(toggle).current = value;
-      toggle.setAttribute('tabindex', value);
-    };
-    lifecycle.add(group, () => {
-      for (const [toggle, { original, current }] of tabIndices) {
-        if (toggle.getAttribute('tabindex') !== current) continue;
-        if (original === null) toggle.removeAttribute('tabindex');
-        else toggle.setAttribute('tabindex', original);
-      }
-    });
+    const setTabindex = tabIndices.set;
+    lifecycle.add(group, tabIndices.restore);
 
     const initTabindex = () => {
-      if (inToolbar()) return;
       const toggles = getToggles();
+      tabIndices.releaseExcept(inToolbar() ? [] : toggles);
+      if (inToolbar()) return;
       const available = toggles.filter(enabled);
       const active =
         available.find((toggle) => toggle === group.ownerDocument.activeElement) ||
@@ -52,6 +42,9 @@ export function enhance(root) {
     };
 
     lifecycle.onUpdate(group, initTabindex);
+    const observer = new MutationObserver(initTabindex);
+    observer.observe(group, { childList: true, subtree: true });
+    lifecycle.add(group, () => observer.disconnect());
     initTabindex();
 
     lifecycle.listen(group, group, 'click', (e) => {

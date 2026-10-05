@@ -5,6 +5,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { inspectRuntimeCompletion } from './runtime-completion.browser.js';
+import { inspectControllerRemoval } from './controller-removal.browser.mjs';
+import { inspectTablePagination } from './table-pagination.browser.mjs';
+import { inspectStreamingIntent } from './streaming-intent.browser.mjs';
 const root = process.env.MEWA_UI_ROOT || path.resolve(import.meta.dirname, '..');
 const require = createRequire(path.join(root, 'package.json'));
 const { default: puppeteer } = await import(require.resolve('puppeteer-core'));
@@ -27,17 +30,46 @@ const server = Bun.serve({
         fs
           .readFileSync(path.join(root, 'docs', 'preview.html'), 'utf8')
           .replace(/<script\b[\s\S]*?<\/script>/gi, '')
+          // Structural fixtures omit presentation. Relative documentation
+          // styles must not request HTML from the /fixture/ endpoint.
+          .replace(/<link\b[^>]*\brel=["']stylesheet["'][^>]*>/gi, '')
           .replace(/(?:href|src)="(?:\.\.\/)?(?:css|js|library|assets)\/[^"]*"/g, ''),
         { headers: { 'content-type': 'text/html' } }
       );
+    if (p.startsWith('/controller-tests/')) {
+      const file = path.resolve(root, 'tests', p.slice('/controller-tests/'.length));
+      if (!file.startsWith(path.join(root, 'tests') + path.sep) || !fs.existsSync(file))
+        return new Response('', { status: 404 });
+      // Replay the same observable regressions against shipped controllers,
+      // without maintaining a second copy of their fixtures or expectations.
+      const source = fs
+        .readFileSync(file, 'utf8')
+        .replace(
+          /(['"])\.\.\/library\/components\/[^'"\n]+\/([^/'"\n]+)\.js\1/g,
+          (_match, quote, slug) => `${quote}/dist/mewa-ui/controllers/${slug}.js${quote}`
+        )
+        .replaceAll('../library/runtime/', '/dist/mewa-ui/runtime/');
+      return new Response(source, { headers: { 'content-type': 'text/javascript' } });
+    }
     const file = path.resolve(root, '.' + p);
     if (!file.startsWith(root + '/')) return new Response('', { status: 403 });
     if (!fs.existsSync(file)) return new Response('', { status: 404 });
+    // Source-controller regression fixtures own enhancement explicitly. Use
+    // the same automatic-registration removal as the distribution build.
+    if (p.startsWith('/library/components/') && p.endsWith('.js'))
+      return new Response(
+        fs
+          .readFileSync(file, 'utf8')
+          .replace(/\/\* mewa:auto:start \*\/[\s\S]*?\/\* mewa:auto:end \*\//g, ''),
+        { headers: { 'content-type': 'text/javascript' } }
+      );
     return new Response(Bun.file(file));
   }
 });
-const browser = await puppeteer.launch(launchOptions());
+const browser = await puppeteer.launch(launchOptions({ nativeScrollbars: true }));
 const page = await browser.newPage();
+const pageErrors = [];
+page.on('pageerror', (error) => pageErrors.push(error.message));
 const results = { browser: await browser.version(), cases: [] };
 async function test(name, fn, fixture = 'blank') {
   await page.goto(`http://127.0.0.1:${server.port}/${fixture}`);
@@ -313,13 +345,12 @@ try {
     [],
     'all component listeners must be released after two mount/destroy cycles'
   );
-  console.log('PASS listener teardown and reinitialization for all 41 behaviors');
+  console.log('PASS listener removal after two mount/destroy cycles for all 41 behaviors');
   await page.goto(`http://127.0.0.1:${server.port}/docs/preview.html`);
   await page.waitForSelector('.docs-nav a[href="#preview-tabs"]');
   await page.click('.docs-nav a[href="#preview-tabs"]');
   assert.equal(await page.evaluate(() => location.hash), '#preview-tabs');
   await page.click('[data-docs-theme-toggle]');
-  assert.equal(await page.$eval('html', (html) => html.dataset.theme), 'dark');
   assert.equal(await page.$eval('html', (html) => html.dataset.theme), 'dark');
   await page.click('[data-docs-theme-toggle]');
   assert.equal(await page.$eval('html', (html) => html.dataset.theme), 'light');
@@ -394,7 +425,19 @@ try {
   assert.equal(results.runesProbe.success, true);
   assert.doesNotMatch(results.runesProbe.output, /(?:const|var|let) state = \$state\(/);
   console.log('PASS browser lifecycle and native form regressions');
+  await inspectControllerRemoval(page, `http://127.0.0.1:${server.port}`);
+  for (const source of [true, false]) {
+    const pagination = await inspectTablePagination(page, `http://127.0.0.1:${server.port}`, {
+      source
+    });
+    console.log(
+      `PASS ${pagination.length} ${source ? 'source' : 'shipped'} trusted pagination states`
+    );
+  }
   await inspectRuntimeCompletion(page, `http://127.0.0.1:${server.port}`);
+  const streaming = await inspectStreamingIntent(page, `http://127.0.0.1:${server.port}`);
+  assert(streaming.length > 0, 'Trusted streaming-intent regressions execute');
+  console.log(`PASS ${streaming.length} shipped streaming-intent regression groups`);
   await page.goto(`http://127.0.0.1:${server.port}/blank`);
   const forms = await page.evaluate(async () => {
     const { runFormsCompletion } = await import('/tests/forms-completion.browser.js');
@@ -402,6 +445,119 @@ try {
   });
   for (const item of forms) assert.equal(item.passed, true, `${item.name}: ${item.error || ''}`);
   console.log(`PASS ${forms.length} form completion regressions`);
+  for (const boundary of ['tests', 'controller-tests'])
+    for (const [file, exported] of [
+      ['forms-ownership.browser.js', 'runFormsOwnership'],
+      ['overlay-ownership.browser.js', 'runOverlayOwnership'],
+      ['content-ownership.browser.js', 'runContentOwnership'],
+      ['dynamic-membership.browser.js', 'runDynamicMembership'],
+      ['ai-ownership.browser.js', 'runAIOwnership']
+    ]) {
+      await page.goto(`http://127.0.0.1:${server.port}/blank`);
+      const results = await page.evaluate(
+        async (boundary, file, exported) => {
+          const module = await import(`/${boundary}/${file}`);
+          return module[exported]();
+        },
+        boundary,
+        file,
+        exported
+      );
+      assert(results.length > 0, `${file}: ownership regressions execute`);
+      for (const item of results)
+        assert.equal(item.passed, true, `${item.name}: ${item.error || ''}`);
+      console.log(`PASS ${results.length} ${boundary}/${file} regressions`);
+    }
+  // Trusted native dispatch checkpoints microtasks between listeners. Reset
+  // synchronization must wait for the default action and later cancellation.
+  for (const mode of ['native', 'cancel', 'destroy']) {
+    await page.goto(`http://127.0.0.1:${server.port}/blank`);
+    await page.evaluate(async (mode) => {
+      const { createLifecycle } = await import('/dist/mewa-ui/runtime/core.js');
+      document.body.innerHTML =
+        '<form><label for="trusted-reset-value">Value</label><input id="trusted-reset-value" name="value" value="Initial"><button type="reset">Reset</button></form>';
+      const form = document.querySelector('form');
+      const field = form.querySelector('input');
+      const lifecycle = createLifecycle('trusted-reset');
+      window.__resetCalls = [];
+      lifecycle.reset(form, form, () => window.__resetCalls.push(field.value));
+      form.addEventListener('reset', (event) => {
+        if (mode === 'cancel') event.preventDefault();
+        if (mode === 'destroy') lifecycle.destroy(form);
+      });
+      field.value = 'Draft';
+      window.__resetLifecycle = lifecycle;
+    }, mode);
+    await page.click('button');
+    await page.evaluate(
+      () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+    );
+    const reset = await page.evaluate(() => ({
+      calls: window.__resetCalls,
+      value: document.querySelector('input').value
+    }));
+    assert.deepEqual(
+      reset.calls,
+      mode === 'native' ? ['Initial'] : [],
+      `${mode}: reset callback follows native action, cancellation and owner disposal`
+    );
+    assert.equal(reset.value, mode === 'cancel' ? 'Draft' : 'Initial');
+    await page.evaluate(() => {
+      window.__resetLifecycle.destroy(document.querySelector('form'));
+      delete window.__resetLifecycle;
+      delete window.__resetCalls;
+    });
+  }
+  console.log('PASS trusted native reset action, late cancellation and disposal');
+  // A correct tabindex snapshot must also produce one real Tab entry after a
+  // nested group changes composite owner through the packaged enhancer.
+  await page.goto(`http://127.0.0.1:${server.port}/blank`);
+  await page.evaluate(async () => {
+    const { createEnhancer } = await import('/dist/mewa-ui/index.js');
+    const { behavior } = await import('/dist/mewa-ui/components/toolbar.js');
+    document.body.innerHTML =
+      '<button id="membership-before" type="button">Before</button><div class="toolbar" role="toolbar"><div class="toggle-group" role="group"><button class="toggle" id="membership-first" type="button" aria-pressed="true">First</button><button class="toggle" id="membership-second" type="button" aria-pressed="false">Second</button></div></div><div class="toolbar" role="toolbar" id="membership-other"></div><button id="membership-after" type="button">After</button>';
+    const enhancer = createEnhancer([behavior]);
+    enhancer.enhance(document.body);
+    enhancer.observe(document.body);
+    window.__membershipEnhancer = enhancer;
+  });
+  for (const destination of ['outside', 'original', 'other', 'outside']) {
+    await page.evaluate((destination) => {
+      const group = document.querySelector('.toggle-group');
+      if (destination === 'outside') document.querySelector('#membership-after').before(group);
+      else
+        document
+          .querySelector(destination === 'other' ? '#membership-other' : '.toolbar')
+          .append(group);
+    }, destination);
+    await page.evaluate(
+      () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+    );
+    await page.focus('#membership-before');
+    await page.keyboard.press('Tab');
+    assert.equal(
+      await page.evaluate(() => document.activeElement.id),
+      'membership-first',
+      `${destination}: native Tab reaches the composite entry`
+    );
+    await page.keyboard.press('Tab');
+    assert.equal(
+      await page.evaluate(() => document.activeElement.id),
+      'membership-after',
+      `${destination}: native Tab does not visit a second group entry`
+    );
+    assert.equal(
+      await page.$eval('#membership-first', (el) => el.getAttribute('aria-pressed')),
+      'true'
+    );
+  }
+  await page.evaluate(() => {
+    window.__membershipEnhancer.disconnect();
+    window.__membershipEnhancer.destroy(document.body);
+    delete window.__membershipEnhancer;
+  });
+  console.log('PASS packaged Toolbar/Toggle Group transfers preserve one trusted Tab entry');
   for (const [file, exported] of [
     ['display-completion.browser.js', 'runDisplayCompletionTests'],
     ['tabs-geometry.browser.js', 'runTabsGeometryTests'],
@@ -420,6 +576,7 @@ try {
       assert.equal(item.error, undefined, `${item.name}: ${item.error || ''}`);
     console.log(`PASS ${results.length} ${file} regressions`);
   }
+  assert.deepEqual(pageErrors, [], 'regression fixtures produce no uncaught page errors');
 } finally {
   await browser.close();
   server.stop(true);

@@ -1,6 +1,6 @@
 // -- Tooltip --------------------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -156,14 +156,9 @@ function unbindTooltip(state) {
     } catch {
       /* Already closed. */
     }
-    state.tip.style.positionAnchor = '';
   }
-  if (state.describedBy.size) {
-    state.trigger.setAttribute('aria-describedby', Array.from(state.describedBy).join(' '));
-  } else {
-    state.trigger.removeAttribute('aria-describedby');
-  }
-  state.trigger.style.anchorName = '';
+  state.restoreBinding?.();
+  state.restoreBinding = null;
   state.tip = null;
   state.onToggle = null;
   state.pointerOnTip = false;
@@ -172,12 +167,22 @@ function unbindTooltip(state) {
 function bindTooltip(state, tip) {
   const { trigger } = state;
   const anchorId = `--tooltip-${tip.id.replace(/[^a-zA-Z0-9_-]/g, '-')}`;
+  const triggerAnchor = trigger.style.anchorName;
+  const tipAnchor = tip.style.positionAnchor;
+  const attributes = attributeSnapshot();
+  const describedBy = (trigger.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
   trigger.style.anchorName = anchorId;
   tip.style.positionAnchor = anchorId;
-  trigger.setAttribute(
+  attributes.set(
+    trigger,
     'aria-describedby',
-    Array.from(new Set([...state.describedBy, tip.id])).join(' ')
+    Array.from(new Set([...describedBy, tip.id])).join(' ')
   );
+  state.restoreBinding = () => {
+    attributes.restore();
+    if (trigger.style.anchorName === anchorId) trigger.style.anchorName = triggerAnchor;
+    if (tip.style.positionAnchor === anchorId) tip.style.positionAnchor = tipAnchor;
+  };
 
   state.tip = tip;
   state.onToggle = () => {
@@ -248,9 +253,7 @@ function initTooltipTrigger(trigger) {
 
   const state = {
     trigger,
-    describedBy: new Set(
-      (trigger.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean)
-    ),
+    restoreBinding: null,
     tip: null,
     onToggle: null,
     openTimer: null,

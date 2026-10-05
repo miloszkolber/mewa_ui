@@ -25,6 +25,9 @@ The optional module derives pinned state from scroll position and reveals a nati
 - [`scrollTop`](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTop) moves immediately to the live edge.
 - [`MutationObserver`](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) detects appended transcript content without polling.
 - [`ResizeObserver`](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) follows content growth that does not insert a new node.
+- [`scrollend`](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollend_event) releases a temporary following suspension after native scrolling settles.
+- [`currentCSSZoom`](https://developer.mozilla.org/en-US/docs/Web/API/Element/currentCSSZoom) converts pixel-wheel distance to the viewport's local CSS pixels.
+- [`requestAnimationFrame`](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame) checks for a later canceled input action without delaying native scrolling.
 
 ## Structure
 
@@ -85,6 +88,30 @@ Scrolling away updates `data-pinned="false"` and reveals the jump button.
 
 Scrolling back to the live edge updates `data-pinned="true"` and hides the jump button.
 
+Pinned state uses the current native position and the configured live-edge tolerance.
+
+The module suspends observer-driven following before trusted upward wheel input takes effect.
+
+The module also suspends following for native `ArrowUp`, `PageUp`, `Home`, and `Shift`+`Space` input when the viewport has keyboard focus.
+
+The suspension prevents streamed growth from overwriting an in-flight native scroll.
+
+The browser still performs the scroll.
+
+The wheel and key suspension ends when native movement leaves the tolerance, completes the requested pixel-wheel distance, or emits `scrollend`.
+
+Pixel-wheel completion includes CSS zoom on the viewport and its ancestors.
+
+A tiny pixel-wheel scroll within the tolerance keeps pinned state and resumes following after its native movement completes.
+
+The early wheel guard excludes modified wheel input, horizontal-dominant input, subpixel pixel-mode deltas, editing controls, and nested native scroll surfaces.
+
+Native scroll events still determine pinned state for excluded input, touch scrolling, and scrollbar scrolling.
+
+A later canceling listener releases the pending suspension on the next animation frame when the viewport does not move.
+
+Browsers without native `scrollend` retain position-based following without the early input guards.
+
 The jump button moves immediately to the live edge.
 
 Activating a focused jump button moves focus to the viewport before hiding the button.
@@ -93,7 +120,9 @@ The module dispatches `message-scroller:pinned-change` with `detail.pinned` when
 
 Changing `data-conversation-key` re-arms live-edge following for the new conversation.
 
-The module adds no wheel, touch, or keyboard interception.
+Native `End` scrolling can re-arm following when the viewport reaches the live edge.
+
+The module does not cancel wheel, touch, keyboard, or scrollbar interaction.
 
 ## Accessibility
 
@@ -120,3 +149,13 @@ The viewport does not follow appended content without the module.
 Message Scroller uses an optional component module.
 
 Load `message-scroller.js` when live-edge pinning or the jump action is required.
+
+Call the controller's `destroy()` when the application releases the scroller or its enclosing region.
+
+Cleanup releases listeners, observers, and pending animation frames even if the application removes `.message-scroller` before destruction.
+
+Cleanup hides the inactive jump button and removes the derived `data-pinned` state.
+
+Cleanup preserves the current transcript, log attributes, and reading position.
+
+Repeated enhancement and remounting do not add duplicate listeners or observers.

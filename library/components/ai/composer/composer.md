@@ -124,3 +124,11 @@ The form submits through its authored `action` and `method`.
 Composer uses an optional component module.
 
 Load `composer.js` when `data-submit-on` keyboard behavior is required.
+
+Call the controller's `destroy()` when the application releases the form or its enclosing region.
+
+Cleanup releases the acquired listener even if the application removes `.composer` before destruction.
+
+Cleanup preserves the current draft, selection, and native form behavior.
+
+Repeated enhancement and remounting do not add duplicate shortcut listeners.

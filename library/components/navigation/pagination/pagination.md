@@ -54,6 +54,16 @@ Do not leave a working `href` on a visually disabled boundary control.
 
 Keep only the current page marked with `aria-current="page"`.
 
+Use icon-only markup for `.pagination-prev` and `.pagination-next`.
+
+Give each boundary control an accessible name.
+
+The stylesheet uses `aria-current="page"` for current-page presentation.
+
+The public `.pagination-active` class remains a compatible presentation hook.
+
+Keep `.pagination-active` on the current page only when using the class hook.
+
 ## Page range
 
 Show a compact subset when every page number would make the control difficult to scan.

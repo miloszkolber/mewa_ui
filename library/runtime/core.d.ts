@@ -30,3 +30,9 @@ export interface AttributeSnapshot {
   restore(): void;
 }
 export declare function attributeSnapshot(): AttributeSnapshot;
+export interface TabIndexOwner {
+  set(element: Element, value: string): void;
+  releaseExcept(elements: Iterable<Element>): void;
+  restore(): void;
+}
+export declare function createTabIndexOwner(): TabIndexOwner;

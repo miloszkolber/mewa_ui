@@ -87,12 +87,12 @@
     &:focus-visible {
       box-shadow: var(--ring-default);
     }
-    &[aria-disabled="true"] {
+    &:is(:disabled, [aria-disabled="true"]) {
       pointer-events: none;
       background-color: var(--surface-control-disabled);
       color: var(--text-disabled);
 
-      & svg { color: var(--text-disabled); }
+      & :is(svg, [class^="ri-"], [class*=" ri-"], .command-palette-shortcut) { color: var(--text-disabled); }
     }
     & svg { width: var(--size-400); height: var(--size-400); color: var(--text-secondary); flex-shrink: 0; }
   }
@@ -104,14 +104,21 @@
   @media (prefers-contrast: more) {
     dialog.command-palette { border: var(--border-width-050) solid var(--border-primary); }
     .command-palette-item {
-      &:hover, &[data-highlighted] { outline: var(--border-width-025) solid var(--text-primary); }
+      &:not(:disabled, [aria-disabled="true"]):is(:hover, [data-highlighted]) { outline: var(--border-width-025) solid var(--text-primary); }
     }
   }
 
   @media (forced-colors: active) {
     dialog.command-palette { border: var(--border-width-050) solid CanvasText; }
     .command-palette-item {
-      &:hover, &[data-highlighted] { forced-color-adjust: none; background: Highlight; color: HighlightText; }
+      &:not(:disabled, [aria-disabled="true"]):is(:hover, [data-highlighted]) { forced-color-adjust: none; background: Highlight; color: HighlightText; }
+      &:is(:disabled, [aria-disabled="true"]) {
+        forced-color-adjust: none;
+        background: ButtonFace;
+        color: GrayText;
+
+        & :is(svg, [class^="ri-"], [class*=" ri-"], .command-palette-shortcut) { color: GrayText; }
+      }
     }
     .command-palette-separator { background-color: CanvasText; }
   }

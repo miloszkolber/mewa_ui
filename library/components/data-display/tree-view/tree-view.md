@@ -135,3 +135,11 @@ Do not combine tree navigation and route-navigation semantics without a document
 Load `tree-view.js` whenever Tree View appears.
 
 Native disclosure remains available without the module, but the documented tree keyboard model and roving focus require JavaScript.
+
+Destroy restores authored roles, expansion attributes, and tab stops only when the module still owns their current values.
+
+Destroy does not reset native branch disclosure or application-owned selection.
+
+Restored authored expansion attributes describe the current native branch disclosure.
+
+Application changes to roles, state, and tab stops remain intact.

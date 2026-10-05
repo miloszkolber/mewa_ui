@@ -1,6 +1,6 @@
 // -- Context Menu --------------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -10,6 +10,7 @@ const lifecycle = createLifecycle('context-menu');
 const TRIGGER_SELECTOR = '[data-context-menu-trigger]';
 const ITEM_SELECTOR = '[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]';
 const documentTriggers = new WeakMap();
+const triggerAttributes = new WeakMap();
 
 let activeContextMenu = null;
 
@@ -21,7 +22,7 @@ function resolveMenu(trigger) {
 }
 
 function isDisabled(item) {
-  return Boolean(item?.disabled) || item?.getAttribute?.('aria-disabled') === 'true';
+  return Boolean(item?.matches?.(':disabled')) || item?.getAttribute?.('aria-disabled') === 'true';
 }
 
 function getItems(menu) {
@@ -29,7 +30,7 @@ function getItems(menu) {
 }
 
 function clearHighlight(menu) {
-  getItems(menu).forEach((item) => item.removeAttribute('data-highlighted'));
+  menu.querySelectorAll(ITEM_SELECTOR).forEach((item) => item.removeAttribute('data-highlighted'));
 }
 
 function highlight(menu, item) {
@@ -56,12 +57,12 @@ function activateCheckable(menu, item) {
   return true;
 }
 
-function closeContextMenu({ restoreFocus = false } = {}) {
+function closeContextMenu({ restoreFocus = false, syncExpanded = true } = {}) {
   if (!activeContextMenu) return;
   const { trigger, menu } = activeContextMenu;
   const focusWasInside = menu.contains(menu.ownerDocument.activeElement);
   activeContextMenu = null;
-  trigger.setAttribute('aria-expanded', 'false');
+  if (syncExpanded) triggerAttributes.get(trigger)?.set(trigger, 'aria-expanded', 'false');
   clearHighlight(menu);
   try {
     if (menu.matches(':popover-open')) menu.hidePopover();
@@ -86,17 +87,21 @@ function openContextMenu(trigger, inline, block) {
   if (!menu || typeof menu.showPopover !== 'function') return false;
 
   if (activeContextMenu && activeContextMenu.menu !== menu) closeContextMenu();
-  trigger.setAttribute('aria-expanded', 'true');
   menu.style.left = '0px';
   menu.style.top = '0px';
 
   try {
     if (!menu.matches(':popover-open')) menu.showPopover();
   } catch {
-    trigger.setAttribute('aria-expanded', 'false');
+    triggerAttributes.get(trigger)?.set(trigger, 'aria-expanded', 'false');
+    return false;
+  }
+  if (!menu.matches(':popover-open')) {
+    triggerAttributes.get(trigger)?.set(trigger, 'aria-expanded', 'false');
     return false;
   }
 
+  triggerAttributes.get(trigger)?.set(trigger, 'aria-expanded', 'true');
   activeContextMenu = { trigger, menu };
   clampPosition(menu, inline, block);
   const first = getItems(menu)[0];
@@ -105,7 +110,8 @@ function openContextMenu(trigger, inline, block) {
 }
 
 function initContextMenuTriggers(root) {
-  queryAll(root, `${TRIGGER_SELECTOR}:not([data-context-menu-init])`).forEach((trigger) => {
+  queryAll(root, TRIGGER_SELECTOR).forEach((trigger) => {
+    if (triggerAttributes.has(trigger)) return;
     const menu = resolveMenu(trigger);
     if (!menu) return;
     const doc = trigger.ownerDocument;
@@ -114,9 +120,22 @@ function initContextMenuTriggers(root) {
     if (!owned) documentTriggers.set(doc, (owned = new Set()));
     owned.add(trigger);
     trigger.dataset.contextMenuInit = '';
-    trigger.setAttribute('aria-haspopup', 'menu');
-    trigger.setAttribute('aria-controls', menu.id);
-    trigger.setAttribute('aria-expanded', 'false');
+    const attributes = attributeSnapshot();
+    triggerAttributes.set(trigger, attributes);
+    attributes.set(trigger, 'aria-haspopup', 'menu');
+    attributes.set(trigger, 'aria-controls', menu.id);
+    attributes.set(trigger, 'aria-expanded', 'false');
+    lifecycle.add(trigger, () => {
+      if (activeContextMenu?.trigger === trigger) closeContextMenu({ syncExpanded: false });
+      attributes.restore();
+      triggerAttributes.delete(trigger);
+      delete trigger.dataset.contextMenuInit;
+      owned.delete(trigger);
+      if (!owned.size) {
+        lifecycle.destroy(doc);
+        documentTriggers.delete(doc);
+      }
+    });
   });
 }
 
@@ -127,7 +146,7 @@ function installGlobalListeners(documentRoot) {
 
   lifecycle.listen(documentRoot, documentRoot, 'contextmenu', (event) => {
     const trigger = event.target?.closest?.(TRIGGER_SELECTOR);
-    if (!trigger?.hasAttribute('data-context-menu-init')) return;
+    if (!documentTriggers.get(documentRoot)?.has(trigger)) return;
     const menu = resolveMenu(trigger);
     if (!trigger || !menu || typeof menu.showPopover !== 'function') return;
     event.preventDefault();
@@ -142,7 +161,7 @@ function installGlobalListeners(documentRoot) {
       (event.shiftKey && event.key === 'F10');
 
     if (trigger && requestsContextMenu) {
-      if (!trigger?.hasAttribute('data-context-menu-init')) return;
+      if (!documentTriggers.get(documentRoot)?.has(trigger)) return;
       const menu = resolveMenu(trigger);
       if (!menu || typeof menu.showPopover !== 'function') return;
       event.preventDefault();
@@ -263,16 +282,6 @@ export function enhance(root) {
 
 export function destroy(root) {
   lifecycle.destroy(root);
-  queryAll(root, TRIGGER_SELECTOR).forEach((trigger) => {
-    delete trigger.dataset.contextMenuInit;
-    trigger.setAttribute('aria-expanded', 'false');
-    const owned = documentTriggers.get(trigger.ownerDocument);
-    owned?.delete(trigger);
-    if (owned && !owned.size) {
-      lifecycle.destroy(trigger.ownerDocument);
-      documentTriggers.delete(trigger.ownerDocument);
-    }
-  });
   const removedActiveMenu =
     activeContextMenu &&
     (root === activeContextMenu.trigger ||

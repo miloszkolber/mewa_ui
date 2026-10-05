@@ -116,6 +116,12 @@ Use `data-invalid` only as a root styling hook for known invalid state.
 
 Use `data-disabled` only when the wrapper needs disabled presentation.
 
+For a readonly time group, put `data-readonly` on the wrapper and `readonly` on both numeric inputs.
+
+Disable the period select because native Select has no readonly state.
+
+Readonly presentation keeps the legend, help, and normalized value readable.
+
 The module may expose the legacy `data-init` readiness marker for compatibility.
 
 Do not author `data-init`.
@@ -199,3 +205,11 @@ Do not describe the component as locale-aware.
 Without the module, the visible named controls remain usable and submittable.
 
 With the module, the enabled hidden input becomes the canonical `HH:MM` value when present.
+
+Destroy removes still-owned canonical submission state and derived status.
+
+Destroy preserves current segment values and application edits.
+
+The native segment controls submit after enhancement ends.
+
+Remount derives a fresh canonical value from the current segments.

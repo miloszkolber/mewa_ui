@@ -17,10 +17,11 @@ function documentView(documentRoot) {
 
 function readStoredTheme(view) {
   try {
-    const value =
-      view?.localStorage?.getItem(APP_SHELL_THEME_KEY) ||
-      view?.localStorage?.getItem(APP_SHELL_LEGACY_THEME_KEY);
-    return value === 'light' || value === 'dark' ? value : null;
+    for (const key of [APP_SHELL_THEME_KEY, APP_SHELL_LEGACY_THEME_KEY]) {
+      const value = view?.localStorage?.getItem(key);
+      if (value === 'light' || value === 'dark') return value;
+    }
+    return null;
   } catch {
     return null;
   }
@@ -41,11 +42,14 @@ function preferredTheme(view) {
 function syncToggle(toggle, documentRoot = toggle.ownerDocument) {
   const dark = documentRoot.documentElement.classList.contains('dark');
   toggle.dataset.theme = dark ? 'dark' : 'light';
-  toggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+  if (toggle.hasAttribute('aria-pressed')) toggle.setAttribute('aria-pressed', String(dark));
+  else toggle.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
 }
 
 function applyTheme(documentRoot, theme) {
   documentRoot.documentElement.classList.toggle('dark', theme === 'dark');
+  documentRoot.documentElement.dataset.theme = theme;
+  documentRoot.documentElement.style.colorScheme = theme;
   queryAll(documentRoot, '[data-theme-toggle][data-mewa-app-shell-init]').forEach((toggle) => {
     syncToggle(toggle, documentRoot);
   });

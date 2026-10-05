@@ -125,6 +125,10 @@ Use `data-table-clear` on a reset button.
 
 The module filters row text case-insensitively.
 
+The module keeps application-hidden rows hidden.
+
+Application-hidden rows do not contribute to the client result count or page count.
+
 The module returns to the first client page after a filter changes.
 
 The module waits for input method composition to finish before filtering.
@@ -160,6 +164,10 @@ Add `data-page-size` only when client-side pagination is required.
 Use `data-table-page` with a page number, `previous`, or `next`.
 
 The module updates visible rows and the optional range output.
+
+The module uses `aria-current="page"` for the current client page and its presentation.
+
+The module temporarily removes the compatible `.pagination-active` class from managed numbered controls.
 
 Do not add client pagination to a small result set.
 
@@ -223,3 +231,17 @@ Do not hide required columns only to make the table fit a narrow page.
 Without the module, the table remains semantic and server-rendered filter, sort, and pagination destinations remain usable.
 
 Load the module only when the page uses the documented client-side enhancement.
+
+Destroy removes client-only filtering and pagination visibility.
+
+Destroy restores authored status, range, empty-state, and pagination values only when the module still owns the current values.
+
+Destroy restores only removed `.pagination-active` tokens without replacing other classes.
+
+Destroy preserves observable application class clears.
+
+Destroy preserves application-owned row visibility.
+
+Destroy preserves replacement status nodes and authored nodes reused elsewhere.
+
+Destroy preserves the current row order, sort direction, filter values, and native user selection.

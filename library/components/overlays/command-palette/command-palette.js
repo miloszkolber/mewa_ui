@@ -14,7 +14,7 @@ function isConnected(element) {
 }
 
 function isDisabled(item) {
-  return item.disabled || item.getAttribute('aria-disabled') === 'true';
+  return item.matches(':disabled') || item.getAttribute('aria-disabled') === 'true';
 }
 
 function getVisibleItems(list) {
@@ -34,7 +34,7 @@ function clearHighlight(list, input, setAttribute) {
 function highlightItem(list, index, input, setAttribute) {
   const visible = getVisibleItems(list);
   clearHighlight(list, input, setAttribute);
-  if (visible.length === 0) return -1;
+  if (visible.length === 0) return;
 
   const clamped = ((index % visible.length) + visible.length) % visible.length;
   const item = visible[clamped];
@@ -42,7 +42,6 @@ function highlightItem(list, index, input, setAttribute) {
   setAttribute(item, 'aria-selected', 'true');
   if (input && item.id) setAttribute(input, 'aria-activedescendant', item.id);
   if (typeof item.scrollIntoView === 'function') item.scrollIntoView({ block: 'nearest' });
-  return clamped;
 }
 
 function showPalette(dialog, trigger) {
@@ -65,6 +64,7 @@ function installDocumentListener(documentRoot) {
   documentRoot.__commandPaletteKeydownInit = true;
   lifecycle.add(documentRoot, () => delete documentRoot.__commandPaletteKeydownInit);
   lifecycle.listen(documentRoot, documentRoot, 'keydown', (e) => {
+    if (e.defaultPrevented || e.isComposing) return;
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
       const dialog = documentRoot.querySelector(
         'dialog.command-palette[data-mewa-command-palette-init]'
@@ -152,8 +152,6 @@ export function enhance(root) {
       },
       true
     );
-    let highlightIndex = -1;
-
     const filter = (q) => {
       const query = q.toLowerCase();
       prepareItems();
@@ -174,7 +172,7 @@ export function enhance(root) {
         setAttribute(separator, 'hidden', query ? '' : null);
       });
       if (empty) setAttribute(empty, 'hidden', items().some((item) => !item.hidden) ? '' : null);
-      highlightIndex = highlightItem(list, 0, input, setAttribute);
+      highlightItem(list, 0, input, setAttribute);
     };
 
     lifecycle.onUpdate(dialog, () => filter(input.value));
@@ -189,22 +187,28 @@ export function enhance(root) {
     lifecycle.listen(dialog, input, 'keydown', (e) => {
       if (e.isComposing) return;
       const visible = getVisibleItems(list);
+      const activeIndex = visible.findIndex(
+        (item) => item.id === input.getAttribute('aria-activedescendant')
+      );
       if (e.key === 'ArrowDown') {
         e.preventDefault();
-        highlightIndex = highlightItem(list, highlightIndex + 1, input, setAttribute);
+        highlightItem(list, activeIndex + 1, input, setAttribute);
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
-        highlightIndex = highlightItem(list, highlightIndex - 1, input, setAttribute);
+        highlightItem(list, activeIndex - 1, input, setAttribute);
       } else if (e.key === 'Enter') {
         e.preventDefault();
-        const item = visible[highlightIndex];
+        const item = visible[activeIndex];
         if (item && !isDisabled(item)) item.click();
+        else {
+          clearHighlight(list, input, setAttribute);
+        }
       } else if (e.key === 'Home') {
         e.preventDefault();
-        highlightIndex = highlightItem(list, 0, input, setAttribute);
+        highlightItem(list, 0, input, setAttribute);
       } else if (e.key === 'End') {
         e.preventDefault();
-        highlightIndex = highlightItem(list, visible.length - 1, input, setAttribute);
+        highlightItem(list, visible.length - 1, input, setAttribute);
       }
     });
 
@@ -226,7 +230,6 @@ export function enhance(root) {
       input.value = '';
       filter('');
       clearHighlight(list, input, setAttribute);
-      highlightIndex = -1;
       // The browser already restores focus when a modal dialog closes. Only
       // restore it here when focus is still inside or has fallen back to body,
       // so a later close event never steals focus the user has moved.

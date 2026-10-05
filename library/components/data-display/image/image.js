@@ -1,6 +1,6 @@
 /* -- Image component ----------------------------------------- */
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -22,26 +22,28 @@ export function enhance(root) {
     const figure = img.closest('.image');
     if (lifecycle.has(figure)) return;
     figure.dataset.mewaImageInit = '';
-    lifecycle.add(figure, () => delete img.dataset.error);
+    const attributes = attributeSnapshot();
+    lifecycle.add(figure, attributes.restore);
 
     if (img.complete && img.naturalWidth === 0) {
-      img.dataset.error = '';
+      attributes.set(img, 'data-error', '');
     }
 
     lifecycle.listen(figure, img, 'error', () => {
-      img.dataset.error = '';
+      attributes.set(img, 'data-error', '');
     });
 
     lifecycle.listen(figure, img, 'load', () => {
-      delete img.dataset.error;
+      attributes.set(img, 'data-error', null);
     });
 
     if (!figure.hasAttribute('data-preview')) return;
 
-    figure.setAttribute('tabindex', '0');
-    if (!figure.hasAttribute('role')) figure.setAttribute('role', 'button');
+    attributes.set(figure, 'tabindex', '0');
+    if (!figure.hasAttribute('role')) attributes.set(figure, 'role', 'button');
     if (!figure.hasAttribute('aria-label') && !figure.hasAttribute('aria-labelledby')) {
-      figure.setAttribute(
+      attributes.set(
+        figure,
         'aria-label',
         img.alt ? `Open image preview: ${img.alt}` : 'Open image preview'
       );

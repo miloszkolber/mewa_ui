@@ -24,6 +24,7 @@ The module uses `IntersectionObserver` to track the active slide.
 - [`scroll-snap-align`](https://developer.mozilla.org/en-US/docs/Web/CSS/scroll-snap-align) defines each slide snap point.
 - [`overscroll-behavior`](https://developer.mozilla.org/en-US/docs/Web/CSS/overscroll-behavior) limits scroll chaining.
 - [`IntersectionObserver`](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver) tracks the visible slide without a scroll polling loop.
+- [`MutationObserver`](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) reconciles slides added, removed, or reordered inside the viewport.
 - [`scrollTo()`](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollTo) moves the viewport to a selected slide without smooth scrolling.
 - [WAI-ARIA Carousel pattern](https://www.w3.org/WAI/ARIA/apg/patterns/carousel/) informs the region and slide semantics.
 
@@ -135,6 +136,14 @@ The module preserves authored `aria-label` and `aria-labelledby` values on slide
 The module supplies a position label only when a slide has no authored accessible name.
 
 The module creates direct-slide buttons when an empty dot group is present.
+
+The module reconciles slide semantics, observed slides, generated dots, and position text when viewport content changes.
+
+The module preserves the current slide when other slides are inserted or reordered.
+
+Removing the current slide selects the nearest remaining position.
+
+Authored dot content remains unchanged.
 
 The component does not autoplay.
 

@@ -17,7 +17,7 @@ The repository contains 80 components, from basic controls and form fields to da
 - a small ES module when behavior needs JavaScript;
 - an anchored section in the shared component preview.
 
-Explore the [component playgrounds](docs/preview.html) to select a component, adjust its properties, try its behavior, and read the current markup. Typography opens as a static rendered Markdown document because it has no properties. Use the [Figma matrix](docs/figma.html) for isolated visual specimens without interactions, property controls, or launcher buttons. The matrix covers visual properties and variants only. Each page has a theme picker and covers the complete catalog in [`registry.json`](registry.json).
+Explore the [component playgrounds](docs/preview.html) to adjust properties, test behavior, and read markup. Typography presents static rendered Markdown. The [Figma matrix](docs/figma.html) shows isolated visual properties and variants without component behavior. Both pages include a theme picker and cover the complete catalog in [`registry.json`](registry.json).
 
 ## Get a release from GitHub
 
@@ -29,6 +29,8 @@ Each tagged [GitHub release](https://github.com/miloszkolber/mewa_ui/releases) p
 
 Download and extract only the archive that the application needs. The release files are ordinary web assets; an application does not need npm or a framework to use them.
 
+Newly generated core archives include `llms.txt`, the task-scoped design and system guides, and component Markdown at their canonical `library/...` paths. A small `components/index.md` lookup and per-component JSON records make the selected contract available offline, including dirty or Git-less builds. The manifest retains optional immutable source links; older archives without local contracts still need the matching source checkout or an available immutable link.
+
 For plain HTML, load the foundations and one flat, dependency-aware component stylesheet:
 
 ```html
@@ -38,9 +40,11 @@ For plain HTML, load the foundations and one flat, dependency-aware component st
 <script type="module" src="/vendor/mewa-ui/auto/dialog.js"></script>
 ```
 
-Each component entry already contains its declared style dependencies, so an isolated feature remains one component stylesheet request. When a page uses many components, prefer `css/all.css` so shared styles are transferred once.
+Each component stylesheet includes its declared style dependencies. For a page with many components, `css/all.css` includes the foundations and transfers shared styles once. `auto.js` loads all component behaviors.
 
 Fonts are opt-in. Load `fonts/google-sans-code.css` when the application does not already provide Google Sans Code.
+
+Icons ship as SVG files in `mewa-icons`. Inline SVG works without JavaScript. The core package does not provide a loader for `ri-*` classes.
 
 For an application with its own lifecycle, import a side-effect-free controller and enhance only the mounted region:
 
@@ -55,11 +59,9 @@ const dialogController = createController(behavior, dialogRegion);
 dialogController.destroy();
 ```
 
-This controller API works with plain JavaScript and can sit behind a framework adapter. The `components/` entries compose the behavior dependencies declared in the manifest; the lower-level `controllers/` entries expose only one component's own behavior.
+The `components/` entries include declared behavior dependencies. The lower-level `controllers/` entries expose only one component's behavior.
 
 Call `destroy()` before unmounting the region. Choose one lifecycle owner per region. See the [runtime guide](library/runtime/README.md) for ownership, dynamic markup, native forms, and browser capabilities.
-
-Use `css/all.css` and `auto.js` for a quick prototype or a broad application surface. For a small feature, load only its flat component entry and matching automatic/controller entry.
 
 ## Use Mewa UI with Svelte
 
@@ -71,17 +73,15 @@ The repository keeps description separate from instruction.
 
 ### For people
 
-- [`README.md`](README.md) describes the library and its structure.
-- [`docs/preview.html`](docs/preview.html) contains the interactive component playground and behavior examples.
-- [`docs/figma.html`](docs/figma.html) is the generated state matrix with a theme picker for design review and Figma import.
+- [`docs/preview.html`](docs/preview.html) contains interactive component playgrounds and behavior examples.
+- [`docs/figma.html`](docs/figma.html) contains the static visual matrix for design review and Figma import.
 - [`docs/review.md`](docs/review.md) records the catalog review's contract changes, executed acceptance checks, and verification limits.
-- [`docs/component-model.mjs`](docs/component-model.mjs) defines canonical component anatomy and nested parts; [`docs/catalog.mjs`](docs/catalog.mjs) defines their public properties. [`docs/model-operations.mjs`](docs/model-operations.mjs) keeps live controls and static matrices aligned. Source markup fixtures live in [`docs/specimens.json`](docs/specimens.json), not an example selector. Run `bun run docs:write` after edits.
-- Preview has component navigation. The export matrix has no page navigation or component behavior. Both pages show supported results without defining a second API.
+- [`docs/industry-review.md`](docs/industry-review.md) records the source review, bounded variants, progressive-disclosure decisions, and their evidence limits.
 
 ### For agents and maintainers
 
 - [`AGENTS.md`](AGENTS.md) defines the maintenance workflow.
-- [`library/DESIGN.md`](library/DESIGN.md) is the canonical design contract.
+- [`library/DESIGN.md`](library/DESIGN.md) gives the system boundaries and routes each task to its contract owners.
 - [`library/system/`](library/system/) covers foundations, selection, patterns, shells, and accessibility.
 - `library/components/{category}/{slug}/{slug}.md` gives exact implementation instructions for one component.
 - [`llms.txt`](llms.txt) is the compact machine router.
@@ -137,14 +137,13 @@ bun run test:performance
 bun run measure
 ```
 
-If the local Bun runtime cannot bind an ephemeral port, provide a free fixed
-port for the browser gate; all browser harness servers honor this override:
+Set `MEWA_UI_PORT` to a free fixed port when the local Bun runtime cannot bind an ephemeral port for the browser suite:
 
 ```sh
 MEWA_UI_PORT=41880 bun run test:browser
 ```
 
-Set `MEWA_BROWSER=firefox` and `PUPPETEER_EXECUTABLE_PATH` to run the browser suite in Firefox. Firefox's tested automation protocol does not support forced-colors emulation or disabling JavaScript; those cases run in Chromium.
+Set `MEWA_BROWSER=firefox` and `PUPPETEER_EXECUTABLE_PATH` to run the browser suite in Firefox. The suite uses Chromium for forced-colors emulation and in-page JavaScript-disabled assertions. Separate Firefox disabled-profile checks can verify native input and navigation without disabled-page DOM evaluation.
 
 For Safari, enable remote automation in Safari Settings, start `safaridriver -p 4447`, and run `bun run test:safari`. The Safari report records the actual viewport widths. Set `SAFARI_WEBDRIVER_URL` to use another local driver port. Screen-reader acceptance remains a separate manual check.
 

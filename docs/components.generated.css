@@ -982,7 +982,7 @@
       border: var(--border-width-025) solid var(--border-secondary);
       background: var(--surface-control-transparent);
 
-      &:not([aria-pressed="true"]):hover {
+      &:not([aria-pressed="true"], :disabled, [aria-disabled="true"]):hover {
         background-color: var(--surface-control-hover);
         color: var(--text-primary);
       }
@@ -1022,23 +1022,32 @@
     /* -- Disabled group ----------------------------------------- */
     &[data-disabled] {
       pointer-events: none;
+    }
 
-      & > .toggle {
-        pointer-events: none;
-        background-color: var(--surface-control-disabled);
-        color: var(--text-disabled);
-      }
+    &[data-disabled] > .toggle,
+    &[data-disabled][data-variant="outline"] > .toggle,
+    &[data-variant="outline"] > .toggle:is(:disabled, [aria-disabled="true"]),
+    & > .toggle:is(:disabled, [aria-disabled="true"]) {
+      pointer-events: none;
+      background-color: var(--surface-control-disabled);
+      border-color: var(--border-disabled);
+      color: var(--text-disabled);
+    }
 
-      /* The variant lives on the group, not on the child. */
-      &[data-variant="outline"] > .toggle {
-        border-color: var(--border-disabled);
-      }
+    &[data-disabled] > .toggle[aria-pressed="true"],
+    & > .toggle:is(:disabled, [aria-disabled="true"])[aria-pressed="true"] {
+      outline: var(--border-width-025) solid currentColor;
+      outline-offset: calc(-1 * var(--space-100));
     }
   }
 
   @media (prefers-contrast: more) {
     .toggle-group[data-variant="outline"] > .toggle {
       border-color: var(--text-primary);
+    }
+    .toggle-group[data-disabled][data-variant="outline"] > .toggle,
+    .toggle-group[data-variant="outline"] > .toggle:is(:disabled, [aria-disabled="true"]) {
+      border-color: var(--border-disabled);
     }
   }
 
@@ -1056,6 +1065,15 @@
       &:focus-visible {
         outline-color: Highlight;
       }
+    }
+    .toggle-group[data-disabled] > .toggle,
+    .toggle-group[data-disabled][data-variant="outline"] > .toggle,
+    .toggle-group[data-variant="outline"] > .toggle:is(:disabled, [aria-disabled="true"]),
+    .toggle-group > .toggle:is(:disabled, [aria-disabled="true"]) {
+      forced-color-adjust: none;
+      background-color: ButtonFace;
+      border-color: GrayText;
+      color: GrayText;
     }
   }
 }
@@ -1521,6 +1539,7 @@
     font-size: var(--font-size-350);
     font-weight: var(--font-weight-525);
     line-height: var(--font-height-regular);
+    overflow-wrap: anywhere;
     cursor: default;
   }
 
@@ -1617,11 +1636,112 @@
     box-shadow: var(--ring-invalid);
   }
 
+  /* Optional composition: the wrapper owns the native input's boundary. */
+  .text-field-control {
+    display: flex;
+    align-items: center;
+    gap: var(--space-200);
+    inline-size: 100%;
+    min-inline-size: 0;
+    min-block-size: var(--size-900);
+    padding-inline: var(--space-300);
+    border: var(--border-width-025) solid var(--border-secondary);
+    background: var(--background);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-350);
+  }
+
+  .text-field-control > .text-field-input {
+    /* Reserve one control target before long affixes wrap; the input still
+       grows to fill the remaining inline space. */
+    flex: 1 0 var(--size-900);
+    inline-size: auto;
+    min-inline-size: 0;
+    min-block-size: calc(var(--size-900) - var(--border-width-025) * 2);
+    block-size: calc(var(--size-900) - var(--border-width-025) * 2);
+    padding-inline: 0;
+  }
+
+  .text-field-control > .text-field-input,
+  .text-field-control > .text-field-input:is(:focus-visible, [aria-invalid="true"], :user-invalid, :disabled, [readonly]) {
+    border: 0;
+    background: var(--surface-control-transparent);
+    color: inherit;
+    box-shadow: none;
+  }
+
+  .text-field-control > .text-field-affix {
+    order: -1;
+    flex: 0 1 auto;
+    min-inline-size: 0;
+    color: var(--text-secondary);
+    line-height: var(--font-height-regular);
+    overflow-wrap: anywhere;
+  }
+
+  .text-field-control > .text-field-affix[data-side="end"] {
+    order: 1;
+  }
+
+  .text-field-control > .text-field-affix:has(> svg) {
+    flex-shrink: 0;
+  }
+
+  .text-field-affix > svg {
+    inline-size: var(--size-400);
+    block-size: var(--size-400);
+    pointer-events: none;
+  }
+
+  /* Negative block margins keep the Button's full 36px target in a 36px
+     field boundary. The trailing action removes only the wrapper's inset. */
+  .text-field-control > .text-field-action.btn {
+    order: 2;
+    margin-block: calc(var(--border-width-025) * -1);
+    margin-inline-end: calc(var(--space-300) * -1);
+  }
+
+  .text-field-control:has(> .text-field-input:disabled) {
+    background: var(--surface-control-disabled);
+    color: var(--text-disabled);
+    border-color: var(--border-disabled);
+    cursor: not-allowed;
+  }
+
+  .text-field-control:has(> .text-field-input:disabled) > .text-field-affix,
+  .text-field-control > .text-field-input:disabled::placeholder {
+    color: var(--text-disabled);
+  }
+
+  .text-field-control:has(> .text-field-input:where([readonly]:not(:disabled))) {
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+    border-color: var(--border-muted);
+  }
+
+  .text-field-control:has(> .text-field-input:focus-visible) {
+    border-color: var(--border-focus);
+    box-shadow: var(--ring-default);
+  }
+
+  .text-field-control:has(> .text-field-input:is([aria-invalid="true"], :user-invalid)),
+  .text-field[data-invalid] > .text-field-control {
+    border-color: var(--border-invalid);
+  }
+
+  .text-field-control:has(> .text-field-input:is([aria-invalid="true"], :user-invalid):focus-visible),
+  .text-field[data-invalid] > .text-field-control:has(> .text-field-input:focus-visible) {
+    border-color: var(--border-invalid);
+    box-shadow: var(--ring-invalid);
+  }
+
   .text-field-description,
   .text-field-error {
     margin: 0;
     font-size: var(--font-size-350);
     line-height: var(--font-height-regular);
+    overflow-wrap: anywhere;
   }
 
   .text-field-description {
@@ -1633,11 +1753,13 @@
   }
 
   .text-field[data-invalid] > .text-field-description,
-  .text-field:has(> :is([aria-invalid="true"], :user-invalid)) > .text-field-description {
+  .text-field:has(> :is([aria-invalid="true"], :user-invalid)) > .text-field-description,
+  .text-field:has(> .text-field-control > .text-field-input:is([aria-invalid="true"], :user-invalid)) > .text-field-description {
     color: var(--text-negative);
   }
 
   .text-field:has(> :disabled) > :is(label, .text-field-label, .text-field-description),
+  .text-field:has(> .text-field-control > .text-field-input:disabled) > :is(label, .text-field-label, .text-field-description),
   .text-field[data-disabled] > :is(label, .text-field-label, .text-field-description) {
     color: var(--text-disabled);
     cursor: not-allowed;
@@ -1655,8 +1777,19 @@
 
   @media (prefers-contrast: more) {
     .text-field > :where(input, textarea, select),
-    .text-field-input {
+    .text-field-input,
+    .text-field-control {
       border-width: var(--border-width-050);
+    }
+
+    .text-field-control > .text-field-input {
+      border-width: 0;
+      min-block-size: calc(var(--size-900) - var(--border-width-050) * 2);
+      block-size: calc(var(--size-900) - var(--border-width-050) * 2);
+    }
+
+    .text-field-control > .text-field-action.btn {
+      margin-block: calc(var(--border-width-050) * -1);
     }
 
     .text-field > :disabled,
@@ -1672,7 +1805,8 @@
     }
 
     .text-field > :where(input, textarea, select),
-    .text-field-input {
+    .text-field-input,
+    .text-field-control {
       border-color: ButtonBorder;
       background: Field;
       color: FieldText;
@@ -1684,18 +1818,53 @@
       outline-offset: 1px;
     }
 
+    .text-field-control:has(> .text-field-input:focus-visible) {
+      outline: var(--border-width-050) solid Highlight;
+      outline-offset: var(--border-width-025);
+      box-shadow: none;
+    }
+
+    .text-field-control > .text-field-affix {
+      color: FieldText;
+    }
+
     .text-field > :disabled,
     .text-field-input:disabled,
+    .text-field-control:has(> .text-field-input:disabled),
+    .text-field-control:has(> .text-field-input:disabled) > .text-field-affix,
     .text-field:has(> :disabled) > :is(label, .text-field-label, .text-field-description),
+    .text-field:has(> .text-field-control > .text-field-input:disabled) > :is(label, .text-field-label, .text-field-description),
     .text-field[data-disabled] > :is(label, .text-field-label, .text-field-description) {
       color: GrayText;
     }
 
+    .text-field-control:has(> .text-field-input:disabled) {
+      border-color: GrayText;
+    }
+
     .text-field > :where(input, textarea, select):is([aria-invalid="true"], :user-invalid),
     .text-field-input:is([aria-invalid="true"], :user-invalid),
+    .text-field-control:has(> .text-field-input:is([aria-invalid="true"], :user-invalid)),
+    .text-field[data-invalid] > .text-field-control,
     .text-field-error {
       border-color: LinkText;
       color: LinkText;
+    }
+
+    .text-field-control:has(> .text-field-input:is([aria-invalid="true"], :user-invalid):focus-visible),
+    .text-field[data-invalid] > .text-field-control:has(> .text-field-input:focus-visible) {
+      border-color: LinkText;
+      box-shadow: none;
+    }
+  }
+}
+
+/* Important layer order gives base focus precedence. Keep this narrow reset
+   in that same layer; the equivalent wrapper outline is defined above. */
+@layer base {
+  @media (forced-colors: active) {
+    .text-field-control > .text-field-input:focus-visible {
+      outline: none !important;
     }
   }
 }
@@ -1836,7 +2005,7 @@
       }
     }
 
-    &:indeterminate {
+    &:is(:indeterminate,[data-demo-mixed]) {
       background-color: var(--surface-control-inverted);
       border-color: var(--border-interactive-inverted);
 
@@ -1864,7 +2033,7 @@
         &::after { background-color: var(--text-disabled); }
       }
 
-      &:indeterminate {
+      &:is(:indeterminate,[data-demo-mixed]) {
         background: var(--surface-control-disabled);
         border-color: var(--border-disabled);
 
@@ -1885,7 +2054,7 @@
         }
       }
 
-      &:indeterminate {
+      &:is(:indeterminate,[data-demo-mixed]) {
         background-color: var(--surface-control-inverted);
         border-color: var(--border-invalid);
 
@@ -3114,6 +3283,8 @@
   .date-picker {
     display: inline-flex;
     flex-direction: column;
+    inline-size: calc(7 * var(--size-900) + 2 * var(--space-300) + 2 * var(--border-width-025));
+    max-inline-size: 100%;
     padding: var(--space-300);
     border: var(--border-width-025) solid var(--border-primary);
 
@@ -3161,12 +3332,13 @@
   }
 
   .date-picker-grid {
+    width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
     border-spacing: 0;
   }
 
   .date-picker-day-label {
-    width: 2.25rem;
     height: 2.25rem;
     font-size: var(--font-size-300);
     font-weight: var(--font-weight-400);
@@ -3179,9 +3351,8 @@
      roving tab stop, and every visual state. No nested button. */
   .date-picker-day {
     display: table-cell;
-    width: var(--size-900);
     height: var(--size-900);
-    min-width: var(--size-900);
+    min-width: var(--size-600);
     padding: 0;
     text-align: center;
     vertical-align: middle;
@@ -3195,8 +3366,9 @@
     }
 
     &:focus-visible {
-      position: relative;
-      box-shadow: var(--ring-default);
+      /* Collapsed table cells do not paint the shared box-shadow ring. */
+      outline: var(--border-width-050) solid var(--border-focus-area);
+      outline-offset: calc(-1 * var(--border-width-050));
     }
 
     &[data-today] {
@@ -3508,6 +3680,13 @@
     justify-content: space-between;
   }
 
+  .combobox-trigger[aria-invalid="true"],
+  .combobox[data-invalid] .combobox-trigger {
+    border-color: var(--border-invalid);
+
+    &:focus-visible { box-shadow: var(--ring-invalid); }
+  }
+
   .combobox-value {
     overflow: hidden;
     flex: 1;
@@ -3673,6 +3852,18 @@
   }
 
   @media (forced-colors: active) {
+    .combobox-trigger[aria-invalid="true"],
+    .combobox[data-invalid] .combobox-trigger {
+      border-color: LinkText;
+      border-style: dashed;
+
+      &:focus-visible {
+        box-shadow: none;
+        outline: var(--border-width-050) solid Highlight;
+        outline-offset: var(--border-width-050);
+      }
+    }
+
     .combobox-content {
       border-color: ButtonText;
     }
@@ -3782,11 +3973,18 @@
     border-color: var(--border-disabled);
   }
 
-  .time-field-input:read-only:not(:disabled) {
+  .time-field-input:read-only:not(:disabled),
+  .time-field[data-readonly] .time-field-input:not(:disabled),
+  .time-field[data-readonly]:not([data-disabled]):not(:disabled) .time-field-select {
     background: var(--surface-secondary);
     color: var(--text-secondary);
     border-color: var(--border-muted);
     cursor: default;
+  }
+
+  .time-field[data-readonly]:not([data-disabled]):not(:disabled) .time-field-select {
+    /* Native disabled selects can dim their text even with the readonly color. */
+    opacity: 1;
   }
 
   .time-field-input:is([aria-invalid="true"], :user-invalid),
@@ -3829,26 +4027,15 @@
     color: var(--text-secondary);
   }
 
-  .time-field:has(.time-field-input:disabled, .time-field-select:disabled) > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
+  .time-field:has(.time-field-input:disabled) > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
   .time-field[data-disabled] > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
-  .time-field:has(.time-field-input:disabled, .time-field-select:disabled) .time-field-label,
+  .time-field:has(.time-field-input:disabled) .time-field-label,
   .time-field[data-disabled] .time-field-label {
     color: var(--text-disabled);
     cursor: not-allowed;
   }
 
-  /* The native readonly attribute lands on each segment. Match the treatment
-     the other text controls give it. */
-  .time-field[data-readonly] .time-field-input:not(:disabled),
-  .time-field[data-readonly] .time-field-select:not(:disabled),
-  .time-field-input[readonly]:not(:disabled) {
-    background: var(--surface-secondary);
-    color: var(--text-secondary);
-    cursor: default;
-  }
-
-  .time-field[data-readonly] .time-field-label,
-  .time-field:has(.time-field-input[readonly], .time-field-select[readonly]) .time-field-label {
+  .time-field[data-readonly]:not([data-disabled]):not(:disabled) .time-field-label {
     color: var(--text-secondary);
     cursor: default;
   }
@@ -3897,15 +4084,15 @@
 
     .time-field-input:disabled,
     .time-field-select:disabled,
-    .time-field:has(.time-field-input:disabled, .time-field-select:disabled) > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
+    .time-field:has(.time-field-input:disabled) > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
     .time-field[data-disabled] > :is(legend, .time-field-legend, .time-field-description, .time-field-status),
-    .time-field:has(.time-field-input:disabled, .time-field-select:disabled) .time-field-label,
+    .time-field:has(.time-field-input:disabled) .time-field-label,
     .time-field[data-disabled] .time-field-label {
       color: GrayText;
     }
 
     .time-field[data-readonly] .time-field-input:not(:disabled),
-    .time-field[data-readonly] .time-field-select:not(:disabled),
+    .time-field[data-readonly]:not([data-disabled]):not(:disabled) .time-field-select,
     .time-field-input[readonly]:not(:disabled) {
       color: FieldText;
     }
@@ -3967,6 +4154,29 @@
         color: var(--text-negative);
       }
     }
+  }
+
+  /* Keep a documented control-and-help group together in either orientation. */
+  .form-field > div {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-inline-size: 0;
+    gap: var(--space-100);
+  }
+
+  .form-field[data-invalid] > div > .field-description {
+    color: var(--text-negative);
+  }
+
+  .form-field > .label:has(+ div > :required)::after {
+    content: " *";
+    color: var(--text-negative);
+  }
+
+  .form-field > .label:has(+ div > :disabled) {
+    color: var(--text-disabled);
+    cursor: not-allowed;
   }
 
   /* -- Inline field (checkbox, switch, radio inline) -------- */
@@ -4073,6 +4283,10 @@
   }
 
   @media (forced-colors: active) {
+    .form-field > .label:has(+ div > :disabled) {
+      color: GrayText;
+    }
+
     .form-field-row {
       border-color: ButtonBorder;
     }
@@ -4251,11 +4465,12 @@
 @layer components {
   .card {
     display: block;
+    min-inline-size: 0;
     background-color: var(--surface-primary);
     color: var(--text-primary);
     border: var(--border-width-025) solid var(--border-primary);
 
-    overflow: hidden;
+    overflow-wrap: anywhere;
     container-type: inline-size;
   }
 
@@ -4292,6 +4507,20 @@
     align-items: center;
     gap: var(--space-200);
     padding: var(--space-600);
+    padding-top: 0;
+  }
+
+  .card[data-density="compact"] > .card-header {
+    padding: var(--space-400);
+    padding-bottom: 0;
+  }
+
+  .card[data-density="compact"] > .card-content {
+    padding: var(--space-400);
+  }
+
+  .card[data-density="compact"] > .card-footer {
+    padding: var(--space-400);
     padding-top: 0;
   }
 
@@ -4366,7 +4595,7 @@
     &[data-radius="full"] > .image-fallback { border-radius: var(--border-radius-6400); }
 
     /* -- Preview cursor -------------------------------------- */
-    &[data-preview] {
+    &[data-preview][data-mewa-image-init] {
       cursor: zoom-in;
     }
 
@@ -4503,6 +4732,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-100);
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
   }
 
   .statistic-title {
@@ -4522,22 +4753,29 @@
     color: var(--text-primary);
   }
 
+  .statistic[data-density="compact"] > .statistic-value {
+    font-size: var(--font-size-600);
+  }
+
   .statistic-description {
     margin: 0;
     font-size: var(--font-size-300);
     color: var(--text-secondary);
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--space-100);
   }
 
   .statistic-trend {
     display: inline-flex;
+    min-inline-size: 0;
     align-items: center;
     gap: var(--space-100);
     font-weight: var(--font-weight-525);
 
     & svg {
+      flex-shrink: 0;
       width: var(--size-300);
       height: var(--size-300);
     }
@@ -4556,7 +4794,7 @@
     .statistic-description { color: CanvasText; }
     .statistic-value { color: CanvasText; }
     .statistic-trend[data-trend="up"] { color: Highlight; }
-    .statistic-trend[data-trend="down"] { color: Mark; }
+    .statistic-trend[data-trend="down"] { color: CanvasText; }
   }
 }
 
@@ -5132,12 +5370,17 @@
     }
 
     &:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > .tree-leaf,
-    &:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > .tree-branch > .tree-branch-trigger {
+    &[aria-disabled="true"] .tree-leaf,
+    & > .tree-leaf:is(:disabled, [aria-disabled="true"]),
+    &:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > .tree-branch > .tree-branch-trigger,
+    &[aria-disabled="true"] .tree-branch > .tree-branch-trigger,
+    & > .tree-branch > .tree-branch-trigger:is(:disabled, [aria-disabled="true"]) {
       background: var(--surface-control-disabled);
       border-color: var(--border-disabled);
       color: var(--text-disabled);
       cursor: not-allowed;
       pointer-events: none;
+      & svg { color: inherit; }
     }
   }
 
@@ -5327,6 +5570,16 @@
     .tree-leaf { color: CanvasText; }
     .tree-branch-trigger svg:first-child { color: CanvasText; }
     .tree-leaf svg { color: CanvasText; }
+    .tree-item:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > .tree-leaf,
+    .tree-item[aria-disabled="true"] .tree-leaf,
+    .tree-item > .tree-leaf:is(:disabled, [aria-disabled="true"]),
+    .tree-item:is([aria-disabled="true"], [data-state="disabled"], [data-disabled]) > .tree-branch > .tree-branch-trigger,
+    .tree-item[aria-disabled="true"] .tree-branch > .tree-branch-trigger,
+    .tree-item > .tree-branch > .tree-branch-trigger:is(:disabled, [aria-disabled="true"]) {
+      color: GrayText;
+      border-color: GrayText;
+      & svg { color: GrayText; }
+    }
   }
 }
 
@@ -5766,18 +6019,18 @@
 
   /* A stationary segment distinguishes unknown completion from zero without
      adding another continuously animated primitive. */
-  .progress:indeterminate {
+  .progress:is(:indeterminate,[data-demo-mixed]) {
     background-image: linear-gradient(var(--surface-control-inverted), var(--surface-control-inverted));
     background-size: 30% 100%;
     background-position: center;
     background-repeat: no-repeat;
   }
 
-  .progress:indeterminate::-webkit-progress-bar {
+  .progress:is(:indeterminate,[data-demo-mixed])::-webkit-progress-bar {
     background: transparent;
   }
 
-  .progress:indeterminate::-moz-progress-bar {
+  .progress:is(:indeterminate,[data-demo-mixed])::-moz-progress-bar {
     background: transparent;
   }
 
@@ -5804,13 +6057,13 @@
     .progress::-webkit-progress-bar { background: ButtonFace; }
     .progress::-webkit-progress-value { background: Highlight; }
     .progress::-moz-progress-bar { background: Highlight; }
-    .progress:indeterminate {
+    .progress:is(:indeterminate,[data-demo-mixed]) {
       forced-color-adjust: none;
       background-color: Canvas;
       background-image: linear-gradient(Highlight, Highlight);
     }
-    .progress:indeterminate::-webkit-progress-bar { background: transparent; }
-    .progress:indeterminate::-moz-progress-bar { background: transparent; }
+    .progress:is(:indeterminate,[data-demo-mixed])::-webkit-progress-bar { background: transparent; }
+    .progress:is(:indeterminate,[data-demo-mixed])::-moz-progress-bar { background: transparent; }
   }
 }
 
@@ -5823,7 +6076,7 @@
     gap: var(--space-200);
     border: var(--border-width-025) solid var(--border-primary);
 
-    padding: var(--space-400) var(--space-500);
+    padding: var(--space-400);
     font-size: var(--font-size-350);
     color: var(--text-primary);
     background-color: var(--background);
@@ -5832,17 +6085,23 @@
       border-color: var(--border-negative);
       background-color: var(--surface-negative);
       color: var(--text-negative);
+    }
 
-      & .callout-title {
-        color: var(--text-negative);
-      }
+    &[data-variant="positive"] {
+      border-color: var(--border-positive);
+      background-color: var(--surface-positive);
+      color: var(--text-positive);
+    }
 
-      & .callout-description {
-        color: var(--text-negative);
-      }
+    &[data-variant="caution"] {
+      border-color: var(--border-caution);
+      background-color: var(--surface-caution);
+      color: var(--text-caution);
+    }
 
-      & .callout-icon {
-        color: var(--text-negative);
+    &:is([data-variant="destructive"], [data-variant="positive"], [data-variant="caution"]) {
+      & :is(.callout-title, .callout-description, .callout-icon) {
+        color: inherit;
       }
     }
   }
@@ -5858,6 +6117,7 @@
   .callout-content {
     flex: 1;
     min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .callout-title {
@@ -5894,8 +6154,8 @@
       border-color: CanvasText;
     }
 
-    .callout[data-variant="destructive"] {
-      border-color: Mark;
+    .callout:is([data-variant="destructive"], [data-variant="positive"], [data-variant="caution"]) {
+      border-color: CanvasText;
       color: CanvasText;
     }
   }
@@ -6475,6 +6735,64 @@
   .dialog-body    { margin-top: var(--space-400); }
   .dialog-footer  { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-200); margin-top: var(--space-600); }
 
+  /* -- Bounded body scrolling -------------------------------- */
+  dialog.dialog[data-scroll="body"] {
+    inline-size: calc(100% - var(--size-800));
+    max-block-size: min(calc(100dvh - var(--size-800)), calc(100% - var(--size-800)));
+    scroll-padding-block: var(--space-600);
+
+    &[open] {
+      display: flex;
+      flex-direction: column;
+    }
+
+    & > .dialog-content {
+      display: grid;
+      /* Keep room for a label, its gap, a 36px control, and focus clearance.
+         Native dialog overflow recovers when the surrounding sections cannot fit. */
+      grid-template-rows: auto minmax(var(--size-1800), 1fr) auto;
+      gap: var(--space-400);
+      min-block-size: 0;
+      min-inline-size: 0;
+    }
+
+    & > .dialog-content > :is(.dialog-header, .dialog-body, .dialog-footer) {
+      min-inline-size: 0;
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    & > .dialog-content > .dialog-body {
+      min-block-size: 0;
+      overflow: auto;
+      padding: var(--border-width-050);
+      scroll-padding-block: var(--space-600);
+
+      &:focus-visible {
+        outline: var(--border-width-050) solid var(--border-focus);
+        outline-offset: calc(var(--border-width-050) * -1);
+        box-shadow: none;
+      }
+    }
+
+    & > .dialog-content > .dialog-footer {
+      /* Include the outer padding in native overflow when grid rows cannot
+         shrink further. The margin avoids adding that padding twice. */
+      padding-block-end: var(--space-600);
+      margin-block-end: calc(var(--space-600) * -1);
+    }
+
+    & > .dialog-content > .dialog-footer > .btn:not([data-icon-only]) {
+      min-inline-size: 0;
+      max-inline-size: 100%;
+      min-block-size: var(--size-900);
+      block-size: auto;
+      padding-block: var(--space-200);
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+  }
+
   /* -- Accessibility ---------------------------------------- */
   @media (prefers-contrast: more) {
     dialog.dialog {
@@ -6492,6 +6810,15 @@
 
     dialog.dialog[open]::backdrop {
       backdrop-filter: none;
+    }
+
+    dialog.dialog[data-scroll="body"] > .dialog-content > .dialog-body:focus-visible {
+      outline-color: Highlight;
+      outline-offset: calc(var(--border-width-050) * -1);
+    }
+
+    dialog.dialog[data-scroll="body"] > .dialog-content > .dialog-body {
+      padding: calc(var(--border-width-050) + var(--border-width-025));
     }
   }
 
@@ -6822,12 +7149,12 @@
     &:focus-visible {
       box-shadow: var(--ring-default);
     }
-    &[aria-disabled="true"] {
+    &:is(:disabled, [aria-disabled="true"]) {
       pointer-events: none;
       background-color: var(--surface-control-disabled);
       color: var(--text-disabled);
 
-      & svg { color: var(--text-disabled); }
+      & :is(svg, [class^="ri-"], [class*=" ri-"], .command-palette-shortcut) { color: var(--text-disabled); }
     }
     & svg { width: var(--size-400); height: var(--size-400); color: var(--text-secondary); flex-shrink: 0; }
   }
@@ -6839,14 +7166,21 @@
   @media (prefers-contrast: more) {
     dialog.command-palette { border: var(--border-width-050) solid var(--border-primary); }
     .command-palette-item {
-      &:hover, &[data-highlighted] { outline: var(--border-width-025) solid var(--text-primary); }
+      &:not(:disabled, [aria-disabled="true"]):is(:hover, [data-highlighted]) { outline: var(--border-width-025) solid var(--text-primary); }
     }
   }
 
   @media (forced-colors: active) {
     dialog.command-palette { border: var(--border-width-050) solid CanvasText; }
     .command-palette-item {
-      &:hover, &[data-highlighted] { forced-color-adjust: none; background: Highlight; color: HighlightText; }
+      &:not(:disabled, [aria-disabled="true"]):is(:hover, [data-highlighted]) { forced-color-adjust: none; background: Highlight; color: HighlightText; }
+      &:is(:disabled, [aria-disabled="true"]) {
+        forced-color-adjust: none;
+        background: ButtonFace;
+        color: GrayText;
+
+        & :is(svg, [class^="ri-"], [class*=" ri-"], .command-palette-shortcut) { color: GrayText; }
+      }
     }
     .command-palette-separator { background-color: CanvasText; }
   }
@@ -6932,7 +7266,7 @@
     padding-inline: 0;
     gap: 0;
   }
-  .pagination-active { border-color: var(--border-primary); background-color: var(--background); font-weight: var(--font-weight-525); }
+  .pagination-active, .pagination-link:where([aria-current="page"]) { border-color: var(--border-primary); background-color: var(--background); font-weight: var(--font-weight-525); }
   .pagination-ellipsis {
     display: inline-flex; align-items: center; justify-content: center;
     width: var(--size-900); height: var(--size-900); color: var(--text-secondary);
@@ -6944,11 +7278,11 @@
       border-color: var(--border-primary);
       &:hover { border-color: var(--text-primary); }
     }
-    .pagination-active { border-width: var(--border-width-050); }
+    .pagination-active, .pagination-link:where([aria-current="page"]) { border-width: var(--border-width-050); }
   }
 
   @media (forced-colors: active) {
-    .pagination-active {
+    .pagination-active, .pagination-link:where([aria-current="page"]) {
       border-color: Highlight;
     }
     .pagination-link, .pagination-prev, .pagination-next {
@@ -7262,7 +7596,7 @@
 
 /* Navigation Menu — library/components/navigation/navigation-menu/navigation-menu.css */
 @layer components {
-  .nav-menu-list { display: flex; align-items: center; gap: var(--space-200); list-style: none; margin: 0; padding: 0; }
+  .nav-menu-list { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-200); list-style: none; margin: 0; padding: 0; }
   .nav-menu-link, .nav-menu-trigger {
     display: inline-flex; align-items: center; gap: var(--space-100);
     min-block-size: var(--size-1000);
@@ -7274,11 +7608,12 @@
     /* The current route stays marked the way Nav marks it, and a disabled
        row leaves the pointer path exactly like Nav's disabled row. */
     &[aria-current="page"] { background-color: var(--surface-menu-hover); color: var(--text-primary); }
-    &[aria-disabled="true"], &[data-disabled] {
+    &:disabled, &[aria-disabled="true"], &[data-disabled] {
       pointer-events: none;
       background-color: transparent;
       color: var(--text-disabled);
       cursor: not-allowed;
+      & svg { color: inherit; }
     }
     &:focus-visible {
       box-shadow: var(--ring-default);
@@ -7315,7 +7650,7 @@
     .nav-menu-content {
       border-color: ButtonText;
     }
-    .nav-menu-link:is([aria-disabled="true"], [data-disabled]) { color: GrayText; }
+    :is(.nav-menu-link,.nav-menu-trigger):is(:disabled,[aria-disabled="true"],[data-disabled]) { color: GrayText; }
   }
 }
 
@@ -7420,6 +7755,7 @@
     display: inline-flex;
     align-items: center;
     block-size: 100%;
+    min-block-size: var(--size-1000);
     padding-inline: var(--space-300);
     color: var(--text-secondary);
     font-size: var(--font-size-350);
@@ -7966,8 +8302,10 @@
 
   @media (forced-colors: active) {
     .skip-link {
+      /* Preserve the system pair without a blank automatic text backplate. */
       background: Highlight;
       color: HighlightText;
+      forced-color-adjust: none;
     }
 
     .brand-mark {
@@ -8565,14 +8903,14 @@
       transform: translate(-50%, -50%);
     }
 
-    .resizable[data-init] & {
+    .resizable[data-init] &:not(:disabled, [aria-disabled="true"]) {
       cursor: col-resize;
       touch-action: none;
       user-select: none;
     }
 
-    .resizable[data-init] &:hover,
-    .resizable[data-init] &:focus-visible {
+    .resizable[data-init] &:not(:disabled, [aria-disabled="true"]):hover,
+    .resizable[data-init] &:not(:disabled, [aria-disabled="true"]):focus-visible {
       background: linear-gradient(
         to right,
         transparent calc(50% - (var(--border-width-025) / 2)),
@@ -8583,7 +8921,7 @@
       color: var(--text-secondary);
     }
 
-    .resizable[data-init] &[data-resizing] {
+    .resizable[data-init] &[data-resizing]:not(:disabled, [aria-disabled="true"]) {
       background: linear-gradient(
         to right,
         transparent calc(50% - (var(--border-width-050) / 2)),
@@ -8594,15 +8932,8 @@
       color: var(--text-primary);
     }
 
-    .resizable[data-init] &:focus-visible {
+    .resizable[data-init] &:not(:disabled, [aria-disabled="true"]):focus-visible {
       box-shadow: var(--ring-default);
-    }
-
-    .resizable[data-init] &:disabled,
-    .resizable[data-init] &[aria-disabled="true"] {
-      background: var(--surface-control-disabled);
-      color: var(--text-disabled);
-      cursor: not-allowed;
     }
   }
 
@@ -8622,7 +8953,7 @@
       transparent calc(50% + (var(--border-width-025) / 2))
     );
 
-    .resizable[data-init] & {
+    .resizable[data-init] &:not(:disabled, [aria-disabled="true"]) {
       cursor: row-resize;
     }
 
@@ -8633,8 +8964,8 @@
       border-block: var(--border-width-025) solid currentColor;
     }
 
-    .resizable[data-init] &:hover,
-    .resizable[data-init] &:focus-visible {
+    .resizable[data-init] &:not(:disabled, [aria-disabled="true"]):hover,
+    .resizable[data-init] &:not(:disabled, [aria-disabled="true"]):focus-visible {
       background: linear-gradient(
         to bottom,
         transparent calc(50% - (var(--border-width-025) / 2)),
@@ -8645,7 +8976,7 @@
       color: var(--text-secondary);
     }
 
-    .resizable[data-init] &[data-resizing] {
+    .resizable[data-init] &[data-resizing]:not(:disabled, [aria-disabled="true"]) {
       background: linear-gradient(
         to bottom,
         transparent calc(50% - (var(--border-width-050) / 2)),
@@ -8657,9 +8988,15 @@
     }
   }
 
+  .resizable .resizable-handle:is(:disabled, [aria-disabled="true"]) {
+    background: var(--surface-control-disabled);
+    color: var(--text-disabled);
+  }
+
   .resizable[data-init] .resizable-handle:is(:disabled, [aria-disabled="true"]) {
     background: var(--surface-control-disabled);
     color: var(--text-disabled);
+    cursor: not-allowed;
   }
 
   .resizable-controls {
@@ -8734,12 +9071,20 @@
       color: ButtonText;
     }
 
-    .resizable[data-init] .resizable-handle:hover,
-    .resizable[data-init] .resizable-handle:focus-visible,
-    .resizable[data-init] .resizable-handle[data-resizing] {
+    .resizable[data-init] .resizable-handle:not(:disabled, [aria-disabled="true"]):hover,
+    .resizable[data-init] .resizable-handle:not(:disabled, [aria-disabled="true"]):focus-visible,
+    .resizable[data-init] .resizable-handle[data-resizing]:not(:disabled, [aria-disabled="true"]) {
       background: Highlight;
       border-color: Highlight;
       color: HighlightText;
+    }
+
+    .resizable .resizable-handle:is(:disabled, [aria-disabled="true"]),
+    .resizable[data-init] .resizable-handle:is(:disabled, [aria-disabled="true"]) {
+      forced-color-adjust: none;
+      background: ButtonFace;
+      border-color: GrayText;
+      color: GrayText;
     }
 
     .resizable-step {

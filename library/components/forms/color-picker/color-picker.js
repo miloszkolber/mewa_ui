@@ -1,6 +1,6 @@
 // -- Color Picker -----------------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -36,16 +36,18 @@ export function enhance(scope) {
 
     let valueAtFocus = colorInput.value;
     let updatingFromHex = false;
+    const attributes = attributeSnapshot();
+    lifecycle.add(root, attributes.restore);
 
     const syncFromColor = () => {
       const normalized = normalizeHex(colorInput.value) || '#000000';
       colorInput.value = normalized;
       hexInput.value = normalized;
-      hexInput.removeAttribute('aria-invalid');
+      attributes.set(hexInput, 'aria-invalid', null);
     };
 
     const syncDisabled = () => {
-      hexInput.disabled = colorInput.disabled;
+      attributes.set(hexInput, 'disabled', colorInput.disabled ? '' : null);
     };
 
     lifecycle.reset(root, colorInput.form, syncFromColor);
@@ -55,8 +57,8 @@ export function enhance(scope) {
     });
     syncFromColor();
     syncDisabled();
-    hexInput.hidden = false;
-    root.dataset.enhanced = '';
+    attributes.set(hexInput, 'hidden', null);
+    attributes.set(root, 'data-enhanced', '');
 
     lifecycle.listen(root, colorInput, 'input', () => {
       if (!updatingFromHex) syncFromColor();
@@ -71,8 +73,7 @@ export function enhance(scope) {
       if (colorInput.matches(':disabled') || hexInput.readOnly) return;
       const normalized = normalizeHex(hexInput.value);
       const draftIsInvalid = hexInput.value !== '' && !normalized;
-      if (draftIsInvalid) hexInput.setAttribute('aria-invalid', 'true');
-      else hexInput.removeAttribute('aria-invalid');
+      attributes.set(hexInput, 'aria-invalid', draftIsInvalid ? 'true' : null);
 
       if (!normalized || normalized === colorInput.value) return;
       colorInput.value = normalized;
@@ -85,18 +86,24 @@ export function enhance(scope) {
       const normalized = normalizeHex(hexInput.value);
       if (!normalized) {
         syncFromColor();
-        return;
+      } else {
+        hexInput.value = normalized;
+        attributes.set(hexInput, 'aria-invalid', null);
       }
-
-      hexInput.value = normalized;
-      hexInput.removeAttribute('aria-invalid');
       if (colorInput.value !== valueAtFocus) {
+        valueAtFocus = colorInput.value;
         colorInput.dispatchEvent(new Event('change', { bubbles: true }));
       }
     });
 
     lifecycle.listen(root, hexInput, 'keydown', (event) => {
-      if (event.key !== 'Enter') return;
+      if (
+        event.key !== 'Enter' ||
+        event.isComposing ||
+        colorInput.matches(':disabled') ||
+        hexInput.readOnly
+      )
+        return;
       event.preventDefault();
       hexInput.blur();
     });

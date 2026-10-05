@@ -108,6 +108,10 @@ Load `accordion.js` for this stricter mode.
 
 The module reopens the last item when closing it would leave every item closed.
 
+Removing `data-type="single"` restores native disclosure behavior on the mounted Accordion.
+
+Adding `data-type="single"` again enables the same one-open enforcement without a second listener.
+
 ## Keyboard
 
 Tab moves focus between summary elements.

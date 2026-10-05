@@ -112,6 +112,14 @@ The module constrains the end input from the current start value.
 
 The module constrains the start input from the current end value.
 
+The module derives cross-field constraints from the current application `min` and `max` values.
+
+Call the controller update method after changing a bound without a native input event.
+
+Teardown removes only constraints and invalid state that the module still owns.
+
+Teardown preserves application bounds and current native date values.
+
 The module sets a custom error when both values exist and the end precedes the start.
 
 The module updates the optional error and status elements.

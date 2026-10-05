@@ -1,20 +1,17 @@
-import { queryAll } from '../../../runtime/core.js';
+import { queryAll, createLifecycle } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
 
-const composerInstances = new WeakMap();
+const lifecycle = createLifecycle('composer');
 
 function initComposer(root) {
-  if (composerInstances.has(root)) return;
+  if (lifecycle.has(root)) return;
+  const input = root.querySelector('.composer-input');
+  if (!input || input.tagName !== 'TEXTAREA') return;
+
   root.dataset.init = '';
   root.dataset.mewaComposerInit = '';
-
-  const input = root.querySelector('.composer-input');
-  if (!input || input.tagName !== 'TEXTAREA') {
-    root.removeAttribute('data-mewa-composer-init');
-    return;
-  }
 
   const requestSubmit = () => {
     const submitter = root.querySelector('button[type="submit"], input[type="submit"]');
@@ -37,25 +34,15 @@ function initComposer(root) {
     requestSubmit();
   };
 
-  input.addEventListener('keydown', onKeyDown);
-
-  composerInstances.set(root, {
-    destroy() {
-      input.removeEventListener('keydown', onKeyDown);
-      root.removeAttribute('data-mewa-composer-init');
-      composerInstances.delete(root);
-    }
-  });
+  lifecycle.listen(root, input, 'keydown', onKeyDown);
 }
 
 export function enhance(root) {
   queryAll(root, '.composer').forEach(initComposer);
 }
 
-export function destroy(root) {
-  queryAll(root, '.composer').forEach((composer) => {
-    composerInstances.get(composer)?.destroy();
-  });
+export function destroy(root = typeof document === 'undefined' ? null : document) {
+  lifecycle.destroy(root);
 }
 
 export const behavior = { name: 'composer', enhance, destroy };

@@ -42,6 +42,29 @@
     }
   }
 
+  /* Keep a documented control-and-help group together in either orientation. */
+  .form-field > div {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-inline-size: 0;
+    gap: var(--space-100);
+  }
+
+  .form-field[data-invalid] > div > .field-description {
+    color: var(--text-negative);
+  }
+
+  .form-field > .label:has(+ div > :required)::after {
+    content: " *";
+    color: var(--text-negative);
+  }
+
+  .form-field > .label:has(+ div > :disabled) {
+    color: var(--text-disabled);
+    cursor: not-allowed;
+  }
+
   /* -- Inline field (checkbox, switch, radio inline) -------- */
   .form-field-inline {
     display: flex;
@@ -146,6 +169,10 @@
   }
 
   @media (forced-colors: active) {
+    .form-field > .label:has(+ div > :disabled) {
+      color: GrayText;
+    }
+
     .form-field-row {
       border-color: ButtonBorder;
     }

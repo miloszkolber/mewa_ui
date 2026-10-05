@@ -595,7 +595,39 @@ export async function inspectDocsSemantics(page, baseUrl) {
       await page.click(`${demo} .date-picker-day:not([data-outside])[data-day="15"]`);
       await settle(page);
       const selected = `${demo} .date-picker-day[aria-selected="true"]`;
+      await page.keyboard.press('ArrowRight');
+      assert.equal(
+        await page.evaluate(() => document.activeElement.getAttribute('role')),
+        'gridcell'
+      );
+      assert.equal(
+        await page.evaluate(() => document.activeElement.getAttribute('aria-selected')),
+        'false'
+      );
+      assert(
+        await page.evaluate(() => {
+          const cell = document.activeElement;
+          const style = getComputedStyle(cell);
+          return (
+            cell.matches(':focus-visible') &&
+            style.outlineStyle !== 'none' &&
+            parseFloat(style.outlineWidth) >= 2
+          );
+        }),
+        'keyboard-focused table cells use a paintable outline, not an invisible collapsed-cell shadow'
+      );
+      await page.keyboard.press('Enter');
+      await page.keyboard.press('ArrowRight');
+      await page.keyboard.press(' ');
+      await settle(page);
       const date = await page.$eval(selected, (el) => el.dataset.date);
+      const exportedDate = await page.$eval(`${active} .playground-code`, (el) => {
+        const template = document.createElement('template');
+        template.innerHTML = el.textContent;
+        return template.content.querySelector('.date-picker-day[aria-selected="true"]')?.dataset
+          .date;
+      });
+      assert.equal(exportedDate, date, 'keyboard selection reaches the exported calendar markup');
       const month = await page.$eval(heading, (el) => el.textContent);
       const node = await page.$(`${demo} .date-picker`);
       await page.select(control('width'), '480px');
@@ -604,6 +636,59 @@ export async function inspectDocsSemantics(page, baseUrl) {
       assert.equal(await page.$eval(heading, (el) => el.textContent), month);
       await sameNode(node, `${demo} .date-picker`, 'width edit retains calendar controller owner');
     });
+    for (const [slug, linkClass] of [
+      ['nav', '.nav-item-link'],
+      ['navigation-menu', '.nav-menu-link'],
+      ['sidebar', '.sidebar-link']
+    ]) {
+      await check(slug, `${slug}: unavailable routes cannot activate with Enter`, async () => {
+        const link = `${demo} ${linkClass}`;
+        const originalHref = await page.$eval(link, (el) => el.getAttribute('href'));
+        assert(originalHref, 'the available route has a native destination');
+        const clicks = await page.evaluateHandle((selector) => {
+          const result = { count: 0 };
+          document.querySelector(selector).addEventListener('click', (event) => {
+            event.preventDefault();
+            result.count++;
+          });
+          return result;
+        }, link);
+        try {
+          await page.focus(link);
+          // A property edit must also disable a link whose focus is retained.
+          await page.$eval(control('prop:part-nav-link:0:disabled'), (el) => {
+            el.checked = true;
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+          });
+          await settle(page);
+          assert.equal(await page.$eval(link, (el) => el.getAttribute('aria-disabled')), 'true');
+          assert.equal(await page.$eval(link, (el) => el.getAttribute('href')), null);
+          await page.keyboard.press('Enter');
+          await settle(page);
+          assert.equal(
+            await clicks.evaluate((result) => result.count),
+            0,
+            'native Enter cannot activate the unavailable route'
+          );
+          await page.$eval(control('prop:part-nav-link:0:disabled'), (el) => {
+            el.checked = false;
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+          });
+          await settle(page);
+          assert.equal(await page.$eval(link, (el) => el.getAttribute('href')), originalHref);
+          await page.focus(link);
+          await page.keyboard.press('Enter');
+          await settle(page);
+          assert.equal(
+            await clicks.evaluate((result) => result.count),
+            1,
+            'reenabling restores native route activation exactly once'
+          );
+        } finally {
+          await clicks.dispose();
+        }
+      });
+    }
     for (const slug of ['combobox', 'toggle-group']) {
       await check(slug, `${slug} serializer preserves authored SVG paths`, () => svgExport(page));
     }

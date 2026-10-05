@@ -373,7 +373,9 @@ await test('data tables filter, sort, announce counts, and clear through native 
     'data-table-range': '',
     'data-range-label': 'projects'
   });
-  const clear = node('button', { type: 'button', 'data-table-clear': '' });
+  const clear = node('button', { type: 'reset', 'data-table-clear': '' });
+  const form = node('form');
+  form.append(filter, clear);
   const table = node('table');
   const head = node('thead');
   const headingRow = node('tr');
@@ -395,7 +397,7 @@ await test('data tables filter, sort, announce counts, and clear through native 
   table.append(head, body);
   const empty = node('p', { class: 'data-table-empty', 'data-table-empty': '' });
   empty.hidden = true;
-  tableRoot.append(filter, status, range, clear, table, empty);
+  tableRoot.append(form, status, range, table, empty);
   const runtime = await loadModule('data-table', tableRoot);
 
   fire(sort, 'click');
@@ -425,7 +427,8 @@ await test('data tables filter, sort, announce counts, and clear through native 
   assert.equal(empty.hidden, false);
   await settle();
   assert.equal(range.textContent, 'Showing 0 of 0 projects');
-  fire(clear, 'click');
+  clear.focus();
+  clear.click();
   await settle();
   assert.equal(filter.value, '');
   await settle();
@@ -433,7 +436,7 @@ await test('data tables filter, sort, announce counts, and clear through native 
   await settle();
   assert.equal(bravo.hidden, false);
   await settle();
-  assert.equal(runtime.document.activeElement, filter);
+  assert.equal(runtime.document.activeElement, clear, 'Native reset retains its activation focus');
 });
 
 await test('date range pickers keep chronological validation dormant until interaction and recover after reset', async () => {

@@ -18,7 +18,8 @@ function bindMenu(trigger, state, menu) {
   menu.style.positionAnchor = anchorId;
 
   const itemSelector = '[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]';
-  const isDisabled = (item) => item.disabled || item.getAttribute('aria-disabled') === 'true';
+  const isDisabled = (item) =>
+    item.matches(':disabled') || item.getAttribute('aria-disabled') === 'true';
   const getItems = () =>
     Array.from(menu.querySelectorAll(itemSelector)).filter((item) => !isDisabled(item));
   const activateCheckable = (item) => {
@@ -39,10 +40,10 @@ function bindMenu(trigger, state, menu) {
     }
   };
   const highlight = (item) => {
-    getItems().forEach((i) => {
+    menu.querySelectorAll(itemSelector).forEach((i) => {
       i.removeAttribute('data-highlighted');
     });
-    if (item) {
+    if (item && !isDisabled(item)) {
       item.setAttribute('data-highlighted', '');
       item.focus();
     }
@@ -56,7 +57,7 @@ function bindMenu(trigger, state, menu) {
       const first = getItems()[0];
       if (first) highlight(first);
     } else {
-      getItems().forEach((i) => {
+      menu.querySelectorAll(itemSelector).forEach((i) => {
         i.removeAttribute('data-highlighted');
       });
       if (menu.contains(menu.ownerDocument.activeElement)) trigger.focus();
@@ -69,7 +70,7 @@ function bindMenu(trigger, state, menu) {
   };
   const onMouseleave = () => {
     if (state.menu !== menu || !trigger.isConnected) return;
-    getItems().forEach((i) => {
+    menu.querySelectorAll(itemSelector).forEach((i) => {
       i.removeAttribute('data-highlighted');
     });
   };

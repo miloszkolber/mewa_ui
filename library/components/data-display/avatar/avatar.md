@@ -73,6 +73,10 @@ The module transfers non-empty image alternative text to an unnamed fallback wit
 
 The module restores the authored fallback attributes when the image loads successfully or the enhancement is destroyed.
 
+The module restores inline image display only while the failed-image hiding value remains unchanged.
+
+Later application display values remain unchanged during recovery and cleanup.
+
 An image without a fallback keeps its native alternative text visible after failure.
 
 The module marks a failed image with `data-error`.

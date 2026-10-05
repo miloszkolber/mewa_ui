@@ -22,6 +22,7 @@ Child components keep ownership of their own pressed, selected, or action state.
 
 - [`role="toolbar"`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/toolbar_role) identifies the composite control region.
 - [`aria-orientation`](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-orientation) exposes horizontal or vertical keyboard direction.
+- [`MutationObserver`](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) tracks controls added, removed, or moved within the Toolbar.
 - [WAI-ARIA Toolbar Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/) defines managed toolbar focus behavior.
 
 ## Structure
@@ -102,6 +103,10 @@ End moves focus to the last enabled control.
 Child controls activate with their native keyboard behavior.
 
 The Toolbar does not change child selection state.
+
+The module maintains one enabled tab stop when controls are added, removed, or reordered.
+
+A control that leaves the Toolbar returns to its authored tab order unless the application replaces the managed value.
 
 Control state feedback uses the shared fast motion primitives.
 

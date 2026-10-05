@@ -73,7 +73,13 @@ The module keeps the copy control hidden when the Clipboard API is unavailable.
 
 The module reports a rejected clipboard write through `.code-block-status` and leaves the code selectable for manual copying.
 
-The module restores the authored copy label after confirmation feedback and during cleanup.
+The module captures the current copy label, accessible name, and status when clipboard feedback starts.
+
+The module restores only feedback nodes and attributes that still contain its last writes after confirmation feedback and during cleanup.
+
+Cleanup preserves application label nodes, accessible names, and status edits made before copying or during feedback.
+
+The latest copy attempt owns feedback when clipboard writes finish out of order.
 
 The module follows appended content only while the reader remains at the live edge.
 
@@ -110,3 +116,11 @@ Streaming applications can append normal source text without the module.
 Code Block uses an optional component module.
 
 Load `code-block.js` when copy or automatic live-edge following is required.
+
+Call the controller's `destroy()` when the application releases the code block or its enclosing region.
+
+Cleanup releases listeners, observers, and feedback timers even if the application removes `.code-block` before destruction.
+
+Cleanup preserves current code content, selection, and reading position.
+
+Repeated enhancement and remounting do not add duplicate listeners or observers.

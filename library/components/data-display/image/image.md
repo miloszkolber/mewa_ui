@@ -165,3 +165,11 @@ Load `image.js` when the page uses automatic failure fallback or `data-preview`.
 A basic figure and image remain fully readable without JavaScript.
 
 Preview behavior requires the module.
+
+The preview cursor appears only while the figure is enhanced.
+
+Destroy removes the generated preview role, name, and tab stop.
+
+Destroy restores an authored attribute only when the module still owns its current value.
+
+Application changes to preview attributes remain intact.

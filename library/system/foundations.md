@@ -2,7 +2,7 @@
 
 Use this file to apply the visual foundation.
 
-Read `library/DESIGN.md` before this file.
+Read only the section that owns the visual change.
 
 ## Identity
 
@@ -14,25 +14,33 @@ Use plain language when the task is simple.
 
 Keep decorative detail subordinate to information and action.
 
+Use monochrome surfaces for normal interface structure.
+
+Use borders instead of visual shadows.
+
+Do not use decorative color gradients.
+
 Use the entire page as one working surface.
 
 Do not divide every content group into a separate card.
 
 ## Token ownership
 
-Use `library/src/base.css` for static primitives and generated palette output.
+Load foundation base styles before semantic theme tokens.
 
-Use `scripts/color-palette.mjs` for the build-time HCT palette recipe.
+In a source checkout, use the foundation paths and order in `registry.json`'s `canonicalAssets.foundations`.
 
-Use `library/src/tokens.css` for semantic theme roles.
+In a core archive, use `manifest.json`'s `foundations.base` and `foundations.tokens` paths.
 
-Use `registry.json` to read the purpose of each semantic token.
+Use the [Semantic token reference](#semantic-token-reference) to read each role's purpose without loading source metadata.
 
-Keep each semantic role as a separate named token even when its current mapping
-matches another role. Semantic names encode intent and future theme/state
-ownership; do not deduplicate roles solely because their values are equal.
+Keep each semantic role as a separate named token even when its current mapping matches another role.
 
-Do not consume a palette primitive in a component.
+Semantic names encode intent and future theme/state ownership; do not deduplicate roles solely because their values are equal.
+
+Use the current cascade layers, spacing, and size tokens.
+
+Use semantic color roles in components and consumers; keep palette primitives inside foundation files.
 
 Do not invent a semantic token for one component.
 
@@ -48,17 +56,13 @@ Use 11 chromatic solid steps from `050` through `950`.
 
 Use one eased HCT tone curve across every solid family.
 
+Use HCT tone, which is CIELAB L*, as the shared perceived-lightness coordinate.
+
 Keep the curve denser near `000` and `1000` and align mirrored steps by HCT tone.
 
 Keep one recipe hue per chromatic family and tune HCT chroma by step.
 
 Treat neutral as the CSS name for the grayscale family.
-
-Run `bun run palette:write` after changing the recipe.
-
-Run `bun run palette:check` before handoff.
-
-Do not hand-edit the generated palette block in `library/src/base.css`.
 
 Use modern space-separated `rgb()` for every authored CSS color, including alpha colors.
 
@@ -167,7 +171,9 @@ This section is generated from `registry.json`.
 
 ## Surface model
 
-Use the page background as level zero.
+Use `--background` for the level-zero page canvas.
+
+Use `--surface-primary` for a continuous content region.
 
 Use one bordered section as level one.
 
@@ -175,14 +181,17 @@ Use rows, bands, and controls inside the section without another outer card.
 
 Use `--surface-secondary` for quiet grouping inside a level-one section.
 
-Use `--surface-control-hover` for controls, `--surface-menu-hover` for menu
-items, `--surface-content-hover` for content rows, and
-`--surface-shell-hover` for application chrome. `--surface-hover` remains a
-compatibility alias for content hover.
+Use `--surface-control-hover` for controls, `--surface-menu-hover` for menus, `--surface-content-hover` for content rows, and `--surface-shell-hover` for application chrome.
+
+Keep `--surface-hover` as the compatibility alias for content hover.
 
 Use `--surface-selected` for a selected or current item.
 
 Use `--surface-disabled` for a disabled surface.
+
+Use `--surface-inverted` for the primary high-contrast action.
+
+Pair status surfaces with matching status text roles.
 
 Use `--border-invalid` for the solid boundary of an invalid interactive control.
 
@@ -205,6 +214,12 @@ Do not wrap a status list in a card.
 Do not wrap an empty state in a card when the parent section already has a border.
 
 ## Borders
+
+Use `--border-primary` for normal separation.
+
+Use `--border-secondary` for stronger internal separation.
+
+Use `--border-muted` for low-emphasis or dashed boundaries.
 
 Use `--border-width-025` for normal structure.
 
@@ -234,6 +249,8 @@ Do not use a border to imitate a shadow.
 
 Use square corners on normal controls and surfaces.
 
+Use `--border-radius-000` for normal geometry.
+
 Use `--border-radius` when a component needs the shared square value.
 
 Use `--border-radius-6400` for avatars, radio controls, circular progress, status dots, and circular skeletons.
@@ -246,11 +263,11 @@ Do not round a container to make it look softer.
 
 ## Typography
 
-Use `var(--font-mono)` for interface text, code, terminal output, keyboard keys, IDs, and technical labels.
+Use Google Sans Code through `var(--font-mono)` for interface text, code, terminal output, keyboard keys, IDs, and technical labels.
 
-Set the Google Sans Code `MONO` variation axis to `0` for interface text,
-headings, and keyboard keys, and to `1` for code, terminal output, and other
-code-like content.
+Set the Google Sans Code `MONO` variation axis to `0` for interface text, headings, and keyboard keys.
+
+Set `MONO` to `1` for code, terminal output, and other code-like content.
 
 Use `var(--font-size-350)` for normal 14px body text and controls.
 
@@ -316,6 +333,8 @@ Use borders to separate connected rows.
 
 Do not add a new semantic spacing token.
 
+Do not add a second spacing scale or a general utility framework.
+
 Do not use an arbitrary pixel value when a current token matches the need.
 
 ## Interactive size
@@ -330,7 +349,13 @@ Use `--size-1000` for 40px navigation and menu rows where the larger row target 
 
 Use `--size-800` for icon-only header tools and dense row actions.
 
+Keep header actions at their documented default size.
+
+Component contracts override general density guidance; Button and Avatar retain one 36px size without compact variants.
+
 Keep icon-only controls square.
+
+Use a 24px target only when the component contract permits an inline or constrained target.
 
 Keep a custom pointer target at least 24px by 24px when possible.
 
@@ -348,7 +373,13 @@ Blur effect styles reference the matching value steps.
 
 ## Icons
 
-Use an SVG from `library/src/icons/`.
+In a source checkout, use SVG files from the registry's `canonicalAssets.icons`, currently `library/src/icons/`.
+
+In archive integrations, use `icons/{name}.svg` from the separate optional `mewa-icons` archive.
+
+The core archive does not contain source icon assets or an `ri-*` loader.
+
+Read the selected [Icon contract](../components/primitives/icon/icon.md#inline-svg) when authoring icon markup.
 
 Inline the SVG for the no-JavaScript path.
 
@@ -360,8 +391,7 @@ Use `-line` for default or outlined presentation.
 
 Use `-fill` for selected or active presentation.
 
-Use `data-icon-pair` when a control needs to swap line and fill assets in one
-stable slot; the containing control owns the state.
+Use `data-icon-pair` when a control needs to swap line and fill assets in one stable slot; the containing control owns the state.
 
 Use a 16px icon in a normal control.
 
@@ -401,9 +431,9 @@ Use the solid focus-area and invalid-area colors for visible perimeters. Keep th
 
 The destructive button intentionally uses `ring.invalid`, matching the Figma component.
 
-In forced-colors mode, the repository uses the operating system's `Highlight` outline instead of
-the authored ring color. Forced colors is the high-contrast mode provided by the operating system,
-not another Figma token.
+In forced-colors mode, use the operating system's `Highlight` outline instead of the authored ring color.
+
+Forced colors is the operating system's high-contrast mode, not another Figma token.
 
 Keep an opaque semantic background as the fallback.
 
@@ -417,6 +447,8 @@ Do not blur cards.
 
 Do not blur tables.
 
+Do not blur content rows.
+
 Do not blur body content.
 
 Do not use blur as elevation.
@@ -427,7 +459,7 @@ Keep motion, breakpoint, and stacking primitives in CSS rather than Figma variab
 
 Use `--motion-duration-fast` for subtle visual state changes.
 
-Use `--motion-duration-spatial` for approved modal surfaces and Sidebar geometry.
+Use `--motion-duration-spatial` for Dialog, Alert Dialog, Command Palette, Sheet, and Sidebar geometry.
 
 Use `--motion-easing-standard` for every state transition.
 
@@ -437,7 +469,7 @@ Use only subtle opacity, offset, scale, slide, or width changes for spatial moti
 
 Keep direct manipulation, scrolling, and other layout changes immediate.
 
-Disable all transitions when reduced motion is requested.
+Disable all transitions when `prefers-reduced-motion: reduce` is active.
 
 Use no smooth scroll behavior.
 
@@ -448,6 +480,10 @@ Use no hover movement.
 Use no shimmer.
 
 Use no animated skeleton.
+
+Do not add View Transitions, scroll-driven animation, or Web Animations.
+
+Spinner rotation is the only continuous animation exception.
 
 Use Spinner rotation only for active loading.
 
@@ -465,6 +501,8 @@ Use the `--breakpoint-narrow` value, `37.5rem`, for compact single-column behavi
 
 Use rem units for each breakpoint.
 
+Keep media-query literals aligned with the named breakpoint tokens.
+
 Use content-driven intrinsic layout before a media query.
 
 Use wrapping flex and auto-fit grid before a new breakpoint.
@@ -478,6 +516,10 @@ Use the `--breakpoint-max-dense` value, `90rem`, for dense application canvases.
 Use the `--breakpoint-max-focused` value, `64rem`, for focused tools and content pages.
 
 Do not add a third global maximum.
+
+Do not add an unapproved global canvas width.
+
+Keep normal content and controls usable at 320px width and 200% zoom.
 
 ## Theme
 
@@ -496,6 +538,10 @@ Use the App Shell module for the optional persisted toggle.
 Keep every component legible in both themes.
 
 Do not hardcode a theme color in a component.
+
+Do not put raw colors or consumer-specific selectors in component stylesheets.
+
+Support increased contrast and forced colors through the [Accessibility contrast modes](accessibility.md#contrast-modes).
 
 ## Acceptance checks
 

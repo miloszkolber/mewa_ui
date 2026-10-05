@@ -1,11 +1,12 @@
 // -- Tag Input --------------------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
 
 const lifecycle = createLifecycle('tag-input');
+const retainedDrafts = new WeakMap();
 
 function escapeCharacterClass(value) {
   return value.replace(/[\\\]\-^]/g, '\\$&');
@@ -28,10 +29,13 @@ export function enhance(root) {
     }
 
     const inputId = valueInput.id;
-    const initialValue = valueInput.defaultValue;
-    const originalAttributes = ['id', 'aria-describedby', 'aria-invalid', 'placeholder'].map(
-      (name) => [name, valueInput.getAttribute(name)]
-    );
+    let resetValue = valueInput.defaultValue;
+    let writtenValue = valueInput.value;
+    // Hidden value writes also replace the native default attribute. Preserve
+    // the reset value unless a later application write replaces that default.
+    const attributes = attributeSnapshot();
+    const initialStatus = status.textContent;
+    let writtenStatus = initialStatus;
     const describedBy = valueInput.getAttribute('aria-describedby');
     const invalid = valueInput.getAttribute('aria-invalid');
     const placeholder = valueInput.getAttribute('placeholder') || '';
@@ -39,20 +43,21 @@ export function enhance(root) {
     const delimiters = Array.from(tagInput.dataset.delimiters || ',');
     const delimiterPattern = `[${escapeCharacterClass(delimiters.join(''))}]`;
     const delimiterRegex = new RegExp(delimiterPattern);
-    const splitRegex = new RegExp(`${delimiterPattern}|\\r?\\n`, 'g');
+    const splitRegex = new RegExp(`${delimiterPattern}|\\r\\n|[\\r\\n]`, 'g');
+    const tokenRegex = new RegExp(`(${delimiterPattern}|\\r\\n|[\\r\\n])`, 'g');
     const maxTags = Number.parseInt(tagInput.dataset.maxTags || '', 10);
     const allowDuplicates = tagInput.hasAttribute('data-allow-duplicates');
 
-    let tags = valueInput.value
-      .split(splitRegex)
-      .map((tag) => tag.trim())
-      .filter((tag, index, all) => tag && (allowDuplicates || all.indexOf(tag) === index));
+    const parseTags = (value) =>
+      value
+        .split(splitRegex)
+        .map((tag) => tag.trim())
+        .filter((tag, index, all) => tag && (allowDuplicates || all.indexOf(tag) === index));
+    let tags = parseTags(valueInput.value);
 
-    valueInput.type = 'hidden';
-    valueInput.removeAttribute('id');
-    valueInput.removeAttribute('aria-describedby');
-    valueInput.removeAttribute('aria-invalid');
-    valueInput.removeAttribute('placeholder');
+    attributes.set(valueInput, 'type', 'hidden');
+    for (const name of ['id', 'aria-describedby', 'aria-invalid', 'placeholder'])
+      attributes.set(valueInput, name, null);
 
     const list = doc.createElement('div');
     list.className = 'tag-input-list';
@@ -62,7 +67,9 @@ export function enhance(root) {
     entry.className = 'tag-input-entry';
     entry.setAttribute('role', 'listitem');
 
-    const draft = doc.createElement('input');
+    const retained = retainedDrafts.get(valueInput);
+    const draft = retained?.draft || doc.createElement('input');
+    retainedDrafts.delete(valueInput);
     draft.className = 'tag-input-control';
     draft.id = inputId;
     draft.type = 'text';
@@ -77,17 +84,29 @@ export function enhance(root) {
     if (invalid) draft.setAttribute('aria-invalid', invalid);
 
     entry.append(draft);
+    retained?.label.remove();
     list.append(entry);
     field.append(list);
 
     const announce = (message, isError = false) => {
       status.textContent = message;
-      if (isError) tagInput.dataset.state = 'error';
-      else if (tagInput.dataset.state === 'error') delete tagInput.dataset.state;
+      writtenStatus = status.textContent;
+      if (isError) attributes.set(tagInput, 'data-state', 'error');
+      else if (tagInput.dataset.state === 'error') attributes.set(tagInput, 'data-state', null);
+    };
+
+    const adoptValue = () => {
+      if (valueInput.defaultValue !== writtenValue) resetValue = valueInput.defaultValue;
+      if (valueInput.value === writtenValue) return false;
+      tags = parseTags(valueInput.value);
+      writtenValue = valueInput.value;
+      render();
+      return true;
     };
 
     const writeValue = (source, emit = true) => {
       valueInput.value = tags.join(', ');
+      writtenValue = valueInput.value;
       draft.required = valueInput.required && tags.length === 0;
       if (!emit) return;
 
@@ -103,6 +122,8 @@ export function enhance(root) {
 
     const removeTag = (index, source) => {
       if (draft.matches(':disabled') || draft.readOnly) return;
+      // A stale Remove button must not remove a different application value.
+      if (adoptValue()) return;
       const removed = tags[index];
       if (removed === undefined) return;
       tags = tags.filter((_tag, tagIndex) => tagIndex !== index);
@@ -143,11 +164,13 @@ export function enhance(root) {
     };
 
     const addParts = (parts, source) => {
-      if (draft.matches(':disabled') || draft.readOnly) return false;
+      const accepted = new Set();
+      if (draft.matches(':disabled') || draft.readOnly) return accepted;
+      adoptValue();
       let added = 0;
       let lastError = '';
 
-      parts.forEach((part) => {
+      parts.forEach((part, index) => {
         const tag = part.trim();
         if (!tag) return;
 
@@ -162,6 +185,7 @@ export function enhance(root) {
         }
 
         tags.push(tag);
+        accepted.add(index);
         added += 1;
       });
 
@@ -173,7 +197,32 @@ export function enhance(root) {
       if (lastError) announce(lastError, true);
       else if (added > 0) announce(`${added} ${added === 1 ? 'tag' : 'tags'} added.`);
 
-      return added > 0;
+      return accepted;
+    };
+
+    const commitDraft = (text, source, keepTrailing = false) => {
+      const tokens = text.split(tokenRegex);
+      const parts = tokens.filter((_token, index) => index % 2 === 0);
+      const completed = keepTrailing ? parts.slice(0, -1) : parts;
+      const accepted = addParts(completed, source);
+      // Retain original whitespace and separators when nothing can be added.
+      // After partial acceptance, remove only accepted parts and their separators.
+      if (!accepted.size) {
+        draft.value = text;
+        return;
+      }
+      const remaining = parts
+        .map((part, index) => ({ part, index }))
+        .filter(
+          ({ part, index }) =>
+            !accepted.has(index) && (part.trim() || (keepTrailing && index === parts.length - 1))
+        );
+      draft.value = remaining
+        .map(
+          ({ part, index }, position) =>
+            part + (position < remaining.length - 1 ? tokens[index * 2 + 1] || delimiters[0] : '')
+        )
+        .join('');
     };
 
     lifecycle.listen(tagInput, draft, 'keydown', (event) => {
@@ -186,27 +235,26 @@ export function enhance(root) {
 
       if (event.key !== 'Enter' && !delimiters.includes(event.key)) return;
       event.preventDefault();
-      if (addParts([draft.value], 'keyboard') || !draft.value.trim()) draft.value = '';
+      if (!draft.value.trim()) draft.value = '';
+      else commitDraft(draft.value, 'keyboard');
     });
 
     lifecycle.listen(tagInput, draft, 'input', (event) => {
       if (event.isComposing || draft.matches(':disabled') || draft.readOnly) return;
       if (!delimiterRegex.test(draft.value)) return;
-      const parts = draft.value.split(splitRegex);
-      const trailing = parts.pop() || '';
-      addParts(parts, 'delimiter');
-      draft.value = trailing;
+      commitDraft(draft.value, 'delimiter', true);
     });
 
     lifecycle.listen(tagInput, draft, 'paste', (event) => {
       if (draft.matches(':disabled') || draft.readOnly) return;
-      const text = event.clipboardData?.getData('text') || '';
+      const text =
+        event.clipboardData?.getData('text/plain') || event.clipboardData?.getData('text') || '';
       if (!delimiterRegex.test(text) && !/[\r\n]/.test(text)) return;
 
       event.preventDefault();
-      const parts = `${draft.value}${text}`.split(splitRegex);
-      draft.value = '';
-      addParts(parts, 'paste');
+      const start = draft.selectionStart ?? draft.value.length;
+      const end = draft.selectionEnd ?? start;
+      commitDraft(`${draft.value.slice(0, start)}${text}${draft.value.slice(end)}`, 'paste');
     });
 
     lifecycle.listen(tagInput, list, 'click', (event) => {
@@ -222,34 +270,41 @@ export function enhance(root) {
 
     lifecycle.listen(tagInput, valueInput.form, 'submit', (event) => {
       if (!draft.value.trim()) return;
-      if (addParts([draft.value], 'submit')) draft.value = '';
-      else event.preventDefault();
+      commitDraft(draft.value, 'submit');
+      if (draft.value.trim()) event.preventDefault();
     });
 
     lifecycle.reset(tagInput, valueInput.form, () => {
-      tags = initialValue
-        .split(splitRegex)
-        .map((tag) => tag.trim())
-        .filter((tag, index, all) => tag && (allowDuplicates || all.indexOf(tag) === index));
+      if (valueInput.defaultValue !== writtenValue) resetValue = valueInput.value;
+      tags = parseTags(resetValue);
       draft.value = '';
       render();
       writeValue('reset', false);
       announce('');
     });
     lifecycle.add(tagInput, () => {
-      const currentValue = tags.join(', ');
-      list.remove();
-      valueInput.type = 'text';
-      valueInput.defaultValue = initialValue;
+      const currentValue = valueInput.value;
+      const ownsDefault = valueInput.defaultValue === writtenValue;
+      attributes.restore();
+      if (ownsDefault) valueInput.defaultValue = resetValue;
       valueInput.value = currentValue;
-      for (const [name, value] of originalAttributes) {
-        if (value === null) valueInput.removeAttribute(name);
-        else valueInput.setAttribute(name, value);
+      if (draft.value) {
+        draft.remove();
+        if (draft.id === inputId) draft.removeAttribute('id');
+        draft.className = 'tag-input-fallback';
+        draft.required = false;
+        const label = doc.createElement('label');
+        label.textContent = 'Uncommitted tags';
+        label.append(draft);
+        field.append(label);
+        retainedDrafts.set(valueInput, { draft, label });
       }
-      delete tagInput.dataset.enhanced;
+      list.remove();
+      if (status.textContent === writtenStatus) status.textContent = initialStatus;
     });
 
     lifecycle.onUpdate(tagInput, () => {
+      adoptValue();
       draft.disabled = valueInput.disabled;
       draft.readOnly = valueInput.readOnly;
       draft.required = valueInput.required && tags.length === 0;
@@ -259,7 +314,7 @@ export function enhance(root) {
     });
     render();
     writeValue('initial', false);
-    tagInput.dataset.enhanced = '';
+    attributes.set(tagInput, 'data-enhanced', '');
   });
 }
 

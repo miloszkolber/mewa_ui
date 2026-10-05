@@ -1,10 +1,8 @@
 # Maintainer guide
 
-Use this file for repository maintenance.
+Use this file for repository maintenance, not consumer implementation.
 
-Read `library/DESIGN.md` before you change the library.
-
-Read the relevant file in `library/system/` before you change appearance, composition, or behavior.
+Use `library/DESIGN.md#read-for-the-task` to select only relevant system sections and component contracts.
 
 ## Repository scope
 
@@ -12,129 +10,77 @@ Change only this repository unless the task names a consumer repository.
 
 Do not assume active consumers of this experimental library.
 
-When a task authorizes breaking changes, update implementation, registry, examples, and checks together instead of retaining unsupported compatibility hooks.
+Document a breaking change before removing a current hook.
 
-Document a breaking change before you remove a current hook.
+For authorized breaking changes, update implementation, registry, examples, and checks together instead of retaining unsupported compatibility hooks.
+
+Preserve registry v3 fields and public aliases with `registry.schema.json` and catalog checks.
+
+Do not remove duplicated public registry fields or create compatibility aliases without a documented migration decision.
 
 Do not edit deployment files from this repository.
 
 ## Source ownership
 
-Edit `library/src/base.css` for static foundation primitives.
-
-Edit `scripts/color-palette.mjs` for solid and alpha palette primitives.
-
-Edit `library/src/tokens.css` for semantic light and dark roles.
-
-Edit `library/components/{category}/{slug}/{slug}.md` for component implementation guidance.
-
-Edit `library/components/{category}/{slug}/{slug}.css` for component presentation.
-
-Edit `library/components/{category}/{slug}/{slug}.js` for component enhancement behavior.
-
-Edit `library/runtime/` for the shared controller and automatic enhancement lifecycle.
-
-Edit `library/adapters/` for optional framework integration.
-
-Edit `docs/specimens.json` for source markup fixtures. These are not selectable playground examples.
-
-Edit `docs/catalog.mjs` for supported public attributes. `docs/component-model.mjs` defines canonical anatomy, explicit defaults, content slots, and ownership of nested parts. `docs/model-operations.mjs` applies the same property changes to live playgrounds and static export. Never infer a container's state from its first button or offer placeholder/single-option controls.
-
-Generate both HTML pages and documentation bundles with `bun run docs:write`. Do not hand-edit generated files.
-
-Edit `registry.json` for component selection metadata and token purposes.
-
-Edit `library/system/` for selection and composition rules.
-
-Edit `README.md` for the human repository overview.
-
-Edit `llms.txt` for machine routing.
+| Change | Authored owner |
+| --- | --- |
+| Static foundation primitives | `library/src/base.css`, outside its generated palette block |
+| Solid and alpha palette recipe | `scripts/color-palette.mjs` |
+| Semantic light and dark roles | `library/src/tokens.css` |
+| Component contract, presentation, or behavior | `library/components/{category}/{slug}/{slug}.{md,css,js}` |
+| Shared controller and automatic enhancement lifecycle | `library/runtime/` |
+| Optional framework integration | `library/adapters/` |
+| Component selection, dependencies, assets, and token purposes | `registry.json` |
+| Visual rules, selection, composition, shells, and shared accessibility | The relevant authored section in `library/system/` |
+| Human overview or machine routing | `README.md` or `llms.txt`, respectively |
+| Source markup fixtures | `docs/specimens.json`; these are not selectable playground examples |
+| Supported public documentation attributes | `docs/catalog.mjs` |
+| Anatomy, explicit defaults, content slots, and nested-part ownership | `docs/component-model.mjs` |
+| Shared live-playground and static-export property changes | `docs/model-operations.mjs` |
 
 Keep `library/` as the only authored implementation tree.
 
-Keep optional framework adapters in separate generated packages.
+Generate distribution copies only under ignored `dist/`; do not hand-edit them.
 
-Generate distribution copies only under ignored `dist/`.
+## Generation and distribution
 
-Do not hand-edit generated distribution files.
+Generate both HTML pages and documentation bundles with `bun run docs:write` after their sources or component stylesheets change.
 
-Do not add complete shell templates.
+Do not hand-edit generated documentation.
 
-## Palette workflow
+`bun run palette:write` updates only the marked palette block in `library/src/base.css` after recipe changes.
 
-Treat `scripts/color-palette.mjs` as the source of the build-time HCT palette recipe.
+Keep Material Color Utilities build-only.
 
-Treat the marked color-palette block in `library/src/base.css` as generated output.
+`bun run catalog:write` updates only `TOKEN-REFERENCE` in foundations and `REGISTRY-FIELDS` in components after registry or generator changes.
 
-Keep Material Color Utilities build-only and ship every authored CSS color as modern space-separated `rgb()`.
+The rest of `library/system/components.md` is authored selection and implementation guidance, not generated output.
 
-Run `bun run palette:write` after palette recipe changes.
+Do not hand-edit either generated catalog block.
 
-Run `bun run palette:check` before handoff.
+The build uses `registry.json` to generate manifests and dependency-aware entries.
 
-Do not hand-edit the generated palette block.
-
-## Catalog workflow
-
-Treat `registry.json` as the source of component selection metadata.
-
-Treat `library/system/components.md` as generated output.
-
-Treat the semantic token reference in `library/system/foundations.md` as generated output.
-
-Run `bun run catalog:write` after registry selection metadata changes.
-
-Run `bun run catalog:check` before handoff.
-
-Do not hand-edit generated sections.
-
-## Distribution workflow
-
-Treat `registry.json` as the distribution manifest source.
-
-Keep component dependencies explicit in the registry.
-
-The build emits flat component CSS entries in registry dependency order. Preserve that order when changing the CSS packaging contract.
-
-Run `bun run docs:write` after component stylesheet changes.
+Keep dependencies explicit and preserve registry dependency order in flat component CSS.
 
 Run `bun run build` to generate `dist/mewa-ui`, `dist/mewa-icons`, and `dist/mewa-svelte`.
 
-Keep fonts and icons optional in the core package.
+Keep core runtime dependencies absent and fonts/icons optional.
 
-Keep the core package free of runtime dependencies.
-
-Keep framework packages as optional adapters with peer dependencies.
+Ship optional framework adapters in separate packages with peer dependencies.
 
 Keep Bun as the only repository JavaScript toolchain.
 
-Compile the Svelte adapter directly with `svelte/compiler`.
+Compile client-side Svelte and rune modules directly with `svelte/compiler` through the Bun plugin.
 
-Do not add Vite, SvelteKit, or another JavaScript build tool.
+Do not add Node, npm, Vite, SvelteKit, or another JavaScript build tool.
 
 Keep release packages usable without npm.
 
-Publish release archives from a version tag through GitHub Actions.
+Publish release archives from a version tag through GitHub Actions, not to the npm registry.
 
-Do not publish this repository to the npm registry.
-
-## Document roles
+## Document roles and writing
 
 Keep `README.md` descriptive and written for people.
-
-Keep `docs/preview.html` interactive. Each interactive component anchor opens one playground with controls, live markup, and real component behavior. Typography opens as a static rendered Markdown presentation with no property or state controls.
-
-Keep `docs/figma.html` as an inert grid of isolated property and variant combinations. Keep the theme picker outside the specimens. Generate it from shared definitions, not from playground DOM. Render only visual properties and variants; never render behavior-only properties.
-
-Keep documentation modules separate from library implementation. Both views use one selected theme.
-
-Use registry categories in both page groupings. Test required visual combinations independently of the model inventory. A loop over declared controls cannot detect an omitted control or property.
-
-Verify simultaneous nested changes, native interaction readback, and draft preservation. Property controls must describe the rendered component, not merely emit attributes. Model persistent conditions as boolean properties; never add a generic hover/focus state selector.
-
-Keep component navigation only in the playground. Do not link the two views from their page chrome.
-
-Expose only implemented attributes in playground property controls. Use lowercase property labels. Keep native hover and focus in the live preview only.
 
 Keep `library/DESIGN.md`, `library/system/`, and component Markdown instructional.
 
@@ -142,253 +88,76 @@ Keep `AGENTS.md` and `llms.txt` concise and action-oriented.
 
 Keep machine-readable descriptions in `registry.json`.
 
-Do not turn `README.md` into an agent checklist.
+Do not turn the README into an agent checklist or copy implementation instructions into descriptive documentation.
 
-Do not copy implementation instructions into descriptive documentation.
+Use ASD-STE100 style, active voice, and present tense.
 
-## Change sequence
+Write one instruction per sentence and keep each rule self-contained.
 
-1. Identify the authoritative file.
-2. Read the current component skill.
-3. Read the current stylesheet and module.
-4. Read the matching anchored section in `docs/preview.html`.
-5. Read the relevant system specification.
-6. Inspect consumers when the change can break a current hook.
-7. Make the smallest complete change.
-8. Update every affected contract.
-9. Add or update a regression test.
-10. Run the validation commands.
-11. Inspect the result in a browser when markup or CSS changes.
-12. Record any unverified behavior in the handoff.
+Use exact class, attribute, token, and path names.
 
-## Component changes
-
-Keep each component in `library/components/{category}/{slug}/`.
-
-Keep one Markdown skill in each component folder.
-
-Keep one stylesheet in each component folder.
-
-Keep one same-name module only when the component needs JavaScript.
-
-Do not add extra reference files inside a component folder.
-
-Keep component selection metadata in `registry.json`.
-
-State the native basis in each component skill.
-
-State the native Web APIs in each component skill.
-
-State the supported structure or provide a complete HTML example.
-
-State accessibility requirements.
-
-State keyboard or event behavior when the component manages interaction.
-
-State the no-JavaScript behavior for an enhanced component.
-
-Keep canonical examples complete.
-
-Use explicit button types.
-
-Use stable IDs in examples.
-
-Do not use inline styles in canonical examples.
-
-Do not document an unimplemented variant.
-
-## New component gate
-
-Confirm that two real tasks need the same responsibility.
-
-Confirm that composition cannot solve the task cleanly.
-
-Confirm that the component has a stable semantic basis.
-
-Confirm that the component has one clear responsibility.
-
-Confirm that the keyboard model is documented.
-
-Confirm that the fallback is documented.
-
-Add the component files.
-
-Add the registry entry.
-
-Run `bun run catalog:write`.
-
-Add tests for source parity and behavior.
-
-Do not add a proposal to the shipped inventory.
-
-## CSS changes
-
-Use the current cascade layers.
-
-Use semantic color roles.
-
-Use current spacing and size tokens.
-
-Use the canonical scale where `100` equals 4px.
-
-Use zero-padded color step labels from `000` through `950` and the four-digit endpoint `1000`.
-
-Use square geometry.
-
-Use borders instead of shadows.
-
-Use blur only on approved sticky shell chrome and documented modal backdrops.
-
-Use the fast motion primitives for subtle visual state feedback.
-
-Transition only color, background color, border color, opacity, and small state indicators.
-
-Use the spatial motion duration for Dialog, Alert Dialog, Command Palette, Sheet, and Sidebar geometry.
-
-Use only subtle opacity, offset, scale, slide, or width changes for spatial motion.
-
-Keep direct manipulation, scrolling, and other layout changes immediate.
-
-Respect `prefers-reduced-motion`.
-
-Keep Spinner rotation as the only continuous animation exception.
-
-Support increased contrast.
-
-Support forced colors.
-
-Use rem units for shared responsive breakpoints.
-
-Keep media-query literals aligned with the named breakpoint tokens.
-
-Do not add a raw color to a component.
-
-Do not add a general utility framework.
-
-Do not style a consumer-specific selector in a component stylesheet.
-
-Do not add an unapproved global canvas width.
-
-## JavaScript changes
-
-Use a native API before a custom replacement.
-
-Keep the module as an ES module.
-
-Keep initialization idempotent.
-
-Support markup inserted after navigation.
-
-Export `enhance` and `behavior` from every component module.
-
-Use `library/runtime/enhancer.js` for document-wide insertion handling.
-
-Keep component observers scoped to their own changing content.
-
-Keep component imports safe when no DOM exists.
-
-Synchronize ARIA state with visual state.
-
-Restore focus when the component contract requires it.
-
-Dispatch only documented events.
-
-Keep native form and navigation behavior.
-
-Do not add a core runtime dependency.
-
-Do not add a polling loop.
-
-Do not couple core controllers to a framework lifecycle.
-
-## Shell changes
-
-Keep shell recipes in `library/system/layouts.md`.
-
-Compose shells from App Shell, Sidebar, Layout, navigation components, and native landmarks.
-
-Keep page-specific shell CSS in consumers.
-
-Keep route navigation as native links.
-
-Keep the current route on `aria-current="page"`.
-
-Keep one main landmark.
-
-Keep the skip link first.
-
-Do not duplicate the product brand in adjacent shell regions.
-
-Do not add a complete shell template to the library.
-
-## Documentation changes
-
-Use ASD-STE100 style.
-
-Use active voice.
-
-Use present tense.
-
-Write one instruction in each sentence.
-
-Keep each rule self-contained.
-
-Use the exact API names.
-
-Keep examples short.
-
-Avoid deep heading nesting.
-
-Keep `library/system/components.md` generated from `registry.json`.
-
-Keep `llms.txt` short.
+Avoid unclear pronouns, idioms, rhetorical language, deep heading nesting, and long examples.
 
 Do not copy the complete design contract into another file.
 
-## Required validation
+## Documentation views
 
-Run `bun run test`.
+`docs/preview.html` contains one interactive playground per component anchor and a static rendered Markdown presentation for Typography.
 
-Run `bun run package:check`.
+`docs/figma.html` contains an inert grid of isolated visual properties and variants for Figma import.
 
-Run `bun run palette:check`.
+Keep its theme picker outside specimens and exclude behavior-only properties.
 
-Run `bun run catalog:check`.
+Generate both views from shared definitions, not from playground DOM.
+
+Keep documentation modules separate from library implementation and use one selected theme in each view.
+
+Use registry categories in both page groupings.
+
+Keep component navigation only in the playground; do not link the two views from their page chrome.
+
+Expose only implemented attributes with lowercase property labels.
+
+Keep native hover and focus in the live preview; never add a generic hover/focus state selector.
+
+Model persistent conditions as boolean properties.
+
+Never infer a container's state from its first button or offer placeholder/single-option controls.
+
+Property controls must describe the rendered component, not merely emit attributes.
+
+Test required visual combinations independently of the model inventory; iterating declared controls cannot detect an omitted property.
+
+Verify simultaneous nested changes, native interaction readback, and draft preservation.
+
+## Change and verification
+
+1. Identify the authoritative owner and read current sources plus the relevant system sections.
+2. For component changes, read its contract, stylesheet/module, and matching `docs/preview.html#preview-{slug}` section.
+3. Use `library/system/components.md#new-component-gate` before adding a component.
+4. Inspect actual consumers when a change can break a current hook.
+5. Make the smallest complete change and update affected contracts and meaningful regression coverage.
+6. Run the applicable checks and inspect changed markup or CSS in a browser.
+7. Record executed commands, failures, and unverified behavior in the handoff.
+
+Run `bun run test`, `bun run package:check`, `bun run palette:check`, and `bun run catalog:check` before handoff.
+
+Run `bun run lint`, `bun run format:check`, and `bun run typecheck` alongside contract checks.
 
 Run `bun run test:browser` when Chromium is available.
 
-Check changed HTML with the keyboard.
+Use `library/system/accessibility.md#test-procedure` for changed HTML acceptance, including keyboard, zoom, width, contrast modes, and native fallback.
 
-Check changed HTML at 200 percent zoom.
+Check light/dark themes and the browser console; reject preview/implementation disagreement.
 
-Check changed HTML at 320px width.
+For runtime changes, read `library/runtime/README.md` and `library/system/components.md#enhancement-implementation`.
 
-Check light and dark themes.
+Verify reset with trusted native button activation and a later canceling listener.
 
-Check increased contrast.
+Run `bun run measure` after building for separately compressed complete CSS, flat entries, controller, automatic, and runtime responses.
 
-Check forced colors.
+Run `bun tests/docs-visual-review.mjs` with `PUPPETEER_EXECUTABLE_PATH` for catalog-wide captures under ignored `screenshots/review/`.
 
-Check the no-JavaScript path.
+Inspect the images; a completed capture is not a visual review.
 
-Check the browser console.
-
-## Runtime maintenance
-
-Use behavior-specific initialization markers. The module-owned legacy `data-init` flag may remain as a readiness hook for compatibility; never author it or use it to exclude another behavior on the same element.
-
-Give every listener, observer, timer, object URL, and generated DOM region an explicit owner and cleanup path.
-
-Use `createLifecycle` for component listeners, including listeners on external forms. Keep cleanup idempotent and preserve application-owned values.
-
-Handle native form reset after its default action. Honor canceled resets and composition events.
-
-Use `registry.schema.json` and catalog checks to preserve machine-readable compatibility. Do not remove duplicated public registry fields without a compatibility decision.
-
-Run `bun run lint`, `bun run format:check`, and `bun run typecheck` in addition to the existing contract checks.
-
-Run `bun run measure` after building to inspect separately compressed complete CSS, flat component CSS entries, controller, automatic, and runtime responses.
-
-Run `bun tests/docs-visual-review.mjs` with `PUPPETEER_EXECUTABLE_PATH` for catalog-wide rendered sweeps and contact sheets under ignored `screenshots/review/`. Inspect the images; a completed capture is not a visual review.
-
-Use `tests/agent-evaluation.md` to evaluate consumer guidance in a fresh workspace. Record which tasks were actually run.
+Use `tests/agent-evaluation.md` for fresh consumer guidance evaluation and record only tasks actually run.

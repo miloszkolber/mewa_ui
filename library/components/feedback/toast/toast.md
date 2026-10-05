@@ -33,6 +33,12 @@ The module creates the container when the page does not provide one.
 
 The container owns the top-layer surface so notifications remain in one positioned stack.
 
+The active container must remain connected to its document.
+
+The retained API resolves or creates a connected container after route removal.
+
+Container replacement removes obsolete notifications and releases their listeners and timers.
+
 Provide one container only when the application needs a non-default position.
 
 ```html
@@ -135,5 +141,29 @@ Do not use repeated assertive Toast messages for routine events.
 ## Runtime
 
 Load `toast.js` before application code calls `window.toast`.
+
+Cleanup restores an authored container's `popover` value only while the module owns that value.
+
+Toast records the acquisition document for each registered root.
+
+Root or ancestor cleanup releases that document binding after DOM adoption.
+
+Re-enhancing an adopted root migrates the binding to the destination document.
+
+Other enhanced owners keep their document's shared API.
+
+Adopting the shared container releases its obsolete notifications before reuse.
+
+Cleanup restores a window's previous `toast` API only while the module owns the installed value.
+
+Enhancement installs the window adapter only on the acquired document's `defaultView`.
+
+A document without a Window never changes another document's window API.
+
+A retained standalone API continues to target its original document after controller cleanup.
+
+A retained standalone API does not reinstall the destroyed window binding.
+
+Document-wide cleanup releases standalone notification resources without replacing an application-owned window API.
 
 Toast has no useful interactive fallback without the module.

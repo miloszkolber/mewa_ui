@@ -73,7 +73,7 @@ Use `data-allow-duplicates` only when repeated values have distinct meaning.
 
 ## Behavior
 
-Call the controller update method after changing required, disabled, or readonly on the authoritative input.
+Call the controller update method after changing the value, required, disabled, or readonly state on the authoritative input.
 
 The update keeps the current draft and synchronizes the visible control and removal buttons.
 
@@ -91,7 +91,27 @@ Each Remove button removes its specific tag.
 
 The module rejects a duplicate or a value above the maximum count and writes a polite status message.
 
+The module retains rejected text in the draft after a keyboard commit, delimiter input, or paste.
+
+The module removes only accepted parts from a partially accepted batch.
+
+Paste replaces the current text selection before the module processes the batch.
+
 The module commits a remaining draft before native form submission.
+
+The module prevents submission when any attempted draft part remains rejected.
+
+A native form reset uses the current application default and clears the draft.
+
+A canceled reset preserves the tags and draft.
+
+Teardown restores the native text editor without replacing current application values, defaults, or relationships.
+
+Teardown keeps a non-empty draft in a separate unnamed native text input labelled `Uncommitted tags`.
+
+The recovery input does not submit or commit its text.
+
+Re-enhancement returns the recovery text to the draft without committing it.
 
 The module dispatches native `input` and `change` events from the authoritative input after a logical change.
 

@@ -1,6 +1,6 @@
 // -- Toolbar --------------------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, createTabIndexOwner } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -13,23 +13,16 @@ export function enhance(root) {
     toolbar.dataset.init = '';
     if (lifecycle.has(toolbar)) return;
     toolbar.dataset.mewaToolbarInit = '';
-    const tabIndices = new Map();
+    const tabIndices = createTabIndexOwner();
     const setActive = (active) => {
-      getCandidates().forEach((item) => {
-        if (!tabIndices.has(item))
-          tabIndices.set(item, { original: item.getAttribute('tabindex') });
+      const candidates = getCandidates();
+      tabIndices.releaseExcept(candidates);
+      candidates.forEach((item) => {
         const value = item === active ? '0' : '-1';
-        tabIndices.get(item).current = value;
-        item.setAttribute('tabindex', value);
+        tabIndices.set(item, value);
       });
     };
-    lifecycle.add(toolbar, () => {
-      for (const [item, { original, current }] of tabIndices) {
-        if (item.getAttribute('tabindex') !== current) continue;
-        if (original === null) item.removeAttribute('tabindex');
-        else item.setAttribute('tabindex', original);
-      }
-    });
+    lifecycle.add(toolbar, tabIndices.restore);
     const getCandidates = () =>
       Array.from(toolbar.querySelectorAll('button, a[href], [tabindex]')).filter(
         (item) => item.closest('[role="toolbar"]') === toolbar
@@ -41,17 +34,19 @@ export function enhance(root) {
           item.getAttribute('aria-disabled') !== 'true' &&
           !item.closest('[hidden], [inert]')
       );
-    lifecycle.onUpdate(toolbar, () => {
+    const update = () => {
       const current = getItems();
       const active =
         current.find((item) => item === toolbar.ownerDocument.activeElement) ||
         current.find((item) => item.getAttribute('tabindex') === '0') ||
         current[0];
       setActive(active);
-    });
-    const items = getItems();
-
-    setActive(items[0]);
+    };
+    lifecycle.onUpdate(toolbar, update);
+    const observer = new MutationObserver(update);
+    observer.observe(toolbar, { childList: true, subtree: true });
+    lifecycle.add(toolbar, () => observer.disconnect());
+    update();
 
     lifecycle.listen(toolbar, toolbar, 'focusin', (event) => {
       if (getItems().includes(event.target)) setActive(event.target);

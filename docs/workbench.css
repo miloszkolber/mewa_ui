@@ -40,7 +40,7 @@
 .playground-demo > [class^="layout-"], .specimen > [class^="layout-"] { width: 100%; min-width: 0; }
 .playground-demo > .image, .specimen > .image { width: min(100%,25rem); }
 .playground-demo .separator[data-orientation="vertical"] { min-height: var(--size-500); }
-.playground-demo > :is(.field,.text-field,.form,.composer,.data-table,.resizable,.message-scroller) { width: 100%; }
+.playground-demo > :is(.field,.text-field,.card,.form,.composer,.data-table,.resizable,.message-scroller) { width: 100%; }
 .playground-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); align-items: start; gap: var(--space-400) var(--space-500); padding: var(--space-500); border-top: 1px solid var(--border-primary); background: var(--surface-primary); }
 .playground-controls label { display: grid; gap: var(--space-100); min-width: 0; font-size: var(--font-size-300); color: var(--text-secondary); }
 .control-label { text-transform: lowercase; }
@@ -108,13 +108,15 @@
 .matrix-specimens .number-field[data-mewa-number-field-init] > button { display: flex; }
 .specimen :is([data-static-overlay],dialog[open]) { display: block; position: relative; inset: auto; margin: 0; opacity: 1; transform: none; max-height: none; }
 .specimen > dialog { width: 100%; }
+/* A static body-scroll Dialog still needs its shrinking flex boundary. Keep
+   only its maximum specimen height bounded; short content does not stretch. */
+.specimen dialog.dialog[data-scroll="body"] { display: flex; flex-direction: column; max-block-size: min(32rem,calc(100dvh - var(--size-800))); }
 .specimen dialog.sheet { height: auto; width: min(24rem,100%); }
 .specimen dialog.sheet[data-side="bottom"] { width: 100%; }
 .specimen .app-sidebar { display: flex; position: relative; inset: auto; height: 24rem; }
 .specimen .app-header { position: relative; inset: auto; }
 .specimen > .tooltip { width: max-content; }
 .specimen > .toast { width: 100%; max-width: min(26rem,100%); }
-.specimen .nav-menu-list { flex-wrap: wrap; }
 .specimen > .carousel { width: calc(100% - var(--space-800)); margin-inline: var(--space-400); }
 .specimen > .slider { max-width: calc(100% - var(--space-200)); }
 .specimen > .separator[data-orientation="vertical"] { width: var(--border-width-025); height: var(--size-1200); }
@@ -143,6 +145,21 @@
 @media print { .docs-sidebar,.skip-link { display: none; } .docs-layout { display: block; } #content { padding: 0; } .matrix-row { break-inside: avoid; } }
 @media (prefers-reduced-motion: reduce) { .playground-controls .control-switch input::after { transition: none; } }
 @media (forced-colors: active) {
+  /* Inert HTML cannot serialize the native indeterminate property. Keep the
+     static minus visible without changing native forced-color controls. */
+  .matrix-page .checkbox[data-demo-mixed] {
+    appearance: none;
+    forced-color-adjust: none;
+    background: Highlight;
+    border-color: Highlight;
+    box-shadow: none;
+    &::after { display: block; background-color: HighlightText; }
+    &:disabled {
+      background: Canvas;
+      border-color: GrayText;
+      &::after { background-color: GrayText; }
+    }
+  }
   .playground-controls .control-switch input { forced-color-adjust: none; background: Canvas; border-color: ButtonText; }
   .playground-controls .control-switch input::after { background: ButtonText; }
   .playground-controls .control-switch input:checked { background: Highlight; }

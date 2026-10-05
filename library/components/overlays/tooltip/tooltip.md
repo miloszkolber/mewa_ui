@@ -93,6 +93,10 @@ The module sets `aria-describedby` on the trigger.
 
 The module retries initialization when a trigger appears before its Tooltip target.
 
+Target replacement restores the old description and anchor styles only while the module owns those values.
+
+Cleanup preserves description and anchor values replaced by the application.
+
 The module corrects the caret edge after native placement flips.
 
 The module uses explicit coordinates when anchor positioning is unavailable.

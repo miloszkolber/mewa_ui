@@ -1,35 +1,20 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { renderDocumentation } from './docs-render.mjs';
+import { renderDocumentation, renderComponentStyles } from './docs-render.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const registry = JSON.parse(fs.readFileSync(path.join(root, 'registry.json'), 'utf8'));
 const mode = process.argv[2] || '--check';
 if (!['--write', '--check'].includes(mode)) throw new Error(`Unknown mode: ${mode}`);
-const styles = registry.components
-  .map(
-    (c) =>
-      `/* ${c.name} — ${c.files.css} */\n${fs.readFileSync(path.join(root, c.files.css), 'utf8').trim()}`
-  )
-  .join('\n\n');
+const obsoleteStyles = path.join(root, 'docs/states.generated.css');
+if (mode === '--write') fs.rmSync(obsoleteStyles, { force: true });
+else if (fs.existsSync(obsoleteStyles)) {
+  console.error('FAIL docs/states.generated.css is obsolete; run bun run docs:write');
+  process.exitCode = 1;
+}
 const outputs = await renderDocumentation(root, registry);
-outputs.set(
-  'docs/components.generated.css',
-  `/* Generated from registry.json. Run bun run docs:write. */\n\n${styles}\n`
-);
-// Mirror pseudo-class selectors, keeping component declarations authoritative.
-const stateStyles = styles
-  .replace(/:focus-visible\b/g, '[data-demo-focus]')
-  .replace(/:focus-within\b/g, '[data-demo-focus-within]')
-  .replace(/:focus\b/g, '[data-demo-focus]')
-  .replace(/:hover\b/g, '[data-demo-hover]')
-  .replace(/:active\b/g, '[data-demo-active]')
-  .replace(/:indeterminate\b/g, '[data-demo-mixed]');
-outputs.set(
-  'docs/states.generated.css',
-  `/* Generated pseudo-state mirrors for documentation only. */\n@scope ([data-state-surface]) {\n${stateStyles}\n}\n`
-);
+outputs.set('docs/components.generated.css', renderComponentStyles(root, registry));
 const bundle = await Bun.build({
   entrypoints: [path.join(root, 'docs/playground.js')],
   target: 'browser',

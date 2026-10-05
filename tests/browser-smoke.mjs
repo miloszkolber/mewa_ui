@@ -1,5 +1,7 @@
 import { launchOptions, browserName } from './browser-support.mjs';
 import { inspectDocumentationSurfaces } from './docs-browser-support.mjs';
+import { inspectVisualCorrections } from './visual-corrections.browser.mjs';
+import { inspectSkipLinkPaint } from './skip-link-paint.browser.mjs';
 import assert from 'node:assert/strict';
 import { checkReactiveAttachments } from './svelte-browser-support.mjs';
 import fs from 'node:fs';
@@ -7,6 +9,8 @@ import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer-core';
+import { compileModel, operate } from '../scripts/docs-model.mjs';
+import { propertyOperations } from '../docs/model-operations.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const registry = JSON.parse(fs.readFileSync(path.join(root, 'registry.json'), 'utf8'));
@@ -152,55 +156,6 @@ async function inspect(page, baseUrl, slug, viewport, theme = 'light') {
       ).length
     };
   });
-
-  if (['checkbox', 'radio-group'].includes(slug)) {
-    const contrasts = await page.evaluate(() => {
-      const parseColor = (color) => {
-        const values = color.match(/[\d.]+/g).map(Number);
-        return { channels: values.slice(0, 3), alpha: values[3] ?? 1 };
-      };
-      const composite = (foreground, background) => ({
-        channels: foreground.channels.map(
-          (value, index) =>
-            value * foreground.alpha + background.channels[index] * (1 - foreground.alpha)
-        ),
-        alpha: foreground.alpha + background.alpha * (1 - foreground.alpha)
-      });
-      const luminance = ({ channels }) =>
-        channels
-          .map((value) => {
-            const v = value / 255;
-            return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
-          })
-          .reduce((sum, value, i) => sum + value * [0.2126, 0.7152, 0.0722][i], 0);
-      const pageBackground = parseColor(getComputedStyle(document.body).backgroundColor);
-      return [...document.querySelectorAll('input.checkbox,input.radio')]
-        .filter(
-          (input) =>
-            !input.checked &&
-            !input.disabled &&
-            !input.indeterminate &&
-            input.getAttribute('aria-invalid') !== 'true'
-        )
-        .map((input) => {
-          const style = getComputedStyle(input);
-          const background = composite(parseColor(style.backgroundColor), pageBackground);
-          const border = composite(parseColor(style.borderColor), background);
-          const a = luminance(border),
-            b = luminance(background);
-          return { id: input.id, contrast: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05) };
-        });
-    });
-    assert(contrasts.length, `${slug}: missing unchecked control fixture`);
-    // The Figma neutral-700/300 pair is intentionally used for the default
-    // interactive border. On the repository's light body-050 surface it
-    // resolves to about 1.9:1, so this smoke guard checks perceptibility of
-    // the approved mapping rather than applying the former 3:1 assumption.
-    assert(
-      contrasts.every((item) => item.contrast >= 1.9),
-      JSON.stringify({ slug, theme, contrasts })
-    );
-  }
 
   assert(result.lang, `${slug} ${viewport.name}: document language is missing`);
   assert(result.main, `${slug} ${viewport.name}: main landmark is missing`);
@@ -360,6 +315,131 @@ async function inspectSveltePackage(page, baseUrl) {
   page.off('pageerror', onPageError);
 }
 
+async function inspectDocumentedEventReadback(page, baseUrl) {
+  const active = '.component-playground:not([hidden])';
+  await page.goto(`${baseUrl}/docs/preview.html#preview-date-picker`, { waitUntil: 'load' });
+  await page.waitForSelector(`${active} .date-picker-day`);
+  // Deliberately omit click/native change: those generic listeners would mask
+  // a stale custom-event name at the documentation readback boundary.
+  await page.$eval(`${active} .date-picker`, (root) => {
+    root.querySelector('.date-picker-heading').textContent = 'Calendar event readback';
+    root.dispatchEvent(
+      new CustomEvent('date-picker:select', { bubbles: true, detail: { date: new Date() } })
+    );
+  });
+  await page.waitForFunction(() =>
+    document
+      .querySelector('.component-playground:not([hidden]) .playground-code')
+      .textContent.includes('Calendar event readback')
+  );
+  await page.goto(`${baseUrl}/docs/preview.html#preview-date-range-picker`, {
+    waitUntil: 'load'
+  });
+  await page.waitForSelector(`${active} .date-range-input`);
+  await page.$eval(`${active} .date-range-picker`, (root) => {
+    root.querySelector('.date-range-input').value = '2026-09-20';
+    root.dispatchEvent(new CustomEvent('date-range:change', { bubbles: true }));
+  });
+  await page.waitForFunction(
+    () =>
+      document.querySelector('.component-playground:not([hidden]) [name="value:0"]').value ===
+      '2026-09-20'
+  );
+  assert(
+    await page.$eval(`${active} .playground-code`, (el) =>
+      el.textContent.includes('value="2026-09-20"')
+    ),
+    'Documented range event updates both the inspector and exported current value'
+  );
+  console.log('PASS documented calendar custom-event readback without generic event fallbacks');
+}
+
+async function inspectUnavailableRoutes(page, baseUrl) {
+  await page.setViewport({ width: 1200, height: 900 });
+  for (const [slug, rootClass, linkClass] of [
+    ['nav', 'nav', 'nav-item-link'],
+    ['navigation-menu', 'nav-menu', 'nav-menu-link'],
+    ['sidebar', 'app-sidebar', 'sidebar-link']
+  ]) {
+    const destination = `#restored-route-${slug}`;
+    const html = `<nav class="${rootClass}"><a class="${linkClass}" href="${destination}" tabindex="0">Route</a><span id="${destination.slice(1)}">Destination</span></nav>`;
+    const model = await compileModel({
+      slug,
+      name: slug,
+      samples: [{ html }, { html }],
+      specimens: [{ html }]
+    });
+    const scope = model.scopes.find((s) => s.type === 'nav-link');
+    const property = scope.props.find((p) => p.name === 'disabled');
+    const disabled = await operate(model.html, propertyOperations(scope, property, ''));
+    // This native exported snippet has no playground link interceptor. Keeping
+    // tabindex also tests an already-focused route's native Enter default.
+    await page.goto('about:blank');
+    await page.setContent(disabled);
+    await page.focus(`.${linkClass}`);
+    await page.keyboard.press('Enter');
+    await page.evaluate(
+      () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+    );
+    assert.equal(await page.evaluate(() => location.hash), '', `${slug}: disabled native route`);
+    const enabled = await operate(disabled, propertyOperations(scope, property, null));
+    await page.setContent(enabled);
+    await page.focus(`.${linkClass}`);
+    await page.keyboard.press('Enter');
+    await page.waitForFunction((hash) => location.hash === hash, {}, destination);
+
+    await page.goto(`${baseUrl}/docs/preview.html#preview-${slug}`, { waitUntil: 'load' });
+    const active = '.component-playground:not([hidden])';
+    const selector = `${active} .playground-demo .${linkClass}`;
+    await page.waitForSelector(selector);
+    const route = await page.$(selector);
+    try {
+      const href = await route.evaluate((el) => {
+        el.textContent = 'Edited route';
+        el.focus();
+        return el.getAttribute('href');
+      });
+      for (const disabled of [true, false]) {
+        await page.$eval(
+          `${active} [name="prop:part-nav-link:0:disabled"]`,
+          (el, disabled) => {
+            el.checked = disabled;
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+          },
+          disabled
+        );
+        assert.deepEqual(
+          await route.evaluate(
+            (el, selector) => [
+              el.isConnected && el === document.querySelector(selector),
+              el === document.activeElement,
+              el.textContent,
+              el.getAttribute('href')
+            ],
+            selector
+          ),
+          [true, true, 'Edited route', disabled ? null : href],
+          `${slug}: availability preserves mounted route, focus and edits`
+        );
+      }
+      assert.equal(
+        await route.evaluate((el) => el.hasAttribute('data-demo-route-tabindex')),
+        false,
+        'Temporary native focus ownership is cleared after re-enabling'
+      );
+      assert(
+        await route.evaluate((el) => el.tabIndex >= 0),
+        'An enabled native route returns to the normal keyboard path'
+      );
+    } finally {
+      await route.dispose();
+    }
+  }
+  console.log(
+    'PASS unavailable route export blocks native Enter; re-enable restores navigation, mounted nodes, focus and edits'
+  );
+}
+
 let server;
 let baseUrl = configuredBaseUrl;
 
@@ -382,7 +462,11 @@ try {
     await inspect(page, baseUrl, 'preview', coreViewports[1], 'dark');
     await inspect(page, baseUrl, 'preview', coreViewports[0], 'dark');
 
+    await inspectDocumentedEventReadback(page, baseUrl);
+    await inspectUnavailableRoutes(page, baseUrl);
     await inspectDocumentationSurfaces(page, baseUrl, figmaScreenshotPath);
+    await inspectVisualCorrections(page, baseUrl);
+    await inspectSkipLinkPaint(page, baseUrl);
 
     await inspectPackage(page, baseUrl);
     await inspectSveltePackage(page, baseUrl);

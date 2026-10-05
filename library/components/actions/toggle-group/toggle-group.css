@@ -11,7 +11,7 @@
       border: var(--border-width-025) solid var(--border-secondary);
       background: var(--surface-control-transparent);
 
-      &:not([aria-pressed="true"]):hover {
+      &:not([aria-pressed="true"], :disabled, [aria-disabled="true"]):hover {
         background-color: var(--surface-control-hover);
         color: var(--text-primary);
       }
@@ -51,23 +51,32 @@
     /* -- Disabled group ----------------------------------------- */
     &[data-disabled] {
       pointer-events: none;
+    }
 
-      & > .toggle {
-        pointer-events: none;
-        background-color: var(--surface-control-disabled);
-        color: var(--text-disabled);
-      }
+    &[data-disabled] > .toggle,
+    &[data-disabled][data-variant="outline"] > .toggle,
+    &[data-variant="outline"] > .toggle:is(:disabled, [aria-disabled="true"]),
+    & > .toggle:is(:disabled, [aria-disabled="true"]) {
+      pointer-events: none;
+      background-color: var(--surface-control-disabled);
+      border-color: var(--border-disabled);
+      color: var(--text-disabled);
+    }
 
-      /* The variant lives on the group, not on the child. */
-      &[data-variant="outline"] > .toggle {
-        border-color: var(--border-disabled);
-      }
+    &[data-disabled] > .toggle[aria-pressed="true"],
+    & > .toggle:is(:disabled, [aria-disabled="true"])[aria-pressed="true"] {
+      outline: var(--border-width-025) solid currentColor;
+      outline-offset: calc(-1 * var(--space-100));
     }
   }
 
   @media (prefers-contrast: more) {
     .toggle-group[data-variant="outline"] > .toggle {
       border-color: var(--text-primary);
+    }
+    .toggle-group[data-disabled][data-variant="outline"] > .toggle,
+    .toggle-group[data-variant="outline"] > .toggle:is(:disabled, [aria-disabled="true"]) {
+      border-color: var(--border-disabled);
     }
   }
 
@@ -85,6 +94,15 @@
       &:focus-visible {
         outline-color: Highlight;
       }
+    }
+    .toggle-group[data-disabled] > .toggle,
+    .toggle-group[data-disabled][data-variant="outline"] > .toggle,
+    .toggle-group[data-variant="outline"] > .toggle:is(:disabled, [aria-disabled="true"]),
+    .toggle-group > .toggle:is(:disabled, [aria-disabled="true"]) {
+      forced-color-adjust: none;
+      background-color: ButtonFace;
+      border-color: GrayText;
+      color: GrayText;
     }
   }
 }

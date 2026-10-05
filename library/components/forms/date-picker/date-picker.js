@@ -46,24 +46,59 @@ const moveMonth = (state, offset) => {
   state.month = next.getMonth();
 };
 
+// Track both content and descendant identities: equal markup can still be an
+// application replacement. Only module writes may advance the owned snapshot.
+const contentOwnership = (element) => {
+  const authoredChildren = Array.from(element.childNodes);
+  const descendants = () => {
+    const walker = element.ownerDocument.createTreeWalker(element);
+    const nodes = [];
+    for (let node = walker.nextNode(); node; node = walker.nextNode()) nodes.push(node);
+    return nodes;
+  };
+  let current = null;
+  const unchanged = () => {
+    if (!current || element.innerHTML !== current.markup) return false;
+    const nodes = descendants();
+    return (
+      nodes.length === current.nodes.length && nodes.every((node, i) => node === current.nodes[i])
+    );
+  };
+  return {
+    write(callback, replacesContent) {
+      // Full renders claim new content; roving updates cannot adopt unrelated edits.
+      const owned = replacesContent || unchanged();
+      callback();
+      if (owned) current = { markup: element.innerHTML, nodes: descendants() };
+    },
+    restore() {
+      // A retained baseline reference is not ownership after application reuse.
+      if (unchanged())
+        element.replaceChildren(...authoredChildren.filter((node) => !node.parentNode));
+    }
+  };
+};
+
 // The gridcell is the focus target, so aria-selected and the roving tab stop
 // live on the same element and a focusable cell carries no nested control.
-const setTabStop = (datePicker, activeCell) => {
-  datePicker.querySelectorAll('.date-picker-day').forEach((cell) => {
-    cell.tabIndex = cell === activeCell ? 0 : -1;
+const setTabStop = (datePicker, activeCell, updateContent) => {
+  updateContent(datePicker.querySelector('.date-picker-grid'), () => {
+    datePicker.querySelectorAll('.date-picker-day').forEach((cell) => {
+      cell.tabIndex = cell === activeCell ? 0 : -1;
+    });
   });
 };
 
-const focusDate = (datePicker, value) => {
+const focusDate = (datePicker, value, updateContent) => {
   const cell = Array.from(datePicker.querySelectorAll('.date-picker-day')).find(
     (candidate) => candidate.dataset.date === value
   );
   if (!cell) return;
-  setTabStop(datePicker, cell);
+  setTabStop(datePicker, cell, updateContent);
   cell.focus();
 };
 
-const renderDatePicker = (el, year, month, selectedDay, setAttribute) => {
+const renderDatePicker = (el, year, month, selectedDay, setAttribute, updateContent) => {
   const documentRoot = el.ownerDocument;
   const heading = el.querySelector('.date-picker-heading');
   const grid = el.querySelector('.date-picker-grid');
@@ -71,7 +106,13 @@ const renderDatePicker = (el, year, month, selectedDay, setAttribute) => {
 
   const headingText = `${monthFormatter.format(new Date(year, month, 1))} ${year}`;
   if (heading) {
-    heading.textContent = headingText;
+    updateContent(
+      heading,
+      () => {
+        heading.textContent = headingText;
+      },
+      true
+    );
     setAttribute(heading, 'aria-live', 'polite');
   }
 
@@ -135,7 +176,7 @@ const renderDatePicker = (el, year, month, selectedDay, setAttribute) => {
     tbody.append(tableRow);
   }
 
-  grid.replaceChildren(thead, tbody);
+  updateContent(grid, () => grid.replaceChildren(thead, tbody), true);
 };
 
 export function enhance(root) {
@@ -150,15 +191,21 @@ export function enhance(root) {
     // The month grid and its ARIA are generated, so destroy has to restore the
     // authored children and attributes, and leave application edits alone.
     const heading = datePicker.querySelector('.date-picker-heading');
-    const authoredHeadingText = heading?.textContent ?? null;
-    const authoredChildren = Array.from(grid.childNodes);
+    const headingContent = heading ? contentOwnership(heading) : null;
+    const gridContent = contentOwnership(grid);
+    const content = new Map([[grid, gridContent]]);
+    if (heading) content.set(heading, headingContent);
+    const updateContent = (element, write, replacesContent = false) => {
+      const owner = content.get(element);
+      if (owner) owner.write(write, replacesContent);
+      else write();
+    };
     const { set: setAttribute, restore } = attributeSnapshot();
     lifecycle.add(datePicker, () => {
       restore();
-      if (heading && heading.textContent !== authoredHeadingText)
-        heading.textContent = authoredHeadingText;
-      if (grid.childNodes.length !== authoredChildren.length)
-        grid.replaceChildren(...authoredChildren);
+      if (heading && datePicker.querySelector('.date-picker-heading') === heading)
+        headingContent.restore();
+      if (datePicker.querySelector('.date-picker-grid') === grid) gridContent.restore();
     });
 
     const now = new Date();
@@ -168,7 +215,16 @@ export function enhance(root) {
       selected: null
     };
 
-    renderDatePicker(datePicker, state.year, state.month, state.selected, setAttribute);
+    const render = () =>
+      renderDatePicker(
+        datePicker,
+        state.year,
+        state.month,
+        state.selected,
+        setAttribute,
+        updateContent
+      );
+    render();
 
     // One selection path for pointer and keyboard, so both re-render, move
     // focus, and publish the same event.
@@ -177,8 +233,8 @@ export function enhance(root) {
       state.year = selectedDate.getFullYear();
       state.month = selectedDate.getMonth();
       state.selected = selectedDate.getDate();
-      renderDatePicker(datePicker, state.year, state.month, state.selected, setAttribute);
-      focusDate(datePicker, dateKey(selectedDate));
+      render();
+      focusDate(datePicker, dateKey(selectedDate), updateContent);
 
       datePicker.dispatchEvent(
         new CustomEvent('date-picker:select', {
@@ -196,7 +252,7 @@ export function enhance(root) {
         if (action === 'next-month') moveMonth(state, 1);
         if (action === 'prev-month' || action === 'next-month') {
           state.selected = null;
-          renderDatePicker(datePicker, state.year, state.month, state.selected, setAttribute);
+          render();
         }
         return;
       }
@@ -243,7 +299,7 @@ export function enhance(root) {
       }
 
       if (next) {
-        setTabStop(datePicker, next);
+        setTabStop(datePicker, next, updateContent);
         next.focus();
       }
     });

@@ -170,6 +170,8 @@ Use `disabled` on native button items when possible.
 
 Skip disabled items during managed keyboard movement.
 
+Native disabled state includes buttons inside a disabled fieldset.
+
 Hide decorative icons from assistive technology.
 
 Do not add submenu markup until the component implements and documents submenu keyboard behavior.

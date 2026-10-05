@@ -81,6 +81,12 @@ Do not set `draggable="true"` on a disabled item.
 
 The module skips disabled items during managed movement.
 
+An update moves the active tab stop to an enabled item when the active item becomes disabled.
+
+An update moves focus out of a newly disabled active item when focus is inside that item.
+
+The module disables both move controls inside a disabled item.
+
 ## Behavior
 
 Dragging an enabled item can place it before or after another item.
@@ -178,3 +184,11 @@ Do not add selection semantics when the list does not support selection.
 Load `sortable.js` whenever Sortable appears.
 
 Without the module, the list content remains readable but the documented reorder behavior is unavailable.
+
+Destroy removes generated move controls and live regions.
+
+Destroy restores authored tab stops, transient states, move-control attributes, and live-region text only when the module still owns their current values.
+
+Destroy preserves the current item order and application changes.
+
+Destroy preserves replacement output nodes and authored nodes reused elsewhere.

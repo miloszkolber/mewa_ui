@@ -16,6 +16,7 @@
     font-size: var(--font-size-350);
     font-weight: var(--font-weight-525);
     line-height: var(--font-height-regular);
+    overflow-wrap: anywhere;
     cursor: default;
   }
 
@@ -112,11 +113,112 @@
     box-shadow: var(--ring-invalid);
   }
 
+  /* Optional composition: the wrapper owns the native input's boundary. */
+  .text-field-control {
+    display: flex;
+    align-items: center;
+    gap: var(--space-200);
+    inline-size: 100%;
+    min-inline-size: 0;
+    min-block-size: var(--size-900);
+    padding-inline: var(--space-300);
+    border: var(--border-width-025) solid var(--border-secondary);
+    background: var(--background);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-350);
+  }
+
+  .text-field-control > .text-field-input {
+    /* Reserve one control target before long affixes wrap; the input still
+       grows to fill the remaining inline space. */
+    flex: 1 0 var(--size-900);
+    inline-size: auto;
+    min-inline-size: 0;
+    min-block-size: calc(var(--size-900) - var(--border-width-025) * 2);
+    block-size: calc(var(--size-900) - var(--border-width-025) * 2);
+    padding-inline: 0;
+  }
+
+  .text-field-control > .text-field-input,
+  .text-field-control > .text-field-input:is(:focus-visible, [aria-invalid="true"], :user-invalid, :disabled, [readonly]) {
+    border: 0;
+    background: var(--surface-control-transparent);
+    color: inherit;
+    box-shadow: none;
+  }
+
+  .text-field-control > .text-field-affix {
+    order: -1;
+    flex: 0 1 auto;
+    min-inline-size: 0;
+    color: var(--text-secondary);
+    line-height: var(--font-height-regular);
+    overflow-wrap: anywhere;
+  }
+
+  .text-field-control > .text-field-affix[data-side="end"] {
+    order: 1;
+  }
+
+  .text-field-control > .text-field-affix:has(> svg) {
+    flex-shrink: 0;
+  }
+
+  .text-field-affix > svg {
+    inline-size: var(--size-400);
+    block-size: var(--size-400);
+    pointer-events: none;
+  }
+
+  /* Negative block margins keep the Button's full 36px target in a 36px
+     field boundary. The trailing action removes only the wrapper's inset. */
+  .text-field-control > .text-field-action.btn {
+    order: 2;
+    margin-block: calc(var(--border-width-025) * -1);
+    margin-inline-end: calc(var(--space-300) * -1);
+  }
+
+  .text-field-control:has(> .text-field-input:disabled) {
+    background: var(--surface-control-disabled);
+    color: var(--text-disabled);
+    border-color: var(--border-disabled);
+    cursor: not-allowed;
+  }
+
+  .text-field-control:has(> .text-field-input:disabled) > .text-field-affix,
+  .text-field-control > .text-field-input:disabled::placeholder {
+    color: var(--text-disabled);
+  }
+
+  .text-field-control:has(> .text-field-input:where([readonly]:not(:disabled))) {
+    background: var(--surface-secondary);
+    color: var(--text-secondary);
+    border-color: var(--border-muted);
+  }
+
+  .text-field-control:has(> .text-field-input:focus-visible) {
+    border-color: var(--border-focus);
+    box-shadow: var(--ring-default);
+  }
+
+  .text-field-control:has(> .text-field-input:is([aria-invalid="true"], :user-invalid)),
+  .text-field[data-invalid] > .text-field-control {
+    border-color: var(--border-invalid);
+  }
+
+  .text-field-control:has(> .text-field-input:is([aria-invalid="true"], :user-invalid):focus-visible),
+  .text-field[data-invalid] > .text-field-control:has(> .text-field-input:focus-visible) {
+    border-color: var(--border-invalid);
+    box-shadow: var(--ring-invalid);
+  }
+
   .text-field-description,
   .text-field-error {
     margin: 0;
     font-size: var(--font-size-350);
     line-height: var(--font-height-regular);
+    overflow-wrap: anywhere;
   }
 
   .text-field-description {
@@ -128,11 +230,13 @@
   }
 
   .text-field[data-invalid] > .text-field-description,
-  .text-field:has(> :is([aria-invalid="true"], :user-invalid)) > .text-field-description {
+  .text-field:has(> :is([aria-invalid="true"], :user-invalid)) > .text-field-description,
+  .text-field:has(> .text-field-control > .text-field-input:is([aria-invalid="true"], :user-invalid)) > .text-field-description {
     color: var(--text-negative);
   }
 
   .text-field:has(> :disabled) > :is(label, .text-field-label, .text-field-description),
+  .text-field:has(> .text-field-control > .text-field-input:disabled) > :is(label, .text-field-label, .text-field-description),
   .text-field[data-disabled] > :is(label, .text-field-label, .text-field-description) {
     color: var(--text-disabled);
     cursor: not-allowed;
@@ -150,8 +254,19 @@
 
   @media (prefers-contrast: more) {
     .text-field > :where(input, textarea, select),
-    .text-field-input {
+    .text-field-input,
+    .text-field-control {
       border-width: var(--border-width-050);
+    }
+
+    .text-field-control > .text-field-input {
+      border-width: 0;
+      min-block-size: calc(var(--size-900) - var(--border-width-050) * 2);
+      block-size: calc(var(--size-900) - var(--border-width-050) * 2);
+    }
+
+    .text-field-control > .text-field-action.btn {
+      margin-block: calc(var(--border-width-050) * -1);
     }
 
     .text-field > :disabled,
@@ -167,7 +282,8 @@
     }
 
     .text-field > :where(input, textarea, select),
-    .text-field-input {
+    .text-field-input,
+    .text-field-control {
       border-color: ButtonBorder;
       background: Field;
       color: FieldText;
@@ -179,18 +295,53 @@
       outline-offset: 1px;
     }
 
+    .text-field-control:has(> .text-field-input:focus-visible) {
+      outline: var(--border-width-050) solid Highlight;
+      outline-offset: var(--border-width-025);
+      box-shadow: none;
+    }
+
+    .text-field-control > .text-field-affix {
+      color: FieldText;
+    }
+
     .text-field > :disabled,
     .text-field-input:disabled,
+    .text-field-control:has(> .text-field-input:disabled),
+    .text-field-control:has(> .text-field-input:disabled) > .text-field-affix,
     .text-field:has(> :disabled) > :is(label, .text-field-label, .text-field-description),
+    .text-field:has(> .text-field-control > .text-field-input:disabled) > :is(label, .text-field-label, .text-field-description),
     .text-field[data-disabled] > :is(label, .text-field-label, .text-field-description) {
       color: GrayText;
     }
 
+    .text-field-control:has(> .text-field-input:disabled) {
+      border-color: GrayText;
+    }
+
     .text-field > :where(input, textarea, select):is([aria-invalid="true"], :user-invalid),
     .text-field-input:is([aria-invalid="true"], :user-invalid),
+    .text-field-control:has(> .text-field-input:is([aria-invalid="true"], :user-invalid)),
+    .text-field[data-invalid] > .text-field-control,
     .text-field-error {
       border-color: LinkText;
       color: LinkText;
+    }
+
+    .text-field-control:has(> .text-field-input:is([aria-invalid="true"], :user-invalid):focus-visible),
+    .text-field[data-invalid] > .text-field-control:has(> .text-field-input:focus-visible) {
+      border-color: LinkText;
+      box-shadow: none;
+    }
+  }
+}
+
+/* Important layer order gives base focus precedence. Keep this narrow reset
+   in that same layer; the equivalent wrapper outline is defined above. */
+@layer base {
+  @media (forced-colors: active) {
+    .text-field-control > .text-field-input:focus-visible {
+      outline: none !important;
     }
   }
 }

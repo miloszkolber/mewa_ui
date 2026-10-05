@@ -11,6 +11,13 @@
     justify-content: space-between;
   }
 
+  .combobox-trigger[aria-invalid="true"],
+  .combobox[data-invalid] .combobox-trigger {
+    border-color: var(--border-invalid);
+
+    &:focus-visible { box-shadow: var(--ring-invalid); }
+  }
+
   .combobox-value {
     overflow: hidden;
     flex: 1;
@@ -176,6 +183,18 @@
   }
 
   @media (forced-colors: active) {
+    .combobox-trigger[aria-invalid="true"],
+    .combobox[data-invalid] .combobox-trigger {
+      border-color: LinkText;
+      border-style: dashed;
+
+      &:focus-visible {
+        box-shadow: none;
+        outline: var(--border-width-050) solid Highlight;
+        outline-offset: var(--border-width-050);
+      }
+    }
+
     .combobox-content {
       border-color: ButtonText;
     }

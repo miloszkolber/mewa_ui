@@ -1,6 +1,6 @@
 // -- Hover Card ----------------------------------------------
 
-import { queryAll, createLifecycle } from '../../../runtime/core.js';
+import { queryAll, createLifecycle, attributeSnapshot } from '../../../runtime/core.js';
 /* mewa:auto:start */
 import { registerBehavior } from '../../../runtime/enhancer.js';
 /* mewa:auto:end */
@@ -139,14 +139,9 @@ function unbindHoverCard(state) {
     card.removeEventListener('focusin', cardListeners.focusin);
     card.removeEventListener('focusout', cardListeners.focusout);
     card.removeEventListener('keydown', state.onEscape);
-    card.style.positionAnchor = '';
   }
-  if (state.describedBy.size) {
-    state.trigger.setAttribute('aria-describedby', Array.from(state.describedBy).join(' '));
-  } else {
-    state.trigger.removeAttribute('aria-describedby');
-  }
-  state.trigger.style.anchorName = '';
+  state.restoreBinding?.();
+  state.restoreBinding = null;
   state.card = null;
   state.cardListeners = null;
   state.pointerOnCard = false;
@@ -156,12 +151,22 @@ function unbindHoverCard(state) {
 function bindHoverCard(state, card) {
   const { trigger } = state;
   const anchorId = `--hover-card-${card.id.replace(/[^a-zA-Z0-9_-]/g, '-')}`;
+  const triggerAnchor = trigger.style.anchorName;
+  const cardAnchor = card.style.positionAnchor;
+  const attributes = attributeSnapshot();
+  const describedBy = (trigger.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
   trigger.style.anchorName = anchorId;
   card.style.positionAnchor = anchorId;
-  trigger.setAttribute(
+  attributes.set(
+    trigger,
     'aria-describedby',
-    Array.from(new Set([...state.describedBy, card.id])).join(' ')
+    Array.from(new Set([...describedBy, card.id])).join(' ')
   );
+  state.restoreBinding = () => {
+    attributes.restore();
+    if (trigger.style.anchorName === anchorId) trigger.style.anchorName = triggerAnchor;
+    if (card.style.positionAnchor === anchorId) card.style.positionAnchor = cardAnchor;
+  };
   state.card = card;
   state.focusWithin =
     trigger.ownerDocument.activeElement === trigger ||
@@ -249,9 +254,7 @@ function initHoverCard(trigger) {
 
   const state = {
     trigger,
-    describedBy: new Set(
-      (trigger.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean)
-    ),
+    restoreBinding: null,
     card: null,
     cardListeners: null,
     triggerListeners: null,

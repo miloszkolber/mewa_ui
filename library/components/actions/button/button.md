@@ -92,7 +92,11 @@ Give an icon-only button an accessible name.
 </button>
 ```
 
-Replace the example path with the matching local SVG from `library/src/icons/`.
+In a source checkout, resolve local SVG assets through the registry's `canonicalAssets.icons`, currently `library/src/icons/`.
+
+In an archive integration, use `icons/{name}.svg` from the separate optional `mewa-icons` archive, not the core package.
+
+Copy the matching SVG inline; no icon loader is required for the complete native path.
 
 When the action has line and fill assets, keep both in one icon slot so the
 button state can swap them without changing layout.
@@ -106,6 +110,10 @@ button state can swap them without changing layout.
   Save
 </button>
 ```
+
+The class-hook pair example requires a consumer-owned local loader or locally loaded Remix stylesheet; the core supplies neither.
+
+Without that integration, use inline SVG children with the same documented `data-icon-variant` values.
 
 ## Variants
 

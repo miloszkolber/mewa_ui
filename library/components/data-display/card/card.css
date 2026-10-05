@@ -3,11 +3,12 @@
 @layer components {
   .card {
     display: block;
+    min-inline-size: 0;
     background-color: var(--surface-primary);
     color: var(--text-primary);
     border: var(--border-width-025) solid var(--border-primary);
 
-    overflow: hidden;
+    overflow-wrap: anywhere;
     container-type: inline-size;
   }
 
@@ -44,6 +45,20 @@
     align-items: center;
     gap: var(--space-200);
     padding: var(--space-600);
+    padding-top: 0;
+  }
+
+  .card[data-density="compact"] > .card-header {
+    padding: var(--space-400);
+    padding-bottom: 0;
+  }
+
+  .card[data-density="compact"] > .card-content {
+    padding: var(--space-400);
+  }
+
+  .card[data-density="compact"] > .card-footer {
+    padding: var(--space-400);
     padding-top: 0;
   }
 

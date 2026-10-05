@@ -3,22 +3,25 @@
   const update = () => {
     const dark = document.documentElement.classList.contains('dark');
     button?.setAttribute('aria-pressed', String(dark));
-    button?.setAttribute('aria-label', `Switch to ${dark ? 'light' : 'dark'} theme`);
+    button?.setAttribute('data-theme', dark ? 'dark' : 'light');
   };
-  document.addEventListener('click', (event) => {
-    if (!event.target.closest('[data-docs-theme-toggle]')) return;
-    const dark = document.documentElement.classList.toggle('dark');
-    const theme = dark ? 'dark' : 'light';
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
-    try {
-      localStorage.setItem('mewa-docs-theme', theme);
-    } catch {
-      /* Storage may be disabled. */
-    }
+  // App Shell owns the preview header and live sample controls. The inert
+  // matrix has only this toolbar controller; specimens receive no enhancement.
+  if (document.body.classList.contains('matrix-page')) {
+    button?.addEventListener('click', () => {
+      const dark = document.documentElement.classList.toggle('dark');
+      const theme = dark ? 'dark' : 'light';
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
+      try {
+        localStorage.setItem('mewa-ui-theme', theme);
+      } catch {
+        /* Storage may be disabled. */
+      }
+      update();
+    });
     update();
-  });
-  update();
+  }
   document.getElementById('component-search')?.addEventListener('input', (event) => {
     const query = event.target.value.trim().toLowerCase();
     const links = [...document.querySelectorAll('.docs-nav a')];

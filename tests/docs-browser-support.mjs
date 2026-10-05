@@ -4,6 +4,8 @@ import { inspectPlaygroundControls } from './docs-controls.mjs';
 import { inspectDocsSemantics } from './docs-semantics.browser.mjs';
 import { inspectDocsIcons } from './docs-icons.browser.mjs';
 import { inspectLayoutRhythm } from './layout-rhythm.browser.js';
+import { inspectDocsTheme } from './docs-theme.browser.mjs';
+import { inspectIndustryVariants } from './industry-variants.browser.mjs';
 import { browserName } from './browser-support.mjs';
 
 export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath) {
@@ -302,6 +304,8 @@ export async function inspectDocumentationSurfaces(page, baseUrl, screenshotPath
   await inspectDocsSemantics(page, baseUrl);
   await inspectDocsIcons(page, baseUrl);
   await inspectLayoutRhythm(page, baseUrl);
+  await inspectIndustryVariants(page, baseUrl);
+  await inspectDocsTheme(page, baseUrl);
   assert.deepEqual(errors, []);
   page.off('pageerror', onError);
   console.log(

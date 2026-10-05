@@ -55,11 +55,138 @@ for (const [slug, selector] of [
   ['collapsible', 'details[open]'],
   ['radio-group', 'input[type="radio"][checked]'],
   ['radio-group', 'input[type="radio"][disabled]'],
+  ['card', '.card[data-density="compact"]'],
+  ['statistic', '.statistic[data-density="compact"]'],
+  ['callout', '.callout[data-variant="positive"]'],
+  ['callout', '.callout[data-variant="caution"]'],
+  ['text-field', '.text-field-affix[data-side="start"]'],
+  ['text-field', '.text-field-affix[data-side="end"]'],
+  ['text-field', '.btn.text-field-action[type="submit"]'],
+  ['dialog', '.dialog[data-scroll="body"]'],
   ['icon', '.ri-home-fill']
 ]) {
   let found = false;
   for (const row of await matrixRows(await model(slug))) found ||= await has(row.html, selector);
   assert(found, `${slug} requires ${selector}`);
+}
+for (const [variant, title] of [
+  ['default', 'Connection required'],
+  ['positive', 'Connected'],
+  ['caution', 'Connection interrupted'],
+  ['destructive', 'Connection failed']
+]) {
+  const calloutModel = await model('callout');
+  const scope = calloutModel.scopes[0];
+  const html = await operate(
+    calloutModel.html,
+    propertyOperations(scope, prop(scope, 'data-variant'), variant)
+  );
+  assert(await has(html, `.callout[data-variant="${variant}"]`));
+  assert.match(html, new RegExp(`class="callout-title">${title}<`));
+  assert(!(await has(html, '[role="alert"],[role="status"]')), 'Static variant adds no live role');
+}
+for (const slug of ['card', 'statistic']) {
+  const m = await model(slug);
+  const scope = m.scopes[0];
+  const density = prop(scope, 'data-density');
+  assert.deepEqual(density.values, [null, 'compact']);
+  const operations = propertyOperations(scope, density, 'compact');
+  assert.deepEqual(
+    operations,
+    [{ selector: scope.target, index: 0, attr: 'data-density', value: 'compact' }],
+    `${slug}: density changes presentation without replacing content`
+  );
+}
+const adornedField = await model('text-field');
+const accordion = await model('accordion');
+assert(prop(accordion.scopes[0], 'data-type'), 'Accordion retains its live selection control');
+for (const row of await matrixRows(accordion)) {
+  assert.doesNotMatch(row.label, /selection:/, 'Inert Accordion excludes behavior-only selection');
+  assert(!(await has(row.html, '.accordion[data-type="single"]')));
+}
+const composedForm = await model('form');
+const submittedControls = await attrs(
+  composedForm.staticHtml,
+  '.form-field > div > input,.form-field > div > textarea'
+);
+assert.deepEqual(
+  submittedControls.map((control) => control.name),
+  ['username', 'email', 'bio'],
+  'The Form submission example names every successful native control'
+);
+for (const control of submittedControls) {
+  assert(control['aria-describedby'], 'Visible Form help is referenced by its affected control');
+  assert(
+    await has(composedForm.staticHtml, `.field-description[id="${control['aria-describedby']}"]`),
+    'Form help references survive model compilation'
+  );
+}
+const horizontalFields = (await matrixRows(composedForm)).filter((row) =>
+  row.label.includes('form field · orientation: horizontal')
+);
+assert(horizontalFields.length > 0, 'Form matrix includes the implemented horizontal orientation');
+for (const row of horizontalFields) {
+  assert.equal(
+    row.wide,
+    true,
+    'Horizontal label/control composition has sufficient specimen width'
+  );
+  assert(
+    await has(row.html, '.form-field[data-orientation="horizontal"] > div > .text-field-input'),
+    'Horizontal input stays in the documented control-and-help group'
+  );
+  assert(
+    await has(row.html, '.form-field[data-orientation="horizontal"] > div > .field-description')
+  );
+  assert(!(await has(row.html, '.form-field[data-orientation="horizontal"] > .field-description')));
+}
+const fieldAction = adornedField.scopes.find((scope) => scope.id === 'part-button');
+assert(fieldAction, 'Text Field discovers its sibling action through the composition owner');
+assert.deepEqual(
+  fieldAction.props.map((property) => property.name),
+  ['disabled']
+);
+assert.deepEqual(adornedField.slot.values, [
+  'plain',
+  'prefix',
+  'suffix',
+  'affixes',
+  'action',
+  'affixes and action'
+]);
+assert.equal(adornedField.slot.default, 'plain');
+for (const [structure, start, end, action] of [
+  ['plain', false, false, false],
+  ['prefix', true, false, false],
+  ['suffix', false, true, false],
+  ['affixes', true, true, false],
+  ['action', false, false, true],
+  ['affixes and action', true, true, true]
+]) {
+  const html = await operate(adornedField.staticHtml, slotOperations('text-field', structure));
+  assert.equal(await has(html, '.text-field-affix[data-side="start"]'), start, structure);
+  assert.equal(await has(html, '.text-field-affix[data-side="end"]'), end, structure);
+  assert.equal(await has(html, '.text-field-action[type="submit"]'), action, structure);
+  assert.equal(
+    await has(html, '.text-field-action[data-icon-only][aria-label="Submit service name"]'),
+    action,
+    structure
+  );
+  assert.equal(await has(html, '.text-field-control'), structure !== 'plain', structure);
+  assert(await has(html, '.text-field-input[name="service"][value="api"]'), structure);
+  const native = (await attrs(html, '.text-field-input'))[0];
+  assert.deepEqual(
+    native['aria-describedby'].split(' '),
+    ['service-help', ...(start ? ['service-prefix'] : []), ...(end ? ['service-suffix'] : [])],
+    `${structure}: meaningful context references follow structural removal`
+  );
+  for (const affix of await attrs(html, '.text-field-affix'))
+    assert.notEqual(affix['aria-hidden'], 'true', 'Meaningful affix text stays exposed');
+  if (structure !== 'plain')
+    assert(
+      await has(html, '.text-field-control > input:first-child'),
+      'Native input keeps DOM order'
+    );
 }
 assert(
   (await matrixRows(await model('toggle'))).some(
@@ -318,6 +445,32 @@ const expectedRows = {
 for (const [slug, expected] of Object.entries(expectedRows))
   assert.equal((await matrixRows(await model(slug))).length, expected, `${slug} matrix rows`);
 
+// Every retained native tree disclosure needs its authored trigger. A missing
+// ancestor summary otherwise produces the browser's invented "Details" label.
+let treeBranches = 0;
+for (const row of await matrixRows(await model('tree-view'))) {
+  const branches = [];
+  const reader = new HTMLRewriter()
+    .on('details.tree-branch', {
+      element(el) {
+        treeBranches++;
+        const branch = { summaries: 0 };
+        branches.push(branch);
+        el.onEndTag(() => {
+          assert.equal(branch.summaries, 1, `${row.label}: explicit tree branch trigger`);
+          assert.equal(branches.pop(), branch);
+        });
+      }
+    })
+    .on('details.tree-branch > summary.tree-branch-trigger', {
+      element() {
+        branches.at(-1).summaries++;
+      }
+    });
+  await reader.transform(new Response(row.html)).text();
+}
+assert(treeBranches > 0, 'Tree matrix includes native branches');
+
 // A declared matrix must cross to the documented count.
 function declaredCount(slug) {
   return (profiles[slug].matrix || []).reduce((count, dimension) => {
@@ -373,6 +526,34 @@ const loadingButton = await operate(
 );
 assert(await has(loadingButton, '.btn[aria-busy="true"]'));
 assert(loadingButton.includes(demoSpinner));
+// Each property change writes its attribute once. The shared content operation
+// still owns the spinner and accessible name independently of the attribute.
+for (const [slug, name, attr, on] of [
+  ['button', 'loading', 'aria-busy', 'true'],
+  ['checkbox', 'indeterminate', 'data-demo-mixed', '']
+]) {
+  const m = await model(slug);
+  const scope = m.scopes[0];
+  const property = prop(scope, name);
+  assert.equal(property.attr, attr);
+  for (const value of [on, null]) {
+    const operations = propertyOperations(scope, property, value);
+    assert.deepEqual(operations, [{ selector: scope.target, index: 0, attr, value }]);
+    for (const base of [m.html, m.staticHtml]) {
+      const enabled = await operate(base, propertyOperations(scope, property, on));
+      assert(await has(enabled, `${scope.target}[${attr}]`));
+      const changed = await operate(enabled, operations);
+      assert.equal(await has(changed, `${scope.target}[${attr}]`), value !== null);
+    }
+  }
+}
+const trailingAction = await operate(
+  buttonModel.html,
+  contentOperations(buttonModel.scopes[0], { label: 'Save <item>', showIconEnd: true })
+);
+assert.match(trailingAction, /Save &lt;item&gt;<span data-icon-pair/);
+assert.equal((await attrs(trailingAction, '[data-icon-pair]')).length, 1);
+assert.equal((await attrs(trailingAction, '[data-icon-pair] path')).length, 2);
 
 const toggles = await matrixRows(await model('toggle'));
 assert(
@@ -531,7 +712,12 @@ for (const variant of ['', 'success', 'warning', 'destructive', 'info'])
   );
 
 const cards = await matrixRows(await model('card'));
-assert.equal(cards.length, 1, 'Do not clone the complete Card for standalone Button states');
+assert.equal(
+  cards.length,
+  2,
+  'Render one Card per density, not clones for standalone Button states'
+);
+for (const row of cards) assert(!(await has(row.html, '.btn[disabled],.btn[aria-busy="true"]')));
 for (const slug of ['popover', 'hover-card']) {
   const m = await compileModel(fixture(slug, `<div class="${slug}" popover>Content</div>`));
   const root = m.scopes[0];
@@ -635,7 +821,7 @@ for (const [slug, required] of Object.entries(expectedInventory)) {
   for (const [id, properties] of Object.entries(required)) {
     const scope = m.scopes.find((s) => s.id === id);
     assert(scope, `${slug}: ${id}`);
-    assert(await has(m.html, scope.selector), `${slug}: usable selector ${scope.selector}`);
+    assert(await has(m.html, scope.target), `${slug}: usable selector ${scope.target}`);
     for (const attr of properties)
       assert(
         scope.props.some((p) => p.attr === attr),
@@ -701,8 +887,73 @@ for (const row of todoRows) {
     1,
     'A status atom does not repeat the full task list'
   );
-  assert(!(await has(row.html, '.todo-list-summary')), 'No unrelated parent summary');
+  assert.equal(
+    (await attrs(row.html, 'details.todo-list > summary.todo-list-summary')).length,
+    1,
+    `${row.label}: retained native disclosure keeps its authored summary`
+  );
+  assert.match(row.html, /todo-list-label[^>]*>Fix the failing motion check</);
 }
+
+assert.deepEqual(
+  (await Promise.all(todoRows.map((row) => attrs(row.html, '.todo-item')))).map(
+    ([item]) => item['data-status']
+  ),
+  ['pending', 'active', 'done', 'error'],
+  'Each isolated task status keeps valid native disclosure anatomy'
+);
+
+const pagination = await model('pagination');
+const pages = pagination.scopes.find((scope) => scope.type === 'page');
+for (const base of [pagination.html, pagination.staticHtml]) {
+  let html = base;
+  for (const chosen of [0, 2, 1, 0, 1]) {
+    html = await operate(html, exclusiveOperations(pages, chosen));
+    const links = await attrs(html, '.pagination-link');
+    assert.equal(links.filter((link) => link['aria-current'] === 'page').length, 1);
+    assert.equal(
+      links.filter((link) => link.class.split(/\s+/).includes('pagination-active')).length,
+      1,
+      'No stale class-only current page after an exclusive change'
+    );
+    assert.equal(links[chosen]['aria-current'], 'page');
+    assert(links[chosen].class.split(/\s+/).includes('pagination-active'));
+  }
+}
+for (const row of await matrixRows(pagination)) {
+  const links = await attrs(row.html, '.pagination-link');
+  for (const link of links)
+    assert.equal(
+      link.class.split(/\s+/).includes('pagination-active'),
+      link['aria-current'] === 'page',
+      `${row.label}: isolated page class agrees with native current state`
+    );
+}
+for (const slug of ['pagination', 'data-table'])
+  for (const sample of [
+    ...source.find((c) => c.slug === slug).samples,
+    ...source.find((c) => c.slug === slug).specimens
+  ]) {
+    const controls = await attrs(sample.html, '.pagination-prev,.pagination-next');
+    for (const control of controls)
+      assert(control['aria-label'], `${slug}: boundary accessible name`);
+    const rewriter = new HTMLRewriter().on('.pagination-prev,.pagination-next', {
+      text(chunk) {
+        assert.equal(chunk.text.trim(), '', `${slug}: boundary controls are icon-only`);
+      }
+    });
+    await rewriter.transform(new Response(sample.html)).text();
+    assert.equal(
+      (
+        await attrs(
+          sample.html,
+          '.pagination-prev svg[aria-hidden="true"],.pagination-next svg[aria-hidden="true"]'
+        )
+      ).length,
+      controls.length,
+      `${slug}: one decorative vector for each boundary control`
+    );
+  }
 
 const progress = await matrixRows(await model('progress'));
 assert(
@@ -722,6 +973,7 @@ assert.match(thinking, /composer-status[^>]*>Thinking…</);
 // The live playground generates calendar days at runtime, so the inert export
 // carries the single active day atom. `dynamic` is no longer a scope field.
 const calendar = await model('date-picker');
+assert.deepEqual(calendar.scopes[0].props, [], 'No unsupported calendar disabled-date API');
 assert(!calendar.scopes.some((s) => s.type === 'day'), 'No synthetic live day atom');
 assert.equal((await attrs(calendar.staticHtml, '.date-picker-day[tabindex="0"]')).length, 1);
 assert((await attrs(calendar.staticHtml, '.date-picker-day')).length > 1);
@@ -737,6 +989,61 @@ const disabledLink = await operate(
   propertyOperations({ ...links, index: 0 }, prop(links, 'disabled'), '')
 );
 assert(await has(disabledLink, '.nav-item-link[aria-disabled="true"]'));
+assert(!(await has(disabledLink, '.nav-item-link[aria-disabled="true"][href]')));
+const restoredLink = await operate(
+  disabledLink,
+  propertyOperations({ ...links, index: 0 }, prop(links, 'disabled'), null)
+);
+assert.equal((await attrs(restoredLink, '.nav-item-link'))[0].href, links.instances[0].href);
+
+for (const [slug, rootClass, linkClass] of [
+  ['nav', 'nav', 'nav-item-link'],
+  ['navigation-menu', 'nav-menu', 'nav-menu-link'],
+  ['sidebar', 'app-sidebar', 'sidebar-link']
+]) {
+  const html = `<nav class="${rootClass}"><a class="${linkClass}" href="#destination" aria-disabled="true" tabindex="0">First</a><a class="${linkClass}" href="/second?x=1&amp;y=2">Second</a><a class="${linkClass}">No route</a><span id="destination">Destination</span></nav>`;
+  const authored = fixture(slug, html);
+  authored.samples.push({ html }); // Navigation Menu uses its expanded anatomy.
+  const m = await compileModel(authored);
+  const scope = m.scopes.find((s) => s.type === 'nav-link');
+  const disabled = prop(scope, 'disabled');
+  assert.equal(initialValue(scope, disabled, 0), '', 'Authored ARIA availability is read back');
+  for (const base of [m.html, m.staticHtml]) {
+    assert(await has(base, `.${linkClass}[aria-disabled="true"]:not([href])`));
+    let changed = base;
+    for (let i = 0; i < 2; i++)
+      changed = await operate(changed, propertyOperations({ ...scope, index: 1 }, disabled, ''));
+    assert.equal((await attrs(changed, `.${linkClass}[href]`)).length, 0);
+    for (let index = 0; index < 3; index++)
+      changed = await operate(changed, propertyOperations({ ...scope, index }, disabled, null));
+    const restored = await attrs(changed, `.${linkClass}`);
+    assert.equal(restored[0].href, '#destination');
+    assert.equal(restored[0].tabindex, '0', 'The route retains its authored focus policy');
+    assert.equal(restored[1].href, '/second?x=1&amp;y=2', 'Preserve the authored HTML encoding');
+    assert.equal(restored[2].href, undefined, 'Do not invent a destination');
+    assert(!(await has(changed, '[data-demo-href]')), 'Saved routes have a cleanup path');
+    changed = await operate(changed, propertyOperations(scope, disabled, ''));
+    changed = await operate(changed, [
+      { selector: scope.target, index: 0, attr: 'href', value: '/edited' }
+    ]);
+    changed = await operate(changed, propertyOperations(scope, disabled, null));
+    assert.equal(
+      (await attrs(changed, `.${linkClass}`))[0].href,
+      '/edited',
+      'Preserve an application route edit'
+    );
+  }
+  const rows = await matrixRows(await model(slug));
+  let unavailable = 0;
+  for (const row of rows) {
+    unavailable += (await attrs(row.html, 'a[aria-disabled="true"]')).length;
+    assert(
+      !(await has(row.html, 'a[aria-disabled="true"][href]')),
+      `${slug}: inert route availability`
+    );
+  }
+  assert(unavailable > 0, `${slug}: explicit unavailable route representative`);
+}
 
 const typography = await model('typography');
 assert.equal(typography.presentation, true);
@@ -965,8 +1272,8 @@ for (const [slug, expectedParts] of [
   for (const [type, target] of expectedParts) {
     const scope = m.scopes.find((s) => s.type === type);
     assert(scope, `${slug} must expose ${type}`);
-    assert.equal((await attrs(m.html, scope.selector)).length, scope.count);
-    assert(!scope.selector.includes(`.${slug} .${slug} `), `${slug}: no duplicated root qualifier`);
+    assert.equal((await attrs(m.html, scope.target)).length, scope.count);
+    assert(!scope.target.includes(`.${slug} .${slug} `), `${slug}: no duplicated root qualifier`);
     const owner = slug === 'suggestion' ? scope : m.scopes[0];
     if (owner !== scope)
       assert.equal(prop(scope, 'disabled'), undefined, 'No redundant child constraint');

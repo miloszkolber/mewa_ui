@@ -25,6 +25,13 @@ export function enhance(root) {
 
     let wasComplete = cells.every((cell) => cell.value !== '');
 
+    const adjacentEditable = (index, direction) => {
+      for (let next = index + direction; next >= 0 && next < cells.length; next += direction) {
+        if (!cells[next].matches(':disabled') && !cells[next].readOnly) return cells[next];
+      }
+      return null;
+    };
+
     const markFilled = (cell) => {
       if (cell.value) cell.dataset.filled = '';
       else delete cell.dataset.filled;
@@ -68,7 +75,7 @@ export function enhance(root) {
       });
 
       sync(source);
-      cells[Math.min(last + 1, cells.length - 1)]?.focus();
+      (adjacentEditable(last, 1) || cells[last])?.focus();
       return true;
     };
 
@@ -89,11 +96,17 @@ export function enhance(root) {
 
         cell.value = digits.slice(-1);
         sync('input');
-        if (cell.value && cells[index + 1]) cells[index + 1].focus();
+        if (cell.value) adjacentEditable(index, 1)?.focus();
       });
 
       lifecycle.listen(otp, cell, 'keydown', (event) => {
-        if (event.isComposing || cell.matches(':disabled') || cell.readOnly) return;
+        if (
+          event.defaultPrevented ||
+          event.isComposing ||
+          cell.matches(':disabled') ||
+          cell.readOnly
+        )
+          return;
         if (event.key === 'Backspace' && cell.value === '' && cells[index - 1]) {
           const previous = cells[index - 1];
           if (previous.matches(':disabled') || previous.readOnly) return;
@@ -104,15 +117,11 @@ export function enhance(root) {
           return;
         }
 
-        if (event.key === 'ArrowLeft' && cells[index - 1]) {
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+          const next = adjacentEditable(index, event.key === 'ArrowLeft' ? -1 : 1);
+          if (!next) return;
           event.preventDefault();
-          cells[index - 1].focus();
-          return;
-        }
-
-        if (event.key === 'ArrowRight' && cells[index + 1]) {
-          event.preventDefault();
-          cells[index + 1].focus();
+          next.focus();
         }
       });
 

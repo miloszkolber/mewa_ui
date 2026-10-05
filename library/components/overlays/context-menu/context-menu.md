@@ -146,6 +146,8 @@ Use `disabled` on native button items when an action is unavailable.
 
 Skip disabled items during managed keyboard movement.
 
+Native disabled state includes buttons inside a disabled fieldset.
+
 Provide the same important actions through a visible control or another discoverable route.
 
 Do not add submenu markup until submenu keyboard behavior is implemented.
@@ -165,3 +167,9 @@ Do not depend on the custom menu for the only path to a task.
 Load `context-menu.js` whenever Context Menu appears.
 
 The documented custom menu behavior requires JavaScript.
+
+Each enhanced trigger owns its registration, including a clone of an enhanced trigger.
+
+Removing the last enhanced trigger releases the document listeners.
+
+Cleanup restores generated trigger relationships unless the application replaces a managed value.

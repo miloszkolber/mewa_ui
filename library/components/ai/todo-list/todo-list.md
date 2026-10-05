@@ -99,3 +99,11 @@ Do not disable the native summary.
 Without the module, the authored completion text remains visible and the disclosure remains usable.
 
 Load the module when task status changes in place and automatic progress derivation is useful.
+
+Call the controller's `destroy()` when the application releases the task list or its enclosing region.
+
+Cleanup disconnects the acquired observer even if the application removes `.todo-list` before destruction.
+
+Cleanup preserves current task states, disclosure state, and progress text.
+
+Repeated enhancement and remounting do not add duplicate progress observers.

@@ -74,6 +74,10 @@ The module assigns unique CSS anchor names.
 
 The module retries initialization when a trigger appears before its target.
 
+The module rebinds an inserted replacement target.
+
+Target replacement and cleanup restore anchor styles only while the module owns those values.
+
 The popover remains non-modal.
 
 Focus stays in normal sequential order unless a child uses `autofocus`.

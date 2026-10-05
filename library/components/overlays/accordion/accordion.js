@@ -17,6 +17,7 @@ export function enhance(root) {
       accordion,
       'toggle',
       (event) => {
+        if (accordion.getAttribute('data-type') !== 'single') return;
         const item = event.target;
         if (!item.matches('.accordion-item') || item.closest('.accordion') !== accordion) return;
         const items = [...accordion.querySelectorAll('.accordion-item')].filter(
