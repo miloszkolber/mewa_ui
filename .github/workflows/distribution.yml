@@ -26,16 +26,30 @@ jobs:
           bun-version: 1.4.0
       - run: bun install --frozen-lockfile
       - run: bun run check
-      - run: bun run test:browser
-      - run: bun run test:consumer
-      - name: Install pinned Firefox test browser
+      # Both engines are pinned so CI verifies the same builds as local review.
+      # An unpinned Chrome silently tests whatever the runner image ships.
+      - name: Install pinned test browsers
         run: |
+          bun -e 'import {install, Browser} from "@puppeteer/browsers"; await install({browser: Browser.CHROME, buildId: "153.0.8010.52", cacheDir: "/tmp/mewa-ui-browsers"});'
           bun -e 'import {install, Browser} from "@puppeteer/browsers"; await install({browser: Browser.FIREFOX, buildId: "stable_155.0.1", cacheDir: "/tmp/mewa-ui-browsers"});'
-      - name: Verify Firefox
+      - name: Resolve pinned browser executables
         run: |
-          export MEWA_BROWSER=firefox
-          export PUPPETEER_EXECUTABLE_PATH=$(bun -e 'import {getInstalledBrowsers} from "@puppeteer/browsers"; console.log((await getInstalledBrowsers({cacheDir: "/tmp/mewa-ui-browsers"}))[0].executablePath);')
-          bun run test:browser
+          for browser in chrome firefox; do
+            upper=$(printf '%s' "$browser" | tr '[:lower:]' '[:upper:]')
+            found=$(bun -e "import {getInstalledBrowsers, Browser} from '@puppeteer/browsers'; const all = await getInstalledBrowsers({cacheDir: '/tmp/mewa-ui-browsers'}); console.log(all.find((entry) => entry.browser === Browser.${upper})?.executablePath ?? '');")
+            if [ -z "$found" ]; then echo "::error::No pinned $browser executable resolved"; exit 1; fi
+            echo "${upper}_EXECUTABLE=$found" >> "$GITHUB_ENV"
+          done
+      - name: Verify Chrome
+        run: bun run test:browser
+        env:
+          PUPPETEER_EXECUTABLE_PATH: ${{ env.CHROME_EXECUTABLE }}
+      - run: bun run test:consumer
+      - name: Verify Firefox
+        run: bun run test:browser
+        env:
+          MEWA_BROWSER: firefox
+          PUPPETEER_EXECUTABLE_PATH: ${{ env.FIREFOX_EXECUTABLE }}
       - name: Verify release version
         if: startsWith(github.ref, 'refs/tags/')
         run: test "$GITHUB_REF_NAME" = "v$(bun -e 'console.log(require("./package.json").version)')"
