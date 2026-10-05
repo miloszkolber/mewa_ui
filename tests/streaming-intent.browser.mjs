@@ -293,13 +293,42 @@ export async function inspectStreamingIntent(page, baseUrl, assetRoot = '/dist/m
   };
 
   const inspectNativeBars = async () => {
-    // Puppeteer's default Chromium profile hides the actual native controls.
-    // That profile cannot certify bar input; Firefox and visible-bar profiles can.
-    if (page.browser().process()?.spawnargs.includes('--hide-scrollbars')) {
+    // Judge bar availability from the measured gutter rather than the launch
+    // flag, because a profile can ask for visible bars and still render overlay
+    // scrollbars that no reader can operate.
+    if (!(await page.$eval('#streaming-viewport', (el) => el.offsetWidth - el.clientWidth > 0))) {
       console.info(
-        'Native scrollbar checks not executed: the launch profile includes --hide-scrollbars.'
+        'Native scrollbar checks not executed: this profile renders no native scrollbar gutter.'
       );
-    } else {
+      return;
+    }
+    // A track click must also move a scroller that this module does not touch.
+    // Without that control, a failed track case cannot be told apart from an
+    // engine or environment that performs no native scrollbar gesture at all.
+    await fresh({ enhanced: false });
+    await page.evaluate(() => {
+      const { viewport } = window.__streamingIntent;
+      viewport.scrollTop = viewport.scrollHeight;
+    });
+    await stablePosition();
+    const controlBounds = await scrollbarPoint();
+    const controlTop = (await state()).top;
+    await nativeBarAction('track', controlBounds);
+    const controlMoved = await page
+      .waitForFunction(
+        (top) => window.__streamingIntent.viewport.scrollTop < top - 24,
+        { timeout: 5000 },
+        controlTop
+      )
+      .then(() => true)
+      .catch(() => false);
+    if (!controlMoved) {
+      console.info(
+        'Native scrollbar checks not executed: a controller-free scroller does not move on a native track action here.'
+      );
+      return;
+    }
+    {
       for (const action of ['track', 'drag', 'drag-outside']) {
         let controlBounds;
         for (const mode of ['paused', 'released-stream', 'enhanced-stream']) {
