@@ -190,7 +190,23 @@ The shipped check now separates an unusable profile from a broken one instead of
 
 That control resolves the attribution on the runner. Continuous integration has a usable gutter, and a controller-free scroller does move on a native track action there, so the failing track case is the library losing a genuine native action. The defect is therefore not Firefox-only, and the earlier statement in this ledger that Chromium performed it correctly was based on one local run. Chromium reproduces it under the runner's timing while the same build passes locally, which makes the race timing-sensitive rather than engine-specific. Local runs cannot serve as the acceptance oracle for this case until the runner's conditions can be reproduced or controlled here.
 
-## Open items at handoff
+## Root cause of the streaming failure
+
+The shipped native-track case was aiming at the wrong place, and that masked the real defect while also causing unrelated Chromium failures.
+
+The case pressed at a fixed `bottom - 20` for the thumb and `top + 70` for the track. Those offsets only address the intended control while the native thumb is taller than 20px. Streaming grows the transcript fast enough to shrink the native thumb from roughly 74px to about 7px within a second, which the diagnostic captured directly: `scrollHeight` 22726 against `clientHeight` 384, a thumb estimate of 6px. A press 20px above the bottom edge is then on empty track *below* the thumb, where the native meaning is "scroll to the very bottom". The transcript is already at the bottom, so nothing moves, and the failure looks exactly like a module that swallowed the action.
+
+That single mis-aim explains every anomaly recorded above:
+
+- Chromium failing intermittently for reasons unrelated to the module, including a case where the controller had already been destroyed and no library code could have been involved.
+- Position jumping from 1608 to about 21800, which is following to the new bottom rather than any page-up.
+- A controller-free scroller always working, because a short transcript keeps the thumb large.
+
+Reading the geometry from the live element at press time, and pacing the drag one frame per step, makes the gesture land reliably for the non-streaming modes. It also unmasks the actual defect: with the gesture aimed correctly, `track/enhanced-stream` pages up and is then erased by the follow write, returning to the live edge. The native action is genuinely lost while content streams, in Chromium as well as Firefox.
+
+A thumb drag cannot be delivered reliably during a 16ms stream at all, because the thumb shrinks and moves between measuring and pressing. The streaming case is about an action surviving following, and the track's empty region stays large however far the content grows, so a track click is the correct vehicle there.
+
+No test change is committed from this pass. The geometry fix, the paced gesture, and the environment report are preserved as a patch with its probes, and the case is left in its previous shape so this work does not trade a documented defect for a noisier failure. The remaining repair belongs in the module: a native scroll must be able to win against a follow write, which browser-owned following removes entirely because growth then needs no write at all.
 
 The native-track race is not closed. What is now established:
 
