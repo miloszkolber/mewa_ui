@@ -20,8 +20,8 @@ Preserve the previous review's uncommitted repairs and public compatibility hook
 | Bounded variant selection and implementation | Component workers and primary | Source complete | All five additions integrated; Dialog's short-body initial-focus defect repaired without a new scroll controller |
 | Progressive disclosure and agent compatibility | Guidance/package workers and primary | Assembled checks pass | Task routing, canonical-owner consolidation, local archive contracts, scoped records, isolated extraction, and provenance modes |
 | Rendered and interaction review | Component workers, primary, and independent auditors | Covered snapshots pass | Five variants, Form/Accordion/capture corrections, and Firefox native-200 flows clear; 110 changed images opened, 50 exact-byte carry-forward; regenerated Form pair byte-identical |
-| Fresh archive-only consumers | Six fresh workers and independent observers | Five clear, streaming repaired | Native, ordinary table, and Svelte reset/removal corrections clear; the streaming rapid-track race is repaired and verified in both engines, so the task-6 rerun is unblocked |
-| Final assembled verification | Primary | In progress | Repository, package, and complete browser gates pass on the repaired source in both engines; final archive replay, task-6 rerun, and whole-package acceptance remain to run |
+| Fresh archive-only consumers | Six fresh workers and independent observers | All six clear on the repaired source | Tasks 2–6 pass all harnesses in both engines; task-1 passes except for environmental `networkidle0` flake that reproduces against the original pre-fix archive |
+| Final assembled verification | Primary | Complete | Repository, package, and complete browser gates pass on the repaired source in both engines; archive replay complete for all six tasks; CI Verify Chrome and Verify Firefox pass on commit `63a633f` |
 
 ## Evidence and limits
 
