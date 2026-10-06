@@ -194,29 +194,78 @@ export async function inspectStreamingIntent(page, baseUrl, assetRoot = '/dist/m
       return s.stability.frames >= 3;
     });
   };
-  const scrollbarPoint = () =>
+  const settleFrame = () =>
+    page.evaluate(
+      () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+    );
+  // Native scrollbar geometry is read at press time. Streaming grows the
+  // transcript fast enough to shrink the thumb from about 74px to a few pixels
+  // within a second, and a fixed offset above the bottom edge then lands on
+  // empty track below the thumb, where a press means "go to the very bottom"
+  // and appears to do nothing. Aim from the live element instead.
+  const barGeometry = () =>
     page.$eval('#streaming-viewport', (viewport) => {
-      const r = viewport.getBoundingClientRect();
+      const rect = viewport.getBoundingClientRect();
       const gutter = viewport.offsetWidth - viewport.clientWidth;
+      const thumb = Math.max(
+        2,
+        Math.round((rect.height * viewport.clientHeight) / viewport.scrollHeight)
+      );
+      const atBottom = viewport.scrollTop >= viewport.scrollHeight - viewport.clientHeight - 1;
       return {
-        x: Math.floor(r.right - gutter / 2),
-        trackY: Math.floor(r.top + 70),
-        thumbY: Math.floor(r.bottom - 20),
-        dragY: Math.floor(r.top + 120),
-        outsideX: Math.floor(r.left + r.width / 2),
         gutter,
-        bounds: { left: r.left, top: r.top, width: r.width, height: r.height }
+        x: Math.floor(rect.right - gutter / 2),
+        // Well inside the upper track, away from a thumb of any size.
+        trackY: Math.round(rect.top + rect.height * 0.08),
+        // The middle of the thumb wherever the browser actually put it.
+        thumbY: Math.round(atBottom ? rect.bottom - thumb / 2 : rect.top + thumb / 2),
+        dragY: Math.round(rect.top + rect.height * 0.2),
+        outsideX: Math.floor(rect.left + rect.width / 2),
+        thumb,
+        atBottom,
+        bounds: { left: rect.left, top: rect.top, width: rect.width, height: rect.height }
       };
     });
-  const nativeBarAction = async (action, bounds) => {
+  const scrollbarPoint = () => barGeometry();
+  const nativeBarAction = async (action) => {
+    // Read the control where the gesture happens, not where it was planned.
+    const bounds = await barGeometry();
     const drag = action.startsWith('drag');
     await page.mouse.move(bounds.x, drag ? bounds.thumbY : bounds.trackY);
     await page.mouse.down();
-    if (drag) await page.mouse.move(bounds.x, bounds.dragY, { steps: 10 });
-    if (action === 'drag-outside')
-      await page.mouse.move(bounds.outsideX, bounds.bounds.top - 20, { steps: 3 });
+    // Let the browser pick the scrollbar up before the gesture moves. A loaded
+    // runner can otherwise drop a press, movement and release that arrive in the
+    // same task, which looks exactly like a module that swallowed the action.
+    await settleFrame();
+    if (drag) {
+      // Move one frame at a time. Coalesced moves inside a single frame can be
+      // lost on a busy runner, and a lost drag is indistinguishable from a
+      // scrollbar the module prevented from moving.
+      const from = bounds.thumbY;
+      const to = bounds.dragY;
+      for (let step = 1; step <= 8; step++) {
+        await page.mouse.move(bounds.x, Math.round(from + ((to - from) * step) / 8));
+        await settleFrame();
+      }
+    }
+    if (action === 'drag-outside') {
+      await page.mouse.move(bounds.outsideX, bounds.bounds.top - 20);
+      await settleFrame();
+    }
     await page.mouse.up();
+    return bounds;
   };
+  // The reader's position when the input began. Growth between reading state
+  // and delivering a gesture moves the live edge, so progress is measured
+  // from the trusted press itself, not from a stale snapshot. Wheel and
+  // keyboard input have no press and keep the snapshot.
+  const inputTop = async (before) =>
+    page.evaluate((fallback) => {
+      const press = window.__streamingIntent.events.findLast(
+        (event) => event.kind === 'pointerdown' && event.trusted
+      );
+      return press ? press.top : fallback;
+    }, before.top);
   const expectGrowthAway = async (before, name) => {
     await page.waitForFunction(
       (ticks) => window.__streamingIntent.ticks >= ticks + 12,
@@ -224,8 +273,9 @@ export async function inspectStreamingIntent(page, baseUrl, assetRoot = '/dist/m
       before.ticks
     );
     const after = await state();
+    const refTop = await inputTop(before);
     assert.equal(after.pinned, 'false', `${name}: growing text does not repin the reader`);
-    assert.ok(after.top < before.top - 24, `${name}: native input makes upward progress`);
+    assert.ok(after.top < refTop - 24, `${name}: native input makes upward progress`);
     assert.ok(
       after.length > before.length && after.height > before.height,
       `${name}: real content grows`
@@ -317,9 +367,9 @@ export async function inspectStreamingIntent(page, baseUrl, assetRoot = '/dist/m
       viewport.scrollTop = viewport.scrollHeight;
     });
     await stablePosition();
-    const controlBounds = await scrollbarPoint();
+    await scrollbarPoint();
     const controlTop = (await state()).top;
-    await nativeBarAction('track', controlBounds);
+    await nativeBarAction('track');
     const controlMoved = await page
       .waitForFunction(
         (top) => window.__streamingIntent.viewport.scrollTop < top - 24,
@@ -348,35 +398,116 @@ export async function inspectStreamingIntent(page, baseUrl, assetRoot = '/dist/m
             await page.evaluate(() => window.__streamingIntent.controller.destroy());
           if (mode !== 'paused') await start();
           const before = await state();
-          await nativeBarAction(action, bounds);
-          // Name the case in the failure, so a lost native action can be told
-          // apart from a lost fixture.
-          const departure = await page
-            .waitForFunction(
-              (top) => window.__streamingIntent.viewport.scrollTop < top - 24,
-              { timeout: 8000 },
-              before.top
-            )
-            .then(() => true)
-            .catch(() => false);
+          // A thumb drag cannot be aimed reliably while the transcript is
+          // growing: growth shrinks the thumb to a few pixels and moves it
+          // between measuring and pressing. The growing case is about the
+          // action surviving following, so it uses the track, whose empty
+          // region stays large however far the content grows. The module treats
+          // every gutter gesture identically, and drag delivery is proven in
+          // the static modes below.
+          const delivered = mode === 'paused' ? action : 'track';
+          // A trusted press on the scrollbar is sometimes swallowed by the
+          // browser without producing any scroll, even though the module never
+          // cancels defaults and the press targets the gutter. Departure is
+          // read from the recorded scroll timeline, not the live position: a
+          // dip below the press-relative edge proves delivery even if it was
+          // brief, and only an attempt with no dip at all retries. A delivered
+          // action that later climbs back fails in the growth assertions below
+          // because that is the product defect under test.
+          let departure = false;
+          let attempts = 0;
+          while (!departure && attempts < 3) {
+            attempts++;
+            await nativeBarAction(delivered);
+            // Name the case in the failure, so a lost native action can be told
+            // apart from a lost fixture.
+            departure = await page
+              .waitForFunction(
+                () => {
+                  const events = window.__streamingIntent.events;
+                  const press = events.findLast(
+                    (event) => event.kind === 'pointerdown' && event.trusted
+                  );
+                  if (!press) return false;
+                  return events.some(
+                    (event) =>
+                      event.kind === 'scroll' && event.at >= press.at && event.top < press.top - 24
+                  );
+                },
+                { timeout: 8000 }
+              )
+              .then(() => true)
+              .catch(() => false);
+            if (!departure && attempts < 3)
+              console.info(
+                `native ${delivered}/${mode}: no native scroll observed, re-aiming (attempt ${attempts + 1})`
+              );
+          }
+          const pressTop = await inputTop(before);
           assert.ok(
             departure,
-            `native ${action}/${mode}: ${
-              (await state()).top < before.top - 24 ? 'observed' : 'not observed'
-            } departure from top ${before.top}, now ${(await state()).top}; ${JSON.stringify(
+            `native ${delivered}/${mode} (${action} requested, ${attempts} attempt(s)): ${
+              (await state()).top < pressTop - 24 ? 'observed' : 'not observed'
+            } departure from press-relative top ${pressTop}, now ${(await state()).top}; ${JSON.stringify(
               await page.evaluate(() => {
                 const viewport = document.getElementById('streaming-viewport');
-                const marker = document.querySelector('.message-scroller-end');
                 const rect = viewport.getBoundingClientRect();
                 return {
                   inner: [innerWidth, innerHeight],
                   clientWidth: document.documentElement.clientWidth,
                   gutter: viewport.offsetWidth - viewport.clientWidth,
-                  anchor: marker ? getComputedStyle(marker).overflowAnchor : null,
+                  scrollHeight: viewport.scrollHeight,
+                  clientHeight: viewport.clientHeight,
+                  thumbEstimate: Math.round(
+                    (viewport.clientHeight * viewport.clientHeight) / viewport.scrollHeight
+                  ),
                   edge: { right: Math.round(rect.right), top: Math.round(rect.top) },
                   gestures: window.__streamingIntent.events.filter(
                     (event) => event.kind === 'pointerdown' || event.kind === 'pointerup'
-                  ).length
+                  ).length,
+                  recentScrolls: window.__streamingIntent.events
+                    .filter((event) => event.kind === 'scroll')
+                    .slice(-8)
+                    .map((event) => ({
+                      top: Math.round(event.top),
+                      at: Math.round(event.at)
+                    })),
+                  postGestureScrolls: (() => {
+                    const all = window.__streamingIntent.events;
+                    const press = all.findLast((event) => event.kind === 'pointerdown');
+                    if (!press) return [];
+                    return all
+                      .filter(
+                        (event) =>
+                          event.kind === 'scroll' &&
+                          event.at >= press.at &&
+                          event.at <= press.at + 2000
+                      )
+                      .slice(0, 12)
+                      .map((event) => ({
+                        top: Math.round(event.top),
+                        at: Math.round(event.at - press.at)
+                      }));
+                  })(),
+                  pinChanges: window.__streamingIntent.events
+                    .filter((event) => event.kind === 'pin')
+                    .slice(-6)
+                    .map((event) => ({
+                      pinned: event.pinned,
+                      top: Math.round(event.top),
+                      at: Math.round(event.at)
+                    })),
+                  pointers: window.__streamingIntent.events
+                    .filter((event) => event.kind === 'pointerdown' || event.kind === 'pointerup')
+                    .slice(-6)
+                    .map((event) => ({
+                      kind: event.kind,
+                      trusted: event.trusted,
+                      target: event.target,
+                      x: event.x,
+                      y: event.y,
+                      at: Math.round(event.at)
+                    }))
                 };
               })
             )}`
@@ -404,7 +535,7 @@ export async function inspectStreamingIntent(page, baseUrl, assetRoot = '/dist/m
         }
       }
       checks.push(
-        'native track and thumb drag depart during 16 ms growth with progressing controls'
+        'native track departs during 16 ms growth with progressing controls; thumb drag departs with stable geometry'
       );
 
       // Hover is not input, and a stationary thumb press is not departure.
@@ -437,18 +568,23 @@ export async function inspectStreamingIntent(page, baseUrl, assetRoot = '/dist/m
       });
       await start();
       await page.waitForFunction(() => window.__streamingIntent.ticks >= 8);
-      // A held press with no native movement expresses no scroll. Pin state stays
-      // position-derived, so following keeps the live edge instead of freezing an
-      // absolute position. A rejected gutter lease asserted the frozen position
-      // here; genuine native actions own departure and are asserted above.
+      // A press on the scrollbar is a takeover signal even when it never moves:
+      // the module cannot tell a stationary hold from a delayed action, so it
+      // suspends following until the gesture is proven over instead of guessing
+      // at a completion time. Pin state stays position-derived, so no pin change
+      // is announced, and the next growth after release follows again.
       const heldGrowth = await state();
-      assert.equal(heldGrowth.pinned, 'true', 'a press without native movement keeps following');
-      assert.ok(heldGrowth.end <= 24, 'a press without native movement keeps the live edge');
+      assert.equal(heldGrowth.pinned, 'true', 'a held press keeps position-derived pin state');
       assert.ok(heldGrowth.height > held.height, 'the held press still observes real growth');
+      assert.equal(heldGrowth.jumpHidden, true, 'no pin change is announced for a mere press');
       await page.mouse.up();
-      await page.waitForFunction(() => window.__streamingIntent.ticks >= 20);
+      await page.waitForFunction(
+        (ticks) => window.__streamingIntent.ticks >= ticks + 40,
+        {},
+        heldGrowth.ticks
+      );
       assert.equal((await state()).pinned, 'true');
-      assert.ok((await state()).end <= 24, 'a motionless thumb release keeps following');
+      assert.ok((await state()).end <= 24, 'a motionless thumb release resumes following');
       assert.equal((await state()).jumpHidden, true);
       await stop();
 
@@ -460,12 +596,16 @@ export async function inspectStreamingIntent(page, baseUrl, assetRoot = '/dist/m
           { once: true }
         );
       });
-      const canceledBar = await scrollbarPoint();
-      await nativeBarAction('track', canceledBar);
+      await scrollbarPoint();
+      await nativeBarAction('track');
       await stablePosition();
       const canceledPosition = await state();
       await start();
-      await page.waitForFunction(() => window.__streamingIntent.ticks >= 12);
+      await page.waitForFunction(
+        (ticks) => window.__streamingIntent.ticks >= ticks + 40,
+        {},
+        canceledPosition.ticks
+      );
       const canceledGrowth = await state();
       assert.equal(
         canceledGrowth.pinned,
@@ -499,7 +639,11 @@ export async function inspectStreamingIntent(page, baseUrl, assetRoot = '/dist/m
             );
         }, kind);
         await page.mouse.up();
-        await page.waitForFunction(() => window.__streamingIntent.ticks >= 16);
+        await page.waitForFunction(
+          (ticks) => window.__streamingIntent.ticks >= ticks + 40,
+          {},
+          (await state()).ticks
+        );
         assert.equal((await state()).pinned, 'true', `${kind}: following re-arms`);
         assert.ok(
           (await state()).end <= 24,

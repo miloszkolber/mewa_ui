@@ -94,9 +94,15 @@ The module suspends observer-driven following before trusted upward wheel input 
 
 The module also suspends following for native `ArrowUp`, `PageUp`, `Home`, and `Shift`+`Space` input when the viewport has keyboard focus.
 
+A trusted pointer press in the scrollbar gutter suspends observer-driven following for that gesture. Native scroll events keep driving pinned state while the press is held.
+
 The suspension prevents streamed growth from overwriting an in-flight native scroll.
 
 The browser still performs the scroll.
+
+Releasing the press never writes. A press whose scroll was already observed leaves pin state as native scrolling set it. A press with no observed scroll keeps the suspension until a scroll, scrollend, or a short settle bound proves nothing is coming, because some engines apply the scrollbar scroll at or after release. The next growth then resumes following when the reader never left the live edge.
+
+A press on the scrollbar is a takeover signal even when it never moves, so following stays suspended for its duration rather than guessing at a completion time.
 
 The wheel and key suspension ends when native movement leaves the tolerance, completes the requested pixel-wheel distance, or emits `scrollend`.
 
@@ -107,6 +113,10 @@ A tiny pixel-wheel scroll within the tolerance keeps pinned state and resumes fo
 The early wheel guard excludes modified wheel input, horizontal-dominant input, subpixel pixel-mode deltas, editing controls, and nested native scroll surfaces.
 
 Native scroll events still determine pinned state for excluded input, touch scrolling, and scrollbar scrolling.
+
+Only the pointer that started a gutter press ends it. Other pointers never clear another gesture's suspension.
+
+Gutter geometry is cached outside the press. The cache refreshes on scroll, resize, and setup. A stale cache misses a suspension and keeps current behavior instead of blocking input.
 
 A later canceling listener releases the pending suspension on the next animation frame when the viewport does not move.
 
