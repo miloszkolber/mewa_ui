@@ -18,10 +18,7 @@ Badge adds presentation only.
 
 Badge requires no JavaScript.
 
-Ready badges use a 24px minimum height, 6px horizontal padding, and a 4px
-icon gap. The default uses inverted general surface/text, the outline uses
-secondary border/text with a transparent general surface, and status states
-use the semantic alpha surfaces.
+Ready badges use a 24px minimum height, 6px horizontal padding, and a 4px icon gap. The default uses inverted general surface/text, the outline uses secondary border/text with a transparent general surface, and status states use the semantic alpha surfaces.
 
 ## Native Web APIs
 

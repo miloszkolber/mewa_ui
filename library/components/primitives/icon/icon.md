@@ -107,10 +107,7 @@ Do not mix arbitrary icon families in one control group.
 
 ### Stateful pairs
 
-Use `data-icon-pair` when one control needs to swap a line glyph for its fill
-counterpart. The containing control owns the state; the pair keeps both local
-assets in one 16px slot. Hover, focus, current, selected, and expanded states
-show the fill glyph. Disabled states keep the line glyph.
+Use `data-icon-pair` when one control needs to swap a line glyph for its fill counterpart. The containing control owns the state; the pair keeps both local assets in one 16px slot. Hover, focus, current, selected, and expanded states show the fill glyph. Disabled states keep the line glyph.
 
 ```html
 <button class="btn" type="button" data-variant="secondary" aria-pressed="false">
@@ -122,9 +119,7 @@ show the fill glyph. Disabled states keep the line glyph.
 </button>
 ```
 
-Use `data-icon-variant="line|fill"` when the class name is not enough for a
-consumer-owned icon loader. The utility is CSS-only and does not replace the
-local loader or inline SVG path.
+Use `data-icon-variant="line|fill"` when the class name is not enough for a consumer-owned icon loader. The utility is CSS-only and does not replace the local loader or inline SVG path.
 
 ## Color
 

@@ -98,8 +98,7 @@ In an archive integration, use `icons/{name}.svg` from the separate optional `me
 
 Copy the matching SVG inline; no icon loader is required for the complete native path.
 
-When the action has line and fill assets, keep both in one icon slot so the
-button state can swap them without changing layout.
+When the action has line and fill assets, keep both in one icon slot so the button state can swap them without changing layout.
 
 ```html
 <button class="btn" type="button" data-variant="secondary" aria-pressed="false">

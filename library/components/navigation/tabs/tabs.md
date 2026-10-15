@@ -126,8 +126,7 @@ The module ignores a disabled tab.
 
 Use the default grouped track for a compact control-like tab set.
 
-Use `data-variant="underline"` for an underline treatment. `line` remains a
-compatibility alias for existing markup.
+Use `data-variant="underline"` for an underline treatment. `line` remains a compatibility alias for existing markup.
 
 Both variants use 36px tab targets. The tablist adds the shared focus-ring gutter and its border outside those targets.
 
